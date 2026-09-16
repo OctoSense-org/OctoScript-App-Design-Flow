@@ -389,11 +389,83 @@ impl Controller {
             self.mount();
         }
     }
+    /// A swipe to the left on a row (or on the open message) reveals its actions.
+    fn swipe(&mut self, control: &Value) {
+        let event = text(control, "event");
+        let id = control["payload"]["id"].clone();
+        self.state["flag_picker"] = json!(false);
+        match event {
+            "open" => {
+                let already = self.state["swiped"] == id;
+                self.state["swiped"] = if already { json!("") } else { id };
+            }
+            "reader_swipe" => {
+                let shown = self.state["reader_actions"] == true;
+                self.state["reader_actions"] = json!(!shown);
+            }
+            _ => return,
+        }
+        self.last_action = "swipe".into();
+        self.dirty = true;
+    }
+
+    fn message_mut(&mut self, id: &Value) -> Option<&mut Value> {
+        self.state["mailbox"]["messages"].as_array_mut().and_then(|a| a.iter_mut().find(|m| m["id"] == *id))
+    }
+
     fn action(&mut self, control: &Value, value: Option<&Value>) {
         let event = text(control, "event");
         let payload = &control["payload"];
         self.last_action = event.into();
+        // Any other action closes an open swipe bar or colour picker.
+        if !matches!(event, "row_flag" | "set_flag" | "reader_swipe") {
+            self.state["swiped"] = json!("");
+            self.state["flag_picker"] = json!(false);
+            if event != "row_archive" && event != "row_delete" && event != "row_restore" { self.state["reader_actions"] = json!(false); }
+        }
         match event {
+            "row_delete" | "row_restore" | "row_archive" => {
+                let id = payload["id"].clone();
+                let (key, on) = match event { "row_delete" => ("trashed", true), "row_restore" => ("trashed", false), _ => ("archived", true) };
+                let toggled = if let Some(m) = self.message_mut(&id) {
+                    let next = if key == "archived" { m["archived"] != true } else { on };
+                    m[key] = json!(next);
+                    true
+                } else { false };
+                if toggled {
+                    // The open message leaves the reader once it leaves the folder.
+                    if self.state["screen"] == "read" && self.state["selected"] == id {
+                        self.state["screen"] = json!("inbox");
+                    }
+                    self.state["reader_actions"] = json!(false);
+                    self.state["notice"] = json!(match event { "row_delete" => "Moved to Trash on this device", "row_restore" => "Restored on this device", _ => "Updated on this device" });
+                    self.save_box();
+                }
+            }
+            "row_flag" => {
+                // The colour picker, on the swiped row or above the open message.
+                let id = payload["id"].clone();
+                let open = self.state["flag_picker"] == true;
+                self.state["flag_picker"] = json!(!open);
+                if self.state["screen"] == "read" {
+                    self.state["reader_actions"] = json!(true);
+                } else {
+                    self.state["swiped"] = id;
+                }
+            }
+            "set_flag" => {
+                let id = payload["id"].clone();
+                let flag = text(payload, "flag").to_owned();
+                if let Some(m) = self.message_mut(&id) {
+                    m["flag"] = json!(flag);
+                    m["flagged"] = json!(!flag.is_empty());
+                }
+                self.state["flag_picker"] = json!(false);
+                self.state["swiped"] = json!("");
+                self.state["reader_actions"] = json!(false);
+                self.state["notice"] = json!(if flag.is_empty() { "Flag cleared" } else { "Flagged on this device" });
+                self.save_box();
+            }
             "navigate" => {
                 self.state["screen"] = payload["screen"].clone();
                 self.state["search_focused"] = json!(false);
@@ -654,6 +726,10 @@ impl Controller {
                         continue;
                     }
                     let kind = text(&action["action"], "kind");
+                    if kind == "swipe" {
+                        self.swipe(&control);
+                        continue;
+                    }
                     if (control["input"] == true) != (kind == "changed") {
                         continue;
                     }

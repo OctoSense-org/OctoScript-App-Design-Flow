@@ -14,9 +14,11 @@ pub fn visible(state: &Value) -> Vec<Value> {
         .filter(|m| {
             let sent = m["source"] == "sent";
             (if folder == "sent" {
-                sent
+                sent && m["trashed"] != true
+            } else if folder == "trash" {
+                m["trashed"] == true
             } else {
-                !sent && (m["archived"] == true) == (folder == "archive")
+                !sent && m["trashed"] != true && (m["archived"] == true) == (folder == "archive")
             }) && (folder != "unread" || m["unread"] == true)
                 && (folder != "flagged" || m["flagged"] == true)
                 && (query.is_empty() || text(m, "subject").to_lowercase().contains(&query))
@@ -261,6 +263,67 @@ pub fn native_document(message: &Value, address: &str) -> String {
     format!("data:text/html;charset=utf-8;base64,{}", STANDARD.encode(source))
 }
 
+/// Flag categories: one colour each, the way iOS Mail flags work.
+pub const FLAGS: [(&str, &str, u32); 6] = [
+    ("red", "Urgent", 0xffff3b30u32),
+    ("orange", "Follow up", 0xffff9500u32),
+    ("yellow", "Waiting", 0xffffcc00u32),
+    ("green", "Done", 0xff34c759u32),
+    ("blue", "Work", 0xff0a84ffu32),
+    ("purple", "Personal", 0xffaf52deu32),
+];
+pub fn flag_color(name: &str) -> Option<u32> {
+    FLAGS.iter().find(|(id, _, _)| *id == name).map(|(_, _, c)| *c)
+}
+fn flag_hex(name: &str) -> String {
+    format!("#{:06X}", flag_color(name).unwrap_or(0xff8e8e93u32) & 0xffffff)
+}
+fn stack(id: &str, x: f64, y: f64, w: f64, h: f64, bg: Option<u32>, radius: f64) -> Value {
+    let mut n = json!({"t":"stack","id":id,"x":x,"y":y,"w":w,"h":h,"c":[]});
+    if let Some(bg) = bg { n["variant"] = json!("surface"); n["bg"] = json!(bg); n["radius"] = json!(radius); }
+    n
+}
+fn caption(id: &str, text: &str, x: f64, y: f64, w: f64, h: f64, size: f64, weight: u32, color: u32, alignx: f64) -> Value {
+    json!({"t":"text","id":id,"text":text,"x":x,"y":y,"w":w,"h":h,"size":size,"line_height":h,"weight":weight,"color":color,
+           "font_src":format!("self:resources/ux/Inter-{weight}.ttf"),"variant":"single_line","alignx":alignx})
+}
+/// A tappable pill: the stack is the Kit component, the button its hit area, the label its text.
+fn pill(id: &str, text: &str, x: f64, y: f64, w: f64, h: f64, bg: u32, ink: u32, controls: &mut Value, event: &str, payload: Value) -> Value {
+    // The Kit wrapper is a plain group; its surface, hit area and label are children.
+    let mut n = stack(id, x, y, w, h, None, 0.0);
+    n["kit"] = json!(json!({"widget":"KitButton","bindings":{"control":[1],"label":[2]}}).to_string());
+    n["c"] = json!([
+        stack(&format!("{id}_surface"), x, y, w, h, Some(bg), 10.0),
+        {"t":"button","id":format!("{id}_control"),"x":x,"y":y,"w":w,"h":h,"enabled":true},
+        caption(&format!("{id}_label"), text, x, y, w, h, 13.0, 600, ink, 0.5)
+    ]);
+    controls[id] = json!({"event":event,"payload":payload,"enabled":true});
+    n
+}
+/// Swipe actions for one message: Delete (or Restore in Trash), Archive, Flag — and the colour
+/// picker when it is open. `y` is the top of the 88-point band they sit in.
+fn swipe_bar(prefix: &str, m: &Value, folder: &str, picker: bool, y: f64, controls: &mut Value) -> Vec<Value> {
+    let id = m["id"].clone();
+    let mut out = vec![stack(&format!("{prefix}_swipe_bg"), 150.0, y + 1.0, 256.0, 86.0, Some(0xfff2f2f7u32), 0.0)];
+    let (del_text, del_event) = if folder == "trash" { ("Restore", "row_restore") } else { ("Delete", "row_delete") };
+    let archive_text = if m["archived"] == true { "Unarchive" } else { "Archive" };
+    out.push(pill(&format!("{prefix}_delete"), del_text, 158.0, y + 10.0, 76.0, 34.0, 0xffff3b30u32, 0xffffffffu32, controls, del_event, json!({"id":id})));
+    out.push(pill(&format!("{prefix}_archive"), archive_text, 240.0, y + 10.0, 76.0, 34.0, 0xff0a84ffu32, 0xffffffffu32, controls, "row_archive", json!({"id":id})));
+    let flag = text(m, "flag");
+    out.push(pill(&format!("{prefix}_flag"), if flag.is_empty() { "Flag" } else { "Flagged" }, 322.0, y + 10.0, 76.0, 34.0, flag_color(flag).unwrap_or(0xffff9500u32), 0xffffffffu32, controls, "row_flag", json!({"id":id})));
+    if picker {
+        for (i, (name, _, color)) in FLAGS.iter().enumerate() {
+            let x = 158.0 + i as f64 * 30.0;
+            let mut dot = pill(&format!("{prefix}_flag_{name}"), "", x, y + 52.0, 26.0, 26.0, *color, 0xffffffffu32, controls, "set_flag", json!({"id":id,"flag":name}));
+            dot["c"][0]["radius"] = json!(13.0);
+            if flag == *name { dot["c"][0]["border"] = json!(2.0); dot["c"][0]["bordercolor"] = json!(0xff1c1c1eu32); }
+            out.push(dot);
+        }
+        out.push(pill(&format!("{prefix}_flag_none"), "Clear", 340.0, y + 52.0, 58.0, 26.0, 0xffe5e5eau32, 0xff1c1c1eu32, controls, "set_flag", json!({"id":id,"flag":""})));
+    }
+    out
+}
+
 pub struct SceneFrame {
     pub value: Value,
     pub actions: HashMap<String, Value>,
@@ -319,7 +382,17 @@ pub fn render(state: &Value, endpoint: &str, nonce: &str) -> SceneFrame {
             }
             controls[format!("{id}_open")] =
                 json!({"event":"open","payload":{"id":m["id"]},"enabled":true});
+            let top = 242. + 88. * i as f64;
+            if let Some(color) = flag_color(text(m, "flag")) {
+                // The category colour, beside the time.
+                item["c"].as_array_mut().unwrap().push(stack(&format!("{id}_flagdot"), 256.0, top + 16.0, 10.0, 10.0, Some(color), 5.0));
+            }
             children.push(item);
+            if state["swiped"] == m["id"] {
+                let folder = text(state, "folder").to_owned();
+                let picker = state["flag_picker"] == true;
+                children.extend(swipe_bar(&id, m, &folder, picker, top, &mut controls));
+            }
         }
         let more = state["mailbox"]["has_more"] == true
             && text(state, "folder") == "inbox"
@@ -353,6 +426,7 @@ pub fn render(state: &Value, endpoint: &str, nonce: &str) -> SceneFrame {
                 "flagged" => "Flagged",
                 "archive" => "Archive",
                 "sent" => "Sent",
+                "trash" => "Trash",
                 _ => "Inbox",
             },
         );
@@ -401,6 +475,31 @@ pub fn render(state: &Value, endpoint: &str, nonce: &str) -> SceneFrame {
                 "src",
                 native_document(m, text(&state["mailbox"], "address")).into(),
             );
+            // The toolbar flag shows the message's category colour.
+            let flag = text(m, "flag");
+            if let Some(svg) = assets.get_mut("read/tool_flag_icon.svg") {
+                *svg = svg.replace("#FF9500", &flag_hex(if flag.is_empty() { "orange" } else { flag }));
+            }
+            controls["tool_flag"] = json!({"event":"row_flag","payload":{"id":m["id"]},"enabled":true});
+            controls["tool_archive"] = json!({"event":"row_archive","payload":{"id":m["id"]},"enabled":true});
+            // A swipe on the message reveals the same actions above it.
+            controls["message_html"] = json!({"event":"reader_swipe","payload":{"id":m["id"]},"enabled":true});
+            if state["reader_actions"] == true {
+                let picker = state["flag_picker"] == true;
+                let band = if picker { 88.0 } else { 56.0 };
+                if let Some(html) = find(tree, "message_html") {
+                    html["y"] = json!(88.0 + band);
+                    html["h"] = json!(616.0 - band);
+                }
+                // The band starts at the message top (88): pills at 96, colour dots at 138, all shifted to the left edge.
+                let mut bar = swipe_bar("reader", m, text(state, "folder"), picker, 86.0, &mut controls);
+                bar[0]["x"] = json!(0.0); bar[0]["w"] = json!(406.0); bar[0]["y"] = json!(88.0); bar[0]["h"] = json!(band);
+                fn shift_x(n: &mut Value, dx: f64) { if let Some(x) = n["x"].as_f64() { n["x"] = json!(x + dx); } for c in n["c"].as_array_mut().into_iter().flatten() { shift_x(c, dx); } }
+                for node in bar.iter_mut().skip(1) {
+                    shift_x(node, -142.0);
+                }
+                tree["c"].as_array_mut().unwrap().extend(bar);
+            }
         }
     } else if screen == "mailboxes" {
         label(tree, "account_address", text(&state["mailbox"], "address"));
@@ -413,7 +512,32 @@ pub fn render(state: &Value, endpoint: &str, nonce: &str) -> SceneFrame {
                 "On device"
             },
         );
-        for (i, folder) in ["sent", "inbox", "unread", "flagged", "drafts", "archive"]
+        // A seventh folder, Trash, cloned from the Archive row; everything below moves down.
+        // The row, its count, its chevron and the divider above it are siblings in the template.
+        let mut extra = Vec::new();
+        for (source, target) in [("folder_5", "folder_6"), ("folder_count_5", "folder_count_6"), ("folder_arrow_5", "folder_arrow_6"), ("folder_line_5", "folder_line_6")] {
+            if let Some(mut node) = find(tree, source).cloned() {
+                rename(&mut node, source, target);
+                moved(&mut node, 53.);
+                extra.push(node);
+            }
+        }
+        if !extra.is_empty() {
+            label(&mut extra[0], "folder_6_label", "Trash");
+            controls["folder_6"] = json!({"event":"folder","payload":{"folder":"trash"},"enabled":true});
+            if let Some(children) = tree["c"].as_array_mut() {
+                for node in children.iter_mut() {
+                    if node["y"].as_f64().unwrap_or(0.) >= 477. && node["id"] != "home_indicator" {
+                        moved(node, 53.);
+                    }
+                }
+                let at = children.iter().position(|n| n["id"] == "folder_line_5").map(|i| i + 1).unwrap_or(children.len());
+                for (k, node) in extra.into_iter().enumerate() {
+                    children.insert(at + k, node);
+                }
+            }
+        }
+        for (i, folder) in ["sent", "inbox", "unread", "flagged", "drafts", "archive", "trash"]
             .iter()
             .enumerate()
         {

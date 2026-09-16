@@ -67,6 +67,9 @@ pub struct MailView {
     list_drag: Option<(u64, f64, f64, String)>,
     #[rust]
     suppress_activation: bool,
+    /// A press that may become a swipe to the left: where it started, and whether it already did.
+    #[rust]
+    swipe: Option<(DVec2, bool)>,
 }
 
 fn retire(cx: &mut Cx, widget: &WidgetRef) {
@@ -253,6 +256,44 @@ impl MailView {
         Ok(())
     }
 
+    /// A leftward drag of 48 points (and little vertical travel) is a swipe on
+    /// whatever is under the press: the deepest element there is reported with
+    /// kind "swipe" — the controller resolves it to the row (or the open message).
+    fn track_swipe(&mut self, cx: &mut Cx, at: DVec2) {
+        let Some((start, done)) = self.swipe else { return };
+        if done {
+            return;
+        }
+        let delta = at - start;
+        if delta.y.abs() > 28. {
+            self.swipe = None;
+            return;
+        }
+        if delta.x > -48. {
+            return;
+        }
+        self.swipe = Some((start, true));
+        self.suppress_activation = true;
+        self.list_drag = None;
+        let mut best: Option<(usize, String)> = None;
+        for element in &self.elements {
+            let Some(id) = element["id"].as_str() else { continue };
+            let area = self.view.widget(cx, &[LiveId::from_str(id)]).area();
+            if area.is_valid(cx) && area.clipped_rect(cx).contains(start) {
+                let depth = id.matches('_').count();
+                if best.as_ref().map(|(d, _)| depth > *d).unwrap_or(true) {
+                    best = Some((depth, id.to_owned()));
+                }
+            }
+        }
+        if let Some((_, id)) = best {
+            if self.actions.len() < 256 {
+                self.sequence += 1;
+                self.actions.push(json!({"id":id,"action":{"kind":"swipe"},"sequence":self.sequence}));
+            }
+        }
+    }
+
     fn shutdown(&mut self, cx: &mut Cx) {
         if let Some(device) = self.device.take() {
             device.shutdown();
@@ -296,9 +337,26 @@ impl Widget for MailView {
         let mut drag_scroll = None;
         // A pointer press on a desktop counts like a touch start: it ends the
         // post-mount suppression, otherwise mouse taps never activate anything.
-        if let Event::MouseDown(_) = event {
+        if let Event::MouseDown(e) = event {
             self.suppress_activation = false;
             self.list_drag = None;
+            self.swipe = Some((e.abs, false));
+        }
+        if let Event::MouseMove(e) = event {
+            self.track_swipe(cx, e.abs);
+        }
+        if let Event::MouseUp(_) = event {
+            self.swipe = None;
+        }
+        if let Event::TouchUpdate(update) = event {
+            for touch in &update.touches {
+                match touch.state {
+                    TouchState::Start => self.swipe = Some((touch.abs, false)),
+                    TouchState::Move => self.track_swipe(cx, touch.abs),
+                    TouchState::Stop => self.swipe = None,
+                    _ => {}
+                }
+            }
         }
         if let Event::TouchUpdate(update) = event {
             // A freshly replaced view has not restored its scroll geometry yet.
