@@ -247,22 +247,6 @@ fn sanitized(message: &Value, body: fn(scraper::ElementRef<'_>, &Value) -> Strin
     }
 }
 
-/// The reader's document for the native Makepad HTML viewer: a small header
-/// and the sanitised body, without a stylesheet or a CSP (there is no browser
-/// to enforce them; the viewer keeps images out until asked). Same data-URL
-/// shape as `document`, which is what the scene lowering requires.
-pub fn native_document(message: &Value, address: &str) -> String {
-    let html = document_body(message);
-    let source = format!(
-        "<h2>{}</h2><p><b>{}</b></p><p>To: {} · {}</p><hr>{html}",
-        escape(text(message, "subject")),
-        escape(text(message, "sender")),
-        escape(address),
-        escape(text(message, "time"))
-    );
-    format!("data:text/html;charset=utf-8;base64,{}", STANDARD.encode(source))
-}
-
 /// Flag categories: one colour each, the way iOS Mail flags work.
 pub const FLAGS: [(&str, &str, u32); 6] = [
     ("red", "Urgent", 0xffff3b30u32),
@@ -478,7 +462,7 @@ pub fn render(state: &Value, endpoint: &str, nonce: &str) -> SceneFrame {
                 tree,
                 "message_html",
                 "src",
-                native_document(m, text(&state["mailbox"], "address")).into(),
+                document(m, text(&state["mailbox"], "address")).into(),
             );
             // The toolbar flag shows the message's category colour.
             let flag = text(m, "flag");
@@ -489,21 +473,32 @@ pub fn render(state: &Value, endpoint: &str, nonce: &str) -> SceneFrame {
             controls["tool_archive"] = json!({"event":"row_archive","payload":{"id":m["id"]},"enabled":true});
             // A swipe on the message reveals the same actions above it.
             controls["message_html"] = json!({"event":"reader_swipe","payload":{"id":m["id"]},"enabled":true});
+            // Remote images stay blocked by the document's CSP until asked for.
+            let blocked = if m["load_remote_images"] == true { 0 } else { document_body(m).matches("<img").count() };
+            let mut offset = 0.0;
+            if blocked > 0 {
+                let mut band = vec![stack("images_bar", 0.0, 88.0, 406.0, 40.0, Some(0xfff2f2f7u32), 0.0)];
+                band.push(caption("images_note", &format!("{blocked} image{} blocked", if blocked == 1 { "" } else { "s" }), 22.0, 94.0, 250.0, 28.0, 13.0, 400, 0xff8e8e93u32, 0.0));
+                band.push(pill("load_images", "Load images", 284.0, 94.0, 104.0, 28.0, 0xffe5e5eau32, 0xff1c1c1eu32, &mut controls, "load_images", json!({"id":m["id"]})));
+                tree["c"].as_array_mut().unwrap().extend(band);
+                offset += 40.0;
+            }
             if state["reader_actions"] == true {
                 let picker = state["flag_picker"] == true;
                 let band = if picker { 88.0 } else { 56.0 };
-                if let Some(html) = find(tree, "message_html") {
-                    html["y"] = json!(88.0 + band);
-                    html["h"] = json!(616.0 - band);
-                }
-                // The band starts at the message top (88): pills at 96, colour dots at 138, all shifted to the left edge.
-                let mut bar = swipe_bar("reader", m, text(state, "folder"), picker, 86.0, &mut controls);
-                bar[0]["x"] = json!(0.0); bar[0]["w"] = json!(406.0); bar[0]["y"] = json!(88.0); bar[0]["h"] = json!(band);
+                // The band sits below the images bar (if any): pills 8 down, colour dots 50 down, at the left edge.
+                let mut bar = swipe_bar("reader", m, text(state, "folder"), picker, 86.0 + offset, &mut controls);
+                bar[0]["x"] = json!(0.0); bar[0]["w"] = json!(406.0); bar[0]["y"] = json!(88.0 + offset); bar[0]["h"] = json!(band);
                 fn shift_x(n: &mut Value, dx: f64) { if let Some(x) = n["x"].as_f64() { n["x"] = json!(x + dx); } for c in n["c"].as_array_mut().into_iter().flatten() { shift_x(c, dx); } }
                 for node in bar.iter_mut().skip(1) {
                     shift_x(node, -142.0);
                 }
                 tree["c"].as_array_mut().unwrap().extend(bar);
+                offset += band;
+            }
+            if let Some(html) = find(tree, "message_html") {
+                html["y"] = json!(88.0 + offset);
+                html["h"] = json!(616.0 - offset);
             }
         }
     } else if screen == "mailboxes" {

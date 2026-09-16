@@ -418,7 +418,7 @@ impl Controller {
         let payload = &control["payload"];
         self.last_action = event.into();
         // Any other action closes an open swipe bar or colour picker.
-        if !matches!(event, "row_flag" | "set_flag" | "reader_swipe") {
+        if !matches!(event, "row_flag" | "set_flag" | "reader_swipe" | "load_images") {
             self.state["swiped"] = json!("");
             self.state["flag_picker"] = json!(false);
             if event != "row_archive" && event != "row_delete" && event != "row_restore" { self.state["reader_actions"] = json!(false); }
@@ -452,6 +452,16 @@ impl Controller {
                 } else {
                     self.state["swiped"] = id;
                 }
+            }
+            "load_images" => {
+                // Remote images for this message only, for this session: the
+                // document's CSP then allows http(s) image sources.
+                let id = payload["id"].clone();
+                if let Some(m) = self.message_mut(&id) {
+                    m["load_remote_images"] = json!(true);
+                }
+                self.state["notice"] = json!("Remote images loaded for this message");
+                self.dirty = true;
             }
             "set_flag" => {
                 let id = payload["id"].clone();
