@@ -87,133 +87,132 @@ fn escape(s: &str) -> String {
         .replace('"', "&quot;")
 }
 
-pub fn document(message: &Value, address: &str) -> String {
-    fn body(element: scraper::ElementRef<'_>, images: &Value) -> String {
-        let name = element.value().name();
-        if matches!(
-            name,
-            "script"
-                | "style"
-                | "iframe"
-                | "object"
-                | "embed"
-                | "form"
-                | "input"
-                | "button"
-                | "textarea"
-                | "select"
-                | "template"
-                | "head"
-                | "meta"
-                | "base"
-                | "link"
-                | "title"
-        ) {
-            return String::new();
-        }
-        let allowed = matches!(
-            name,
-            "p" | "div"
-                | "span"
-                | "table"
-                | "tr"
-                | "td"
-                | "th"
-                | "tbody"
-                | "thead"
-                | "tfoot"
-                | "img"
-                | "br"
-                | "a"
-                | "h1"
-                | "h2"
-                | "h3"
-                | "h4"
-                | "h5"
-                | "h6"
-                | "ul"
-                | "ol"
-                | "li"
-                | "b"
-                | "i"
-                | "em"
-                | "strong"
-                | "u"
-                | "s"
-                | "blockquote"
-                | "pre"
-                | "code"
-                | "hr"
-                | "center"
-                | "font"
-        );
-        let mut out = String::new();
-        if allowed {
-            out.push_str(&format!("<{name}"));
-            for (key, value) in element.value().attrs() {
-                if !matches!(
-                    key,
-                    "href"
-                        | "src"
-                        | "style"
-                        | "width"
-                        | "height"
-                        | "align"
-                        | "bgcolor"
-                        | "color"
-                        | "face"
-                        | "size"
-                        | "colspan"
-                        | "rowspan"
-                        | "alt"
-                        | "title"
-                ) {
+/// The sanitised body alone (what `document` wraps in a page).
+pub fn document_body(message: &Value) -> String {
+    sanitized(message, body)
+}
+
+fn body(element: scraper::ElementRef<'_>, images: &Value) -> String {
+    let name = element.value().name();
+    if matches!(
+        name,
+        "script"
+            | "style"
+            | "iframe"
+            | "object"
+            | "embed"
+            | "form"
+            | "input"
+            | "button"
+            | "textarea"
+            | "select"
+            | "template"
+            | "head"
+            | "meta"
+            | "base"
+            | "link"
+            | "title"
+    ) {
+        return String::new();
+    }
+    let allowed = matches!(
+        name,
+        "p" | "div"
+            | "span"
+            | "table"
+            | "tr"
+            | "td"
+            | "th"
+            | "tbody"
+            | "thead"
+            | "tfoot"
+            | "img"
+            | "br"
+            | "a"
+            | "h1"
+            | "h2"
+            | "h3"
+            | "h4"
+            | "h5"
+            | "h6"
+            | "ul"
+            | "ol"
+            | "li"
+            | "b"
+            | "i"
+            | "em"
+            | "strong"
+            | "u"
+            | "s"
+            | "blockquote"
+            | "pre"
+            | "code"
+            | "hr"
+            | "center"
+            | "font"
+    );
+    let mut out = String::new();
+    if allowed {
+        out.push_str(&format!("<{name}"));
+        for (key, value) in element.value().attrs() {
+            if !matches!(
+                key,
+                "href"
+                    | "src"
+                    | "style"
+                    | "width"
+                    | "height"
+                    | "align"
+                    | "bgcolor"
+                    | "color"
+                    | "face"
+                    | "size"
+                    | "colspan"
+                    | "rowspan"
+                    | "alt"
+                    | "title"
+            ) {
+                continue;
+            }
+            let mut value = value.trim().to_owned();
+            if matches!(key, "src" | "href") {
+                if let Some(cid) = value.strip_prefix("cid:") {
+                    value = images[cid.trim_matches(['<', '>'])]
+                        .as_str()
+                        .unwrap_or("")
+                        .into();
+                }
+                let lower = value.to_lowercase();
+                if !(lower.starts_with("https://")
+                    || lower.starts_with("http://")
+                    || lower.starts_with("mailto:")
+                    || lower.starts_with('#')
+                    || ["png", "jpeg", "gif", "webp"]
+                        .iter()
+                        .any(|mime| lower.starts_with(&format!("data:image/{mime};base64,"))))
+                {
                     continue;
                 }
-                let mut value = value.trim().to_owned();
-                if matches!(key, "src" | "href") {
-                    if let Some(cid) = value.strip_prefix("cid:") {
-                        value = images[cid.trim_matches(['<', '>'])]
-                            .as_str()
-                            .unwrap_or("")
-                            .into();
-                    }
-                    let lower = value.to_lowercase();
-                    if !(lower.starts_with("https://")
-                        || lower.starts_with("http://")
-                        || lower.starts_with("mailto:")
-                        || lower.starts_with('#')
-                        || ["png", "jpeg", "gif", "webp"]
-                            .iter()
-                            .any(|mime| lower.starts_with(&format!("data:image/{mime};base64,"))))
-                    {
-                        continue;
-                    }
-                }
-                out.push_str(&format!(" {key}=\"{}\"", escape(&value)));
             }
-            out.push('>');
+            out.push_str(&format!(" {key}=\"{}\"", escape(&value)));
         }
-        for child in element.children() {
-            if let scraper::node::Node::Text(value) = child.value() {
-                out.push_str(&escape(value));
-            } else if let Some(child) = scraper::ElementRef::wrap(child) {
-                out.push_str(&body(child, images));
-            }
-        }
-        if allowed && !matches!(name, "img" | "br" | "hr") {
-            out.push_str(&format!("</{name}>"));
-        }
-        out
+        out.push('>');
     }
-    let html = if text(message, "html").is_empty() {
-        format!("<pre>{}</pre>", escape(text(message, "body")))
-    } else {
-        body(
-            scraper::Html::parse_fragment(text(message, "html")).root_element(),
-            &message["inline_images"],
-        )
-    };
+    for child in element.children() {
+        if let scraper::node::Node::Text(value) = child.value() {
+            out.push_str(&escape(value));
+        } else if let Some(child) = scraper::ElementRef::wrap(child) {
+            out.push_str(&body(child, images));
+        }
+    }
+    if allowed && !matches!(name, "img" | "br" | "hr") {
+        out.push_str(&format!("</{name}>"));
+    }
+    out
+}
+
+pub fn document(message: &Value, address: &str) -> String {
+    let html = sanitized(message, body);
     let images = if message["load_remote_images"] == true {
         "data: https: http:"
     } else {
@@ -231,6 +230,35 @@ pub fn document(message: &Value, address: &str) -> String {
         "data:text/html;charset=utf-8;base64,{}",
         STANDARD.encode(source)
     )
+}
+
+/// The message body as safe markup: the HTML part through the sanitiser, or
+/// the plain part as preformatted text.
+fn sanitized(message: &Value, body: fn(scraper::ElementRef<'_>, &Value) -> String) -> String {
+    if text(message, "html").is_empty() {
+        format!("<pre>{}</pre>", escape(text(message, "body")))
+    } else {
+        body(
+            scraper::Html::parse_fragment(text(message, "html")).root_element(),
+            &message["inline_images"],
+        )
+    }
+}
+
+/// The reader's document for the native Makepad HTML viewer: a small header
+/// and the sanitised body, without a stylesheet or a CSP (there is no browser
+/// to enforce them; the viewer keeps images out until asked). Same data-URL
+/// shape as `document`, which is what the scene lowering requires.
+pub fn native_document(message: &Value, address: &str) -> String {
+    let html = document_body(message);
+    let source = format!(
+        "<h2>{}</h2><p><b>{}</b></p><p>To: {} · {}</p><hr>{html}",
+        escape(text(message, "subject")),
+        escape(text(message, "sender")),
+        escape(address),
+        escape(text(message, "time"))
+    );
+    format!("data:text/html;charset=utf-8;base64,{}", STANDARD.encode(source))
 }
 
 pub struct SceneFrame {
@@ -371,7 +399,7 @@ pub fn render(state: &Value, endpoint: &str, nonce: &str) -> SceneFrame {
                 tree,
                 "message_html",
                 "src",
-                document(m, text(&state["mailbox"], "address")).into(),
+                native_document(m, text(&state["mailbox"], "address")).into(),
             );
         }
     } else if screen == "mailboxes" {
