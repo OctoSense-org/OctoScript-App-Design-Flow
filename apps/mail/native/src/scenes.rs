@@ -283,8 +283,13 @@ fn stack(id: &str, x: f64, y: f64, w: f64, h: f64, bg: Option<u32>, radius: f64)
     if let Some(bg) = bg { n["variant"] = json!("surface"); n["bg"] = json!(bg); n["radius"] = json!(radius); }
     n
 }
+/// A single line of text centred in the box `y..y+h`: the label keeps the font's
+/// natural line height (the template's 1.32×) and is offset to the box's middle,
+/// since a taller line box would seat the glyphs at its top.
 fn caption(id: &str, text: &str, x: f64, y: f64, w: f64, h: f64, size: f64, weight: u32, color: u32, alignx: f64) -> Value {
-    json!({"t":"text","id":id,"text":text,"x":x,"y":y,"w":w,"h":h,"size":size,"line_height":h,"weight":weight,"color":color,
+    let line = (size * 1.32 * 100.).round() / 100.;
+    let top = ((y + (h - line) / 2.) * 100.).round() / 100.;
+    json!({"t":"text","id":id,"text":text,"x":x,"y":top,"w":w,"h":line,"size":size,"line_height":line,"weight":weight,"color":color,
            "font_src":format!("self:resources/ux/Inter-{weight}.ttf"),"variant":"single_line","alignx":alignx})
 }
 /// A tappable pill: the stack is the Kit component, the button its hit area, the label its text.
