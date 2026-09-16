@@ -331,6 +331,14 @@ impl Widget for MailView {
         // Row buttons own taps. A vertical touch drag scrolls the surrounding
         // list and cancels their activation, even when it started on a row.
         let mut drag_scroll = None;
+        // A pointer press on a desktop counts like a touch start: it ends the
+        // post-mount suppression, otherwise mouse taps never activate anything.
+        if let Event::MouseDown(_) = event {
+            if !self.pending_layout {
+                self.suppress_activation = false;
+                self.list_drag = None;
+            }
+        }
         if let Event::TouchUpdate(update) = event {
             // A freshly replaced view has not restored its scroll geometry yet.
             // Starting a drag against that zero origin would reset the list.
