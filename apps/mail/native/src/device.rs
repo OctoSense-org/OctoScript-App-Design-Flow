@@ -740,6 +740,11 @@ fn serve(
     Ok(())
 }
 fn handle(socket: &mut TcpStream, token: &str, app: &mut Controller) -> Result<(), String> {
+    // macOS hands accepted sockets the listener's non-blocking flag; the
+    // reads below expect a blocking socket with a timeout.
+    socket
+        .set_nonblocking(false)
+        .map_err(|_| "Socket setup failed")?;
     socket
         .set_read_timeout(Some(Duration::from_secs(3)))
         .map_err(|_| "Socket setup failed")?;
