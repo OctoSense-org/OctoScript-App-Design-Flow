@@ -29,9 +29,11 @@ script-app/
   （`tools/octo shot`）之前，检查门会拒绝这个 bundle。不要添加假图片。
 - 发布者名称、支持 URL 和隐私政策 URL 都是占位符（`tools/octo check` 会提示）。
   由人来替换它们。
-- `platforms` 写的是 `android`；只列出你实际测试过的平台。
+- `platforms` 写的是 `android`；请换成你实际运行过的平台（在 Mac 上用 `card-host` 运行即
+  `macos`），并由人确认。
 
-来源：复制自 OctoSense-App-Hub 的 `templates/script-app/`（当时在那里尚未提交），
+来源：与 OctoSense-App-Hub 同期制作的脚本应用模板草稿（从未提交到那里；App Hub 的
+`templates/app/` 是卡片应用起步模板），
 只做了一处修正：列表的空状态改为 `for` 之前单独的一个 `if`，因为在 `on_render` 中使用
 `if … else for …` 时，空分支什么都不画，还会留下过期的行。下一步：
 [docs/QUICKSTART.md](../../docs/QUICKSTART.md)。

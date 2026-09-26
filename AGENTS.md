@@ -20,7 +20,10 @@ patch around it here.
 
 ## How to work
 
-1. Run `tools/octo doctor`. Fix what it reports before anything else.
+1. Set up the workspace once ([QUICKSTART §1–2](docs/QUICKSTART.md#1-prerequisites):
+   clone this repository and OctoSense-App-Hub side by side, run
+   `python3 tools/setup-native.py`, build `hub` and `card-host`), then run
+   `tools/octo doctor`. Fix what it reports before anything else.
    `tools/octo` is this repository's own Python CLI around App Hub's `hub` and `card-host`. It is unrelated to octos (the agent kernel inside OctoSense) and needs no AI service or API key. `doctor` checks Python, cargo, the App Hub checkout and the `hub` / `card-host` binaries.
 2. Pick the flow from [flows/README.md](flows/README.md). For a text brief it
    is [flows/script-app/FLOW.md](flows/script-app/FLOW.md). Publishing is

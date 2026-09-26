@@ -12,9 +12,11 @@ Follow the harness, and do not invent requirements or APIs:
 - Capabilities: [CAPABILITIES](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/CAPABILITIES.md)
 - Publishing, step by step, with the human checkpoints: [PUBLISHING](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/PUBLISHING.md)
 
-The loop: edit `bundle/main.splash` → `tools/octo run bundle --port 8141 --detach`
-→ drive it (`/click`, `/t`, `/snap`) and `tools/octo shot` → `curl -s 127.0.0.1:8141/quit`
-→ `tools/octo check bundle`. (`tools/octo` lives in the harness repository.)
+The loop, with `OCTO=<path to OctoScript-App-Design-Flow>/tools/octo` (the CLI
+lives in the harness repository, not here), run from this directory: edit
+`bundle/main.splash` → `$OCTO run bundle --port 8141 --detach` → drive it
+(`/click`, `/t`, `/snap`) and `$OCTO shot 8141 out.png` → `curl -s 127.0.0.1:8141/quit`
+→ `$OCTO check bundle`.
 
 Rules:
 

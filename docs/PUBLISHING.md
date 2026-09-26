@@ -6,10 +6,10 @@ person must act. The contract itself belongs to the App Hub
 ([OctoSense-App-Hub `docs/PUBLISHING.md`](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md));
 this page applies it to script apps and records what was verified.
 
-Every command below was run against App Hub `apps/script-and-system-apps`
-(commit `79a2c4f`: the script-app gate, the script-app scan and the `os.`
-identity check, since merged to `main` as OctoSense-App-Hub#4) on macOS, unless a step is marked **unverified**. Outputs are
-quoted verbatim.
+Every command below was run on macOS against App Hub `79a2c4f` (the branch
+that merged to `main` as OctoSense-App-Hub#4), then again on App Hub `main`
+(`6c075d0`) on 2026-09-26 with a new app and throwaway keys, unless a step is
+marked **unverified**. Outputs are quoted verbatim.
 
 - Start here only when [QUICKSTART](QUICKSTART.md) steps 1–6 pass: the app
   runs in `card-host`, and you tested its interactions.
@@ -327,8 +327,27 @@ Verified outputs: `published my-test-notes 0.1.0 (catalog sequence 1)`,
 (`Installed Test Notes 0.1.0 — 1 capability(ies)`, bundle unpacked under
 `store-data/my-test-notes/bundle`). **OPEN** in the standalone store did not
 show the app in that window; running an installed app is the shell's Card
-runner (**unverified here**). Keep the mirror and its keys under `build/`,
-never in `bundle/`.
+runner. Keep the mirror and its keys under `build/`, never in `bundle/`.
+
+To run it in a shell, point OctoSense-Desktop at the same mirror (build the
+desktop as its [README](https://github.com/OctoSense-org/OctoSense-Desktop#set-up-the-sibling-workspace)
+describes; `OCTOSENSE_HOME` and `OCTOSENSE_APP_DATA` keep this test out of
+your own `~/.octosense`):
+
+```sh
+cd /path/to/OctoSense-Desktop
+OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" \
+  OCTOSENSE_HOME="$APP/build/desktop-home" OCTOSENSE_APP_DATA="$APP/build/desktop-apps" \
+  MAKEPAD_REMOTE=8399 cargo run --release
+```
+
+Verified on macOS on 2026-09-26 (Desktop `4db0214`): **App Hub** in the dock
+listed the app, **Get** then **Install** (below the permissions summary;
+scroll down) installed it, **Open** ran it in a tile
+(`card: <id> running under 1 capability(ies) …` in the log), and its
+interactions and storage worked as in `card-host`. End with
+`curl -s 127.0.0.1:8399/gq`. This is a rehearsal with your own anchor; a
+stock build only trusts the App Hub's anchor.
 
 ## 5. Human checkpoints
 
