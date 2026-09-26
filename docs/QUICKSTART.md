@@ -1,7 +1,11 @@
 # Quickstart: build, run and ship an OctoSense script app
 
 One path, from nothing to a bundle the App Hub gate admits. Every command was
-run on macOS (Apple silicon) on 2026-09-25 unless marked **unverified**.
+run on macOS (Apple silicon) unless marked **unverified**: first on 2026-09-25,
+then again end to end from fresh clones of `main` on 2026-09-26 (a new app
+built from this page and [SCRIPT-API](SCRIPT-API.md) alone, through
+`tools/octo check`, `hub scan`, a local publish and an install in
+OctoSense-Desktop).
 
 ```text
 1 prerequisites → 2 build hub + card-host → 3 octo new → 4 octo run → 5 edit loop
@@ -28,14 +32,28 @@ run on macOS (Apple silicon) on 2026-09-25 unless marked **unverified**.
 
   The App Hub's `Cargo.toml` patches its Makepad and Octoscript dependencies to
   exactly those sibling paths (`../makepad`, `../octoscript-makepad`,
-  `../octoscript`). Prepare them as [NATIVE-WORKSPACE](NATIVE-WORKSPACE.md)
-  describes, then check out the revisions the App Hub expects.
+  `../octoscript`). Create the workspace with these commands; `setup-native.py`
+  clones the three runtime siblings (lower-case directory names, as above) at
+  the revisions [native-runtime.lock.json](../native-runtime.lock.json) selects
+  ([NATIVE-WORKSPACE](NATIVE-WORKSPACE.md) has its options):
 
-  Script apps need App Hub and Makepad `main`: OctoSense-App-Hub#4 and
-  OctoSense-org/makepad#30 merged on 2026-09-26 (App Hub `0d36f50b`, makepad
-  `cd812acd`, selected by octoscript-makepad `463e3da8`). This guide was
-  verified before the merges with App Hub `79a2c4f`, makepad `d94e5e6`,
-  octoscript-makepad `c4c9682`, octoscript `ed1d3a8`.
+  ```sh
+  mkdir octosense-ws && cd octosense-ws
+  git clone https://github.com/OctoSense-org/OctoScript-App-Design-Flow.git
+  git clone https://github.com/OctoSense-org/OctoSense-App-Hub.git
+  cd OctoScript-App-Design-Flow
+  python3 tools/setup-native.py           # makepad, octoscript, octoscript-makepad beside it
+  python3 tools/setup-native.py --check   # pass: exits 0 and prints the pinned revisions
+  ```
+
+  Verified 2026-09-26: the two clones took about 1.5 minutes (this repository
+  is about 1 GB, mostly design evidence; `--depth 1` is fine for building
+  apps), `setup-native.py` about 30 seconds.
+
+  Use `main` of App Hub and of this repository. The runtime is Octoscript-Makepad
+  `463e3da8`, which pins makepad `cd812acd` (OctoSense-org/makepad#30, merged)
+  and octoscript `68f6a9df`; App Hub `main` includes OctoSense-App-Hub#4
+  (merged as `0d36f50b`). The 2026-09-26 re-run used App Hub `6c075d0`.
 
 ## 2. Build `hub` and `card-host`
 
@@ -69,7 +87,7 @@ tools/octo new ~/apps/my-app --id my-notes --name "My Notes"
 ```
 
 Copies [templates/script-app](../templates/script-app/README.md) (`bundle/`,
-`AGENTS.md`, `.gitignore`), sets `id` and `name` in the manifest and the
+`AGENTS.md` with its `CLAUDE.md`/`GEMINI.md` shims, `.gitignore`), sets `id` and `name` in the manifest and the
 title label in `main.splash`, and stamps the bundle. Verified output (run
 with `--id my-test-notes --name "Test Notes"`):
 
@@ -105,7 +123,13 @@ pid 18656  log …/my-app/.local-state/card-host.log
 - The app's files live in its jail: `<app>/.local-state/<id>/`.
 - Look in the log for `admitted` **and** for errors after
   `[SPLASH] eval:` (script errors print there, see
-  [SCRIPT-API](SCRIPT-API.md#errors-and-the-log)).
+  [SCRIPT-API](SCRIPT-API.md#errors-and-the-log)). Search for the error
+  forms, not the word "error": Makepad's `[ui-hang]` diagnostics mention
+  Metal's `MTLCompilerError` in healthy runs.
+
+  ```sh
+  grep -nE '\[E\]|splash:[0-9]+:|refused|on_render closure failed|callback error' <app>/.local-state/card-host.log
+  ```
 
 Drive it over HTTP (all GET; coordinates are window points, y down):
 
@@ -119,6 +143,20 @@ Drive it over HTTP (all GET; coordinates are window points, y down):
 | `curl -s "127.0.0.1:8141/log?n=50"` | the last log lines |
 | `tools/octo shot 8141 out.png` | PNG of the window (`/g?raw=1`) |
 | `curl -s 127.0.0.1:8141/quit` | quit; always end with this (or `/gq`) |
+
+Driving tips (verified 2026-09-26):
+
+- `/t` types into whatever has focus. Clicking a button takes focus away from
+  a `TextInput`, so click the input again before the next `/t`. To clear it,
+  send `/k?k=down&c=Backspace` once per character.
+- `?q=` also matches the `Splash` widget itself, whose text is your whole
+  `main.splash`; filter the result by type (`"ty":"Label"`) or read the rects.
+- A `shot` taken the moment `run --detach` returns can catch a frame before
+  text is drawn (shapes but no labels). Wait a second, or send any input with
+  `wait=1`, before the first capture, and look at every PNG.
+- The window is 412x892 points and `/g?raw=1` is at 2x on a Retina Mac:
+  divide screenshot pixels by 2 to get click coordinates. The capture
+  includes `card-host`'s 32-point caption bar at the top.
 
 Verified: `/snap` showed the title label `"t":"Test Notes"`; clicking the
 input, `/t?t=Buy%20milk`, then clicking **Add** wrote `["Buy milk"]` to
@@ -194,7 +232,11 @@ What exists today, stated plainly:
 - **Closest real path, verified on the desktop:** publish into a local
   catalog with your own throwaway anchor and install it with the App Hub's
   store, which is the same install code a phone runs:
-  [PUBLISHING § 4](PUBLISHING.md#4-rehearse-the-store-path-locally).
+  [PUBLISHING § 4](PUBLISHING.md#4-rehearse-the-store-path-locally). The
+  same local catalog also works in the desktop shell: OctoSense-Desktop reads
+  `OCTOSENSE_HUB` and `OCTOSENSE_HUB_ANCHOR`, and its App Hub installs and
+  opens your app in the shell's Card runner (verified on macOS, see
+  PUBLISHING § 4).
 - **First-party apps** reach a phone as system apps: a bundle in
   [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps),
   listed in the ROM's `home/system-apps.json` and packed by

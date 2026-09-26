@@ -31,9 +31,10 @@ Deliberately incomplete, so a copy cannot be published by accident:
   (`tools/octo shot`). Do not add a dummy image.
 - The publisher name, support URL and privacy-policy URL are placeholders
   (`tools/octo check` notes them). A person replaces them.
-- `platforms` says `android`; list only what you actually tested.
+- `platforms` says `android`; replace it with what you actually ran it on
+  (a `card-host` run on a Mac is `macos`). A person confirms the claim.
 
-Origin: copied from OctoSense-App-Hub `templates/script-app/` (uncommitted
-there at the time), with one fix: the list's empty state is a separate `if`
+Origin: a draft script-app template made alongside OctoSense-App-Hub (never
+committed there; App Hub's `templates/app/` is the card-app starter), with one fix: the list's empty state is a separate `if`
 before the `for`, because `if … else for …` in `on_render` drew nothing for
 the empty branch and left stale rows. Next steps: [docs/QUICKSTART.md](../../docs/QUICKSTART.md).

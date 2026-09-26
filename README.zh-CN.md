@@ -64,13 +64,13 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 
 | 部分 | 状态 |
 | --- | --- |
-| `hub` 中的脚本应用准入检查、扫描与 `os.` id 检查 | 已在 App Hub `main`（[OctoSense-App-Hub#4](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/4)，合并为 `0d36f50b`）。本仓库文档基于其合并前的提交 `79a2c4f` 验证。 |
+| `hub` 中的脚本应用准入检查、扫描与 `os.` id 检查 | 已在 App Hub `main`（[OctoSense-App-Hub#4](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/4)，合并为 `0d36f50b`）。本仓库文档基于其合并前的提交 `79a2c4f` 验证，并于 2026-09-26 在 `main` 上端到端重新跑通。 |
 | 运行时中的隔离脚本应用与宿主服务 | 已在 makepad `main`（[OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30)，合并为 `cd812acd`），由 `native-runtime.lock.json` 固定的 Octoscript-Makepad `463e3da8` 选定。合并前在 `d94e5e6` 验证。 |
 | Shell 中的系统应用与商店应用 | 已在 OctoSense-Desktop（[#36](https://github.com/OctoSense-org/OctoSense-Desktop/pull/36)）和 OctoSense-ROM 的 Home（[#18](https://github.com/OctoSense-org/OctoSense-ROM/pull/18)）的 `main`。 |
 | 提交途径 | 在 OctoSense-App-Hub 开一个 issue（见下文），如 App Hub 的 [PUBLISHING § Submitting](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#submitting) 所述。其中提到的索引仓库和 release action 尚不存在。 |
 | 在手机上安装自己的应用包 | 不支持。见[运行应用](#运行应用)。 |
 
-[docs/QUICKSTART.md §1](docs/QUICKSTART.md#1-prerequisites) 列出了合并前一起验证过的确切版本。
+[docs/QUICKSTART.md §1](docs/QUICKSTART.md#1-prerequisites) 列出了确切版本以及搭建工作区的命令。
 
 ## 快速上手
 
@@ -91,9 +91,16 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
     octoscript/                   OctoSense-org/Octoscript
   ```
 
-然后在本仓库中执行：
+然后创建工作区，并在本仓库中构建和使用这些工具：
 
 ```sh
+# 0. The workspace: clone this repository and the App Hub side by side, then
+#    let setup-native.py add makepad, octoscript and octoscript-makepad
+mkdir octosense-ws && cd octosense-ws
+git clone https://github.com/OctoSense-org/OctoScript-App-Design-Flow.git
+git clone https://github.com/OctoSense-org/OctoSense-App-Hub.git
+cd OctoScript-App-Design-Flow && python3 tools/setup-native.py
+
 # 1. Build the two tools once (in the App Hub checkout)
 (cd ../OctoSense-App-Hub && cargo build --release -p octosense-card-host -p octosense-app-hub)
 tools/octo doctor                                        # finds hub and card-host; prints fixes if not
@@ -255,8 +262,10 @@ my-app/                     the app's own git repository
 **在 Shell 中。** OctoSense-Desktop 和 OctoSense ROM 的 Home 通过 App Hub 的 Card runner
 （App Hub `crates/appstore` 中的 `card` 模块）运行应用，而不是 `card-host` 本身；它执行同一套
 manifest 策略。系统应用从 OctoSense-System-Apps 打包进 Shell 构建；商店应用从 App Hub 商店、
-依据签名目录安装。Desktop 这部分随
-[OctoSense-Desktop#36](https://github.com/OctoSense-org/OctoSense-Desktop/pull/36) 合入。
+依据签名目录安装。想在发布前在桌面 Shell 中试用自己的应用：用一次性信任锚把它发布到本地目录，再把
+OctoSense-Desktop 的 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 指向该目录；其 App Hub
+即可安装并打开该应用（已在 macOS 上验证，
+[PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)）。
 
 **目前在手机上**（[QUICKSTART §9](docs/QUICKSTART.md#9-run-it-on-an-octosense-phone)）：
 
@@ -265,7 +274,7 @@ manifest 策略。系统应用从 OctoSense-System-Apps 打包进 Shell 构建�
   在设备上从本地目录安装不受支持，也未经验证。
 - 最接近的已验证路径在桌面端：用一次性信任锚发布到本地目录，再用 App Hub 的独立
   `appstore` 安装（[PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)）。
-  从这个独立商店打开已安装应用，尚未证实可行。
+  独立商店不能打开应用；把 OctoSense-Desktop 指向同一目录即可安装并打开。
 - `card-host` 的远程控制桥在 Android 上被编译移除；手机测试使用 Shell 自己的测试工具，
   而不是 `tools/octo`。
 - 发布之后，应用会通过签名目录出现在每台手机的商店中。
@@ -358,7 +367,7 @@ manifest 策略。系统应用从 OctoSense-System-Apps 打包进 Shell 构建�
 | [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) | 第一方应用（News、Photos、Maps、Camera、Mail）与 Mail 宿主服务 |
 | [OctoSense-Desktop](https://github.com/OctoSense-org/OctoSense-Desktop) | 桌面 Shell |
 | [OctoSense-ROM](https://github.com/OctoSense-org/OctoSense-ROM/blob/main/README.zh-CN.md) | 手机 Shell（`home/`），可作为 Home 应用安装，也可刷入 ROM 镜像 |
-| [OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard) | AppCard 运行时（Splash 隔离环境、组件、Card 降级） |
+| [OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard) | AppCard 助手（`octos-app`）与 L0 卡片语言；Splash 隔离环境和组件本身在 makepad 中 |
 | [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad)、[Octoscript](https://github.com/OctoSense-org/OctoScript)、[Octoscript-Makepad](https://github.com/OctoSense-org/OctoScript-Makepad) | 应用运行所依赖的框架与语言 |
 
 ## 许可证

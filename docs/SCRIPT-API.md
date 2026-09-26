@@ -2,8 +2,9 @@
 
 What a script app's `main.splash` can use when it runs in a policed isolate
 (App Hub `card-host` and the shells' Card runner). Everything here was read in
-the runtime source (OctoSense-org/makepad `sandbox/contained-tier-gates`, since merged as #30,
-`d94e5e6`, with file:line) and, where marked **✓ run**, executed in
+the runtime source (OctoSense-org/makepad `sandbox/contained-tier-gates` at
+`d94e5e6`, merged to `main` as #30, `cd812acd`; the file:line references
+still hold at `cd812acd`) and, where marked **✓ run**, executed in
 `card-host` (App Hub `79a2c4f`) on macOS. Idioms are taken from the System
 Apps (`OctoSense-System-Apps/apps/<name>/bundle/main.splash`), which are
 working code.

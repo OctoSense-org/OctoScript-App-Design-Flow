@@ -72,14 +72,14 @@ repository.
 
 | Piece | State |
 | --- | --- |
-| Script-app gate, scan and `os.` id check in `hub` | On App Hub `main` ([OctoSense-App-Hub#4](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/4), merged as `0d36f50b`). The docs here were verified against its pre-merge commit `79a2c4f`. |
+| Script-app gate, scan and `os.` id check in `hub` | On App Hub `main` ([OctoSense-App-Hub#4](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/4), merged as `0d36f50b`). The docs here were verified against its pre-merge commit `79a2c4f` and re-run end to end on `main` on 2026-09-26. |
 | Contained script apps and host services in the runtime | On makepad `main` ([OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30), merged as `cd812acd`), selected by Octoscript-Makepad `463e3da8`, the release `native-runtime.lock.json` pins. Verified before the merge at `d94e5e6`. |
 | System and store apps in the shells | On `main` of OctoSense-Desktop ([#36](https://github.com/OctoSense-org/OctoSense-Desktop/pull/36)) and OctoSense-ROM's Home ([#18](https://github.com/OctoSense-org/OctoSense-ROM/pull/18)). |
 | Submission route | An issue on OctoSense-App-Hub (below), as App Hub's [PUBLISHING § Submitting](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#submitting) describes. The index repository and release action it mentions do not exist yet. |
 | Installing your own bundle on a phone | Not supported. See [Running an app](#running-an-app). |
 
 [docs/QUICKSTART.md §1](docs/QUICKSTART.md#1-prerequisites) lists the exact
-revisions that were verified together before the merges.
+revisions and the commands that set up the workspace.
 
 ## Quick path
 
@@ -101,9 +101,16 @@ Prerequisites ([QUICKSTART §1](docs/QUICKSTART.md#1-prerequisites)):
     octoscript/                   OctoSense-org/Octoscript
   ```
 
-Then, from this repository:
+Then create the workspace and, from this repository, build and use the tools:
 
 ```sh
+# 0. The workspace: clone this repository and the App Hub side by side, then
+#    let setup-native.py add makepad, octoscript and octoscript-makepad
+mkdir octosense-ws && cd octosense-ws
+git clone https://github.com/OctoSense-org/OctoScript-App-Design-Flow.git
+git clone https://github.com/OctoSense-org/OctoSense-App-Hub.git
+cd OctoScript-App-Design-Flow && python3 tools/setup-native.py
+
 # 1. Build the two tools once (in the App Hub checkout)
 (cd ../OctoSense-App-Hub && cargo build --release -p octosense-card-host -p octosense-app-hub)
 tools/octo doctor                                        # finds hub and card-host; prints fixes if not
@@ -288,9 +295,12 @@ signing.
 App Hub's Card runner (the `card` module in App Hub's `crates/appstore`), not
 with `card-host` itself; it applies the same manifest policy. System apps are
 packed into the shell build from OctoSense-System-Apps; store apps are
-installed from the App Hub store out of the signed catalog. The Desktop side
-of this landed with
-[OctoSense-Desktop#36](https://github.com/OctoSense-org/OctoSense-Desktop/pull/36).
+installed from the App Hub store out of the signed catalog. To try your own
+app in the desktop shell before it is published, publish it into a local
+catalog with a throwaway anchor and point OctoSense-Desktop's
+`OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` at it; its App Hub installs and
+opens the app (verified on macOS,
+[PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
 
 **On a phone, today** ([QUICKSTART §9](docs/QUICKSTART.md#9-run-it-on-an-octosense-phone)):
 
@@ -302,7 +312,8 @@ of this landed with
 - The closest verified path is on the desktop: publish into a local catalog
   with a throwaway anchor and install it with App Hub's standalone `appstore`
   ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
-  Opening the installed app from that standalone store was not shown to work.
+  The standalone store does not open apps; OctoSense-Desktop pointed at the
+  same catalog installs and opens it.
 - `card-host`'s remote bridge is compiled out on Android; phone testing goes
   through the shell's own instrument, not `tools/octo`.
 - After publication, the app appears in every phone's store from the signed
@@ -409,7 +420,7 @@ For a script app, the complete examples are the first-party bundles in
 | [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) | First-party apps (News, Photos, Maps, Camera, Mail) and the Mail host service |
 | [OctoSense-Desktop](https://github.com/OctoSense-org/OctoSense-Desktop) | The desktop shell |
 | [OctoSense-ROM](https://github.com/OctoSense-org/OctoSense-ROM) | The phone shell (`home/`), as a Home app or in the ROM image |
-| [OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard) | The AppCard runtime (Splash isolate, widgets, Card lowering) |
+| [OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard) | The AppCard assistant (`octos-app`) and the L0 card language; the Splash isolate and widgets themselves are in makepad |
 | [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad), [Octoscript](https://github.com/OctoSense-org/OctoScript), [Octoscript-Makepad](https://github.com/OctoSense-org/OctoScript-Makepad) | The framework and language the apps run on |
 
 ## License
