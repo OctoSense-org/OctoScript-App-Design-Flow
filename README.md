@@ -20,9 +20,8 @@ OctoSense app, and the coding agents they work with.
 
 Formerly *Octoscript-AppCard*. The AppCard assistant runtime and
 the first-party apps moved to OctoSense-System-Apps and, since 2026-09-27,
-live in [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps). The archived
-[OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) keeps a read-only copy at the old paths until
-2026-10-12.
+live in [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
+(OctoSense-System-Apps is archived and no longer public).
 
 ## Contents
 

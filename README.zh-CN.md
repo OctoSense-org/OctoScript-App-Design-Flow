@@ -17,8 +17,8 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 面向：参加黑客松的选手、其他开发 OctoSense 应用的开发者，以及与他们协作的编码 Agent。
 
 原名 *Octoscript-AppCard*。AppCard 助手运行时和第一方应用先迁至 OctoSense-System-Apps，
-自 2026-09-27 起位于 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)。已归档的
-[OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) 在 2026-10-12 前仍在原路径保留一份只读副本。
+自 2026-09-27 起位于 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
+（OctoSense-System-Apps 已归档，不再公开）。
 
 ## 目录
 
