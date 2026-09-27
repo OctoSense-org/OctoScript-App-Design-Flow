@@ -85,7 +85,7 @@ node wizard/preview/smoke.mjs                                     # two Chromium
 
 `native/` 是为早期原生 OctoSense Shell 编写的 Rust `AppModule`
 （feature `app-calendar`）。该 Shell 已归档，原生客户端现在位于
-[OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard)；本模块
+[OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard)；本模块
 作为参考实现保留，不由本仓库的 CI 构建。画面包括：月视图（任意月份、按日历区分的圆点、
 今天 / 选中的圆环、选中日的列表）、日时间线（按小时分行，重叠事件平分宽度，当前时间线）、
 事件详情、编辑器（标题 / 地点 / 备注字段、全天、开始 / 结束选择器并禁用冲突时段、

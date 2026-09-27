@@ -329,32 +329,36 @@ Verified outputs: `published my-test-notes 0.1.0 (catalog sequence 1)`,
 show the app in that window; running an installed app is the shell's Card
 runner. Keep the mirror and its keys under `build/`, never in `bundle/`.
 
-To run it in a shell, point OctoSense-Desktop at the same mirror (build the
-desktop as its [README](https://github.com/OctoSense-org/OctoSense-Desktop#set-up-the-sibling-workspace)
+To run it in a shell, point the OctoSense desktop shell at the same mirror
+(built from the [OctoSense](https://github.com/OctoSense-org/OctoSense)
+repository as its [README](https://github.com/OctoSense-org/OctoSense#set-up)
 describes; `OCTOSENSE_HOME` and `OCTOSENSE_APP_DATA` keep this test out of
-your own `~/.octosense`). The desktop can live in the workspace you already
-have: clone it into `octosense-ws/` and run its `python3 tools/setup-native.py`
-there; it reuses `makepad/`, `octoscript/` and `octoscript-makepad/` (same
-revisions) and adds `OctoSense-System-Apps/` (verified 2026-09-26: setup 6 s,
-`cargo build --release` 51 s sharing the App Hub build's `CARGO_TARGET_DIR`):
+your own `~/.octosense`). Clone it into the workspace you already have. Its
+`tools/setup.py` prepares its own pinned Makepad, OctoScript and
+OctoScript-Makepad in `OctoSense/.sources/` (its Makepad carries a reviewed
+patch, so it does not reuse the workspace's checkouts; `--cache ..` borrows
+their Git objects). Verified 2026-09-27 on a fresh clone: setup 45 s (13 s with `--cache`),
+a cold `cargo build --release -p octosense` 8.6 min; the desktop started with App
+Hub and the system apps in the dock:
 
 ```sh
-cd <workspace> && git clone https://github.com/OctoSense-org/OctoSense-Desktop.git
-cd OctoSense-Desktop && python3 tools/setup-native.py
+cd <workspace> && git clone https://github.com/OctoSense-org/OctoSense.git
+cd OctoSense && python3 tools/setup.py --cache ..
 ```
 
 ```sh
-cd /path/to/OctoSense-Desktop
+cd /path/to/OctoSense
 OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" \
   OCTOSENSE_HOME="$APP/build/desktop-home" OCTOSENSE_APP_DATA="$APP/build/desktop-apps" \
-  MAKEPAD_REMOTE=8399 cargo run --release
+  MAKEPAD_REMOTE=8399 cargo run --release -p octosense
 ```
 
-Verified on macOS on 2026-09-26 (Desktop `4db0214`, again at `cae5cfb` with a
-`net` app): **App Hub** in the dock (the shopping-bag icon; hovering names it)
+Verified on macOS on 2026-09-26 (OctoSense-Desktop `4db0214`, again at `cae5cfb` with a
+`net` app) and on 2026-09-27 on a fresh clone of OctoSense `main` at `58c72dd`
+(setup 22 s without `--cache`, a cold release build 5.3 min, windows hidden): **App Hub** in the dock (the shopping-bag icon; hovering names it)
 listed the app, **Get** then **Install** (below the permissions summary;
 scroll down, or `/m?k=scroll&x=…&y=…&dy=600` over the bridge) installed it,
-**Open** ran it in a tile
+**Open** ran it in its own window
 (`card: <id> running under 2 capability(ies), 2 host(s) …` in the log), and
 its interactions, storage and requests to its declared host worked as in
 `card-host`. Add `MAKEPAD_HIDE_WINDOWS=1` to keep the window off screen while

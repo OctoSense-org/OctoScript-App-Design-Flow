@@ -10,7 +10,7 @@ first renderer for a purchased design kit is **splash-makepad through release
 Makepad Studio**. The older theme/LLM L0 and desktop/device rails remain in
 `run_kit.py` for existing kit configurations; they are not documented or
 maintained here, and the desktop rail's client now lives in
-[OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard).
+[OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard).
 
 For a new installation, use [the generic reproduction guide](../../core/REPRODUCE.md)
 and [example kit configuration](../../core/examples/sketch-kit.json).

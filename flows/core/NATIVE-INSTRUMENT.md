@@ -114,7 +114,7 @@ The pinned Makepad release compiles its HTTP `--remote` instrument out on
 Android. Do not report desktop HTTP probes or Studio captures as Android or
 OpenHarmony passes. Device builds and device instrumentation belong to the
 runtime repository,
-[OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard).
+[OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard).
 Never use OS capture methods (`adb screencap`, `screenrecord`, MediaProjection)
 as evidence.
 

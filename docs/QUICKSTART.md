@@ -5,8 +5,9 @@ run on macOS (Apple silicon) unless marked **unverified**: first on 2026-09-25,
 then again end to end from fresh clones of `main` twice on 2026-09-26 (each
 time a new app built from this page and [SCRIPT-API](SCRIPT-API.md) alone,
 through `tools/octo check`, `hub scan`, a local publish and an install in
-OctoSense-Desktop). The second run used this repository at `7a61293b`, App Hub
-`3e993d4` and OctoSense-Desktop `cae5cfb`.
+the desktop shell). The second run used this repository at `7a61293b`, App Hub
+`3e993d4` and OctoSense-Desktop `cae5cfb` (the repository is now
+[OctoSense](https://github.com/OctoSense-org/OctoSense)).
 
 ```text
 1 prerequisites → 2 build hub + card-host → 3 octo new → 4 octo run → 5 edit loop
@@ -20,7 +21,8 @@ OctoSense-Desktop). The second run used this repository at `7a61293b`, App Hub
 - **Python 3.9+** for `tools/octo` and `setup-native.py` (no packages
   needed; macOS's own `/usr/bin/python3` 3.9.6 ran every step).
 - **Disk:** about 3 GB (the workspace about 1.9 GB, the release build about
-  1 GB; add about 0.2 GB for OctoSense-Desktop's sources).
+  1 GB; to also try the desktop shell, add about 1 GB for the OctoSense
+  clone and its own framework sources, plus its build).
 - **A graphical session** for `card-host` (it opens a real window, 412x892
   points, even when an agent drives it).
 - **The App Hub and its sibling sources** in one workspace directory:
@@ -332,14 +334,15 @@ What exists today, stated plainly:
   catalog with your own throwaway anchor and install it with the App Hub's
   store, which is the same install code a phone runs:
   [PUBLISHING § 4](PUBLISHING.md#4-rehearse-the-store-path-locally). The
-  same local catalog also works in the desktop shell: OctoSense-Desktop reads
+  same local catalog also works in the OctoSense desktop shell, which reads
   `OCTOSENSE_HUB` and `OCTOSENSE_HUB_ANCHOR`, and its App Hub installs and
   opens your app in the shell's Card runner (verified on macOS, see
   PUBLISHING § 4).
 - **First-party apps** reach a phone as system apps: a bundle in
-  [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps),
-  listed in the ROM's `home/system-apps.json` and packed by
-  `home/apps/app-hub/build.rs`, then a ROM or Home build. That path is for
+  [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps),
+  listed in the shell's `system-apps.json` (OctoSense `phone/system-apps.json`
+  on a phone) and packed by App Hub's `crates/app-hub-app/build.rs`, then a
+  Home or ROM build. That path is for
   `os.*` apps maintained by OctoSense, not for store apps.
 - **After publication** your app appears in every phone's store from the
   signed catalog.

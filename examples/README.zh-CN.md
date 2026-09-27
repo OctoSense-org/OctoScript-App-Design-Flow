@@ -17,9 +17,9 @@
 [shared/](shared/README.zh-CN.md) 存放通用的浏览器适配器和历史上的跨应用验证产物，它不是一个应用。
 
 系统脚本应用（News、Photos、Maps、Camera、Mail）以及个人数据技能已迁移到
-[OctoSense-org/OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps)。
+[OctoSense-org/OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)。
 原生客户端和运行时已迁移到
-[OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard)。
+[OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard)。
 Makepad 和 OctoScript 位于独立的
 [原生工作区](../docs/NATIVE-WORKSPACE.md)。
 

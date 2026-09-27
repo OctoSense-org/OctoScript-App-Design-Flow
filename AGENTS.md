@@ -10,10 +10,10 @@ then the one flow you are following.
 
 | It is | It is not (go there instead) |
 | --- | --- |
-| Flows (`flows/*/FLOW.md`): step-by-step procedures from an input to a checked bundle | The runtime: [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad) (Splash isolate, widgets) and [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) (the Card runner); the AppCard assistant and the L0 card language: [OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard) |
-| Developer docs (`docs/`): quickstart, script API, capabilities, host services, publishing, glossary | System apps (News, Photos, Maps, Camera, Mail, AI providers): [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) |
+| Flows (`flows/*/FLOW.md`): step-by-step procedures from an input to a checked bundle | The runtime: [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad) (Splash isolate, widgets) and [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) (the Card runner); the AppCard assistant and the L0 card language: [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard) |
+| Developer docs (`docs/`): quickstart, script API, capabilities, host services, publishing, glossary | System apps (News, Photos, Maps, Camera, Mail, AI providers): [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) |
 | `tools/octo`: doctor, new, run, shot, check around the real `card-host` and `hub` | The store, gate, catalog, `hub` and `card-host` source: [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) |
-| Templates (`templates/script-app/`) and worked examples (`examples/`) | The shells that run apps: OctoSense ROM `home/` (phone launcher) and the OctoSense desktop shell |
+| Templates (`templates/script-app/`) and worked examples (`examples/`) | The shells that run apps: [OctoSense](https://github.com/OctoSense-org/OctoSense) `phone/` (Home, the phone launcher) and `desktop/` (the desktop shell) |
 
 If a task needs a change in one of those repositories, say so and stop; do not
 patch around it here.

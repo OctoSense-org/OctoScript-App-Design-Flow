@@ -16,8 +16,9 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 
 面向：参加黑客松的选手、其他开发 OctoSense 应用的开发者，以及与他们协作的编码 Agent。
 
-原名 *Octoscript-AppCard*。AppCard 助手运行时和第一方应用已迁至
-[OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps)。
+原名 *Octoscript-AppCard*。AppCard 助手运行时和第一方应用先迁至 OctoSense-System-Apps，
+自 2026-09-27 起位于 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
+（OctoSense-System-Apps 已归档，不再公开）。
 
 ## 目录
 
@@ -47,9 +48,9 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 | --- | --- |
 | **起步** | 下面的[快速上手](#快速上手)：2026-09-26 的实测中，一个新应用从空目录到 `— PASSED` 约 10 分钟（克隆 1.5 分钟、setup 20 秒、首次构建在 Apple silicon Mac 上约 1 分钟），大部分时间用在编写应用上。每一步都是 shell 命令，任何编码 Agent（或不用 Agent）都能执行。 |
 | **机器** | 已验证的平台是 Apple silicon 上的 macOS；Windows 和 Linux 未验证。需要 Rust stable（rustup）、Python 3.9+（macOS 自带的 `/usr/bin/python3` 即可）、git、图形会话、约 3 GB 可用空间（克隆约 1.9 GB，其中本仓库 1.3 GB，可用 `--depth 1`；构建产物约 1 GB），首次构建需要联网。 |
-| **应用能做什么** | 自己的存储、访问已声明主机的 HTTPS 请求、图片与网页、相机、定位，以及通过宿主服务使用 Mail：[CAPABILITIES](docs/CAPABILITIES.md)。语言与全部 API：[SCRIPT-API](docs/SCRIPT-API.md)。完整示例：[系统应用](https://github.com/OctoSense-org/OctoSense-System-Apps)（News、Photos、Maps、Camera、Mail）和[模板](templates/script-app/README.zh-CN.md)。 |
+| **应用能做什么** | 自己的存储、访问已声明主机的 HTTPS 请求、图片与网页、相机、定位，以及通过宿主服务使用 Mail：[CAPABILITIES](docs/CAPABILITIES.md)。语言与全部 API：[SCRIPT-API](docs/SCRIPT-API.md)。完整示例：[系统应用](https://github.com/OctoSense-org/OctoSense/tree/main/apps)（News、Photos、Maps、Camera、Mail）和[模板](templates/script-app/README.zh-CN.md)。 |
 | **应用不能做什么** | 持有密码、密钥或 token；自创权限或宿主服务（那是 App Hub 和 Shell 的修改）；使用 `llm` 或 `os.*` id（仅限系统应用）；侧载到手机。`card-host` 不提供任何宿主服务，所以类似 Mail 的应用在其中会显示 `no service answers`。 |
-| **演示** | 在 `card-host` 中运行应用（`tools/octo run`，通过远程控制桥操作），并用 `tools/octo shot` 截取真实截图。要在 OctoSense 内展示，让 OctoSense-Desktop 读取本地目录（[PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)）。 |
+| **演示** | 在 `card-host` 中运行应用（`tools/octo run`，通过远程控制桥操作），并用 `tools/octo shot` 截取真实截图。要在 OctoSense 内展示，让 OctoSense 桌面端 Shell 读取本地目录（[PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)）。 |
 | **提交到 App Hub** | [发布](#发布)：`tools/octo check` 通过、回答 `hub scan` 的问题，然后由人签名，并在 [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues) 开一个 `Submit <app id> <version>` issue。参赛作品不等于自动提交到 App Hub；请向主办方确认他们需要什么。 |
 | **无头测试** | `tools/octo run … --hidden`：窗口不会出现，Agent 可以在不占用你屏幕的情况下测试应用（也可同时测多个应用，每个用自己的 `--port`）。见[无头测试](#无头测试同时测多个应用不占屏幕)。 |
 | **卡住了** | [QUICKSTART § Troubleshooting](docs/QUICKSTART.md#troubleshooting)，然后看 [SCRIPT-API § Gotchas](docs/SCRIPT-API.md#gotchas)。 |
@@ -85,7 +86,7 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 | --- | --- |
 | `hub` 中的脚本应用准入检查、扫描与 `os.` id 检查 | 已在 App Hub `main`（[OctoSense-App-Hub#4](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/4)，合并为 `0d36f50b`）。本仓库文档基于其合并前的提交 `79a2c4f` 验证，并于 2026-09-26 在 `main` 上端到端重新跑通。 |
 | 运行时中的隔离脚本应用与宿主服务 | 已在 makepad `main`（[OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30)，合并为 `cd812acd`，现为 `d0a9def5`），由 `native-runtime.lock.json` 固定的 Octoscript-Makepad `99c1e5ee` 选定。合并前在 `d94e5e6` 验证。 |
-| Shell 中的系统应用与商店应用 | 已在 OctoSense-Desktop（[#36](https://github.com/OctoSense-org/OctoSense-Desktop/pull/36)）和 OctoSense-ROM 的 Home（[#18](https://github.com/OctoSense-org/OctoSense-ROM/pull/18)）的 `main`。 |
+| Shell 中的系统应用与商店应用 | 已在 [OctoSense](https://github.com/OctoSense-org/OctoSense) 的 `main`，桌面端 Shell 与手机 Home 均包含（仓库合并前分别以 OctoSense-Desktop [#36](https://github.com/OctoSense-org/OctoSense/pull/36) 和 OctoSense-ROM #18 合入）。 |
 | 提交途径 | 在 OctoSense-App-Hub 开一个 issue（见下文），如 App Hub 的 [PUBLISHING § Submitting](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#submitting) 所述。其中提到的索引仓库和 release action 尚不存在。 |
 | 在手机上安装自己的应用包 | 不支持。见[运行应用](#运行应用)。 |
 
@@ -256,7 +257,7 @@ my-app/                     the app's own git repository
   位于任何应用的 jail 之外。`<family>.sheet.*` 方法只接受来自面板的调用。新增宿主服务是对
   Shell 的修改，而不是对应用包的修改：[docs/HOST-SERVICES.md](docs/HOST-SERVICES.md)。
 - **商店应用与系统应用。** `os.` 开头的 id 保留给系统应用：准入检查会拒绝，任何商店也不会
-  安装。系统应用（[OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps)
+  安装。系统应用（[OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
   中的 News、Photos、Maps、Camera、Mail、AI providers）应用包结构相同，随 Shell 一起发布，上限更高
   （例如存储为 64 MiB 而不是 16 MiB）。`tools/octo new --system` 和
   `tools/octo run --system` 用于开发系统应用。其余都是商店应用，只通过签名的 App Hub 目录分发。
@@ -283,11 +284,11 @@ my-app/                     the app's own git repository
 `no service answers "mail" on this device`。当前的 `card-host` 还会拒绝已签名的 manifest：
 请在签名之前截图。
 
-**在 Shell 中。** OctoSense-Desktop 和 OctoSense ROM 的 Home 通过 App Hub 的 Card runner
+**在 Shell 中。** OctoSense 桌面端 Shell 和手机 Home 通过 App Hub 的 Card runner
 （App Hub `crates/appstore` 中的 `card` 模块）运行应用，而不是 `card-host` 本身；它执行同一套
-manifest 策略。系统应用从 OctoSense-System-Apps 打包进 Shell 构建；商店应用从 App Hub 商店、
+manifest 策略。系统应用从 OctoSense 的 `apps/` 打包进 Shell 构建；商店应用从 App Hub 商店、
 依据签名目录安装。想在发布前在桌面 Shell 中试用自己的应用：用一次性信任锚把它发布到本地目录，再把
-OctoSense-Desktop 的 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 指向该目录；其 App Hub
+桌面端 Shell 的 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 指向该目录；其 App Hub
 即可安装并打开该应用（已在 macOS 上验证，
 [PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)）。
 
@@ -298,7 +299,7 @@ OctoSense-Desktop 的 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 指向该目录�
   在设备上从本地目录安装不受支持，也未经验证。
 - 最接近的已验证路径在桌面端：用一次性信任锚发布到本地目录，再用 App Hub 的独立
   `appstore` 安装（[PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)）。
-  独立商店不能打开应用；把 OctoSense-Desktop 指向同一目录即可安装并打开。
+  独立商店不能打开应用；把桌面端 Shell 指向同一目录即可安装并打开。
 - `card-host` 的远程控制桥在 Android 上被编译移除；手机测试使用 Shell 自己的测试工具，
   而不是 `tools/octo`。
 - 发布之后，应用会通过签名目录出现在每台手机的商店中。
@@ -394,7 +395,7 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 | [Reunion](examples/reunion/README.zh-CN.md) | 原生卡片 / WASM | 聚会筹划、回复与付款 |
 | [Calendar](examples/calendar/README.zh-CN.md) | 原生卡片 / 浏览器预览 + 同步服务器 | 两台设备共用一份日历，附基于 SQLite 的同步服务器 |
 
-脚本应用的完整示例是 [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps)
+脚本应用的完整示例是 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
 中的第一方应用包（`apps/<name>/bundle/`），以及 [templates/script-app](templates/script-app/README.zh-CN.md)。
 
 ## 参与贡献
@@ -413,10 +414,9 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 | 仓库 | 作用 |
 | --- | --- |
 | [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) | 签名目录、准入检查、`hub`、`card-host`、商店与 Card runner |
-| [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) | 第一方应用（News、Photos、Maps、Camera、Mail、AI providers）及其宿主服务（`mail`、`llm`） |
-| [OctoSense-Desktop](https://github.com/OctoSense-org/OctoSense-Desktop) | 桌面 Shell |
-| [OctoSense-ROM](https://github.com/OctoSense-org/OctoSense-ROM/blob/main/README.zh-CN.md) | 手机 Shell（`home/`），可作为 Home 应用安装，也可刷入 ROM 镜像 |
-| [OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard) | AppCard 助手（`octos-app`，在 Shell 中需 `--features app-appcard` 才启用）与 L0 卡片语言；Splash 隔离环境和组件本身在 makepad 中 |
+| [OctoSense](https://github.com/OctoSense-org/OctoSense) | Shell 及其内置的一切：桌面端 Shell（`desktop/`）、手机 Shell Home（`phone/`，可作为 Home 应用安装，也可放进由 `rom/` 构建的 ROM 镜像），以及第一方应用和它们的宿主服务（`apps/`）。原为 OctoSense-Desktop、OctoSense-ROM 和 OctoSense-System-Apps 三个仓库。 |
+| [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) | 第一方应用（News、Photos、Maps、Camera、Mail、AI providers）及其宿主服务（`mail`、`llm`） |
+| [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard) | AppCard 助手（`octos-app`，在 Shell 中需 `--features app-appcard` 才启用）与 L0 卡片语言；Splash 隔离环境和组件本身在 makepad 中 |
 | [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad)、[Octoscript](https://github.com/OctoSense-org/OctoScript)、[Octoscript-Makepad](https://github.com/OctoSense-org/OctoScript-Makepad) | 应用运行所依赖的框架与语言 |
 
 ## 许可证

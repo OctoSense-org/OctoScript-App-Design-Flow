@@ -87,7 +87,7 @@ node wizard/preview/smoke.mjs                                     # two Chromium
 
 `native/` is a Rust `AppModule` written for the earlier native OctoSense shell
 (feature `app-calendar`). That shell is archived and the native client now lives in
-[OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard); this module
+[OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard); this module
 is kept as a reference implementation and is not built by this repository's CI. Screens: month (any month, dots
 per calendar, today/selection rings, the selected day's list), day timeline
 (hour rows, overlapping events share the width, now line), event detail, editor

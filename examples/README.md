@@ -20,9 +20,9 @@ cross-app verification artifacts; it is not an app.
 
 System script apps (News, Photos, Maps, Camera, Mail) and the personal-data
 skill moved to
-[OctoSense-org/OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps).
+[OctoSense-org/OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps).
 The native client and runtime moved to
-[OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard).
+[OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard).
 Makepad and Octoscript live in the separate
 [native workspace](../docs/NATIVE-WORKSPACE.md).
 
