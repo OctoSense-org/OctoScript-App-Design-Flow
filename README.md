@@ -139,8 +139,10 @@ What to expect:
 
 - `new` prints `created …` and `bundle stamped`.
 - `run --detach` returns once `card-host` logs
-  `card-host: my-notes 0.1.0 admitted — capabilities {"storage"}, …`. Script
-  errors appear in `<app>/.local-state/card-host.log` after `[SPLASH] eval:`.
+  `card-host: my-notes 0.1.0 admitted — capabilities {"storage"}, …`, the
+  script's first eval ran, and a first frame is up — a `shot` fired right
+  after it is settled. Script errors appear in
+  `<app>/.local-state/card-host.log` after `[SPLASH] eval:`.
 - `check` on a fresh copy of the template is **refused** on purpose:
   `[refused] listing: screenshots/01-main.png is named by the listing but is not in the bundle`.
   It passes (`my-notes 0.1.0 — PASSED` plus the unsigned warning) once a real

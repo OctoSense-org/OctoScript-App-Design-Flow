@@ -129,7 +129,8 @@ tools/octo package-help
 
 - `new` 输出 `created …` 和 `bundle stamped`。
 - `run --detach` 在 `card-host` 输出
-  `card-host: my-notes 0.1.0 admitted — capabilities {"storage"}, …` 后返回。脚本错误会出现在
+  `card-host: my-notes 0.1.0 admitted — capabilities {"storage"}, …`、脚本完成首次求值
+  并绘出第一帧后返回——此时立即 `shot` 得到的就是稳定画面。脚本错误会出现在
   `<app>/.local-state/card-host.log` 中 `[SPLASH] eval:` 之后。
 - 对刚复制出来的模板执行 `check`，会被**有意拒绝**：
   `[refused] listing: screenshots/01-main.png is named by the listing but is not in the bundle`。

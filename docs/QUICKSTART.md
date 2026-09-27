@@ -103,7 +103,7 @@ system apps. Make `~/apps/my-app` its own git repository.
 
 ```sh
 tools/octo run ~/apps/my-app/bundle --port 8141            # foreground; Ctrl-C quits
-tools/octo run ~/apps/my-app/bundle --port 8141 --detach   # background; returns when admitted
+tools/octo run ~/apps/my-app/bundle --port 8141 --detach   # background; returns once admitted and the first frame is up
 ```
 
 This is `card-host --bundle <bundle> --app-data <app>/.local-state
@@ -151,9 +151,9 @@ Driving tips (verified 2026-09-26):
   send `/k?k=down&c=Backspace` once per character.
 - `?q=` also matches the `Splash` widget itself, whose text is your whole
   `main.splash`; filter the result by type (`"ty":"Label"`) or read the rects.
-- A `shot` taken the moment `run --detach` returns can catch a frame before
-  text is drawn (shapes but no labels). Wait a second, or send any input with
-  `wait=1`, before the first capture, and look at every PNG.
+- `run --detach` returns once the first evaluated frame is up, so a `shot`
+  fired right after it is settled. Against an app started any other way, send
+  any input with `wait=1` before the first capture — and look at every PNG.
 - The window is 412x892 points and `/g?raw=1` is at 2x on a Retina Mac:
   divide screenshot pixels by 2 to get click coordinates. The capture
   includes `card-host`'s 32-point caption bar at the top.

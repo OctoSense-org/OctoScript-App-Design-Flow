@@ -19,6 +19,7 @@ $OCTOSENSE_APP_HUB/../target/release, ../OctoSense-App-Hub/target/release and
 third-party packages.
 """
 import argparse
+import http.client
 import json
 import os
 import re
@@ -216,9 +217,11 @@ def cmd_new(args):
 
 # ------------------------------------------------------------------------- run
 def wait_for(log_path, proc, port, timeout):
-    """Wait until the remote bridge is up and the bundle was admitted or refused."""
+    """Wait until the bridge is up, the bundle was admitted or refused, and the
+    script's first eval ran (`[SPLASH] eval:` lands once the evaluated view is
+    in the tree, before any frame shows it)."""
     deadline = time.time() + timeout
-    listening = admitted = refused = None
+    listening = admitted = refused = evaluated = None
     while time.time() < deadline:
         if proc.poll() is not None:
             break
@@ -228,12 +231,31 @@ def wait_for(log_path, proc, port, timeout):
                 listening = line.strip()
             if "card-host:" in line and "admitted" in line and not admitted:
                 admitted = line.strip()
+            if "[SPLASH] eval:" in line and not evaluated:
+                evaluated = line.strip()
             if "card-host: refused" in line or "did not lower" in line:
                 refused = line.strip()
-        if refused or (listening and admitted):
+        if refused or (listening and admitted and evaluated):
             break
         time.sleep(0.25)
-    return listening, admitted, refused
+    return listening, admitted, refused, evaluated
+
+
+def settle_frame(port, timeout=15.0):
+    """Present one frame and read it back; None on success, an error string
+    otherwise. A grab arms a capture for the window's next present and the
+    bridge answers with it, and caps a grab at 10 seconds."""
+    url = f"http://127.0.0.1:{port}/g?raw=1"
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as r:
+            data = r.read()
+    except (OSError, http.client.HTTPException) as e:
+        # URLError and TimeoutError are OSErrors; HTTPException covers a
+        # response cut short mid-read, which urllib does not wrap.
+        return f"GET {url} failed: {e}"
+    if not data.startswith(PNG_MAGIC):
+        return f"{url} did not return a PNG: {data[:200]!r}"
+    return None
 
 
 def cmd_run(args):
@@ -268,12 +290,25 @@ def cmd_run(args):
     log_path = app_data / "card-host.log"
     log = open(log_path, "w")
     proc = subprocess.Popen(cmd, env=env, cwd=cwd, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
-    listening, admitted, refused = wait_for(log_path, proc, args.port, args.timeout)
-    if refused or proc.poll() is not None or not admitted:
+    listening, admitted, refused, evaluated = wait_for(log_path, proc, args.port, args.timeout)
+
+    def fail(msg):
         if proc.poll() is None:
             proc.terminate()
         print(log_path.read_text(errors="replace")[-4000:])
-        die(refused or "card-host exited or did not admit the bundle in time; see the log above")
+        die(msg)
+
+    if refused or proc.poll() is not None or not admitted:
+        fail(refused or "card-host exited or did not admit the bundle in time; see the log above")
+    if not evaluated:
+        fail("the bundle was admitted but the script's first eval did not finish in time "
+             "(a card-host too old to log it lands here too — rebuild it); see the log above")
+    # With the evaluated view in the tree, present one frame before returning:
+    # a `shot` fired the moment `--detach` returns then captures the settled
+    # window, not the half-drawn one from before the first eval.
+    err = settle_frame(args.port)
+    if err:
+        fail(f"the bundle is up but its first frame could not be captured: {err}; see the log above")
     print(listening or "(remote line not seen yet)")
     print(admitted)
     print(f"pid {proc.pid}  log {log_path}")
@@ -392,7 +427,7 @@ def main():
     r.add_argument("bundle")
     r.add_argument("--port", type=int, default=8141, help="MAKEPAD_REMOTE port (default 8141)")
     r.add_argument("--system", action="store_true", help="admit as a system app (os.* ids, system ceilings)")
-    r.add_argument("--detach", action="store_true", help="start in the background, wait for admission, return")
+    r.add_argument("--detach", action="store_true", help="start in the background; return once admitted, evaluated, and a first frame is up")
     r.add_argument("--no-stamp", action="store_true", help="do not pass --stamp (card-host then refuses a stale digest)")
     r.add_argument("--app-data", help="where the app's jail lives (default <bundle>/../.local-state)")
     r.add_argument("--static", action="append", metavar="PREFIX=DIR", help="card-host --static mount (repeatable)")
