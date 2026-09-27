@@ -109,7 +109,7 @@ system apps. Make `~/apps/my-app` its own git repository.
 
 ```sh
 tools/octo run ~/apps/my-app/bundle --port 8141            # foreground; Ctrl-C quits
-tools/octo run ~/apps/my-app/bundle --port 8141 --detach   # background; returns when admitted
+tools/octo run ~/apps/my-app/bundle --port 8141 --detach   # background; returns when admitted and drawn
 ```
 
 This is `card-host --bundle <bundle> --app-data <app>/.local-state
@@ -119,8 +119,20 @@ directory. Verified `--detach` output:
 ```text
 [makepad-remote] listening on 127.0.0.1:8141 pid=18656 app=card-host grabs=/var/folders/…
 [I] crates/card-host/src/main.rs:189:9 - card-host: my-test-notes 0.1.0 admitted — capabilities {"storage"}, hosts {}, storage 16777216 bytes, agent none
+ready: first frame drawn
 pid 18656  log …/my-app/.local-state/card-host.log
 ```
+
+- `run` (with or without `--detach`) first checks that the port is free. If something already answers
+  there it stops with `port 8141 is already taken by card-host pid …`, the
+  command to quit that instance (`curl -s 127.0.0.1:8141/quit`) and exit
+  status 1, instead of starting a second app without a bridge. After launch
+  `--detach` also requires the `[makepad-remote] listening on 127.0.0.1:8141` line
+  with the new pid, and stops the new `card-host` if it is missing.
+- `--detach` returns only when the app's widgets are laid out (`/snap` lists them,
+  with text) and a full frame has been drawn after that, usually 0.3–0.6 s
+  after start. A `shot`, click or `/t` sent right after it lands on the
+  finished UI.
 
 - `--stamp` rewrites the manifest digest on every start, so edits run without
   a separate `hub stamp`. Without it (`--no-stamp`) card-host refuses a
@@ -157,18 +169,13 @@ Driving tips (verified 2026-09-26):
   send `/k?k=down&c=Backspace` once per character.
 - `?q=` also matches the `Splash` widget itself, whose text is your whole
   `main.splash`; filter the result by type (`"ty":"Label"`) or read the rects.
-- A `shot` taken the moment `run --detach` returns can catch a frame before
-  text is drawn (shapes but no labels), and the first click or `/t` sent at
-  that moment can be lost
-  ([#118](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/issues/118)).
-  Wait a second after `run --detach` before the first input or capture, and
-  look at every PNG.
-- Always `/quit` the running app before the next `run` on the same port. If
-  the port is still taken, the new `card-host` starts **without** a bridge
-  and `run --detach` still exits 0, so your `curl`s reach the old instance and
-  edits seem to do nothing
-  ([#119](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/issues/119)).
-  Check with `lsof -nP -iTCP:8141 -sTCP:LISTEN`.
+- You can drive the app the moment `run --detach` returns: it waits until the
+  UI is laid out and drawn. `tools/octo shot` also waits for the app's widgets
+  and then grabs until two frames in a row are identical (at most `--settle`,
+  2 s), so it never saves a half-drawn first frame. Still look at every PNG.
+- `/quit` the running app before the next `run` on the same port.
+  `run` refuses a port that is still taken (exit 1, naming the app and pid
+  that hold it), so you cannot end up driving an old instance by accident.
 - The window is 412x892 points and `/g?raw=1` is at 2x on a Retina Mac:
   divide screenshot pixels by 2 to get click coordinates. The capture
   includes `card-host`'s 32-point caption bar at the top.
@@ -203,8 +210,8 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 honours it, including the OctoSense shells). Rules for running several at
 once:
 
-- **One port per app.** Give every instance its own `--port`; a taken port
-  starts the app without a bridge (see #119 above).
+- **One port per app.** Give every instance its own `--port`; `run` refuses
+  a port that is already taken and names the app holding it.
 - **One `--app-data` per copy.** Two different bundles already get separate
   jails (`<app>/.local-state`). Two copies of the *same* bundle need
   `--app-data` to keep their storage and logs apart.
@@ -352,9 +359,9 @@ real screenshots, `tools/octo check`, `hub scan`, then the **human** steps
 | `doctor`: `[fail] hub` or `card-host` | Build them (§2). If `hub` resolves to GitHub's `hub` CLI, `doctor` says so; set `OCTO_HUB` / `OCTO_CARD_HOST` or `CARGO_TARGET_DIR`. |
 | `cargo` not found | `export PATH=$HOME/.cargo/bin:$PATH` (rustup puts it there). |
 | Build fails on a `path = "../makepad/..."` dependency | The siblings are missing or at other revisions: run `python3 tools/setup-native.py` from this repository, then `--check`. |
-| `run --detach` prints `(remote line not seen yet)` | Another process holds the port (§4 driving tips, #119). Quit it or pick another `--port`. |
-| Clicks, typing or edits seem to have no effect | You are driving an old instance (above), the input was sent before the first frame (wait a second), or a handler failed: grep the log (§4). |
-| The window shows shapes but no text | Captured too early; wait and `shot` again. |
+| `run`: `port 8141 is already taken by card-host pid …` | An earlier instance still holds the port. `curl -s 127.0.0.1:8141/quit` (the message prints it), or pick another `--port`. |
+| Clicks, typing or edits seem to have no effect | A handler failed (grep the log, §4), or you started the app some other way than `tools/octo run` and are driving an older instance on that port (`curl -s 127.0.0.1:8141/s` shows its pid). |
+| `shot` says `still changing after 2s` | The app animates continuously; the PNG is the last frame. Look at it, or pass a longer `--settle`. |
 | A button shows no label | `ButtonFlat`'s default text is white for a dark theme; set `draw_text +: {color: …}` ([SCRIPT-API § Gotchas](SCRIPT-API.md#gotchas)). |
 | A number shows `NaN` | `"".to_f64()` and non-numeric text give NaN, not nil; guard with `if v >= 0` ([SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings)). |
 | `widget has no uid` / `widget '<id>' not found in tree` after typing | A `TextInput`'s `on_change` handler reads that same input through `ui` ([OctoScript-Makepad#44](https://github.com/OctoSense-org/OctoScript-Makepad/issues/44)): use the handler's `text` argument instead. |

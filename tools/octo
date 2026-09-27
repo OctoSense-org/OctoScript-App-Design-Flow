@@ -24,6 +24,7 @@ import os
 import re
 import shutil
 import signal
+import socket
 import subprocess
 import sys
 import time
@@ -214,26 +215,111 @@ def cmd_new(args):
     return 0
 
 
+# ---------------------------------------------------------------- the bridge
+# Widgets card-host itself draws around the card; they exist before the app does.
+HOST_CHROME = {"main_window", "caption_bar", "caption_label", "caption_icon", "label", "body", "card"}
+
+
+def bridge_get(port, path, timeout=5.0, host="127.0.0.1"):
+    """GET a remote-bridge route; bytes, or None when nothing answers."""
+    try:
+        with urllib.request.urlopen(f"http://{host}:{port}{path}", timeout=timeout) as r:
+            return r.read()
+    except (urllib.error.URLError, OSError, ValueError):
+        return None
+
+
+def bridge_json(port, path, timeout=5.0, host="127.0.0.1"):
+    data = bridge_get(port, path, timeout, host)
+    try:
+        return json.loads(data) if data else None
+    except ValueError:
+        return None
+
+
+def port_owner(port):
+    """None when 127.0.0.1:port is free, else a description of what holds it."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(1.0)
+        if s.connect_ex(("127.0.0.1", port)) != 0:
+            return None
+    info = bridge_json(port, "/s", timeout=2.0)
+    if isinstance(info, dict) and "pid" in info:
+        return f"{info.get('app', '?')} pid {info['pid']} (a makepad app with the remote bridge)"
+    return "a process that is not a makepad remote bridge (find it with `lsof -nP -iTCP:%d -sTCP:LISTEN`)" % port
+
+
+def app_ready(port, host="127.0.0.1"):
+    """(ready, has_text) from /snap: has the app's own UI been laid out yet?"""
+    snap = bridge_json(port, "/snap", timeout=3.0, host=host)
+    widgets = (snap or {}).get("s") or []
+    content = [w for w in widgets if w.get("i") not in HOST_CHROME and w.get("ty") != "Splash"]
+    return bool(content), any((w.get("t") or "").strip() for w in content)
+
+
+def wait_until_ready(port, timeout, host="127.0.0.1"):
+    """Poll /snap until the app's widgets (with text) are laid out, then make
+    sure one full frame has been presented after that. Returns a note or None.
+
+    Right after admission the window can still show a half-built first frame
+    and input can land before the widgets exist (#118)."""
+    deadline = time.time() + timeout
+    first_content = None
+    note = None
+    while True:
+        ready, has_text = app_ready(port, host)
+        now = time.time()
+        if ready and first_content is None:
+            first_content = now
+        # A UI without any text is legal; give text 3 s to show up, then go on.
+        if ready and (has_text or now - first_content > 3.0):
+            if not has_text:
+                note = "the app's widgets report no text"
+            break
+        if now > deadline:
+            return "the app's widgets did not appear in /snap in time"
+        time.sleep(0.05)
+    # An input with wait=1 answers only after the next frame is drawn; a pointer
+    # move outside the window changes nothing in the app.
+    bridge_get(port, "/m?k=move&x=-1&y=-1&wait=1", timeout=5.0, host=host)
+    return note
+
+
 # ------------------------------------------------------------------------- run
 def wait_for(log_path, proc, port, timeout):
-    """Wait until the remote bridge is up and the bundle was admitted or refused."""
+    """Wait until this card-host's remote bridge is up and the bundle was
+    admitted, or something failed. Returns (listening, admitted, error)."""
     deadline = time.time() + timeout
-    listening = admitted = refused = None
+    listening = admitted = error = None
+    want = re.compile(r"\[makepad-remote\] listening on 127\.0\.0\.1:%d pid=%d\b" % (port, proc.pid))
     while time.time() < deadline:
-        if proc.poll() is not None:
-            break
         text = log_path.read_text(errors="replace") if log_path.exists() else ""
         for line in text.splitlines():
-            if "[makepad-remote] listening" in line and not listening:
+            if want.search(line) and not listening:
                 listening = line.strip()
+            if "[makepad-remote] bind" in line and "failed" in line:
+                error = line.strip()
             if "card-host:" in line and "admitted" in line and not admitted:
                 admitted = line.strip()
             if "card-host: refused" in line or "did not lower" in line:
-                refused = line.strip()
-        if refused or (listening and admitted):
+                error = line.strip()
+        if error or (listening and admitted):
             break
-        time.sleep(0.25)
-    return listening, admitted, refused
+        if proc.poll() is not None:
+            error = error or f"card-host exited with status {proc.returncode}"
+            break
+        time.sleep(0.1)
+    if not error and not admitted:
+        error = f"card-host did not admit the bundle within {timeout:g}s"
+    elif not error and not listening:
+        error = f"card-host (pid {proc.pid}) never reported its remote bridge listening on 127.0.0.1:{port}"
+    return listening, admitted, error
+
+
+def port_busy_message(port, owner):
+    return (f"port {port} is already taken by {owner}.\n"
+            f"  Every curl/shot on {port} would reach that process, not the app you are starting.\n"
+            f"  Quit it:  curl -s 127.0.0.1:{port}/quit      or pick another port: --port {port + 1}")
 
 
 def cmd_run(args):
@@ -241,6 +327,11 @@ def cmd_run(args):
     if not (bundle / "manifest.json").is_file():
         die(f"{bundle} has no manifest.json; pass the bundle directory (…/bundle)")
     card_host = need("card-host", "OCTO_CARD_HOST")
+    # card-host would start anyway, without a bridge, and every curl would
+    # silently drive whatever already holds the port (#119).
+    owner = port_owner(args.port)
+    if owner:
+        die(port_busy_message(args.port, owner))
     app_data = Path(args.app_data).expanduser().resolve() if args.app_data else bundle.parent / ".local-state"
     app_data.mkdir(parents=True, exist_ok=True)
     cmd = [str(card_host), "--bundle", str(bundle), "--app-data", str(app_data), "--allow-unsigned"]
@@ -273,36 +364,78 @@ def cmd_run(args):
 
     log_path = app_data / "card-host.log"
     log = open(log_path, "w")
+    started = time.time()
     proc = subprocess.Popen(cmd, env=env, cwd=cwd, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
-    listening, admitted, refused = wait_for(log_path, proc, args.port, args.timeout)
-    if refused or proc.poll() is not None or not admitted:
+
+    def fail(msg):
         if proc.poll() is None:
             proc.terminate()
+            try:
+                proc.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                proc.kill()
         print(log_path.read_text(errors="replace")[-4000:])
-        die(refused or "card-host exited or did not admit the bundle in time; see the log above")
-    print(listening or "(remote line not seen yet)")
+        die(msg + f"\n  (stopped the card-host it started, pid {proc.pid}; log {log_path})")
+
+    listening, admitted, error = wait_for(log_path, proc, args.port, args.timeout)
+    if error:
+        owner = port_owner(args.port) if "bind" in error else None
+        fail(port_busy_message(args.port, owner) if owner else error)
+    info = bridge_json(args.port, "/s")
+    if not isinstance(info, dict) or info.get("pid") != proc.pid:
+        fail(f"127.0.0.1:{args.port} is not answered by the card-host just started (pid {proc.pid}): /s said {info!r}")
+    note = wait_until_ready(args.port, max(5.0, args.timeout - (time.time() - started)))
+    if note and "did not appear" in note:
+        fail(note)
+    print(listening)
     print(admitted)
+    print(f"ready: first frame drawn{'; ' + note if note else ''}")
     print(f"pid {proc.pid}  log {log_path}")
     print(f"drive it:  curl -s 127.0.0.1:{args.port}/snap   |   tools/octo shot {args.port} <out.png>   |   curl -s 127.0.0.1:{args.port}/quit")
     return 0
 
 
 # ------------------------------------------------------------------------ shot
-def cmd_shot(args):
-    url = f"http://{args.host}:{args.port}/g?raw=1"
+def grab_png(host, port, timeout):
+    url = f"http://{host}:{port}/g?raw=1"
     try:
-        with urllib.request.urlopen(url, timeout=args.timeout) as r:
+        with urllib.request.urlopen(url, timeout=timeout) as r:
             data = r.read()
-    except urllib.error.URLError as e:
-        die(f"GET {url} failed: {e}. Is the app running with MAKEPAD_REMOTE={args.port}?")
+    except (urllib.error.URLError, OSError) as e:
+        die(f"GET {url} failed: {e}. Is the app running with MAKEPAD_REMOTE={port}?")
     if not data.startswith(PNG_MAGIC):
         die(f"{url} did not return a PNG: {data[:200]!r}")
+    return data
+
+
+def cmd_shot(args):
+    if bridge_json(args.port, "/s", host=args.host) is None:
+        die(f"nothing answers on {args.host}:{args.port}. Is the app running with MAKEPAD_REMOTE={args.port}?")
+    # Never capture a half-built first frame (#118): wait for the app's widgets,
+    # then grab until two frames in a row are identical (or --settle runs out,
+    # e.g. for an app that animates all the time).
+    note = wait_until_ready(args.port, args.timeout, host=args.host)
+    if note and "did not appear" in note:
+        die(note + f"; nothing captured. Check `curl -s {args.host}:{args.port}/snap`.")
+    data = grab_png(args.host, args.port, args.timeout)
+    deadline = time.time() + args.settle
+    settled = False
+    while time.time() < deadline:
+        bridge_get(args.port, "/m?k=move&x=-1&y=-1&wait=1", timeout=5.0, host=args.host)
+        again = grab_png(args.host, args.port, args.timeout)
+        if again == data:
+            settled = True
+            break
+        data = again
     out = Path(args.out).expanduser()
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_bytes(data)
     w = int.from_bytes(data[16:20], "big")
     h = int.from_bytes(data[20:24], "big")
-    print(f"wrote {out} ({w}x{h}, {len(data)} bytes). Look at it before you ship it.")
+    extra = "" if settled else f" (still changing after {args.settle:g}s, e.g. an animation; this is the last frame)"
+    if note:
+        extra += f" ({note})"
+    print(f"wrote {out} ({w}x{h}, {len(data)} bytes){extra}. Look at it before you ship it.")
     return 0
 
 
@@ -399,7 +532,7 @@ def main():
     r.add_argument("--port", type=int, default=8141, help="MAKEPAD_REMOTE port (default 8141)")
     r.add_argument("--hidden", action="store_true", help="headless: never show or focus the window (MAKEPAD_HIDE_WINDOWS=1); drive and screenshot it over the bridge")
     r.add_argument("--system", action="store_true", help="admit as a system app (os.* ids, system ceilings)")
-    r.add_argument("--detach", action="store_true", help="start in the background, wait for admission, return")
+    r.add_argument("--detach", action="store_true", help="start in the background, wait until admitted and the first frame is drawn, return")
     r.add_argument("--no-stamp", action="store_true", help="do not pass --stamp (card-host then refuses a stale digest)")
     r.add_argument("--app-data", help="where the app's jail lives (default <bundle>/../.local-state)")
     r.add_argument("--static", action="append", metavar="PREFIX=DIR", help="card-host --static mount (repeatable)")
@@ -409,7 +542,8 @@ def main():
     s.add_argument("port", type=int)
     s.add_argument("out")
     s.add_argument("--host", default="127.0.0.1")
-    s.add_argument("--timeout", type=float, default=30.0)
+    s.add_argument("--timeout", type=float, default=30.0, help="seconds to wait for the app's widgets (default 30)")
+    s.add_argument("--settle", type=float, default=2.0, help="seconds to wait for two identical frames in a row (default 2)")
 
     c = sub.add_parser("check", help="hub stamp, then hub check --allow-unsigned; nonzero on refusal")
     c.add_argument("bundle")
