@@ -354,10 +354,11 @@ OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" \
 ```
 
 Verified on macOS on 2026-09-26 (OctoSense-Desktop `4db0214`, again at `cae5cfb` with a
-`net` app): **App Hub** in the dock (the shopping-bag icon; hovering names it)
+`net` app) and on 2026-09-27 on a fresh clone of OctoSense `main` at `58c72dd`
+(setup 22 s without `--cache`, a cold release build 5.3 min, windows hidden): **App Hub** in the dock (the shopping-bag icon; hovering names it)
 listed the app, **Get** then **Install** (below the permissions summary;
 scroll down, or `/m?k=scroll&x=…&y=…&dy=600` over the bridge) installed it,
-**Open** ran it in a tile
+**Open** ran it in its own window
 (`card: <id> running under 2 capability(ies), 2 host(s) …` in the log), and
 its interactions, storage and requests to its declared host worked as in
 `card-host`. Add `MAKEPAD_HIDE_WINDOWS=1` to keep the window off screen while
