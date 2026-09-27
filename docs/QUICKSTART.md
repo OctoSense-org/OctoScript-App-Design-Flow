@@ -181,6 +181,81 @@ always appear in `/snap` or `/d`: confirm them with a screenshot or the jail
 file, and click them by coordinates from the screenshot (pixels / 2 on a
 Retina Mac).
 
+### 4a. Headless: test without the screen, several apps at once
+
+Makepad has a headless mode: the app runs with its window **never shown or
+focused**, and the remote bridge above (`/snap`, `/click`, `/t`, `/g`
+screenshots) works exactly the same. Use it for every automated check, so a
+coding agent never takes over your screen or keyboard focus, and so several
+apps (or several copies of one app) can be tested side by side without
+competing for the display.
+
+```sh
+tools/octo run apps/tip-split/bundle      --port 8161 --hidden --detach
+tools/octo run apps/unit-converter/bundle --port 8162 --hidden --detach
+curl -s "127.0.0.1:8161/snap?q=Button"                 # each app answers on its own port
+curl -s "127.0.0.1:8162/click?x=X&y=Y&wait=1"      # X, Y: centre of a rect from /snap
+tools/octo shot 8161 tip.png && tools/octo shot 8162 conv.png
+curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
+```
+
+`--hidden` sets `MAKEPAD_HIDE_WINDOWS=1` for `card-host` (any Makepad app
+honours it, including the OctoSense shells). Rules for running several at
+once:
+
+- **One port per app.** Give every instance its own `--port`; a taken port
+  starts the app without a bridge (see #119 above).
+- **One `--app-data` per copy.** Two different bundles already get separate
+  jails (`<app>/.local-state`). Two copies of the *same* bundle need
+  `--app-data` to keep their storage and logs apart.
+- Screenshots are rendered by the app itself, so they are complete even
+  though nothing is on screen. Look at them.
+
+Verified 2026-09-27 on macOS (Apple silicon): two apps ran hidden at the same
+time; clicks sent to both at once changed each app's own state ("Tip 20%" in
+one, "Celsius to Fahrenheit" in the other) and both screenshots were correct.
+
+**Scripted UI tests: `makepad_test`.** For repeatable regression tests, the
+pinned makepad ships a Rust test harness, `libs/makepad_test`
+([README](https://github.com/OctoSense-org/makepad/blob/main/libs/makepad_test/README.md),
+[GUIDE](https://github.com/OctoSense-org/makepad/blob/main/libs/makepad_test/GUIDE.md)).
+It builds and launches the app itself, hidden by default, drives it through
+the same bridge, and on failure saves a screenshot, the widget tree and the
+log. To test a bundle, point it at App Hub's `card-host` and pass the bundle
+as app arguments:
+
+```rust
+// tests/ui.rs in a small crate with
+// [dev-dependencies] makepad-test = { path = "../makepad/libs/makepad_test" }
+use makepad_test::{run_with_config, Selector, TestApp, TestConfig};
+
+fn app(test: &str, bundle: &str) -> TestConfig {
+    let card_host = "../OctoSense-App-Hub/crates/card-host";
+    let mut c = TestConfig::new(card_host, "octosense-card-host", test).unwrap();
+    c.bin_name = Some("card-host".into());
+    c.app_args = vec!["--bundle".into(), format!("{bundle}/bundle"),
+        "--app-data".into(), format!("{bundle}/.test-state"),
+        "--allow-unsigned".into(), "--stamp".into()];
+    c
+}
+
+#[test]
+fn tip_20_percent() {
+    run_with_config(app("tip", "/abs/path/apps/tip-split"), |app: TestApp| {
+        app.locator(Selector::widget_type("Button").text_exact("20%")).wait_visible().click();
+        app.locator(Selector::id("tip_line")).wait_text("Tip 20%: 0.00");
+    }).unwrap();
+}
+```
+
+Run with `cargo test --release --test ui`; set `MAKEPAD_TEST_PARALLEL=1` to
+run the tests (one hidden app each) concurrently, or `MAKEPAD_TEST_VISIBLE=1`
+to watch them. Target widgets you declared in the page (`name := …` for
+`Selector::id`, or a button's text); widgets built inside `on_render` may be
+missing from the harness's snapshot, the same limit as `/snap` above.
+Verified with the example above (and a second app in parallel) against
+makepad `cd812acd` and App Hub `3e993d4c`.
+
 ## 5. The edit loop
 
 1. Edit `bundle/main.splash` (the language: [SCRIPT-API](SCRIPT-API.md)).

@@ -7,7 +7,7 @@ exactly what `hub check` prints and exits with its status.
 
     tools/octo doctor
     tools/octo new <dir> [--id ID] [--name NAME]
-    tools/octo run <bundle> [--port N] [--system] [--detach] [--no-stamp] [--app-data DIR]
+    tools/octo run <bundle> [--port N] [--hidden] [--system] [--detach] [--no-stamp] [--app-data DIR]
     tools/octo shot <port> <out.png>
     tools/octo check <bundle> [hub check flags ...]
     tools/octo package-help
@@ -252,10 +252,16 @@ def cmd_run(args):
         cmd += ["--static", s]
     env = dict(os.environ)
     env["MAKEPAD_REMOTE"] = str(args.port)
+    if args.hidden:
+        # Makepad's headless mode: the window is never shown or focused, and
+        # the remote bridge (/snap, /click, /g screenshots) still works. Run
+        # as many apps side by side as you like, each on its own --port.
+        env["MAKEPAD_HIDE_WINDOWS"] = "1"
+        env.pop("MAKEPAD_FOCUS", None)
     # card-host resolves its compiled-in resources relative to its workspace.
     repo = hub_repo()
     cwd = str(repo) if repo and repo.is_dir() else None
-    print("octo: " + " ".join(cmd) + f"   (MAKEPAD_REMOTE={args.port})", flush=True)
+    print("octo: " + " ".join(cmd) + f"   (MAKEPAD_REMOTE={args.port}" + (", hidden window" if args.hidden else "") + ")", flush=True)
 
     if not args.detach:
         proc = subprocess.Popen(cmd, env=env, cwd=cwd)
@@ -391,6 +397,7 @@ def main():
     r = sub.add_parser("run", help="run a bundle in card-host with the remote-control bridge")
     r.add_argument("bundle")
     r.add_argument("--port", type=int, default=8141, help="MAKEPAD_REMOTE port (default 8141)")
+    r.add_argument("--hidden", action="store_true", help="headless: never show or focus the window (MAKEPAD_HIDE_WINDOWS=1); drive and screenshot it over the bridge")
     r.add_argument("--system", action="store_true", help="admit as a system app (os.* ids, system ceilings)")
     r.add_argument("--detach", action="store_true", help="start in the background, wait for admission, return")
     r.add_argument("--no-stamp", action="store_true", help="do not pass --stamp (card-host then refuses a stale digest)")
