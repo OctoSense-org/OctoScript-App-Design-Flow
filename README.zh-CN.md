@@ -84,7 +84,7 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 | 部分 | 状态 |
 | --- | --- |
 | `hub` 中的脚本应用准入检查、扫描与 `os.` id 检查 | 已在 App Hub `main`（[OctoSense-App-Hub#4](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/4)，合并为 `0d36f50b`）。本仓库文档基于其合并前的提交 `79a2c4f` 验证，并于 2026-09-26 在 `main` 上端到端重新跑通。 |
-| 运行时中的隔离脚本应用与宿主服务 | 已在 makepad `main`（[OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30)，合并为 `cd812acd`），由 `native-runtime.lock.json` 固定的 Octoscript-Makepad `463e3da8` 选定。合并前在 `d94e5e6` 验证。 |
+| 运行时中的隔离脚本应用与宿主服务 | 已在 makepad `main`（[OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30)，合并为 `cd812acd`，现为 `d0a9def5`），由 `native-runtime.lock.json` 固定的 Octoscript-Makepad `99c1e5ee` 选定。合并前在 `d94e5e6` 验证。 |
 | Shell 中的系统应用与商店应用 | 已在 OctoSense-Desktop（[#36](https://github.com/OctoSense-org/OctoSense-Desktop/pull/36)）和 OctoSense-ROM 的 Home（[#18](https://github.com/OctoSense-org/OctoSense-ROM/pull/18)）的 `main`。 |
 | 提交途径 | 在 OctoSense-App-Hub 开一个 issue（见下文），如 App Hub 的 [PUBLISHING § Submitting](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#submitting) 所述。其中提到的索引仓库和 release action 尚不存在。 |
 | 在手机上安装自己的应用包 | 不支持。见[运行应用](#运行应用)。 |
@@ -278,7 +278,7 @@ my-app/                     the app's own git repository
 | `/g?raw=1` | 窗口的 PNG（即 `tools/octo shot` 保存的内容） |
 | `/quit`（或 `/gq`） | 退出；最后一定要调用 |
 
-`on_render` 生成的行不一定出现在 `/snap` 中；请用截图或 jail 中的文件确认。`card-host`
+`on_render` 生成的控件与其他控件一样出现在 `/snap` 和 `/d` 中（自 makepad `d0a9def5` 起）；应用稍后才添加的内容（来自定时器或响应）在绘制后才出现，请轮询 `/snap?q=` 等待它。`card-host`
 **不**注册任何宿主服务，所以类似 Mail 的应用在其中会得到
 `no service answers "mail" on this device`。当前的 `card-host` 还会拒绝已签名的 manifest：
 请在签名之前截图。

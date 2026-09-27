@@ -4,7 +4,8 @@ What a script app's `main.splash` can use when it runs in a policed isolate
 (App Hub `card-host` and the shells' Card runner). Everything here was read in
 the runtime source (OctoSense-org/makepad `sandbox/contained-tier-gates` at
 `d94e5e6`, merged to `main` as #30, `cd812acd`; the file:line references
-still hold at `cd812acd`) and, where marked **✓ run**, executed in
+were checked at `cd812acd`, the pinned runtime is now `d0a9def5`) and, where
+marked **✓ run**, executed in
 `card-host` (App Hub `79a2c4f`) on macOS. Idioms are taken from the System
 Apps (`OctoSense-System-Apps/apps/<name>/bundle/main.splash`), which are
 working code.
@@ -77,7 +78,7 @@ is `widget method <m> not found for uid <uid>` (`MP/widgets/src/widget_async.rs:
 | --- | --- | --- | --- |
 | `on_click: \|\| …` | Button, ButtonFlat, ButtonFlatter | none | `ButtonFlat{text: "Add" on_click: \|\| add()}` **✓ run** |
 | `on_click: \|active\| …` | CheckBox | `active` | |
-| `on_change: \|text\| …` | TextInput | current text | News search. Use `text`; do not read the input itself through `ui` here ([Gotchas](#gotchas)) |
+| `on_change: \|text\| …` | TextInput | current text | News search. `text` is the new text; `ui.<its id>.text()` returns the same **✓ run** |
 | `on_return: \|text\| …` | TextInput | current text | Maps search |
 | `on_tap: \|x, y\| …` | GestureView | point in the view | `GestureView{on_tap: \|x, y\| remove(i) …}` **✓ run** |
 | `on_double_tap: \|x, y\|`, `on_long_press: \|x, y\|` | GestureView | | News long-press |
@@ -296,13 +297,13 @@ Sources: `MP/widgets/src/widget_async.rs:15, 456-465`, `MP/platform/script/src/v
   bind it once and instantiate it: `let Chip = ButtonFlat{height: 40 draw_bg +: {…} draw_text +: {…}}`,
   then `Chip{text: "10%" on_click: || set_tip(10)}` (**✓ run**).
 - **A `TextInput` inside its own `on_change`:** reading the input itself
-  (`ui.<its id>.text()`) from its `on_change` handler fails with
-  `widget has no uid`, and afterwards `ui.<its id>` is `not found in tree`
-  from every handler
-  ([OctoScript-Makepad#44](https://github.com/OctoSense-org/OctoScript-Makepad/issues/44), **✓ run**).
-  Other widgets (`ui.total.set_text(…)`) work there. Keep the handler's `text`
-  argument in a top-level `let` instead (`on_change: |text| set_query(text)`,
-  as News and Photos do).
+  (`ui.<its id>.text()`) there works since makepad `d0a9def5` and returns the
+  edited text (**✓ run**). Before it, this failed with `widget has no uid` and
+  then `not found in tree`
+  ([OctoScript-Makepad#44](https://github.com/OctoSense-org/OctoScript-Makepad/issues/44));
+  if you see those errors, update the runtime (`tools/setup-native.py --update`).
+  Passing the handler's `text` argument on (`on_change: |text| set_query(text)`,
+  as News and Photos do) remains the simplest form.
 - **`ButtonFlat` holds no children:** a `Label` inside a `ButtonFlat` is not
   drawn and the button's own text disappeared (**✓ run**). Use `text:`; for a
   rich tappable row use `GestureView{on_tap: |x, y| …}` around the content.
