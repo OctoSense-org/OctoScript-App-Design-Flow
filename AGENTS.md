@@ -58,6 +58,12 @@ patch around it here.
 - **Keep the bundle clean.** Only `manifest.json`, `listing.json`, the entry,
   artwork and screenshots go in `bundle/`. Notes, keys, logs, review packets
   and `.local-state/` stay out.
+- **Run headless.** Start apps with `tools/octo run … --hidden` (Makepad's
+  headless mode: the window is never shown or focused, the remote bridge and
+  screenshots work as usual), so you never take over the person's screen.
+  Several apps can be tested at once: one `--port` each, and `--app-data` per
+  copy when you run the same bundle twice. For scripted regression tests use
+  makepad's `makepad_test` harness ([QUICKSTART §4a](docs/QUICKSTART.md#4a-headless-test-without-the-screen-several-apps-at-once)).
 - **Clean up what you launch.** End every `card-host` you start with
   `curl -s 127.0.0.1:<port>/quit` (or `/gq`); do not `pkill` other windows.
 

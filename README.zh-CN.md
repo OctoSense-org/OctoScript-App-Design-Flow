@@ -30,6 +30,7 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 - [应用是什么](#应用是什么)
 - [隔离规则](#隔离规则)
 - [运行应用](#运行应用)
+- [无头测试：同时测多个应用，不占屏幕](#无头测试同时测多个应用不占屏幕)
 - [发布](#发布)
 - [仓库结构](#仓库结构)
 - [示例](#示例)
@@ -50,6 +51,7 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 | **应用不能做什么** | 持有密码、密钥或 token；自创权限或宿主服务（那是 App Hub 和 Shell 的修改）；使用 `llm` 或 `os.*` id（仅限系统应用）；侧载到手机。`card-host` 不提供任何宿主服务，所以类似 Mail 的应用在其中会显示 `no service answers`。 |
 | **演示** | 在 `card-host` 中运行应用（`tools/octo run`，通过远程控制桥操作），并用 `tools/octo shot` 截取真实截图。要在 OctoSense 内展示，让 OctoSense-Desktop 读取本地目录（[PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)）。 |
 | **提交到 App Hub** | [发布](#发布)：`tools/octo check` 通过、回答 `hub scan` 的问题，然后由人签名，并在 [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues) 开一个 `Submit <app id> <version>` issue。参赛作品不等于自动提交到 App Hub；请向主办方确认他们需要什么。 |
+| **无头测试** | `tools/octo run … --hidden`：窗口不会出现，Agent 可以在不占用你屏幕的情况下测试应用（也可同时测多个应用，每个用自己的 `--port`）。见[无头测试](#无头测试同时测多个应用不占屏幕)。 |
 | **卡住了** | [QUICKSTART § Troubleshooting](docs/QUICKSTART.md#troubleshooting)，然后看 [SCRIPT-API § Gotchas](docs/SCRIPT-API.md#gotchas)。 |
 
 ## Agent 从这里开始
@@ -128,6 +130,8 @@ tools/octo new ~/apps/my-app --id my-notes --name "My Notes"
 
 # 3. Run it in a real window with the remote-control bridge
 tools/octo run ~/apps/my-app/bundle --port 8141 --detach
+#    Agent 和脚本请加 --hidden（无头模式：不占用你的屏幕，
+#    可同时运行多个应用，每个用自己的 --port；见 QUICKSTART §4a）
 curl -s "127.0.0.1:8141/snap?q=Notes"                    # what is on screen
 
 # 4. Iterate: edit bundle/main.splash, then quit and run again
@@ -296,6 +300,31 @@ OctoSense-Desktop 的 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 指向该目录�
 - `card-host` 的远程控制桥在 Android 上被编译移除；手机测试使用 Shell 自己的测试工具，
   而不是 `tools/octo`。
 - 发布之后，应用会通过签名目录出现在每台手机的商店中。
+
+## 无头测试：同时测多个应用，不占屏幕
+
+Makepad 有无头（headless）模式：应用运行时窗口**从不显示、也不抢焦点**，而远程控制桥
+（`/snap`、`/click`、`/t`、`/g` 截图）照常工作。凡是由 Agent 或脚本操作应用，都应使用它：
+不会占用你的屏幕和键盘，还能同时测试多个应用，或同一应用的多个副本，彼此不争抢显示器。
+
+```sh
+tools/octo run apps/tip-split/bundle      --port 8161 --hidden --detach
+tools/octo run apps/unit-converter/bundle --port 8162 --hidden --detach
+curl -s "127.0.0.1:8161/snap?q=Button"        # 每个应用在自己的端口上响应
+tools/octo shot 8161 tip.png && tools/octo shot 8162 conv.png
+curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
+```
+
+- `--hidden` 会设置 `MAKEPAD_HIDE_WINDOWS=1`；所有 Makepad 应用都支持它，包括 OctoSense 的 Shell。
+- 每个应用用自己的 `--port`；同一个应用包运行两份时，每份用自己的 `--app-data`。
+- 截图由应用自身渲染，即使屏幕上什么都没有，截图也是完整的。
+- **脚本化 UI 测试：** makepad 的 [`makepad_test`](https://github.com/OctoSense-org/makepad/tree/main/libs/makepad_test)
+  测试框架会以隐藏窗口启动应用、通过同一个控制桥操作它，并在测试失败时保存截图、组件树和日志；
+  设置 `MAKEPAD_TEST_PARALLEL=1` 可并发运行多个测试（每个测试一个隐藏应用）。
+  配置方法和 `card-host` 示例见 [QUICKSTART §4a](docs/QUICKSTART.md#4a-headless-test-without-the-screen-several-apps-at-once)（英文）。
+
+2026-09-27 在 macOS（Apple silicon）上验证：两个应用以隐藏窗口并行运行，同时发给两者的点击各自改变了对应应用的状态，
+两张截图都正确；`makepad_test` 示例测试通过。
 
 ## 发布
 

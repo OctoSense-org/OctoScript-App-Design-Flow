@@ -33,6 +33,7 @@ the first-party apps moved to
 - [What an app is](#what-an-app-is)
 - [Containment rules](#containment-rules)
 - [Running an app](#running-an-app)
+- [Headless testing: many apps, no screen](#headless-testing-many-apps-no-screen)
 - [Publishing](#publishing)
 - [Repository layout](#repository-layout)
 - [Examples](#examples)
@@ -54,6 +55,7 @@ organizers; none of that is decided here. What a contestant needs from here:
 | **What it cannot do** | Hold a password, key or token; invent a capability or a host service (those are App Hub and shell changes); use `llm` or an `os.*` id (system apps only); be side-loaded onto a phone. `card-host` provides no host services, so a Mail-style app shows `no service answers` there. |
 | **Demo** | The app in `card-host` (`tools/octo run`, driven over the remote bridge) and real screenshots from `tools/octo shot`. To show it inside OctoSense, run OctoSense-Desktop against a local catalog ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)). |
 | **Submit to the App Hub** | [Publishing](#publishing): `tools/octo check` passes, `hub scan` answered, then a person signs and opens a `Submit <app id> <version>` issue on [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues). A contest entry is not automatically an App Hub submission; ask the organizers what they need. |
+| **Test headless** | `tools/octo run … --hidden`: the window never appears, so an agent can test your app (and several apps at once, one `--port` each) without taking over your screen. [Headless testing](#headless-testing-many-apps-no-screen). |
 | **Stuck** | [QUICKSTART § Troubleshooting](docs/QUICKSTART.md#troubleshooting), then [SCRIPT-API § Gotchas](docs/SCRIPT-API.md#gotchas). |
 
 ## Agents start here
@@ -139,6 +141,8 @@ tools/octo new ~/apps/my-app --id my-notes --name "My Notes"
 
 # 3. Run it in a real window with the remote-control bridge
 tools/octo run ~/apps/my-app/bundle --port 8141 --detach
+#    Agents and scripts: add --hidden (headless: no window takes your screen,
+#    and several apps can run at once, one --port each; QUICKSTART §4a)
 curl -s "127.0.0.1:8141/snap?q=Notes"                    # what is on screen
 
 # 4. Iterate: edit bundle/main.splash, then quit and run again
@@ -337,6 +341,39 @@ opens the app (verified on macOS,
   through the shell's own instrument, not `tools/octo`.
 - After publication, the app appears in every phone's store from the signed
   catalog.
+
+## Headless testing: many apps, no screen
+
+Makepad has a headless mode: an app runs with its window **never shown or
+focused**, while the remote-control bridge (`/snap`, `/click`, `/t`, `/g`
+screenshots) keeps working. Use it whenever an agent or a script drives an
+app: it never takes over your screen or keyboard, and you can test several
+apps, or several copies of one app, at the same time without them competing
+for the display.
+
+```sh
+tools/octo run apps/tip-split/bundle      --port 8161 --hidden --detach
+tools/octo run apps/unit-converter/bundle --port 8162 --hidden --detach
+curl -s "127.0.0.1:8161/snap?q=Button"        # each app answers on its own port
+tools/octo shot 8161 tip.png && tools/octo shot 8162 conv.png
+curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
+```
+
+- `--hidden` sets `MAKEPAD_HIDE_WINDOWS=1`; any Makepad app honours it,
+  including the OctoSense shells.
+- One `--port` per app; one `--app-data` per copy when you run the same
+  bundle twice.
+- Screenshots are rendered by the app itself, so they are complete even with
+  nothing on screen.
+- **Scripted UI tests:** makepad's [`makepad_test`](https://github.com/OctoSense-org/makepad/tree/main/libs/makepad_test)
+  harness launches the app hidden, drives it through the same bridge, and
+  saves a screenshot, the widget tree and the log when a test fails;
+  `MAKEPAD_TEST_PARALLEL=1` runs tests (one hidden app each) concurrently.
+  Setup and a `card-host` example: [QUICKSTART §4a](docs/QUICKSTART.md#4a-headless-test-without-the-screen-several-apps-at-once).
+
+Verified 2026-09-27 on macOS (Apple silicon): two apps ran hidden side by
+side, clicks sent to both at once changed each app's own state, and both
+screenshots were correct; the `makepad_test` example passed.
 
 ## Publishing
 
