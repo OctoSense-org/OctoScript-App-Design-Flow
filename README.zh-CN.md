@@ -151,7 +151,9 @@ tools/octo package-help
 
 - `new` 输出 `created …` 和 `bundle stamped`。
 - `run --detach` 在 `card-host` 输出
-  `card-host: my-notes 0.1.0 admitted — capabilities {"storage"}, …` 后返回。脚本错误会出现在
+  `card-host: my-notes 0.1.0 admitted — capabilities {"storage"}, …`、远程桥已在你的 `--port` 上监听、
+  并且第一帧完整画出（`ready: first frame drawn`）之后才返回；之后可以立即点击或 `shot`。
+  如果端口已被占用，它以状态 1 退出，指出占用端口的应用，并给出停止它的 `curl -s 127.0.0.1:<port>/quit`。脚本错误会出现在
   `<app>/.local-state/card-host.log` 中 `[SPLASH] eval:` 之后。
 - 对刚复制出来的模板执行 `check`，会被**有意拒绝**：
   `[refused] listing: screenshots/01-main.png is named by the listing but is not in the bundle`。
@@ -168,8 +170,8 @@ tools/octo package-help
 | --- | --- |
 | `doctor` | 检查 Python，查找 `hub` 与 `card-host`（排除 GitHub 那个同名的 `hub` CLI），检查模板，并输出缺失项的修复方法。 |
 | `new <dir> [--id ID] [--name NAME] [--system]` | 复制 `templates/script-app`（`bundle/`、`AGENTS.md`、`.gitignore`），设置 id、名称和版本 `0.1.0`，并 stamp 应用包。id 格式为 `[a-z0-9.-]{1,64}`；`os.*` 需要 `--system`。 |
-| `run <bundle> [--port N] [--detach] [--system] [--no-stamp] [--app-data DIR] [--static PREFIX=DIR]` | 以 `MAKEPAD_REMOTE=<port>`（默认 8141）运行 `card-host --bundle … --app-data … --allow-unsigned --stamp`。应用的 jail 在 `<app>/.local-state/<id>/`。 |
-| `shot <port> <out.png>` | 保存运行中窗口的 PNG（`GET /g?raw=1`）。 |
+| `run <bundle> [--port N] [--hidden] [--detach] [--system] [--no-stamp] [--app-data DIR] [--static PREFIX=DIR]` | 以 `MAKEPAD_REMOTE=<port>`（默认 8141）运行 `card-host --bundle … --app-data … --allow-unsigned --stamp`。端口已被占用时拒绝运行。`--detach` 在应用通过准入、远程桥开始监听并画出第一帧后返回。应用的 jail 在 `<app>/.local-state/<id>/`。 |
+| `shot <port> <out.png> [--settle S]` | 等应用的控件出现、且连续两帧相同（最多 `--settle`，默认 2 秒）后，保存运行中窗口的 PNG（`GET /g?raw=1`）。 |
 | `check <bundle> [hub check flags]` | 先 `hub stamp`，再 `hub check --allow-unsigned`；被拒绝时以非零状态退出。不会对已签名的 manifest 重新 stamp。 |
 | `package-help` | 输出发布检查清单。 |
 
@@ -316,7 +318,7 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 ```
 
 - `--hidden` 会设置 `MAKEPAD_HIDE_WINDOWS=1`；所有 Makepad 应用都支持它，包括 OctoSense 的 Shell。
-- 每个应用用自己的 `--port`；同一个应用包运行两份时，每份用自己的 `--app-data`。
+- 每个应用用自己的 `--port`（端口已被占用时 `run` 会拒绝运行）；同一个应用包运行两份时，每份用自己的 `--app-data`。
 - 截图由应用自身渲染，即使屏幕上什么都没有，截图也是完整的。
 - **脚本化 UI 测试：** makepad 的 [`makepad_test`](https://github.com/OctoSense-org/makepad/tree/main/libs/makepad_test)
   测试框架会以隐藏窗口启动应用、通过同一个控制桥操作它，并在测试失败时保存截图、组件树和日志；

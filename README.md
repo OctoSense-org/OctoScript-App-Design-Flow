@@ -162,7 +162,11 @@ What to expect:
 
 - `new` prints `created …` and `bundle stamped`.
 - `run --detach` returns once `card-host` logs
-  `card-host: my-notes 0.1.0 admitted — capabilities {"storage"}, …`. Script
+  `card-host: my-notes 0.1.0 admitted — capabilities {"storage"}, …`, its
+  remote bridge listens on your `--port`, and the first full frame is drawn
+  (`ready: first frame drawn`); you can click or `shot` right away. If the
+  port is already taken it exits 1 and names the app holding it, with the
+  `curl -s 127.0.0.1:<port>/quit` to stop it. Script
   errors appear in `<app>/.local-state/card-host.log` after `[SPLASH] eval:`.
 - `check` on a fresh copy of the template is **refused** on purpose:
   `[refused] listing: screenshots/01-main.png is named by the listing but is not in the bundle`.
@@ -181,8 +185,8 @@ Python 3.9+, no third-party packages. Run `tools/octo <command> -h` for flags.
 | --- | --- |
 | `doctor` | Checks Python, finds `hub` and `card-host` (rejecting GitHub's unrelated `hub` CLI), checks the template, and prints how to fix what is missing. |
 | `new <dir> [--id ID] [--name NAME] [--system]` | Copies `templates/script-app` (`bundle/`, `AGENTS.md`, `.gitignore`), sets id, name and version `0.1.0`, and stamps the bundle. Ids are `[a-z0-9.-]{1,64}`; `os.*` needs `--system`. |
-| `run <bundle> [--port N] [--detach] [--system] [--no-stamp] [--app-data DIR] [--static PREFIX=DIR]` | Runs `card-host --bundle … --app-data … --allow-unsigned --stamp` with `MAKEPAD_REMOTE=<port>` (default 8141). The app's jail is `<app>/.local-state/<id>/`. |
-| `shot <port> <out.png>` | Saves a PNG of the running window (`GET /g?raw=1`). |
+| `run <bundle> [--port N] [--hidden] [--detach] [--system] [--no-stamp] [--app-data DIR] [--static PREFIX=DIR]` | Runs `card-host --bundle … --app-data … --allow-unsigned --stamp` with `MAKEPAD_REMOTE=<port>` (default 8141). Refuses a port that is already taken. `--detach` returns once the app is admitted, its bridge listens and the first frame is drawn. The app's jail is `<app>/.local-state/<id>/`. |
+| `shot <port> <out.png> [--settle S]` | Saves a PNG of the running window (`GET /g?raw=1`) once the app's widgets exist and two frames in a row match (at most `--settle`, 2 s). |
 | `check <bundle> [hub check flags]` | `hub stamp`, then `hub check --allow-unsigned`; exits nonzero on a refusal. Does not restamp a signed manifest. |
 | `package-help` | Prints the publish checklist. |
 
@@ -361,7 +365,7 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 
 - `--hidden` sets `MAKEPAD_HIDE_WINDOWS=1`; any Makepad app honours it,
   including the OctoSense shells.
-- One `--port` per app; one `--app-data` per copy when you run the same
+- One `--port` per app (`run` refuses a port that is already taken); one `--app-data` per copy when you run the same
   bundle twice.
 - Screenshots are rendered by the app itself, so they are complete even with
   nothing on screen.

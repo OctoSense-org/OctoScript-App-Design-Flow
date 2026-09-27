@@ -66,6 +66,9 @@ patch around it here.
   makepad's `makepad_test` harness ([QUICKSTART §4a](docs/QUICKSTART.md#4a-headless-test-without-the-screen-several-apps-at-once)).
 - **Clean up what you launch.** End every `card-host` you start with
   `curl -s 127.0.0.1:<port>/quit` (or `/gq`); do not `pkill` other windows.
+  `tools/octo run` refuses a port that is still taken and prints the `/quit`
+  command for whatever holds it; it returns once the app is drawn, so you can
+  click, type or `shot` immediately.
 
 ## Definition of done (before hand-off to a human)
 
