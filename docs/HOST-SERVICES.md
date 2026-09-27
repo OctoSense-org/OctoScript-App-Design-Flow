@@ -10,6 +10,16 @@ Sources: `crates/appstore/src/services.rs` in
 and the Mail service in
 [OctoSense-System-Apps `apps/mail/host-service`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/mail/host-service).
 
+## The services that exist
+
+| Family | Service (source) | Who may call it | Shells that register it |
+| --- | --- | --- | --- |
+| `mail` | Mail ([`apps/mail/host-service`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/mail/host-service)) | Any app granted `mail` | OctoSense-Desktop, OctoSense ROM `home/` |
+| `llm` | AI providers ([`apps/ai-providers/host-service`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/ai-providers/host-service)) | Only `os.*` system apps (the AI providers app); it refuses store apps even when granted `llm` | OctoSense-Desktop, OctoSense ROM `home/` |
+
+`card-host` registers neither. A store app that needs something else needs a
+new service in the shells (below), not a workaround in the bundle.
+
 ## Calling a service from an app
 
 ```splash

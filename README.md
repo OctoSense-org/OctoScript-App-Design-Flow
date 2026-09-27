@@ -24,6 +24,7 @@ the first-party apps moved to
 
 ## Contents
 
+- [Hackathon: start here](#hackathon-start-here)
 - [Agents start here](#agents-start-here)
 - [Status](#status)
 - [Quick path](#quick-path)
@@ -37,6 +38,23 @@ the first-party apps moved to
 - [Examples](#examples)
 - [Contributing](#contributing)
 - [Related repositories](#related-repositories)
+
+## Hackathon: start here
+
+This repository covers the technical path only. For the event itself
+(rules, schedule, judging, how entries are handed in), see the
+[Agentic App Hackathon](https://create.gosim.org/agenticapp26/) page and its
+organizers; none of that is decided here. What a contestant needs from here:
+
+| | |
+| --- | --- |
+| **Start** | The [Quick path](#quick-path) below: on 2026-09-26 a new app went from an empty directory to `— PASSED` in about 10 minutes (clones 1.5 min, setup 20 s, first build 1 min on an Apple silicon Mac), most of it writing the app. Every step is a shell command, so any coding agent (or none) can run it. |
+| **Machine** | macOS on Apple silicon is the verified platform. Windows and Linux are unverified. Rust stable (rustup), Python 3.9+ (macOS's own `/usr/bin/python3` works), git, a graphical session, about 3 GB free (the clones take about 1.9 GB, 1.3 GB of it this repository, where `--depth 1` is fine; the build about 1 GB), and network access for the first build. |
+| **What an app can do** | Its own storage, HTTPS requests to hosts it declares, pictures and web pages, camera, location, and Mail through a host service: [CAPABILITIES](docs/CAPABILITIES.md). The language and every API: [SCRIPT-API](docs/SCRIPT-API.md). Complete examples: the [System Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) (News, Photos, Maps, Camera, Mail) and the [template](templates/script-app/README.md). |
+| **What it cannot do** | Hold a password, key or token; invent a capability or a host service (those are App Hub and shell changes); use `llm` or an `os.*` id (system apps only); be side-loaded onto a phone. `card-host` provides no host services, so a Mail-style app shows `no service answers` there. |
+| **Demo** | The app in `card-host` (`tools/octo run`, driven over the remote bridge) and real screenshots from `tools/octo shot`. To show it inside OctoSense, run OctoSense-Desktop against a local catalog ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)). |
+| **Submit to the App Hub** | [Publishing](#publishing): `tools/octo check` passes, `hub scan` answered, then a person signs and opens a `Submit <app id> <version>` issue on [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues). A contest entry is not automatically an App Hub submission; ask the organizers what they need. |
+| **Stuck** | [QUICKSTART § Troubleshooting](docs/QUICKSTART.md#troubleshooting), then [SCRIPT-API § Gotchas](docs/SCRIPT-API.md#gotchas). |
 
 ## Agents start here
 
@@ -86,7 +104,8 @@ revisions and the commands that set up the workspace.
 Prerequisites ([QUICKSTART §1](docs/QUICKSTART.md#1-prerequisites)):
 
 - Rust (stable, via rustup), with `~/.cargo/bin` on `PATH`.
-- Python 3.9 or newer (no packages needed for `tools/octo`).
+- Python 3.9 or newer (no packages needed for `tools/octo`; macOS's own
+  `/usr/bin/python3` 3.9 works).
 - A graphical session: `card-host` opens a real 412x892-point window, even
   when an agent drives it.
 - One workspace directory holding this repository and its siblings, because
@@ -214,11 +233,11 @@ ceilings; `hub check` prints the resulting `grants:` line.
 
 **Capabilities** form a closed list defined by the App Hub: `storage`, `net`,
 `images`, `web`, `camera`, `microphone`, `library`, `location`, `mail`,
-`prompt`, `ledger.read`, `clipboard`. Not requested means not granted, and the
-store shows the person one plain-language line per capability before install.
-Ask for the least the app needs. What each unlocks and which have no working
-path yet (`prompt`, `ledger.read`, `clipboard`):
-[docs/CAPABILITIES.md](docs/CAPABILITIES.md).
+`llm`, `prompt`, `ledger.read`, `clipboard`. Not requested means not granted,
+and the store shows the person one plain-language line per capability before
+install. Ask for the least the app needs. What each unlocks, which have no
+working path yet (`prompt`, `ledger.read`, `clipboard`) and which only a
+system app can use (`llm`): [docs/CAPABILITIES.md](docs/CAPABILITIES.md).
 
 **`listing.json`**: subtitle, description, category, keywords, icon,
 screenshots, the platforms you actually tested, age rating and the publisher
@@ -260,7 +279,7 @@ lists every check.
   [docs/HOST-SERVICES.md](docs/HOST-SERVICES.md).
 - **Store apps and system apps.** Ids under `os.` are reserved for system
   apps: the gate refuses them and no store installs one. System apps (News,
-  Photos, Maps, Camera, Mail in
+  Photos, Maps, Camera, Mail, AI providers in
   [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps))
   have the same bundle shape, ship with the shells and get higher ceilings
   (for example 64 MiB storage instead of 16 MiB). `tools/octo new --system`
@@ -417,10 +436,10 @@ For a script app, the complete examples are the first-party bundles in
 | Repository | Role |
 | --- | --- |
 | [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) | The signed catalog, the gate, `hub`, `card-host`, the store and the Card runner |
-| [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) | First-party apps (News, Photos, Maps, Camera, Mail) and the Mail host service |
+| [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) | First-party apps (News, Photos, Maps, Camera, Mail, AI providers) and their host services (`mail`, `llm`) |
 | [OctoSense-Desktop](https://github.com/OctoSense-org/OctoSense-Desktop) | The desktop shell |
 | [OctoSense-ROM](https://github.com/OctoSense-org/OctoSense-ROM) | The phone shell (`home/`), as a Home app or in the ROM image |
-| [OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard) | The AppCard assistant (`octos-app`) and the L0 card language; the Splash isolate and widgets themselves are in makepad |
+| [OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard) | The AppCard assistant (`octos-app`, opt-in in the shells with `--features app-appcard`) and the L0 card language; the Splash isolate and widgets themselves are in makepad |
 | [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad), [Octoscript](https://github.com/OctoSense-org/OctoScript), [Octoscript-Makepad](https://github.com/OctoSense-org/OctoScript-Makepad) | The framework and language the apps run on |
 
 ## License

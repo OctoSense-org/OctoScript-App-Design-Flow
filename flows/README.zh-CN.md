@@ -36,7 +36,8 @@
      脚本通过不等于视觉批准。
    - **用私钥签名。** 只有密钥持有人运行 `hub keygen` 或 `hub sign-manifest`。
      密钥永远不进入仓库、bundle、提示词或日志。
-   - **提交。** 创建 App Hub 索引条目或发布版本由人决定。
+   - **提交。** 在 OctoSense-App-Hub 开 `Submit <app id> <version>` issue
+     （[PUBLISHING §3.8](../docs/PUBLISHING.md#38-submit--human)）由人决定。
    - 各流程特有的检查点（例如购买 Sketch 或设计套件）列在该流程的步骤表中。
 4. **统一的交接。** 每个应用流程都以相同的方式结束：
 
@@ -49,7 +50,7 @@
    | 5 | 截图 | `curl --fail -sS "$APP_ENDPOINT/g?raw=1" -o bundle/screenshots/01-main.png`，然后 `curl -sS "$APP_ENDPOINT/quit"` | PNG 显示的是应用，而不是错误画面（**HUMAN** 评审） |
    | 6 | 重新盖章并检查 | `"$HUB_BIN" stamp bundle && "$HUB_BIN" check bundle --allow-unsigned` | 只剩下未签名警告 |
    | 7 | 签名（**HUMAN**） | `"$HUB_BIN" sign-manifest bundle --key "$APP_SIGNING_KEY" --key-id "$APP_PUBLISHER_ID"` | `"$HUB_BIN" check bundle --publisher-key "$APP_PUBLISHER_ID=$APP_PUBLISHER_PUBLIC_KEY"` 通过，其中 `APP_PUBLISHER_PUBLIC_KEY="$("$HUB_BIN" pubkey "$APP_SIGNING_KEY")"` |
-   | 8 | 提交（**HUMAN**） | 创建 App Hub 索引条目 | App Hub 对完全相同的字节重新运行检查门 |
+   | 8 | 提交（**HUMAN**） | 在 OctoSense-App-Hub 开 `Submit <app id> <version>` issue（[PUBLISHING §3.8](../docs/PUBLISHING.md#38-submit--human)） | 维护者对完全相同的字节重新运行检查门 |
 
    `HUB_BIN` 和 `CARD_HOST_BIN` 是从
    [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub)

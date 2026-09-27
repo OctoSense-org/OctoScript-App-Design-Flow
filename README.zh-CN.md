@@ -21,6 +21,7 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 
 ## 目录
 
+- [黑客松：从这里开始](#黑客松从这里开始)
 - [Agent 从这里开始](#agent-从这里开始)
 - [现状](#现状)
 - [快速上手](#快速上手)
@@ -34,6 +35,22 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 - [示例](#示例)
 - [参与贡献](#参与贡献)
 - [相关仓库](#相关仓库)
+
+## 黑客松：从这里开始
+
+本仓库只负责技术路径。比赛本身（规则、日程、评审、作品如何提交）请见
+[Agentic App Hackathon](https://create.gosim.org/agenticapp26/) 页面并咨询主办方，
+这些都不在这里决定。选手需要从这里获得的内容：
+
+| | |
+| --- | --- |
+| **起步** | 下面的[快速上手](#快速上手)：2026-09-26 的实测中，一个新应用从空目录到 `— PASSED` 约 10 分钟（克隆 1.5 分钟、setup 20 秒、首次构建在 Apple silicon Mac 上约 1 分钟），大部分时间用在编写应用上。每一步都是 shell 命令，任何编码 Agent（或不用 Agent）都能执行。 |
+| **机器** | 已验证的平台是 Apple silicon 上的 macOS；Windows 和 Linux 未验证。需要 Rust stable（rustup）、Python 3.9+（macOS 自带的 `/usr/bin/python3` 即可）、git、图形会话、约 3 GB 可用空间（克隆约 1.9 GB，其中本仓库 1.3 GB，可用 `--depth 1`；构建产物约 1 GB），首次构建需要联网。 |
+| **应用能做什么** | 自己的存储、访问已声明主机的 HTTPS 请求、图片与网页、相机、定位，以及通过宿主服务使用 Mail：[CAPABILITIES](docs/CAPABILITIES.md)。语言与全部 API：[SCRIPT-API](docs/SCRIPT-API.md)。完整示例：[系统应用](https://github.com/OctoSense-org/OctoSense-System-Apps)（News、Photos、Maps、Camera、Mail）和[模板](templates/script-app/README.zh-CN.md)。 |
+| **应用不能做什么** | 持有密码、密钥或 token；自创权限或宿主服务（那是 App Hub 和 Shell 的修改）；使用 `llm` 或 `os.*` id（仅限系统应用）；侧载到手机。`card-host` 不提供任何宿主服务，所以类似 Mail 的应用在其中会显示 `no service answers`。 |
+| **演示** | 在 `card-host` 中运行应用（`tools/octo run`，通过远程控制桥操作），并用 `tools/octo shot` 截取真实截图。要在 OctoSense 内展示，让 OctoSense-Desktop 读取本地目录（[PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)）。 |
+| **提交到 App Hub** | [发布](#发布)：`tools/octo check` 通过、回答 `hub scan` 的问题，然后由人签名，并在 [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues) 开一个 `Submit <app id> <version>` issue。参赛作品不等于自动提交到 App Hub；请向主办方确认他们需要什么。 |
+| **卡住了** | [QUICKSTART § Troubleshooting](docs/QUICKSTART.md#troubleshooting)，然后看 [SCRIPT-API § Gotchas](docs/SCRIPT-API.md#gotchas)。 |
 
 ## Agent 从这里开始
 
@@ -77,7 +94,8 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 前置条件（[QUICKSTART §1](docs/QUICKSTART.md#1-prerequisites)）：
 
 - Rust（stable，通过 rustup 安装），并把 `~/.cargo/bin` 加入 `PATH`。
-- Python 3.9 或更新版本（`tools/octo` 不需要额外的包）。
+- Python 3.9 或更新版本（`tools/octo` 不需要额外的包；macOS 自带的 `/usr/bin/python3`
+  3.9 即可）。
 - 图形会话：`card-host` 会打开一个真实的 412x892 点窗口，即便由 Agent 驱动也是如此。
 - 一个工作区目录，同时放置本仓库和它的兄弟仓库，因为 App Hub 的 `Cargo.toml` 把 Makepad
   和 Octoscript 指向这些路径：
@@ -197,10 +215,10 @@ my-app/                     the app's own git repository
 `hub check` 输出的 `grants:` 行就是实际授予的结果。
 
 **Capabilities（权限）** 是 App Hub 定义的封闭列表：`storage`、`net`、`images`、`web`、
-`camera`、`microphone`、`library`、`location`、`mail`、`prompt`、`ledger.read`、
+`camera`、`microphone`、`library`、`location`、`mail`、`llm`、`prompt`、`ledger.read`、
 `clipboard`。未申请即不授予；安装前商店会为每项权限向用户显示一行通俗说明。只申请应用真正
-需要的。每项权限解锁什么、哪些目前还没有可用路径（`prompt`、`ledger.read`、`clipboard`）：
-[docs/CAPABILITIES.md](docs/CAPABILITIES.md)。
+需要的。每项权限解锁什么、哪些目前还没有可用路径（`prompt`、`ledger.read`、`clipboard`）、
+哪些只有系统应用能用（`llm`）：[docs/CAPABILITIES.md](docs/CAPABILITIES.md)。
 
 **`listing.json`**：副标题、描述、类别、关键词、图标、截图、实际测试过的平台、年龄分级，
 以及发布者信息（名称、支持方式、https 隐私政策 URL）。合法取值见
@@ -233,7 +251,7 @@ my-app/                     the app's own git repository
   Shell 的修改，而不是对应用包的修改：[docs/HOST-SERVICES.md](docs/HOST-SERVICES.md)。
 - **商店应用与系统应用。** `os.` 开头的 id 保留给系统应用：准入检查会拒绝，任何商店也不会
   安装。系统应用（[OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps)
-  中的 News、Photos、Maps、Camera、Mail）应用包结构相同，随 Shell 一起发布，上限更高
+  中的 News、Photos、Maps、Camera、Mail、AI providers）应用包结构相同，随 Shell 一起发布，上限更高
   （例如存储为 64 MiB 而不是 16 MiB）。`tools/octo new --system` 和
   `tools/octo run --system` 用于开发系统应用。其余都是商店应用，只通过签名的 App Hub 目录分发。
 
@@ -364,10 +382,10 @@ OctoSense-Desktop 的 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 指向该目录�
 | 仓库 | 作用 |
 | --- | --- |
 | [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) | 签名目录、准入检查、`hub`、`card-host`、商店与 Card runner |
-| [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) | 第一方应用（News、Photos、Maps、Camera、Mail）与 Mail 宿主服务 |
+| [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) | 第一方应用（News、Photos、Maps、Camera、Mail、AI providers）及其宿主服务（`mail`、`llm`） |
 | [OctoSense-Desktop](https://github.com/OctoSense-org/OctoSense-Desktop) | 桌面 Shell |
 | [OctoSense-ROM](https://github.com/OctoSense-org/OctoSense-ROM/blob/main/README.zh-CN.md) | 手机 Shell（`home/`），可作为 Home 应用安装，也可刷入 ROM 镜像 |
-| [OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard) | AppCard 助手（`octos-app`）与 L0 卡片语言；Splash 隔离环境和组件本身在 makepad 中 |
+| [OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard) | AppCard 助手（`octos-app`，在 Shell 中需 `--features app-appcard` 才启用）与 L0 卡片语言；Splash 隔离环境和组件本身在 makepad 中 |
 | [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad)、[Octoscript](https://github.com/OctoSense-org/OctoScript)、[Octoscript-Makepad](https://github.com/OctoSense-org/OctoScript-Makepad) | 应用运行所依赖的框架与语言 |
 
 ## 许可证

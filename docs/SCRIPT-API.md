@@ -77,7 +77,7 @@ is `widget method <m> not found for uid <uid>` (`MP/widgets/src/widget_async.rs:
 | --- | --- | --- | --- |
 | `on_click: \|\| …` | Button, ButtonFlat, ButtonFlatter | none | `ButtonFlat{text: "Add" on_click: \|\| add()}` **✓ run** |
 | `on_click: \|active\| …` | CheckBox | `active` | |
-| `on_change: \|text\| …` | TextInput | current text | News search |
+| `on_change: \|text\| …` | TextInput | current text | News search. Use `text`; do not read the input itself through `ui` here ([Gotchas](#gotchas)) |
 | `on_return: \|text\| …` | TextInput | current text | Maps search |
 | `on_tap: \|x, y\| …` | GestureView | point in the view | `GestureView{on_tap: \|x, y\| remove(i) …}` **✓ run** |
 | `on_double_tap: \|x, y\|`, `on_long_press: \|x, y\|` | GestureView | | News long-press |
@@ -220,7 +220,7 @@ host.request("mail.list", {account: account.id folder: folder.id offset: 0 limit
 | --- | --- | --- |
 | JSON | `s.parse_json()`, `v.to_json()` | `parse_json` never raises. Invalid JSON does **not** reliably give nil (`"{nope".parse_json() == nil` was false **✓ run**): check the fields you need. `to_json` stops at depth 24. |
 | Feeds | `s.parse_feed(style)` | → `[{title link source published summary image}]` or nil (`mod_feed.rs`); News |
-| Strings | `len trim split(p) search(p) replace(p, r) strip_prefix strip_suffix url_encode url_decode to_f64 match_str match_all` | `search` → index or -1. `"a-b-c".replace("-", "+")` = `a+b-c`: **first occurrence only** **✓ run**; replace all with `regex("-", "g")`. |
+| Strings | `len trim split(p) search(p) replace(p, r) strip_prefix strip_suffix url_encode url_decode to_f64 match_str match_all` | `to_f64` gives NaN (not nil) for `""`, non-numbers and untrimmed text (`" 12.5 "`); NaN compares false with everything, so guard with `if v >= 0` (**✓ run**). `search` → index or -1. `"a-b-c".replace("-", "+")` = `a+b-c`: **first occurrence only** **✓ run**; replace all with `regex("-", "g")`. |
 | Regex | `regex(pattern, flags)` with `.test(s)`, `.exec(s)` | case-insensitive contains: `regex("word", "i").test(s)` (News) |
 | Missing | `to_lower to_upper contains starts_with ends_with` | use `search(p) == 0`, `search(p) >= 0`, or a regex |
 | Arrays | `push pop clear len remove(i) retain(fn)` | no `sort map filter join insert index_of slice` |
@@ -289,6 +289,20 @@ Sources: `MP/widgets/src/widget_async.rs:15, 456-465`, `MP/platform/script/src/v
   background in `card-host`, whether always visible or shown later with
   `set_visible(true)` (**✓ run**); `SolidView{draw_bg.color: …}` did. Use
   `SolidView` or `RoundedView` for filled panels.
+- **Default button look:** a `ButtonFlat` with only `text:` draws white text
+  on a light outline, invisible on a white app (**✓ run**). Style it as the
+  template does (`draw_bg +: {color: … color_hover: … color_down: …}` and
+  `draw_text +: {color: … color_hover: … color_down: …}`). To reuse a style,
+  bind it once and instantiate it: `let Chip = ButtonFlat{height: 40 draw_bg +: {…} draw_text +: {…}}`,
+  then `Chip{text: "10%" on_click: || set_tip(10)}` (**✓ run**).
+- **A `TextInput` inside its own `on_change`:** reading the input itself
+  (`ui.<its id>.text()`) from its `on_change` handler fails with
+  `widget has no uid`, and afterwards `ui.<its id>` is `not found in tree`
+  from every handler
+  ([OctoScript-Makepad#44](https://github.com/OctoSense-org/OctoScript-Makepad/issues/44), **✓ run**).
+  Other widgets (`ui.total.set_text(…)`) work there. Keep the handler's `text`
+  argument in a top-level `let` instead (`on_change: |text| set_query(text)`,
+  as News and Photos do).
 - **`ButtonFlat` holds no children:** a `Label` inside a `ButtonFlat` is not
   drawn and the button's own text disappeared (**✓ run**). Use `text:`; for a
   rich tappable row use `GestureView{on_tap: |x, y| …}` around the content.

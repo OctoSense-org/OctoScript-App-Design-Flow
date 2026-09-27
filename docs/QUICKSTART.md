@@ -2,10 +2,11 @@
 
 One path, from nothing to a bundle the App Hub gate admits. Every command was
 run on macOS (Apple silicon) unless marked **unverified**: first on 2026-09-25,
-then again end to end from fresh clones of `main` on 2026-09-26 (a new app
-built from this page and [SCRIPT-API](SCRIPT-API.md) alone, through
-`tools/octo check`, `hub scan`, a local publish and an install in
-OctoSense-Desktop).
+then again end to end from fresh clones of `main` twice on 2026-09-26 (each
+time a new app built from this page and [SCRIPT-API](SCRIPT-API.md) alone,
+through `tools/octo check`, `hub scan`, a local publish and an install in
+OctoSense-Desktop). The second run used this repository at `7a61293b`, App Hub
+`3e993d4` and OctoSense-Desktop `cae5cfb`.
 
 ```text
 1 prerequisites → 2 build hub + card-host → 3 octo new → 4 octo run → 5 edit loop
@@ -16,7 +17,10 @@ OctoSense-Desktop).
 
 - **Rust** (stable, via rustup). `cargo` lives in `~/.cargo/bin`; put it on
   `PATH` (`export PATH=$HOME/.cargo/bin:$PATH`).
-- **Python 3.9+** for `tools/octo` (no packages needed).
+- **Python 3.9+** for `tools/octo` and `setup-native.py` (no packages
+  needed; macOS's own `/usr/bin/python3` 3.9.6 ran every step).
+- **Disk:** about 3 GB (the workspace about 1.9 GB, the release build about
+  1 GB; add about 0.2 GB for OctoSense-Desktop's sources).
 - **A graphical session** for `card-host` (it opens a real window, 412x892
   points, even when an agent drives it).
 - **The App Hub and its sibling sources** in one workspace directory:
@@ -47,13 +51,13 @@ OctoSense-Desktop).
   ```
 
   Verified 2026-09-26: the two clones took about 1.5 minutes (this repository
-  is about 1 GB, mostly design evidence; `--depth 1` is fine for building
-  apps), `setup-native.py` about 30 seconds.
+  is about 1.3 GB on disk, mostly design evidence; `--depth 1` is fine for
+  building apps), `setup-native.py` 20 to 30 seconds.
 
   Use `main` of App Hub and of this repository. The runtime is Octoscript-Makepad
   `463e3da8`, which pins makepad `cd812acd` (OctoSense-org/makepad#30, merged)
   and octoscript `68f6a9df`; App Hub `main` includes OctoSense-App-Hub#4
-  (merged as `0d36f50b`). The 2026-09-26 re-run used App Hub `6c075d0`.
+  (merged as `0d36f50b`).
 
 ## 2. Build `hub` and `card-host`
 
@@ -62,8 +66,10 @@ cd <workspace>/OctoSense-App-Hub
 cargo build --release -p octosense-card-host -p octosense-app-hub
 ```
 
-Verified (`Finished release profile … in 1m 43s` with dependencies cached).
-The binaries land in `target/release/` (or `$CARGO_TARGET_DIR/release/`).
+Verified: `Finished release profile … in 46.00s` from a cold target on a
+16-core Apple silicon Mac (1m 43s on an earlier run with dependencies cached;
+a laptop takes longer). The binaries land in `target/release/` (or
+`$CARGO_TARGET_DIR/release/`).
 
 Then, from this repository:
 
@@ -152,8 +158,17 @@ Driving tips (verified 2026-09-26):
 - `?q=` also matches the `Splash` widget itself, whose text is your whole
   `main.splash`; filter the result by type (`"ty":"Label"`) or read the rects.
 - A `shot` taken the moment `run --detach` returns can catch a frame before
-  text is drawn (shapes but no labels). Wait a second, or send any input with
-  `wait=1`, before the first capture, and look at every PNG.
+  text is drawn (shapes but no labels), and the first click or `/t` sent at
+  that moment can be lost
+  ([#118](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/issues/118)).
+  Wait a second after `run --detach` before the first input or capture, and
+  look at every PNG.
+- Always `/quit` the running app before the next `run` on the same port. If
+  the port is still taken, the new `card-host` starts **without** a bridge
+  and `run --detach` still exits 0, so your `curl`s reach the old instance and
+  edits seem to do nothing
+  ([#119](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/issues/119)).
+  Check with `lsof -nP -iTCP:8141 -sTCP:LISTEN`.
 - The window is 412x892 points and `/g?raw=1` is at 2x on a Retina Mac:
   divide screenshot pixels by 2 to get click coordinates. The capture
   includes `card-host`'s 32-point caption bar at the top.
@@ -254,3 +269,23 @@ Follow [PUBLISHING](PUBLISHING.md) top to bottom: final manifest and listing,
 real screenshots, `tools/octo check`, `hub scan`, then the **human** steps
 (publisher key, signing, and the submission issue).
 `tools/octo package-help` prints the checklist.
+
+## Troubleshooting
+
+| Symptom | Cause and fix |
+| --- | --- |
+| `doctor`: `[fail] hub` or `card-host` | Build them (§2). If `hub` resolves to GitHub's `hub` CLI, `doctor` says so; set `OCTO_HUB` / `OCTO_CARD_HOST` or `CARGO_TARGET_DIR`. |
+| `cargo` not found | `export PATH=$HOME/.cargo/bin:$PATH` (rustup puts it there). |
+| Build fails on a `path = "../makepad/..."` dependency | The siblings are missing or at other revisions: run `python3 tools/setup-native.py` from this repository, then `--check`. |
+| `run --detach` prints `(remote line not seen yet)` | Another process holds the port (§4 driving tips, #119). Quit it or pick another `--port`. |
+| Clicks, typing or edits seem to have no effect | You are driving an old instance (above), the input was sent before the first frame (wait a second), or a handler failed: grep the log (§4). |
+| The window shows shapes but no text | Captured too early; wait and `shot` again. |
+| A button shows no label | `ButtonFlat`'s default text is white for a dark theme; set `draw_text +: {color: …}` ([SCRIPT-API § Gotchas](SCRIPT-API.md#gotchas)). |
+| A number shows `NaN` | `"".to_f64()` and non-numeric text give NaN, not nil; guard with `if v >= 0` ([SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings)). |
+| `widget has no uid` / `widget '<id>' not found in tree` after typing | A `TextInput`'s `on_change` handler reads that same input through `ui` ([OctoScript-Makepad#44](https://github.com/OctoSense-org/OctoScript-Makepad/issues/44)): use the handler's `text` argument instead. |
+| `variable net not found in scope` | The manifest lacks `net` or has no `network.hosts` (§6). |
+| `this app may not reach <url>` | The host is not in `network.hosts` (exact, lowercase). |
+| `no service answers "mail" on this device` | Expected in `card-host`, which has no host services; try it in a shell ([HOST-SERVICES](HOST-SERVICES.md)). |
+| `check`: `screenshots/01-main.png is named by the listing but is not in the bundle` | Capture a real screenshot (§8); never a placeholder. |
+| `check`: `[refused] digest` | The bundle changed after stamping: `tools/octo check` restamps an unsigned bundle; after signing, stamp and sign again. |
+| `card-host: refused: no signature verifier is installed` | `card-host` does not run signed bundles; test the unsigned copy. |
