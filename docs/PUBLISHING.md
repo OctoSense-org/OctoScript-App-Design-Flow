@@ -332,7 +332,16 @@ runner. Keep the mirror and its keys under `build/`, never in `bundle/`.
 To run it in a shell, point OctoSense-Desktop at the same mirror (build the
 desktop as its [README](https://github.com/OctoSense-org/OctoSense-Desktop#set-up-the-sibling-workspace)
 describes; `OCTOSENSE_HOME` and `OCTOSENSE_APP_DATA` keep this test out of
-your own `~/.octosense`):
+your own `~/.octosense`). The desktop can live in the workspace you already
+have: clone it into `octosense-ws/` and run its `python3 tools/setup-native.py`
+there; it reuses `makepad/`, `octoscript/` and `octoscript-makepad/` (same
+revisions) and adds `OctoSense-System-Apps/` (verified 2026-09-26: setup 6 s,
+`cargo build --release` 51 s sharing the App Hub build's `CARGO_TARGET_DIR`):
+
+```sh
+cd <workspace> && git clone https://github.com/OctoSense-org/OctoSense-Desktop.git
+cd OctoSense-Desktop && python3 tools/setup-native.py
+```
 
 ```sh
 cd /path/to/OctoSense-Desktop
@@ -341,11 +350,17 @@ OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" \
   MAKEPAD_REMOTE=8399 cargo run --release
 ```
 
-Verified on macOS on 2026-09-26 (Desktop `4db0214`): **App Hub** in the dock
+Verified on macOS on 2026-09-26 (Desktop `4db0214`, again at `cae5cfb` with a
+`net` app): **App Hub** in the dock (the shopping-bag icon; hovering names it)
 listed the app, **Get** then **Install** (below the permissions summary;
-scroll down) installed it, **Open** ran it in a tile
-(`card: <id> running under 1 capability(ies) …` in the log), and its
-interactions and storage worked as in `card-host`. End with
+scroll down, or `/m?k=scroll&x=…&y=…&dy=600` over the bridge) installed it,
+**Open** ran it in a tile
+(`card: <id> running under 2 capability(ies), 2 host(s) …` in the log), and
+its interactions, storage and requests to its declared host worked as in
+`card-host`. Add `MAKEPAD_HIDE_WINDOWS=1` to keep the window off screen while
+you drive it over the bridge. An `icon.svg` drawn with `<text>` showed as a
+blank tile in the store; draw icons with shapes and paths, as the template
+does. End with
 `curl -s 127.0.0.1:8399/gq`. This is a rehearsal with your own anchor; a
 stock build only trusts the App Hub's anchor.
 

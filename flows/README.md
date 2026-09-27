@@ -43,8 +43,9 @@ Supporting code, not flows:
    - **Signing with private keys.** Only the key holder runs `hub keygen` or
      `hub sign-manifest`. Keys never enter the repository, the bundle, a
      prompt or a log.
-   - **Submission.** Opening the App Hub index entry or release is a
-     person's decision.
+   - **Submission.** Opening the `Submit <app id> <version>` issue on
+     OctoSense-App-Hub ([PUBLISHING §3.8](../docs/PUBLISHING.md#38-submit--human))
+     is a person's decision.
    - Flow-specific checkpoints (for example, buying Sketch or a design kit)
      are listed in that flow's steps table.
 4. **Common hand-off.** Every app flow ends the same way:
@@ -58,7 +59,7 @@ Supporting code, not flows:
    | 5 | Screenshot | `curl --fail -sS "$APP_ENDPOINT/g?raw=1" -o bundle/screenshots/01-main.png`, then `curl -sS "$APP_ENDPOINT/quit"` | the PNG shows the app, not an error frame (**HUMAN** review) |
    | 6 | Restamp and check | `"$HUB_BIN" stamp bundle && "$HUB_BIN" check bundle --allow-unsigned` | only the unsigned warning remains |
    | 7 | Sign (**HUMAN**) | `"$HUB_BIN" sign-manifest bundle --key "$APP_SIGNING_KEY" --key-id "$APP_PUBLISHER_ID"` | `"$HUB_BIN" check bundle --publisher-key "$APP_PUBLISHER_ID=$APP_PUBLISHER_PUBLIC_KEY"` passes, where `APP_PUBLISHER_PUBLIC_KEY="$("$HUB_BIN" pubkey "$APP_SIGNING_KEY")"` |
-   | 8 | Submit (**HUMAN**) | open the App Hub index entry | the Hub re-runs the gate on the exact bytes |
+   | 8 | Submit (**HUMAN**) | open a `Submit <app id> <version>` issue on OctoSense-App-Hub ([PUBLISHING §3.8](../docs/PUBLISHING.md#38-submit--human)) | a maintainer re-runs the gate on the exact bytes |
 
    `HUB_BIN` and `CARD_HOST_BIN` are the `hub` and `card-host` binaries built
    from [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub)
