@@ -93,7 +93,7 @@ repository.
 | Piece | State |
 | --- | --- |
 | Script-app gate, scan and `os.` id check in `hub` | On App Hub `main` ([OctoSense-App-Hub#4](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/4), merged as `0d36f50b`). The docs here were verified against its pre-merge commit `79a2c4f` and re-run end to end on `main` on 2026-09-26. |
-| Contained script apps and host services in the runtime | On makepad `main` ([OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30), merged as `cd812acd`), selected by Octoscript-Makepad `463e3da8`, the release `native-runtime.lock.json` pins. Verified before the merge at `d94e5e6`. |
+| Contained script apps and host services in the runtime | On makepad `main` ([OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30), merged as `cd812acd`; now at `d0a9def5`), selected by Octoscript-Makepad `99c1e5ee`, the release `native-runtime.lock.json` pins. Verified before the merge at `d94e5e6`. |
 | System and store apps in the shells | On `main` of OctoSense-Desktop ([#36](https://github.com/OctoSense-org/OctoSense-Desktop/pull/36)) and OctoSense-ROM's Home ([#18](https://github.com/OctoSense-org/OctoSense-ROM/pull/18)). |
 | Submission route | An issue on OctoSense-App-Hub (below), as App Hub's [PUBLISHING § Submitting](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#submitting) describes. The index repository and release action it mentions do not exist yet. |
 | Installing your own bundle on a phone | Not supported. See [Running an app](#running-an-app). |
@@ -312,9 +312,10 @@ drive the real window over HTTP (all GET, window points, y down):
 | `/g?raw=1` | A PNG of the window (what `tools/octo shot` saves) |
 | `/quit` (or `/gq`) | Quits; always end with this |
 
-Rows built by `on_render` do not always appear in `/snap`; confirm them with a
-screenshot or the jail file. `card-host` registers **no** host services, so a
-Mail-style app gets `no service answers "mail" on this device` there. The
+Widgets built by `on_render` are listed in `/snap` and `/d` like any other
+(since makepad `d0a9def5`); content an app adds later, from a timer or a
+reply, appears once it is drawn, so poll `/snap?q=` for it. `card-host`
+registers **no** host services, so a Mail-style app gets `no service answers "mail" on this device` there. The
 current `card-host` also refuses signed manifests: take screenshots before
 signing.
 

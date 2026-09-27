@@ -55,9 +55,8 @@ OctoSense-Desktop). The second run used this repository at `7a61293b`, App Hub
   building apps), `setup-native.py` 20 to 30 seconds.
 
   Use `main` of App Hub and of this repository. The runtime is Octoscript-Makepad
-  `463e3da8`, which pins makepad `cd812acd` (OctoSense-org/makepad#30, merged)
-  and octoscript `68f6a9df`; App Hub `main` includes OctoSense-App-Hub#4
-  (merged as `0d36f50b`).
+  `99c1e5ee`, which pins makepad `d0a9def5` and octoscript `68f6a9df`; this
+  guide was last verified against App Hub `46d67e51`.
 
 ## 2. Build `hub` and `card-host`
 
@@ -183,10 +182,12 @@ Driving tips (verified 2026-09-26):
 Verified: `/snap` showed the title label `"t":"Test Notes"`; clicking the
 input, `/t?t=Buy%20milk`, then clicking **Add** wrote `["Buy milk"]` to
 `.local-state/my-test-notes/notes.json` and drew the row; tapping the row
-removed it; a restart reloaded stored notes. Rows built by `on_render` do not
-always appear in `/snap` or `/d`: confirm them with a screenshot or the jail
-file, and click them by coordinates from the screenshot (pixels / 2 on a
-Retina Mac).
+removed it; a restart reloaded stored notes. Widgets built by `on_render` are
+in `/snap` and `/d` like any other, so click them by the rects `/snap` gives
+(verified on makepad `d0a9def5` with the unit converter's mode buttons and
+history rows). What an app builds later, from `start_timeout` or a network
+reply, appears once it is drawn: poll `/snap?q=` for it rather than reading
+`/snap` once.
 
 ### 4a. Headless: test without the screen, several apps at once
 
@@ -258,10 +259,11 @@ fn tip_20_percent() {
 Run with `cargo test --release --test ui`; set `MAKEPAD_TEST_PARALLEL=1` to
 run the tests (one hidden app each) concurrently, or `MAKEPAD_TEST_VISIBLE=1`
 to watch them. Target widgets you declared in the page (`name := …` for
-`Selector::id`, or a button's text); widgets built inside `on_render` may be
-missing from the harness's snapshot, the same limit as `/snap` above.
-Verified with the example above (and a second app in parallel) against
-makepad `cd812acd` and App Hub `3e993d4c`.
+`Selector::id`, or a button's text); widgets built inside `on_render` are in
+the harness's snapshot too. Verified with the example above (and a second app
+in parallel) against makepad `cd812acd` and App Hub `3e993d4c`, and on makepad
+`d0a9def5` with App Hub `46d67e51` by a test that clicks the unit converter's
+`on_render` mode button `kg → lb` by its text.
 
 ## 5. The edit loop
 
@@ -364,7 +366,7 @@ real screenshots, `tools/octo check`, `hub scan`, then the **human** steps
 | `shot` says `still changing after 2s` | The app animates continuously; the PNG is the last frame. Look at it, or pass a longer `--settle`. |
 | A button shows no label | `ButtonFlat`'s default text is white for a dark theme; set `draw_text +: {color: …}` ([SCRIPT-API § Gotchas](SCRIPT-API.md#gotchas)). |
 | A number shows `NaN` | `"".to_f64()` and non-numeric text give NaN, not nil; guard with `if v >= 0` ([SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings)). |
-| `widget has no uid` / `widget '<id>' not found in tree` after typing | A `TextInput`'s `on_change` handler reads that same input through `ui` ([OctoScript-Makepad#44](https://github.com/OctoSense-org/OctoScript-Makepad/issues/44)): use the handler's `text` argument instead. |
+| `widget has no uid` / `widget '<id>' not found in tree` after typing | A runtime older than makepad `d0a9def5`, where a `TextInput`'s `on_change` could not read that same input through `ui` ([OctoScript-Makepad#44](https://github.com/OctoSense-org/OctoScript-Makepad/issues/44), fixed): run `python3 tools/setup-native.py --update` and rebuild `card-host`. |
 | `variable net not found in scope` | The manifest lacks `net` or has no `network.hosts` (§6). |
 | `this app may not reach <url>` | The host is not in `network.hosts` (exact, lowercase). |
 | `no service answers "mail" on this device` | Expected in `card-host`, which has no host services; try it in a shell ([HOST-SERVICES](HOST-SERVICES.md)). |
