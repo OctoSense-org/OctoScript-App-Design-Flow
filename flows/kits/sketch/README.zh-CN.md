@@ -4,7 +4,7 @@
 
 本流程从已获授权的 Sketch 设计套件生成**主题套件**（theme kit）。它不是应用设计流程。分步契约见 `FLOW.md`。
 
-入口：在仓库根目录运行 `tools/beauty-pipeline.sh`。对于购买的设计套件，推荐的首选渲染器是**通过 release 版 Makepad Studio 运行的 splash-makepad**。较早的 theme/LLM L0 与桌面/设备通道仍保留在 `run_kit.py` 中，供已有的套件配置使用；本文不再记录或维护它们，桌面通道的客户端现已迁至 [OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard)。
+入口：在仓库根目录运行 `tools/beauty-pipeline.sh`。对于购买的设计套件，推荐的首选渲染器是**通过 release 版 Makepad Studio 运行的 splash-makepad**。较早的 theme/LLM L0 与桌面/设备通道仍保留在 `run_kit.py` 中，供已有的套件配置使用；本文不再记录或维护它们，桌面通道的客户端现已迁至 [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard)。
 
 全新安装请使用[通用复现指南](../../core/REPRODUCE.md)和[套件配置示例](../../core/examples/sketch-kit.json)。它们用本地输入替代了个人归档路径和设备设置。默认的原生循环会记录明确的外部视觉评审；它不需要模型服务商账号，也不会调用模型 CLI。参见[评审者契约](../../core/MODEL-REVIEW.md)。
 

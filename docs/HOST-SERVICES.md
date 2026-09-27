@@ -8,14 +8,14 @@ Sources: `crates/appstore/src/services.rs` in
 [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub),
 `widgets/src/splash_host.rs` and `splash_policy.rs` in OctoSense-org/makepad,
 and the Mail service in
-[OctoSense-System-Apps `apps/mail/host-service`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/mail/host-service).
+[OctoSense `apps/mail/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/mail/host-service).
 
 ## The services that exist
 
 | Family | Service (source) | Who may call it | Shells that register it |
 | --- | --- | --- | --- |
-| `mail` | Mail ([`apps/mail/host-service`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/mail/host-service)) | Any app granted `mail` | OctoSense-Desktop, OctoSense ROM `home/` |
-| `llm` | AI providers ([`apps/ai-providers/host-service`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/ai-providers/host-service)) | Only `os.*` system apps (the AI providers app); it refuses store apps even when granted `llm` | OctoSense-Desktop, OctoSense ROM `home/` |
+| `mail` | Mail ([`apps/mail/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/mail/host-service)) | Any app granted `mail` | OctoSense desktop (`desktop/`) and Home (`phone/`) |
+| `llm` | AI providers ([`apps/ai-providers/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/ai-providers/host-service)) | Only `os.*` system apps (the AI providers app); it refuses store apps even when granted `llm` | OctoSense desktop (`desktop/`) and Home (`phone/`) |
 
 `card-host` registers neither. A store app that needs something else needs a
 new service in the shells (below), not a workaround in the bundle.
@@ -47,7 +47,7 @@ host.request("mail.accounts", {}, fn(r){
 - `card-host` registers **no** services (it has no dependency on Mail). A
   Mail-style app run in `card-host` gets that "no service answers" error
   (verified: `no service answers "mail" on this device`); the service is
-  linked by the shell (OctoSense ROM `home/`).
+  linked by the shell (OctoSense `desktop/` and `phone/`).
 
 ## The sheet
 

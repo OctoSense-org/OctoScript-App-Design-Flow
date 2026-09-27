@@ -73,7 +73,7 @@ Context changes must not interrupt an ongoing interaction or erase state.
 ## Verified current state — 2026-09-08
 
 The native client this table inspected (`app/`, `a2app-l0/`) has since moved to
-[OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard).
+[OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard).
 Links to it point at the last revision of this repository that contained it.
 
 | Area | Present implementation | Exposure gap |

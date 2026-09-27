@@ -178,7 +178,7 @@ def cmd_new(args):
     if not ID_RE.match(app_id) or app_id.startswith(".") or ".." in app_id:
         die(f"id {app_id!r} must be 1-64 of [a-z0-9.-], not start with '.', and not contain '..'")
     if app_id.startswith("os.") and not args.system:
-        die("ids under 'os.' are reserved for system apps (OctoSense-System-Apps); no store installs one. "
+        die("ids under 'os.' are reserved for system apps (OctoSense apps/); no store installs one. "
             "Pass --system only if you are developing a system app.")
     name = args.name or "My Notes"
 

@@ -5,7 +5,7 @@ Assessed: 2026-09-13
 > Dated record. The source paths below (`pipeline/...`, `app/`, `a2app-l0/`,
 > `~/home/octos`) name the working copies inspected on that date; they are not
 > files in this repository. The native client now lives in
-> [OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard).
+> [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard).
 
 This maps the [design requirements](app-card-design-requirements.md) to the local source. It is an architecture assessment and proposed implementation plan. No runtime changes, live provider calls, or new native/WASM tests were performed for this assessment.
 

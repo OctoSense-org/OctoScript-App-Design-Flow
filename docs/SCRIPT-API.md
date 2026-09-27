@@ -7,7 +7,7 @@ the runtime source (OctoSense-org/makepad `sandbox/contained-tier-gates` at
 were checked at `cd812acd`, the pinned runtime is now `d0a9def5`) and, where
 marked **✓ run**, executed in
 `card-host` (App Hub `79a2c4f`) on macOS. Idioms are taken from the System
-Apps (`OctoSense-System-Apps/apps/<name>/bundle/main.splash`), which are
+Apps (OctoSense `apps/<name>/bundle/main.splash`), which are
 working code.
 
 If something is not on this page, check the runtime source before using it.

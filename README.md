@@ -19,8 +19,10 @@ Who it is for: hackathon contestants and other developers building an
 OctoSense app, and the coding agents they work with.
 
 Formerly *Octoscript-AppCard*. The AppCard assistant runtime and
-the first-party apps moved to
-[OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps).
+the first-party apps moved to OctoSense-System-Apps and, since 2026-09-27,
+live in [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps). The archived
+[OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) keeps a read-only copy at the old paths until
+2026-10-12.
 
 ## Contents
 
@@ -51,9 +53,9 @@ organizers; none of that is decided here. What a contestant needs from here:
 | --- | --- |
 | **Start** | The [Quick path](#quick-path) below: on 2026-09-26 a new app went from an empty directory to `— PASSED` in about 10 minutes (clones 1.5 min, setup 20 s, first build 1 min on an Apple silicon Mac), most of it writing the app. Every step is a shell command, so any coding agent (or none) can run it. |
 | **Machine** | macOS on Apple silicon is the verified platform. Windows and Linux are unverified. Rust stable (rustup), Python 3.9+ (macOS's own `/usr/bin/python3` works), git, a graphical session, about 3 GB free (the clones take about 1.9 GB, 1.3 GB of it this repository, where `--depth 1` is fine; the build about 1 GB), and network access for the first build. |
-| **What an app can do** | Its own storage, HTTPS requests to hosts it declares, pictures and web pages, camera, location, and Mail through a host service: [CAPABILITIES](docs/CAPABILITIES.md). The language and every API: [SCRIPT-API](docs/SCRIPT-API.md). Complete examples: the [System Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) (News, Photos, Maps, Camera, Mail) and the [template](templates/script-app/README.md). |
+| **What an app can do** | Its own storage, HTTPS requests to hosts it declares, pictures and web pages, camera, location, and Mail through a host service: [CAPABILITIES](docs/CAPABILITIES.md). The language and every API: [SCRIPT-API](docs/SCRIPT-API.md). Complete examples: the [System Apps](https://github.com/OctoSense-org/OctoSense/tree/main/apps) (News, Photos, Maps, Camera, Mail) and the [template](templates/script-app/README.md). |
 | **What it cannot do** | Hold a password, key or token; invent a capability or a host service (those are App Hub and shell changes); use `llm` or an `os.*` id (system apps only); be side-loaded onto a phone. `card-host` provides no host services, so a Mail-style app shows `no service answers` there. |
-| **Demo** | The app in `card-host` (`tools/octo run`, driven over the remote bridge) and real screenshots from `tools/octo shot`. To show it inside OctoSense, run OctoSense-Desktop against a local catalog ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)). |
+| **Demo** | The app in `card-host` (`tools/octo run`, driven over the remote bridge) and real screenshots from `tools/octo shot`. To show it inside OctoSense, run the OctoSense desktop shell against a local catalog ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)). |
 | **Submit to the App Hub** | [Publishing](#publishing): `tools/octo check` passes, `hub scan` answered, then a person signs and opens a `Submit <app id> <version>` issue on [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues). A contest entry is not automatically an App Hub submission; ask the organizers what they need. |
 | **Test headless** | `tools/octo run … --hidden`: the window never appears, so an agent can test your app (and several apps at once, one `--port` each) without taking over your screen. [Headless testing](#headless-testing-many-apps-no-screen). |
 | **Stuck** | [QUICKSTART § Troubleshooting](docs/QUICKSTART.md#troubleshooting), then [SCRIPT-API § Gotchas](docs/SCRIPT-API.md#gotchas). |
@@ -94,7 +96,7 @@ repository.
 | --- | --- |
 | Script-app gate, scan and `os.` id check in `hub` | On App Hub `main` ([OctoSense-App-Hub#4](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/4), merged as `0d36f50b`). The docs here were verified against its pre-merge commit `79a2c4f` and re-run end to end on `main` on 2026-09-26. |
 | Contained script apps and host services in the runtime | On makepad `main` ([OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30), merged as `cd812acd`; now at `d0a9def5`), selected by Octoscript-Makepad `99c1e5ee`, the release `native-runtime.lock.json` pins. Verified before the merge at `d94e5e6`. |
-| System and store apps in the shells | On `main` of OctoSense-Desktop ([#36](https://github.com/OctoSense-org/OctoSense-Desktop/pull/36)) and OctoSense-ROM's Home ([#18](https://github.com/OctoSense-org/OctoSense-ROM/pull/18)). |
+| System and store apps in the shells | On `main` of [OctoSense](https://github.com/OctoSense-org/OctoSense), in the desktop shell and the phone's Home (landed as OctoSense-Desktop [#36](https://github.com/OctoSense-org/OctoSense/pull/36) and OctoSense-ROM #18, before the repositories merged). |
 | Submission route | An issue on OctoSense-App-Hub (below), as App Hub's [PUBLISHING § Submitting](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#submitting) describes. The index repository and release action it mentions do not exist yet. |
 | Installing your own bundle on a phone | Not supported. See [Running an app](#running-an-app). |
 
@@ -288,7 +290,7 @@ lists every check.
 - **Store apps and system apps.** Ids under `os.` are reserved for system
   apps: the gate refuses them and no store installs one. System apps (News,
   Photos, Maps, Camera, Mail, AI providers in
-  [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps))
+  [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps))
   have the same bundle shape, ship with the shells and get higher ceilings
   (for example 64 MiB storage instead of 16 MiB). `tools/octo new --system`
   and `tools/octo run --system` exist for developing them. Everything else is
@@ -319,13 +321,13 @@ registers **no** host services, so a Mail-style app gets `no service answers "ma
 current `card-host` also refuses signed manifests: take screenshots before
 signing.
 
-**In the shells.** OctoSense-Desktop and OctoSense ROM's Home run apps with
+**In the shells.** The OctoSense desktop shell and the phone's Home run apps with
 App Hub's Card runner (the `card` module in App Hub's `crates/appstore`), not
 with `card-host` itself; it applies the same manifest policy. System apps are
-packed into the shell build from OctoSense-System-Apps; store apps are
+packed into the shell build from OctoSense's `apps/`; store apps are
 installed from the App Hub store out of the signed catalog. To try your own
 app in the desktop shell before it is published, publish it into a local
-catalog with a throwaway anchor and point OctoSense-Desktop's
+catalog with a throwaway anchor and point the desktop shell's
 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` at it; its App Hub installs and
 opens the app (verified on macOS,
 [PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
@@ -340,7 +342,7 @@ opens the app (verified on macOS,
 - The closest verified path is on the desktop: publish into a local catalog
   with a throwaway anchor and install it with App Hub's standalone `appstore`
   ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
-  The standalone store does not open apps; OctoSense-Desktop pointed at the
+  The standalone store does not open apps; the desktop shell pointed at the
   same catalog installs and opens it.
 - `card-host`'s remote bridge is compiled out on Android; phone testing goes
   through the shell's own instrument, not `tools/octo`.
@@ -456,7 +458,7 @@ source, reviewed card scenes, service code and tests.
 | [Calendar](examples/calendar/README.md) | Native cards / browser preview + sync server | One calendar on two devices, with a SQLite-backed sync server |
 
 For a script app, the complete examples are the first-party bundles in
-[OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps)
+[OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
 (`apps/<name>/bundle/`), plus [templates/script-app](templates/script-app/README.md).
 
 ## Contributing
@@ -478,10 +480,9 @@ For a script app, the complete examples are the first-party bundles in
 | Repository | Role |
 | --- | --- |
 | [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) | The signed catalog, the gate, `hub`, `card-host`, the store and the Card runner |
-| [OctoSense-System-Apps](https://github.com/OctoSense-org/OctoSense-System-Apps) | First-party apps (News, Photos, Maps, Camera, Mail, AI providers) and their host services (`mail`, `llm`) |
-| [OctoSense-Desktop](https://github.com/OctoSense-org/OctoSense-Desktop) | The desktop shell |
-| [OctoSense-ROM](https://github.com/OctoSense-org/OctoSense-ROM) | The phone shell (`home/`), as a Home app or in the ROM image |
-| [OctoSense-System-Apps `apps/appcard`](https://github.com/OctoSense-org/OctoSense-System-Apps/tree/main/apps/appcard) | The AppCard assistant (`octos-app`, opt-in in the shells with `--features app-appcard`) and the L0 card language; the Splash isolate and widgets themselves are in makepad |
+| [OctoSense](https://github.com/OctoSense-org/OctoSense) | The shell and what ships in it: the desktop shell (`desktop/`), the phone shell Home (`phone/`, as a Home app or in the ROM image built by `rom/`), and the first-party apps with their host services (`apps/`). Formerly OctoSense-Desktop, OctoSense-ROM and OctoSense-System-Apps. |
+| [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) | First-party apps (News, Photos, Maps, Camera, Mail, AI providers) and their host services (`mail`, `llm`) |
+| [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard) | The AppCard assistant (`octos-app`, opt-in in the shells with `--features app-appcard`) and the L0 card language; the Splash isolate and widgets themselves are in makepad |
 | [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad), [Octoscript](https://github.com/OctoSense-org/OctoScript), [Octoscript-Makepad](https://github.com/OctoSense-org/OctoScript-Makepad) | The framework and language the apps run on |
 
 ## License
