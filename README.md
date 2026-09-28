@@ -33,6 +33,7 @@ live in [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main
 - [Design flows](#design-flows)
 - [What an app is](#what-an-app-is)
 - [Containment rules](#containment-rules)
+- [AI in your app](#ai-in-your-app)
 - [Running an app](#running-an-app)
 - [Headless testing: many apps, no screen](#headless-testing-many-apps-no-screen)
 - [Publishing](#publishing)
@@ -54,6 +55,7 @@ organizers; none of that is decided here. What a contestant needs from here:
 | **Machine** | macOS on Apple silicon is the verified platform. Windows and Linux are unverified. Rust stable (rustup), Python 3.9+ (macOS's own `/usr/bin/python3` works), git, a graphical session, about 3 GB free (the clones take about 1.9 GB, 1.3 GB of it this repository, where `--depth 1` is fine; the build about 1 GB), and network access for the first build. |
 | **What an app can do** | Its own storage, HTTPS requests to hosts it declares, pictures and web pages, camera, location, and Mail through a host service: [CAPABILITIES](docs/CAPABILITIES.md). The language and every API: [SCRIPT-API](docs/SCRIPT-API.md). Complete examples: the [System Apps](https://github.com/OctoSense-org/OctoSense/tree/main/apps) (News, Photos, Maps, Camera, Mail) and the [template](templates/script-app/README.md). |
 | **What it cannot do** | Hold a password, key or token; invent a capability or a host service (those are App Hub and shell changes); use `llm` or an `os.*` id (system apps only); be side-loaded onto a phone. `card-host` provides no host services, so a Mail-style app shows `no service answers` there. |
+| **AI in the app** | Building needs none, with any coding agent or none. On the device, a store app cannot ask the assistant or a model yet: the `octos.*` capabilities pass the gate, but no OctoSense shell serves them to apps (`no service answers "octos"`). What works, what is planned, and a verified example that handles "unavailable": [docs/AI-SERVICES.md](docs/AI-SERVICES.md). |
 | **Demo** | The app in `card-host` (`tools/octo run`, driven over the remote bridge) and real screenshots from `tools/octo shot`. To show it inside OctoSense, run the OctoSense desktop shell against a local catalog ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)). |
 | **Submit to the App Hub** | [Publishing](#publishing): `tools/octo check` passes, `hub scan` answered, then a person signs and opens a `Submit <app id> <version>` issue on [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues). A contest entry is not automatically an App Hub submission; ask the organizers what they need. |
 | **Test headless** | `tools/octo run … --hidden`: the window never appears, so an agent can test your app (and several apps at once, one `--port` each) without taking over your screen. [Headless testing](#headless-testing-many-apps-no-screen). |
@@ -242,11 +244,15 @@ ceilings; `hub check` prints the resulting `grants:` line.
 
 **Capabilities** form a closed list defined by the App Hub: `storage`, `net`,
 `images`, `web`, `camera`, `microphone`, `library`, `location`, `mail`,
-`llm`, `prompt`, `ledger.read`, `clipboard`. Not requested means not granted,
+`llm`, `news`, `glance`, `model`, `prompt`, `ledger.read`, `clipboard`, plus 49 exact
+host-service names (four `octos.*` for the device's assistant, 45 `matrix.*`
+for Rinx). Not requested means not granted,
 and the store shows the person one plain-language line per capability before
 install. Ask for the least the app needs. What each unlocks, which have no
 working path yet (`prompt`, `ledger.read`, `clipboard`) and which only a
 system app can use (`llm`): [docs/CAPABILITIES.md](docs/CAPABILITIES.md).
+What the assistant capabilities do today (nothing yet, in OctoSense):
+[docs/AI-SERVICES.md](docs/AI-SERVICES.md).
 
 **`listing.json`**: subtitle, description, category, keywords, icon,
 screenshots, the platforms you actually tested, age rating and the publisher
@@ -294,6 +300,20 @@ lists every check.
   (for example 64 MiB storage instead of 16 MiB). `tools/octo new --system`
   and `tools/octo run --system` exist for developing them. Everything else is
   a store app, distributed only through the signed App Hub catalog.
+
+## AI in your app
+
+OctoSense runs one octos agent kernel per shell, configured by the person in
+the AI providers system app; keys never reach an app. **A contained app
+cannot use it yet**: the gate accepts the four `octos.*` capabilities, but no
+OctoSense shell serves them to apps, and `card-host` serves no host services.
+`llm` is provider management for system apps only, and the one-shot `model`
+capability (App Hub #24) has no service in any shell yet. An app's own agent
+(`tools.json`, `AGENT.md`, skills, triggers) is admitted by App Hub `main` and
+planned in OctoSense's ADR 0002, but nothing runs it yet. Build apps that are
+complete without AI, and read [docs/AI-SERVICES.md](docs/AI-SERVICES.md)
+before adding an AI feature: the exact names, a verified call that handles
+"unavailable", what the person sees, the errors, and the planned route.
 
 ## Running an app
 
@@ -432,6 +452,7 @@ Limits, stated plainly:
 | [docs/SCRIPT-API.md](docs/SCRIPT-API.md) | The Splash language and every API a contained app may call |
 | [docs/CAPABILITIES.md](docs/CAPABILITIES.md) | Each capability: what it unlocks, what the person sees, the rules |
 | [docs/HOST-SERVICES.md](docs/HOST-SERVICES.md) | `host.request`, sheets, "secrets are the host's", adding a service |
+| [docs/AI-SERVICES.md](docs/AI-SERVICES.md) ([简体中文](docs/AI-SERVICES.zh-CN.md)) | OctoSense's assistant (octos): what an app can use today, a verified example, what is planned |
 | [docs/PUBLISHING.md](docs/PUBLISHING.md) | Publishing to the App Hub, with verified outputs and the checklist |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | One meaning per term |
 | [docs/NATIVE-WORKSPACE.md](docs/NATIVE-WORKSPACE.md), [docs/l0/](docs/l0/) | Sibling-source setup for the native runtime; L0 card examples |
