@@ -57,7 +57,7 @@ the desktop shell). The second run used this repository at `7a61293b`, App Hub
   building apps), `setup-native.py` 20 to 30 seconds.
 
   Use `main` of App Hub and of this repository. The runtime is Octoscript-Makepad
-  `bbb9f69f`, which pins makepad `4531e695` and octoscript `68f6a9df`; this
+  `ff9a65b0`, which pins makepad `7c2e458b` and octoscript `68f6a9df`; this
   guide was last verified against App Hub `46d67e51`.
 
 ## 2. Build `hub` and `card-host`
