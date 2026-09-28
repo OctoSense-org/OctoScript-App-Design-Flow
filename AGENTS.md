@@ -11,7 +11,7 @@ then the one flow you are following.
 | It is | It is not (go there instead) |
 | --- | --- |
 | Flows (`flows/*/FLOW.md`): step-by-step procedures from an input to a checked bundle | The runtime: [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad) (Splash isolate, widgets) and [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) (the Card runner); the AppCard assistant and the L0 card language: [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard) |
-| Developer docs (`docs/`): quickstart, script API, capabilities, host services, publishing, glossary | System apps (News, Photos, Maps, Camera, Mail, AI providers): [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) |
+| Developer docs (`docs/`): quickstart, script API, capabilities, host services, AI services, publishing, glossary | System apps (News, Photos, Maps, Camera, Mail, AI providers): [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) |
 | `tools/octo`: doctor, new, run, shot, check around the real `card-host` and `hub` | The store, gate, catalog, `hub` and `card-host` source: [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) |
 | Templates (`templates/script-app/`) and worked examples (`examples/`) | The shells that run apps: [OctoSense](https://github.com/OctoSense-org/OctoSense) `phone/` (Home, the phone launcher) and `desktop/` (the desktop shell) |
 
@@ -48,6 +48,12 @@ patch around it here.
 - **Declare every host.** Every `https://` host in `main.splash` is in
   `network.hosts` (with `net`), unless the app legitimately needs `images` or
   `web`. Never `http://`.
+- **No AI feature the device cannot serve.** A contained app cannot ask
+  OctoSense's assistant or a model yet: the `octos.*` capabilities pass the
+  gate, but every call answers `no service answers "octos" on this device`,
+  and `llm` is for system apps only. Never put a model key in an app. Read
+  [docs/AI-SERVICES.md](docs/AI-SERVICES.md) before adding one, and report
+  such a feature as not verified on a device.
 - **Only needed capabilities.** Each capability maps to something a screen
   does ([docs/CAPABILITIES.md](docs/CAPABILITIES.md)). Remove what is unused.
 - **No dummy screenshots.** Screenshots are captures of the real app in a real
