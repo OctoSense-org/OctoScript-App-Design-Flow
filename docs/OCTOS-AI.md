@@ -23,7 +23,7 @@ here.
 | --- | --- | --- |
 | Apps reach AI only through host services and the app-peer broker, never the kernel | **available** (rule) | OctoSense [`AGENTS.md`](https://github.com/OctoSense-org/OctoSense/blob/main/AGENTS.md) rules 3 and 4, [`crates/app-peers`](https://github.com/OctoSense-org/OctoSense/tree/main/crates/app-peers) |
 | `llm` host service: the person's AI providers, masked keys, host sheets | **available**, system apps (`os.*`) only | OctoSense [`apps/ai-providers`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/ai-providers) |
-| A direct model call (completion or chat) from a script app | **not available**, and no pull request adds one | [§2](#2-direct-model-calls-the-llm-capability) |
+| `model.complete`: a direct, one-shot, schema-checked model call from a script app (not a chat; no tools) | **coming**: the service is in [OctoSense#95](https://github.com/OctoSense-org/OctoSense/pull/95) (draft); the `model` capability is in App Hub ([#24](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/24)) but not yet in the shells' App Hub pin ([OctoSense#70](https://github.com/OctoSense-org/OctoSense/pull/70)) | [§2](#2-direct-model-calls-model-coming-and-llm) |
 | `octos.*` assistant services (open a conversation, start a turn) | **available** to native modules only (the shipped policy grants Rinx); no path for script apps | OctoSense `crates/app-peers`, `crates/ai-host/src/lib.rs` `Policy::shipped` |
 | An app's own agent declared in its bundle: `agent` (model needs, triggers, skills), `tools.json`, `AGENT.md`, `skills/` | **available** in the App Hub gate ([OctoSense-App-Hub#18](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/18)); **coming** in the shells (they pin an App Hub before #18; [OctoSense#86](https://github.com/OctoSense-org/OctoSense/pull/86) moves the pin); nothing runs the agent yet (ADR 0002 M2, M3) | App Hub `crates/app-policy/src/{manifest,agent,policy}.rs` |
 | App tools registered with the app's peer (`peer/tools/register`, `peer/tool/call`) | **coming**: [octos-org/octos#2567](https://github.com/octos-org/octos/pull/2567), draft, changes requested | octos UPCR-2026-035 |
@@ -42,7 +42,7 @@ that do are the open pull requests above.
 ## Contents
 
 1. [The model: apps never talk to the kernel](#1-the-model-apps-never-talk-to-the-kernel)
-2. [Direct model calls: the `llm` capability](#2-direct-model-calls-the-llm-capability)
+2. [Direct model calls: `model` (coming) and `llm`](#2-direct-model-calls-model-coming-and-llm)
 3. [An app's own agent](#3-an-apps-own-agent)
 4. [App tools for the agent: host-registered peer tools](#4-app-tools-for-the-agent-host-registered-peer-tools)
 5. [The system toolbox: research and workflow templates](#5-the-system-toolbox-research-and-workflow-templates)
@@ -101,12 +101,71 @@ Sources: OctoSense [`docs/adr/0002-event-driven-app-agents.md`](https://github.c
 [`docs/adr/home/0004-system-apps-are-contained-script-apps.md`](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/home/0004-system-apps-are-contained-script-apps.md),
 [`crates/app-peers/README.md`](https://github.com/OctoSense-org/OctoSense/blob/main/crates/app-peers/README.md).
 
-## 2. Direct model calls: the `llm` capability
+## 2. Direct model calls: `model` (coming) and `llm`
 
-**There is no host method that runs a model for an app.** No `llm.complete`,
-`llm.chat` or similar exists in the `llm` service, and no open pull request
-adds one. A script app gets model output only through an agent (sections 3–5),
-which is **coming**.
+**Today there is no host method that runs a model for an app.** A script app
+gets model output only through an agent (sections 3–5), which is **coming**.
+
+### `model.complete` (**coming**)
+
+OctoSense ADR 0002 §14 (added in [OctoSense#95](https://github.com/OctoSense-org/OctoSense/pull/95),
+draft) adds a narrow, direct, **one-shot** call for bounded jobs: title this
+note, classify this item, pull these fields out of this text. An app's agent
+stays the main path for anything with tools, research, memory or approvals.
+The call needs the `model` capability, which App Hub admits
+([OctoSense-App-Hub#24](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/24),
+merged). The shells get it only when their App Hub pin moves
+([OctoSense#70](https://github.com/OctoSense-org/OctoSense/pull/70)). Until
+then no shell grants it, and the service itself is not merged. The shape
+below is #95's and may change: do not ship a submission that depends on it
+yet.
+
+```splash
+host.request("model.complete", {
+    task: "Give the note a short title and up to three tags."
+    input: {note: note_text}
+    schema: {type: "object" required: ["title" "tags"] additionalProperties: false
+             properties: {title: {type: "string" maxLength: 40}
+                          tags: {type: "array" maxItems: 3 items: {type: "string"}}}}
+    class: "fast"
+}, fn(r){
+    if !r.is_ok { status(r.error) return }   // "budget: …", "no_provider: …"
+    show_title(r.data.output.title)
+})
+```
+
+This call was not run for this guide, because no shell serves `model` yet.
+The literal syntax follows the Photos bundle (space-separated lists and maps);
+the fields come from #95's service and its tests (a fake provider, and a live
+DeepSeek check).
+
+- **You name a class, not a model:** `"fast"` (default) or `"strong"`. The
+  host picks from the person's providers in their own order and never tells
+  the app the provider, the model id or the key. `r.data.meta.class` says
+  which class answered.
+- **One shot:** no tools, memory, browsing or history. The model sees the
+  host's instructions, your `task`, your `schema` and your `input`, nothing
+  else.
+- **`schema` is required** (a bounded JSON Schema subset, at most 8 KiB).
+  `r.data.output` always validates against it. A bad reply is retried once,
+  then comes back as an error.
+- **No URLs by default.** A reply with `http://`, `https://` or `www.` in any
+  string is refused, because output ends up in card data. Pass
+  `allow_urls: true` only if you extract links.
+- **A daily budget per app:** by default 6 calls a minute, and 100 calls and
+  100,000 tokens a day. `r.data.meta.budget` and `model.budget` show what is
+  left.
+- **Errors are `"<code>: <sentence>"`**, with `code` one of `capability`,
+  `no_provider`, `rate`, `budget`, `bad_request`, `invalid_output`,
+  `too_large` or `provider`. Show the sentence, and keep the app usable
+  without the model.
+- **Privacy:** the store tells the person: "Sends what you give it to the AI
+  provider you configured, for one-off answers within a daily budget; it
+  never sees your API keys."
+
+### `llm` (**available**, system apps only)
+
+No `llm.complete`, `llm.chat` or similar exists in the `llm` service.
 
 What `llm` is (**available**, system apps only): the AI providers system app's
 service for the person's provider list. Source:
@@ -618,6 +677,7 @@ needs; each line below is what the store shows the person before install.
 | --- | --- | --- | --- |
 | `glance` | `glance.publish`, `withdraw`, `list` for the app's own cards | "Show cards on your glance screen" | App Hub: **available**; shells: **coming** (#86) |
 | `news` | the `news` host service (collected stories) | "Read news the device collects from its feeds and topics" | App Hub: **available**; the service answers `os.*` only |
+| `model` | `model.complete`: one-shot, schema-checked calls to the person's AI provider, within a daily budget | "Send what you give it to the AI provider you configured, within a daily budget" | App Hub: **available** (#24); shells: **coming** (OctoSense#70, #95) |
 | `llm` | managing the person's AI providers | "Manage the assistant's AI providers, whose keys stay with the device" | `os.*` only; do not request it in a store app |
 | `octos.session.open`, `octos.session.history`, `octos.turn.start`, `octos.turn.interrupt` | the app's own conversation and turns with the assistant, each name its own consent | "Open its own conversation with the assistant", …, "Ask the assistant to work for it, using the device's AI settings" | admitted by the gate; served only to native modules the host policy grants (Rinx); no script-app path |
 | `research`, `crawl` | system toolbox tools, with a scope | – | **coming**; the gate refuses them today |
@@ -706,7 +766,7 @@ cargo build --release -p octosense && desktop/scripts/glance_remote.sh
   `sys.digest` once OctoScript#40 lands.
 - Build the app's own screens as today; do not depend on a model at run time.
 
-What an app author cannot do yet: call a model, reach the app's peer from a
+What an app author cannot do yet: call a model (`model.complete` is **coming**, §2), reach the app's peer from a
 script app, publish to the glance screen from a contained app, request
 `research` or `crawl`, or have a trigger fire.
 
