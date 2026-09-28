@@ -388,7 +388,7 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 | [docs/SCRIPT-API.md](docs/SCRIPT-API.md) | Splash 语言及隔离应用可调用的全部 API |
 | [docs/CAPABILITIES.md](docs/CAPABILITIES.md) | 每项权限：解锁什么、用户看到什么、规则 |
 | [docs/HOST-SERVICES.md](docs/HOST-SERVICES.md) | `host.request`、面板、“密钥归宿主所有”、新增宿主服务 |
-| [docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)（[English](docs/AI-SERVICES.md)） | OctoSense 的助手（octos）：应用目前能用什么、经过验证的示例、规划中的内容 |
+| [docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)（[English](docs/AI-SERVICES.md)） | OctoSense 的助手（octos）：应用目前能用什么、经过验证的示例、规划中的内容（应用自己的 Agent、它的工具、系统工具箱、glance 卡片、`sys.digest`），附带日期的状态表 |
 | [docs/PUBLISHING.md](docs/PUBLISHING.md) | 发布到 App Hub，附经过验证的输出和检查清单 |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | 每个术语只有一个含义 |
 | [docs/NATIVE-WORKSPACE.md](docs/NATIVE-WORKSPACE.md)、[docs/l0/](docs/l0/) | 原生运行时的兄弟仓库配置；L0 卡片示例 |
