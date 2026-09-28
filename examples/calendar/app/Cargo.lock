@@ -1008,7 +1008,7 @@ dependencies = [
 [[package]]
 name = "octosense-app-host"
 version = "0.1.0"
-source = "git+https://github.com/OctoSense-org/octosense-app-hub.git?rev=36cfb4e963afccc9c733f18918423988306d2978#36cfb4e963afccc9c733f18918423988306d2978"
+source = "git+https://github.com/OctoSense-org/OctoSense-App-Hub.git?rev=64bd6c01218010805116ae203edfb1f4b9e28fe6#64bd6c01218010805116ae203edfb1f4b9e28fe6"
 dependencies = [
  "makepad-app-module",
  "makepad-widgets",
