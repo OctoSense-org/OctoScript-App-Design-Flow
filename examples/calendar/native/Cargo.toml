@@ -7,11 +7,11 @@ publish = false
 description = "The Calendar app as an in-process OctoSense AppModule: native Makepad L0 scenes built at runtime from the calendar state, synced through the calendar service"
 
 [dependencies]
-makepad-widgets = { git = "https://github.com/OctoSense-org/makepad.git", rev = "975c5630e01b0f3f3ae16cafd2e0fce3c9a5f7d9" }
-makepad-app-module = { git = "https://github.com/OctoSense-org/makepad.git", rev = "975c5630e01b0f3f3ae16cafd2e0fce3c9a5f7d9" }
-octoscript-makepad = { git = "https://github.com/OctoSense-org/Octoscript-Makepad.git", rev = "65d30a091eee284ed45afe5b8502835563fb56f7" }
-octoscript-widgets = { git = "https://github.com/OctoSense-org/Octoscript-Makepad.git", rev = "65d30a091eee284ed45afe5b8502835563fb56f7" }
-octoscript-node = { git = "https://github.com/OctoSense-org/Octoscript-Makepad.git", rev = "65d30a091eee284ed45afe5b8502835563fb56f7" }
+makepad-widgets = { git = "https://github.com/OctoSense-org/makepad.git", rev = "b0cbc9bcfb204ade5d8ceecb66e0a58e972c70f1" }
+makepad-app-module = { git = "https://github.com/OctoSense-org/makepad.git", rev = "b0cbc9bcfb204ade5d8ceecb66e0a58e972c70f1" }
+octoscript-makepad = { git = "https://github.com/OctoSense-org/Octoscript-Makepad.git", rev = "6351524b77a49a382c96373d7bfe6a105f142dbc" }
+octoscript-widgets = { git = "https://github.com/OctoSense-org/Octoscript-Makepad.git", rev = "6351524b77a49a382c96373d7bfe6a105f142dbc" }
+octoscript-node = { git = "https://github.com/OctoSense-org/Octoscript-Makepad.git", rev = "6351524b77a49a382c96373d7bfe6a105f142dbc" }
 octoscript-ui-l0 = { git = "https://github.com/OctoSense-org/Octoscript.git", rev = "68f6a9df55692b5d8ef8873a12721e279a3f40d6" }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
