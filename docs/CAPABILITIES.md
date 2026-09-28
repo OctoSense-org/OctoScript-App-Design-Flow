@@ -34,21 +34,28 @@ nothing on screen needs".
 | `location` | The device position: `sys.gps(...)`, MapView's follow camera. | Permission: "Use your location". Privacy: "Uses your location." | Without it `sys.gps("ok")` reads 0 (no fix). OS permission still applies. |
 | `mail` | The `mail` host service: `host.request("mail.<method>", …)` for accounts the person adds on the host's sheet. | Permission: "Read and send mail from accounts you sign in to on the device". Privacy: "Reads and sends mail from accounts you add; it never sees your password." | See [HOST-SERVICES](HOST-SERVICES.md). Needs a shell that registers the Mail service (card-host does not). |
 | `llm` | The `llm` host service of the AI providers system app: its model providers with masked key status, and host sheets for typing, showing and scanning a provider key. | Permission: "Manage the assistant's AI providers, whose keys stay with the device". Privacy: "Manages the assistant's AI providers; it never sees your API keys." | Added in App Hub `c5cdb17` (#11). The service answers only `os.*` apps (`apps/ai-providers/host-service/src/lib.rs` in OctoSense), so a store app gains nothing from it: do not request it. |
-| `news` | The `news` host service: stories the device collects from its feeds and followed topics (`news.list`, `news.read`, …). | Permission: "Read news the device collects from its feeds and topics". Privacy: "Reads news the device collects from its feeds and topics." | Added in App Hub #18. The service answers only `os.*` apps (`apps/news/host-service` in OctoSense), so a store app gains nothing from it. |
-| `glance` | Publishing the app's own L0 cards to the glance screen (`glance.publish`, `glance.withdraw`, `glance.list`). | Permission: "Show cards on your glance screen". Privacy: "Shows short cards on your glance screen; each opens only this app." | Added in App Hub #22. The shells honour it once OctoSense#86 lands; until then no contained app can publish. See [OCTOS-AI §6](OCTOS-AI.md#6-publishing-results-the-glance-screen). |
+| `news` | The `news` host service: stories the device collects on a schedule from its feeds and topic feeds (`news.list`, `news.read`, …). | Permission: "Read news the device collects from its feeds and topics". Privacy: "Reads news the device collects from its feeds and topics." | On App Hub `main` (#18). The service in OctoSense (`apps/news/host-service`) answers only `os.*` apps, and the shells' pinned App Hub (`46d67e51`) does not know the name yet, so a store app gains nothing from it: do not request it. |
+| `glance` | The `glance` host service: publishing L0 cards to the glance screen (`glance.publish`, `glance.withdraw`, `glance.list`). | Permission: "Show cards on your glance screen". Privacy: "Shows short cards on your glance screen; each opens only this app." | On App Hub `main` (#22). The OctoSense service (`crates/shell/src/glance.rs`) serves only `os.*` contained apps until OctoSense#86 lands, and the shells' pinned App Hub does not know the name yet: do not request it today. See [AI-SERVICES](AI-SERVICES.md#publishing-to-the-glance-screen). |
+| `model` | The `model` host service: one-shot model calls (`model.complete` with `{task, input, schema, class}`, `class` `fast` or `strong`); the host picks the model from the person's providers, checks the reply against the schema and keeps a daily budget. | Permission: "Send what you give it to the AI provider you configured, within a daily budget". Privacy: "Sends what you give it to the AI provider you configured, for one-off answers within a daily budget; it never sees your API keys." | On App Hub `main` (#24). **No shell serves it yet** (the OctoSense service is [OctoSense#95](https://github.com/OctoSense-org/OctoSense/pull/95), a draft): a call answers `no service answers "model" on this device`. See [AI-SERVICES](AI-SERVICES.md#coming-one-shot-model-calls-model). |
 | `prompt` | Raising a prompt the person answers (a confirmation). | Permission: "Ask you questions". Privacy: "May ask you questions." | Resolves to the isolate's `host_prompts` flag, which the runtime attaches to each `host.request` as `may_prompt` (`splash_host.rs`). There is no app-side prompt API (`host.prompt` does not exist) and the App Hub's `ServiceCall` does not carry the flag yet, so **no current service uses it**; do not request it. |
 | `ledger.read` | Reading the shared ledger through a `ledger` host service. | Permission: "Read your shared data". Privacy: "Reads your shared data." | Grants `ledger.read` only; `ledger.write` is a different name. **No shell registering a `ledger` service was found**; unverified. |
 | `clipboard` | Clipboard access. | Permission: "Use the clipboard". Privacy: "Uses the clipboard." | **No script API gated by `clipboard` was found** in this runtime revision; unverified. |
 
-App Hub `main` also lists the exact-name assistant services
-(`octos.session.open`, `octos.session.history`, `octos.turn.start`,
-`octos.turn.interrupt`) and 45 `matrix.*` names; OctoSense serves them only to
-native modules its host policy grants, not to script apps. What an app can do
-with AI, and what is still coming: [OCTOS-AI](OCTOS-AI.md).
-
 Every `host.request("<family>.<method>")` needs the capability `<family>` (or
 the exact service name). Refused calls answer at once with `r.is_ok` false and
 `r.error` = `this app was not granted "<family>", which "<service>" needs`.
+
+## Host services by exact name: `octos.*` and `matrix.*`
+
+Besides the families above, `KNOWN_CAPABILITIES` holds 49 exact service names
+(`crates/app-policy/src/services.rs`, since App Hub #14): four for the
+device's assistant and 45 for the person's Matrix account. Each is its own
+consent; a prefix (`octos.`, `matrix.`) or any other name is refused.
+
+| Names | The person sees (store) | Who serves them today |
+| --- | --- | --- |
+| `octos.session.open`, `octos.session.history`, `octos.turn.start`, `octos.turn.interrupt` | "Open its own conversation with the assistant", "Read its own conversations with the assistant", "Ask the assistant to work for it, using the device's AI settings", "Stop assistant work it started"; privacy: "Asks the device's assistant to work for it; the assistant's keys stay with the device." | **No OctoSense shell and not `card-host`**: a call answers `no service answers "octos" on this device`. Only Rinx's mini-app host serves them. Details, a verified example and the plan: [AI-SERVICES](AI-SERVICES.md). |
+| `matrix.*` (45 names, e.g. `matrix.profile`, `matrix.read_messages`, `matrix.send_message`) | One plain line per name, e.g. "Read messages in rooms you allow" | Only Rinx's mini-app host. |
 
 ## Other manifest requests
 
@@ -57,7 +64,7 @@ the exact service name). Refused calls answer at once with `r.is_ok` false and
 | `storage.max_bytes` | Whole-jail quota | 16 MiB / 64 MiB |
 | `compute.instruction_budget` | Script instructions per session, cumulative | 20 000 000 / 4 000 000 000 |
 | `compute.memory_bytes` | Isolate heap | 64 MiB / 128 MiB |
-| `agent` | An assistant session limited to the app's jail and hosts: `profile` one of `read-only`, `workspace-write`, `workspace-write-never-ask`; `tools` from `ledger.read ledger.write net.fetch storage.read storage.write card.render`; iterations ≤ 8, tokens ≤ 200 000. The person sees "Runs an assistant limited to this app's own data…" (or "Runs no assistant."). | – |
+| `agent` | An assistant session limited to the app's jail and hosts: `profile` one of `read-only`, `workspace-write`, `workspace-write-never-ask`; `tools` from `ledger.read ledger.write net.fetch storage.read storage.write card.render`; iterations ≤ 8, tokens ≤ 200 000. The person sees "Runs an assistant limited to this app's own data…" (or "Runs no assistant."). **Nothing runs this agent yet**, in any shell; see [AI-SERVICES](AI-SERVICES.md#an-apps-own-agent). App Hub `main` adds `model`, `background`, `triggers`, `instructions` and `skills`, which the shells' pinned App Hub refuses. | – |
 
 Values above the ceiling are clamped, not refused; an absent value gets the
 ceiling. The `grants:` line of `hub check` shows the result.
