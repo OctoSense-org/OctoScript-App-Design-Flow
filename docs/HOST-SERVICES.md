@@ -16,8 +16,10 @@ and the Mail service in
 | --- | --- | --- | --- |
 | `mail` | Mail ([`apps/mail/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/mail/host-service)) | Any app granted `mail` | OctoSense desktop (`desktop/`) and Home (`phone/`) |
 | `llm` | AI providers ([`apps/ai-providers/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/ai-providers/host-service)) | Only `os.*` system apps (the AI providers app); it refuses store apps even when granted `llm` | OctoSense desktop (`desktop/`) and Home (`phone/`) |
+| `news` | News's data service ([`apps/news/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/news/host-service)) | Only `os.*` system apps | OctoSense desktop and Home |
+| `glance` | The glance screen ([`crates/shell/src/glance.rs`](https://github.com/OctoSense-org/OctoSense/blob/main/crates/shell/src/glance.rs)) | Apps granted `glance`, once OctoSense#86 lands ([OCTOS-AI §6](OCTOS-AI.md#6-publishing-results-the-glance-screen)) | OctoSense desktop and Home |
 
-`card-host` registers neither. A store app that needs something else needs a
+`card-host` registers none of them. A store app that needs something else needs a
 new service in the shells (below), not a workaround in the bundle.
 
 ## Calling a service from an app

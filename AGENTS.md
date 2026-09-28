@@ -45,6 +45,12 @@ patch around it here.
 - **No secrets in apps.** No password, PIN or one-time-code field, no login
   form, no API key or token in the bundle. Accounts go through a host service's
   sheet ([docs/HOST-SERVICES.md](docs/HOST-SERVICES.md)).
+- **AI only through the host.** An app never talks to octos (the agent
+  kernel), never holds a provider key and never names a model. Before adding
+  anything AI to an app, read [docs/OCTOS-AI.md](docs/OCTOS-AI.md): there is
+  no model-call API for script apps today, and an app's own agent, its tools,
+  the research toolbox and the glance screen are marked there as available or
+  coming. Build only on what it marks available.
 - **Declare every host.** Every `https://` host in `main.splash` is in
   `network.hosts` (with `net`), unless the app legitimately needs `images` or
   `web`. Never `http://`.
@@ -56,7 +62,8 @@ patch around it here.
 - **Restamp after every edit.** `tools/octo check` and `tools/octo run` stamp
   for you; after signing, any edit needs stamp and sign again (human).
 - **Keep the bundle clean.** Only `manifest.json`, `listing.json`, the entry,
-  artwork and screenshots go in `bundle/`. Notes, keys, logs, review packets
+  artwork and screenshots go in `bundle/` (plus `tools.json`, `AGENT.md` and
+  `skills/` for an app that declares its own agent: [docs/OCTOS-AI.md](docs/OCTOS-AI.md#3-an-apps-own-agent)). Notes, keys, logs, review packets
   and `.local-state/` stay out.
 - **Run headless.** Start apps with `tools/octo run … --hidden` (Makepad's
   headless mode: the window is never shown or focused, the remote bridge and

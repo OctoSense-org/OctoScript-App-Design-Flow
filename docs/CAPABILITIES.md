@@ -34,9 +34,17 @@ nothing on screen needs".
 | `location` | The device position: `sys.gps(...)`, MapView's follow camera. | Permission: "Use your location". Privacy: "Uses your location." | Without it `sys.gps("ok")` reads 0 (no fix). OS permission still applies. |
 | `mail` | The `mail` host service: `host.request("mail.<method>", …)` for accounts the person adds on the host's sheet. | Permission: "Read and send mail from accounts you sign in to on the device". Privacy: "Reads and sends mail from accounts you add; it never sees your password." | See [HOST-SERVICES](HOST-SERVICES.md). Needs a shell that registers the Mail service (card-host does not). |
 | `llm` | The `llm` host service of the AI providers system app: its model providers with masked key status, and host sheets for typing, showing and scanning a provider key. | Permission: "Manage the assistant's AI providers, whose keys stay with the device". Privacy: "Manages the assistant's AI providers; it never sees your API keys." | Added in App Hub `c5cdb17` (#11). The service answers only `os.*` apps (`apps/ai-providers/host-service/src/lib.rs` in OctoSense), so a store app gains nothing from it: do not request it. |
+| `news` | The `news` host service: stories the device collects from its feeds and followed topics (`news.list`, `news.read`, …). | Permission: "Read news the device collects from its feeds and topics". Privacy: "Reads news the device collects from its feeds and topics." | Added in App Hub #18. The service answers only `os.*` apps (`apps/news/host-service` in OctoSense), so a store app gains nothing from it. |
+| `glance` | Publishing the app's own L0 cards to the glance screen (`glance.publish`, `glance.withdraw`, `glance.list`). | Permission: "Show cards on your glance screen". Privacy: "Shows short cards on your glance screen; each opens only this app." | Added in App Hub #22. The shells honour it once OctoSense#86 lands; until then no contained app can publish. See [OCTOS-AI §6](OCTOS-AI.md#6-publishing-results-the-glance-screen). |
 | `prompt` | Raising a prompt the person answers (a confirmation). | Permission: "Ask you questions". Privacy: "May ask you questions." | Resolves to the isolate's `host_prompts` flag, which the runtime attaches to each `host.request` as `may_prompt` (`splash_host.rs`). There is no app-side prompt API (`host.prompt` does not exist) and the App Hub's `ServiceCall` does not carry the flag yet, so **no current service uses it**; do not request it. |
 | `ledger.read` | Reading the shared ledger through a `ledger` host service. | Permission: "Read your shared data". Privacy: "Reads your shared data." | Grants `ledger.read` only; `ledger.write` is a different name. **No shell registering a `ledger` service was found**; unverified. |
 | `clipboard` | Clipboard access. | Permission: "Use the clipboard". Privacy: "Uses the clipboard." | **No script API gated by `clipboard` was found** in this runtime revision; unverified. |
+
+App Hub `main` also lists the exact-name assistant services
+(`octos.session.open`, `octos.session.history`, `octos.turn.start`,
+`octos.turn.interrupt`) and 45 `matrix.*` names; OctoSense serves them only to
+native modules its host policy grants, not to script apps. What an app can do
+with AI, and what is still coming: [OCTOS-AI](OCTOS-AI.md).
 
 Every `host.request("<family>.<method>")` needs the capability `<family>` (or
 the exact service name). Refused calls answer at once with `r.is_ok` false and

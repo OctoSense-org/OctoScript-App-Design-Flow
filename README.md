@@ -53,6 +53,7 @@ organizers; none of that is decided here. What a contestant needs from here:
 | **Start** | The [Quick path](#quick-path) below: on 2026-09-26 a new app went from an empty directory to `— PASSED` in about 10 minutes (clones 1.5 min, setup 20 s, first build 1 min on an Apple silicon Mac), most of it writing the app. Every step is a shell command, so any coding agent (or none) can run it. |
 | **Machine** | macOS on Apple silicon is the verified platform. Windows and Linux are unverified. Rust stable (rustup), Python 3.9+ (macOS's own `/usr/bin/python3` works), git, a graphical session, about 3 GB free (the clones take about 1.9 GB, 1.3 GB of it this repository, where `--depth 1` is fine; the build about 1 GB), and network access for the first build. |
 | **What an app can do** | Its own storage, HTTPS requests to hosts it declares, pictures and web pages, camera, location, and Mail through a host service: [CAPABILITIES](docs/CAPABILITIES.md). The language and every API: [SCRIPT-API](docs/SCRIPT-API.md). Complete examples: the [System Apps](https://github.com/OctoSense-org/OctoSense/tree/main/apps) (News, Photos, Maps, Camera, Mail) and the [template](templates/script-app/README.md). |
+| **AI in an app** | What exists today and what is coming (an app's own agent, its tools, research templates, glance cards), with the PR for each: [OCTOS-AI](docs/OCTOS-AI.md). A script app has no model-call API yet. |
 | **What it cannot do** | Hold a password, key or token; invent a capability or a host service (those are App Hub and shell changes); use `llm` or an `os.*` id (system apps only); be side-loaded onto a phone. `card-host` provides no host services, so a Mail-style app shows `no service answers` there. |
 | **Demo** | The app in `card-host` (`tools/octo run`, driven over the remote bridge) and real screenshots from `tools/octo shot`. To show it inside OctoSense, run the OctoSense desktop shell against a local catalog ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)). |
 | **Submit to the App Hub** | [Publishing](#publishing): `tools/octo check` passes, `hub scan` answered, then a person signs and opens a `Submit <app id> <version>` issue on [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues). A contest entry is not automatically an App Hub submission; ask the organizers what they need. |
@@ -79,6 +80,8 @@ Read these in order (the same order the
 4. [docs/PUBLISHING.md](docs/PUBLISHING.md), with the App Hub's
    [publishing contract](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md):
    stamp, screenshot, check, sign and submit.
+5. [docs/OCTOS-AI.md](docs/OCTOS-AI.md), only if the app uses AI: what is
+   available today and what is still coming.
 
 The human checkpoints (publisher keys and signing, publisher identity and
 privacy text, platform claims, paid image generation, visual approval,
@@ -432,6 +435,7 @@ Limits, stated plainly:
 | [docs/SCRIPT-API.md](docs/SCRIPT-API.md) | The Splash language and every API a contained app may call |
 | [docs/CAPABILITIES.md](docs/CAPABILITIES.md) | Each capability: what it unlocks, what the person sees, the rules |
 | [docs/HOST-SERVICES.md](docs/HOST-SERVICES.md) | `host.request`, sheets, "secrets are the host's", adding a service |
+| [docs/OCTOS-AI.md](docs/OCTOS-AI.md) | Using octos AI in an app: the app's own agent, its tools, the system toolbox, glance cards, with what is available and what is coming |
 | [docs/PUBLISHING.md](docs/PUBLISHING.md) | Publishing to the App Hub, with verified outputs and the checklist |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | One meaning per term |
 | [docs/NATIVE-WORKSPACE.md](docs/NATIVE-WORKSPACE.md), [docs/l0/](docs/l0/) | Sibling-source setup for the native runtime; L0 card examples |
