@@ -244,7 +244,7 @@ ceilings; `hub check` prints the resulting `grants:` line.
 
 **Capabilities** form a closed list defined by the App Hub: `storage`, `net`,
 `images`, `web`, `camera`, `microphone`, `library`, `location`, `mail`,
-`llm`, `news`, `glance`, `prompt`, `ledger.read`, `clipboard`, plus 49 exact
+`llm`, `news`, `glance`, `model`, `prompt`, `ledger.read`, `clipboard`, plus 49 exact
 host-service names (four `octos.*` for the device's assistant, 45 `matrix.*`
 for Rinx). Not requested means not granted,
 and the store shows the person one plain-language line per capability before
@@ -307,7 +307,8 @@ OctoSense runs one octos agent kernel per shell, configured by the person in
 the AI providers system app; keys never reach an app. **A contained app
 cannot use it yet**: the gate accepts the four `octos.*` capabilities, but no
 OctoSense shell serves them to apps, and `card-host` serves no host services.
-`llm` is provider management for system apps only. An app's own agent
+`llm` is provider management for system apps only, and the one-shot `model`
+capability (App Hub #24) has no service in any shell yet. An app's own agent
 (`tools.json`, `AGENT.md`, skills, triggers) is admitted by App Hub `main` and
 planned in OctoSense's ADR 0002, but nothing runs it yet. Build apps that are
 complete without AI, and read [docs/AI-SERVICES.md](docs/AI-SERVICES.md)

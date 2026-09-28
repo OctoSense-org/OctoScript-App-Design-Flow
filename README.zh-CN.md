@@ -224,7 +224,7 @@ my-app/                     the app's own git repository
 `hub check` 输出的 `grants:` 行就是实际授予的结果。
 
 **Capabilities（权限）** 是 App Hub 定义的封闭列表：`storage`、`net`、`images`、`web`、
-`camera`、`microphone`、`library`、`location`、`mail`、`llm`、`news`、`glance`、`prompt`、`ledger.read`、
+`camera`、`microphone`、`library`、`location`、`mail`、`llm`、`news`、`glance`、`model`、`prompt`、`ledger.read`、
 `clipboard`，另有 49 个精确的宿主服务名（设备助手的 4 个 `octos.*`，Rinx 的 45 个 `matrix.*`）。未申请即不授予；安装前商店会为每项权限向用户显示一行通俗说明。只申请应用真正
 需要的。每项权限解锁什么、哪些目前还没有可用路径（`prompt`、`ledger.read`、`clipboard`）、
 哪些只有系统应用能用（`llm`）：[docs/CAPABILITIES.md](docs/CAPABILITIES.md)。
@@ -271,7 +271,8 @@ my-app/                     the app's own git repository
 OctoSense 每个 Shell 运行一个 octos Agent 内核，由用户在系统应用 AI providers 中配置；
 密钥永远不会到达应用。**隔离运行的应用目前还不能使用它**：准入检查接受 4 个 `octos.*`
 权限，但没有任何 OctoSense Shell 向应用提供这些服务，`card-host` 也不提供任何宿主服务。
-`llm` 是只供系统应用使用的模型提供方管理服务。应用自己的 Agent（`tools.json`、`AGENT.md`、
+`llm` 是只供系统应用使用的模型提供方管理服务，一次性调用模型的 `model` 权限（App Hub #24）
+目前也还没有任何 Shell 提供服务。应用自己的 Agent（`tools.json`、`AGENT.md`、
 skills、触发器）已被 App Hub `main` 接受，并在 OctoSense ADR 0002 中规划，但目前没有任何
 地方运行它。请把应用做成不依赖 AI 也完整可用；添加 AI 功能之前先读
 [docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)：准确的名称、一个经过验证并处理

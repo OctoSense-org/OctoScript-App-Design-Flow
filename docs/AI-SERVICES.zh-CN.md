@@ -3,7 +3,7 @@
 [English](AI-SERVICES.md) | 简体中文
 
 用本仓库开发的脚本应用如何使用 OctoSense 内部的助手（Shell 运行的 octos Agent 内核）、
-目前哪些可用、哪些还在规划中。本文描述 2026-09-27 的状态：App Hub `main` 为 `362d832`，
+目前哪些可用、哪些还在规划中。本文描述 2026-09-27 的状态：App Hub `main` 为 `e8601b8`，
 OctoSense `main` 为 `405139f`（它锁定 App Hub `46d67e51` 和 octos `a6ea8505`）。
 
 > **开发应用不需要任何 AI。** 本仓库中没有任何东西会调用模型或需要 API key，你可以使用
@@ -22,6 +22,7 @@ OctoSense `main` 为 `405139f`（它锁定 App Hub `46d67e51` 和 octos `a6ea850
 - [用户看到什么](#用户看到什么)
 - [错误](#错误)
 - [测试](#测试)
+- [即将到来：一次性模型调用（`model`）](#即将到来一次性模型调用model)
 - [尚不可用的内容与规划路线](#尚不可用的内容与规划路线)
 
 ## 简短回答
@@ -33,6 +34,7 @@ OctoSense Shell 向隔离运行的应用提供助手请求，`card-host` 也不�
 | 你尝试 | 目前的结果 |
 | --- | --- |
 | 声明 `octos.turn.start`（及同组权限）并调用 | 准入检查接受这些名称。调用返回 `no service answers "octos" on this device`，在 `card-host` 和 OctoSense Shell 中都一样（已在 `card-host` 中验证，见下文）。 |
+| 声明 `model` 并调用 `model.complete` | 准入检查接受它（App Hub [#24](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/24)，已合并）：一次性模型调用**即将到来**。OctoSense 的 `model` 服务尚未实现，所以调用返回 `no service answers "model" on this device`（已在 `card-host` 中验证）。见[即将到来：一次性模型调用](#即将到来一次性模型调用model)。 |
 | 声明 `llm` | 准入检查接受它，但 `llm` 服务用于管理设备的 AI 提供方（没有发送提示词的方法），并且只响应 `os.*` 系统应用：`llm is for OctoSense's own apps.`。不要申请它。 |
 | 在 `manifest.json` 中声明 `agent` | 准入检查接受并按上限裁剪；**没有任何地方运行它**。 |
 | 附带 `tools.json`、`AGENT.md`、`skills/` | App Hub `main` 接受；**目前没有任何 Shell 加载它们**，而且 Shell 锁定的较旧 App Hub 会拒绝使用新 `agent` 字段的 manifest（见[下文](#尚不可用的内容与规划路线)）。 |
@@ -143,6 +145,7 @@ OctoSense Shell 使用同一份 App Hub 分发代码，同样没有注册 `octos
 | --- | --- | --- |
 | `this app was not granted "octos", which "<service>" needs` | manifest 中没有列出这个精确名称 | 把它加入 `capabilities`，或删除该调用 |
 | `no service answers "octos" on this device` | 当前宿主不向应用提供助手（目前：所有 OctoSense Shell 和 `card-host`） | 显示“不可用”，继续工作 |
+| `no service answers "model" on this device` | 当前宿主没有 `model` 服务（目前：所有 OctoSense Shell 和 `card-host`） | 同上 |
 | `Unsupported Octos arguments` | 传了 `text` 以外的参数（turn start），或给其他调用传了任何参数 | 只传 `{text}` 或 `{}` |
 | `Provide text (at most 32 KiB)` | 提示词为空或过长 | 发送前检查 |
 | `This app already has an assistant turn running` | 同一时间只能有一个回合 | 等待期间禁用按钮，或先中断 |
@@ -166,6 +169,29 @@ OctoSense Shell 使用同一份 App Hub 分发代码，同样没有注册 `octos
   [Rinx `examples/miniapps`](https://github.com/hagency-org/Rinx/tree/main/examples/miniapps)。
   这不是 App Hub 的安装路径，并且它会拒绝声明了 `agent` 的应用包。本文未重新运行这一路径。
 
+## 即将到来：一次性模型调用（`model`）
+
+App Hub `main` 接受第二条更窄的路径
+（[App-Hub#24](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/24)，已合并）：
+`model` 权限，对应 Shell 的 `model` 宿主服务。以下按 App Hub 的描述（OctoSense 一侧的服务
+还是一个尚未提交的 PR，所以目前都不会运行）：
+
+- `host.request("model.complete", {task, input, schema, class}, fn(r){…})`，`class`
+  为 `fast` 或 `strong`。宿主从用户自己的 AI 提供方中挑选模型；应用永远看不到提供方、
+  模型 id 或密钥。
+- 一次性：没有工具、没有记忆，除 `input` 外没有历史。回复必须符合应用的 JSON Schema
+  （有大小上限）；除非应用明确要求，回复中的 URL 会被拒绝。每个应用有每日的调用次数和
+  token 预算，由宿主管理。
+- 商店显示 "Send what you give it to the AI provider you configured, within a daily
+  budget"；隐私摘要显示 "Sends what you give it to the AI provider you configured, for
+  one-off answers within a daily budget; it never sees your API keys."
+
+目前准入检查会通过（`grants: capabilities {"model"}`），而每次调用都返回
+`no service answers "model" on this device`（在 App Hub `e8601b8` 的 `card-host` 中运行）。
+Shell 锁定的 App Hub（`46d67e51`）不认识这个名称，所以目前的 Shell 会拒绝申请它的
+manifest。确切的返回形状和错误文字要等 OctoSense 服务实现后才确定；在此之前不要依赖上述
+字段以外的任何内容。
+
 ## 尚不可用的内容与规划路线
 
 | 尚不可用 | 规划路线 | 状态 |
@@ -173,10 +199,11 @@ OctoSense Shell 使用同一份 App Hub 分发代码，同样没有注册 `octos
 | OctoSense 中隔离运行的应用发起助手请求 | Shell 给应用分配 peer 并提供服务，与原生模块相同 | 规划中：OctoSense [ADR 0002](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0002-event-driven-app-agents.md)（Proposed），先从 News 开始（[#61](https://github.com/OctoSense-org/OctoSense/issues/61)） |
 | 直接访问内核、选择提供方或模型 | 永远不会：应用声明模型**需求**（`agent.model`：needs、tier、`local_only`），由宿主从用户的提供方中挑选 | App Hub 已接受（[App-Hub#18](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/18)）；尚未运行 |
 | 应用自己的 Agent 和工具 | `tools.json`（名为 `<app>.<tool>` 的类型化工具，`risk` 为 read/act/destructive，`confirm` 为 host/app）、`AGENT.md`、只含数据的 `skills/`，以及 manifest 中的 `background` 和 `triggers`，由 App Hub 接受并锁定 | App Hub `main` 会检查它们（[PUBLISHING § The app's agent and tools](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-apps-agent-and-tools)）。内核一侧（[octos#2567](https://github.com/octos-org/octos/pull/2567)）尚未合并，也没有任何 Shell 注册或运行它们。 |
+| 一次性模型调用 | 使用 `model` 权限调用 `model.complete` | 权限已合入 App Hub（[#24](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/24)）；OctoSense 服务尚未实现 |
 | 在 glance 屏幕上显示卡片 | 使用 `glance` 权限调用 `glance.publish` | 服务已合入 OctoSense（[#72](https://github.com/OctoSense-org/OctoSense/pull/72)），但只服务 `os.*` 应用；该权限已在 App Hub `main`（[App-Hub#22](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/22)），Shell 一侧正在进行（[#86](https://github.com/OctoSense-org/OctoSense/pull/86)） |
 
 **需要知道的版本差异。** `tools/octo check` 运行的是本仓库旁边的 App Hub 检出
-（`main`）。OctoSense Shell 仍锁定 App Hub `46d67e51`，它早于 `glance`、`news` 权限和新的
+（`main`）。OctoSense Shell 仍锁定 App Hub `46d67e51`，它早于 `glance`、`news`、`model` 权限和新的
 `agent` 字段（`model`、`background`、`triggers`、`instructions`、`skills`）。manifest 会
 拒绝未知字段，所以使用了其中任何一项的应用包能通过 `octo check`，却会被目前的 Shell 拒绝。
 想现在就在 OctoSense 中打开的应用包，请不要使用它们。较旧的 App Hub 是否接受带有

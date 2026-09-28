@@ -4,7 +4,7 @@ English | [简体中文](AI-SERVICES.zh-CN.md)
 
 How a script app built here can use the assistant inside OctoSense (the octos
 agent kernel the shell runs), what works today, and what is planned. State as
-of 2026-09-27: App Hub `main` `362d832`, OctoSense `main` `405139f` (which
+of 2026-09-27: App Hub `main` `e8601b8`, OctoSense `main` `405139f` (which
 pins App Hub `46d67e51` and octos `a6ea8505`).
 
 > **Building an app needs no AI.** Nothing in this repository calls a model
@@ -24,6 +24,7 @@ The deep version, for shell and native-module developers:
 - [What the person sees](#what-the-person-sees)
 - [Errors](#errors)
 - [Test it](#test-it)
+- [Coming: one-shot model calls (`model`)](#coming-one-shot-model-calls-model)
 - [Not available yet, and the planned route](#not-available-yet-and-the-planned-route)
 
 ## The short answer
@@ -36,6 +37,7 @@ complete without AI.
 | You try | What happens today |
 | --- | --- |
 | Declare `octos.turn.start` (and friends) and call it | The gate accepts the name. The call answers `no service answers "octos" on this device`, in `card-host` and in the OctoSense shells alike (verified in `card-host`, below). |
+| Declare `model` and call `model.complete` | The gate accepts it (App Hub [#24](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/24), merged): a one-shot model call is **coming**. The OctoSense `model` service is not written yet, so the call answers `no service answers "model" on this device` (verified in `card-host`). See [Coming: one-shot model calls](#coming-one-shot-model-calls-model). |
 | Declare `llm` | The gate accepts it, but the `llm` service manages the device's AI providers (it has no prompt method) and answers only `os.*` system apps: `llm is for OctoSense's own apps.` Do not request it. |
 | Declare an `agent` in `manifest.json` | Admitted and clamped by the gate; **nothing runs it**. |
 | Ship `tools.json`, `AGENT.md`, `skills/` | Admitted by App Hub `main`; **no shell loads them yet**, and the shells' older App Hub refuses a manifest with the new `agent` fields (see [below](#not-available-yet-and-the-planned-route)). |
@@ -162,6 +164,7 @@ say in your listing and your report that it does nothing on today's devices.
 | --- | --- | --- |
 | `this app was not granted "octos", which "<service>" needs` | The manifest does not list that exact name | Add it to `capabilities`, or remove the call |
 | `no service answers "octos" on this device` | This host does not serve the assistant to apps (today: every OctoSense shell and `card-host`) | Show "unavailable" and carry on |
+| `no service answers "model" on this device` | No `model` service on this host (today: every OctoSense shell and `card-host`) | The same |
 | `Unsupported Octos arguments` | An argument other than `text` (turn start) or anything at all (the others) | Send only `{text}` or `{}` |
 | `Provide text (at most 32 KiB)` | Empty or oversized prompt | Check before sending |
 | `This app already has an assistant turn running` | One turn at a time | Disable the button while waiting, or interrupt first |
@@ -187,6 +190,34 @@ There is no per-app quota API. Budgets are the host's (planned, below).
   It is not the App Hub install path, and it refuses a bundle that declares
   an `agent`. Not re-run for this page.
 
+## Coming: one-shot model calls (`model`)
+
+App Hub `main` admits a second, narrower path
+([App-Hub#24](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/24),
+merged): the `model` capability, for the shell's `model` host service. As
+App Hub describes it (the OctoSense service is a pull request still to come,
+so none of this runs yet):
+
+- `host.request("model.complete", {task, input, schema, class}, fn(r){…})`,
+  with `class` `fast` or `strong`. The host picks the model from the
+  person's own AI providers; the app never sees the provider, model id or
+  key.
+- One shot: no tools, no memory, no history beyond `input`. The reply must
+  validate against the app's JSON Schema (size-capped); URLs in the reply
+  are refused unless the app asks for them. A per-app daily rate and token
+  budget, kept by the host.
+- The store says "Send what you give it to the AI provider you configured,
+  within a daily budget"; the privacy summary says "Sends what you give it to
+  the AI provider you configured, for one-off answers within a daily budget;
+  it never sees your API keys."
+
+Today the gate passes it (`grants: capabilities {"model"}`) and every call
+answers `no service answers "model" on this device` (run in `card-host` at
+App Hub `e8601b8`). The shells' pinned App Hub (`46d67e51`) does not know the
+name, so today's shells refuse a manifest that requests it. The exact answer
+shape and error texts come with the OctoSense service; do not rely on more
+than the fields above until then.
+
 ## Not available yet, and the planned route
 
 | Not available | Planned route | Status |
@@ -194,11 +225,12 @@ There is no per-app quota API. Budgets are the host's (planned, below).
 | Assistant requests from a contained app in OctoSense | The shell gives the app a peer and serves it, as it does for native modules | Planned: OctoSense [ADR 0002](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0002-event-driven-app-agents.md) (Proposed), first for News ([#61](https://github.com/OctoSense-org/OctoSense/issues/61)) |
 | Direct kernel access, choosing a provider or model | Never: the app states model **requirements** (`agent.model`: needs, tier, `local_only`), the host picks from the person's providers | Admitted by App Hub ([App-Hub#18](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/18)); not run |
 | The app's own agent and tools | `tools.json` (typed tools named `<app>.<tool>`, `risk` read/act/destructive, `confirm` host/app), `AGENT.md`, data-only `skills/`, `background` and `triggers` in the manifest, admitted and pinned by App Hub | App Hub `main` checks them ([PUBLISHING § The app's agent and tools](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-apps-agent-and-tools)). The kernel side ([octos#2567](https://github.com/octos-org/octos/pull/2567)) is open, and no shell registers or runs them. |
+| A one-shot model call | `model.complete` with the `model` capability | Capability merged in App Hub ([#24](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/24)); the OctoSense service is still to come |
 | Cards on the glance screen | `glance.publish` with the `glance` capability | The service is merged in OctoSense ([#72](https://github.com/OctoSense-org/OctoSense/pull/72)) but serves only `os.*` apps; the capability is on App Hub `main` ([App-Hub#22](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/22)) and the shell side is in progress ([#86](https://github.com/OctoSense-org/OctoSense/pull/86)) |
 
 **Version skew to know about.** `tools/octo check` runs the App Hub checkout
 beside this repository (`main`). The OctoSense shells still pin App Hub
-`46d67e51`, which predates the `glance` and `news` capabilities and the new
+`46d67e51`, which predates the `glance`, `news` and `model` capabilities and the new
 `agent` fields (`model`, `background`, `triggers`, `instructions`, `skills`).
 Manifests refuse unknown fields, so a bundle that uses any of them passes
 `octo check` but is refused by today's shells. Leave them out of a bundle you
