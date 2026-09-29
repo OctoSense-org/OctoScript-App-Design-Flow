@@ -21,7 +21,7 @@ path = "src/main.rs"
 [dependencies]
 octosense-calendar = { path = "../native" }
 octosense-app-host = { git = "https://github.com/OctoSense-org/OctoSense-App-Hub.git", rev = "64bd6c01218010805116ae203edfb1f4b9e28fe6" }
-makepad-widgets = { git = "https://github.com/OctoSense-org/makepad.git", rev = "3afef545b3365d7019f24741e8caea02e82edc27" }
+makepad-widgets = { git = "https://github.com/OctoSense-org/makepad.git", rev = "a5a3cf5b0dbd1b56c25defe6d98479f25843e770" }
 
 [patch."https://github.com/OctoSense-org/makepad.git"]
 makepad-widgets = { path = "../../../../makepad/widgets" }
