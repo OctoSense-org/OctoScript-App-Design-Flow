@@ -212,6 +212,16 @@ host.request("mail.list", {account: account.id folder: folder.id offset: 0 limit
   callback runs immediately with `is_ok` false and
   `r.error` = `this app was not granted "mail", which "mail.accounts" needs`;
   the log shows `splash host: refused "mail.accounts": this app was not granted "mail", which "mail.accounts" needs`. **✓ run**
+- Every request answers once ([App Hub#38](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/38); in the OctoSense shells with
+  [OctoSense#204](https://github.com/OctoSense-org/OctoSense/pull/204), open; not run for this page). A call that waits longer than
+  its service allows (60 s unless the service asks for more; the clock stops
+  while the service's sheet is up) answers `the host service timed out`; a
+  33rd waiting call from one app answers `too many host requests are waiting;
+  try again when some have answered`; from a home-screen tile or an
+  assistant's tool call, a service that needs its sheet refuses with a
+  sentence such as `this surface cannot raise a prompt; open the app to
+  continue`. The limits: App Hub
+  [PUBLISHING § Host services and sheets](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#host-services-and-sheets).
 - `host.capabilities()` → the granted list (`["storage"]` **✓ run**);
   `host.has("net")` → bool (**✓ run**). There is no `host.prompt`.
 - Services, sheets and the Mail methods: [HOST-SERVICES](HOST-SERVICES.md).

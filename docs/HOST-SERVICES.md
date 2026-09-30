@@ -150,6 +150,13 @@ A new service is a change to a shell, not to an app bundle. It needs, together:
    moved to a worker thread and `send` later; `host.open_sheet(splash_source)`
    / `host.close_sheet()` raise and drop the sheet (`close_sheet_later(app_id)`
    from a worker). Put anything that takes a secret under `sheet.`.
+   `call.may_prompt` is false where no sheet may appear (a home-screen tile,
+   an assistant's tool call): answer with a sentence that tells the person to
+   open the app, because App Hub refuses the sheet there anyway. A request
+   that waits longer than `HostService::timeout` (60 s by default; override it
+   for a slow service, and the clock stops while the sheet is up) answers
+   `the host service timed out`, and a late `send` is dropped ([App Hub#38](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/38); in
+   the OctoSense shells with [OctoSense#204](https://github.com/OctoSense-org/OctoSense/pull/204), open).
 3. **Registration in the shell**: `register_host_service(Box::new(Weather))`
    at startup, where the shell's Card runner pumps `services::pump`. Mail's
    crate exposes `octosense_mail_service::register()`.
