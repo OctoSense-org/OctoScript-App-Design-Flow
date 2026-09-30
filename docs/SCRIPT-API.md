@@ -190,10 +190,11 @@ are refused (`only https:// URLs are allowed`, `host not permitted (private/inte
 The gate additionally refuses a bundle whose source names an undeclared https
 host ([PUBLISHING §2](PUBLISHING.md#2-the-rules-the-gate-enforces)).
 
-`net.web_socket`, `net.socket_stream` and `net.http_server` exist once `net`
-is granted and are **not** held to the host list in this runtime revision
-(`net.rs:781-829, 1104-1243`). Do not use them in a store app; a reviewer will
-ask why.
+`net.web_socket` is held to the host list like `net.http_request`
+(`this app may not reach <url>`). `net.socket_stream` and `net.http_server`
+are refused in a store app, whatever it was granted (`this app may not open a
+raw socket`, `this app may not open a listening server`; makepad#30, `net.rs`
+at the runtime this repository pins).
 
 ## Host services: `host.request`
 
