@@ -18,7 +18,7 @@ this.
 | **AI providers** | The system app (`os.ai-providers`) where the person chooses the assistant's models and types keys, on host sheets. Its `llm` host service answers only system apps. |
 | **App peer** | The octos peer the shell gives one app the assistant is granted to: private contexts, workspace and memory (`app/<app>/acct-<hash>`), owned by the system agent. Today only native modules (Rinx) get one. |
 | **System agent** | The shell's own assistant session (`_main:api:octosense#system`), owner of every app peer. It holds no app's tools and cannot approve for an app. |
-| **Agent files** | `tools.json`, `AGENT.md` and `skills/` beside `manifest.json`, plus the manifest's `agent` fields: an app's own agent (OctoSense ADR 0002). App Hub `main` admits them; no shell runs them yet. |
+| **Agent files** | `tools.json`, `AGENT.md` and `skills/` beside `manifest.json`, plus the manifest's `agent` fields: an app's own agent (OctoSense ADR 0002). The App Hub gate admits them; once the person allows the app's agent, the OctoSense shells give it a peer with its `tools.json` tools, but do not install `AGENT.md` or skills yet. |
 | **Sheet** | A host-owned surface a host service draws over an app, in its own isolate under no app's policy, for things only the person may type (a password). Only the sheet may call `<family>.sheet.*` methods. |
 | **Card runner** | The part of an OctoSense shell (App Hub's `appstore` crate, `card` module) that runs one installed or system app: admit, resolve policy, jail, evaluate, pump host services. |
 | **card-host** | App Hub's reference contained host for one bundle on the desktop (`crates/card-host`). The development runner: `card-host --bundle <dir> --allow-unsigned`. Same policy code as the Card runner. |

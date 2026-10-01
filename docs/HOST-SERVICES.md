@@ -16,13 +16,13 @@ and the Mail service in
 | --- | --- | --- | --- |
 | `mail` | Mail ([`apps/mail/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/mail/host-service)) | Any app granted `mail` | OctoSense desktop (`desktop/`) and Home (`phone/`) |
 | `llm` | AI providers ([`apps/ai-providers/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/ai-providers/host-service)) | Only `os.*` system apps (the AI providers app); it refuses store apps even when granted `llm` (`llm is for OctoSense's own apps.`). It manages the assistant's providers; it has no prompt method | OctoSense desktop (`desktop/`) and Home (`phone/`) |
-| `news` | News's data service ([`apps/news/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/news/host-service)) | Only `os.*` system apps; the `news` capability is on App Hub `main` but not in the shells' pinned App Hub yet | OctoSense desktop and Home |
-| `glance` | The glance screen ([`crates/shell/src/glance.rs`](https://github.com/OctoSense-org/OctoSense/blob/main/crates/shell/src/glance.rs)) | Only `os.*` contained apps until OctoSense [#86](https://github.com/OctoSense-org/OctoSense/pull/86) lands; the `glance` capability is on App Hub `main` but not in the shells' pinned App Hub yet ([AI-SERVICES](AI-SERVICES.md#publishing-to-the-glance-screen)) | OctoSense desktop and Home |
-| `model` | **None yet.** The `model` capability (one-shot `model.complete`) is on App Hub `main` (#24); the OctoSense service is [#95](https://github.com/OctoSense-org/OctoSense/pull/95), a draft, so a call answers `no service answers "model" on this device` | – | – |
-| `octos` | **None in OctoSense.** The four `octos.*` capabilities pass the gate, but no OctoSense shell registers a service for them: a call answers `no service answers "octos" on this device`. Rinx's mini-app host serves them to bundles imported into Rinx | – | – |
+| `news` | News's data service ([`apps/news/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/news/host-service)) | Only `os.*` system apps (`The news service serves system apps only.`) | OctoSense desktop and Home |
+| `glance` | The glance screen ([`crates/shell/src/glance.rs`](https://github.com/OctoSense-org/OctoSense/blob/main/crates/shell/src/glance.rs)) | Any contained app granted `glance` (OctoSense [#86](https://github.com/OctoSense-org/OctoSense/pull/86)), and native modules ([AI-SERVICES](AI-SERVICES.md#publishing-to-the-glance-screen)) | OctoSense desktop and Home |
+| `model` | One-shot model calls, `model.complete` ([`apps/ai-providers/host-service/src/complete`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/ai-providers/host-service/src/complete), OctoSense [#95](https://github.com/OctoSense-org/OctoSense/pull/95)) | Any app granted `model`, within a per-app budget ([AI-SERVICES](AI-SERVICES.md#one-shot-model-calls-model)) | OctoSense desktop and Home |
+| `octos` | The assistant for contained apps ([`crates/ai-host/src/contained.rs`](https://github.com/OctoSense-org/OctoSense/blob/main/crates/ai-host/src/contained.rs), OctoSense [#106](https://github.com/OctoSense-org/OctoSense/pull/106), [#184](https://github.com/OctoSense-org/OctoSense/pull/184)) | Any app granted the `octos.*` name it calls, once the person allows its agent (asked at first use). Rinx's mini-app host also serves them, to bundles imported into Rinx | OctoSense desktop and Home, where the shell hosts a kernel (not iOS) |
 
 `card-host` registers none of these. The device's assistant and what an app
-can and cannot do with it today: [AI-SERVICES](AI-SERVICES.md). A store app that needs something else needs a
+can and cannot do with it: [AI-SERVICES](AI-SERVICES.md). A store app that needs something else needs a
 new service in the shells (below), not a workaround in the bundle.
 
 ## Calling a service from an app
@@ -150,6 +150,15 @@ A new service is a change to a shell, not to an app bundle. It needs, together:
    moved to a worker thread and `send` later; `host.open_sheet(splash_source)`
    / `host.close_sheet()` raise and drop the sheet (`close_sheet_later(app_id)`
    from a worker). Put anything that takes a secret under `sheet.`.
+   `call.may_prompt` is false where no sheet may appear (a home-screen tile,
+   an assistant's tool call): answer with a sentence that tells the person to
+   open the app, because App Hub refuses the sheet there anyway. A request
+   that waits longer than `HostService::timeout` (60 s by default; override it
+   for a slow service, and the clock stops while the sheet is up) answers
+   `the host service timed out`, and a late `send` is dropped ([App Hub#38](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/38), in
+   the OctoSense shells since [OctoSense#243](https://github.com/OctoSense-org/OctoSense/pull/243)). The shells set `call.may_prompt`
+   false for tiles and tool calls with [OctoSense#204](https://github.com/OctoSense-org/OctoSense/pull/204) (open); until then it is
+   always true there.
 3. **Registration in the shell**: `register_host_service(Box::new(Weather))`
    at startup, where the shell's Card runner pumps `services::pump`. Mail's
    crate exposes `octosense_mail_service::register()`.

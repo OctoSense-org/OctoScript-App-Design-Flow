@@ -48,10 +48,11 @@ patch around it here.
 - **Declare every host.** Every `https://` host in `main.splash` is in
   `network.hosts` (with `net`), unless the app legitimately needs `images` or
   `web`. Never `http://`.
-- **No AI feature the device cannot serve.** A contained app cannot ask
-  OctoSense's assistant or a model yet: the `octos.*` capabilities pass the
-  gate, but every call answers `no service answers "octos" on this device`,
-  and `llm` is for system apps only. Never put a model key in an app. Read
+- **Every AI feature is optional.** On an OctoSense device a store app can
+  call `model.complete`, and `octos.*` once the person allows its agent, but
+  `card-host` (and so `tools/octo run`) serves neither: every call there
+  answers `no service answers "…" on this device`. `llm` is for system apps
+  only. Never put a model key in an app. Read
   [docs/AI-SERVICES.md](docs/AI-SERVICES.md) before adding one, and report
   such a feature as not verified on a device.
 - **Only needed capabilities.** Each capability maps to something a screen
@@ -63,7 +64,8 @@ patch around it here.
   for you; after signing, any edit needs stamp and sign again (human).
 - **Keep the bundle clean.** Only `manifest.json`, `listing.json`, the entry,
   artwork and screenshots go in `bundle/` (plus `tools.json`, `AGENT.md` and
-  `skills/` for an app that declares its own agent, which no shell runs yet:
+  `skills/` for an app that declares its own agent; the shells give it a peer
+  and its tools, but do not install `AGENT.md` or skills yet:
   [docs/AI-SERVICES.md](docs/AI-SERVICES.md#an-apps-own-agent)). Notes, keys, logs, review packets
   and `.local-state/` stay out.
 - **Run headless.** Start apps with `tools/octo run … --hidden` (Makepad's

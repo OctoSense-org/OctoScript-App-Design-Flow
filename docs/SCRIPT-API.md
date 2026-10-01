@@ -190,10 +190,11 @@ are refused (`only https:// URLs are allowed`, `host not permitted (private/inte
 The gate additionally refuses a bundle whose source names an undeclared https
 host ([PUBLISHING §2](PUBLISHING.md#2-the-rules-the-gate-enforces)).
 
-`net.web_socket`, `net.socket_stream` and `net.http_server` exist once `net`
-is granted and are **not** held to the host list in this runtime revision
-(`net.rs:781-829, 1104-1243`). Do not use them in a store app; a reviewer will
-ask why.
+`net.web_socket` is held to the host list like `net.http_request`
+(`this app may not reach <url>`). `net.socket_stream` and `net.http_server`
+are refused in a store app, whatever it was granted (`this app may not open a
+raw socket`, `this app may not open a listening server`; makepad#30, `net.rs`
+at the runtime this repository pins).
 
 ## Host services: `host.request`
 
@@ -211,6 +212,17 @@ host.request("mail.list", {account: account.id folder: folder.id offset: 0 limit
   callback runs immediately with `is_ok` false and
   `r.error` = `this app was not granted "mail", which "mail.accounts" needs`;
   the log shows `splash host: refused "mail.accounts": this app was not granted "mail", which "mail.accounts" needs`. **✓ run**
+- Every request answers once ([App Hub#38](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/38), in the OctoSense shells since
+  [OctoSense#243](https://github.com/OctoSense-org/OctoSense/pull/243); not run for this page). A call that waits longer than
+  its service allows (60 s unless the service asks for more; the clock stops
+  while the service's sheet is up) answers `the host service timed out`; a
+  33rd waiting call from one app answers `too many host requests are waiting;
+  try again when some have answered`; from a home-screen tile or an
+  assistant's tool call, a service that needs its sheet refuses with a
+  sentence such as `this surface cannot raise a prompt; open the app to
+  continue` (in the shells with [OctoSense#204](https://github.com/OctoSense-org/OctoSense/pull/204), open: until then they mark every
+  call as able to show a sheet). The limits: App Hub
+  [PUBLISHING § Host services and sheets](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#host-services-and-sheets).
 - `host.capabilities()` → the granted list (`["storage"]` **✓ run**);
   `host.has("net")` → bool (**✓ run**). There is no `host.prompt`.
 - Services, sheets and the Mail methods: [HOST-SERVICES](HOST-SERVICES.md).

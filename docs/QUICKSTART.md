@@ -291,9 +291,9 @@ request `images` or `web`); plain `http://` is never allowed. What each
 capability unlocks and what the person sees: [CAPABILITIES](CAPABILITIES.md).
 Services such as mail: [HOST-SERVICES](HOST-SERVICES.md).
 
-**AI.** A contained app cannot ask OctoSense's assistant or a model yet:
-the four `octos.*` capabilities pass the gate, but in `card-host` and in the
-OctoSense shells a call answers `no service answers "octos" on this device`.
+**AI.** In the OctoSense shells a contained app can call `model.complete`,
+and the four `octos.*` capabilities once the person allows its agent; in
+`card-host` every such call answers `no service answers "…" on this device`.
 Build the app to be complete without it; what exists, a verified call that
 handles "unavailable", and the plan: [AI-SERVICES](AI-SERVICES.md).
 
