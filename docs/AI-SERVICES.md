@@ -502,10 +502,9 @@ What an app author can do today:
   so do not use a field the shells' pin does not know.
 - This repository's `card-host` and `card-studio` are built against the
   runtime its [`native-runtime.lock.json`](../native-runtime.lock.json)
-  pins: Octoscript-Makepad `cb66de07`, which pins Octoscript `dbd48cfb`.
-  That Octoscript has neither `sys.digest` nor `model-copy` in text slots,
-  `sys.chat` or `ChatEntry`, which the shells' pin (`5991dfae`) has. Until
-  the lock moves, such a card can be checked only in an OctoSense checkout.
+  pins: Octoscript-Makepad `62760863`, which pins Octoscript `5991dfae`,
+  the shells' pin. It has `sys.digest`, `model-copy` in text slots,
+  `sys.chat` and `ChatEntry` (OctoScript #40, #53).
 
 If you want to prepare, draft `tools.json` and `AGENT.md` outside `bundle/`,
 from App Hub's News example
@@ -1089,8 +1088,8 @@ view root  Surface(pad: .page) {
 (Its header comment is shortened here.) The shells' L0 checker admits
 `sys.digest`; until #87 lands no shell fills it from the toolbox's runs
 (what such a card then shows was not run for this page). This repository's
-pinned runtime (Octoscript `dbd48cfb`) predates OctoScript#40, so its
-checker does not know the source.
+pinned runtime (Octoscript `5991dfae`) includes OctoScript#40, so its
+checker knows the source as well (not run for this page).
 
 ## AI-written text and in-card chat: `model-copy`, `sys.chat`
 
