@@ -23,10 +23,11 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 
 ## 代码导读
 
-[代码导读（英文）](docs/CODE-WALKTHROUGH.md) 沿着 Python CLI、脚本模板、图像/卡片
-流水线和运行时版本，一路讲到 App Hub 与 OctoSense Shell，解释原生 Rust、Splash 与 L0
-应用的差别、实际运行方式、应用 Agent 的数据访问和对话、跨应用工具限制，以及 Tokio
-所在的层级。`tools/octo` 是开发命令；octos 是独立的 Agent 内核。
+[代码导读（英文）](docs/CODE-WALKTHROUGH.md) 沿着 Python CLI，从脚本模板走到运行中的
+应用，再进入 App Hub 与 OctoSense Shell。“总结已保存的笔记”这一请求解释 Peer、对话、
+数据访问和应答路由；从画面图集到卡片的示例解释图像流水线的默认阶段。导读还介绍原生
+Rust、Splash 与 L0 应用的差别、跨应用工具限制、运行时版本和 Tokio 所在的层级。
+`tools/octo` 是开发命令；octos 是独立的 Agent 内核。
 
 ## 目录
 

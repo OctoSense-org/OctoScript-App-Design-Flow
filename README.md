@@ -27,12 +27,13 @@ live in [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main
 
 ## Code walkthrough
 
-[docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md) traces the Python CLI,
-script template, image/card pipeline and runtime pins into App Hub and the
-OctoSense shell. It explains native Rust versus Splash/L0 apps, how to run
-a bundle, app-agent data access and conversations, cross-app tool limits,
-and where Tokio belongs. `tools/octo` is the development CLI; octos is the
-separate agent kernel.
+[docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md) follows the Python CLI
+from a script template to a running app, then into App Hub and the OctoSense
+shell. A saved-notes request explains peers, conversations, data access and
+reply routing; an atlas-to-card example explains the image pipeline's default
+stages. It also covers native Rust versus Splash/L0 apps, cross-app tool
+limits, runtime pins and Tokio. `tools/octo` is the development CLI; octos
+is the separate agent kernel.
 
 ## Contents
 

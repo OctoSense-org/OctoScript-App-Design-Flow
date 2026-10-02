@@ -14,9 +14,9 @@ selected framework's `runtime.json`.
 | `main.splash` | A script program evaluated by Makepad Script in a Splash isolate; the template here uses it |
 | `page.card` / L0 | Declarative card source parsed/realized by Octoscript and lowered by Octoscript-Makepad into Makepad UI |
 | `tools/octo` | This repository's Python command wrapping App Hub's `hub` and `card-host` |
-| octos | Rust agent kernel managed by OctoSense; unrelated to the spelling of this CLI |
+| octos | Rust agent kernel managed by OctoSense; separate from `tools/octo` |
 | Coding agent | An optional development assistant following this repository's `AGENTS.md` |
-| App agent | A runtime peer that the device's shell prepares for an allowed app |
+| App agent | A model conversation with app-scoped tools; the shell gives it a peer identity for routing |
 
 Splash script and Octoscript L0 reach the same UI host by different parsing
 paths. A native Rust app may embed script UI while keeping its operations
@@ -187,18 +187,46 @@ clients. Phone catalog configuration belongs to the Home build; see
 A runtime app agent is a model conversation restricted to one app/account.
 The shell asks the person to allow it, prepares its peer, installs available
 tool declarations and opens conversation contexts. On desktop, `Ask <app>`
-is a host-owned human chat surface. App-owned `octos.*` screens and
-supported L0 `sys.chat` cards are other entry points; the
+is a host-owned human chat surface. App-owned `octos.*` screens are another
+entry point. L0 `sys.chat` cards also provide chat when the runtime supports
+them; see [§9](#9-pins-checks-and-useful-failure-boundaries) for the current
+authoring-pin limitation. The
 [shell walkthrough](https://github.com/OctoSense-org/OctoSense/blob/c3011a2057ec59738b79466f48ff2ad8d0e60130/docs/architecture-walkthrough.md#6-where-a-person-talks-and-where-the-answer-goes)
 explains their routing.
 
-The system assistant discovers allowed, prepared peers and sends work using
-their **peer slug**. The system lane runs on the app peer's own session;
-its result reaches the peer blackboard for the system assistant to gather.
-The human lane runs on a separate sharing-context session of that peer;
-its events and completion return to the human conversation's event sink.
-Each lane owns its transcript. Sharing provides bounded recent history from
-the other lane, and the shell panel can display both.
+### Follow “Summarize my saved notes”
+
+Assume the app has saved notes in its account folder and the person has
+allowed its agent. This example illustrates the shell route; the standalone
+run in §4 cannot exercise it.
+
+1. **Choose the recipient.** A **peer** is an agent identity used for routing.
+   Its **peer slug** is the name the kernel assigns that identity. The shell
+   routes a person's `Ask <app>` request to that app's prepared peer. The
+   system assistant discovers allowed peers and uses the actual slug when
+   delegating the same request; an app id is not a substitute for that slug.
+2. **Choose the conversation.** A **session** owns a conversation transcript
+   and its model turns. Human requests use a separate **sharing-context
+   session**: a conversation attached to the peer that can receive bounded
+   recent history from its other conversation. The system request uses the
+   app peer's own session. The two keep their own transcripts, while the
+   shell panel can display both.
+3. **Read the notes.** The model requests an available file-read tool; the
+   shell limits it to the exposed account workspace described below. The
+   tool's result becomes input for the model's summary. Notes elsewhere
+   require a supported tool that can read them.
+4. **Return the answer.** The human session sends events and completion to
+   its **event sink**, the receiver that forwards updates to that human
+   conversation. A system-delegated answer reaches the **peer blackboard**,
+   the kernel's record of peer results that the system assistant gathers.
+   Sharing a peer identity does not send both answers to the same receiver.
+
+An app-owned chat uses the `octos.*` route in §5 to start work and retrieve
+its reply/event data. See [AI-SERVICES](AI-SERVICES.md) for that API; the
+host callback and the model's completed answer are separate parts of the
+exchange.
+
+### Data and executable tools
 
 On Unix, the shell gives an app agent bounded `files.list/read/search`
 tools when the person has consented and an account workspace is available.
@@ -254,6 +282,35 @@ connects those objects to Rust code.
 
 ## 8. The image/card design path is a separate pipeline
 
+The script path starts with a text brief and produces `main.splash`.
+The image/card path starts with an existing atlas of 8–12 screens and
+produces native L0 card assets and service bindings. Choose this path when
+the project starts from those visual designs.
+
+### Trace the default stages through one project
+
+Consider an eight-screen project with a supplied atlas, its exact prompt,
+a valid flow manifest and reviewed mappings for each scene. The default
+stages consume those inputs and produce these artifacts:
+
+| Stage | Input → result | Code to follow |
+| --- | --- | --- |
+| `intake` | Atlas + prompt + scene crop rectangles → preserved inputs and normalized reference images in `pipeline-output/intake` | [`atlas.py`](../flows/image-to-card/atlas.py) |
+| `semantic` | Each scene's reference, contract, mapping and service-action files → semantic preflight result | [`native.py`](../flows/image-to-card/native.py), `preflight` |
+| `compile` | Reviewed scene mapping → `page.card`, `page.data.json` and native kit assets | [`native.py`](../flows/image-to-card/native.py), `compile_page` |
+| `bundle` | Compiled scenes + declared artwork → exported card bundle in `wizard/card-bundle` | [`bundle.py`](../flows/image-to-card/bundle.py) |
+| `service-test` | The manifest's explicit `checks.service-test` command arrays → logs and exit results | [`flow.py`](../flows/image-to-card/flow.py), `configured_commands` |
+
+Those are default output paths; the manifest can override them. Before
+`semantic`, scene directories must already contain `reference.png`,
+`contract.json`, `mapped.json`, `semantic-map.json` and `service-actions.json`.
+The default selection does not prepare or author those files, render a
+capture, or grant visual approval. Use the preparation and review steps in
+[the image/card flow](../flows/image-to-card/FLOW.md) first. The exported
+card assets also still need the app hand-off below.
+
+### Follow the dispatcher and extend the plan
+
 [`tools/image-to-appcard-flow.sh`](../tools/image-to-appcard-flow.sh) forwards
 to [`tools/beauty-pipeline.sh`](../tools/beauty-pipeline.sh) with
 `--image-to-appcard-flow`; that dispatcher selects Python and invokes
@@ -274,12 +331,20 @@ The supporting paths have distinct inputs and outputs:
 | [`flows/core`](../flows/core/README.md) | Shared policy, review packets, repair, composition and gates |
 | [`tools/beauty-pipeline.sh`](../tools/beauty-pipeline.sh) | Dispatches the image-card flow, `--ux-image`, `--repair`, or the default Sketch `run_kit.py` path |
 
-`STAGES` lists intake, prepare, observe, measure, map, semantic, compile,
-capture, gate, extract, bundle, service-test, wasm, integrate, web-test and
-hosted-test. The default `--stages` is
-`intake,semantic,compile,bundle,service-test`. Choose further stages for the
-surfaces and checks your project delivers. A browser capture covers the
-browser route; native and hosted stages cover their respective runtimes.
+The default `--stages` is `intake,semantic,compile,bundle,service-test`,
+traced above. `STAGES` also offers these steps for other inputs or delivery
+surfaces:
+
+| Additional stages | Purpose |
+| --- | --- |
+| `prepare`, `observe`, `measure`, `map` | Prepare scene directories and develop their measured mappings |
+| `capture`, `gate` | Capture the native UI and evaluate its recorded evidence |
+| `extract` | Export declared service surfaces as independently mountable native trees |
+| `wasm`, `integrate` | Build the browser runtime bundle and sync it into the website |
+| `web-test`, `hosted-test` | Run the manifest's explicit checks for those delivery routes |
+
+Select the stages your project needs. A browser capture covers the browser
+route; native and hosted stages cover their respective runtimes.
 
 `commands_for` builds stage commands; configured checks use argument arrays.
 `run` resolves the entire selected plan before mutation, then creates a run

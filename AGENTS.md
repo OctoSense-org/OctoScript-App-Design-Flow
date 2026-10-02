@@ -134,6 +134,9 @@ End with a report a person can check without rerunning anything:
 - Distinguish an account workspace from the entire app jail and host
   service storage. Agent access is bounded; do not promise automatic access
   to data written elsewhere by the UI.
+- Explain routing terms through one request and show pipeline inputs and
+  outputs before enumerating stages. Keep worked examples explicit about
+  required files, consent and runtime support.
 - Keep English/Chinese README summaries aligned, preserve dated evidence,
   run `python3 tools/check-links.py`, and also check links in new untracked
   Markdown files. Report unrun native, provider and device paths explicitly.
