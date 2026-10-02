@@ -96,7 +96,7 @@ Rust、Splash 与 L0 应用的差别、跨应用工具限制、运行时版本�
 | 部分 | 状态 |
 | --- | --- |
 | `hub` 中的脚本应用准入检查、扫描与 `os.` id 检查 | 已在 App Hub `main`（[OctoSense-App-Hub#4](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/4)，合并为 `0d36f50b`）。本仓库文档基于其合并前的提交 `79a2c4f` 验证，并于 2026-09-26 在 `main` 上端到端重新跑通。 |
-| 运行时中的隔离脚本应用与宿主服务 | 已在 makepad `main`（[OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30)，合并为 `cd812acd`，现为 `1f3b1ded`），由 `native-runtime.lock.json` 固定的 Octoscript-Makepad `cb66de07` 选定。合并前在 `d94e5e6` 验证。 |
+| 运行时中的隔离脚本应用与宿主服务 | 已在 makepad `main`（[OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30)，合并为 `cd812acd`，现为 `39a9de88`），由 `native-runtime.lock.json` 固定的 Octoscript-Makepad `62760863` 选定。合并前在 `d94e5e6` 验证。 |
 | Shell 中的系统应用与商店应用 | 已在 [OctoSense](https://github.com/OctoSense-org/OctoSense) 的 `main`，桌面端 Shell 与手机 Home 均包含（仓库合并前分别以 OctoSense-Desktop [#36](https://github.com/OctoSense-org/OctoSense/pull/36) 和 OctoSense-ROM #18 合入）。 |
 | 提交途径 | 在 OctoSense-App-Hub 开一个 issue（见下文），如 App Hub 的 [PUBLISHING § Submitting](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#submitting) 所述。其中提到的索引仓库和 release action 尚不存在。 |
 | 在手机上安装自己的应用包 | 不支持。见[运行应用](#运行应用)。 |

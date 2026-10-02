@@ -422,9 +422,8 @@ host.request("model.complete", {
   所以不要使用 Shell 锁定版本不认识的字段。
 - 本仓库的 `card-host` 和 `card-studio` 是按
   [`native-runtime.lock.json`](../native-runtime.lock.json) 锁定的运行时构建的：
-  Octoscript-Makepad `cb66de07`，它锁定 Octoscript `dbd48cfb`。这个 Octoscript 既没有
-  `sys.digest`，也没有文本槽中的 `model-copy`、`sys.chat` 或 `ChatEntry`，而 Shell 锁定的
-  版本（`5991dfae`）都有。在锁定版本更新之前，这类卡片只能在 OctoSense 检出中检查。
+  Octoscript-Makepad `62760863`，它锁定 Octoscript `5991dfae`，与 Shell 锁定的版本相同。它有
+  `sys.digest`、文本槽中的 `model-copy`、`sys.chat` 和 `ChatEntry`（OctoScript #40、#53）。
 
 如果想提前准备，可以参照 App Hub 的 News 示例
 （[`crates/app-policy/tests/fixtures/news-agent`](https://github.com/OctoSense-org/OctoSense-App-Hub/tree/main/crates/app-policy/tests/fixtures/news-agent)），
@@ -941,7 +940,7 @@ view root  Surface(pad: .page) {
 
 （这里省略了部分头部注释。）Shell 的 L0 检查器接受 `sys.digest`；在 #87 合入之前，没有 Shell
 会用工具箱的运行结果填充它（这时卡片显示什么，本文未运行）。本仓库锁定的运行时（Octoscript
-`dbd48cfb`）早于 OctoScript#40，所以它的检查器不认识这个数据源。
+`5991dfae`）包含 OctoScript#40，所以它的检查器也认识这个数据源（本文未运行）。
 
 ## AI 撰写的文字与卡片内对话：`model-copy`、`sys.chat`
 
