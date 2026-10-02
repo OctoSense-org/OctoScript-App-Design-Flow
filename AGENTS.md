@@ -6,7 +6,7 @@ You are in **OctoScript App Design Flow**: the harness for building an
 OctoSense app and taking it to the OctoSense App Hub. Read this file first,
 then the one flow you are following. For repository architecture/documentation
 work, read [docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md): trace code and
-check links/commands without pretending to complete an app-authoring flow.
+check links and commands.
 The screenshot, gate and publishing checklist below applies when delivering
 an app bundle, not when reviewing this repository's documentation.
 
@@ -14,7 +14,7 @@ an app bundle, not when reviewing this repository's documentation.
 
 | It is | It is not (go there instead) |
 | --- | --- |
-| Flows (`flows/*/FLOW.md`): step-by-step procedures from an input to a checked bundle | The runtime: [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad) (Splash isolate, widgets) and [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) (the Card runner); the AppCard assistant: [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard); the L0 parser/checker: [Octoscript](https://github.com/OctoSense-org/Octoscript), and its Makepad lowering/renderer: [Octoscript-Makepad](https://github.com/OctoSense-org/Octoscript-Makepad) |
+| Flows (`flows/*/FLOW.md`): step-by-step procedures from an input to a checked bundle | The runtime: [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad) (Splash isolate, widgets) and [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) (the Card runner); the AppCard assistant: [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard); the L0 parser/checker: [Octoscript](https://github.com/OctoSense-org/Octoscript), and its Makepad lowering/renderer: [Octoscript-Makepad](https://github.com/OctoSense-org/OctoScript-Makepad) |
 | Developer docs (`docs/`): quickstart, script API, capabilities, host services, AI services, publishing, glossary | System apps (News, Photos, Maps, Camera, Mail, AI providers): [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) |
 | `tools/octo`: doctor, new, run, shot, check around the real `card-host` and `hub` | The store, gate, catalog, `hub` and `card-host` source: [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) |
 | Templates (`templates/script-app/`) and worked examples (`examples/`) | The shells that run apps: [OctoSense](https://github.com/OctoSense-org/OctoSense) `phone/` (Home, the phone launcher) and `desktop/` (the desktop shell) |

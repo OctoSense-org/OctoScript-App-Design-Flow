@@ -12,7 +12,8 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 （[templates/script-app](templates/script-app/README.zh-CN.md)）、完整示例
 （[examples/](examples/README.zh-CN.md)），以及 `tools/octo`：一个包装 App Hub 真实
 `card-host` 与 `hub` 二进制的小型命令行工具。它自己从不决定准入：`tools/octo check`
-转发 `hub check` 的输出与退出码，并额外输出封装层进度和 listing 占位符提示。
+先为未签名的包写入摘要，再转发 `hub check` 的输出与退出码，并显示进度和清单（listing）
+占位提示。摘要写入失败时，命令立即返回其错误码，不运行准入检查。
 
 面向：参加黑客松的选手、其他开发 OctoSense 应用的开发者，以及与他们协作的编码 Agent。
 
@@ -20,14 +21,12 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 自 2026-09-27 起位于 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
 （OctoSense-System-Apps 已归档，不再公开）。
 
-## 面向 Rust 初学者的代码导读
+## 代码导读
 
-[代码导读（英文）](docs/CODE-WALKTHROUGH.md) 从 Python CLI、脚本模板、图像/卡片
-流水线和运行时版本追踪到 App Hub 与 OctoSense Shell，解释原生 Rust、Splash 与 L0
+[代码导读（英文）](docs/CODE-WALKTHROUGH.md) 沿着 Python CLI、脚本模板、图像/卡片
+流水线和运行时版本，一路讲到 App Hub 与 OctoSense Shell，解释原生 Rust、Splash 与 L0
 应用的差别、实际运行方式、应用 Agent 的数据访问和对话、跨应用工具限制，以及 Tokio
 所在的层级。`tools/octo` 是开发命令；octos 是独立的 Agent 内核。
-`main.splash` 由 Makepad Script 在 Splash 隔离环境中求值，与 Octoscript L0
-（`page.card`）的解析路径不同。
 
 ## 目录
 
@@ -291,7 +290,7 @@ OctoSense 每个 Shell 运行一个 octos Agent 内核，由用户在系统应�
 | 进行一次性、按 schema 校验的模型调用 | `model` 权限，`host.request("model.complete", …)`，受每日预算限制 | `no service answers "model"` |
 | 在自己的界面上与助手对话 | 4 个 `octos.*` 权限，用户在首次使用的确认页上允许该应用的 Agent 之后 | `no service answers "octos"` |
 | 拥有自己的 Agent：用户可以直接与它对话（Shell 为每个有 Agent 的应用绘制的“Ask <app>”面板、卡片内对话、应用自己的界面），系统 Agent 也可以把任务交给它 | `agent` 块（`"tools": ["ask_user_question"]`），可选 `tools.json`；该 Agent 可以读取应用的账户文件夹（`accounts/device/`） | 只能用 `hub check` 检查 |
-| 向 glance 屏幕发布卡片，卡片内可与应用 Agent 对话，模型写的文字标为 AI 撰写 | `glance` 权限，`glance.publish`（L0 `sys.chat`、`model-copy`） | `no service answers "glance"`；本仓库锁定的运行时早于 `sys.chat` |
+| 向 glance 屏幕发布卡片，卡片内可与应用 Agent 对话，模型写的文字标为 AI 撰写 | `glance` 权限，`glance.publish`（L0 `sys.chat`、`model-copy`） | `no service answers "glance"`；本仓库锁定的开发运行时尚不支持 `sys.chat` 与 `ChatEntry` |
 
 仍在**规划中**：商店应用自己的 `tools.json` 工具真正运行（目前只有系统应用的 host-service
 工具能运行）、宿主根据 `needs` 为 Agent 选择模型、触发器与后台运行、安装 `AGENT.md` 和
