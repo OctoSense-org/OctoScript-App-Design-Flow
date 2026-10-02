@@ -8,14 +8,15 @@ A capability is a permission an app asks for in `manifest.json`:
 ```
 
 The list is closed (`KNOWN_CAPABILITIES` in OctoSense-App-Hub
-`crates/app-policy/src/manifest.rs`). A name not on it is refused by the gate
+`crates/app-contract/src/manifest.rs`, the app contract every host and app
+links since App Hub #46; `crates/app-policy` re-exports it). A name not on it is refused by the gate
 (`policy: app <id> requests unknown capability "<name>"`). Not requested means
 not granted. Before install the store shows two things derived from the
 manifest, never from the listing: one **permission** line per capability
 (`permissions_summary`, `crates/app-hub/src/index.rs`; an app with none shows
 "Draw its screens, and nothing else") and the **privacy** summary
 (`privacy_summary`, `crates/app-policy/src/listing.rs`). Both are quoted
-below as of App Hub `79a2c4f`.
+below as of App Hub `79a2c4f`; the `research`, `crawl`, `prompt` and `agent` rows were rechecked at `41bc959` (2026-10-01).
 
 Ask for the least the app needs; the scan asks the reviewer to "name any grant
 nothing on screen needs".
@@ -37,7 +38,9 @@ nothing on screen needs".
 | `news` | The `news` host service: stories the device collects on a schedule from its feeds and topic feeds (`news.list`, `news.read`, …). | Permission: "Read news the device collects from its feeds and topics". Privacy: "Reads news the device collects from its feeds and topics." | On App Hub `main` (#18) and in the shells' App Hub pin. The service in OctoSense (`apps/news/host-service`) answers only `os.*` apps, so a store app gains nothing from it: do not request it. |
 | `glance` | The `glance` host service: publishing L0 cards to the glance screen (`glance.publish`, `glance.withdraw`, `glance.list`). | Permission: "Show cards on your glance screen". Privacy: "Shows short cards on your glance screen; each opens only this app." | On App Hub `main` (#22) and in the shells' App Hub pin. The OctoSense service (`crates/shell/src/glance.rs`) serves any contained app granted `glance` ([OctoSense#86](https://github.com/OctoSense-org/OctoSense/pull/86)); `card-host` does not. See [AI-SERVICES](AI-SERVICES.md#publishing-to-the-glance-screen). |
 | `model` | The `model` host service: one-shot model calls (`model.complete` with `{task, input, schema, class}`, `class` `fast` or `strong`); the host picks the model from the person's providers, checks the reply against the schema and keeps a daily budget. | Permission: "Send what you give it to the AI provider you configured, within a daily budget". Privacy: "Sends what you give it to the AI provider you configured, for one-off answers within a daily budget; it never sees your API keys." | On App Hub `main` (#24). The OctoSense shells serve it ([OctoSense#95](https://github.com/OctoSense-org/OctoSense/pull/95)); in `card-host` a call answers `no service answers "model" on this device`. See [AI-SERVICES](AI-SERVICES.md#one-shot-model-calls-model). |
-| `prompt` | The app asking the person questions of its own. A service's sheet (Mail's sign-in, AI providers' key sheet) does not need it. | Permission: "Ask you questions". Privacy: "May ask you questions." | Resolves to `AppPolicy::may_prompt`, which no host reads, and there is no app-side prompt API (`host.prompt` does not exist), so **no current service uses it**; do not request it. Whether a service may raise its sheet is the surface's call, not this capability's: the app in the foreground may, a home-screen tile or an assistant's tool call may not (each request's `may_prompt`, [App Hub#38](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/38); the OctoSense shells have it since [OctoSense#243](https://github.com/OctoSense-org/OctoSense/pull/243) but mark every call `may_prompt: true` until [OctoSense#204](https://github.com/OctoSense-org/OctoSense/pull/204), open). |
+| `prompt` | The app asking the person questions of its own. A service's sheet (Mail's sign-in, AI providers' key sheet) does not need it. | Permission: "Ask you questions". Privacy: "May ask you questions." | Resolves to `AppPolicy::may_prompt`, which no host reads, and there is no app-side prompt API (`host.prompt` does not exist), so **no current service uses it**; do not request it. An app's **agent** asks the person questions through the kernel's `ask_user_question` instead, declared in `agent.tools`, not here (the store shows the same words, "Ask you questions"; [AI-SERVICES](AI-SERVICES.md#what-an-apps-agent-gets-today)). Whether a service may raise its sheet is the surface's call, not this capability's: the app in the foreground may, a home-screen tile or an assistant's tool call may not (each request's `may_prompt`, [App Hub#38](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/38); the OctoSense shells set it false for glance tiles and tool calls since [OctoSense#204](https://github.com/OctoSense-org/OctoSense/pull/204), merged 2026-10-01). |
+| `research` | Searching through the system toolbox for the app's **agent** (`toolbox.search`, `toolbox.web_read`, `workflow.run`, `workflow.fork`), within the manifest's top-level `research` scope (languages, regions, domains, recency, results per search). The host runs every search; the app never fetches the sites. | Permission: "Search …" with the scope in words. Privacy: "Searches …; the device runs each search, within these limits." | Added in App Hub #26. Needs the `research` object (`{}` means no limits) or the gate refuses: `requests research but declares no research scope` (**✓ run 2026-10-01**). The OctoSense shells grant it to system apps (`os.*`) only for now, where built with `toolbox-peers` ([AI-SERVICES](AI-SERVICES.md#the-system-toolbox)); a store app gains nothing yet. |
+| `crawl` | Crawling a site through the system toolbox (`toolbox.deep_crawl`), up to the scope's `max_depth` and `max_pages`, inside its domain lists. More reach than `research`; neither implies the other. | Permission: "Crawl websites, …, which reaches more than searching". Privacy: "Crawls websites, …: this reaches more of the web than searching." | Same scope object and the same system-apps-only rule as `research`. |
 | `ledger.read` | Reading the shared ledger through a `ledger` host service. | Permission: "Read your shared data". Privacy: "Reads your shared data." | Grants `ledger.read` only; `ledger.write` is a different name. **No shell registering a `ledger` service was found**; unverified. |
 | `clipboard` | Clipboard access. | Permission: "Use the clipboard". Privacy: "Uses the clipboard." | **No script API gated by `clipboard` was found** in this runtime revision; unverified. |
 
@@ -64,13 +67,24 @@ consent; a prefix (`octos.`, `matrix.`) or any other name is refused.
 | `storage.max_bytes` | Whole-jail quota | 16 MiB / 64 MiB |
 | `compute.instruction_budget` | Script instructions per session, cumulative | 20 000 000 / 4 000 000 000 |
 | `compute.memory_bytes` | Isolate heap | 64 MiB / 128 MiB |
-| `agent` | An assistant session limited to the app's jail and hosts: `profile` one of `read-only`, `workspace-write`, `workspace-write-never-ask`; `tools` from `ledger.read ledger.write net.fetch storage.read storage.write card.render`; iterations ≤ 8, tokens ≤ 200 000. The person sees "Runs an assistant limited to this app's own data…" (or "Runs no assistant."). **Nothing runs this agent yet**, in any shell; see [AI-SERVICES](AI-SERVICES.md#an-apps-own-agent). App Hub `main` adds `model`, `background`, `triggers`, `instructions` and `skills`, which the shells' pinned App Hub refuses. | – |
+| `agent` | The app's own agent: `profile` one of `read-only`, `workspace-write`, `workspace-write-never-ask`; `tools` from `ledger.read ledger.write net.fetch storage.read storage.write card.render` and the kernel's `ask_user_question` (no other kernel tool); iterations ≤ 8, tokens ≤ 200 000; `model` needs and tier, `background`, `triggers`, `instructions` (`AGENT.md`) and `skills`. The person sees "Runs an assistant limited to this app's own data…" (or "Runs no assistant."). The OctoSense shells give a declared agent its own peer once the person allows it, with `ask_user_question` and read tools over its account folder; they do not yet choose its model, fire its triggers, install `AGENT.md` or skills, or implement the generic host tools. See [AI-SERVICES](AI-SERVICES.md#an-apps-own-agent). | – |
+| `storage.accounts` | `true`: data and one agent per account; default one `device` folder | – |
+| `storage.agent_workspace` | `"account"` (default): the agent reads its account's folder; `"none"`: no files | – |
+| `storage.cache_max_bytes` | Ceiling for the jail's `cache/` | – |
+| `research` (top-level object) | The scope of `research` and `crawl`; required with either, refused without both | – |
 
 Values above the ceiling are clamped, not refused; an absent value gets the
 ceiling. The `grants:` line of `hub check` shows the result.
 
 ## Reserved and absent names
 
+- **Reserved names** (`RESERVED_NAMES` in `crates/app-contract/src/manifest.rs`):
+  no app id may be, or end in, `agents apphub appcard card dev octos os
+  reference rinx sheets shell system terminal toolbox workflow`, because a
+  host keys an app's folders, tools and consent by its id and its tools by
+  the id's last segment. **✓ run 2026-10-01**: `[refused] identity: app id
+  "dev.example.terminal" ends in "terminal", which is reserved: its tools
+  would be terminal.*, a native app's or the host's`.
 - **`os.*` ids** (not a capability, an id prefix) are reserved for system apps.
   The gate refuses them (`[refused] identity: <id> is under os., which is
   reserved for system apps that ship with the device`), no store installs one

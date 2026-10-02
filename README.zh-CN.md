@@ -221,14 +221,16 @@ my-app/                     the app's own git repository
 `capabilities`（申请的权限）、`network.hosts`（纯主机名，需配合 `net`），以及由
 `hub stamp` 写入的 `integrity.bundle_blake3`（`hub sign-manifest` 之后还有签名）。可选的
 申请项（`storage.max_bytes`、`compute.*`、`agent`）会被限制在宿主的上限以内；
-`hub check` 输出的 `grants:` 行就是实际授予的结果。
+`hub check` 输出的 `grants:` 行就是实际授予的结果。`storage` 还可以声明应用是否按账户
+保存数据、它的 Agent 能读什么（`storage.accounts`、`storage.agent_workspace`）。应用 id
+不能是、也不能以宿主保留的名字结尾（`terminal`、`rinx`、`system`、`toolbox` 等）。
 
 **Capabilities（权限）** 是 App Hub 定义的封闭列表：`storage`、`net`、`images`、`web`、
-`camera`、`microphone`、`library`、`location`、`mail`、`llm`、`news`、`glance`、`model`、`prompt`、`ledger.read`、
+`camera`、`microphone`、`library`、`location`、`mail`、`llm`、`news`、`glance`、`model`、`research`、`crawl`、`prompt`、`ledger.read`、
 `clipboard`，另有 49 个精确的宿主服务名（设备助手的 4 个 `octos.*`，Rinx 的 45 个 `matrix.*`）。未申请即不授予；安装前商店会为每项权限向用户显示一行通俗说明。只申请应用真正
 需要的。每项权限解锁什么、哪些目前还没有可用路径（`prompt`、`ledger.read`、`clipboard`）、
-哪些只有系统应用能用（`llm`）：[docs/CAPABILITIES.md](docs/CAPABILITIES.md)。
-助手相关权限目前能做什么（在 OctoSense 中暂时什么也做不了）：
+哪些只有系统应用能用（`llm`、`news`，以及暂时的 `research` 和 `crawl`）：[docs/CAPABILITIES.md](docs/CAPABILITIES.md)。
+助手相关权限和应用自己的 Agent 目前在 OctoSense 中能做什么：
 [docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)。
 
 **`listing.json`**：副标题、描述、类别、关键词、图标、截图、实际测试过的平台、年龄分级，
@@ -269,14 +271,24 @@ my-app/                     the app's own git repository
 ## 应用中的 AI
 
 OctoSense 每个 Shell 运行一个 octos Agent 内核，由用户在系统应用 AI providers 中配置；
-密钥永远不会到达应用。**隔离运行的应用目前还不能使用它**：准入检查接受 4 个 `octos.*`
-权限，但没有任何 OctoSense Shell 向应用提供这些服务，`card-host` 也不提供任何宿主服务。
-`llm` 是只供系统应用使用的模型提供方管理服务，一次性调用模型的 `model` 权限（App Hub #24）
-目前也还没有任何 Shell 提供服务。应用自己的 Agent（`tools.json`、`AGENT.md`、
-skills、触发器）已被 App Hub `main` 接受，并在 OctoSense ADR 0002 中规划，但目前没有任何
-地方运行它。请把应用做成不依赖 AI 也完整可用；添加 AI 功能之前先读
+密钥永远不会到达应用。内核上运行着**系统 Agent**（Shell 自己的助手，用户在系统对话中与它交谈），
+以及每个声明了 Agent 的应用各自的**应用 Agent**，每个都在宿主持有的独立 peer 上。
+截至 2026-10-01，在 OctoSense `main` 上（细节与出处见
+[docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)）：
+
+| 应用可以 | 方式 | 在 `card-host` 中 |
+| --- | --- | --- |
+| 进行一次性、按 schema 校验的模型调用 | `model` 权限，`host.request("model.complete", …)`，受每日预算限制 | `no service answers "model"` |
+| 在自己的界面上与助手对话 | 4 个 `octos.*` 权限，用户在首次使用的确认页上允许该应用的 Agent 之后 | `no service answers "octos"` |
+| 拥有自己的 Agent：用户可以直接与它对话（Shell 为每个有 Agent 的应用绘制的“Ask <app>”面板、卡片内对话、应用自己的界面），系统 Agent 也可以把任务交给它 | `agent` 块（`"tools": ["ask_user_question"]`），可选 `tools.json`；该 Agent 可以读取应用的账户文件夹（`accounts/device/`） | 只能用 `hub check` 检查 |
+| 向 glance 屏幕发布卡片，卡片内可与应用 Agent 对话，模型写的文字标为 AI 撰写 | `glance` 权限，`glance.publish`（L0 `sys.chat`、`model-copy`） | `no service answers "glance"`；本仓库锁定的运行时早于 `sys.chat` |
+
+仍在**规划中**：商店应用自己的 `tools.json` 工具真正运行（目前只有系统应用的 host-service
+工具能运行）、宿主根据 `needs` 为 Agent 选择模型、触发器与后台运行、安装 `AGENT.md` 和
+skills，以及面向商店应用的系统工具箱。`llm` 是只供系统应用使用的模型提供方管理服务。
+请把应用做成不依赖 AI 也完整可用；添加 AI 功能之前先读
 [docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)：准确的名称、一个经过验证并处理
-“不可用”状态的调用、用户看到什么、错误信息，以及规划中的路线。
+“不可用”状态的调用、用户看到什么、错误信息，以及规划中的内容。
 
 ## 运行应用
 
@@ -388,7 +400,7 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 | [docs/SCRIPT-API.md](docs/SCRIPT-API.md) | Splash 语言及隔离应用可调用的全部 API |
 | [docs/CAPABILITIES.md](docs/CAPABILITIES.md) | 每项权限：解锁什么、用户看到什么、规则 |
 | [docs/HOST-SERVICES.md](docs/HOST-SERVICES.md) | `host.request`、面板、“密钥归宿主所有”、新增宿主服务 |
-| [docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)（[English](docs/AI-SERVICES.md)） | OctoSense 的助手（octos）：应用目前能用什么、经过验证的示例、规划中的内容（应用自己的 Agent、它的工具、系统工具箱、glance 卡片、`sys.digest`），附带日期的状态表 |
+| [docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)（[English](docs/AI-SERVICES.md)） | OctoSense 的助手（octos）：系统 Agent 与应用 Agent、应用目前能用什么、经过验证的示例、应用自己的 Agent 及其工具、系统工具箱、glance 卡片、`sys.digest`、AI 撰写的文字与卡片内对话（`sys.chat`），附带日期的状态表 |
 | [docs/PUBLISHING.md](docs/PUBLISHING.md) | 发布到 App Hub，附经过验证的输出和检查清单 |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | 每个术语只有一个含义 |
 | [docs/NATIVE-WORKSPACE.md](docs/NATIVE-WORKSPACE.md)、[docs/l0/](docs/l0/) | 原生运行时的兄弟仓库配置；L0 卡片示例 |

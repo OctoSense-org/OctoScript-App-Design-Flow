@@ -3,20 +3,28 @@
 [English](AI-SERVICES.md) | 简体中文
 
 用本仓库开发的脚本应用如何使用 OctoSense 内部的助手（Shell 运行的 octos Agent 内核）、
-目前哪些可用、哪些还在规划中。本文描述 2026-09-30 的状态：App Hub `main` 为 `0f33211`，
-OctoSense `main` 为 `7082ff5`（它锁定 App Hub `0f332112`）。自本文初稿（2026-09-27）以来，
+目前哪些可用、哪些还在规划中。本文描述 2026-10-01 的状态：App Hub `main` 为 `41bc959`，
+OctoSense `main` 为 `f52620c`（它锁定 App Hub `58c3c8ae`、octos `ae230ce0`、Octoscript
+`5991dfae` 和 Octoscript-Makepad `8f103d0c`）。自本文初稿（2026-09-27）以来，
 Shell 增加了 `model` 服务、在首次使用征得同意后向隔离应用提供的 `octos` 服务、面向所有获得
 授权的应用的 `glance`，以及为每个声明了 Agent 的应用提供的 Agent（一个 peer 和一个
-“Ask <app>”面板）。Shell 一侧的说明见 OctoSense 的
-[`docs/ai-services.zh-CN.md`](https://github.com/OctoSense-org/OctoSense/blob/main/docs/ai-services.zh-CN.md)
-和 [`docs/architecture.zh-CN.md`](https://github.com/OctoSense-org/OctoSense/blob/main/docs/architecture.zh-CN.md)。
+“Ask <app>”面板）。自 2026-09-30 起，Shell 还为这个 Agent 提供 `ask_user_question` 和读取
+它自己文件夹的工具，按账户各保留一个 Agent，在应用被卸载时清除它，允许用户在 L0 卡片内与它
+对话（`sys.chat`，模型写的文字标为 AI 撰写），并让系统应用的 Agent 通过自己的工具把卡片放到
+glance 屏幕上（Mail、Calendar）。Shell 一侧的说明见 OctoSense 的
+[`docs/ai-services.zh-CN.md`](https://github.com/OctoSense-org/OctoSense/blob/main/docs/ai-services.zh-CN.md)、
+[`docs/architecture.zh-CN.md`](https://github.com/OctoSense-org/OctoSense/blob/main/docs/architecture.zh-CN.md)
+和 [ADR 0004](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0004-native-apps-hosting-and-peers.md)。
 
 后面几节介绍正在其上构建的内容：在应用包中声明应用自己的 Agent、它提供的工具、系统工具箱、
-发布到 glance 屏幕、`sys.digest` 卡片，以及 News 的端到端流程。那里的每项功能都标为
+发布到 glance 屏幕、`sys.digest` 卡片、AI 撰写的文字与卡片内对话，以及 News 的端到端流程。那里的每项功能都标为
 **可用**（已合入所列仓库的 `main`，可按描述使用）或**即将推出**（在所列的未合并 PR 中，
 或只存在于 ADR 中：展示的形状在合入前可能变化，暂时不要让提交依赖它）。标为 **✓ 已运行**
 的命令在 2026-09-27 为本文实际运行过（macOS，Apple silicon）；其他命令均引自所列来源，并
-标明未运行。2026-09-30 的更新引自所列 PR 和代码，未运行。
+标明未运行。2026-09-30 的更新引自所列 PR 和代码，未运行。2026-10-01 的更新是在上述版本的
+代码中读到的；标为 **✓ 2026-10-01 已运行** 的 `hub check` 输出来自按 App Hub `main` `41bc959`
+（`app-contract`、`app-policy` 和 `app-hub` 三个 crate）构建的 `hub`；本文没有任何内容是在
+OctoSense Shell 中运行的。
 
 > **开发应用不需要任何 AI。** 本仓库中没有任何东西会调用模型或需要 API key，你可以使用
 > 任何编程 Agent（Codex、Claude Code、Cursor、Gemini CLI、GitHub Copilot 等），也可以
@@ -29,6 +37,7 @@ Shell 增加了 `model` 服务、在首次使用征得同意后向隔离应用�
 
 - [简短回答](#简短回答)
 - [助手的构成](#助手的构成)
+- [系统 Agent 与应用 Agent](#系统-agent-与应用-agent)
 - [助手相关权限](#助手相关权限)
 - [最小调用示例与“不可用”状态](#最小调用示例与不可用状态)
 - [用户看到什么](#用户看到什么)
@@ -41,6 +50,7 @@ Shell 增加了 `model` 服务、在首次使用征得同意后向隔离应用�
 - [系统工具箱](#系统工具箱)
 - [发布到 glance 屏幕](#发布到-glance-屏幕)
 - [绑定到结果的卡片：`sys.digest`](#绑定到结果的卡片sysdigest)
+- [AI 撰写的文字与卡片内对话：`model-copy`、`sys.chat`](#ai-撰写的文字与卡片内对话model-copysyschat)
 - [卡片级别与渲染评审](#卡片级别与渲染评审)
 - [端到端示例：News](#端到端示例news)
 - [不接真实提供方的测试](#不接真实提供方的测试)
@@ -58,9 +68,10 @@ Shell 增加了 `model` 服务、在首次使用征得同意后向隔离应用�
 | 声明 `octos.turn.start`（及同组权限）并调用 | 准入检查接受这些名称。在 `card-host` 中调用返回 `no service answers "octos" on this device`（已验证，见下文）。在托管内核的 OctoSense Shell 中，第一次调用会等待用户允许该应用的 Agent（`Waiting for the person to allow this app's agent (OctoSense asks the first time)`）；之后应用与自己的 peer 对话（[OctoSense#106](https://github.com/OctoSense-org/OctoSense/pull/106)、[#120](https://github.com/OctoSense-org/OctoSense/pull/120)、[#184](https://github.com/OctoSense-org/OctoSense/pull/184)）。 |
 | 声明 `model` 并调用 `model.complete` | 准入检查接受它（App Hub [#24](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/24)），OctoSense Shell 也提供它（[OctoSense#95](https://github.com/OctoSense-org/OctoSense/pull/95)，已合并）：一次性、按 schema 校验的调用，由用户自己的 AI 提供方回答。`card-host` 返回 `no service answers "model" on this device`。见[一次性模型调用](#一次性模型调用model)。 |
 | 声明 `llm` | 准入检查接受它，但 `llm` 服务用于管理设备的 AI 提供方（没有发送提示词的方法），并且只响应 `os.*` 系统应用：`llm is for OctoSense's own apps.`。不要申请它。 |
-| 在 `manifest.json` 中声明 `agent` | 准入检查接受并按上限裁剪。用户允许后，Shell 为应用分配自己的 peer，用户可以在 Shell 的“Ask <app>”面板中与它对话（[OctoSense#184](https://github.com/OctoSense-org/OctoSense/pull/184)）。根据 `needs` 选择模型、触发器和后台运行仍**即将推出**（见[应用自己的 Agent](#应用自己的-agent)）。 |
-| 附带 `tools.json`、`AGENT.md`、`skills/` | 准入检查接受。Shell 把应用包中的工具注册到应用的 peer，并转发对它们的调用（[OctoSense#145](https://github.com/OctoSense-org/OctoSense/pull/145)、[#184](https://github.com/OctoSense-org/OctoSense/pull/184)）；`AGENT.md` 和技能还不会装进 peer。 |
-| 调用 `glance.publish` | 任何被授予 `glance` 权限的隔离应用都会得到响应（[OctoSense#86](https://github.com/OctoSense-org/OctoSense/pull/86)）（见[发布到 glance 屏幕](#发布到-glance-屏幕)）。 |
+| 在 `manifest.json` 中声明 `agent` | 准入检查接受并按上限裁剪。用户允许后，Shell 为应用分配自己的 peer，用户可以在 Shell 的“Ask <app>”面板中与它对话（[OctoSense#184](https://github.com/OctoSense-org/OctoSense/pull/184)），系统 Agent 也可以把任务交给它。它的 Agent 可以保留内核的 `ask_user_question`（[OctoSense#190](https://github.com/OctoSense-org/OctoSense/pull/190)），并能读取自己的账户文件夹（[#205](https://github.com/OctoSense-org/OctoSense/pull/205)、[#249](https://github.com/OctoSense-org/OctoSense/pull/249)）。根据 `needs` 选择模型、触发器和后台运行仍**即将推出**（见[应用自己的 Agent](#应用自己的-agent)）。 |
+| 附带 `tools.json`、`AGENT.md`、`skills/` | 准入检查接受。Shell 把应用包中的工具注册到应用的 peer，并转发对它们的调用（[OctoSense#145](https://github.com/OctoSense-org/OctoSense/pull/145)、[#184](https://github.com/OctoSense-org/OctoSense/pull/184)），但调用只会在应用命名空间对应的宿主服务上运行，所以目前只有系统应用的工具能运行（News、Mail、Calendar）；商店应用的工具会返回错误（见[应用的 Agent 目前得到什么](#应用的-agent-目前得到什么)）。`AGENT.md` 和技能还不会装进 peer。 |
+| 调用 `glance.publish` | 任何被授予 `glance` 权限的隔离应用都会得到响应（[OctoSense#86](https://github.com/OctoSense-org/OctoSense/pull/86)）：一张 L0 卡片，或一张可交互的 Splash 卡片，可选同时发出通知（见[发布到 glance 屏幕](#发布到-glance-屏幕)）。 |
+| 在 L0 卡片中使用 `sys.chat` 或 `model-copy` 文字 | OctoSense Shell 会用发布应用的 Agent 回答其 glance 卡片中的 `sys.chat`，并把模型写的文字标为 AI 撰写后绘制（[OctoSense#263](https://github.com/OctoSense-org/OctoSense/pull/263)、[OctoScript#53](https://github.com/OctoSense-org/OctoScript/pull/53)）。本仓库锁定的运行时早于这两者，所以这里 `card-host` 和 `card-studio` 使用的 L0 检查器不认识它们（读自 [`native-runtime.lock.json`](../native-runtime.lock.json)，未运行）（见[AI 撰写的文字与卡片内对话](#ai-撰写的文字与卡片内对话model-copysyschat)）。 |
 | 把模型提供方的 API key 放进应用包 | 绝不允许。应用中不得有密钥、token 或密码（[AGENTS.md](../AGENTS.md#rules-for-every-app)）。 |
 
 应用在 `net` 下声明的普通 HTTPS API 只是一次网络请求，即使背后运行着模型也是如此。
@@ -74,9 +85,11 @@ Shell 增加了 `model` 服务、在首次使用征得同意后向隔离应用�
   `OCTOS_APP_CORE_BIN` 指定的二进制，iOS 没有内核。
 - **AI providers**（一个系统应用）是用户选择模型、输入密钥的地方，密钥只在宿主自有的面板
   上输入。密钥保存在平台的密钥存储中，任何应用都看不到。
-- **应用 peer。** 获得助手授权的应用会得到自己的 octos peer：私有的会话上下文、工作区和
-  记忆（`app/<app>/acct-<hash>`），归 Shell 的系统 Agent 所有。应用拿到的是一个受限的
-  服务，永远拿不到内核、提供方或密钥。
+- **应用 peer。** 获得助手授权的应用会为它保存的每个账户得到一个自己的 octos peer（除非
+  manifest 写明 `storage.accounts: true`，否则只有一个 `device` 账户）：私有的会话上下文、
+  工作区（该账户的文件夹，`apps/<app>/accounts/<account>/`）和记忆
+  （`app/<app>/acct-<hash>`），归 Shell 的系统 Agent 所有（`crates/app-peers`）。应用拿到的
+  是一个受限的服务，永远拿不到内核、提供方或密钥。
 - **审批属于用户，并且在发起请求的应用中进行。** 系统 Agent 从不替应用审批。
 
 Shell 的宿主策略授权的**原生模块**会得到 peer（随附的策略授权的是 Matrix 客户端 Rinx：
@@ -87,16 +100,81 @@ peer（`card.<app id>`），通过 Shell 的 `octos` 宿主服务
 （[#120](https://github.com/OctoSense-org/OctoSense/pull/120)、[#184](https://github.com/OctoSense-org/OctoSense/pull/184)）。`OCTOSENSE_CONTAINED_APPS=1` 对所有应用跳过这个询问
 （开发者用的覆盖开关），`0` 则关闭它。
 
+## 系统 Agent 与应用 Agent
+
+OctoSense `main` 的做法，读自 `crates/shell/src/agents.rs`、`crates/ai-host/src/contained.rs`、
+`crates/shell/src/questions/` 和 `crates/app-peers`（ADR 0004 §4、§6）。本文未运行。
+
+- **哪些应用有 Agent。** manifest 中声明了 `agent` 块或任意 `octos.*` 名称、或者应用包附带
+  `tools.json` 的脚本应用；以及 Shell 条目授予了 `octos.*` 的原生应用（Rinx）。Settings ›
+  Assistant 列出每一个，并可以关闭它。2026-10-01 时，系统应用 News、Mail 和 Calendar 都有
+  Agent；它们都没有声明 `octos.*` 名称，所以由 Shell 驱动它们的 Agent，应用本身从不调用
+  `host.request("octos…")`。
+- **首次使用。** 用户在首次使用的确认页上允许应用的 Agent。这个确认页可以由应用自己的第一次
+  `octos.*` 调用、它的“Ask <app>”面板（桌面端栏上的“Ask <app>”或 Shift+F8），或者系统
+  Agent 的 `agents.ask` 引出。此后 Shell 会在启动时准备好这个 peer 并注册它的工具，无论应用
+  是否打开。脚本应用的 peer 是 `card.<app id>`（例如 `card.os.mail`），永远不会是原生模块的
+  peer。
+- **系统 Agent** 是 Shell 自己的会话（`_main:api:octosense#system`），用户在系统对话（助手
+  窗格：Dock 上的 Assistant 图标、桌面端的 F8、手机主屏上的磁贴）中与它交谈。它用
+  `peer_list` 看到每个已准备好的应用 peer，用 `peer_send_input` 把任务交给其中一个，用
+  `peer_gather` 读取对方写下的结果，并通过 `agents.list` / `agents.ask` 向 Shell 询问那些
+  用户尚未允许其 Agent 的应用。它不持有任何应用的工具，从不替应用审批，也不能关闭应用的 peer。
+- **每个应用 Agent 有两条通道。** 系统 Agent 的请求走一条通道，用户的请求走另一条，两者并行
+  并共享历史；用户可以不经过系统 Agent，直接与应用的 Agent 对话
+  （见[下文](#用户直接与应用的-agent-对话)）。
+- **提问。** 保留了 `ask_user_question` 的 Agent 可以向用户提问。由用户或应用发起的回合中的
+  问题显示在应用的对话里；由系统 Agent 发起的回合中的问题转到系统对话。10 分钟内无人回答
+  就会被拒绝。
+- **示例**（OctoSense#267 实际运行的形状，在那里用真实模型运行；本文未运行）：用户请系统
+  Agent 放一张日历卡片；系统 Agent 用 `peer_send_input` 把请求交给 Calendar 的 Agent（如果
+  用户还没有允许，会先出现 Calendar 的首次使用确认页）；Calendar 的 Agent 调用自己的一个工具
+  （`calendar.notify`、`calendar.agenda`），它的宿主服务填好随服务附带的固定 L0 卡片，并以
+  Calendar 的身份发布到 glance 屏幕。模型从不编写卡片代码。
+- **生命周期。** peer 在多次启动之间保留记忆。退出某个账户会暂停该账户的 Agent；删除账户或
+  卸载应用会清除它（octos `peer/purge`，
+  [OctoSense#248](https://github.com/OctoSense-org/OctoSense/pull/248)），所以重新安装后是一个
+  新的 Agent。
+
+### 用户直接与应用的 Agent 对话
+
+应用的 Agent 不只能通过系统 Agent 联系到：用户也可以直接与它对话，有三个地方，都属于同一个对话
+中的**用户通道**。在用户于首次使用确认页上允许该应用的 Agent 之前，什么都不会运行。读自 OctoSense
+`f52620c` 的 `crates/shell/src/app_chat/mod.rs`、`crates/shell/src/glance_chat.rs` 和
+`crates/ai-host/src/contained.rs`；本文未运行。
+
+| 在哪里 | 用户怎么做 | 应用作者要写什么 |
+| --- | --- | --- |
+| Shell 的 **“Ask <app>”面板** | 在桌面端从栏上的“Ask <app>”按钮、Shift+F8，或 Setup › Assistant › “Ask this app's agent”，为当前焦点应用的 Agent 打开它。它位于系统对话的右侧。发送的是用户自己的回合，与系统 Agent 的通道并行运行；面板的 Stop 只停止用户的回合，另有一行“Stop the system agent's task”停止另一条通道的回合。应用的 Agent 在用户通道中提出的问题在这里回答。 | 什么都不用写：Shell 为**每个**有 Agent 的应用绘制这个面板，无论应用自己有没有对话界面。 |
+| glance 屏幕上的**卡片内对话** | 在应用发布的卡片中输入；应用自己的 Agent 在卡片中回答。 | 一张带 `sys.chat` 和 `ChatEntry` 的 L0 卡片，用 `glance` 发布（见[下文](#ai-撰写的文字与卡片内对话model-copysyschat)）。 |
+| **应用自己的界面** | 使用应用绘制的对话或“提问”控件。 | 在 `octos` 服务上调用 `host.request("octos.session.open" / "octos.turn.start" / "octos.session.history" / "octos.turn.interrupt", …)`，并在 `capabilities` 中列出这些名称（见[最小调用示例](#最小调用示例与不可用状态)）。 |
+
+- **一个对话，两条通道。** 系统 Agent 的通道是 peer 自己的会话（`_main:api:octosense#peer-…`）；
+  用户的通道是一个以共享历史方式打开的请求上下文（`…#peerctx-…`）。每条通道都能只读地看到另一条
+  通道最近的消息。回合按发言者标注，事件和 `octos.session.history` 的每一行都带有 `lane`
+  （`person` 或 `system_agent`）和 `speaker`。
+- 来自面板或系统对话的回合是用户本人的（`TurnTrigger::Person`）；应用用 `octos.turn.start`
+  发起的回合，或卡片中的对话，会被标为用户的，但在审批规则中算作应用自己的运行
+  （见[上文](#助手相关权限)）。
+- **Shell 审批界面上的 Stop**（某个应用 Agent 的待审批事项和问题下方的按钮，
+  `approvals::stop_agent`）会拒绝该 Agent 正在等待的事项，并停止它在**两条**通道中正在运行的
+  回合：设备归用户所有。
+- **在手机上**，这个面板被构建成全屏的面板，但在 `main` 上没有任何触控入口能打开它（手机的
+  Assistant 磁贴打开的是系统对话）；未在设备上运行。应用自己的界面和它的 glance 卡片在手机上与
+  桌面端一样可用。
+- 原生模块和进程应用通过各自的通道（注入服务上的 `open_conversation`，或 peer link）到达同一条
+  用户通道；脚本应用使用上面的 `octos.*` 名称。
+
 ## 助手相关权限
 
-四个精确名称，每个都是单独的授权（App Hub `crates/app-policy/src/manifest.rs` 中的
+四个精确名称，每个都是单独的授权（App Hub `crates/app-contract/src/manifest.rs` 中的
 `KNOWN_CAPABILITIES`；名称及其商店文字在 `crates/app-policy/src/services.rs`）。前缀不授予任何权限：`octos.` 或 `octos.admin`
 会被准入检查拒绝。
 
 | 权限 | 调用 | 参数 | 返回（`r.data`） | 商店显示 |
 | --- | --- | --- | --- | --- |
 | `octos.session.open` | `octos.session.open` | `{}` | `{open: true, model: {lane, provider, model} 或 nil}` | Open its own conversation with the assistant |
-| `octos.session.history` | `octos.session.history` | `{}` | 会话内容，`{session_id, messages: [...], …}` | Read its own conversations with the assistant |
+| `octos.session.history` | `octos.session.history` | `{}` | 会话内容，`{session_id, messages: [...], …}`：两条通道按时间合并，每条消息带有它的 `lane` 和发言者 | Read its own conversations with the assistant |
 | `octos.turn.start` | `octos.turn.start` | `{text}`（1 字节到 32 KiB） | 回合结束后的 `{turn_id, text}`，即回复 | Ask the assistant to work for it, using the device's AI settings |
 | `octos.turn.interrupt` | `octos.turn.interrupt` | `{}` | 停止正在运行的回合 | Stop assistant work it started |
 
@@ -106,7 +184,13 @@ OctoSense Shell 面向隔离应用的 `octos` 服务（`crates/ai-host/src/conta
 `src/host/octos.rs`）。其他参数会被拒绝（`Unsupported Octos arguments`）：应用只提供文本
 （在 OctoSense Shell 中还可以提供 `trigger`，取 `person`、`app` 或 `incoming` 之一，以及
 `from`，说明是什么发起了这个回合），从不提供会话、配置、提供方、模型或审批决定。每个应用实例
-同一时间只运行一个回合，一个回合 180 秒后放弃。
+同一时间只运行一个回合，一个回合 180 秒后放弃。脚本应用收不到推送的事件：它用
+`octos.session.history` 读取对话，其中也包括系统 Agent 的回合。
+
+应用传来的 `trigger: "person"` 会在对话记录中把这个回合标为用户的，但审批规则把它当作应用自己
+发起的运行：“当我发起时”这类常设规则永远不会替它批准。只有 Shell 自己的输入框（“Ask <app>”
+面板、系统对话）才能证明是用户本人
+（[OctoSense#215](https://github.com/OctoSense-org/OctoSense/pull/215)）。
 
 ## 最小调用示例与“不可用”状态
 
@@ -170,7 +254,13 @@ fn ask(){
 - 助手发起的**工具审批**交给用户，在发起请求的应用中、用宿主自己的控件进行（OctoSense
   Shell 使用它们的审批面板，[OctoSense#120](https://github.com/OctoSense-org/OctoSense/pull/120) 和 [#145](https://github.com/OctoSense-org/OctoSense/pull/145)；Rinx 为它的迷你
   应用使用自己的控件）；系统 Agent 从不回答审批。脚本应用无法审批任何东西：没有任何参数能
-  携带审批决定。
+  携带审批决定。审批面板会完整显示每个参数（隐藏字符和控制字符显示为码位，命令每行一条），
+  在用户把所有参数都滚动看过之前，“Approve”按钮保持禁用
+  （[OctoSense#218](https://github.com/OctoSense-org/OctoSense/pull/218)）。
+- 应用 Agent 的**首次使用确认页**，列出它能读什么（"Its own memory"，或在
+  `storage.agent_workspace: "none"` 时为 "No files: only what its tools return"）、能用什么
+  （保留了 `ask_user_question` 的 Agent 显示 "Ask you questions"）以及模型在哪里运行
+  （`crates/shell/src/approvals/consent.rs`）。Settings › Assistant 可以再次关闭它。
 
 ## 错误
 
@@ -181,6 +271,8 @@ fn ask(){
 | `Waiting for the person to allow this app's agent (OctoSense asks the first time)` | 用户还没有允许该应用的 Agent；Shell 正在询问 | 显示出来；用户的回答决定下一次调用的结果 |
 | `The assistant is turned off for apps on this device` | 设备为应用关闭了助手（`OCTOSENSE_CONTAINED_APPS=0`） | 显示“不可用”，继续工作 |
 | `The assistant is not available on this device` | Shell 无法启动该应用的 peer | 同上 |
+| `Add an account in the app before using its assistant` | 应用按账户保存数据（`storage.accounts: true`），但还没有任何账户 | 提供应用自己的添加账户入口 |
+| `This app's manifest does not declare that assistant service` | 隔离环境之后 Shell 自己的检查：manifest 没有列出任何 `octos.*` 名称，或没有列出这一个 | 声明它，或删除该调用 |
 | `no service answers "model" on this device` | 当前宿主没有 `model` 服务（`card-host`） | 同上 |
 | `model.complete` 返回的 `<code>: <sentence>`，`<code>` 为 `capability`、`no_provider`、`rate`、`budget`、`bad_request`、`invalid_output`、`too_large`、`provider` 之一 | `model` 服务拒绝了这次调用（[详情](#model-服务)） | 显示这句话；让应用不依赖模型也能使用 |
 | `Unsupported Octos arguments` | 传了 `text` 以外的参数（turn start），或给其他调用传了任何参数 | 只传 `{text}` 或 `{}` |
@@ -275,7 +367,7 @@ host.request("model.complete", {
 
 ## 状态一览
 
-截至 2026 年 9 月 30 日。**可用**表示已合入所列仓库的 `main`；**即将推出**表示在所列的
+截至 2026 年 10 月 1 日。**可用**表示已合入所列仓库的 `main`；**即将推出**表示在所列的
 未合并 PR 中，或只存在于 ADR 中。
 
 | 功能 | 状态 | PR 与源码 |
@@ -285,33 +377,54 @@ host.request("model.complete", {
 | OctoSense 中隔离运行的脚本应用使用 `octos.*` | 在托管内核的 Shell 中（iOS 除外）**可用**，前提是用户在首次使用时允许该应用的 Agent | OctoSense [#106](https://github.com/OctoSense-org/OctoSense/pull/106)、[#120](https://github.com/OctoSense-org/OctoSense/pull/120)、[#184](https://github.com/OctoSense-org/OctoSense/pull/184) |
 | `llm`：用户的 AI 提供方、遮盖后的密钥状态、宿主面板 | **可用**，仅限系统应用（`os.*`）；没有发送提示词的方法 | OctoSense [`apps/ai-providers/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/ai-providers/host-service) |
 | `model.complete`：一次性、按 schema 校验的模型调用 | **可用**：权限（[App-Hub#24](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/24)）和服务（[OctoSense#95](https://github.com/OctoSense-org/OctoSense/pull/95)），都在 Shell 的 App Hub 锁定版本中 | [上文](#一次性模型调用model) |
-| 应用包中声明应用自己的 Agent：`agent`（profile、模型需求、触发器、技能）、`tools.json`、`AGENT.md`、`skills/` | 在 App Hub 准入检查（[App-Hub#18](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/18)）和 Shell 中**可用**：用户允许后分配 peer 并提供“Ask <app>”面板（[OctoSense#184](https://github.com/OctoSense-org/OctoSense/pull/184)）；`AGENT.md` 和技能还不会装进 peer | [应用自己的 Agent](#应用自己的-agent) |
-| 宿主按 `needs` 和 `tier` 挑选模型；触发器和 `background` 真正触发 | **即将推出**（ADR 0002 第 2 步、M3） | [manifest 中的 `agent`](#manifest-中的-agent) |
-| 应用工具注册到应用的 peer（`peer/tools/register`、`peer/tool/call`） | **可用**：内核一侧（[octos#2567](https://github.com/octos-org/octos/pull/2567)）以及 Shell 注册应用包中的工具并转发调用（[OctoSense#145](https://github.com/OctoSense-org/OctoSense/pull/145)、[#184](https://github.com/OctoSense-org/OctoSense/pull/184)） | [应用的工具与 peer 工具](#应用的工具与-peer-工具) |
-| 在应用内与应用的 Agent 对话、运行时审批、应用记忆 | 对话在 Shell 的“Ask <app>”面板中**可用**（[OctoSense#184](https://github.com/OctoSense-org/OctoSense/pull/184)）；审批在 Shell 的面板上进行（[#120](https://github.com/OctoSense-org/OctoSense/pull/120)、[#145](https://github.com/OctoSense-org/OctoSense/pull/145)）；应用记忆**即将推出**（ADR 0002 §9，M7） | [各部分在哪里执行](#各部分在哪里执行) |
-| 系统工具箱：模板、`workflow.run`、`workflow.fork`、`research` 模块 | 模板**可用**（[OctoSense#82](https://github.com/OctoSense-org/OctoSense/pull/82)，`crates/toolbox`），App Hub 中也有了 `research` 和 `crawl` 权限（[App-Hub#26](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/26)）；把工具箱授予应用的 Agent **即将推出**（[OctoSense#64](https://github.com/OctoSense-org/OctoSense/issues/64)；随附的 Shell 中关闭了 `toolbox-peers` 构建特性） | [系统工具箱](#系统工具箱) |
+| 应用包中声明应用自己的 Agent：`agent`（profile、模型需求、触发器、技能）、`tools.json`、`AGENT.md`、`skills/` | 在 App Hub 准入检查（[App-Hub#18](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/18)）和 Shell 中**可用**：用户允许后分配 peer、提供“Ask <app>”面板，系统 Agent 也能用 `peer_send_input` 把任务交给它（[OctoSense#184](https://github.com/OctoSense-org/OctoSense/pull/184)）；`AGENT.md` 和技能还不会装进 peer | [应用自己的 Agent](#应用自己的-agent) |
+| 应用 Agent 使用内核的 `ask_user_question`（`agent.tools: ["ask_user_question"]`，隔离应用的 Agent 唯一能保留的内核工具） | **可用**（[App-Hub#37](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/37)、[OctoSense#190](https://github.com/OctoSense-org/OctoSense/pull/190)） | [应用的 Agent 目前得到什么](#应用的-agent-目前得到什么) |
+| 应用 peer 上的宿主读取工具：`files.list`、`files.read`、`files.search`，作用于账户文件夹；用户通道通过 `read_parent` 读取该文件夹 | 在 Unix 平台上**可用**，Windows 除外（[OctoSense#205](https://github.com/OctoSense-org/OctoSense/pull/205)、[#249](https://github.com/OctoSense-org/OctoSense/pull/249)；octos [#2647](https://github.com/octos-org/octos/pull/2647)） | OctoSense `crates/shell/src/host_tools/files.rs` |
+| 每个账户一个 Agent（`storage.accounts`），删除账户或应用时一并清除 Agent（`peer/purge`） | **可用**（[App-Hub#44](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/44)、[OctoSense#233](https://github.com/OctoSense-org/OctoSense/pull/233)、[#248](https://github.com/OctoSense-org/OctoSense/pull/248)；octos [#2649](https://github.com/octos-org/octos/pull/2649)） | [Agent 在哪里工作](#agent-在哪里工作storage) |
+| 宿主按 `needs` 和 `tier` 挑选模型；触发器和 `background` 真正触发 | **即将推出**（ADR 0002 第 2 步、M3）。Shell 目前还不读取 `agent.profile` 或 `agent.model` | [manifest 中的 `agent`](#manifest-中的-agent) |
+| 应用工具注册到应用的 peer（`peer/tools/register`、`peer/tool/call`） | **可用**：内核一侧（[octos#2567](https://github.com/octos-org/octos/pull/2567)）以及 Shell 注册应用包中的工具并转发调用（[OctoSense#145](https://github.com/OctoSense-org/OctoSense/pull/145)、[#184](https://github.com/OctoSense-org/OctoSense/pull/184)）。调用只会在应用命名空间对应的宿主服务上运行，所以只有系统应用的工具能运行；`implemented_by: "app"` 的工具在 Card runner 能接手之前返回错误（**即将推出**） | [应用的工具与 peer 工具](#应用的工具与-peer-工具) |
+| 系统应用的 Agent 通过自己的工具把卡片放到 glance 屏幕（`mail.notify`、`calendar.notify`、`calendar.agenda`：由宿主服务填好固定的 L0 卡片） | Mail 和 Calendar **可用**（[OctoSense#267](https://github.com/OctoSense-org/OctoSense/pull/267)）；Calendar 只在桌面端 | OctoSense `apps/mail/host-service`、`apps/calendar/host-service` |
+| 在应用内与应用的 Agent 对话、运行时审批、应用记忆 | 对话在 Shell 的“Ask <app>”面板中（[OctoSense#184](https://github.com/OctoSense-org/OctoSense/pull/184)）和卡片中（[`sys.chat`](#ai-撰写的文字与卡片内对话model-copysyschat)）**可用**；审批在 Shell 的面板上进行（[#120](https://github.com/OctoSense-org/OctoSense/pull/120)、[#145](https://github.com/OctoSense-org/OctoSense/pull/145)、[#215](https://github.com/OctoSense-org/OctoSense/pull/215)、[#218](https://github.com/OctoSense-org/OctoSense/pull/218)），每次工具调用都有审计记录（[#222](https://github.com/OctoSense-org/OctoSense/pull/222)）；peer 的记忆按账户保存，按规则提升**即将推出**（ADR 0002 §9，M7） | [各部分在哪里执行](#各部分在哪里执行) |
+| 系统工具箱：模板、`workflow.run`、`workflow.fork`、`toolbox.search`、`toolbox.web_read`、`toolbox.deep_crawl` | 模板**可用**（[OctoSense#82](https://github.com/OctoSense-org/OctoSense/pull/82)，`crates/toolbox`），App Hub 中也有了 `research` 和 `crawl` 权限（[App-Hub#26](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/26)）。只授予声明了它们的系统应用（`os.*`）的 Agent，并且只在启用了 `toolbox-peers` 构建的 Shell 中（手机端默认启用，桌面端没有）；面向商店应用**即将推出**（[OctoSense#64](https://github.com/OctoSense-org/OctoSense/issues/64)） | [系统工具箱](#系统工具箱) |
 | `news` 宿主服务（数据服务，不用模型） | **可用**，仅限系统应用（`os.*`） | OctoSense [`apps/news/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/news/host-service) |
-| `glance.publish`、`glance.withdraw`、`glance.list`（服务本身） | **可用**（[OctoSense#72](https://github.com/OctoSense-org/OctoSense/pull/72)），面向任何被授予 `glance` 的隔离应用（[OctoSense#86](https://github.com/OctoSense-org/OctoSense/pull/86)） | [发布到 glance 屏幕](#发布到-glance-屏幕) |
+| `glance.publish`、`glance.withdraw`、`glance.list`（服务本身） | **可用**（[OctoSense#72](https://github.com/OctoSense-org/OctoSense/pull/72)），面向任何被授予 `glance` 的隔离应用（[OctoSense#86](https://github.com/OctoSense-org/OctoSense/pull/86)）；`main` 上还支持可交互的 `script` 卡片和 `notify` 通知（`crates/shell/src/glance.rs`） | [发布到 glance 屏幕](#发布到-glance-屏幕) |
 | `glance` 权限 | 在 App Hub（[App-Hub#22](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/22)）和 Shell（[OctoSense#86](https://github.com/OctoSense-org/OctoSense/pull/86)）中都**可用** | [谁可以发布](#谁可以发布) |
-| L0 数据源 `sys.digest(app:, id:, fields:)` | **即将推出**：[OctoScript#40](https://github.com/OctoSense-org/OctoScript/pull/40)、[OctoScript-Makepad#50](https://github.com/OctoSense-org/OctoScript-Makepad/pull/50)、[OctoSense#87](https://github.com/OctoSense-org/OctoSense/pull/87) | [绑定到结果的卡片](#绑定到结果的卡片sysdigest) |
+| L0 数据源 `sys.digest(app:, id:, fields:)` | 检查器**可用**（以 [OctoScript#40](https://github.com/OctoSense-org/OctoScript/pull/40) 合入，由 [OctoScript-Makepad#50](https://github.com/OctoSense-org/OctoScript-Makepad/pull/50) 更新锁定，已在 Shell 的运行时锁定版本中）；由 Shell 从工具箱的运行结果填充**即将推出**（[OctoSense#87](https://github.com/OctoSense-org/OctoSense/pull/87)，未合并） | [绑定到结果的卡片](#绑定到结果的卡片sysdigest) |
+| L0 文本槽中模型写的文字，标为 AI 撰写；`sys.chat` 和 `ChatEntry`（卡片内与应用 Agent 对话） | **可用**：检查器（[OctoScript#53](https://github.com/OctoSense-org/OctoScript/pull/53)）、kit 中的标记（[OctoScript-Makepad#68](https://github.com/OctoSense-org/OctoScript-Makepad/pull/68)），以及 glance 卡片和 AppCard 中的宿主一侧（[OctoSense#263](https://github.com/OctoSense-org/OctoSense/pull/263)，`crates/l0-chat`）；不在本仓库锁定的运行时中 | [AI 撰写的文字与卡片内对话](#ai-撰写的文字与卡片内对话model-copysyschat) |
 | 渲染并评审卡片：`card-studio`、`card-host --remote` | **可用**（App Hub `main`，[App-Hub#19](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/19)）；由应用的 Agent 运行这一循环**即将推出**（M6） | [卡片级别与渲染评审](#卡片级别与渲染评审) |
 
-一句话概括：商店应用可以调用 `model.complete`，在被授予 `glance` 时发布 glance 卡片，并在
-用户允许其 Agent 后通过自己的 peer 与助手对话，Shell 会为这个 peer 注册应用的工具；根据
-`needs` 选择模型、触发器、后台运行、应用记忆以及面向应用 Agent 的系统工具箱仍即将推出。
+一句话概括：商店应用可以调用 `model.complete`，在被授予 `glance` 时发布 glance 卡片（卡片内
+可以有由它的 Agent 回答的对话），并在用户允许其 Agent 后通过自己的 peer 与助手对话，这个 peer
+保留 `ask_user_question` 并能读取应用自己的文件夹；商店应用自己的工具、根据 `needs` 选择模型、
+触发器、后台运行、`AGENT.md` 和技能，以及面向商店应用的系统工具箱仍即将推出。
 
 应用作者现在可以做的：
 
 - 把应用自己的界面做成不依赖 AI 也完整可用，并把“不可用”当作正常状态显示。
-- 声明一个能通过 `hub check` 的 Agent（`agent`、`tools.json`、`AGENT.md`、技能），同时
-  清楚 Shell 会为它分配 peer 并注册它的工具，但还不会装入 `AGENT.md` 或技能、为它挑选模型
-  或触发它的触发器。
-- 用 `card-studio` 编写并渲染 L0 卡片；OctoScript#40 合入后，再围绕 `sys.digest` 设计卡片。
+- 声明一个能通过 `hub check` 的 Agent（带 `tools: ["ask_user_question"]` 的 `agent`、
+  `tools.json`、`AGENT.md`、技能），同时清楚 Shell 会为它分配 peer、提供对话和对应用账户文件夹
+  的读取权限，但还不会运行商店应用自己的工具、装入 `AGENT.md` 或技能、为它挑选模型或触发它的
+  触发器。
+- 把 Agent 应该看到的数据放在账户文件夹里（应用存储中的 `accounts/device/`），系统应用就是
+  这样做的（见[Agent 在哪里工作](#agent-在哪里工作storage)）。
+- 用 `card-studio` 编写并渲染 L0 卡片；可以围绕 `sys.digest`、`model-copy` 和 `sys.chat`
+  设计卡片，但要知道本仓库的运行时还无法检查它们。
 
-**需要知道的版本差异。** `tools/octo check` 运行的是本仓库旁边的 App Hub 检出
-（`main`）。OctoSense Shell 锁定自己的一个 App Hub 提交（2026-09-30 为 `0f332112`，见
-OctoSense 的 `native-apps.json`），它可能落后于 App Hub `main`。manifest 会拒绝未知字段，
-所以比 Shell 锁定版本更新的字段能通过 `octo check`，却会被 Shell 拒绝，直到锁定版本更新。
+**需要知道的版本差异。**
+
+- `tools/octo check` 运行的是本仓库旁边的 App Hub 检出（`main`）。OctoSense Shell 锁定自己的
+  一个 App Hub 提交（2026-10-01 为 `58c3c8ae`，见 OctoSense 的 `Cargo.toml` 和
+  `native-apps.json`），它可能落后于 App Hub `main`。两者都从同一个 crate 取得 manifest 规则：
+  crates.io 上的 `octosense-app-contract` 1.x
+  （[ADR 0005](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0005-app-contract.md)）。
+  默认 `schema_minor`（0）的 manifest 仍会拒绝未知字段
+  （**✓ 2026-10-01 已运行**：``hub: manifest is not valid: unknown field `future_field`, expected one of `schema`, `id`, … `requires`, `schema_minor` ``），
+  所以不要使用 Shell 锁定版本不认识的字段。
+- 本仓库的 `card-host` 和 `card-studio` 是按
+  [`native-runtime.lock.json`](../native-runtime.lock.json) 锁定的运行时构建的：
+  Octoscript-Makepad `cb66de07`，它锁定 Octoscript `dbd48cfb`。这个 Octoscript 既没有
+  `sys.digest`，也没有文本槽中的 `model-copy`、`sys.chat` 或 `ChatEntry`，而 Shell 锁定的
+  版本（`5991dfae`）都有。在锁定版本更新之前，这类卡片只能在 OctoSense 检出中检查。
 
 如果想提前准备，可以参照 App Hub 的 News 示例
 （[`crates/app-policy/tests/fixtures/news-agent`](https://github.com/OctoSense-org/OctoSense-App-Hub/tree/main/crates/app-policy/tests/fixtures/news-agent)），
@@ -322,13 +435,57 @@ OctoSense 的 `native-apps.json`），它可能落后于 App Hub `main`。manife
 自 [App-Hub#18](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/18)（2026-09-27 合并）起在 App Hub 准入检查中**可用**，Shell 锁定的
 App Hub 也包含它。自 [OctoSense#184](https://github.com/OctoSense-org/OctoSense/pull/184)（2026-09-30）起，对于声明了 Agent（或
 `octos.*`，或附带 `tools.json`）的应用，Shell 会在用户允许后为它分配自己的 peer，把应用包
-中的工具注册到这个 peer，并让用户在“Ask <app>”面板中与它对话。还没有任何 Shell 把
+中的工具注册到这个 peer，并让用户在“Ask <app>”面板中与它对话；系统 Agent 也可以把任务交给它
+（见[系统 Agent 与应用 Agent](#系统-agent-与应用-agent)）。还没有任何 Shell 把
 `AGENT.md` 或技能装进 peer、挑选模型或触发触发器（ADR 0002 实施第 2 步）。
 
 契约见 App Hub 的
 [PUBLISHING § The app's agent and tools](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-apps-agent-and-tools)；
 完整示例是 App Hub 的
 [`crates/app-policy/tests/fixtures/news-agent`](https://github.com/OctoSense-org/OctoSense-App-Hub/tree/main/crates/app-policy/tests/fixtures/news-agent)。
+
+### 应用的 Agent 目前得到什么
+
+Shell 在脚本应用的 peer（`card.<app id>`）上注册的内容，读自 OctoSense `f52620c` 的
+`crates/shell/src/host_tools/`（只读代码，未运行）：
+
+| 工具 | 来源 | 商店应用 | 系统应用（`os.*`） |
+| --- | --- | --- | --- |
+| `ask_user_question`（octos 内核工具） | `agent.tools: ["ask_user_question"]` | **有** | **有**（News、Mail、Calendar） |
+| `files.list`、`files.read`、`files.search`（只读，无需审批） | 每个其 Agent 有工作区的 peer，限 Unix 平台 | **有**：只限它的账户文件夹，每次读取 128 KiB，每次列出 500 项，每次搜索 100 条匹配 | **有** |
+| 它自己 `tools.json` 中 `implemented_by: "host-service"` 的工具 | 在工具命名空间对应的宿主服务上、以应用的身份运行，就像它自己调用 `host.request` 一样；该服务族必须已被授予，或者是系统应用自己的命名空间 | 返回 `not_granted`：商店应用没有自己的宿主服务（除非它的命名空间恰好是它已被授予的服务族，例如 id 以 `.mail` 结尾并被授予 `mail`；那时调用等同于它自己的 `host.request`） | **有**：`news.list`、`news.read`、`mail.notify`、`calendar.events`、`calendar.add_event`、`calendar.remove_event`、`calendar.notify`、`calendar.agenda` |
+| 它自己 `tools.json` 中 `implemented_by: "app"` 的工具 | 本应在应用的脚本中运行 | 在 Card runner 能接手之前返回 `<tool> runs in the app's own script; open the app to use it`（**即将推出**） | 同左 |
+| 通用宿主工具 `ledger.read`、`ledger.write`、`net.fetch`、`storage.read`、`storage.write`、`card.render` | `agent.tools` | 准入检查接受，但没有任何 Shell 实现它们（在 OctoSense `crates/` 中找不到） | 同左 |
+| 其他应用可共享的工具（`mail.send`） | `agent.tools` 中带点的名称 | 被商店的准入检查拒绝：`app <id> requests tool "mail.send", which this host does not offer contained apps`（**✓ 2026-10-01 已运行**） | 由 Shell 授予其命名空间所属的应用；目前没有任何授予 |
+| 系统工具箱的工具 | `research` / `crawl` 权限 | **即将推出** | 在启用 `toolbox-peers` 时（见[下文](#系统工具箱)）；目前没有系统应用声明 `research` |
+| `dev.run`（一条 shell 命令） | 开发者模式，对它覆盖的应用 | 只在开发构建中 | 同左 |
+
+所以，商店应用的 Agent 可以与用户和系统 Agent 对话、向用户提问，并读取应用保存在账户文件夹
+里的内容；它还不能通过自己的工具做事。转发层还默认把每个 Agent 限制为每个回合 32 次、每天
+1000 次工具调用（`crates/shell/src/host_tools/relay.rs`）。
+
+### Agent 在哪里工作：`storage`
+
+App Hub 的 `storage` 块（[App-Hub#44](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/44)，
+ADR 0004 §11）决定 Agent 能看到什么：
+
+| 字段 | 含义 |
+| --- | --- |
+| `storage.accounts` | `true`：按账户保存数据，每个账户一个 Agent（Mail）。省略或 `false`：一个 `device` 文件夹、一个 Agent |
+| `storage.agent_workspace` | `"account"`（默认）：Agent 的工作区就是该账户的文件夹，它的对话通过 octos `read_parent` 读取这个文件夹。`"none"`：没有文件，只有工具返回的内容 |
+| `storage.cache_max_bytes` | 隔离目录中 `cache/` 的上限 |
+
+账户文件夹是应用自己存储中的 `accounts/<account>/`（没有账户的应用为 `accounts/device/`）。
+系统应用把数据放在那里（自 [OctoSense#229](https://github.com/OctoSense-org/OctoSense/pull/229)
+起，News、YouTube、Photos 和 Maps 中都有 `let DATA = "accounts/device/"`），可重新获取的缓存
+放在 `cache/`，所以它们的 Agent 能读到这些数据；写在隔离目录顶层的数据，Agent 读不到。按同样
+布局（`fs` 路径放在 `accounts/device/` 下）的商店应用，按同一段代码应该得到同样的结果，但这一点
+**未验证**：本文没有在 Shell 中运行过带 Agent 的商店应用。`storage.external` 只给原生应用，
+脚本应用的 manifest 写了会被拒绝。卡片内对话的记录也保存在同一个文件夹的 `chat/` 下
+（见[下文](#ai-撰写的文字与卡片内对话model-copysyschat)）。
+
+准入检查接受 `"storage": {"accounts": false, "agent_workspace": "account"}`
+（**✓ 2026-10-01 已运行**）。
 
 ### 设计（ADR 0002）
 
@@ -400,14 +557,22 @@ $ hub check <bundle> --allow-unsigned
   grants: capabilities {"glance", "storage"}, hosts {}, storage 16777216 bytes, agent read-only
 ```
 
-（唯一的拒绝项是模板缺少截图，用真实截图即可解决。）
+（唯一的拒绝项是模板缺少截图，用真实截图即可解决。）系统应用声明的是一个更小的 Agent，
+Shell 目前就会据此行事：
 
-| 字段 | 规则（App Hub `manifest.rs`、`policy.rs`） | 目前在哪里执行 |
+```json
+"agent": { "profile": "read-only", "tools": ["ask_user_question"], "model": { "needs": ["tool_calling"] } }
+```
+
+配合 `"capabilities": ["storage", "glance"]`，它得到同样的 `grants:` 行
+（**✓ 2026-10-01 已运行**，App Hub `41bc959`）。
+
+| 字段 | 规则（App Hub `crates/app-contract/src/manifest.rs`、`crates/app-policy/src/policy.rs`） | 目前在哪里执行 |
 | --- | --- | --- |
-| `profile` | `read-only`、`workspace-write` 或 `workspace-write-never-ask`；没有完全访问 | 准入检查 |
-| `tools` | 只能是通用宿主工具：`ledger.read ledger.write net.fetch storage.read storage.write card.render`；其他一律拒绝 | 准入检查 |
+| `profile` | `read-only`、`workspace-write` 或 `workspace-write-never-ask`；没有完全访问 | 准入检查；Shell 目前还不读取它（peer 的边界来自它的工作区和注册的工具） |
+| `tools` | 通用宿主工具 `ledger.read ledger.write net.fetch storage.read storage.write card.render`（准入检查接受，但还没有 Shell 实现），以及 octos 内核工具中唯一的 `ask_user_question`；其他一律拒绝。**✓ 2026-10-01 已运行**：`web_search` 得到 `[refused] agent: agent.tools names the octos kernel tool "web_search"; a contained app's agent may keep only ask_user_question` | 准入检查；Shell 把 `ask_user_question` 交给 peer（[OctoSense#190](https://github.com/OctoSense-org/OctoSense/pull/190)） |
 | `max_iterations`、`token_budget` | 上限分别裁剪为 8 和 200 000 | 准入检查（`grants:` 行） |
-| `model.needs` | 取自 `tool_calling vision long_context reasoning structured_output multilingual` | 准入检查；应用有工具却没有 `tool_calling` 时会警告 |
+| `model.needs` | 取自 `tool_calling vision long_context reasoning structured_output multilingual` | 准入检查；应用有工具却没有 `tool_calling` 时会警告。Shell 还不会据此挑选模型 |
 | `model.tier` | `fast`、`standard`（默认）或 `strong` | 准入检查 |
 | `model.local_only` | 对整个应用生效；数据不得离开用户的设备 | 准入检查（可共享的工具必须写明 `private_data: false`） |
 | `model.per_task` | 命名任务 `[a-z_]{1,32}`，最多 8 个，由 `AGENT.md` 引用 | 准入检查 |
@@ -441,13 +606,24 @@ octos `peer/model/set`）；策略可以降低 tier 或强制使用本地模型�
 
 ### 审批：`risk` 与 `confirm`
 
-在 `tools.json` 中按工具声明（见下一节）。一次调用是否需要用户同意取决于 `risk`；由谁的
-界面来询问取决于 `confirm`（App Hub PUBLISHING）：
+在 `tools.json` 中按工具声明（见下一节）。一次调用是否需要用户同意取决于 `risk` 和
+`outward`；由谁的界面来询问取决于 `confirm`；常设规则能否替用户批准取决于 `auto_approvable`
+（App Hub PUBLISHING；`outward` 和 `auto_approvable` 自
+[App-Hub#44](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/44) 起）：
 
 | `risk` | 运行方式 |
 | --- | --- |
 | `read`（只查看）、`act`（修改应用自己的状态） | 无人值守运行 |
 | `destructive`（发送、发帖、分享、购买、删除） | 只在用户批准后运行 |
+| `act` 且 `outward: true`（到达设备之外） | 只在用户批准后运行，与 destructive 工具相同 |
+
+- `read` 工具写 `outward: true` 会被拒绝（**✓ 2026-10-01 已运行**）：
+  `[refused] tools: brief.note.share is outward but its risk is read: a call that reaches outside the device is at least act`。
+  `act` 工具写它时准入检查会警告：
+  `[warning] tools: brief.note.share is outward: every call waits for the host's approval`。
+- `auto_approvable: false`（默认 `true`）：任何常设规则（“一小时内允许”）都不能批准它，每次
+  调用都需要用户当场同意。用于永久删除、付款、分享到设备之外、账户和安全设置的变更。Shell 取
+  它自己的规则和工具声明中更严格的那一个。
 
 | `risk: "destructive"` 且 | 用户在场 | 用户不在场 |
 | --- | --- | --- |
@@ -474,8 +650,10 @@ it off." 和 "Can ask to mail.send: nothing of this runs until you approve it."
 | --- | --- |
 | 声明（字段、大小、名称、schema、risk、confirm） | **可用**：App Hub 准入检查会拒绝或警告 |
 | 运行时的审批关卡（内核）；批准、修改或拒绝 | **可用**：内核一侧（[octos#2567](https://github.com/octos-org/octos/pull/2567)）和 Shell 的审批面板（[OctoSense#120](https://github.com/OctoSense-org/OctoSense/pull/120)、[#145](https://github.com/OctoSense-org/OctoSense/pull/145)）；审批留在这些面板上，而不是在应用的对话中（[#184](https://github.com/OctoSense-org/OctoSense/pull/184)） |
-| 在应用内与应用的 Agent 对话 | 在 Shell 的“Ask <app>”面板中**可用**（[OctoSense#184](https://github.com/OctoSense-org/OctoSense/pull/184)） |
-| `app/<app>/…` 中的记忆，按规则提升 | **即将推出**：ADR 0002 §9，M7。没有对应的 manifest 字段；记忆规则写在 `AGENT.md` 的文字里 |
+| Shell 的审批路由（`crates/shell/src/approvals/`） | **可用**：依次是开发者模式、`confirm: "app"`（所属应用的面板）、`auto_approvable: false`（总是由用户决定）、用户的常设规则，最后是当场弹出的面板。规则的条件在读不懂参数时一律不通过（[#215](https://github.com/OctoSense-org/OctoSense/pull/215)）；每一行参数都显示过之后，Approve 才可用（[#218](https://github.com/OctoSense-org/OctoSense/pull/218)） |
+| 每次工具调用的审计 | **可用**：每次调用在到达和结束时各记录一次，包括调用者、所属应用、工具和参数的 SHA-256（从不记录参数本身），写入 Shell 主目录下的 `logs/tool-calls.jsonl`（[#222](https://github.com/OctoSense-org/OctoSense/pull/222)） |
+| 在应用内与应用的 Agent 对话 | 在 Shell 的“Ask <app>”面板（[OctoSense#184](https://github.com/OctoSense-org/OctoSense/pull/184)）和 glance 卡片的 `sys.chat` 中（[#263](https://github.com/OctoSense-org/OctoSense/pull/263)）**可用** |
+| `app/<app>/acct-<hash>` 中的记忆，按账户保存并随账户清除 | **可用**（[#248](https://github.com/OctoSense-org/OctoSense/pull/248)）；按规则提升**即将推出**（ADR 0002 §9，M7）。没有对应的 manifest 字段；记忆规则写在 `AGENT.md` 的文字里 |
 | 系统 Agent 的覆盖层 | **即将推出**：ADR 0002 §11，M8 |
 
 ## 应用的工具与 peer 工具
@@ -514,11 +692,17 @@ it off." 和 "Can ask to mail.send: nothing of this runs until you approve it."
   format pattern`）；输入必须是对象。最多 64 个工具，描述最长 1024 个字符。
 - `implemented_by`：`host-service`（持有数据、网络或密钥的原生代码）或 `app`（应用自己的
   脚本，用于只整理自身数据的工具）。Shell 在工具命名空间对应的宿主服务上、以应用的身份运行
-  `host-service` 工具，就像应用自己调用 `host.request` 一样；`app` 工具目前会被拒绝
-  （`<tool> runs in the app's own script; open the app to use it`；OctoSense
-  `crates/shell/src/host_tools/script_apps.rs`）。
-- `background`、`shareable`、`private_data`、`confirm`：见
+  `host-service` 工具，就像应用自己调用 `host.request` 一样，从不经由面板（`may_prompt: false`），
+  并且只在 manifest 被授予了该服务族、或该服务族是系统应用自己的命名空间（`os.calendar` →
+  `calendar`）时才运行；否则返回 `<app> was not granted the <family> service`。`app` 工具目前会
+  被拒绝（`<tool> runs in the app's own script; open the app to use it`；OctoSense
+  `crates/shell/src/host_tools/script_apps.rs`）。商店应用没有自己的宿主服务，所以这两种工具
+  对它都还不能运行。
+- `background`、`shareable`、`private_data`、`confirm`、`outward`、`auto_approvable`：见
   [应用自己的 Agent](#审批risk-与-confirm)。
+- Shell 的转发层会用 `input_schema` 校验每次调用的参数（最多 64 KiB），用 `output_schema`
+  校验结果（最多 256 KiB）。octos 要求 `output_schema` 是对象，所以返回裸数组的工具（例如
+  `mail.accounts`）不能原样提供（见 OctoSense#267 的后续事项）。
 
 Shell 会把它们交给应用的 peer：内核一侧是
 [octos#2567](https://github.com/octos-org/octos/pull/2567)（"host-registered tools per app
@@ -531,6 +715,8 @@ peer 注册其 `tools.json` 并转发调用（[OctoSense#145](https://github.com
 | `peer/tool/call` | 内核 → 宿主 | `{peer, session_id, context_id, turn_id, call_id, tool_call_id, args_digest, name, args, risk, confirm_required, timeout_ms, tools_version}` |
 | `peer/tool/result` | 宿主 → 内核 | `{session_id, peer, host_token, call_id, ok?, data?, error?, status?: "awaiting_confirmation"}` |
 | `peer/tool/cancel` | 内核 → 宿主 | `{call_id, reason: timeout \| cancelled}` |
+| `peer/tools/unregister` | 宿主 → 内核 | 释放已关闭应用的工具路由（[octos#2658](https://github.com/octos-org/octos/pull/2658)、[OctoSense#247](https://github.com/OctoSense-org/OctoSense/pull/247)） |
+| `peer/purge` | 宿主 → 内核 | 在删除账户或卸载应用时清除宿主持有的 peer 及其对话记录和记忆（[octos#2649](https://github.com/octos-org/octos/pull/2649)、[OctoSense#248](https://github.com/OctoSense-org/OctoSense/pull/248)） |
 
 模型看到的 `news.list` 名为 `news_list`。默认值：每次调用 30 秒，结果最多 256 KiB，审批
 一小时后过期。需要把关的调用（destructive 或 outward）在 `confirm: host` 时等待内核审批；
@@ -541,9 +727,20 @@ peer 注册其 `tools.json` 并转发调用（[OctoSense#145](https://github.com
 
 模板**可用**（[OctoSense#82](https://github.com/OctoSense-org/OctoSense/pull/82)，已合并：`crates/toolbox`，crate `octosense-toolbox`），
 App Hub 也有了 `research` 和 `crawl` 权限（[App-Hub#26](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/26)）。把工具箱授予应用的 Agent
-**即将推出**（[OctoSense#64](https://github.com/OctoSense-org/OctoSense/issues/64)）：随附的
-Shell 构建中关闭了 `toolbox-peers` 构建特性，`crawl` / `deep_crawl` 也尚未实现（工具箱唯一的
-模块是 `research`）。
+已在 `main` 上，位于 `toolbox-peers` 构建特性之后（`crates/ai-host/src/toolbox_peers.rs`）：
+手机端的默认构建包含它，桌面端不包含。
+
+- `research` 提供 `workflow.run`、`workflow.fork`、`toolbox.search` 和 `toolbox.web_read`；
+  `crawl` 在范围中 `max_depth` 和 `max_pages` 大于 0 时提供 `toolbox.deep_crawl`。每个工具都只在
+  用户允许该应用的 Agent 之后才提供。
+- **目前只有系统应用（`os.*`）能得到它们**：脚本应用的 `research` / `crawl` 声明只对 `os.*` id
+  生效，所以商店应用不能靠在 manifest 里写上它就给自己授予研究能力。代码中把这一点标为临时的，
+  直到 Shell 读取 App Hub 校验过的研究范围为止。面向商店应用**即将推出**
+  （[OctoSense#64](https://github.com/OctoSense-org/OctoSense/issues/64)）。2026-10-01 时没有
+  系统应用声明 `research`。
+- 声明了 `research` 的商店应用还必须带上顶层的 `research` 范围对象，否则准入检查会拒绝
+  （**✓ 2026-10-01 已运行**）：
+  `[refused] policy: app dev.example.brief requests research but declares no research scope; add a top-level "research" object (octos's scope; {} means no limits)`。
 
 应用的 Agent 从不自己搜索、抓取或操作浏览器。它被授予工具箱中的工具，由宿主在应用之外、
 按应用的范围和预算运行（ADR 0002 §6）。
@@ -585,7 +782,9 @@ schema），取自 #82 的 `templates/*/template.json`：
 
 错误的格式为 `{"error": {kind, message}}`，`kind` 为 `manifest check widening pin
 not_found not_granted params runtime io` 之一。Agent 通过 peer 工具使用它们
-（见[上一节](#应用的工具与-peer-工具)），而不是通过 `host.request`。
+（见[上一节](#应用的工具与-peer-工具)），而不是通过 `host.request`。这张表中，Shell 向应用 Agent
+提供 `workflow.run` 和 `workflow.fork`，另外还有 `toolbox.search`、`toolbox.web_read` 和
+`toolbox.deep_crawl`（`crates/toolbox/src/peer.rs`）。
 
 ### 范围、预算与来源记录
 
@@ -598,7 +797,8 @@ not_found not_granted params runtime io` 之一。Agent 通过 peer 工具使用
 - **来源记录属于宿主**，而不是模型：每个来源都带有 `id, url, title, source, language,
   published_at, retrieved_at, evidence_sha256, via`。输出中出现宿主没有取回过的 URL，
   这次运行就会失败。
-- **结果**写入 `<app folder>/toolbox/runs/<template>/<run_id>.json`。
+- **结果**写入应用的工具箱文件夹下的 `toolbox/runs/<template>/<run_id>.json`，这个文件夹归宿主
+  所有（`<apps root>/.host/toolbox/<app>/`，在应用的隔离目录之外），所以应用无法伪造摘要。
 - **每个应用一份预算**：启用 `toolbox-peers` 时，工具箱的模型客户端经由 `model` 服务的
   `ModelHost::complete`（`crates/ai-host/src/toolbox_peers.rs`），所以模板中的调用和直接的
   `model.complete` 调用消耗同一份预算。
@@ -612,28 +812,43 @@ not_found not_granted params runtime io` 之一。Agent 通过 peer 工具使用
 
 | 方法 | 参数 | 返回 |
 | --- | --- | --- |
-| `glance.publish` | `{card_id, source, data?, title, priority?, expires?, open?: {app, route?}}` | `{card_id, replaced, expires_at}` |
+| `glance.publish` | `{card_id, source \| script, data?, title, priority?, expires?, open?: {app, route?}, notify?}` | `{card_id, replaced, expires_at}` |
 | `glance.withdraw` | `{card_id}` | `{withdrawn}` |
 | `glance.list` | – | `[{card_id, title, priority, published_at, expires_at}]`，只包含调用者自己的卡片 |
 
-- `source` 是一张 **L0 卡片**（头部声明时可以是 L1；L2 会被拒绝），按 `data`（从卡片数据源
-  名称到值的映射）实例化，并在保存前经过 Card runner 的流水线降级处理。
+- 二者选一：
+  - `source`，一张 **L0 卡片**（头部声明时可以是 L1；L2 会被拒绝），按 `data`（从卡片数据源
+    名称到值的映射）实例化，并在保存前经过 Card runner 的流水线降级处理。`sys.chat` 数据源必须
+    写发布卡片的应用（见[卡片内对话](#ai-撰写的文字与卡片内对话model-copysyschat)）。
+  - `script`，一个 **Splash 程序**，与脚本应用的 `main.splash` 是同一种东西（有自己的状态、
+    处理函数、`host.request` 调用和存储），不带 `data`：这是可交互的卡片（回复框、表单）。
+- `notify: true` 还会发出一条通知（手机的通知栏、桌面端的 toast）。在桌面端点击 toast 会在
+  卡片窗口中打开这张卡片；新卡片还会打开 glance 面板。
 - **限制：** `card_id` 为 1–64 个 `[A-Za-z0-9._-]` 字符；`title` 最多 80 个字符；`source`
-  最多 16 KiB；`data` 按 JSON 计最多 32 KiB；`priority` 0–100（默认 50）；`expires` 60 秒
+  （或 `script`）最多 16 KiB；`data` 按 JSON 计最多 32 KiB；`priority` 0–100（默认 50）；`expires` 60 秒
   到 7 天（默认 24 小时）；每个应用每分钟最多发布 6 次（替换和被 L0 检查拒绝的卡片都计数）；
   每个应用 4 张卡片；存储中共 32 张；显示 6 张。
 - **身份：** 发布者就是调用者，永远不是参数；用相同的 `card_id` 发布会替换原卡片；
   `open.app` 必须是调用者自己的应用。点击卡片会打开该应用。`open.route` 会被保存，但尚未
   使用。
 - 每个卡片块在自己的隔离环境中运行，遵循发布它的应用的策略（原生模块的卡片块没有任何
-  权限），并且不能弹出面板。
+  权限）。它是后台界面：它调用的宿主服务不能在那里弹出面板（`may_prompt: false`，
+  [OctoSense#204](https://github.com/OctoSense-org/OctoSense/pull/204)），卡片块消失时它还在等待的
+  请求会被取消。
 
 ### 谁可以发布
 
 - **任何被授予 `glance` 的隔离应用**都可以发布、列出和撤回自己的卡片
   （[OctoSense#86](https://github.com/OctoSense-org/OctoSense/pull/86)，已合并；权限是 [App-Hub#22](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/22)，已在 Shell 的 App Hub
   锁定版本中）。系统应用没有例外。拒绝时返回：`<app> was not granted the glance capability`。
-- 原生模块和 Shell 的演示（`OCTOSENSE_GLANCE_DEMO=1`）也可以发布。
+- 原生模块也可以发布，系统应用的宿主服务也会替它们的应用 Agent 发布：Mail 的 `mail.notify`
+  以及 Calendar 的 `calendar.notify` 和 `calendar.agenda` 会填好服务随附的固定 L0 卡片
+  （`apps/mail/host-service/resources/notice.card`、
+  `apps/calendar/host-service/resources/event.card`、`agenda.card`），并以该应用的身份发布
+  （[OctoSense#267](https://github.com/OctoSense-org/OctoSense/pull/267)）。商店应用的 Agent
+  还没有这样的工具：由应用自己的脚本发布。
+- Shell 的演示会发布示例卡片：`OCTOSENSE_GLANCE_DEMO=mail` 发布两张 Mail 卡片（假数据），
+  除 `0` 以外的其他值发布一份 News 摘要。
 
 应用中的调用如下（形状取自 `glance.rs`；未运行，因为 `card-host` 不注册任何宿主服务）：
 
@@ -653,10 +868,12 @@ host.request("glance.publish", {
 
 ## 绑定到结果的卡片：`sys.digest`
 
-**即将推出**：[OctoScript#40](https://github.com/OctoSense-org/OctoScript/pull/40)
-（L0 数据源）、[OctoScript-Makepad#50](https://github.com/OctoSense-org/OctoScript-Makepad/pull/50)
-（更新锁定版本）、[OctoSense#87](https://github.com/OctoSense-org/OctoSense/pull/87)
-（由 Shell 解析，`crates/shell/src/glance_digest.rs`）。
+L0 数据源**可用**：以 [OctoScript#40](https://github.com/OctoSense-org/OctoScript/pull/40) 合入，
+由 [OctoScript-Makepad#50](https://github.com/OctoSense-org/OctoScript-Makepad/pull/50) 更新锁定，
+已在 Shell 的运行时锁定版本中（Octoscript `5991dfae`）。由 Shell 填充它**即将推出**：
+[OctoSense#87](https://github.com/OctoSense-org/OctoSense/pull/87)（未合并；
+`crates/shell/src/glance_digest.rs`）。摘要的 `summary` 以及要点的 `text` 和 `label` 是模型
+文字，显示时标为 AI 撰写（见[下文](#ai-撰写的文字与卡片内对话model-copysyschat)）。
 
 L0 的“不写事实”规则禁止卡片把发现的内容当作自己的文字，所以这些发现变成由宿主解析的数据源：
 
@@ -722,8 +939,84 @@ view root  Surface(pad: .page) {
            }
 ```
 
-（这里省略了部分头部注释。）在 OctoScript#40 合入之前，L0 检查器不认识 `sys.digest`，
-使用它的卡片会被拒绝。
+（这里省略了部分头部注释。）Shell 的 L0 检查器接受 `sys.digest`；在 #87 合入之前，没有 Shell
+会用工具箱的运行结果填充它（这时卡片显示什么，本文未运行）。本仓库锁定的运行时（Octoscript
+`dbd48cfb`）早于 OctoScript#40，所以它的检查器不认识这个数据源。
+
+## AI 撰写的文字与卡片内对话：`model-copy`、`sys.chat`
+
+自 2026-10-01 起在 OctoSense Shell 中**可用**：L0 规则见
+[OctoScript#53](https://github.com/OctoSense-org/OctoScript/pull/53)（OctoScript 的
+[`docs/ui-profile-l0.md`](https://github.com/OctoSense-org/OctoScript/blob/main/docs/ui-profile-l0.md)
+§4.2 和 §5.15），kit 中的标记见
+[OctoScript-Makepad#68](https://github.com/OctoSense-org/OctoScript-Makepad/pull/68)，宿主一侧见
+[OctoSense#263](https://github.com/OctoSense-org/OctoSense/pull/263)（`crates/l0-chat`、
+`crates/shell/src/glance_chat.rs`）。不在本仓库锁定的运行时中（见[版本差异](#状态一览)）；
+本节内容均未为本文运行。
+
+在此之前，L0 拒绝屏幕上任何由模型写的字符串。现在这条规则分成两条：一条管文字，一条管动作。
+
+**文字：模型写的文字可以填入文本槽，并标为 AI 撰写。** 模型文字包括：声明为
+`class: model-copy` 的 `copy`（`copy gist { class: model-copy, en: "Rates held." }`）、
+宿主数据源中由模型写的字段（`sys.digest` 的 `summary` 以及要点的 `text`/`label`，`sys.chat`
+条目的 `text`），以及被写入了这类文字的 `text` 状态（草稿：
+`event use { draft: set(copy.suggestion) }`）。文本槽是 `TextHero`、`TextTitle`、`TextBody`、
+`TextRow`、`TextEyebrow`、`TextCaption`、`Band`、`Bubble`、`ChatEntry` 和 `Field` 的 `text`
+参数；chip、磁贴和标签页的标签、头像、图标和占位文字都不是。kit 会在文字上方画一个小的闪光
+图标和 `AI` 眉题，颜色与文字本身相同；文字仍是纯文本（没有 Markdown、HTML 或链接）。
+
+**动作：模型写的文字从不决定运行什么。** 它不能作为动作的载荷或目标、数据源参数、条件、循环键、
+控件标签、组件属性、状态初值，也不能写入宿主存储。检查器默认拒绝：除文本槽外的每个位置都不接受它。
+
+**卡片内与应用的 Agent 对话。** 取自 OctoScript 的 `chat.card` 样例：
+
+```text
+source convo sys.chat(app: "os.news", thread: "main", fields: [entries, id, role, text])
+
+state draft { shape: text, initial: "" }
+
+copy title { class: vocabulary, en: "ASK THE NEWS AGENT", zh: "问新闻助手" }
+copy ask   { class: vocabulary, en: "Ask about today's news", zh: "问问今天的新闻" }
+
+event send { convo: append($value), draft: clear }
+
+view root  Surface(pad: .page) {
+             Col(gap: 8) {
+               TextEyebrow(text: copy.title)
+               for m in convo.entries key m.id {
+                 ChatEntry(text: m.text, role: m.role)
+               }
+               Field(text: draft, placeholder: copy.ask, on_commit: send, width: .fill)
+             }
+           }
+```
+
+- `app` 是字面量，必须是**发布卡片的应用**：写了别的应用的卡片，Shell 拒绝发布；这样的卡片读到
+  的是 `unavailable` 的对话记录，也写不进任何东西。`thread` 是 `[A-Za-z0-9_-]{1,64}` 或指向
+  状态的路径。
+- 数据源返回 `status`、`count` 和 `entries`，每行为 `{id, role, text, at}`；`role` 为 `user`、
+  `model` 或 `host`（一条通知）。`ChatEntry(text: m.text, role: m.role)` 按角色在对应一侧画出
+  气泡；两个参数必须来自同一行，只有 `model` 条目会被标为 AI 撰写。
+- **对话记录属于宿主。** 卡片 `data` 中放在该数据源名下的任何内容，都会被宿主自己的对话记录
+  替换。卡片唯一的写入是 `append`，只接受用户在 `Field` 中输入的内容，并记为一条 `user` 条目；
+  然后宿主在应用的对话（用户通道）中运行一个回合，把回复作为 `model` 条目追加；如果应用没有
+  Agent，或用户还没有允许它，则追加一条 `host` 通知（"<app> has no agent to answer here yet."）。
+  卡片永远无法写入 `model` 条目。
+- **限制**（`crates/l0-chat/src/lib.rs`）：去掉首尾空白后每条消息最多 4 KiB，每个会话每 2 秒
+  最多一条、Agent 回答期间不接受新消息，保留最近 200 条，回复超过 16 KiB 会被截断。
+- **存储**：每个会话一个只有所有者可读写的文件，位于应用的账户文件夹
+  `apps/<app>/accounts/<account>/chat/<thread>.json`，这同时也是 Agent 的工作区，所以 Agent
+  能读到它参与的对话记录。
+- **在哪里得到回答**：桌面端卡片窗口（由卡片通知打开的那个窗口；`glance_sheet.rs`）中的 glance
+  卡片，以及 AppCard 的 L0 卡片（那里的回复目前仍是一条 `host` 通知）。手机的 glance 页面不走
+  这条路径（在 `crates/shell/src/mobile_*` 中找不到）。App Hub 的 Card runner 不回答
+  `sys.chat`，所以卡片应用自己的 `page.card` 暂时不能使用它（在 App Hub `crates/` 中找不到）。
+
+想用它的商店应用，用 `glance.publish`（`source`）发布一张写着自己 id 的这类卡片，并声明一个
+Agent，好让用户能够允许它。想试一下这个流程，可以用桌面 Shell 的
+`OCTOSENSE_GLANCE_DEMO=mail`：它用假数据发布两张 Mail 卡片，其中一张带有 Ask 对话（OctoSense 中的
+`desktop/scripts/mail_card_remote.sh` 以隐藏窗口驱动它；本文未运行）。
+
 
 ## 卡片级别与渲染评审
 
@@ -769,10 +1062,10 @@ News 是 ADR 0002 的第一个切片。每一步及其现状：
 | 1 | **数据服务采集**，不用模型：HN、TechMeme、Google News、RSS、关注的话题（Google News、GDELT），已读条目账本，每 15 分钟一次 | **可用**（M1） | `apps/news/host-service`：`news.list`、`news.read`、`news.topics.get`、`news.topics.set`、`news.refresh`、`news.sources`、`news.feeds.import`；仅限 `os.*` |
 | 2 | **应用包从中读取**：`host.has("news")`，然后 `news.list {feed, current: true, limit: 30}` | **可用**：News 的 manifest 申请了 `news`，并在 `host.has("news")` 时使用该服务 | `apps/news/bundle/main.splash` |
 | 3 | **触发器唤醒 Agent**：服务的抓取报告（“N 条新内容”）作为 `news.items.new`，或定时（`0 7 * * *`） | **即将推出**（M3）：服务的 `on_fetch` 钩子目前只写日志 | `crates/shell/src/apps.rs` `register_news` |
-| 4 | **News 的 Agent 运行**，使用应用包中声明的 `AGENT.md`、技能和工具 | 声明在 App Hub 中**可用**（#18）；用户允许后为 `os.news` 分配带有其 `tools.json` 工具的 peer，**可用**（[OctoSense#184](https://github.com/OctoSense-org/OctoSense/pull/184)）；把 `AGENT.md` 和技能装进 peer **即将推出** | `apps/news/bundle`、`crates/shell/src/agents.rs` |
-| 5 | **运行 `news-digest` 模板**：`workflow.run {id: "news-digest", params: {topic, language}, run_id: "glance"}` | 模板**可用**（#82）；由应用的 Agent 运行**即将推出**（M5，#64） | `crates/toolbox` |
+| 4 | **News 的 Agent 运行**，使用应用包中声明的 `AGENT.md`、技能和工具 | 声明在 App Hub 中**可用**（#18）；用户允许后为 `os.news` 分配带有其 `tools.json` 工具（`news.list`、`news.read`）和 `ask_user_question` 的 peer，**可用**（[OctoSense#184](https://github.com/OctoSense-org/OctoSense/pull/184)、[#190](https://github.com/OctoSense-org/OctoSense/pull/190)）；把 `AGENT.md` 和技能装进 peer **即将推出** | `apps/news/bundle`、`crates/shell/src/agents.rs` |
+| 5 | **运行 `news-digest` 模板**：`workflow.run {id: "news-digest", params: {topic, language}, run_id: "glance"}` | 模板**可用**（#82）；面向系统应用的工具箱 peer 工具已在 `main` 上，位于 `toolbox-peers` 之后，但 News 还没有声明 `research`，所以它的 Agent 没有 `workflow.run`（**即将推出**，M5，#64） | `crates/toolbox`、`crates/ai-host/src/toolbox_peers.rs` |
 | 6 | **宿主保存结果**，附带来源记录：`toolbox/runs/news-digest/glance.json` | 在工具箱运行器中**可用**（#82）；由 Agent 发起**即将推出**（#64） | `crates/toolbox/src/runner.rs` |
-| 7 | **卡片绑定到结果**：`news-brief.card`，`source brief sys.digest(app: "os.news", id: "glance", …)` | **即将推出**（OctoScript#40、OctoScript-Makepad#50、#87） | `crates/shell/src/glance_digest.rs` |
+| 7 | **卡片绑定到结果**：`news-brief.card`，`source brief sys.digest(app: "os.news", id: "glance", …)` | L0 数据源**可用**（OctoScript#40、OctoScript-Makepad#50）；由 Shell 填充**即将推出**（#87，未合并） | `crates/shell/src/glance_digest.rs`（在 #87 中） |
 | 8 | **按 glance、手机和桌面尺寸渲染并评审**卡片 | 工具**可用**（`card-studio`）；由 Agent 运行**即将推出**（M6） | App Hub `crates/card-studio` |
 | 9 | **`glance.publish`** 这张卡片（`card_id` 为 "brief"，`data: {}`；由宿主填入 `brief`） | **可用**，由被授予 `glance` 的隔离应用发布（#86） | `crates/shell/src/glance.rs` |
 | 10 | **用户点击卡片，打开 News** | **可用**（桌面面板和手机的 glance 页面会打开发布卡片的应用） | `glance_panel.rs`、`mobile_pages.rs` |
@@ -784,6 +1077,9 @@ News 是 ADR 0002 的第一个切片。每一步及其现状：
 ```sh
 cargo build --release -p octosense && desktop/scripts/glance_remote.sh
 ```
+
+Mail 的卡片窗口、其中的回复草稿和卡片内的 Ask 对话也有同类检查：
+`desktop/scripts/mail_card_remote.sh`（`OCTOSENSE_GLANCE_DEMO=mail`，假数据；本文未运行）。
 
 ## 不接真实提供方的测试
 
@@ -800,7 +1096,9 @@ cargo build --release -p octosense && desktop/scripts/glance_remote.sh
   （见[上文](#卡片级别与渲染评审)）：数据是固定样例，不需要模型或网络。对于
   `sys.digest` 卡片，#87 带有一个运行结果样例
   `crates/shell/resources/glance/fixtures/news-digest-run.json`，以及
-  `OCTOSENSE_GLANCE_DEMO=digest`（**即将推出**）。
+  `OCTOSENSE_GLANCE_DEMO=digest`（**即将推出**）。检查 `sys.chat` 卡片的布局同样不需要模型：没有
+  Agent 时宿主会回一条 `host` 通知。这两种卡片都需要比本仓库锁定版本更新的运行时
+  （见[版本差异](#状态一览)）。
 - **平台自身测试中的替身**，供你修改某个服务或工具箱时使用（在 OctoSense 中，而不是在应用包
   中；本文未运行这些命令）：
 
@@ -827,10 +1125,20 @@ cargo build --release -p octosense && desktop/scripts/glance_remote.sh
   （`apps/ai-providers/host-service/src/complete/`），以及用于 2026-09-30 更新的 #106、
   #120、#145 和 #184（`crates/ai-host/src/contained.rs`、`crates/shell/src/agents.rs`、
   `crates/shell/src/host_tools/script_apps.rs`），基于 `main` `7082ff5`。
-- OctoSense-App-Hub `main`（`a72989f`；2026-09-30 更新基于 `0f33211`）：`crates/app-policy/src/manifest.rs`、
-  `services.rs`、`agent.rs`、`policy.rs`、`listing.rs`；`docs/PUBLISHING.md`；
-  `docs/DEVELOPMENT.md`。
-- OctoScript PR #40：`docs/ui-profile-l0.md` §5.14。
-- octos PR #2567：
+- 用于 2026-10-01 更新的 OctoSense `main` `f52620c`：`crates/shell/src/agents.rs`、
+  `crates/shell/src/host_tools/`（`mod.rs`、`script_apps.rs`、`files.rs`、`relay.rs`）、
+  `crates/shell/src/questions/`、`crates/shell/src/glance.rs`、`glance_chat.rs`、
+  `crates/l0-chat/src/lib.rs`、`crates/ai-host/src/contained.rs`、
+  `crates/ai-host/src/toolbox_peers.rs`、`crates/shell/src/approvals/consent.rs`、
+  `apps/mail/bundle/`、`apps/calendar/bundle/`、`apps/news/bundle/`；ADR 0004 和 ADR 0005；
+  PR #190、#204、#205、#210、#215、#218、#222、#229、#232、#233、#243、#248、#249、#261、
+  #263 和 #267。
+- OctoSense-App-Hub `main`（`a72989f`；2026-09-30 更新基于 `0f33211`；2026-10-01 更新基于
+  `41bc959`）：`crates/app-contract/src/manifest.rs` 和 `policy.rs`（manifest 及其规则，自
+  App Hub #46 起）、`crates/app-policy/src/services.rs`、`agent.rs`、`policy.rs`、`listing.rs`；
+  `docs/PUBLISHING.md`；`docs/DEVELOPMENT.md`。
+- OctoScript `main` `5991dfae`：`docs/ui-profile-l0.md` §4.2、§5.14 和 §5.15；
+  `crates/octoscript-ui-l0/tests/fixtures/chat.card`。PR #40 和 #53；Octoscript-Makepad PR #68。
+- octos `ae230ce0`（OctoSense 锁定的版本）以及 PR #2567、#2647、#2649 和 #2658：
   `docs/OCTOS_UI_PROTOCOL_CHANGE_REQUEST_UPCR_2026_035_PEER_HOST_TOOLS.md`。
 - Rinx：`src/host/octos.rs`。

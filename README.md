@@ -240,18 +240,22 @@ release), `capabilities` (the permissions it asks for), `network.hosts`
 (bare host names, with `net`), and `integrity.bundle_blake3`, written by
 `hub stamp` (plus a signature after `hub sign-manifest`). Optional requests
 (`storage.max_bytes`, `compute.*`, `agent`) are clamped to the host's
-ceilings; `hub check` prints the resulting `grants:` line.
+ceilings; `hub check` prints the resulting `grants:` line. `storage` may
+also say whether the app keeps accounts and what its agent may read
+(`storage.accounts`, `storage.agent_workspace`). The id may not be, or end
+in, a name the host reserves (`terminal`, `rinx`, `system`, `toolbox`, …).
 
 **Capabilities** form a closed list defined by the App Hub: `storage`, `net`,
 `images`, `web`, `camera`, `microphone`, `library`, `location`, `mail`,
-`llm`, `news`, `glance`, `model`, `prompt`, `ledger.read`, `clipboard`, plus 49 exact
+`llm`, `news`, `glance`, `model`, `research`, `crawl`, `prompt`, `ledger.read`, `clipboard`, plus 49 exact
 host-service names (four `octos.*` for the device's assistant, 45 `matrix.*`
 for Rinx). Not requested means not granted,
 and the store shows the person one plain-language line per capability before
 install. Ask for the least the app needs. What each unlocks, which have no
 working path yet (`prompt`, `ledger.read`, `clipboard`) and which only a
-system app can use (`llm`): [docs/CAPABILITIES.md](docs/CAPABILITIES.md).
-What the assistant capabilities do today (nothing yet, in OctoSense):
+system app can use (`llm`, `news`, and for now `research` and `crawl`):
+[docs/CAPABILITIES.md](docs/CAPABILITIES.md). What the assistant
+capabilities and an app's own agent do today in OctoSense:
 [docs/AI-SERVICES.md](docs/AI-SERVICES.md).
 
 **`listing.json`**: subtitle, description, category, keywords, icon,
@@ -304,16 +308,27 @@ lists every check.
 ## AI in your app
 
 OctoSense runs one octos agent kernel per shell, configured by the person in
-the AI providers system app; keys never reach an app. **A contained app
-cannot use it yet**: the gate accepts the four `octos.*` capabilities, but no
-OctoSense shell serves them to apps, and `card-host` serves no host services.
-`llm` is provider management for system apps only, and the one-shot `model`
-capability (App Hub #24) has no service in any shell yet. An app's own agent
-(`tools.json`, `AGENT.md`, skills, triggers) is admitted by App Hub `main` and
-planned in OctoSense's ADR 0002, but nothing runs it yet. Build apps that are
-complete without AI, and read [docs/AI-SERVICES.md](docs/AI-SERVICES.md)
-before adding an AI feature: the exact names, a verified call that handles
-"unavailable", what the person sees, the errors, and the planned route.
+the AI providers system app; keys never reach an app. On it run the
+**system agent** (the shell's own assistant, which the person talks to in
+the system chat) and one **app agent** per app that declares one, each on
+its own host-owned peer. As of 2026-10-01, on OctoSense `main`
+([docs/AI-SERVICES.md](docs/AI-SERVICES.md) has the details and sources):
+
+| An app can | How | In `card-host` |
+| --- | --- | --- |
+| Make a one-shot, schema-checked model call | `model` capability, `host.request("model.complete", …)`, within a daily budget | `no service answers "model"` |
+| Talk to the assistant from its own screens | the four `octos.*` capabilities, once the person allows the app's agent on a first-use sheet | `no service answers "octos"` |
+| Have its own agent, which the person talks to directly (the shell's "Ask <app>" panel, drawn for every app with an agent; an in-card chat; the app's own screens) and the system agent can hand work to | an `agent` block (`"tools": ["ask_user_question"]`), optional `tools.json`; the agent reads the app's account folder (`accounts/device/`) | checked by `hub check` only |
+| Publish cards to the glance screen, with an in-card chat its agent answers and model-written text marked AI-written | `glance` capability, `glance.publish` (L0 `sys.chat`, `model-copy`) | `no service answers "glance"`; this repository's runtime predates `sys.chat` |
+
+Still **coming**: a store app's own `tools.json` tools running (today only
+system apps' host-service tools run), the host choosing the agent's model
+from `needs`, triggers and background runs, installing `AGENT.md` and
+skills, and the system toolbox for store apps. `llm` is provider management
+for system apps only. Build apps that are complete without AI, and read
+[docs/AI-SERVICES.md](docs/AI-SERVICES.md) before adding an AI feature: the
+exact names, a verified call that handles "unavailable", what the person
+sees, the errors, and what is planned.
 
 ## Running an app
 
@@ -452,7 +467,7 @@ Limits, stated plainly:
 | [docs/SCRIPT-API.md](docs/SCRIPT-API.md) | The Splash language and every API a contained app may call |
 | [docs/CAPABILITIES.md](docs/CAPABILITIES.md) | Each capability: what it unlocks, what the person sees, the rules |
 | [docs/HOST-SERVICES.md](docs/HOST-SERVICES.md) | `host.request`, sheets, "secrets are the host's", adding a service |
-| [docs/AI-SERVICES.md](docs/AI-SERVICES.md) ([简体中文](docs/AI-SERVICES.zh-CN.md)) | OctoSense's assistant (octos): what an app can use today, a verified example, what is planned (an app's own agent, its tools, the system toolbox, glance cards, `sys.digest`), with a dated status table |
+| [docs/AI-SERVICES.md](docs/AI-SERVICES.md) ([简体中文](docs/AI-SERVICES.zh-CN.md)) | OctoSense's assistant (octos): the system agent and app agents, what an app can use today, a verified example, an app's own agent and its tools, the system toolbox, glance cards, `sys.digest`, AI-written text and in-card chat (`sys.chat`), with a dated status table |
 | [docs/PUBLISHING.md](docs/PUBLISHING.md) | Publishing to the App Hub, with verified outputs and the checklist |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | One meaning per term |
 | [docs/NATIVE-WORKSPACE.md](docs/NATIVE-WORKSPACE.md), [docs/l0/](docs/l0/) | Sibling-source setup for the native runtime; L0 card examples |
