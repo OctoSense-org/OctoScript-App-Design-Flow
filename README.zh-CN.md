@@ -12,13 +12,22 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 （[templates/script-app](templates/script-app/README.zh-CN.md)）、完整示例
 （[examples/](examples/README.zh-CN.md)），以及 `tools/octo`：一个包装 App Hub 真实
 `card-host` 与 `hub` 二进制的小型命令行工具。它自己从不决定准入：`tools/octo check`
-输出的就是 `hub check` 的原样输出。
+转发 `hub check` 的输出与退出码，并额外输出封装层进度和 listing 占位符提示。
 
 面向：参加黑客松的选手、其他开发 OctoSense 应用的开发者，以及与他们协作的编码 Agent。
 
 原名 *Octoscript-AppCard*。AppCard 助手运行时和第一方应用先迁至 OctoSense-System-Apps，
 自 2026-09-27 起位于 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
 （OctoSense-System-Apps 已归档，不再公开）。
+
+## 面向 Rust 初学者的代码导读
+
+[代码导读（英文）](docs/CODE-WALKTHROUGH.md) 从 Python CLI、脚本模板、图像/卡片
+流水线和运行时版本追踪到 App Hub 与 OctoSense Shell，解释原生 Rust、Splash 与 L0
+应用的差别、实际运行方式、应用 Agent 的数据访问和对话、跨应用工具限制，以及 Tokio
+所在的层级。`tools/octo` 是开发命令；octos 是独立的 Agent 内核。
+`main.splash` 由 Makepad Script 在 Splash 隔离环境中求值，与 Octoscript L0
+（`page.card`）的解析路径不同。
 
 ## 目录
 
@@ -237,7 +246,8 @@ my-app/                     the app's own git repository
 以及发布者信息（名称、支持方式、https 隐私政策 URL）。合法取值见
 [docs/PUBLISHING.md §3.2](docs/PUBLISHING.md#32-finalize-the-listing)。
 
-**`main.splash`**：程序本身，用 Splash（OctoScript）编写，无需编译即可解释执行。顶层是
+**`main.splash`**：程序本身，由 Makepad Script 在 Splash 隔离环境中求值，
+无需 Rust 编译；它与 Octoscript L0（`page.card`）的解析路径不同。顶层是
 `let` 状态和 `fn`，然后是一个根组件；由于 `ui` 在主体执行后才注入，请用
 `start_timeout(0.05, || boot())` 启动逻辑。源码中的 `{{assets}}` 会被替换为提供应用包内容
 的本地回环地址（`http_resource("{{assets}}/thumbs/a.jpg")`）。应用可以调用的全部内容，
@@ -445,7 +455,7 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 | [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) | 签名目录、准入检查、`hub`、`card-host`、商店与 Card runner |
 | [OctoSense](https://github.com/OctoSense-org/OctoSense) | Shell 及其内置的一切：桌面端 Shell（`desktop/`）、手机 Shell Home（`phone/`，可作为 Home 应用安装，也可放进由 `rom/` 构建的 ROM 镜像），以及第一方应用和它们的宿主服务（`apps/`）。原为 OctoSense-Desktop、OctoSense-ROM 和 OctoSense-System-Apps 三个仓库。 |
 | [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) | 第一方应用（News、Photos、Maps、Camera、Mail、AI providers）及其宿主服务（`mail`、`llm`） |
-| [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard) | AppCard 助手（`octos-app`，在 Shell 中需 `--features app-appcard` 才启用）与 L0 卡片语言；Splash 隔离环境和组件本身在 makepad 中 |
+| [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard) | AppCard 助手（`octos-app`，在 Shell 中需 `--features app-appcard` 才启用）；L0 解析器/检查器位于 Octoscript，Makepad 转换/渲染层位于 Octoscript-Makepad；Splash 隔离环境和组件位于 makepad |
 | [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad)、[Octoscript](https://github.com/OctoSense-org/OctoScript)、[Octoscript-Makepad](https://github.com/OctoSense-org/OctoScript-Makepad) | 应用运行所依赖的框架与语言 |
 
 ## 许可证

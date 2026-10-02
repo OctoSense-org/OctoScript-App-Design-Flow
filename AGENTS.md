@@ -4,13 +4,17 @@
 
 You are in **OctoScript App Design Flow**: the harness for building an
 OctoSense app and taking it to the OctoSense App Hub. Read this file first,
-then the one flow you are following.
+then the one flow you are following. For repository architecture/documentation
+work, read [docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md): trace code and
+check links/commands without pretending to complete an app-authoring flow.
+The screenshot, gate and publishing checklist below applies when delivering
+an app bundle, not when reviewing this repository's documentation.
 
 ## What this repository is, and is not
 
 | It is | It is not (go there instead) |
 | --- | --- |
-| Flows (`flows/*/FLOW.md`): step-by-step procedures from an input to a checked bundle | The runtime: [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad) (Splash isolate, widgets) and [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) (the Card runner); the AppCard assistant and the L0 card language: [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard) |
+| Flows (`flows/*/FLOW.md`): step-by-step procedures from an input to a checked bundle | The runtime: [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad) (Splash isolate, widgets) and [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) (the Card runner); the AppCard assistant: [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard); the L0 parser/checker: [Octoscript](https://github.com/OctoSense-org/Octoscript), and its Makepad lowering/renderer: [Octoscript-Makepad](https://github.com/OctoSense-org/Octoscript-Makepad) |
 | Developer docs (`docs/`): quickstart, script API, capabilities, host services, AI services, publishing, glossary | System apps (News, Photos, Maps, Camera, Mail, AI providers): [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) |
 | `tools/octo`: doctor, new, run, shot, check around the real `card-host` and `hub` | The store, gate, catalog, `hub` and `card-host` source: [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) |
 | Templates (`templates/script-app/`) and worked examples (`examples/`) | The shells that run apps: [OctoSense](https://github.com/OctoSense-org/OctoSense) `phone/` (Home, the phone launcher) and `desktop/` (the desktop shell) |
@@ -87,8 +91,9 @@ patch around it here.
 - **Clean up what you launch.** End every `card-host` you start with
   `curl -s 127.0.0.1:<port>/quit` (or `/gq`); do not `pkill` other windows.
   `tools/octo run` refuses a port that is still taken and prints the `/quit`
-  command for whatever holds it; it returns once the app is drawn, so you can
-  click, type or `shot` immediately.
+  command for whatever holds it. With `--detach` it returns once the app is
+  drawn, so you can click, type or `shot` immediately; without `--detach`
+  it waits for the child process to exit.
 
 ## Definition of done (before hand-off to a human)
 
@@ -116,6 +121,24 @@ End with a report a person can check without rerunning anything:
   must do next.
 - **Gaps found**: runtime or tool behavior that contradicted the docs, with the
   smallest reproduction you have.
+
+## Architecture claims and documentation changes
+
+- Keep Splash/Makepad Script and Octoscript L0 distinct; the project name
+  does not make `.splash` and `.card` interchangeable languages.
+- Separate validation, grants, registration and executable handlers. A
+  `tools.json` entry or `AGENT.md` accepted by the gate is not proof the
+  runtime executes or installs it. Default App Hub admission also checks
+  `agent.tools` against `HostLimits::offered_tools`; shell relay support
+  alone does not make an arbitrary cross-app tool request admissible.
+- Distinguish an account workspace from the entire app jail and host
+  service storage. Agent access is bounded; do not promise automatic access
+  to data written elsewhere by the UI.
+- Keep English/Chinese README summaries aligned, preserve dated evidence,
+  run `python3 tools/check-links.py`, and also check links in new untracked
+  Markdown files. Report unrun native, provider and device paths explicitly.
+- Runtime locks belong to each consumer. Do not update shared sibling
+  checkouts or pins merely to make a documentation command pass.
 
 ## Syntax reminders for `main.splash`
 

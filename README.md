@@ -13,7 +13,8 @@ flows ([flows/](flows/README.md)), the developer docs ([docs/](docs/)), a
 runnable app template ([templates/script-app](templates/script-app/README.md)),
 worked examples ([examples/](examples/README.md)) and `tools/octo`, a small CLI
 over the App Hub's real `card-host` and `hub` binaries. It never decides
-admission itself: `tools/octo check` prints exactly what `hub check` prints.
+admission itself: `tools/octo check` forwards `hub check` output and exit
+status, and adds wrapper progress and listing-placeholder notes.
 
 Who it is for: hackathon contestants and other developers building an
 OctoSense app, and the coding agents they work with.
@@ -22,6 +23,15 @@ Formerly *Octoscript-AppCard*. The AppCard assistant runtime and
 the first-party apps moved to OctoSense-System-Apps and, since 2026-09-27,
 live in [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
 (OctoSense-System-Apps is archived and no longer public).
+
+## Code walkthrough for Rust beginners
+
+[docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md) traces the Python CLI,
+script template, image/card pipeline and runtime pins into App Hub and the
+OctoSense shell. It explains native Rust versus Splash/L0 apps, how to run
+a bundle, app-agent data access and conversations, cross-app tool limits,
+and where Tokio belongs. `tools/octo` is the development CLI; octos is the
+separate agent kernel.
 
 ## Contents
 
@@ -263,8 +273,9 @@ screenshots, the platforms you actually tested, age rating and the publisher
 (name, support, https privacy-policy URL). Valid values:
 [docs/PUBLISHING.md §3.2](docs/PUBLISHING.md#32-finalize-the-listing).
 
-**`main.splash`**: the program, in Splash (OctoScript), interpreted with no
-compile step. Top-level `let` state and `fn`s, then one root widget; start
+**`main.splash`**: the program, evaluated by Makepad Script in a Splash
+isolate with no Rust compile step. This is a different parsing path from
+Octoscript L0 (`page.card`). Top-level `let` state and `fn`s, then one root widget; start
 work with `start_timeout(0.05, || boot())`, since `ui` is injected after the
 body runs. `{{assets}}` in the source is replaced by the loopback origin that
 serves the bundle (`http_resource("{{assets}}/thumbs/a.jpg")`). Everything an
@@ -517,7 +528,7 @@ For a script app, the complete examples are the first-party bundles in
 | [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) | The signed catalog, the gate, `hub`, `card-host`, the store and the Card runner |
 | [OctoSense](https://github.com/OctoSense-org/OctoSense) | The shell and what ships in it: the desktop shell (`desktop/`), the phone shell Home (`phone/`, as a Home app or in the ROM image built by `rom/`), and the first-party apps with their host services (`apps/`). Formerly OctoSense-Desktop, OctoSense-ROM and OctoSense-System-Apps. |
 | [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) | First-party apps (News, Photos, Maps, Camera, Mail, AI providers) and their host services (`mail`, `llm`) |
-| [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard) | The AppCard assistant (`octos-app`, opt-in in the shells with `--features app-appcard`) and the L0 card language; the Splash isolate and widgets themselves are in makepad |
+| [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard) | The AppCard assistant (`octos-app`, opt-in in the shells with `--features app-appcard`); the L0 parser/checker is in Octoscript and its Makepad lowering/renderer in Octoscript-Makepad; Splash isolates and widgets are in makepad |
 | [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad), [Octoscript](https://github.com/OctoSense-org/OctoScript), [Octoscript-Makepad](https://github.com/OctoSense-org/OctoScript-Makepad) | The framework and language the apps run on |
 
 ## License
