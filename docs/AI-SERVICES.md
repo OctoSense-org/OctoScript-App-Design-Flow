@@ -502,7 +502,7 @@ What an app author can do today:
   so do not use a field the shells' pin does not know.
 - This repository's `card-host` and `card-studio` are built against the
   runtime its [`native-runtime.lock.json`](../native-runtime.lock.json)
-  pins: Octoscript-Makepad `62760863`, which pins Octoscript `5991dfae`,
+  pins: Octoscript-Makepad `2cc5ef37`, which pins Octoscript `5991dfae`,
   the shells' pin. It has `sys.digest`, `model-copy` in text slots,
   `sys.chat` and `ChatEntry` (OctoScript #40, #53).
 

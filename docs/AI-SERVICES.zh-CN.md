@@ -422,7 +422,7 @@ host.request("model.complete", {
   所以不要使用 Shell 锁定版本不认识的字段。
 - 本仓库的 `card-host` 和 `card-studio` 是按
   [`native-runtime.lock.json`](../native-runtime.lock.json) 锁定的运行时构建的：
-  Octoscript-Makepad `62760863`，它锁定 Octoscript `5991dfae`，与 Shell 锁定的版本相同。它有
+  Octoscript-Makepad `2cc5ef37`，它锁定 Octoscript `5991dfae`，与 Shell 锁定的版本相同。它有
   `sys.digest`、文本槽中的 `model-copy`、`sys.chat` 和 `ChatEntry`（OctoScript #40、#53）。
 
 如果想提前准备，可以参照 App Hub 的 News 示例
