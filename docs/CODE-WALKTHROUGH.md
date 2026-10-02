@@ -44,9 +44,9 @@ current shell does not install its instructions or skills into the peer.
    how runtime source versions are prepared and checked.
 
 Then follow the runtime in
-[App Hub's code walkthrough](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/docs/junior-architecture-walkthrough/docs/CODE-WALKTHROUGH.md)
+[App Hub's code walkthrough](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/f560e9b1e751d9ab7d4ba7f74204ee37056d27dd/docs/CODE-WALKTHROUGH.md)
 and the complete shell/peer path in
-[OctoSense](https://github.com/OctoSense-org/OctoSense/blob/docs/junior-architecture-walkthrough/docs/architecture-walkthrough.md).
+[OctoSense](https://github.com/OctoSense-org/OctoSense/blob/c3011a2057ec59738b79466f48ff2ad8d0e60130/docs/architecture-walkthrough.md).
 
 ## 3. Trace `tools/octo new`, `run`, `shot`, `check`
 
@@ -189,7 +189,7 @@ The shell asks the person to allow it, prepares its peer, installs available
 tool declarations and opens conversation contexts. On desktop, `Ask <app>`
 is a host-owned human chat surface. App-owned `octos.*` screens and
 supported L0 `sys.chat` cards are other entry points; the
-[shell walkthrough](https://github.com/OctoSense-org/OctoSense/blob/docs/junior-architecture-walkthrough/docs/architecture-walkthrough.md#6-where-a-person-talks-and-where-the-answer-goes)
+[shell walkthrough](https://github.com/OctoSense-org/OctoSense/blob/c3011a2057ec59738b79466f48ff2ad8d0e60130/docs/architecture-walkthrough.md#6-where-a-person-talks-and-where-the-answer-goes)
 explains their routing.
 
 The system assistant discovers allowed, prepared peers and sends work using
@@ -249,7 +249,7 @@ those contexts; the peer identity persists between turns.
 For the exact `tokio::spawn`, channels, cancellation and UI handoff, continue
 in OctoSense's `crates/ai-host`, `crates/app-peers` and the octos dependency
 at the shell's pin. The end-to-end
-[shell walkthrough](https://github.com/OctoSense-org/OctoSense/blob/docs/junior-architecture-walkthrough/docs/architecture-walkthrough.md)
+[shell walkthrough](https://github.com/OctoSense-org/OctoSense/blob/c3011a2057ec59738b79466f48ff2ad8d0e60130/docs/architecture-walkthrough.md)
 connects those objects to Rust code.
 
 ## 8. The image/card design path is a separate pipeline
