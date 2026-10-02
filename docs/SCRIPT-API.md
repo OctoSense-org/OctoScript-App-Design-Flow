@@ -220,8 +220,8 @@ host.request("mail.list", {account: account.id folder: folder.id offset: 0 limit
   try again when some have answered`; from a home-screen tile or an
   assistant's tool call, a service that needs its sheet refuses with a
   sentence such as `this surface cannot raise a prompt; open the app to
-  continue` (in the shells with [OctoSense#204](https://github.com/OctoSense-org/OctoSense/pull/204), open: until then they mark every
-  call as able to show a sheet). The limits: App Hub
+  continue` (in the shells since [OctoSense#204](https://github.com/OctoSense-org/OctoSense/pull/204), merged 2026-10-01, for
+  glance tiles and agents' tool calls). The limits: App Hub
   [PUBLISHING § Host services and sheets](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#host-services-and-sheets).
 - `host.capabilities()` → the granted list (`["storage"]` **✓ run**);
   `host.has("net")` → bool (**✓ run**). There is no `host.prompt`.

@@ -19,6 +19,7 @@ and the Mail service in
 | `news` | News's data service ([`apps/news/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/news/host-service)) | Only `os.*` system apps (`The news service serves system apps only.`) | OctoSense desktop and Home |
 | `glance` | The glance screen ([`crates/shell/src/glance.rs`](https://github.com/OctoSense-org/OctoSense/blob/main/crates/shell/src/glance.rs)) | Any contained app granted `glance` (OctoSense [#86](https://github.com/OctoSense-org/OctoSense/pull/86)), and native modules ([AI-SERVICES](AI-SERVICES.md#publishing-to-the-glance-screen)) | OctoSense desktop and Home |
 | `model` | One-shot model calls, `model.complete` ([`apps/ai-providers/host-service/src/complete`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/ai-providers/host-service/src/complete), OctoSense [#95](https://github.com/OctoSense-org/OctoSense/pull/95)) | Any app granted `model`, within a per-app budget ([AI-SERVICES](AI-SERVICES.md#one-shot-model-calls-model)) | OctoSense desktop and Home |
+| `calendar` | Calendar's events and its glance cards ([`apps/calendar/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/calendar/host-service), OctoSense [#267](https://github.com/OctoSense-org/OctoSense/pull/267)) | Only Calendar (`os.calendar`), and in practice only its agent's tools: App Hub has no `calendar` capability, so no app can be granted it, and the shell runs a system app's own namespace without a grant ([AI-SERVICES](AI-SERVICES.md#what-an-apps-agent-gets-today)) | OctoSense desktop (Calendar is not packed on the phone) |
 | `octos` | The assistant for contained apps ([`crates/ai-host/src/contained.rs`](https://github.com/OctoSense-org/OctoSense/blob/main/crates/ai-host/src/contained.rs), OctoSense [#106](https://github.com/OctoSense-org/OctoSense/pull/106), [#184](https://github.com/OctoSense-org/OctoSense/pull/184)) | Any app granted the `octos.*` name it calls, once the person allows its agent (asked at first use). Rinx's mini-app host also serves them, to bundles imported into Rinx | OctoSense desktop and Home, where the shell hosts a kernel (not iOS) |
 
 `card-host` registers none of these. The device's assistant and what an app
@@ -84,7 +85,11 @@ it on:
 - the service that needs a credential asks for it on its sheet and keeps it
   in the platform's secret store (Mail: the keychain on Apple platforms, an
   Android Keystore key on Android), under the host's own directory, outside
-  every app's jail.
+  every app's jail (in the OctoSense shells, the owner-only
+  `secrets/os.mail/` folder since
+  [OctoSense#223](https://github.com/OctoSense-org/OctoSense/pull/223), not under `apps/`).
+  An app's agent never reaches it either: the agent works in the app's
+  account folder ([AI-SERVICES](AI-SERVICES.md#where-the-agent-works-storage)).
 
 If your app needs an account on some service, it needs a host service for it.
 It does not get a login form.
@@ -105,6 +110,7 @@ The `mail` family (capability `mail`) as the Mail system app uses it
 | `mail.message` | `{account, folder?, message}` | `{id, sender, address, subject, body, html, attachments, date, time}` |
 | `mail.mark_read` | `{account, folder?, message}` | `{}` |
 | `mail.send` | `{account, to, subject, body}` | `{accepted}` |
+| `mail.notify` | `{title, body, card_id?, priority?}` (title ≤ 80, body ≤ 600 characters) | `{card_id, replaced, expires_at}` once Mail's fixed notice card is on the glance screen, with a notification. Mail's agent's tool ([OctoSense#267](https://github.com/OctoSense-org/OctoSense/pull/267)); answers `This device shows no glance cards.` where no shell publishes them |
 | `mail.sheet.submit` | sign-in fields | sheet only |
 | `mail.sheet.cancel` | – | sheet only |
 
@@ -120,7 +126,8 @@ with `{id, address}`. Each account is granted to the apps that added it.
 A new service is a change to a shell, not to an app bundle. It needs, together:
 
 1. **A capability** for its family in `KNOWN_CAPABILITIES`
-   (`crates/app-policy/src/manifest.rs`), with its privacy line in
+   (`crates/app-contract/src/manifest.rs`, a reviewed change to the app
+   contract), with its privacy line in
    `app-policy/src/listing.rs::privacy_summary` and its permission line in
    `app-hub/src/index.rs::permissions_summary` (a test there fails when a
    capability has no plain-words line). The list is closed on purpose; adding a
@@ -157,8 +164,17 @@ A new service is a change to a shell, not to an app bundle. It needs, together:
    for a slow service, and the clock stops while the sheet is up) answers
    `the host service timed out`, and a late `send` is dropped ([App Hub#38](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/38), in
    the OctoSense shells since [OctoSense#243](https://github.com/OctoSense-org/OctoSense/pull/243)). The shells set `call.may_prompt`
-   false for tiles and tool calls with [OctoSense#204](https://github.com/OctoSense-org/OctoSense/pull/204) (open); until then it is
-   always true there.
+   false for glance tiles and for an agent's tool calls since
+   [OctoSense#204](https://github.com/OctoSense-org/OctoSense/pull/204) (merged 2026-10-01): Mail's `add_account` and AI providers'
+   sheets refuse there, and a cancelled tool call stops waiting. The `model`
+   service waits out every attempt on a provider (2 × 120 s + 30 s); the
+   other services keep the 60 s default.
+   **A service's method can also be an app agent's tool.** A system app's
+   `tools.json` tool with `implemented_by: "host-service"` reaches the
+   service as a normal `ServiceCall` from that app (`may_prompt: false`), so
+   one method serves the app's screen and its agent: Mail's `mail.notify`
+   and Calendar's `calendar.*` are written that way
+   ([AI-SERVICES](AI-SERVICES.md#the-apps-tools-and-peer-tools)).
 3. **Registration in the shell**: `register_host_service(Box::new(Weather))`
    at startup, where the shell's Card runner pumps `services::pump`. Mail's
    crate exposes `octosense_mail_service::register()`.

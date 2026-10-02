@@ -54,7 +54,15 @@ patch around it here.
   answers `no service answers "…" on this device`. `llm` is for system apps
   only. Never put a model key in an app. Read
   [docs/AI-SERVICES.md](docs/AI-SERVICES.md) before adding one, and report
-  such a feature as not verified on a device.
+  such a feature as not verified on a device. An app's own agent
+  (`"agent": {…, "tools": ["ask_user_question"]}`) is checked here only by
+  `hub check`. In the shells the person talks to it directly in the
+  "Ask <app>" panel the shell draws for every app with an agent, so the app
+  need not draw a chat of its own (desktop; the phone has no entry to the
+  panel yet). A store app's `tools.json` tools do not run in any shell yet,
+  so no screen may depend on its agent calling them. L0 cards that use
+  `sys.chat`, `sys.digest` or `model-copy` text need a newer runtime than
+  this repository pins: report them as not verified here.
 - **Only needed capabilities.** Each capability maps to something a screen
   does ([docs/CAPABILITIES.md](docs/CAPABILITIES.md)). Remove what is unused.
 - **No dummy screenshots.** Screenshots are captures of the real app in a real
@@ -64,8 +72,10 @@ patch around it here.
   for you; after signing, any edit needs stamp and sign again (human).
 - **Keep the bundle clean.** Only `manifest.json`, `listing.json`, the entry,
   artwork and screenshots go in `bundle/` (plus `tools.json`, `AGENT.md` and
-  `skills/` for an app that declares its own agent; the shells give it a peer
-  and its tools, but do not install `AGENT.md` or skills yet:
+  `skills/` for an app that declares its own agent; the shells give it a peer,
+  `ask_user_question` and read access to its account folder, and register
+  its tools (which run only for system apps today), but do not install
+  `AGENT.md` or skills yet:
   [docs/AI-SERVICES.md](docs/AI-SERVICES.md#an-apps-own-agent)). Notes, keys, logs, review packets
   and `.local-state/` stay out.
 - **Run headless.** Start apps with `tools/octo run … --hidden` (Makepad's
