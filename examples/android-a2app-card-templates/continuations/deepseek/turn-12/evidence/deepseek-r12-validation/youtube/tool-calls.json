@@ -1,0 +1,2198 @@
+[
+  {
+    "request_id": "7b73f495-8456-473c-9e7f-fef396b7a85a",
+    "request": {
+      "name": "studio.bundle_check",
+      "args": {
+        "bundle_path": "card-templates/youtube/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "7b73f495-8456-473c-9e7f-fef396b7a85a",
+      "data": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.youtube",
+        "capabilities": [],
+        "digest": "10699a2b3e3a5c8881a41e934f97088bb5eaace2a416aa1a8ac26eb2e846ebc4",
+        "name": "YouTube Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.625
+  },
+  {
+    "request_id": "86572dab-3bb1-47f4-8896-f64ed0e85539",
+    "request": {
+      "name": "studio.open",
+      "args": {
+        "bundle_path": "card-templates/youtube/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "86572dab-3bb1-47f4-8896-f64ed0e85539",
+      "data": {
+        "bundle": {
+          "admission": "local_developer",
+          "app_id": "dev.studio.cards.youtube",
+          "capabilities": [],
+          "digest": "10699a2b3e3a5c8881a41e934f97088bb5eaace2a416aa1a8ac26eb2e846ebc4",
+          "name": "YouTube Cards",
+          "publisher_signed": false,
+          "source_modified": false,
+          "version": "0.1.0"
+        },
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "ready": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 1.14
+  },
+  {
+    "request_id": "87df7350-3f15-42f7-86ff-8f628e1b8c6a",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd"
+      }
+    },
+    "reply": {
+      "call_id": "87df7350-3f15-42f7-86ff-8f628e1b8c6a",
+      "data": {
+        "height": 2132,
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-1ba5b720-2b11-4ec2-a76e-c6f563d14cb9.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "YouTube Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   watch later: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "YOUTUBE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "3d",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "VIDEO UNAVAILABLE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Can't play in this demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Lo-fi build session \u00b7 42 min",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Circuit Beats \u00b7 184K views",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-e97821ff-9d1f-437e-ae90-0a2e8aaea4f3.json",
+        "total_widgets": 19,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.352
+  },
+  {
+    "request_id": "54e506bc-c184-4d2b-a927-1b45dbf286df",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "widget_id": "-@7",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "54e506bc-c184-4d2b-a927-1b45dbf286df",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.107
+  },
+  {
+    "request_id": "4438ce01-f332-4073-8452-59638b552e47",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd"
+      }
+    },
+    "reply": {
+      "call_id": "4438ce01-f332-4073-8452-59638b552e47",
+      "data": {
+        "height": 2132,
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-19c31158-e7a2-4351-9b7c-e725109489fa.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "YouTube Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   watch later: 1",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "YOUTUBE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "3d",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "VIDEO UNAVAILABLE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Can't play in this demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Lo-fi build session \u00b7 42 min",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Circuit Beats \u00b7 184K views",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "In Watch later \u2713",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-d5431228-c0d0-45b7-b542-089f38dfba19.json",
+        "total_widgets": 19,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.32
+  },
+  {
+    "request_id": "2f01482e-f686-492a-8f11-bed83ca53ceb",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "widget_id": "-@7",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "2f01482e-f686-492a-8f11-bed83ca53ceb",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.108
+  },
+  {
+    "request_id": "d3519557-c780-4188-9635-4e372c7e3f14",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd"
+      }
+    },
+    "reply": {
+      "call_id": "d3519557-c780-4188-9635-4e372c7e3f14",
+      "data": {
+        "height": 2132,
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-3fc3293d-c5a1-4d89-a8d9-2cf144fe2372.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "YouTube Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   watch later: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "YOUTUBE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "3d",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "VIDEO UNAVAILABLE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Can't play in this demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Lo-fi build session \u00b7 42 min",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Circuit Beats \u00b7 184K views",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-e5996510-9bd8-4732-a30c-ee99e808a9b5.json",
+        "total_widgets": 19,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.324
+  },
+  {
+    "request_id": "331f2dfa-6d3d-4a4a-97eb-3d012e9d5b3e",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "widget_id": "d_ex@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "331f2dfa-6d3d-4a4a-97eb-3d012e9d5b3e",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.136
+  },
+  {
+    "request_id": "5d5091d3-0c01-4176-b956-fc76dedf4889",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd"
+      }
+    },
+    "reply": {
+      "call_id": "5d5091d3-0c01-4176-b956-fc76dedf4889",
+      "data": {
+        "height": 2132,
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-33751a2e-29a1-469c-9d15-b00ebbdef026.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "YouTube Cards   \u00b7   L1 expanded   \u00b7   ready   \u00b7   watch later: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "\u2022 Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "YOUTUBE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "3d",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "VIDEO UNAVAILABLE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Video can't play in this offline demo.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Lo-fi build session \u00b7 42 min",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Circuit Beats \u00b7 184K views \u00b7 3 days ago",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "Demo description: building a lo-fi track layer by layer.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-f9833f72-1192-4fc4-aa46-da17fdccec3d.json",
+        "total_widgets": 21,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.365
+  },
+  {
+    "request_id": "3c86745c-0915-4d66-9934-bf070d05565a",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "widget_id": "d_ap@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "3c86745c-0915-4d66-9934-bf070d05565a",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.108
+  },
+  {
+    "request_id": "5f78ec7f-6c53-44b4-96a4-9b4ba175964c",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd"
+      }
+    },
+    "reply": {
+      "call_id": "5f78ec7f-6c53-44b4-96a4-9b4ba175964c",
+      "data": {
+        "height": 2132,
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-ccaf000a-dad2-4e47-bd81-94800b8de029.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "YouTube Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   watch later: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Lo-fi build session \u00b7 42 min",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Circuit Beats \u00b7 184K views",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Synth patch walkthrough",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "Circuit Beats \u00b7 92K views",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Desk setup tour 2026",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "Study Corner \u00b7 3.1M views",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@9",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-1db86b41-26c1-4362-8d5c-ce8b4da274e3.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.319
+  },
+  {
+    "request_id": "1e4dd0a3-30e5-436f-ae9c-eff77e12a3aa",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "widget_id": "1@7",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "1e4dd0a3-30e5-436f-ae9c-eff77e12a3aa",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.137
+  },
+  {
+    "request_id": "8cca6060-3c45-41c8-a7ca-95a0cfe1b5d4",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd"
+      }
+    },
+    "reply": {
+      "call_id": "8cca6060-3c45-41c8-a7ca-95a0cfe1b5d4",
+      "data": {
+        "height": 2132,
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-76006f52-e58f-466c-ac08-e4a4504229d8.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "YouTube Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   watch later: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "VIDEO UNAVAILABLE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Video can't play in this offline demo.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Synth patch walkthrough",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "Circuit Beats \u00b7 92K views \u00b7 1 week ago",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "\u2039 Back",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-3dae55c4-4a3c-421b-841b-3428a3ad2d96.json",
+        "total_widgets": 21,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.505
+  },
+  {
+    "request_id": "a3c889b0-612d-4c72-af8b-c2ae39d6c812",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "widget_id": "-@7",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "a3c889b0-612d-4c72-af8b-c2ae39d6c812",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.128
+  },
+  {
+    "request_id": "79d3fa1e-dd73-46fc-bd14-93259b049942",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd"
+      }
+    },
+    "reply": {
+      "call_id": "79d3fa1e-dd73-46fc-bd14-93259b049942",
+      "data": {
+        "height": 2132,
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-e97bbf7f-c605-4427-bd95-844f09c7e461.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "YouTube Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   watch later: 1",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "VIDEO UNAVAILABLE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Video can't play in this offline demo.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Synth patch walkthrough",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "Circuit Beats \u00b7 92K views \u00b7 1 week ago",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "In Watch later \u2713",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "\u2039 Back",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-a18eb857-80fa-46a7-8bd4-a82b9c670340.json",
+        "total_widgets": 21,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.339
+  },
+  {
+    "request_id": "730240ce-9277-4674-862e-56ffda6852dc",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "widget_id": "1@5",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "730240ce-9277-4674-862e-56ffda6852dc",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.156
+  },
+  {
+    "request_id": "2b12d18b-0ae9-454b-9789-f0ce5cce3265",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd"
+      }
+    },
+    "reply": {
+      "call_id": "2b12d18b-0ae9-454b-9789-f0ce5cce3265",
+      "data": {
+        "height": 2132,
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-767e8931-b244-470e-9927-a33574f234ae.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "YouTube Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   watch later: 1",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Lo-fi build session \u00b7 42 min",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Circuit Beats \u00b7 184K views",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Synth patch walkthrough",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "Circuit Beats \u00b7 92K views",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "In Watch later \u2713",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Desk setup tour 2026",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "Study Corner \u00b7 3.1M views",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@9",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-2d919704-83bd-443c-801a-c9fdba4a06a0.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.353
+  },
+  {
+    "request_id": "c6ea974c-0474-41cc-a679-f4863295f2a1",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "widget_id": "1@2",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "c6ea974c-0474-41cc-a679-f4863295f2a1",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.122
+  },
+  {
+    "request_id": "c6540310-676b-449e-9cf3-793790a50e63",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd"
+      }
+    },
+    "reply": {
+      "call_id": "c6540310-676b-449e-9cf3-793790a50e63",
+      "data": {
+        "height": 2132,
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-acc74c20-3733-416d-81ca-93e554d9560f.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "YouTube Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   watch later: 1",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Watch later \u00b7 1",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Synth patch walkthrough",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Circuit Beats \u00b7 92K views",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "In Watch later \u2713",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-b1e93d35-a5f9-45d1-9333-736c98fda7de.json",
+        "total_widgets": 20,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.303
+  },
+  {
+    "request_id": "183bb035-4ee1-4b05-945c-37f9129292e0",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "widget_id": "-@7",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "183bb035-4ee1-4b05-945c-37f9129292e0",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.35
+  },
+  {
+    "request_id": "de5bc13d-ddea-445f-b4d9-7d48f89064fa",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd"
+      }
+    },
+    "reply": {
+      "call_id": "de5bc13d-ddea-445f-b4d9-7d48f89064fa",
+      "data": {
+        "height": 2132,
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-12d45dbf-3258-41d8-993a-1463eb1a18bb.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "YouTube Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   watch later: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Watch later \u00b7 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Nothing saved yet",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-4912ec8f-1653-4104-a161-d4efd4e5bac4.json",
+        "total_widgets": 15,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.344
+  },
+  {
+    "request_id": "4b8e95f2-0dd5-4631-898d-41ae3c683f87",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "widget_id": "d_gl@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "4b8e95f2-0dd5-4631-898d-41ae3c683f87",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.356
+  },
+  {
+    "request_id": "30a6454b-c0a6-4523-9be3-1095c003300d",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd"
+      }
+    },
+    "reply": {
+      "call_id": "30a6454b-c0a6-4523-9be3-1095c003300d",
+      "data": {
+        "height": 2132,
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-9cbe63fb-02ef-4442-b77b-83f82d4a0c69.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "YouTube Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   watch later: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "YOUTUBE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "3d",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "VIDEO UNAVAILABLE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Can't play in this demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Lo-fi build session \u00b7 42 min",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Circuit Beats \u00b7 184K views",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Watch later",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-aeeeb089-3de8-4c34-89e3-a89ecf3fef65.json",
+        "total_widgets": 19,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.375
+  },
+  {
+    "request_id": "09804d78-d1ab-40ad-8f43-e6c162c0dfb0",
+    "request": {
+      "name": "studio.close",
+      "args": {
+        "instance_id": "5afd7ec8-766d-41eb-ba6c-e67d1074fabd"
+      }
+    },
+    "reply": {
+      "call_id": "09804d78-d1ab-40ad-8f43-e6c162c0dfb0",
+      "data": {
+        "closed": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.126
+  }
+]

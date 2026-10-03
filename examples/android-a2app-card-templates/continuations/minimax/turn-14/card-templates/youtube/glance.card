@@ -1,0 +1,99 @@
+# ledger youtube.glance@0.1.0
+# level:   L0
+# profile: ui/l0
+# model:   dev.studio.cards.youtube
+#
+theme taskplan_light
+#
+# VIDEO family's compact L0 glance: one video record. Title, channel, duration and
+# age, one action, one honest offline cue. The list, the full record and the
+# Watch later filter live behind the card's own detail, not in the glance.
+# L0/L1/L2 are PRESENTATION depths; this file is language L0 at every depth.
+#
+# Fixture: glance.data.json — synthetic demo records. This offline build runs no
+# search, loads no thumbnail and opens no player url, so the card STATES that
+# playback is unavailable here instead of implying a video is on screen.
+#
+# OFFLINE SOURCE CONTRACT:
+#   * fixture keys are the SOURCE ALIASES (lead, more);
+#   * `id:` is OMITTED so fixture values lower to literals;
+#   * every lifecycle-bound read sits inside a `.$state == .ready` guard;
+#   * `when` takes no else; branches reference named views.
+#
+# The shipped youtube.card searches a live source and hands a player url to
+# sys.link. Neither is possible offline, so this card uses a plain sys.dataset
+# record and makes no playback claim.
+
+source lead sys.dataset(fields: [title, subtitle, summary, as_of, status, metric1_label, metric1_value, metric2_label, metric2_value])
+
+state mode  { shape: enum[glance, detail], initial: .glance }
+state later { shape: enum[none, saved], initial: .none }
+
+event open_detail { mode: set(.detail) }
+event back        { mode: set(.glance) }
+event add_later   { later: set(.saved) }
+event drop_later  { later: set(.none) }
+
+copy app      { class: vocabulary, en: "Videos", zh: "视频" }
+copy noplay   { class: vocabulary, en: "NO PLAYBACK OFFLINE", zh: "离线无法播放" }
+copy open     { class: vocabulary, en: "Open", zh: "打开" }
+copy back     { class: vocabulary, en: "‹ Back", zh: "‹ 返回" }
+copy later    { class: vocabulary, en: "Watch later", zh: "稍后观看" }
+copy drop     { class: vocabulary, en: "Remove from Watch later", zh: "从稍后观看中移除" }
+
+# Lifecycle strings are declared copy, never inline (framework-l0 §1).
+copy loading { class: vocabulary, en: "Loading demo videos…", zh: "正在加载演示视频…" }
+copy offline { class: vocabulary, en: "Can't load demo videos", zh: "无法加载演示视频" }
+
+view root Surface(pad: .tight) {
+  Col(gap: 8) {
+    Row(gap: 8, align: .center) {
+      Icon(name: .video, size: .row)
+      TextCaption(text: copy.app, width: .fill)
+      TextCaption(value: lead.as_of)
+    }
+    when lead.$state == .pending { loading_row }
+    when lead.$state == .failed  { offline_row }
+    when lead.$state == .ready   {
+      when mode == .glance { glance_row }
+      when mode == .detail { detail }
+    }
+  }
+}
+
+view loading_row Col {
+  TextBody(text: copy.loading, width: .fill)
+}
+
+view offline_row Col {
+  TextBody(text: copy.offline, width: .fill)
+}
+
+view glance_row Col(gap: 8) {
+  TextCaption(text: copy.noplay, width: .fill)
+  TextTitle(text: lead.title, width: .fill)
+  TextRow(text: lead.subtitle, width: .fill)
+  Row(gap: 8, align: .center) {
+    TextCaption(value: lead.metric1_value)
+  }
+  Row(gap: 8) {
+    Chip(text: copy.open, on_tap: open_detail, tone: .primary)
+  }
+}
+
+view detail Col(gap: 8) {
+  TextTitle(text: lead.title, width: .fill)
+  TextRow(text: lead.subtitle, width: .fill)
+  Row(gap: 8, align: .center) {
+    TextCaption(value: lead.metric1_value)
+    TextCaption(value: lead.metric2_value)
+  }
+  TextBody(text: lead.summary, width: .fill)
+  Row(gap: 8) {
+    when later == .none  { Chip(text: copy.later, on_tap: add_later, tone: .primary) }
+    when later == .saved { Chip(text: copy.drop, on_tap: drop_later) }
+  }
+  Row(gap: 8) {
+    Chip(text: copy.back, on_tap: back)
+  }
+}

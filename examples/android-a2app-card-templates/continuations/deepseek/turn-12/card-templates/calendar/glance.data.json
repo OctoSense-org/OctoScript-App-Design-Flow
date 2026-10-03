@@ -1,0 +1,11 @@
+{
+  "ev": {
+    "title": "Design review",
+    "subtitle": "Today · 10:00–11:00 · Studio 2",
+    "status": "confirmed",
+    "as_of": "Today",
+    "$state": "ready",
+    "$status": "ready"
+  },
+  "_note": "Synthetic demo fixture for card-templates/calendar/glance.card (sys.dataset). Bound under the source name `ev`. Not a real calendar."
+}

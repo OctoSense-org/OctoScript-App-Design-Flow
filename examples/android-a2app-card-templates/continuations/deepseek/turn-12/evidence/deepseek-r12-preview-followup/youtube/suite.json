@@ -1,0 +1,96 @@
+{
+  "family": "youtube",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Lo-fi build session",
+        "UNAVAILABLE"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "reveal-preview-states",
+      "action": "tap",
+      "target": "states_btn",
+      "contains": [
+        "Loading",
+        "Empty",
+        "Error"
+      ]
+    },
+    {
+      "label": "loading",
+      "action": "tap",
+      "target": "Loading",
+      "contains": [
+        "Loading\u2026"
+      ]
+    },
+    {
+      "label": "empty",
+      "action": "tap",
+      "target": "Empty",
+      "contains": [
+        "No videos"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "error",
+      "action": "tap",
+      "target": "Error",
+      "contains": [
+        "Couldn't load"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "ready",
+      "action": "tap",
+      "target": "Ready",
+      "contains": [
+        "Lo-fi build session"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "collapse-preview-states",
+      "action": "tap",
+      "target": "states_btn",
+      "excludes": [
+        "Loading",
+        "Empty",
+        "Error"
+      ]
+    }
+  ]
+}

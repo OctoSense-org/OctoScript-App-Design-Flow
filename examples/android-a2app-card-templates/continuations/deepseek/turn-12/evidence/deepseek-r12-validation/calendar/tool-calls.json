@@ -1,0 +1,4708 @@
+[
+  {
+    "request_id": "cde09c37-b2e3-4603-9693-2951c2d6fee2",
+    "request": {
+      "name": "studio.bundle_check",
+      "args": {
+        "bundle_path": "card-templates/calendar/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "cde09c37-b2e3-4603-9693-2951c2d6fee2",
+      "data": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.calendar",
+        "capabilities": [],
+        "digest": "e1d8257b7426a9c774f20cfc96db13f771cc8c2f067c0f50c520f6ddf4d016f0",
+        "name": "Calendar Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.676
+  },
+  {
+    "request_id": "1bf49d3b-b84f-4061-98ff-bed905751e02",
+    "request": {
+      "name": "studio.open",
+      "args": {
+        "bundle_path": "card-templates/calendar/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "1bf49d3b-b84f-4061-98ff-bed905751e02",
+      "data": {
+        "bundle": {
+          "admission": "local_developer",
+          "app_id": "dev.studio.cards.calendar",
+          "capabilities": [],
+          "digest": "e1d8257b7426a9c774f20cfc96db13f771cc8c2f067c0f50c520f6ddf4d016f0",
+          "name": "Calendar Cards",
+          "publisher_signed": false,
+          "source_modified": false,
+          "version": "0.1.0"
+        },
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "ready": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.938
+  },
+  {
+    "request_id": "e372d123-a3a1-4f25-b7f4-327d12df7235",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "e372d123-a3a1-4f25-b7f4-327d12df7235",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-19fd0f21-5f2c-4e48-aa49-7eb42f0a7108.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   RSVP(review): none",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "CALENDAR",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "10:00\u201311:00 \u00b7 Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "No response",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "RSVP",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-43551da5-64f2-4e39-9d05-6ed5c75d145a.json",
+        "total_widgets": 18,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.321
+  },
+  {
+    "request_id": "fb6636ca-1f8e-48e2-bbaa-4e6e6055bce3",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "d_ex@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "fb6636ca-1f8e-48e2-bbaa-4e6e6055bce3",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.103
+  },
+  {
+    "request_id": "6af2777b-67f4-4cc2-afd8-ab18b8da3900",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "6af2777b-67f4-4cc2-afd8-ab18b8da3900",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-f11e9c9c-5d6e-49b8-b188-421376342f43.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L1 expanded   \u00b7   ready   \u00b7   RSVP(review): none",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "\u2022 Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "CALENDAR",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Today \u00b7 10:00\u201311:00 \u00b7 Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Attendees: you, Meera, Tom (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "text": "RSVP (local demo \u2014 nothing is sent)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Going",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Maybe",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "text": "No response",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "8@0",
+              "text": "Walk through the new card layouts and pick the family accent set.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "9@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-9dfb3211-83b9-49c5-8be0-0eaee201a670.json",
+        "total_widgets": 25,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.3
+  },
+  {
+    "request_id": "b43194c4-a5ca-4bf2-9a46-e72112db76f1",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "-@8",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "b43194c4-a5ca-4bf2-9a46-e72112db76f1",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.13
+  },
+  {
+    "request_id": "488a7db7-7e12-4faa-b5f5-d12419e3a1ea",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "488a7db7-7e12-4faa-b5f5-d12419e3a1ea",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-1bf8cbf5-28da-4901-a24b-7979c7bb8eab.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L1 expanded   \u00b7   ready   \u00b7   RSVP(review): going",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "\u2022 Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "CALENDAR",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Today \u00b7 10:00\u201311:00 \u00b7 Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Attendees: you, Meera, Tom (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "text": "RSVP (local demo \u2014 nothing is sent)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Going",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Maybe",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "text": "Going (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "8@0",
+              "text": "Walk through the new card layouts and pick the family accent set.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "9@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-fbd76475-b31d-4337-b398-2ea4462be059.json",
+        "total_widgets": 25,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.325
+  },
+  {
+    "request_id": "917ce88b-d3ab-401d-9849-31d5337c87c8",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "1@3",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "917ce88b-d3ab-401d-9849-31d5337c87c8",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.117
+  },
+  {
+    "request_id": "1c7cb39e-ed10-4cac-b288-ea7fb20e5d18",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "1c7cb39e-ed10-4cac-b288-ea7fb20e5d18",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-522f77e6-280a-4cc2-bfda-aa8d800d7929.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L1 expanded   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "\u2022 Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "CALENDAR",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Today \u00b7 10:00\u201311:00 \u00b7 Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Attendees: you, Meera, Tom (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "text": "RSVP (local demo \u2014 nothing is sent)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Going",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Maybe",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "text": "Maybe (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "8@0",
+              "text": "Walk through the new card layouts and pick the family accent set.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "9@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-72198bed-deef-49a5-a692-2b3e6d1fde75.json",
+        "total_widgets": 25,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.4
+  },
+  {
+    "request_id": "f5740b68-5148-4561-93c7-d9de022d972a",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "d_ap@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "f5740b68-5148-4561-93c7-d9de022d972a",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.116
+  },
+  {
+    "request_id": "9fe406e4-d018-4042-896e-14518db4d485",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "9fe406e4-d018-4042-896e-14518db4d485",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-7d1f0d24-46d2-4fe1-8075-32b414cadca5.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Today",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "text": "Week",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Thursday \u00b7 2 events",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "10:00\u201311:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "14:00\u201314:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "1:1 with Sam",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "Room 4 \u00b7 2nd floor",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@3",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-0c3811d6-1e52-49a8-b8d4-101e117c434a.json",
+        "total_widgets": 25,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.306
+  },
+  {
+    "request_id": "d0c069ee-38cb-4775-a324-4954b5bca1aa",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "3@3",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "d0c069ee-38cb-4775-a324-4954b5bca1aa",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.109
+  },
+  {
+    "request_id": "317cdf75-d0bb-4bde-b55c-652604dd089d",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "317cdf75-d0bb-4bde-b55c-652604dd089d",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-9fde96f2-1532-44ae-9814-89a67e0072c4.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Today",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "text": "Week",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "1:1 with Sam",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Today \u00b7 14:00\u201314:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "Room 4 \u00b7 2nd floor",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "text": "Weekly catch-up. Topics: roadmap, review load, next sprint.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "text": "No response",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "8@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Going",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Maybe",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "9@0",
+              "text": "Demo event \u00b7 no calendar sync",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "a@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "\u2039 Back to agenda",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-6b5151ab-6bb6-4636-a182-d3be64aa53be.json",
+        "total_widgets": 26,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.332
+  },
+  {
+    "request_id": "9ed3744e-8815-444b-8aea-a9744d28e851",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "-@8",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "9ed3744e-8815-444b-8aea-a9744d28e851",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.128
+  },
+  {
+    "request_id": "bb790d4f-02d7-44ca-b562-eef07e362265",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "bb790d4f-02d7-44ca-b562-eef07e362265",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-1015192d-3467-4944-bf03-20de698cbcc2.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Today",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "text": "Week",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "1:1 with Sam",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Today \u00b7 14:00\u201314:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "Room 4 \u00b7 2nd floor",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "text": "Weekly catch-up. Topics: roadmap, review load, next sprint.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "text": "Going (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "8@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Going",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Maybe",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "9@0",
+              "text": "Demo event \u00b7 no calendar sync",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "a@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "\u2039 Back to agenda",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-d064a20b-e323-4334-886d-4ba6ab501666.json",
+        "total_widgets": 26,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.336
+  },
+  {
+    "request_id": "47a9927d-7aba-4dae-a470-c6056836c62f",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "-@9",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "47a9927d-7aba-4dae-a470-c6056836c62f",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.134
+  },
+  {
+    "request_id": "731aac8a-c07f-4511-9f94-2c48d3b343aa",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "731aac8a-c07f-4511-9f94-2c48d3b343aa",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-9867e2a8-2fe4-46b1-a3a4-c5b1f371ec97.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Today",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "text": "Week",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Thursday \u00b7 2 events",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "10:00\u201311:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "14:00\u201314:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "1:1 with Sam",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "Room 4 \u00b7 2nd floor",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@3",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-fbb09d35-b916-44f9-9b89-57571209f16d.json",
+        "total_widgets": 25,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.362
+  },
+  {
+    "request_id": "92210492-0285-4439-b84c-8e197bc71cce",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "3@2",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "92210492-0285-4439-b84c-8e197bc71cce",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.131
+  },
+  {
+    "request_id": "bc8344f4-8fd1-488c-a35e-3bee251fdda5",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "bc8344f4-8fd1-488c-a35e-3bee251fdda5",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-eba850f8-a96c-4e5a-b5de-385606a43ada.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Today",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "text": "Week",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Today \u00b7 10:00\u201311:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "text": "Walk through the new card layouts and pick the family accent set. Bring the L0/L1 comps.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "text": "Maybe (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "8@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Going",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Maybe",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "9@0",
+              "text": "Demo event \u00b7 no calendar sync",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "a@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "\u2039 Back to agenda",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-7f3f18cd-c58b-4629-880f-8ffd1c81cf63.json",
+        "total_widgets": 26,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.322
+  },
+  {
+    "request_id": "408d8931-dfb3-461a-987b-78ecea257f07",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "-@9",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "408d8931-dfb3-461a-987b-78ecea257f07",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.126
+  },
+  {
+    "request_id": "28b0583e-6994-4e2b-bc9f-ebc49a87bf3e",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "28b0583e-6994-4e2b-bc9f-ebc49a87bf3e",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-f3c4a8a7-dde1-4613-a44f-c4cbf698c2f1.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Today",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "text": "Week",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Thursday \u00b7 2 events",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "10:00\u201311:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "14:00\u201314:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "1:1 with Sam",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "Room 4 \u00b7 2nd floor",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@3",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-9a8078bc-ab13-4512-b010-659b6282b309.json",
+        "total_widgets": 25,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.365
+  },
+  {
+    "request_id": "757027ed-4b35-4582-bad8-0fef33f633da",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "1@1",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "757027ed-4b35-4582-bad8-0fef33f633da",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.32
+  },
+  {
+    "request_id": "b67f4e16-7998-4919-b3d4-4253783a4e26",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "b67f4e16-7998-4919-b3d4-4253783a4e26",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-3e25bda4-2507-4ca0-9e31-e230cd0bb1c4.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 1,
+            "finding_count": 1,
+            "pass": false
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Today",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "text": "Week",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Thursday \u00b7 2 events",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "10:00\u201311:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "14:00\u201314:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "1:1 with Sam",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "Room 4 \u00b7 2nd floor",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@3",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Friday \u00b7 09:00\u201309:15",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Team standup",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-157cde02-bea8-413f-855c-63d55a2931a3.json",
+        "total_widgets": 28,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.32
+  },
+  {
+    "request_id": "a2ccaf45-64b5-4031-99f8-9099d3065b26",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "stage@0",
+        "action": "scroll",
+        "delta_y": 300
+      }
+    },
+    "reply": {
+      "call_id": "a2ccaf45-64b5-4031-99f8-9099d3065b26",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.152
+  },
+  {
+    "request_id": "b434f3e0-706e-4e23-a9e1-d293a68cdbba",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "b434f3e0-706e-4e23-a9e1-d293a68cdbba",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-e9fffb08-2eb0-4908-878a-389657bf4eb0.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 1,
+            "finding_count": 1,
+            "pass": false
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "10:00\u201311:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "14:00\u201314:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "1:1 with Sam",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "Room 4 \u00b7 2nd floor",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@3",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Friday \u00b7 09:00\u201309:15",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Team standup",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "text": "Online \u00b7 meet.demo/standup",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@4",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-bacedd52-eb3f-4afd-9c75-19d9cda22767.json",
+        "total_widgets": 25,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.387
+  },
+  {
+    "request_id": "30a12174-92d3-4fe5-8032-f8d6688826ea",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "3@4",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "30a12174-92d3-4fe5-8032-f8d6688826ea",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.128
+  },
+  {
+    "request_id": "2982f452-a748-4487-8324-98aef7b4d3de",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "2982f452-a748-4487-8324-98aef7b4d3de",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-f62e23e4-7314-4445-84e7-671365d5901f.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Today",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "text": "Week",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Team standup",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Friday \u00b7 09:00\u201309:15",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "Online \u00b7 meet.demo/standup",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "text": "Quick sync: blockers, then the day's plan.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "text": "No response",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "8@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Going",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Maybe",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "9@0",
+              "text": "Demo event \u00b7 no calendar sync",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "a@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "\u2039 Back to agenda",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-9c6083ad-64ef-41fd-a7f1-56fc4c7bee6e.json",
+        "total_widgets": 26,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.298
+  },
+  {
+    "request_id": "ee49ba37-0edb-4a57-8e4b-905db8226db1",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "-@8",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "ee49ba37-0edb-4a57-8e4b-905db8226db1",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.361
+  },
+  {
+    "request_id": "74dd3c7f-8e5c-45a7-9938-078d42043d85",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "74dd3c7f-8e5c-45a7-9938-078d42043d85",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-522f5f96-4dbe-48e2-a46c-4aa987c39dd3.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Today",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "text": "Week",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Team standup",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Friday \u00b7 09:00\u201309:15",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "Online \u00b7 meet.demo/standup",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "text": "Quick sync: blockers, then the day's plan.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "text": "Going (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "8@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Going",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Maybe",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "9@0",
+              "text": "Demo event \u00b7 no calendar sync",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "a@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "\u2039 Back to agenda",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-608a4827-a5d9-43d5-8b3d-62bbe277da13.json",
+        "total_widgets": 26,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.376
+  },
+  {
+    "request_id": "e611496a-703a-497a-89e7-cdb13b7f87fe",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "-@9",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "e611496a-703a-497a-89e7-cdb13b7f87fe",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.133
+  },
+  {
+    "request_id": "72620d27-d965-4612-9d7e-6d3382d6ab34",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "72620d27-d965-4612-9d7e-6d3382d6ab34",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-47dc10f0-b08e-4757-8736-5f7d36ca8180.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 1,
+            "finding_count": 1,
+            "pass": false
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Today",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "text": "Week",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Thursday \u00b7 2 events",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "10:00\u201311:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "14:00\u201314:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "1:1 with Sam",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "Room 4 \u00b7 2nd floor",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@3",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Friday \u00b7 09:00\u201309:15",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Team standup",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-75cdd2b4-ec8d-45a2-b22a-092dc4d7cb8e.json",
+        "total_widgets": 28,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.349
+  },
+  {
+    "request_id": "5ed30bbf-9fd5-4e7b-82b6-c5f3a1714974",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "3@2",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "5ed30bbf-9fd5-4e7b-82b6-c5f3a1714974",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.136
+  },
+  {
+    "request_id": "8e8aadb9-0eb5-46c6-914d-bfde17345f55",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "8e8aadb9-0eb5-46c6-914d-bfde17345f55",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-243517fe-f44b-4e23-9d1f-fdf02f64ccce.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Today",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "text": "Week",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Today \u00b7 10:00\u201311:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "text": "Walk through the new card layouts and pick the family accent set. Bring the L0/L1 comps.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "text": "Maybe (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "8@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Going",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Maybe",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "9@0",
+              "text": "Demo event \u00b7 no calendar sync",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "a@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "\u2039 Back to agenda",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-a8933473-ee4c-499e-a398-87413dca1d34.json",
+        "total_widgets": 26,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.299
+  },
+  {
+    "request_id": "acc7a918-1fbd-48c8-8586-86ee7584c36a",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "d_gl@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "acc7a918-1fbd-48c8-8586-86ee7584c36a",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.329
+  },
+  {
+    "request_id": "f6ce6e15-7f1d-4e75-9753-a5e653a54fcc",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "f6ce6e15-7f1d-4e75-9753-a5e653a54fcc",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-5b2e1788-f4b3-4d42-aa0f-05f7fa9109e6.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "CALENDAR",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "10:00\u201311:00 \u00b7 Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Maybe (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "RSVP",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-589304f5-eb44-4986-9bfc-5ca7da6ce3b8.json",
+        "total_widgets": 18,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.356
+  },
+  {
+    "request_id": "dc324d62-d811-448e-944c-afa9e11dbf79",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "states_btn@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "dc324d62-d811-448e-944c-afa9e11dbf79",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.366
+  },
+  {
+    "request_id": "533d26f8-bac8-429c-985b-a2a9612d385b",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "533d26f8-bac8-429c-985b-a2a9612d385b",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-77b89697-539f-4622-a046-758d8af48612.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "CALENDAR",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "10:00\u201311:00 \u00b7 Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Maybe (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "RSVP",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-9f2cf7c4-a867-4213-9162-536b71e8b59b.json",
+        "total_widgets": 23,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.361
+  },
+  {
+    "request_id": "6ef30a94-92af-461e-9f88-99b404fc939c",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "1@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "6ef30a94-92af-461e-9f88-99b404fc939c",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.118
+  },
+  {
+    "request_id": "8f45cc4d-206e-4847-bc86-68722e77bbfc",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "8f45cc4d-206e-4847-bc86-68722e77bbfc",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-c72a76fa-a6a7-4fbc-9483-d8d3a19e09ac.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L0 glance   \u00b7   loading   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "CALENDAR",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Loading\u2026",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-527565a8-b5d6-43c9-bff9-6b0ef54f0857.json",
+        "total_widgets": 19,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.358
+  },
+  {
+    "request_id": "12e1cc12-28cd-484e-85ae-31489a3673af",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "2@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "12e1cc12-28cd-484e-85ae-31489a3673af",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.349
+  },
+  {
+    "request_id": "3668d325-cf41-4b6b-9a25-159722deabc2",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "3668d325-cf41-4b6b-9a25-159722deabc2",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-0e263d17-ad8c-43c5-8fec-0b9beee72f36.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L0 glance   \u00b7   empty   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "CALENDAR",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "No events today",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-46769d0a-feb3-4435-aa1f-209319bbb3af.json",
+        "total_widgets": 19,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.309
+  },
+  {
+    "request_id": "2423df5e-bb47-401e-b149-a48d1bf11be7",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "3@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "2423df5e-bb47-401e-b149-a48d1bf11be7",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.358
+  },
+  {
+    "request_id": "b5eb803b-d519-4353-9ab6-8e8e220bbe39",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "b5eb803b-d519-4353-9ab6-8e8e220bbe39",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-c11359d4-4eed-4b63-925b-561e7a3c9598.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L0 glance   \u00b7   error   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "CALENDAR",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Couldn't load calendar \u2014 demo error state",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-ff83e759-b21a-4d24-937f-f04da87623b2.json",
+        "total_widgets": 19,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.372
+  },
+  {
+    "request_id": "8a518f15-ecf5-4194-bc3d-c29ca5feb73f",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "widget_id": "-@3",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "8a518f15-ecf5-4194-bc3d-c29ca5feb73f",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.129
+  },
+  {
+    "request_id": "bf2ab532-9669-4222-913a-935ecbb8dd36",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "bf2ab532-9669-4222-913a-935ecbb8dd36",
+      "data": {
+        "height": 2132,
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-3558f895-dc02-4106-901e-18bbc8631e9c.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Calendar Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   RSVP(review): maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "CALENDAR",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "10:00\u201311:00 \u00b7 Studio 2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Maybe (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "RSVP",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-12832927-400e-43a4-a1c6-bca0c8b1702f.json",
+        "total_widgets": 23,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.334
+  },
+  {
+    "request_id": "27915d15-99e2-40eb-b197-b528724a3dc4",
+    "request": {
+      "name": "studio.close",
+      "args": {
+        "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8"
+      }
+    },
+    "reply": {
+      "call_id": "27915d15-99e2-40eb-b197-b528724a3dc4",
+      "data": {
+        "closed": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.364
+  }
+]

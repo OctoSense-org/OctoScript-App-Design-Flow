@@ -1,0 +1,219 @@
+{
+  "family": "calendar",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Design review",
+        "Studio B",
+        "● L0"
+      ]
+    },
+    {
+      "label": "expanded",
+      "action": "tap",
+      "target": "b1",
+      "contains": [
+        "Bring the revised invoice",
+        "RSVP: Going",
+        "● L1"
+      ]
+    },
+    {
+      "label": "first-going",
+      "action": "tap",
+      "target": "x_next",
+      "contains": [
+        "Going",
+        "RSVP: Maybe",
+        "● L1"
+      ]
+    },
+    {
+      "label": "first-maybe",
+      "action": "tap",
+      "target": "x_next",
+      "contains": [
+        "Maybe",
+        "RSVP: No",
+        "● L1"
+      ]
+    },
+    {
+      "label": "agenda",
+      "action": "tap",
+      "target": "b2",
+      "contains": [
+        "Design review",
+        "Dentist check-up",
+        "Dinner with Priya",
+        "● L2"
+      ]
+    },
+    {
+      "label": "last-detail",
+      "action": "tap",
+      "target": "Open",
+      "occurrence": 2,
+      "contains": [
+        "Dinner with Priya",
+        "Cafe Lumen",
+        "19:00",
+        "● L2"
+      ]
+    },
+    {
+      "label": "last-going",
+      "action": "tap",
+      "target": "d_next",
+      "contains": [
+        "Going",
+        "RSVP: Maybe",
+        "● L2"
+      ]
+    },
+    {
+      "label": "back-agenda",
+      "action": "tap",
+      "target": "‹ Agenda",
+      "contains": [
+        "Design review",
+        "● L2"
+      ]
+    },
+    {
+      "label": "first-response-independent",
+      "action": "tap",
+      "target": "Open",
+      "occurrence": 0,
+      "contains": [
+        "Design review",
+        "Maybe",
+        "RSVP: No",
+        "● L2"
+      ]
+    },
+    {
+      "label": "first-declined",
+      "action": "tap",
+      "target": "d_next",
+      "contains": [
+        "RSVP: clear",
+        "● L2"
+      ]
+    },
+    {
+      "label": "agenda-for-second",
+      "action": "tap",
+      "target": "‹ Agenda",
+      "contains": [
+        "● L2"
+      ]
+    },
+    {
+      "label": "second-detail",
+      "action": "tap",
+      "target": "Open",
+      "occurrence": 1,
+      "contains": [
+        "Dentist check-up",
+        "Riverside Clinic",
+        "● L2"
+      ]
+    },
+    {
+      "label": "second-going",
+      "action": "tap",
+      "target": "d_next",
+      "contains": [
+        "Going",
+        "RSVP: Maybe",
+        "● L2"
+      ]
+    },
+    {
+      "label": "second-maybe",
+      "action": "tap",
+      "target": "d_next",
+      "contains": [
+        "Maybe",
+        "RSVP: No",
+        "● L2"
+      ]
+    },
+    {
+      "label": "second-declined",
+      "action": "tap",
+      "target": "d_next",
+      "contains": [
+        "RSVP: clear",
+        "● L2"
+      ]
+    },
+    {
+      "label": "agenda-for-third",
+      "action": "tap",
+      "target": "‹ Agenda",
+      "contains": [
+        "● L2"
+      ]
+    },
+    {
+      "label": "third-detail",
+      "action": "tap",
+      "target": "Open",
+      "occurrence": 2,
+      "contains": [
+        "Dinner with Priya",
+        "Going",
+        "RSVP: Maybe",
+        "● L2"
+      ]
+    },
+    {
+      "label": "third-maybe",
+      "action": "tap",
+      "target": "d_next",
+      "contains": [
+        "Maybe",
+        "RSVP: No",
+        "● L2"
+      ]
+    },
+    {
+      "label": "third-declined",
+      "action": "tap",
+      "target": "d_next",
+      "contains": [
+        "RSVP: clear",
+        "● L2"
+      ]
+    },
+    {
+      "label": "all-declined-glance",
+      "action": "tap",
+      "target": "b0",
+      "contains": [
+        "Nothing scheduled",
+        "● L0"
+      ],
+      "no_enabled_button_text": [
+        "Open event"
+      ]
+    }
+  ],
+  "draft": false,
+  "source_file": "minimax-round14-final/card-templates/calendar/bundle/main.splash",
+  "source_sha256": "ec8fdf555bb66c826d6db4b22b18a9107200d5b2bd0776066c0f30637c80cf66",
+  "status": "Operator confirmed native source byte-identical from reconciled round13 to final round14; input suite ready, actual runtime outcomes pending.",
+  "reconciliation": "Read native diffs round12→13: Mail/Photo/YouTube unchanged; News removes extra closing brace; Finance reflows six list rows with same IDs/copy/actions; Calendar adds persistent depth markers and moves status. All115 steps retained; marker assertions reflect actual controls. Round14 native hash confirmation still pending.",
+  "assumptions": [
+    "Round13 native source is reconciled; only final round14 byte equality remains. This is not native test evidence."
+  ],
+  "native_source_reconciled": true,
+  "awaiting_round14_hash_confirmation": true,
+  "final_round14_binding": {
+    "main_and_manifest_byte_identical_to_round13": true,
+    "execution_status_at_preparation": "pending"
+  }
+}

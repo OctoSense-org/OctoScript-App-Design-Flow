@@ -1,0 +1,22 @@
+{
+  "operator_interrupted": true,
+  "timestamp_utc": "2026-10-03T18:07:22.247338+00:00",
+  "reason": "Repeated no-root failures and whole-source rewrites; provide precise independently diagnosed container-close locations in a new turn. No operator app source edit.",
+  "method": "Force-stopped isolated MiniMax test package, allowed ledger collector to drain, then stopped only this turn collector.",
+  "recorded_tool_calls": 42,
+  "assistant_finals": 0,
+  "last_call_status": [
+    {
+      "name": "studio_open",
+      "success": false
+    },
+    {
+      "name": "write_file",
+      "success": true
+    },
+    {
+      "name": "studio_open",
+      "success": false
+    }
+  ]
+}

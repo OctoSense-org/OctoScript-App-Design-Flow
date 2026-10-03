@@ -1,0 +1,64 @@
+{
+  "family": "finance",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "142.60 USD",
+        "Demo Corp"
+      ]
+    },
+    {
+      "label": "reveal-preview-states",
+      "action": "tap",
+      "target": "states_btn",
+      "contains": [
+        "Loading",
+        "Empty",
+        "Error"
+      ]
+    },
+    {
+      "label": "loading",
+      "action": "tap",
+      "target": "Loading",
+      "contains": [
+        "Loading\u2026"
+      ]
+    },
+    {
+      "label": "empty",
+      "action": "tap",
+      "target": "Empty",
+      "contains": [
+        "No quotes"
+      ]
+    },
+    {
+      "label": "error",
+      "action": "tap",
+      "target": "Error",
+      "contains": [
+        "Couldn't load quotes"
+      ]
+    },
+    {
+      "label": "ready",
+      "action": "tap",
+      "target": "Ready",
+      "contains": [
+        "142.60 USD"
+      ]
+    },
+    {
+      "label": "collapse-preview-states",
+      "action": "tap",
+      "target": "states_btn",
+      "excludes": [
+        "Loading",
+        "Empty",
+        "Error"
+      ]
+    }
+  ]
+}

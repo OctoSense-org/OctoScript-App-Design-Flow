@@ -1,0 +1,873 @@
+{
+  "family": "calendar",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "Design review",
+          "Studio B",
+          "\u25cf L0"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design review",
+          "pass": true
+        },
+        {
+          "contains": "Studio B",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L0",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "action": "tap",
+        "target": "b1",
+        "contains": [
+          "Bring the revised invoice",
+          "RSVP: Going",
+          "\u25cf L1"
+        ]
+      },
+      "target_rect": [
+        136,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b1@0",
+      "png": "01-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Bring the revised invoice",
+          "pass": true
+        },
+        {
+          "contains": "RSVP: Going",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "first-going",
+      "input": {
+        "label": "first-going",
+        "action": "tap",
+        "target": "x_next",
+        "contains": [
+          "Going",
+          "RSVP: Maybe",
+          "\u25cf L1"
+        ]
+      },
+      "target_rect": [
+        123,
+        338,
+        135,
+        44
+      ],
+      "target_selector": "x_next@0",
+      "png": "02-first-going.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Going",
+          "pass": true
+        },
+        {
+          "contains": "RSVP: Maybe",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "first-maybe",
+      "input": {
+        "label": "first-maybe",
+        "action": "tap",
+        "target": "x_next",
+        "contains": [
+          "Maybe",
+          "RSVP: No",
+          "\u25cf L1"
+        ]
+      },
+      "target_rect": [
+        85,
+        338,
+        142,
+        44
+      ],
+      "target_selector": "x_next@0",
+      "png": "03-first-maybe.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Maybe",
+          "pass": true
+        },
+        {
+          "contains": "RSVP: No",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "agenda",
+      "input": {
+        "label": "agenda",
+        "action": "tap",
+        "target": "b2",
+        "contains": [
+          "Design review",
+          "Dentist check-up",
+          "Dinner with Priya",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        252,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b2@0",
+      "png": "04-agenda.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design review",
+          "pass": true
+        },
+        {
+          "contains": "Dentist check-up",
+          "pass": true
+        },
+        {
+          "contains": "Dinner with Priya",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "last-detail",
+      "input": {
+        "label": "last-detail",
+        "action": "tap",
+        "target": "Open",
+        "occurrence": 2,
+        "contains": [
+          "Dinner with Priya",
+          "Cafe Lumen",
+          "19:00",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        289,
+        297,
+        71,
+        44
+      ],
+      "target_selector": "1@10",
+      "png": "05-last-detail.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Dinner with Priya",
+          "pass": true
+        },
+        {
+          "contains": "Cafe Lumen",
+          "pass": true
+        },
+        {
+          "contains": "19:00",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "last-going",
+      "input": {
+        "label": "last-going",
+        "action": "tap",
+        "target": "d_next",
+        "contains": [
+          "Going",
+          "RSVP: Maybe",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        123,
+        336,
+        135,
+        44
+      ],
+      "target_selector": "d_next@0",
+      "png": "06-last-going.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Going",
+          "pass": true
+        },
+        {
+          "contains": "RSVP: Maybe",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back-agenda",
+      "input": {
+        "label": "back-agenda",
+        "action": "tap",
+        "target": "\u2039 Agenda",
+        "contains": [
+          "Design review",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        16,
+        392,
+        103,
+        44
+      ],
+      "target_selector": "-@26",
+      "png": "07-back-agenda.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design review",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "first-response-independent",
+      "input": {
+        "label": "first-response-independent",
+        "action": "tap",
+        "target": "Open",
+        "occurrence": 0,
+        "contains": [
+          "Design review",
+          "Maybe",
+          "RSVP: No",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        289,
+        144,
+        71,
+        44
+      ],
+      "target_selector": "1@6",
+      "png": "08-first-response-independent.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design review",
+          "pass": true
+        },
+        {
+          "contains": "Maybe",
+          "pass": true
+        },
+        {
+          "contains": "RSVP: No",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "first-declined",
+      "input": {
+        "label": "first-declined",
+        "action": "tap",
+        "target": "d_next",
+        "contains": [
+          "RSVP: clear",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        92,
+        336,
+        108,
+        44
+      ],
+      "target_selector": "d_next@0",
+      "png": "09-first-declined.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "RSVP: clear",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "agenda-for-second",
+      "input": {
+        "label": "agenda-for-second",
+        "action": "tap",
+        "target": "\u2039 Agenda",
+        "contains": [
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        16,
+        392,
+        103,
+        44
+      ],
+      "target_selector": "-@26",
+      "png": "10-agenda-for-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-detail",
+      "input": {
+        "label": "second-detail",
+        "action": "tap",
+        "target": "Open",
+        "occurrence": 1,
+        "contains": [
+          "Dentist check-up",
+          "Riverside Clinic",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        289,
+        221,
+        71,
+        44
+      ],
+      "target_selector": "1@8",
+      "png": "11-second-detail.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Dentist check-up",
+          "pass": true
+        },
+        {
+          "contains": "Riverside Clinic",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-going",
+      "input": {
+        "label": "second-going",
+        "action": "tap",
+        "target": "d_next",
+        "contains": [
+          "Going",
+          "RSVP: Maybe",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        123,
+        336,
+        135,
+        44
+      ],
+      "target_selector": "d_next@0",
+      "png": "12-second-going.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Going",
+          "pass": true
+        },
+        {
+          "contains": "RSVP: Maybe",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-maybe",
+      "input": {
+        "label": "second-maybe",
+        "action": "tap",
+        "target": "d_next",
+        "contains": [
+          "Maybe",
+          "RSVP: No",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        85,
+        336,
+        142,
+        44
+      ],
+      "target_selector": "d_next@0",
+      "png": "13-second-maybe.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Maybe",
+          "pass": true
+        },
+        {
+          "contains": "RSVP: No",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-declined",
+      "input": {
+        "label": "second-declined",
+        "action": "tap",
+        "target": "d_next",
+        "contains": [
+          "RSVP: clear",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        92,
+        336,
+        108,
+        44
+      ],
+      "target_selector": "d_next@0",
+      "png": "14-second-declined.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "RSVP: clear",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "agenda-for-third",
+      "input": {
+        "label": "agenda-for-third",
+        "action": "tap",
+        "target": "\u2039 Agenda",
+        "contains": [
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        16,
+        392,
+        103,
+        44
+      ],
+      "target_selector": "-@26",
+      "png": "15-agenda-for-third.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "third-detail",
+      "input": {
+        "label": "third-detail",
+        "action": "tap",
+        "target": "Open",
+        "occurrence": 2,
+        "contains": [
+          "Dinner with Priya",
+          "Going",
+          "RSVP: Maybe",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        289,
+        297,
+        71,
+        44
+      ],
+      "target_selector": "1@10",
+      "png": "16-third-detail.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Dinner with Priya",
+          "pass": true
+        },
+        {
+          "contains": "Going",
+          "pass": true
+        },
+        {
+          "contains": "RSVP: Maybe",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "third-maybe",
+      "input": {
+        "label": "third-maybe",
+        "action": "tap",
+        "target": "d_next",
+        "contains": [
+          "Maybe",
+          "RSVP: No",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        85,
+        336,
+        142,
+        44
+      ],
+      "target_selector": "d_next@0",
+      "png": "17-third-maybe.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Maybe",
+          "pass": true
+        },
+        {
+          "contains": "RSVP: No",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "third-declined",
+      "input": {
+        "label": "third-declined",
+        "action": "tap",
+        "target": "d_next",
+        "contains": [
+          "RSVP: clear",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        92,
+        336,
+        108,
+        44
+      ],
+      "target_selector": "d_next@0",
+      "png": "18-third-declined.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "RSVP: clear",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "all-declined-glance",
+      "input": {
+        "label": "all-declined-glance",
+        "action": "tap",
+        "target": "b0",
+        "contains": [
+          "Nothing scheduled",
+          "\u25cf L0"
+        ],
+        "no_enabled_button_text": [
+          "Open event"
+        ]
+      },
+      "target_rect": [
+        20,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b0@0",
+      "png": "19-all-declined-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Nothing scheduled",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L0",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Open event",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.calendar",
+    "capabilities": [],
+    "digest": "ed21d351e33b28dfaf07b835843a23847ea5c88d4956cc250e359be66e8ed276",
+    "name": "Calendar Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

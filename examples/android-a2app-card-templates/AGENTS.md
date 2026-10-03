@@ -1,7 +1,7 @@
 # Android model authorship
 
-- Follow the repository's root `AGENTS.md`. This directory contains reviewed model-authored prototypes with known
-  blockers and their evidence, not an accepted or published template collection.
+- Follow the repository's root `AGENTS.md`. This directory contains reviewed model-authored prototypes, including historical
+  blockers and their evidence, not a store-approved or published template collection.
 - The user requires Android DeepSeek or MiniMax to author the actual designs,
   card/app source and revisions. Supervising agents may prepare reference
   inventories, provenance, validation and review feedback; do not substitute

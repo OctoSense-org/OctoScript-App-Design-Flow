@@ -1,0 +1,237 @@
+{
+  "family": "youtube",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Lo-fi build session",
+        "UNAVAILABLE"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "save-first",
+      "action": "tap",
+      "target": "Watch later",
+      "contains": [
+        "In Watch later \u2713"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "remove-first",
+      "action": "tap",
+      "target": "In Watch later \u2713",
+      "contains": [
+        "Watch later"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "expanded",
+      "action": "tap",
+      "target": "d_ex",
+      "contains": [
+        "Lo-fi build session",
+        "UNAVAILABLE"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "full-app",
+      "action": "tap",
+      "target": "Open app",
+      "occurrence": 0,
+      "contains": [
+        "Lo-fi build session",
+        "Synth patch walkthrough"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "second-item",
+      "action": "tap",
+      "target": "Open \u203a",
+      "occurrence": 1,
+      "contains": [
+        "Synth patch walkthrough"
+      ],
+      "excludes": [
+        "Lo-fi build session",
+        "local and real",
+        "video route",
+        "player stream"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ]
+    },
+    {
+      "label": "save-second",
+      "action": "tap",
+      "target": "Watch later",
+      "occurrence": -1,
+      "contains": [
+        "In Watch later \u2713"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "back",
+      "action": "tap",
+      "target": "\u2039 Back",
+      "contains": [
+        "Lo-fi build session",
+        "Synth patch walkthrough"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "saved-collection",
+      "action": "tap",
+      "target": "Watch later",
+      "occurrence": 0,
+      "contains": [
+        "Synth patch walkthrough"
+      ],
+      "excludes": [
+        "Lo-fi build session",
+        "local and real",
+        "video route",
+        "player stream"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ]
+    },
+    {
+      "label": "remove-second",
+      "action": "tap",
+      "target": "In Watch later \u2713",
+      "contains": [
+        "Nothing saved yet"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "return",
+      "action": "tap",
+      "target": "d_gl",
+      "contains": [
+        "Lo-fi build session"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "empty",
+      "action": "tap",
+      "target": "Empty",
+      "contains": [
+        "No videos"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "error",
+      "action": "tap",
+      "target": "Error",
+      "contains": [
+        "Couldn't load"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "ready",
+      "action": "tap",
+      "target": "Ready",
+      "contains": [
+        "Lo-fi build session"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    }
+  ]
+}

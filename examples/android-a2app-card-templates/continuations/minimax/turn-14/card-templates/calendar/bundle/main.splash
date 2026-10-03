@@ -1,0 +1,372 @@
+// Calendar card template — dev.studio.cards.calendar
+// All events are SYNTHETIC DEMO DATA in this app's local list. No account, no
+// calendar service, no network, nothing is ever synced.
+//
+// Depths are PRESENTATION depths (UI), not parser levels:
+//   L0  next event at a glance
+//   L1  expanded event with a reversible RSVP cycle
+//   L2  agenda -> selected detail
+
+let events = [
+    {id: "e1" title: "Design review" day: "Thu 8 Oct" time: "10:00 - 11:00"
+        place: "Studio B" tag: "Work"
+        note: "Bring the revised invoice mockups. Marcus joins from the office."}
+    {id: "e2" title: "Dentist check-up" day: "Fri 9 Oct" time: "16:30"
+        place: "Riverside Clinic" tag: "Health"
+        note: "Six-month check-up. Arrive ten minutes early to fill the form in."}
+    {id: "e3" title: "Dinner with Priya" day: "Sat 10 Oct" time: "19:00 - 21:00"
+        place: "Cafe Lumen, 4 Riverside" tag: "Personal"
+        note: "Terrace table booked for four. Priya is bringing Lena."}
+]
+
+let ground = #xf2f2f7
+let surface = #xffffff
+let ink = #x1c1c1e
+let ink2 = #x3c3c43
+let muted = #x8e8e93
+let accent = #x007aff
+let danger = #xd70015
+let line = #xe5e5ea
+let demo_bg = #xfff3cd
+let demo_ink = #x8a0b00
+
+let rsvp = []
+let status = "Demo agenda."
+let depth = 0
+let sel = "e1"
+let route = "list"
+
+// ---------- state helpers ----------
+
+fn pick(cond, on, off){ if cond { on } else { off } }
+
+fn ev_of(id){
+    for e in events { if e.id == id { return e } }
+    nil
+}
+
+// 0 = unanswered, then Going, Maybe, No, wrapping back to 0. The cycle wraps,
+// so every state is reachable again by tapping — that is the reversibility.
+fn state_of(id){
+    for r in rsvp {
+        if r.id == id {
+            if r.state == "going" { return 1 }
+            if r.state == "maybe" { return 2 }
+            if r.state == "no" { return 3 }
+            return 0
+        }
+    }
+    0
+}
+
+fn set_state(id, s){
+    for r in rsvp { if r.id == id { r.state = s; return } }
+    rsvp.push({id: id state: s})
+}
+
+fn rsvp_of(id){
+    let s = state_of(id)
+    if s == 1 { return "Going" }
+    if s == 2 { return "Maybe" }
+    if s == 3 { return "No" }
+    return "No answer"
+}
+
+// the button always names the NEXT state, never the current one
+fn rsvp_step(id){
+    let s = state_of(id)
+    if s == 0 { return "RSVP: Going" }
+    if s == 1 { return "RSVP: Maybe" }
+    if s == 2 { return "RSVP: No" }
+    return "RSVP: clear"
+}
+
+fn cycle_rsvp(id){
+    let s = state_of(id)
+    if s == 0 { set_state(id, "going") }
+    if s == 1 { set_state(id, "maybe") }
+    if s == 2 { set_state(id, "no") }
+    if s == 3 { set_state(id, "") }
+    let e = ev_of(id)
+    if e == nil { return }
+    say(e.title + " · " + rsvp_of(id))
+    sync()
+}
+
+fn answered(){
+    let n = 0
+    for e in events { if state_of(e.id) != 0 { n = n + 1 } }
+    n
+}
+
+// the next event still being considered; none once every event is declined
+fn next_event(){
+    for e in events { if state_of(e.id) != 3 { return e } }
+    nil
+}
+
+fn next_id(){
+    let n = next_event()
+    if n == nil { return "" }
+    n.id
+}
+
+fn say(s){ status = s; ui.status.set_text(s) }
+
+fn depth_name(){
+    if depth == 0 { return "L0 Glance" }
+    if depth == 1 { return "L1 Event" }
+    return "L2 Agenda"
+}
+
+fn set_depth(d){
+    depth = d
+    route = "list"
+    say("Showing " + depth_name())
+    sync()
+}
+
+fn do_open(id){
+    sel = id
+    route = "detail"
+    set_depth(2)
+    route = "detail"
+    sync()
+}
+
+fn do_back(){
+    route = "list"
+    say("Showing " + depth_name())
+    sync()
+}
+
+// ---------- chrome sync ----------
+
+fn sync(){
+    ui.glance.set_visible(depth == 0)
+    ui.expanded.set_visible(depth == 1)
+    ui.full.set_visible(depth == 2)
+
+    ui.count.set_text("" + events.len() + " events · " + "" + answered() + " answered")
+    ui.status.set_text(status)
+    // Same persistent marker as the other families: the active depth is shown by
+    // a bullet in the segment bar, so it survives an RSVP tap and detail
+    // navigation. No separate depth label, so no new container nesting.
+    ui.b0.set_text(pick(depth == 0, "● L0", "L0"))
+    ui.b1.set_text(pick(depth == 1, "● L1", "L1"))
+    ui.b2.set_text(pick(depth == 2, "● L2", "L2"))
+
+    let n = next_event()
+    if n == nil {
+        ui.g_card.set_visible(false)
+        ui.g_empty.set_visible(true)
+    } else {
+        ui.g_card.set_visible(true)
+        ui.g_empty.set_visible(false)
+        ui.g_day.set_text(n.day)
+        ui.g_time.set_text(n.time)
+        ui.g_title.set_text(n.title)
+        ui.g_place.set_text(n.place + " · " + n.tag)
+        ui.g_rsvp.set_text(rsvp_of(n.id))
+    }
+    // ButtonFlat has no set_visible, so the action is hidden via a View wrapper.
+    // With every event declined there is no next event, so the action goes away.
+    ui.open_wrap.set_visible(next_id() != "")
+
+    let s = ev_of(sel)
+    if s != nil {
+        ui.x_title.set_text(s.title)
+        ui.x_day.set_text(s.day + " · " + s.time)
+        ui.x_place.set_text(s.place + " · " + s.tag)
+        ui.x_note.set_text(s.note)
+        ui.x_rsvp.set_text(rsvp_of(s.id))
+        ui.x_next.set_text(rsvp_step(s.id))
+        ui.d_title.set_text(s.title)
+        ui.d_day.set_text(s.day + " · " + s.time)
+        ui.d_place.set_text(s.place + " · " + s.tag)
+        ui.d_note.set_text(s.note)
+        ui.d_rsvp.set_text(rsvp_of(s.id))
+        ui.d_next.set_text(rsvp_step(s.id))
+    }
+
+    ui.l2_list.set_visible(route == "list")
+    ui.l2_detail.set_visible(route == "detail")
+
+    ui.e1_u.set_text(rsvp_of("e1"))
+    ui.e2_u.set_text(rsvp_of("e2"))
+    ui.e3_u.set_text(rsvp_of("e3"))
+}
+
+// ---------- shared button styles ----------
+
+let Flat = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}
+    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}
+    draw_text +: {color: accent color_hover: accent color_down: accent text_style +: {font_size: 15}}}
+
+let Quiet = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}
+    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}
+    draw_text +: {color: ink2 color_hover: ink2 color_down: ink2 text_style +: {font_size: 15}}}
+
+let Seg = ButtonFlat{height: 44 width: Fill align: Align{x: 0.5 y: 0.5}
+    draw_bg +: {color: #x00000000 color_hover: #x0000000f color_down: #x0000001a border_size: 0.0}
+    draw_text +: {color: ink color_hover: ink color_down: ink text_style +: {font_size: 14}}}
+
+// ---------- root ----------
+
+SolidView{width: Fill height: Fill flow: Down draw_bg.color: ground
+
+    View{width: Fill height: Fit flow: Down spacing: 2
+        padding: Inset{left: 16 right: 16 top: 12 bottom: 8}
+        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8
+            Label{text: "Calendar" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 19}}
+            View{width: Fill height: 1}
+            RoundedView{width: Fit height: Fit
+                padding: Inset{left: 8 right: 8 top: 3 bottom: 3}
+                draw_bg.color: demo_bg draw_bg.border_radius: 6.0
+                Label{text: "DEMO" draw_text.color: demo_ink draw_text.text_style: theme.font_bold{font_size: 11}}
+            }
+        }
+        count := Label{width: Fill text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+    }
+
+    View{width: Fill height: Fill flow: Down
+
+        // ===== L0 =====
+        glance := View{width: Fill height: Fill flow: Down spacing: 8
+            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}
+            g_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3
+                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                draw_bg.color: surface draw_bg.border_radius: 14.0
+                View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8
+                    g_day := Label{text: "" draw_text.color: muted draw_text.text_style: theme.font_bold{font_size: 12}}
+                    View{width: Fill height: 1}
+                    g_time := Label{text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+                }
+                g_title := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}
+                g_place := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 13}
+                g_rsvp := Label{text: "" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 12}}
+            }
+            g_empty := RoundedView{visible: false width: Fill height: Fit flow: Down spacing: 3
+                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                draw_bg.color: surface draw_bg.border_radius: 14.0
+                Label{width: Fill text: "Nothing scheduled" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}
+                Label{width: Fill text: "Every demo event is declined." draw_text.color: ink2 draw_text.text_style.font_size: 13}
+            }
+            View{width: Fill height: 1}
+            View{width: Fill height: Fit flow: Right spacing: 8
+                open_wrap := View{width: Fit height: Fit Flat{text: "Open event" on_click: || do_open(next_id())}}
+                Flat{text: "Agenda" on_click: || set_depth(2)}
+            }
+        }
+
+        // ===== L1 =====
+        expanded := View{visible: false width: Fill height: Fill flow: Down spacing: 8
+            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}
+            x_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3
+                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                draw_bg.color: surface draw_bg.border_radius: 14.0
+                x_day := Label{text: "" draw_text.color: muted draw_text.text_style: theme.font_bold{font_size: 12}}
+                x_title := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}
+                x_place := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 13}
+                SolidView{width: Fill height: 1 draw_bg.color: line}
+                x_note := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 13}
+            }
+            View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8
+                x_rsvp := Label{text: "" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 13}}
+                x_next := Flat{text: "RSVP: Going" on_click: || cycle_rsvp(sel)}
+            }
+            View{width: Fill height: Fit flow: Right spacing: 8
+                Flat{text: "Agenda" on_click: || set_depth(2)}
+            }
+            View{width: Fill height: 1}
+            View{width: Fill height: Fit flow: Right spacing: 8
+                Quiet{text: "‹ Glance" on_click: || set_depth(0)}
+            }
+        }
+
+        // ===== L2 =====
+        full := View{visible: false width: Fill height: Fill
+            l2 := ScrollYView{width: Fill height: Fill flow: Down spacing: 8
+                padding: Inset{left: 16 right: 16 top: 4 bottom: 8}
+
+                l2_list := View{width: Fill height: Fit flow: Down spacing: 6
+                    e1 := View{width: Fill height: Fit
+                        RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8
+                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}
+                            draw_bg.color: surface draw_bg.border_radius: 10.0
+                            View{width: Fill height: Fit flow: Down spacing: 1
+                                Label{text: "Thu 8 Oct · 10:00" draw_text.color: muted draw_text.text_style.font_size: 11}
+                                Label{text: "Design review" draw_text.color: ink draw_text.text_style.font_size: 13}
+                            }
+                            e1_u := Label{text: "No answer" draw_text.color: muted draw_text.text_style.font_size: 12}
+                            Flat{text: "Open" on_click: || do_open("e1")}
+                        }
+                    }
+                    e2 := View{width: Fill height: Fit
+                        RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8
+                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}
+                            draw_bg.color: surface draw_bg.border_radius: 10.0
+                            View{width: Fill height: Fit flow: Down spacing: 1
+                                Label{text: "Fri 9 Oct · 16:30" draw_text.color: muted draw_text.text_style.font_size: 11}
+                                Label{text: "Dentist check-up" draw_text.color: ink draw_text.text_style.font_size: 13}
+                            }
+                            e2_u := Label{text: "No answer" draw_text.color: muted draw_text.text_style.font_size: 12}
+                            Flat{text: "Open" on_click: || do_open("e2")}
+                        }
+                    }
+                    e3 := View{width: Fill height: Fit
+                        RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8
+                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}
+                            draw_bg.color: surface draw_bg.border_radius: 10.0
+                            View{width: Fill height: Fit flow: Down spacing: 1
+                                Label{text: "Sat 10 Oct · 19:00" draw_text.color: muted draw_text.text_style.font_size: 11}
+                                Label{text: "Dinner with Priya" draw_text.color: ink draw_text.text_style.font_size: 13}
+                            }
+                            e3_u := Label{text: "No answer" draw_text.color: muted draw_text.text_style.font_size: 12}
+                            Flat{text: "Open" on_click: || do_open("e3")}
+                        }
+                    }
+                }
+
+                l2_detail := View{visible: false width: Fill height: Fit flow: Down spacing: 6
+                    RoundedView{width: Fill height: Fit flow: Down spacing: 3
+                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                        draw_bg.color: surface draw_bg.border_radius: 14.0
+                        d_day := Label{text: "" draw_text.color: muted draw_text.text_style: theme.font_bold{font_size: 12}}
+                        d_title := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}
+                        d_place := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 13}
+                        SolidView{width: Fill height: 1 draw_bg.color: line}
+                        d_note := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 13}
+                    }
+                    View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8
+                        d_rsvp := Label{text: "" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 13}}
+                        d_next := Flat{text: "RSVP: Going" on_click: || cycle_rsvp(sel)}
+                    }
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        Quiet{text: "‹ Agenda" on_click: || do_back()}
+                    }
+                }
+            }
+        }
+    }
+
+    View{width: Fill height: Fit flow: Down spacing: 4
+        padding: Inset{left: 16 right: 16 top: 6 bottom: 8}
+        SolidView{width: Fill height: 1 draw_bg.color: line}
+        RoundedView{width: Fill height: Fit flow: Right spacing: 4
+            padding: Inset{left: 4 right: 4 top: 4 bottom: 4}
+            draw_bg.color: #xe5e5ea draw_bg.border_radius: 12.0
+            b0 := Seg{text: "L0" on_click: || set_depth(0)}
+            b1 := Seg{text: "L1" on_click: || set_depth(1)}
+            b2 := Seg{text: "L2" on_click: || set_depth(2)}
+        }
+        status := Label{width: Fill text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+    }
+}
+
+fn boot(){
+    say("Showing L0 Glance")
+    sync()
+}
+
+start_timeout(0.05, || boot())

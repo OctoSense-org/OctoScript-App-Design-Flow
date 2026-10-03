@@ -1,0 +1,100 @@
+# ledger news.glance@0.1.0
+# level:   L0
+# profile: ui/l0
+# model:   dev.studio.cards.news
+#
+theme taskplan_light
+#
+# NEWS family's compact L0 glance: the lead story only. Outlet/time, headline,
+# one action, one honest cue. The feed list, the story body and the Saved filter
+# live behind the card's own detail, not in the glance.
+# L0/L1/L2 are PRESENTATION depths; this file is language L0 at every depth.
+#
+# Fixture: glance.data.json — synthetic demo stories. No live feed is read and no
+# article page is opened, so the card SAYS DEMO.
+#
+# OFFLINE SOURCE CONTRACT:
+#   * fixture keys are the SOURCE ALIASES (lead, more);
+#   * `id:` is OMITTED so fixture values lower to literals;
+#   * every lifecycle-bound read sits inside a `.$state == .ready` guard;
+#   * `when` takes no else; branches reference named views.
+#
+# State and event semantics are unchanged: mode, saved and tab keep their
+# declared shapes, and every event has card-local behaviour.
+
+source lead sys.dataset(fields: [title, subtitle, summary, as_of, status, metric1_label, metric1_value, metric2_label, metric2_value])
+
+state mode  { shape: enum[glance, detail], initial: .glance }
+state saved { shape: enum[plain, kept], initial: .plain }
+state tab   { shape: enum[all, saved], initial: .all }
+
+event open_detail { mode: set(.detail) }
+event back        { mode: set(.glance) }
+event keep        { saved: set(.kept), tab: set(.saved) }
+event drop        { saved: set(.plain) }
+
+copy app       { class: vocabulary, en: "News",         zh: "新闻" }
+copy open      { class: vocabulary, en: "Open",         zh: "打开" }
+copy back      { class: vocabulary, en: "‹ Back",       zh: "‹ 返回" }
+copy save      { class: vocabulary, en: "Save",         zh: "收藏" }
+copy saved     { class: vocabulary, en: "Remove from Saved", zh: "取消收藏" }
+copy tab_all   { class: vocabulary, en: "All",          zh: "全部" }
+copy tab_saved { class: vocabulary, en: "Saved",        zh: "收藏" }
+copy demo_note { class: vocabulary, en: "Demo stories. No live feed.", zh: "演示新闻。无实时信息源。" }
+
+# Lifecycle strings are declared copy, never inline (framework-l0 §1).
+copy loading { class: vocabulary, en: "Loading demo stories…", zh: "正在加载演示新闻…" }
+copy offline { class: vocabulary, en: "Can't load demo stories", zh: "无法加载演示新闻" }
+
+view root Surface(pad: .tight) {
+  Col(gap: 8) {
+    Row(gap: 8, align: .center) {
+      Icon(name: .bookmark, size: .row)
+      TextCaption(text: copy.app, width: .fill)
+      TextCaption(value: lead.as_of)
+    }
+    when lead.$state == .pending { loading_row }
+    when lead.$state == .failed  { offline_row }
+    when lead.$state == .ready   {
+      when mode == .glance { glance_row }
+      when mode == .detail { detail }
+    }
+  }
+}
+
+view loading_row Col {
+  TextBody(text: copy.loading, width: .fill)
+}
+
+view offline_row Col {
+  TextBody(text: copy.offline, width: .fill)
+}
+
+view glance_row Col(gap: 8) {
+  TextTitle(text: lead.title, width: .fill)
+  TextRow(text: lead.subtitle, width: .fill)
+  Row(gap: 8) {
+    Chip(text: copy.open, on_tap: open_detail, tone: .primary)
+  }
+  TextCaption(text: copy.demo_note, width: .fill)
+}
+
+view detail Col(gap: 8) {
+  TextTitle(text: lead.title, width: .fill)
+  Row(gap: 8, align: .center) {
+    Icon(name: .bookmark, size: .row)
+    TextRow(text: lead.subtitle, width: .fill)
+  }
+  TextBody(text: lead.summary, width: .fill)
+  Row(gap: 8) {
+    when saved == .plain { Chip(text: copy.save, on_tap: keep, tone: .primary) }
+    when saved == .kept  { Chip(text: copy.saved, on_tap: drop) }
+  }
+  Row(gap: 8) {
+    when tab == .all   { Chip(text: copy.tab_all, on_tap: open_detail) }
+    when tab == .saved { Chip(text: copy.tab_saved, on_tap: open_detail, tone: .primary) }
+  }
+  Row(gap: 8) {
+    Chip(text: copy.back, on_tap: back)
+  }
+}

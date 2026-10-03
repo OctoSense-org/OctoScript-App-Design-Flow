@@ -1,0 +1,188 @@
+{
+  "scope": "Frozen MiniMax round12 FINAL files, separate from diagnostic01 history. No edits/device/GPU; native headless startup/timer checks only.",
+  "runtime": {
+    "octosense": "ccf8013f2bd7adbb6c20d5f52f47bcfbcbb55313",
+    "makepad_base_with_reviewed_overlay": "c155f61d0e1600d2ec474209374444a38a09a470",
+    "framework": "2cc5ef37d7d6a3d2992673389ce74488f7bb2d87"
+  },
+  "method": "Existing pinned native Splash evaluator plus timer-registration diagnostic. Headless timer callback widget lookups may fail because root is not mounted; report startup count and registered timers, not callback visual/input acceptance.",
+  "results": [
+    {
+      "family": "mail",
+      "source": "minimax-round12-final/card-templates/mail/bundle/main.splash",
+      "sha256": "b0d68d4ccde75012e9ce586605313d63b7adb74271f5dee4912977ae13de6120",
+      "bytes": 23242,
+      "lines": 508,
+      "raw_brace_balance": 0,
+      "hash_prefixed_lines": [],
+      "children": [
+        "1"
+      ],
+      "running": [
+        "Some(true)"
+      ],
+      "timers": [
+        "1"
+      ],
+      "startup_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 23242 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 1\nRUNNING Some(true)\n",
+      "timer_diagnostic_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 23242 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 1\nRUNNING Some(true)\nTIMERS 1\n{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"widget 'status' not found in tree (.sources/makepad/widgets/src/widget_async.rs:1315)\",\"level\":\"error\",\"spans\":[{\"file_name\":\"splash:minimax-round12-final/card-templates/mail/bundle/main.splash\",\"byte_start\":0,\"byte_end\":0,\"line_start\":108,\"line_end\":108,\"column_start\":26,\"column_end\":26,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nDISPATCHED\n",
+      "exit_codes": [
+        0,
+        0
+      ],
+      "finding": "One root child and one registered timer, runnable policy, no hash-prefixed comment lines or startup error emitted. Headless startup is not Android functional/visual acceptance."
+    },
+    {
+      "family": "calendar",
+      "source": "minimax-round12-final/card-templates/calendar/bundle/main.splash",
+      "sha256": "9df515379942153fafa48d4e12d2a8f239baa538f89f7b0c23e1fe9091636708",
+      "bytes": 16137,
+      "lines": 371,
+      "raw_brace_balance": 0,
+      "hash_prefixed_lines": [],
+      "children": [
+        "1"
+      ],
+      "running": [
+        "Some(true)"
+      ],
+      "timers": [
+        "1"
+      ],
+      "startup_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 16137 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 1\nRUNNING Some(true)\n",
+      "timer_diagnostic_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 16137 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 1\nRUNNING Some(true)\nTIMERS 1\n{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"widget 'status' not found in tree (.sources/makepad/widgets/src/widget_async.rs:1315)\",\"level\":\"error\",\"spans\":[{\"file_name\":\"splash:minimax-round12-final/card-templates/calendar/bundle/main.splash\",\"byte_start\":0,\"byte_end\":0,\"line_start\":117,\"line_end\":117,\"column_start\":26,\"column_end\":26,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nDISPATCHED\n",
+      "exit_codes": [
+        0,
+        0
+      ],
+      "finding": "One root child and one registered timer, runnable policy, no hash-prefixed comment lines or startup error emitted. Headless startup is not Android functional/visual acceptance."
+    },
+    {
+      "family": "news",
+      "source": "minimax-round12-final/card-templates/news/bundle/main.splash",
+      "sha256": "3cb38a9dd428715adc0c5f582fe3a3fbcf45a5e6de7ef194a9765409a704106d",
+      "bytes": 19347,
+      "lines": 394,
+      "raw_brace_balance": -1,
+      "hash_prefixed_lines": [],
+      "children": [
+        "0"
+      ],
+      "running": [
+        "Some(true)"
+      ],
+      "timers": [
+        "1"
+      ],
+      "startup_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 19347 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 0\nRUNNING Some(true)\n",
+      "timer_diagnostic_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 19347 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 0\nRUNNING Some(true)\nTIMERS 1\n{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"widget 'status' not found in tree (.sources/makepad/widgets/src/widget_async.rs:1315)\",\"level\":\"error\",\"spans\":[{\"file_name\":\"splash:minimax-round12-final/card-templates/news/bundle/main.splash\",\"byte_start\":0,\"byte_end\":0,\"line_start\":67,\"line_end\":67,\"column_start\":26,\"column_end\":26,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nDISPATCHED\n",
+      "exit_codes": [
+        0,
+        0
+      ],
+      "finding": {
+        "severity": "startup blocker",
+        "location": "tail379–381; footer opened368",
+        "description": "After footer content there are three closing braces for only footer View and root SolidView. Extra indented close380 precedes intended root close381. Earlier six action-row defects were fixed, but footer replacement introduced one excess close. Original native source has zero root children even though a timeout registers.",
+        "excerpt_start_line": 368,
+        "excerpt": [
+          "    View{width: Fill height: Fit flow: Down spacing: 4",
+          "        padding: Inset{left: 16 right: 16 top: 6 bottom: 8}",
+          "        SolidView{width: Fill height: 1 draw_bg.color: line}",
+          "        RoundedView{width: Fill height: Fit flow: Right spacing: 4",
+          "            padding: Inset{left: 4 right: 4 top: 4 bottom: 4}",
+          "            draw_bg.color: #xe5e5ea draw_bg.border_radius: 12.0",
+          "            b0 := Seg{text: \"L0\" on_click: || set_depth(0)}",
+          "            b1 := Seg{text: \"L1\" on_click: || set_depth(1)}",
+          "            b2 := Seg{text: \"L2\" on_click: || set_depth(2)}",
+          "        }",
+          "        status := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}",
+          "    }",
+          "    }",
+          "}"
+        ]
+      }
+    },
+    {
+      "family": "finance",
+      "source": "minimax-round12-final/card-templates/finance/bundle/main.splash",
+      "sha256": "1078ba641d0ac8cf817cefa896bec5c55b5fbf270c7089ea86787285363c24da",
+      "bytes": 20909,
+      "lines": 415,
+      "raw_brace_balance": 0,
+      "hash_prefixed_lines": [],
+      "children": [
+        "1"
+      ],
+      "running": [
+        "Some(true)"
+      ],
+      "timers": [
+        "1"
+      ],
+      "startup_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 20909 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 1\nRUNNING Some(true)\n",
+      "timer_diagnostic_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 20909 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 1\nRUNNING Some(true)\nTIMERS 1\n{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"widget 'status' not found in tree (.sources/makepad/widgets/src/widget_async.rs:1315)\",\"level\":\"error\",\"spans\":[{\"file_name\":\"splash:minimax-round12-final/card-templates/finance/bundle/main.splash\",\"byte_start\":0,\"byte_end\":0,\"line_start\":61,\"line_end\":61,\"column_start\":26,\"column_end\":26,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nDISPATCHED\n",
+      "exit_codes": [
+        0,
+        0
+      ],
+      "finding": "One root child and one registered timer, runnable policy, no hash-prefixed comment lines or startup error emitted. Headless startup is not Android functional/visual acceptance."
+    },
+    {
+      "family": "photo",
+      "source": "minimax-round12-final/card-templates/photo/bundle/main.splash",
+      "sha256": "99d535019dc451db5948703843327c21ae86aaab7f07ac9ad14df553b0ba5353",
+      "bytes": 19084,
+      "lines": 399,
+      "raw_brace_balance": 0,
+      "hash_prefixed_lines": [],
+      "children": [
+        "1"
+      ],
+      "running": [
+        "Some(true)"
+      ],
+      "timers": [
+        "1"
+      ],
+      "startup_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 19084 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 1\nRUNNING Some(true)\n",
+      "timer_diagnostic_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 19084 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 1\nRUNNING Some(true)\nTIMERS 1\n{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"widget 'status' not found in tree (.sources/makepad/widgets/src/widget_async.rs:1315)\",\"level\":\"error\",\"spans\":[{\"file_name\":\"splash:minimax-round12-final/card-templates/photo/bundle/main.splash\",\"byte_start\":0,\"byte_end\":0,\"line_start\":72,\"line_end\":72,\"column_start\":26,\"column_end\":26,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nDISPATCHED\n",
+      "exit_codes": [
+        0,
+        0
+      ],
+      "finding": "One root child and one registered timer, runnable policy, no hash-prefixed comment lines or startup error emitted. Headless startup is not Android functional/visual acceptance."
+    },
+    {
+      "family": "youtube",
+      "source": "minimax-round12-final/card-templates/youtube/bundle/main.splash",
+      "sha256": "1bc00cc92f7dfe0b125e74bb3a87385c5fdfe88a870f4af660b1de6d323f0f61",
+      "bytes": 18709,
+      "lines": 387,
+      "raw_brace_balance": 0,
+      "hash_prefixed_lines": [],
+      "children": [
+        "1"
+      ],
+      "running": [
+        "Some(true)"
+      ],
+      "timers": [
+        "1"
+      ],
+      "startup_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 18709 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 1\nRUNNING Some(true)\n",
+      "timer_diagnostic_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 18709 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 1\nRUNNING Some(true)\nTIMERS 1\n{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"widget 'status' not found in tree (.sources/makepad/widgets/src/widget_async.rs:1315)\",\"level\":\"error\",\"spans\":[{\"file_name\":\"splash:minimax-round12-final/card-templates/youtube/bundle/main.splash\",\"byte_start\":0,\"byte_end\":0,\"line_start\":72,\"line_end\":72,\"column_start\":26,\"column_end\":26,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nDISPATCHED\n",
+      "exit_codes": [
+        0,
+        0
+      ],
+      "finding": "One root child and one registered timer, runnable policy, no hash-prefixed comment lines or startup error emitted. Headless startup is not Android functional/visual acceptance."
+    }
+  ],
+  "archive_metadata": {
+    "original_operator_receipt_sha256": "e2ceb480b91d7eb696a58a277093bd551028d4956ba03a70e83a24dc7285f411",
+    "transformation": "Only absolute operator artifact path prefix removed from source paths and diagnostic span strings; source hashes, logs and findings unchanged.",
+    "scope": "Frozen final round12 checkpoint, separate from in-progress diagnostic01 and pending round13 repairs.",
+    "source_files_included": false
+  }
+}

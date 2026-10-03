@@ -1,0 +1,222 @@
+// News Cards — native interactive preview of the NEWS card template.
+// Presentation depths: L0 compact glance / L1 expanded actionable / L2 full app.
+// Synthetic demo content only. No live feed, no network, no article fetched.
+//
+// Layout: navigation + status pinned at TOP so they stay reachable when the
+// Android keyboard shrinks the viewport; the card scrolls below.
+// Fictional stories; a saved record is a LINK, never a downloaded article.
+
+let depth = "glance"
+let view_state = "ready"
+let show_states = false
+let tab = "feed"
+let detail_open = false
+let open_id = ""
+let saved_a = false
+let saved_b = false
+
+let NavBtn = ButtonFlat{height: 44 padding: 10 draw_bg +: {color: #xe8edf3 color_hover: #xdde5ef color_down: #xd0dae7} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+let AccentBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xd6342b color_hover: #xe0443b color_down: #xc02b22} draw_text +: {color: #xffffff color_hover: #xffffff color_down: #xffffff}}
+let GhostBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xffffff color_hover: #xf0f4f8 color_down: #xe6ecf3} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+let OpenBtn = ButtonFlat{height: 44 width: 108 padding: 8 draw_bg +: {color: #xe8edf3 color_hover: #xdde5ef color_down: #xd0dae7} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+
+fn depth_name(){
+    if depth == "glance" { return "L0 glance" }
+    if depth == "expand" { return "L1 expanded" }
+    return "L2 app"
+}
+fn title_of(id){
+    if id == "harbor" { return "Harbor line opens after two-year rebuild" }
+    return "City council approves night bus pilot"
+}
+fn src_of(id){
+    if id == "harbor" { return "Demo Daily · Transit desk · 2h ago" }
+    return "Demo Daily · City desk · 5h ago"
+}
+fn summary_of(id){
+    if id == "harbor" { return "The fictional Harbor line reopens with new signalling; officials say peak-hour trips drop by six minutes." }
+    return "A one-year pilot adds two late-night routes on weekends, with a review due next spring."
+}
+fn is_saved(id){
+    if id == "harbor" { return saved_a }
+    return saved_b
+}
+fn save_label(id){
+    if is_saved(id) { return "Saved ✓" }
+    return "Save"
+}
+fn saved_count(){
+    let n = 0
+    if saved_a { n = n + 1 }
+    if saved_b { n = n + 1 }
+    return n
+}
+
+fn refresh_nav(){
+    let s = "News Cards   ·   " + depth_name() + "   ·   " + view_state + "   ·   saved: " + saved_count()
+    ui.depth_status.set_text(s)
+    if depth == "glance" { ui.d_gl.set_text("• Glance") } else { ui.d_gl.set_text("Glance") }
+    if depth == "expand" { ui.d_ex.set_text("• Expand") } else { ui.d_ex.set_text("Expand") }
+    if depth == "app" { ui.d_ap.set_text("• Open app") } else { ui.d_ap.set_text("Open app") }
+}
+fn toggle_states(){
+    if show_states { show_states = false } else { show_states = true }
+    if show_states { ui.states_btn.set_text("States ▾") } else { ui.states_btn.set_text("States ▸") }
+    ui.states_row.set_visible(show_states)
+}
+
+fn set_depth(d){ depth = d detail_open = false refresh_nav() ui.stage.render() }
+fn set_state(s){ view_state = s refresh_nav() ui.stage.render() }
+fn set_tab(t){ tab = t detail_open = false refresh_nav() ui.stage.render() }
+fn open_detail(id){ open_id = id detail_open = true ui.stage.render() }
+fn close_detail(){ detail_open = false ui.stage.render() }
+fn toggle_save(id){
+    if id == "harbor" { if saved_a { saved_a = false } else { saved_a = true } }
+    else { if saved_b { saved_b = false } else { saved_b = true } }
+    refresh_nav() ui.stage.render()
+}
+
+fn boot(){ refresh_nav() ui.states_row.set_visible(false) ui.stage.render() }
+
+start_timeout(0.05, || boot())
+
+SolidView{width: Fill height: Fill flow: Down padding: 12 spacing: 8 draw_bg.color: #xf6f5f3
+    // Title folded into the consolidated status line below (density).
+    depth_status := Label{width: Fill height: Fit text: "Depth: L0 glance   ·   state: ready   ·   saved: 0" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}
+    View{width: Fill height: Fit flow: Right spacing: 8
+        d_gl := NavBtn{text: "• Glance" on_click: || set_depth("glance")}
+        d_ex := NavBtn{text: "Expand" on_click: || set_depth("expand")}
+        d_ap := NavBtn{text: "Open app" on_click: || set_depth("app")}
+        View{width: Fill height: Fit}
+        states_btn := NavBtn{text: "States ▸" on_click: || toggle_states()}
+    }
+    states_row := View{width: Fill height: Fit flow: Right spacing: 8
+        NavBtn{text: "Ready" on_click: || set_state("ready")}
+        NavBtn{text: "Loading" on_click: || set_state("loading")}
+        NavBtn{text: "Empty" on_click: || set_state("empty")}
+        NavBtn{text: "Error" on_click: || set_state("error")}
+    }
+
+    ScrollYView{width: Fill height: Fill flow: Down spacing: 8
+        stage := RoundedView{width: Fill height: Fit flow: Down padding: 14 spacing: 8 draw_bg.color: #xffffff draw_bg.radius: 16 on_render: || {
+
+            // ---------- L0 · compact glance ----------
+            if depth == "glance" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    Label{text: "NEWS" draw_text.color: #xd6342b draw_text.text_style.font_size: 12}
+                    View{width: Fill height: Fit}
+                    Label{text: "2h" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}
+                }
+                if view_state == "loading" { Label{text: "Loading…" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }
+                if view_state == "empty" { Label{text: "No stories" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }
+                if view_state == "error" { Label{width: Fill height: Fit text: "Couldn't load stories — demo error state" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }
+                if view_state == "ready" {
+                    Label{text: "Demo Daily · Transit desk" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}
+                    Label{width: Fill height: Fit text: "Harbor line opens after two-year rebuild" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{width: Fill height: Fit text: "New signalling cuts peak trips by six minutes." draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        AccentBtn{text: save_label("harbor") on_click: || toggle_save("harbor")}
+                        GhostBtn{text: "Read ›" on_click: || set_depth("expand")}
+                    }
+                }
+            }
+
+            // ---------- L1 · expanded actionable ----------
+            if depth == "expand" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    Label{text: "NEWS" draw_text.color: #xd6342b draw_text.text_style.font_size: 11}
+                    View{width: Fill height: Fit}
+                    Label{text: "2h" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}
+                }
+                if view_state == "loading" { Label{text: "Loading…" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }
+                if view_state == "empty" { Label{text: "No stories" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }
+                if view_state == "error" { Label{width: Fill height: Fit text: "Couldn't load stories — demo error state" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }
+                if view_state == "ready" {
+                    Label{width: Fill height: Fit text: "Harbor line opens after two-year rebuild" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{text: "Demo Daily · Transit desk · 2h ago" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                    SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}
+                    Label{width: Fill height: Fit text: "The fictional Harbor line reopens with new signalling; officials say peak-hour trips drop by six minutes. The rebuild ran two years and replaced the old relay interlocking." draw_text.color: #x1c2430 draw_text.text_style.font_size: 15 draw_text.wrap: true}
+                    Label{text: "demo.invalid/harbor-line" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        AccentBtn{text: save_label("harbor") on_click: || toggle_save("harbor")}
+                        NavBtn{text: "Open app" on_click: || set_depth("app")}
+                    }
+                    Label{width: Fill height: Fit text: "Demo link — the story is not downloaded." draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}
+                }
+            }
+
+            // ---------- L2 · full app (feed / saved) ----------
+            if depth == "app" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    if tab == "feed" {
+                        AccentBtn{text: "Feed" width: 108 on_click: || set_tab("feed")}
+                        NavBtn{text: "Saved" width: 108 on_click: || set_tab("saved")}
+                    }
+                    if tab == "saved" {
+                        NavBtn{text: "Feed" width: 108 on_click: || set_tab("feed")}
+                        AccentBtn{text: "Saved" width: 108 on_click: || set_tab("saved")}
+                    }
+                }
+                SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}
+                if detail_open {
+                    Label{width: Fill height: Fit text: title_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{width: Fill height: Fit text: src_of(open_id) draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}
+                    SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}
+                    Label{width: Fill height: Fit text: summary_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 14 draw_text.wrap: true}
+                    Label{width: Fill height: Fit text: "Saved as a link (demo) — no article is downloaded." draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        AccentBtn{text: save_label(open_id) on_click: || toggle_save(open_id)}
+                        NavBtn{text: "‹ Back" on_click: || close_detail()}
+                    }
+                }
+                if detail_open == false {
+                    if tab == "feed" {
+                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                            Label{width: Fill height: Fit text: "Demo Daily · Transit desk · 2h" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                            Label{width: Fill height: Fit text: "Harbor line opens after two-year rebuild" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                NavBtn{text: save_label("harbor") on_click: || toggle_save("harbor")}
+                                OpenBtn{text: "Open ›" on_click: || open_detail("harbor")}
+                            }
+                        }
+                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                            Label{text: "Demo Daily · City desk · 5h" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}
+                            Label{width: Fill height: Fit text: "City council approves night bus pilot" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                NavBtn{text: save_label("bus") on_click: || toggle_save("bus")}
+                                OpenBtn{text: "Open ›" on_click: || open_detail("bus")}
+                            }
+                        }
+                    }
+                    if tab == "saved" {
+                        Label{width: Fill height: Fit text: "Saved stories · " + saved_count() draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                        if saved_count() == 0 {
+                            Label{text: "No saved stories" draw_text.color: #x8a8a8e draw_text.text_style.font_size: 15}
+                        }
+                        if saved_a {
+                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                                Label{text: "Demo Daily · Transit desk · 2h" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}
+                                Label{width: Fill height: Fit text: "Harbor line opens after two-year rebuild" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                                View{width: Fill height: Fit flow: Right spacing: 8
+                                    NavBtn{text: "Saved ✓" on_click: || toggle_save("harbor")}
+                                    OpenBtn{text: "Open ›" on_click: || open_detail("harbor")}
+                                }
+                            }
+                        }
+                        if saved_b {
+                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                                Label{text: "Demo Daily · City desk · 5h" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}
+                                Label{width: Fill height: Fit text: "City council approves night bus pilot" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                                View{width: Fill height: Fit flow: Right spacing: 8
+                                    NavBtn{text: "Saved ✓" on_click: || toggle_save("bus")}
+                                    OpenBtn{text: "Open ›" on_click: || open_detail("bus")}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }}
+    }
+}

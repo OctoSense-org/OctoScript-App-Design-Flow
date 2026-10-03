@@ -1,0 +1,2544 @@
+[
+  {
+    "request_id": "3b14b725-78e7-466e-9e80-aacfcff10792",
+    "request": {
+      "name": "studio.bundle_check",
+      "args": {
+        "bundle_path": "card-templates/mail/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "3b14b725-78e7-466e-9e80-aacfcff10792",
+      "data": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.mail",
+        "capabilities": [],
+        "digest": "09b64aaf8e8923a1177ea0bb267b6cbeaaa92dbb8fef78ae4198485b07a55552",
+        "name": "Mail Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.67
+  },
+  {
+    "request_id": "0c88ee09-50f2-494c-a618-d71cc0f49d29",
+    "request": {
+      "name": "studio.open",
+      "args": {
+        "bundle_path": "card-templates/mail/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "0c88ee09-50f2-494c-a618-d71cc0f49d29",
+      "data": {
+        "bundle": {
+          "admission": "local_developer",
+          "app_id": "dev.studio.cards.mail",
+          "capabilities": [],
+          "digest": "09b64aaf8e8923a1177ea0bb267b6cbeaaa92dbb8fef78ae4198485b07a55552",
+          "name": "Mail Cards",
+          "publisher_signed": false,
+          "source_modified": false,
+          "version": "0.1.0"
+        },
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "ready": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.945
+  },
+  {
+    "request_id": "f7d0c225-868f-461d-8584-7476a471d882",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe"
+      }
+    },
+    "reply": {
+      "call_id": "f7d0c225-868f-461d-8584-7476a471d882",
+      "data": {
+        "height": 2132,
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-f19350e6-05ad-42a6-8a8b-307aad71740a.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Mail Cards   \u00b7   L0 glance   \u00b7   ready",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "MAIL",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "9:41",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Ana Rivera",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Contract signing \u2014 Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Can we sign by Friday? Revised terms attached.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Reply",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-0cda541e-19b4-4093-b479-37a41c92b46d.json",
+        "total_widgets": 17,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.323
+  },
+  {
+    "request_id": "80b236f8-1d3d-4739-bc6d-17c888df0919",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "widget_id": "d_ex@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "80b236f8-1d3d-4739-bc6d-17c888df0919",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.106
+  },
+  {
+    "request_id": "c7231011-8b83-492d-9e6d-7e56e5aefa25",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe"
+      }
+    },
+    "reply": {
+      "call_id": "c7231011-8b83-492d-9e6d-7e56e5aefa25",
+      "data": {
+        "height": 2132,
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-6072b212-4c1b-45d3-8adb-694b6a0b002a.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Mail Cards   \u00b7   L1 expanded   \u00b7   ready",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "\u2022 Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "MAIL",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "9:41",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Contract signing \u2014 Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Ana Rivera \u00b7 ana@acme.demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "SUMMARY (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "text": "Ana attached the revised payment terms and would like to sign by Friday.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "reply_field@0",
+              "text": "Draft a reply\u2026",
+              "type": "TextInput",
+              "value": "",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Send (demo)",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Archive",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-b6b626d9-bf3c-4361-996d-ade9a62fa3cc.json",
+        "total_widgets": 22,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.34
+  },
+  {
+    "request_id": "a31950ec-20ea-4a8c-ac3b-0d4f5998212d",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "widget_id": "-@6",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "a31950ec-20ea-4a8c-ac3b-0d4f5998212d",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.305
+  },
+  {
+    "request_id": "49ce0ee1-af45-4fab-b5bc-99ceceff550a",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe"
+      }
+    },
+    "reply": {
+      "call_id": "49ce0ee1-af45-4fab-b5bc-99ceceff550a",
+      "data": {
+        "height": 2132,
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-9ec7add9-70f8-46eb-8aac-4745638f0881.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Mail Cards   \u00b7   L1 expanded   \u00b7   ready",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "\u2022 Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "MAIL",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "9:41",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Contract signing \u2014 Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Ana Rivera \u00b7 ana@acme.demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "SUMMARY (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "text": "Ana attached the revised payment terms and would like to sign by Friday.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "reply_field@0",
+              "text": "Draft a reply\u2026",
+              "type": "TextInput",
+              "value": "",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Send (demo)",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Archive",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "text": "Write a reply first \u2014 nothing was sent.",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-22c47a60-19ff-48fb-b339-3ca0f8be3bc6.json",
+        "total_widgets": 23,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.315
+  },
+  {
+    "request_id": "b6a363d6-4f7f-4820-beaf-d83fec759c46",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "widget_id": "1@4",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "b6a363d6-4f7f-4820-beaf-d83fec759c46",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.148
+  },
+  {
+    "request_id": "f6fa9bee-bfc3-4a38-ad44-f32f57c74649",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe"
+      }
+    },
+    "reply": {
+      "call_id": "f6fa9bee-bfc3-4a38-ad44-f32f57c74649",
+      "data": {
+        "height": 2132,
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-d23e8a96-1b39-48fd-8e30-0af87cd71811.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Mail Cards   \u00b7   L1 expanded   \u00b7   ready   \u00b7   mail: archived",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "\u2022 Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "MAIL",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "9:41",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Contract signing \u2014 Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Ana Rivera \u00b7 ana@acme.demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "SUMMARY (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "text": "Ana attached the revised payment terms and would like to sign by Friday.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "reply_field@0",
+              "text": "Draft a reply\u2026",
+              "type": "TextInput",
+              "value": "",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Send (demo)",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "text": "Write a reply first \u2014 nothing was sent.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "8@0",
+              "text": "Archived (demo). Undo restores it.",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-83276a41-7226-40be-9fb1-e89fec13f819.json",
+        "total_widgets": 24,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.389
+  },
+  {
+    "request_id": "c7804fb5-7ad3-4422-a5ef-410c0d7d03ca",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "widget_id": "2@3",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "c7804fb5-7ad3-4422-a5ef-410c0d7d03ca",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.12
+  },
+  {
+    "request_id": "b848cd4e-44f7-4f5f-8fa8-9cf69d55797f",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe"
+      }
+    },
+    "reply": {
+      "call_id": "b848cd4e-44f7-4f5f-8fa8-9cf69d55797f",
+      "data": {
+        "height": 2132,
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-e2845dcd-5c7a-4b06-bb39-43e3852136dc.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Mail Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   mail: archived",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Archived",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Design Weekly",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "8:05",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Your Thursday digest is ready",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "text": "Five short reads on card UI.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-d7a6c77f-b80d-43a2-b0e2-5ec49d839680.json",
+        "total_widgets": 21,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.312
+  },
+  {
+    "request_id": "26595a2c-d42f-477a-9553-aa03e1716823",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "widget_id": "1@2",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "26595a2c-d42f-477a-9553-aa03e1716823",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.103
+  },
+  {
+    "request_id": "3fc41261-6ee8-4abb-b826-87620fe934d3",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe"
+      }
+    },
+    "reply": {
+      "call_id": "3fc41261-6ee8-4abb-b826-87620fe934d3",
+      "data": {
+        "height": 2132,
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-4fb5b830-763c-4c4c-8687-955b8024c479.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Mail Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   mail: archived",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Archived",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Ana Rivera",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "9:41",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Contract signing \u2014 Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "text": "Archived (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "Finance team",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@5",
+              "text": "Mon",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Quarterly report draft",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "text": "Archived (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@4",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-626dd5a7-278f-4425-837a-5bae49759176.json",
+        "total_widgets": 28,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.299
+  },
+  {
+    "request_id": "e3ce4398-26ac-4d82-99fc-f1aa2a4a0576",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "widget_id": "d_ex@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "e3ce4398-26ac-4d82-99fc-f1aa2a4a0576",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.144
+  },
+  {
+    "request_id": "4aac9c88-1983-489e-9fd8-a902c79b5057",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe"
+      }
+    },
+    "reply": {
+      "call_id": "4aac9c88-1983-489e-9fd8-a902c79b5057",
+      "data": {
+        "height": 2132,
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-d4576ea5-a1eb-466a-be2d-0150ca29f8cd.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Mail Cards   \u00b7   L1 expanded   \u00b7   ready   \u00b7   mail: archived",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "\u2022 Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "MAIL",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "9:41",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Contract signing \u2014 Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Ana Rivera \u00b7 ana@acme.demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "SUMMARY (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "text": "Ana attached the revised payment terms and would like to sign by Friday.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "reply_field@0",
+              "text": "Draft a reply\u2026",
+              "type": "TextInput",
+              "value": "",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Send (demo)",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "text": "Archived (demo). Undo restores it.",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-e46743b9-4185-46dd-9667-87e3a116fc69.json",
+        "total_widgets": 23,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.371
+  },
+  {
+    "request_id": "4b990f0a-2e0d-456b-82a8-cb044c853b61",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "widget_id": "1@4",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "4b990f0a-2e0d-456b-82a8-cb044c853b61",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.333
+  },
+  {
+    "request_id": "4656c69b-f020-4088-af2a-6f3053f758bb",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe"
+      }
+    },
+    "reply": {
+      "call_id": "4656c69b-f020-4088-af2a-6f3053f758bb",
+      "data": {
+        "height": 2132,
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-9f0662b6-aebd-4219-a9db-f0ad27eb4dc5.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Mail Cards   \u00b7   L1 expanded   \u00b7   ready",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "\u2022 Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "MAIL",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "9:41",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Contract signing \u2014 Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Ana Rivera \u00b7 ana@acme.demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "SUMMARY (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "text": "Ana attached the revised payment terms and would like to sign by Friday.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "reply_field@0",
+              "text": "Draft a reply\u2026",
+              "type": "TextInput",
+              "value": "",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Send (demo)",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Archive",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-42562ef0-21d4-4f9d-9d9a-48f8b249818f.json",
+        "total_widgets": 22,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.356
+  },
+  {
+    "request_id": "75044c91-e226-471b-8c50-d1659f4c9313",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "widget_id": "2@3",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "75044c91-e226-471b-8c50-d1659f4c9313",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.331
+  },
+  {
+    "request_id": "c2a3775c-6f99-4344-b786-b1b48451931d",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe"
+      }
+    },
+    "reply": {
+      "call_id": "c2a3775c-6f99-4344-b786-b1b48451931d",
+      "data": {
+        "height": 2132,
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-e606b0bb-e19e-40eb-a183-47b13a0f1cf6.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Mail Cards   \u00b7   L2 app   \u00b7   ready",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Archived",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Finance team",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "Mon",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Quarterly report draft",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "text": "Archived (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-1d9728ad-5f32-4bcc-967c-d51126435171.json",
+        "total_widgets": 21,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.356
+  },
+  {
+    "request_id": "3ecaf1b9-f971-4d99-9761-685f427b13e8",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "widget_id": "-@5",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "3ecaf1b9-f971-4d99-9761-685f427b13e8",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.127
+  },
+  {
+    "request_id": "d9fde789-a29b-4430-9a30-04e1e2c16316",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe"
+      }
+    },
+    "reply": {
+      "call_id": "d9fde789-a29b-4430-9a30-04e1e2c16316",
+      "data": {
+        "height": 2132,
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-3c3b33f9-3837-4b08-a546-f562ddd35c1f.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Mail Cards   \u00b7   L2 app   \u00b7   ready",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Archived",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Ana Rivera",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "9:41",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Contract signing \u2014 Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "text": "Can we sign by Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "Design Weekly",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@5",
+              "text": "8:05",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Your Thursday digest is ready",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "text": "Five short reads on card UI.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@4",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-5bd600dd-212e-48b2-97c7-59a132113729.json",
+        "total_widgets": 28,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.315
+  },
+  {
+    "request_id": "e5989be3-c0bb-4826-9778-e14134f47e05",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "widget_id": "3@4",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "e5989be3-c0bb-4826-9778-e14134f47e05",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.346
+  },
+  {
+    "request_id": "f8b4e55e-1e22-4e8f-9cd0-c5dfe04f7fc5",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe"
+      }
+    },
+    "reply": {
+      "call_id": "f8b4e55e-1e22-4e8f-9cd0-c5dfe04f7fc5",
+      "data": {
+        "height": 2132,
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-5f113345-c934-4647-adfb-fe9decf4bb6c.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Mail Cards   \u00b7   L2 app   \u00b7   ready",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Archived",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Your Thursday digest is ready",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "text": "Design Weekly \u00b7 digest@demo.weekly",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "text": "Five short reads on card UI, motion and type. No tracking, just a weekly list.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "text": "Demo message \u00b7 no real mail read or sent",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "\u2039 Back to list",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-ebbc143f-6bf8-4ce3-bf6b-a873824c4a36.json",
+        "total_widgets": 21,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.323
+  },
+  {
+    "request_id": "a1a4e185-b015-4c16-9bd4-0466b5f28cfd",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "widget_id": "-@6",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "a1a4e185-b015-4c16-9bd4-0466b5f28cfd",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.137
+  },
+  {
+    "request_id": "15e10183-44c5-4674-8ffd-a6e37cee3511",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe"
+      }
+    },
+    "reply": {
+      "call_id": "15e10183-44c5-4674-8ffd-a6e37cee3511",
+      "data": {
+        "height": 2132,
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-b0dfb974-4894-4a40-b75b-ed6fa6cd7544.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Mail Cards   \u00b7   L2 app   \u00b7   ready",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Archived",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Ana Rivera",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "9:41",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Contract signing \u2014 Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "text": "Can we sign by Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "Design Weekly",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@5",
+              "text": "8:05",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Your Thursday digest is ready",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "text": "Five short reads on card UI.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@4",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-0f4acc59-ba79-4dbb-ad7b-f96c228251a6.json",
+        "total_widgets": 28,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.321
+  },
+  {
+    "request_id": "1aedc394-ab23-448f-a9ec-41851603dc06",
+    "request": {
+      "name": "studio.close",
+      "args": {
+        "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe"
+      }
+    },
+    "reply": {
+      "call_id": "1aedc394-ab23-448f-a9ec-41851603dc06",
+      "data": {
+        "closed": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.153
+  }
+]

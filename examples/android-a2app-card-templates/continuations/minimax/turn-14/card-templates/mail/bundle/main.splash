@@ -1,0 +1,508 @@
+// Mail card template — dev.studio.cards.mail
+// All records are SYNTHETIC DEMO DATA held in this app's local list.
+// No mailbox, no account, no network. "Queue reply" appends to the local demo
+// list only; nothing is ever transmitted.
+//
+// Depths are PRESENTATION depths (UI), not parser levels:
+//   L0  compact glance card
+//   L1  expanded actionable card
+//   L2  full app: collection -> reader -> reply, one bounded scroll region
+
+let msgs = [
+    {id: "m1" from: "Ana Ruiz" subject: "Contract renewal"
+        preview: "Revised payment terms are in the PDF. Can we sign by Friday?"
+        body: "The revised payment terms are in the attached PDF: net 45 instead of net 30, and the renewal window moves to 60 days. Can we sign by Friday?"
+        at: "09:12" tag: "Work" att: true unread: true}
+    {id: "m2" from: "City Library" subject: "Holds ready until Saturday"
+        preview: "Three books from your request are on the holds shelf."
+        body: "Three books from your request are on the holds shelf until Saturday. The reading room closes at 20:00."
+        at: "08:47" tag: "Personal" att: false unread: true}
+    {id: "m3" from: "Priya N." subject: "Design review moved to Thursday"
+        preview: "Pushed to Thursday so Marcus can join. Same room."
+        body: "Pushed the design review to Thursday 10:00 so Marcus can join. Same room as before."
+        at: "Yesterday" tag: "Work" att: false unread: false}
+    {id: "m4" from: "Northwind Studio" subject: "Invoice 2291 - August retainer"
+        preview: "Amount due 1,480.00, payable within 14 days."
+        body: "Invoice 2291 for the August retainer. Amount due 1,480.00, payable within 14 days."
+        at: "Mon" tag: "Finance" att: false unread: false}
+]
+
+let ground = #xf2f2f7
+let surface = #xffffff
+let ink = #x1c1c1e
+let ink2 = #x3c3c43
+let muted = #x8e8e93
+let accent = #x007aff
+let line = #xe5e5ea
+let demo_bg = #xfff3cd
+let demo_ink = #x8a0b00
+
+let archived = []
+let drafts = []
+let sent = []
+let last_id = ""
+let status = "Demo inbox."
+let depth = 0
+let sel = "m1"
+let route = "list"
+
+// ---------- state helpers ----------
+
+fn has_item(list, x){ for v in list { if v == x { return true } } false }
+
+fn pick(cond, on, off){ if cond { on } else { off } }
+
+fn msg_of(id){
+    for m in msgs { if m.id == id { return m } }
+    nil
+}
+
+fn n_rows(){
+    let n = 0
+    for m in msgs { if !has_item(archived, m.id) { n = n + 1 } }
+    n
+}
+
+fn n_unread(){
+    let n = 0
+    for m in msgs { if !has_item(archived, m.id) && m.unread { n = n + 1 } }
+    n
+}
+
+fn lead(){
+    for m in msgs { if !has_item(archived, m.id) { return m } }
+    nil
+}
+
+fn lead_id(){
+    let m = lead()
+    if m == nil { return "" }
+    m.id
+}
+
+fn unread_str(id){
+    for m in msgs {
+        if m.id == id {
+            if m.unread { return "Unread" }
+            return "Read"
+        }
+    }
+    ""
+}
+
+// A draft belongs to the message it was typed for, so changing the selection
+// never shows another message's text.
+fn draft_of(id){
+    for d in drafts { if d.id == id { return d.text } }
+    ""
+}
+
+fn set_draft(id, t){
+    for d in drafts { if d.id == id { d.text = t; return } }
+    drafts.push({id: id text: t})
+}
+
+fn say(s){ status = s; ui.status.set_text(s) }
+
+// Typing clears a stale "nothing to send" warning, so the status never claims
+// the draft is empty after the reader has typed something.
+fn typed(t){
+    set_draft(sel, t)
+    if status.search("Nothing to send") == 0 { say("") }
+}
+
+fn depth_name(){
+    if depth == 0 { return "L0 Glance" }
+    if depth == 1 { return "L1 Card" }
+    if route == "reader" { return "L2 Reader" }
+    if route == "reply" { return "L2 Reply" }
+    return "L2 Inbox"
+}
+
+fn set_depth(d){
+    depth = d
+    route = "list"
+    say("")
+    sync()
+}
+
+// ---------- local actions ----------
+
+fn do_archive(id){
+    if has_item(archived, id) { return }
+    archived.push(id)
+    last_id = id
+    say("Archived " + id_name(id))
+    if sel == id { sel = lead_id() }
+    sync()
+}
+
+fn id_name(id){
+    let m = msg_of(id)
+    if m == nil { return "" }
+    m.from
+}
+
+fn do_undo(){
+    if last_id == "" { say("Nothing to undo."); return }
+    if !has_item(archived, last_id) { last_id = ""; say("Nothing to undo."); return }
+    archived.retain(|x| x != last_id)
+    last_id = ""
+    say("Restored to Inbox")
+    sync()
+}
+
+fn do_read(id){
+    for m in msgs { if m.id == id { m.unread = !m.unread } }
+    if unread_str(id) == "Unread" { say(id_name(id) + " marked unread") } else { say(id_name(id) + " marked read") }
+    sync()
+}
+
+fn do_open(id){
+    sel = id
+    route = "reader"
+    set_depth(2)
+    route = "reader"
+    sync()
+}
+
+fn do_reply(){
+    route = "reply"
+    say("")
+    sync()
+}
+
+fn do_back(){
+    if route == "reply" { route = "reader" } else { route = "list" }
+    say("")
+    sync()
+}
+
+fn do_send(){
+    let m = msg_of(sel)
+    if m == nil { say("No message selected"); return }
+    if has_item(archived, m.id) { say("Unarchive before replying"); return }
+    let body = draft_of(m.id).trim()
+    if body == "" { say("Nothing to send · write a reply first"); return }
+    sent.push({to: m.from subject: "Re: " + m.subject preview: body})
+    set_draft(m.id, "")
+    say("Queued for " + m.from)
+    route = "reader"
+    sync()
+}
+
+// ---------- chrome sync ----------
+
+fn sync(){
+    ui.glance.set_visible(depth == 0)
+    ui.expanded.set_visible(depth == 1)
+    ui.full.set_visible(depth == 2)
+
+    ui.count.set_text("" + n_rows() + " in Inbox · " + "" + n_unread() + " unread")
+    ui.status.set_text(status)
+    ui.depth_now.set_text(depth_name())
+
+    // one persistent selected-depth marker, in words not colour alone
+    ui.b0.set_text(pick(depth == 0, "● L0", "L0"))
+    ui.b1.set_text(pick(depth == 1, "● L1", "L1"))
+    ui.b2.set_text(pick(depth == 2, "● L2", "L2"))
+
+    let m = lead()
+    if m == nil {
+        ui.g_card.set_visible(false)
+        ui.g_empty.set_visible(true)
+    } else {
+        ui.g_card.set_visible(true)
+        ui.g_empty.set_visible(false)
+        ui.g_from.set_text(m.from)
+        ui.g_time.set_text(m.at)
+        ui.g_subj.set_text(m.subject)
+        ui.g_prev.set_text(m.preview)
+        ui.g_meta.set_text(m.tag + " · " + pick(m.unread, "Unread", "Read"))
+    }
+
+    let s = msg_of(sel)
+    let live = false
+    if s != nil && !has_item(archived, s.id) { live = true }
+    ui.x_card.set_visible(live)
+    ui.x_gone.set_visible(!live)
+    if live {
+        ui.x_from.set_text(s.from)
+        ui.x_time.set_text(s.at)
+        ui.x_subj.set_text(s.subject)
+        ui.x_meta.set_text(s.tag + " · " + pick(s.unread, "Unread", "Read") + " · " + pick(s.att, "1 attachment", "no attachment"))
+        ui.x_prev.set_text(s.preview)
+        ui.x_mark.set_text(pick(s.unread, "Mark as read", "Mark as unread"))
+    }
+
+    ui.r1.set_visible(!has_item(archived, "m1"))
+    ui.r2.set_visible(!has_item(archived, "m2"))
+    ui.r3.set_visible(!has_item(archived, "m3"))
+    ui.r4.set_visible(!has_item(archived, "m4"))
+    ui.r1_u.set_text(unread_str("m1"))
+    ui.r2_u.set_text(unread_str("m2"))
+    ui.r3_u.set_text(unread_str("m3"))
+    ui.r4_u.set_text(unread_str("m4"))
+
+    ui.l2_list.set_visible(route == "list")
+    ui.l2_reader.set_visible(route == "reader")
+    ui.l2_reply.set_visible(route == "reply")
+
+    let r = msg_of(sel)
+    if r != nil {
+        ui.rd_from.set_text(r.from + " · " + r.at)
+        ui.rd_subj.set_text(r.subject)
+        ui.rd_body.set_text(r.body)
+        ui.cmp_to.set_text("To " + r.from)
+        ui.cmp_subj.set_text("Re: " + r.subject)
+    }
+    ui.field.set_text(draft_of(sel))
+
+    if sent.len() > 0 {
+        ui.sent_card.set_visible(true)
+        let last = sent[sent.len() - 1]
+        ui.sent_count.set_text("" + sent.len() + " queued")
+        ui.sent_to.set_text("To " + last.to)
+        ui.sent_prev.set_text(last.preview)
+    } else {
+        ui.sent_card.set_visible(false)
+    }
+}
+
+// ---------- shared button styles ----------
+
+let Flat = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}
+    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}
+    draw_text +: {color: accent color_hover: accent color_down: accent text_style +: {font_size: 15}}}
+
+let Quiet = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}
+    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}
+    draw_text +: {color: ink2 color_hover: ink2 color_down: ink2 text_style +: {font_size: 15}}}
+
+let Seg = ButtonFlat{height: 44 width: Fill align: Align{x: 0.5 y: 0.5}
+    draw_bg +: {color: #x00000000 color_hover: #x0000000f color_down: #x0000001a border_size: 0.0}
+    draw_text +: {color: ink color_hover: ink color_down: ink text_style +: {font_size: 14}}}
+
+let Chip = ButtonFlat{height: 44 padding: Inset{left: 10 right: 10} align: Align{x: 0.5 y: 0.5}
+    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}
+    draw_text +: {color: ink2 color_hover: ink2 color_down: ink2 text_style +: {font_size: 13}}}
+
+// ---------- root ----------
+
+SolidView{width: Fill height: Fill flow: Down draw_bg.color: ground
+
+    // chrome: title, DEMO badge, counts, and the single status line
+    View{width: Fill height: Fit flow: Down spacing: 2
+        padding: Inset{left: 16 right: 16 top: 12 bottom: 8}
+        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8
+            Label{text: "Mail" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 19}}
+            View{width: Fill height: 1}
+            RoundedView{width: Fit height: Fit
+                padding: Inset{left: 8 right: 8 top: 3 bottom: 3}
+                draw_bg.color: demo_bg draw_bg.border_radius: 6.0
+                Label{text: "DEMO" draw_text.color: demo_ink draw_text.text_style: theme.font_bold{font_size: 11}}
+            }
+        }
+        count := Label{width: Fill text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+        status := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 12}
+    }
+
+    View{width: Fill height: Fill flow: Down
+
+        // ===== L0 =====
+        glance := View{width: Fill height: Fill flow: Down spacing: 8
+            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}
+            g_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3
+                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                draw_bg.color: surface draw_bg.border_radius: 14.0
+                View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8
+                    g_from := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}
+                    g_time := Label{text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+                }
+                g_subj := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style.font_size: 13}
+                g_prev := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 13}
+                g_meta := Label{text: "" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 12}}
+            }
+            g_empty := RoundedView{visible: false width: Fill height: Fit flow: Down spacing: 3
+                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                draw_bg.color: surface draw_bg.border_radius: 14.0
+                Label{width: Fill text: "No messages" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}
+                Label{width: Fill text: "Everything is archived." draw_text.color: ink2 draw_text.text_style.font_size: 13}
+            }
+            View{width: Fill height: 1}
+            View{width: Fill height: Fit flow: Right spacing: 8
+                Flat{text: "Open card" on_click: || do_open(lead_id())}
+                Flat{text: "Inbox" on_click: || set_depth(2)}
+            }
+        }
+
+        // ===== L1 =====
+        expanded := View{visible: false width: Fill height: Fill flow: Down spacing: 8
+            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}
+            x_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3
+                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                draw_bg.color: surface draw_bg.border_radius: 14.0
+                View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8
+                    x_from := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}
+                    x_time := Label{text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+                }
+                x_subj := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 14}}
+                x_meta := Label{text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+                SolidView{width: Fill height: 1 draw_bg.color: line}
+                x_prev := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 13}
+            }
+            x_gone := RoundedView{visible: false width: Fill height: Fit flow: Down spacing: 3
+                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                draw_bg.color: surface draw_bg.border_radius: 14.0
+                Label{width: Fill text: "Message archived" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}
+                Label{width: Fill text: "Undo below, or open another message." draw_text.color: ink2 draw_text.text_style.font_size: 13}
+            }
+            View{width: Fill height: Fit flow: Right spacing: 8
+                x_mark := Flat{text: "Mark as read" on_click: || do_read(sel)}
+                Quiet{text: "Archive" on_click: || do_archive(sel)}
+            }
+            View{width: Fill height: Fit flow: Right spacing: 8
+                Flat{text: "Reply" on_click: || do_reply()}
+                Flat{text: "Inbox" on_click: || set_depth(2)}
+            }
+            View{width: Fill height: 1}
+            View{width: Fill height: Fit flow: Right spacing: 8
+                Quiet{text: "‹ Glance" on_click: || set_depth(0)}
+            }
+        }
+
+        // ===== L2 =====
+        full := View{visible: false width: Fill height: Fill
+            l2 := ScrollYView{width: Fill height: Fill flow: Down spacing: 8
+                padding: Inset{left: 16 right: 16 top: 4 bottom: 8}
+
+                l2_list := View{width: Fill height: Fit flow: Down spacing: 6
+                    r1 := View{width: Fill height: Fit
+                        RoundedView{width: Fill height: Fit flow: Down spacing: 2
+                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}
+                            draw_bg.color: surface draw_bg.border_radius: 10.0
+                            Label{width: Fill text: "Ana Ruiz" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 13}}
+                            Label{width: Fill text: "Contract renewal" draw_text.color: muted draw_text.text_style.font_size: 11}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                Label{width: Fill text: "09:12" draw_text.color: muted draw_text.text_style.font_size: 11}
+                                r1_u := Label{text: "Unread" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 12}}
+                            }
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                            Flat{text: "Open" on_click: || do_open("m1")}
+                            }
+                        }
+                    }
+                    r2 := View{width: Fill height: Fit
+                        RoundedView{width: Fill height: Fit flow: Down spacing: 2
+                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}
+                            draw_bg.color: surface draw_bg.border_radius: 10.0
+                            Label{width: Fill text: "City Library" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 13}}
+                            Label{width: Fill text: "Holds ready until Saturday" draw_text.color: muted draw_text.text_style.font_size: 11}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                Label{width: Fill text: "08:47" draw_text.color: muted draw_text.text_style.font_size: 11}
+                                r2_u := Label{text: "Unread" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 12}}
+                            }
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                            Flat{text: "Open" on_click: || do_open("m2")}
+                            }
+                        }
+                    }
+                    r3 := View{width: Fill height: Fit
+                        RoundedView{width: Fill height: Fit flow: Down spacing: 2
+                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}
+                            draw_bg.color: surface draw_bg.border_radius: 10.0
+                            Label{width: Fill text: "Priya N." draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 13}}
+                            Label{width: Fill text: "Design review moved to Thursday" draw_text.color: muted draw_text.text_style.font_size: 11}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                Label{width: Fill text: "Yesterday" draw_text.color: muted draw_text.text_style.font_size: 11}
+                                r3_u := Label{text: "Read" draw_text.color: muted draw_text.text_style.font_size: 12}
+                            }
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                            Flat{text: "Open" on_click: || do_open("m3")}
+                            }
+                        }
+                    }
+                    r4 := View{width: Fill height: Fit
+                        RoundedView{width: Fill height: Fit flow: Down spacing: 2
+                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}
+                            draw_bg.color: surface draw_bg.border_radius: 10.0
+                            Label{width: Fill text: "Northwind Studio" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 13}}
+                            Label{width: Fill text: "Invoice 2291 - retainer" draw_text.color: muted draw_text.text_style.font_size: 11}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                Label{width: Fill text: "Mon" draw_text.color: muted draw_text.text_style.font_size: 11}
+                                r4_u := Label{text: "Read" draw_text.color: muted draw_text.text_style.font_size: 12}
+                            }
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                            Flat{text: "Open" on_click: || do_open("m4")}
+                            }
+                        }
+                    }
+                }
+
+                l2_reader := View{visible: false width: Fill height: Fit flow: Down spacing: 6
+                    RoundedView{width: Fill height: Fit flow: Down spacing: 4
+                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                        draw_bg.color: surface draw_bg.border_radius: 14.0
+                        rd_from := Label{text: "" draw_text.color: demo_ink draw_text.text_style: theme.font_bold{font_size: 11}}
+                        rd_subj := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}
+                        SolidView{width: Fill height: 1 draw_bg.color: line}
+                        rd_body := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 13}
+                    }
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        Flat{text: "Reply" on_click: || do_reply()}
+                        Quiet{text: "‹ Inbox" on_click: || do_back()}
+                    }
+                }
+
+                l2_reply := View{visible: false width: Fill height: Fit flow: Down spacing: 6
+                    RoundedView{width: Fill height: Fit flow: Down spacing: 4
+                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                        draw_bg.color: surface draw_bg.border_radius: 14.0
+                        cmp_to := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 13}}
+                        cmp_subj := Label{width: Fill text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+                        field := TextInput{width: Fill height: 44
+                            on_change: |t| typed(t)}
+                        Flat{text: "Queue reply" on_click: || do_send()}
+                    }
+                    sent_card := RoundedView{visible: false width: Fill height: Fit flow: Down spacing: 2
+                        padding: Inset{left: 14 right: 14 top: 8 bottom: 8}
+                        draw_bg.color: surface draw_bg.border_radius: 12.0
+                        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8
+                            Label{text: "QUEUED · DEMO" draw_text.color: demo_ink draw_text.text_style: theme.font_bold{font_size: 11}}
+                            sent_count := Label{width: Fill text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+                        }
+                        sent_to := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style.font_size: 13}
+                        sent_prev := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 12}
+                    }
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        Quiet{text: "‹ Message" on_click: || do_back()}
+                    }
+                }
+            }
+        }
+    }
+
+    // ---------- compact footer ----------
+    View{width: Fill height: Fit flow: Down spacing: 4
+        padding: Inset{left: 16 right: 16 top: 4 bottom: 6}
+        SolidView{width: Fill height: 1 draw_bg.color: line}
+        RoundedView{width: Fill height: Fit flow: Right spacing: 4
+            padding: Inset{left: 4 right: 4 top: 4 bottom: 4}
+            draw_bg.color: #xe5e5ea draw_bg.border_radius: 12.0
+            b0 := Seg{text: "L0" on_click: || set_depth(0)}
+            b1 := Seg{text: "L1" on_click: || set_depth(1)}
+            b2 := Seg{text: "L2" on_click: || set_depth(2)}
+        }
+        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8
+            depth_now := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 12}}
+            Chip{text: "Undo" on_click: || do_undo()}
+        }
+    }
+}
+
+fn boot(){
+    say("")
+    sync()
+}
+
+start_timeout(0.05, || boot())

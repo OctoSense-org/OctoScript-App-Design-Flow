@@ -1,0 +1,5227 @@
+[
+  {
+    "request_id": "d64599b5-1717-4935-b1af-824dc92a45ea",
+    "request": {
+      "name": "studio.bundle_check",
+      "args": {
+        "bundle_path": "card-templates/calendar/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "d64599b5-1717-4935-b1af-824dc92a45ea",
+      "data": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.calendar",
+        "capabilities": [],
+        "digest": "ed21d351e33b28dfaf07b835843a23847ea5c88d4956cc250e359be66e8ed276",
+        "name": "Calendar Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.527
+  },
+  {
+    "request_id": "480236a1-f259-44ff-a35b-5f084d1844ea",
+    "request": {
+      "name": "studio.open",
+      "args": {
+        "bundle_path": "card-templates/calendar/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "480236a1-f259-44ff-a35b-5f084d1844ea",
+      "data": {
+        "bundle": {
+          "admission": "local_developer",
+          "app_id": "dev.studio.cards.calendar",
+          "capabilities": [],
+          "digest": "ed21d351e33b28dfaf07b835843a23847ea5c88d4956cc250e359be66e8ed276",
+          "name": "Calendar Cards",
+          "publisher_signed": false,
+          "source_modified": false,
+          "version": "0.1.0"
+        },
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "ready": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 1.04
+  },
+  {
+    "request_id": "7e6355b7-7d77-439b-afec-33b039298637",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "7e6355b7-7d77-439b-afec-33b039298637",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-b36c35c1-fe2b-43d7-8593-45dd073160d6.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 0 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "glance@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_day@0",
+              "text": "Thu 8 Oct",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_time@0",
+              "text": "10:00 - 11:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_title@0",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_place@0",
+              "text": "Studio B \u00b7 Work",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_rsvp@0",
+              "text": "No answer",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "open_wrap@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "Open event",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "\u25cf L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L0 Glance",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-2b7c39db-71a8-4e6b-994b-bd0cbd88f534.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.351
+  },
+  {
+    "request_id": "c2dfca01-8b31-400d-8030-3e2a5db1cda5",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "b1@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "c2dfca01-8b31-400d-8030-3e2a5db1cda5",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.137
+  },
+  {
+    "request_id": "7c2c6a62-98db-47e7-bb28-bfca99cae8dd",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "7c2c6a62-98db-47e7-bb28-bfca99cae8dd",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-3419f00e-16c1-4c92-914f-e6f7aa53d169.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 0 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_day@0",
+              "text": "Thu 8 Oct \u00b7 10:00 - 11:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_title@0",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_place@0",
+              "text": "Studio B \u00b7 Work",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_note@0",
+              "text": "Bring the revised invoice mockups. Marcus joins from the office.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_rsvp@0",
+              "text": "No answer",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_next@0",
+              "text": "RSVP: Going",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "text": "Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L1 Event",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-c0814e75-0fcd-4419-ace2-d484043cdaf9.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.376
+  },
+  {
+    "request_id": "f9930091-e4d1-4e7c-89f9-8640e04ce7d2",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "x_next@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "f9930091-e4d1-4e7c-89f9-8640e04ce7d2",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.163
+  },
+  {
+    "request_id": "a5f9891b-1fad-4bb9-bb13-1aaf167eedae",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "a5f9891b-1fad-4bb9-bb13-1aaf167eedae",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-4e510d18-bd9d-4fe5-842b-b8e3997ac2cf.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 1 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_day@0",
+              "text": "Thu 8 Oct \u00b7 10:00 - 11:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_title@0",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_place@0",
+              "text": "Studio B \u00b7 Work",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_note@0",
+              "text": "Bring the revised invoice mockups. Marcus joins from the office.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_rsvp@0",
+              "text": "Going",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_next@0",
+              "text": "RSVP: Maybe",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "text": "Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Design review \u00b7 Going",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-7f0f3b7b-67b1-45ef-a4a6-eaff0d80b80c.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.391
+  },
+  {
+    "request_id": "61c43f04-5553-4f8c-8479-25c4457016da",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "x_next@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "61c43f04-5553-4f8c-8479-25c4457016da",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.118
+  },
+  {
+    "request_id": "8cbdb2e5-595b-466c-801d-206af1a04d94",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "8cbdb2e5-595b-466c-801d-206af1a04d94",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-21252dfb-f526-43e7-b736-e92b2e780622.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 1 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_day@0",
+              "text": "Thu 8 Oct \u00b7 10:00 - 11:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_title@0",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_place@0",
+              "text": "Studio B \u00b7 Work",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_note@0",
+              "text": "Bring the revised invoice mockups. Marcus joins from the office.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_rsvp@0",
+              "text": "Maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_next@0",
+              "text": "RSVP: No",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "text": "Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Design review \u00b7 Maybe",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-86ed9592-aa03-4586-ad81-26e12a323cac.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.348
+  },
+  {
+    "request_id": "f084adb9-4e58-4346-9fe1-2e9028689101",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "b2@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "f084adb9-4e58-4346-9fe1-2e9028689101",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.142
+  },
+  {
+    "request_id": "3614402a-0ef4-4dfa-97ba-beddb2b3f6fb",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "3614402a-0ef4-4dfa-97ba-beddb2b3f6fb",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-b7281100-face-42a0-a6ee-6f7861d92e41.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 1 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "text": "Thu 8 Oct \u00b7 10:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e1_u@0",
+              "text": "Maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "Fri 9 Oct \u00b7 16:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Dentist check-up",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e2_u@0",
+              "text": "No answer",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@22",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@23",
+              "text": "Sat 10 Oct \u00b7 19:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@9",
+              "text": "Dinner with Priya",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e3_u@0",
+              "text": "No answer",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@10",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Agenda",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-6120b028-76d7-49eb-ae8f-ddc33ddceb5a.json",
+        "total_widgets": 40,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.35
+  },
+  {
+    "request_id": "daabac4e-19f6-4958-bd72-7c69d2102e1e",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "1@10",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "daabac4e-19f6-4958-bd72-7c69d2102e1e",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.342
+  },
+  {
+    "request_id": "fb73eb57-916e-4495-82e1-a64b1d607dff",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "fb73eb57-916e-4495-82e1-a64b1d607dff",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-f7e96c49-db83-4a36-8498-1cbcce0fae46.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 1 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_day@0",
+              "text": "Sat 10 Oct \u00b7 19:00 - 21:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_title@0",
+              "text": "Dinner with Priya",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_place@0",
+              "text": "Cafe Lumen, 4 Riverside \u00b7 Personal",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_note@0",
+              "text": "Terrace table booked for four. Priya is bringing Lena.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_rsvp@0",
+              "text": "No answer",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_next@0",
+              "text": "RSVP: Going",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "\u2039 Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Agenda",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-3839d5ba-620b-4a65-97f8-2afd0d15ddb8.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.359
+  },
+  {
+    "request_id": "aa719166-3204-4e38-9594-6dbc210c9d35",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "d_next@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "aa719166-3204-4e38-9594-6dbc210c9d35",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.138
+  },
+  {
+    "request_id": "5f779081-a809-4bc2-a184-eec18af427aa",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "5f779081-a809-4bc2-a184-eec18af427aa",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-083a4f4d-e1a7-415d-b545-f751d9f11321.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 2 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_day@0",
+              "text": "Sat 10 Oct \u00b7 19:00 - 21:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_title@0",
+              "text": "Dinner with Priya",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_place@0",
+              "text": "Cafe Lumen, 4 Riverside \u00b7 Personal",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_note@0",
+              "text": "Terrace table booked for four. Priya is bringing Lena.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_rsvp@0",
+              "text": "Going",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_next@0",
+              "text": "RSVP: Maybe",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "\u2039 Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Dinner with Priya \u00b7 Going",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-072ef694-d829-49af-b9ac-855dd92b15a8.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.36
+  },
+  {
+    "request_id": "5abe4d56-f3c6-41ad-9a2d-1053ead38a3e",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "-@26",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "5abe4d56-f3c6-41ad-9a2d-1053ead38a3e",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.153
+  },
+  {
+    "request_id": "7b739712-fc0b-49a2-be35-ab56f117d294",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "7b739712-fc0b-49a2-be35-ab56f117d294",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-ab22715d-ad9e-4609-aad0-1ccb9a47d116.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 2 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "text": "Thu 8 Oct \u00b7 10:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e1_u@0",
+              "text": "Maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "Fri 9 Oct \u00b7 16:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Dentist check-up",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e2_u@0",
+              "text": "No answer",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@22",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@23",
+              "text": "Sat 10 Oct \u00b7 19:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@9",
+              "text": "Dinner with Priya",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e3_u@0",
+              "text": "Going",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@10",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Agenda",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-2c496f0d-206e-475a-927b-a5515237c1db.json",
+        "total_widgets": 40,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.419
+  },
+  {
+    "request_id": "5b6008b4-1d60-40b2-8f4f-4aca9132a2e4",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "1@6",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "5b6008b4-1d60-40b2-8f4f-4aca9132a2e4",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.155
+  },
+  {
+    "request_id": "c29aeca4-bf7c-4b1c-83ef-83979db8adee",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "c29aeca4-bf7c-4b1c-83ef-83979db8adee",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-2989cfe6-e28d-4d70-8927-32ffa07124ff.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 2 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_day@0",
+              "text": "Thu 8 Oct \u00b7 10:00 - 11:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_title@0",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_place@0",
+              "text": "Studio B \u00b7 Work",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_note@0",
+              "text": "Bring the revised invoice mockups. Marcus joins from the office.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_rsvp@0",
+              "text": "Maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_next@0",
+              "text": "RSVP: No",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "\u2039 Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Agenda",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-17a6c7db-bdbc-448e-9bca-6ddb9c6fb08f.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.379
+  },
+  {
+    "request_id": "c7b9f664-2c2e-4647-b985-1add34c2c677",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "d_next@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "c7b9f664-2c2e-4647-b985-1add34c2c677",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.143
+  },
+  {
+    "request_id": "b27ced48-2028-4e1d-b89a-53f31cb6438b",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "b27ced48-2028-4e1d-b89a-53f31cb6438b",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-804f1e57-a88b-4cba-8df1-760857e4b5d8.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 2 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_day@0",
+              "text": "Thu 8 Oct \u00b7 10:00 - 11:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_title@0",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_place@0",
+              "text": "Studio B \u00b7 Work",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_note@0",
+              "text": "Bring the revised invoice mockups. Marcus joins from the office.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_rsvp@0",
+              "text": "No",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_next@0",
+              "text": "RSVP: clear",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "\u2039 Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Design review \u00b7 No",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-92dd4f9b-718e-4a6b-828e-fa962971e3c1.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.372
+  },
+  {
+    "request_id": "9011a828-9a62-4add-9410-bd78e37afc64",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "-@26",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "9011a828-9a62-4add-9410-bd78e37afc64",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.129
+  },
+  {
+    "request_id": "3e3524b8-d1c4-498c-b834-015ccaf3db5c",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "3e3524b8-d1c4-498c-b834-015ccaf3db5c",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-8f4c85b6-82b7-4e54-af41-1d390d449a58.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 2 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "text": "Thu 8 Oct \u00b7 10:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e1_u@0",
+              "text": "No",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "Fri 9 Oct \u00b7 16:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Dentist check-up",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e2_u@0",
+              "text": "No answer",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@22",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@23",
+              "text": "Sat 10 Oct \u00b7 19:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@9",
+              "text": "Dinner with Priya",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e3_u@0",
+              "text": "Going",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@10",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Agenda",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-185a00be-70bb-4445-a0f0-22eb2f0c4121.json",
+        "total_widgets": 40,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.379
+  },
+  {
+    "request_id": "de100805-a2ec-4b9e-ab88-3c3d48f427d9",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "1@8",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "de100805-a2ec-4b9e-ab88-3c3d48f427d9",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.149
+  },
+  {
+    "request_id": "913c62f9-575d-4569-99b8-b3db2a165b29",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "913c62f9-575d-4569-99b8-b3db2a165b29",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-8dd67d98-6451-49d2-bd86-4c8bf6641425.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 2 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_day@0",
+              "text": "Fri 9 Oct \u00b7 16:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_title@0",
+              "text": "Dentist check-up",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_place@0",
+              "text": "Riverside Clinic \u00b7 Health",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_note@0",
+              "text": "Six-month check-up. Arrive ten minutes early to fill the form in.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_rsvp@0",
+              "text": "No answer",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_next@0",
+              "text": "RSVP: Going",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "\u2039 Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Agenda",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-7fc81b4d-2054-47a1-937a-9feee2911a54.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.37
+  },
+  {
+    "request_id": "8a8ae05d-15ee-4550-b082-e296de811fed",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "d_next@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "8a8ae05d-15ee-4550-b082-e296de811fed",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.149
+  },
+  {
+    "request_id": "65a57592-5ba1-45a0-bb28-b6b482fb8a01",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "65a57592-5ba1-45a0-bb28-b6b482fb8a01",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-4a442419-2230-406b-9693-e2ff21646976.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 3 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_day@0",
+              "text": "Fri 9 Oct \u00b7 16:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_title@0",
+              "text": "Dentist check-up",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_place@0",
+              "text": "Riverside Clinic \u00b7 Health",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_note@0",
+              "text": "Six-month check-up. Arrive ten minutes early to fill the form in.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_rsvp@0",
+              "text": "Going",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_next@0",
+              "text": "RSVP: Maybe",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "\u2039 Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Dentist check-up \u00b7 Going",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-e88be44c-54e9-4361-b7c3-41c90ffb09c1.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.391
+  },
+  {
+    "request_id": "119245e2-f574-4232-83c4-fa7dd5b9946d",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "d_next@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "119245e2-f574-4232-83c4-fa7dd5b9946d",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.137
+  },
+  {
+    "request_id": "1c9130b9-8efc-4e54-b18e-55e2bcf7e6d0",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "1c9130b9-8efc-4e54-b18e-55e2bcf7e6d0",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-eb7927cf-6ad1-439d-9330-bf42c25eea87.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 3 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_day@0",
+              "text": "Fri 9 Oct \u00b7 16:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_title@0",
+              "text": "Dentist check-up",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_place@0",
+              "text": "Riverside Clinic \u00b7 Health",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_note@0",
+              "text": "Six-month check-up. Arrive ten minutes early to fill the form in.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_rsvp@0",
+              "text": "Maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_next@0",
+              "text": "RSVP: No",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "\u2039 Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Dentist check-up \u00b7 Maybe",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-3f6cd9cc-9886-42e6-8670-632e0e9e701d.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.398
+  },
+  {
+    "request_id": "671836af-3fd3-4556-aea5-ba29dab3e871",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "d_next@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "671836af-3fd3-4556-aea5-ba29dab3e871",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.159
+  },
+  {
+    "request_id": "8d93c2fa-5b1f-46bf-a66b-d89d435982ea",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "8d93c2fa-5b1f-46bf-a66b-d89d435982ea",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-4a496b0b-aea7-4ba4-81bf-e037b6ab5f6d.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 3 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_day@0",
+              "text": "Fri 9 Oct \u00b7 16:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_title@0",
+              "text": "Dentist check-up",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_place@0",
+              "text": "Riverside Clinic \u00b7 Health",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_note@0",
+              "text": "Six-month check-up. Arrive ten minutes early to fill the form in.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_rsvp@0",
+              "text": "No",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_next@0",
+              "text": "RSVP: clear",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "\u2039 Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Dentist check-up \u00b7 No",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-13b434a3-84a0-4ae8-963d-c4a2c410d2b4.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.384
+  },
+  {
+    "request_id": "d14763e1-0bf6-4104-8d20-c604b8b580a7",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "-@26",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "d14763e1-0bf6-4104-8d20-c604b8b580a7",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.143
+  },
+  {
+    "request_id": "31a49b18-c59e-4618-ba8d-5350fa34a37c",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "31a49b18-c59e-4618-ba8d-5350fa34a37c",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-4561d7cd-fcc7-401c-a0a5-4fa997386bd7.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 3 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "text": "Thu 8 Oct \u00b7 10:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Design review",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e1_u@0",
+              "text": "No",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "Fri 9 Oct \u00b7 16:30",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Dentist check-up",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e2_u@0",
+              "text": "No",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@22",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@23",
+              "text": "Sat 10 Oct \u00b7 19:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@9",
+              "text": "Dinner with Priya",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "e3_u@0",
+              "text": "Going",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@10",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Agenda",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-8aa1a77e-b56b-424b-a98d-42be2d97224b.json",
+        "total_widgets": 40,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.391
+  },
+  {
+    "request_id": "7917591f-ef19-46e2-9f0d-5d0a17d7582f",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "1@10",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "7917591f-ef19-46e2-9f0d-5d0a17d7582f",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.152
+  },
+  {
+    "request_id": "d6fb81e4-75f1-4446-846e-94e4a14fa249",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "d6fb81e4-75f1-4446-846e-94e4a14fa249",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-dfbd8baa-c7df-4eea-a206-dab9bb6430c9.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 3 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_day@0",
+              "text": "Sat 10 Oct \u00b7 19:00 - 21:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_title@0",
+              "text": "Dinner with Priya",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_place@0",
+              "text": "Cafe Lumen, 4 Riverside \u00b7 Personal",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_note@0",
+              "text": "Terrace table booked for four. Priya is bringing Lena.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_rsvp@0",
+              "text": "Going",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_next@0",
+              "text": "RSVP: Maybe",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "\u2039 Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Agenda",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-f896c143-8c43-43e0-9e6c-1c9589c78da8.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.391
+  },
+  {
+    "request_id": "3f430ae1-b5e1-4645-924a-5114b24203d1",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "d_next@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "3f430ae1-b5e1-4645-924a-5114b24203d1",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.152
+  },
+  {
+    "request_id": "616d37ca-5458-45b9-ac07-fcb7f474af2b",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "616d37ca-5458-45b9-ac07-fcb7f474af2b",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-996eef8f-8672-4c0c-bbba-1a0d70efcb5e.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 3 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_day@0",
+              "text": "Sat 10 Oct \u00b7 19:00 - 21:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_title@0",
+              "text": "Dinner with Priya",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_place@0",
+              "text": "Cafe Lumen, 4 Riverside \u00b7 Personal",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_note@0",
+              "text": "Terrace table booked for four. Priya is bringing Lena.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_rsvp@0",
+              "text": "Maybe",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_next@0",
+              "text": "RSVP: No",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "\u2039 Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Dinner with Priya \u00b7 Maybe",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-b6826351-66af-4739-8a99-ffefd896400a.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.373
+  },
+  {
+    "request_id": "dc4b2921-edda-4ce3-964f-b754f4515353",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "d_next@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "dc4b2921-edda-4ce3-964f-b754f4515353",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.15
+  },
+  {
+    "request_id": "7df2b19e-0bae-42f6-b8ac-995803a8fcce",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "7df2b19e-0bae-42f6-b8ac-995803a8fcce",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-4e1f033e-48e8-42c9-a5f3-055cb5fcb1f3.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 3 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_day@0",
+              "text": "Sat 10 Oct \u00b7 19:00 - 21:00",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_title@0",
+              "text": "Dinner with Priya",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_place@0",
+              "text": "Cafe Lumen, 4 Riverside \u00b7 Personal",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_note@0",
+              "text": "Terrace table booked for four. Priya is bringing Lena.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_rsvp@0",
+              "text": "No",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_next@0",
+              "text": "RSVP: clear",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "\u2039 Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Dinner with Priya \u00b7 No",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-d1102502-1d51-4131-a03c-4a7b5231e610.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.4
+  },
+  {
+    "request_id": "54844833-a5d6-4cc8-bb8d-7e33cef1a022",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "widget_id": "b0@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "54844833-a5d6-4cc8-bb8d-7e33cef1a022",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.147
+  },
+  {
+    "request_id": "af09c6b1-eca7-4dc0-99b2-053ca1d5d746",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "af09c6b1-eca7-4dc0-99b2-053ca1d5d746",
+      "data": {
+        "height": 2132,
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-be92ee90-54e4-4179-b084-f2438cccef07.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Calendar",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 events \u00b7 3 answered",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "glance@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_empty@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Nothing scheduled",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Every demo event is declined.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Agenda",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "\u25cf L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L0 Glance",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-096d4822-9e24-4cee-b73d-426a9fb4bb9f.json",
+        "total_widgets": 23,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.396
+  },
+  {
+    "request_id": "e3f15956-40a2-4705-ab2d-8a6b2dd525a0",
+    "request": {
+      "name": "studio.close",
+      "args": {
+        "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5"
+      }
+    },
+    "reply": {
+      "call_id": "e3f15956-40a2-4705-ab2d-8a6b2dd525a0",
+      "data": {
+        "closed": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.137
+  }
+]

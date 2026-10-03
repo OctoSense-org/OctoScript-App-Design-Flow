@@ -1,0 +1,62 @@
+{
+  "package": "dev.makepad.octosense.studio.minimax",
+  "source_before": {
+    "files": 25,
+    "exact": true
+  },
+  "suites": {
+    "mail": {
+      "exit": 1,
+      "steps": 15,
+      "behavior_pass": 14,
+      "raw_pass": 13,
+      "errors": [
+        {
+          "label": "last-item",
+          "error": "list index out of range",
+          "assertions": null
+        }
+      ]
+    },
+    "calendar": {
+      "exit": 0,
+      "steps": 20,
+      "behavior_pass": 20,
+      "raw_pass": 20,
+      "errors": []
+    },
+    "news": {
+      "exit": 0,
+      "steps": 20,
+      "behavior_pass": 20,
+      "raw_pass": 20,
+      "errors": []
+    },
+    "finance": {
+      "exit": 0,
+      "steps": 20,
+      "behavior_pass": 20,
+      "raw_pass": 20,
+      "errors": []
+    },
+    "photo": {
+      "exit": 0,
+      "steps": 20,
+      "behavior_pass": 20,
+      "raw_pass": 20,
+      "errors": []
+    },
+    "youtube": {
+      "exit": 0,
+      "steps": 20,
+      "behavior_pass": 20,
+      "raw_pass": 20,
+      "errors": []
+    }
+  },
+  "helper_sha256": "37faf491caedfa3fbdf95f707b4d02c3750de86db481090fd2166da144339298",
+  "source_after": {
+    "files": 25,
+    "exact": true
+  }
+}

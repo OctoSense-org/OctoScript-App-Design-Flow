@@ -1,0 +1,349 @@
+{
+  "family": "finance",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "Demo Corp"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Demo Corp",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-app",
+      "input": {
+        "label": "full-app",
+        "action": "tap",
+        "target": "d_ap"
+      },
+      "target_rect": [
+        180,
+        107,
+        89,
+        44
+      ],
+      "target_selector": "d_ap@0",
+      "png": "01-full-app.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "2",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "last-row-scroll",
+      "input": {
+        "label": "last-row-scroll",
+        "action": "scroll",
+        "target": "stage",
+        "delta_y": 300,
+        "contains": [
+          "GridWorks \u00b7 GRDW"
+        ]
+      },
+      "target_rect": [
+        12,
+        162,
+        360,
+        613
+      ],
+      "target_selector": "stage@0",
+      "png": "02-last-row-scroll.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "GridWorks \u00b7 GRDW",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "last-detail-top",
+      "input": {
+        "label": "last-detail-top",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": -1,
+        "contains": [
+          "GridWorks \u00b7 GRDW",
+          "54.30 USD",
+          "53.20 \u2013 54.80"
+        ],
+        "excludes": [
+          "Demo Corp"
+        ]
+      },
+      "target_rect": [
+        111,
+        701,
+        108,
+        44
+      ],
+      "target_selector": "1@9",
+      "png": "03-last-detail-top.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "GridWorks \u00b7 GRDW",
+          "pass": true
+        },
+        {
+          "contains": "54.30 USD",
+          "pass": true
+        },
+        {
+          "contains": "53.20 \u2013 54.80",
+          "pass": true
+        },
+        {
+          "excludes": "Demo Corp",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-last",
+      "input": {
+        "label": "save-last",
+        "action": "tap",
+        "target": "Watch",
+        "occurrence": -1,
+        "contains": [
+          "Watching \u2713"
+        ]
+      },
+      "target_rect": [
+        26,
+        564,
+        69,
+        44
+      ],
+      "target_selector": "-@8",
+      "png": "04-save-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Watching \u2713",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back-to-list",
+      "input": {
+        "label": "back-to-list",
+        "action": "tap",
+        "target": "\u2039 Back"
+      },
+      "target_rect": [
+        143,
+        564,
+        64,
+        44
+      ],
+      "target_selector": "1@6",
+      "png": "05-back-to-list.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "2",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "saved-only-last",
+      "input": {
+        "label": "saved-only-last",
+        "action": "tap",
+        "target": "Watching",
+        "occurrence": 0,
+        "contains": [
+          "GridWorks \u00b7 GRDW"
+        ],
+        "excludes": [
+          "Demo Corp"
+        ]
+      },
+      "target_rect": [
+        150,
+        179,
+        126,
+        44
+      ],
+      "target_selector": "1@2",
+      "png": "06-saved-only-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "GridWorks \u00b7 GRDW",
+          "pass": true
+        },
+        {
+          "excludes": "Demo Corp",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-last",
+      "input": {
+        "label": "remove-last",
+        "action": "tap",
+        "target": "Watching \u2713",
+        "contains": [
+          "No instruments watched"
+        ]
+      },
+      "target_rect": [
+        38,
+        380,
+        105,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "07-remove-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "No instruments watched",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "first-still-independent",
+      "input": {
+        "label": "first-still-independent",
+        "action": "tap",
+        "target": "d_gl",
+        "contains": [
+          "Demo Corp",
+          "Watch"
+        ],
+        "no_enabled_button_text": [
+          "Watching \u2713"
+        ]
+      },
+      "target_rect": [
+        12,
+        107,
+        69,
+        44
+      ],
+      "target_selector": "d_gl@0",
+      "png": "08-first-still-independent.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Demo Corp",
+          "pass": true
+        },
+        {
+          "contains": "Watch",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Watching \u2713",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.finance",
+    "capabilities": [],
+    "digest": "f9e443bdbf3708cf4f11f1a7aaea20c47bd946c994b511c6e9adef0123d7a9f5",
+    "name": "Finance Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

@@ -1,0 +1,65 @@
+{
+  "kernel_rev": "056173e85b150e387805fc307fe231064ac1ed35",
+  "source_sha256": {
+    "crates/octos-agent/src/tools/apply_patch.rs": "3ed43a68a48c411c527e6d82383432cc0e4bfaa68a38ac7e13b60f5e03e2e809",
+    "crates/octos-agent/src/tools/diff_edit.rs": "d6fd1c44a6ce8f0cc19190f868933539852afd84e05197128493e753c3afc54f"
+  },
+  "scope": "Source-only review, no file mutations or test execution",
+  "envelope_matching": {
+    "bare_hunk": "first match at/after current forward cursor, not uniqueness",
+    "comparison": "pattern=context+remove; replacement=context+add; per-line trim_end comparison",
+    "cursor": "after replacement in mutated in-memory line vector",
+    "anchor": "first trim_end exact at/after cursor; fallback first trim match; then search after anchor",
+    "eof": "pattern must match exactly at file end, at/after cursor",
+    "pure_insertion": "requires anchor, EOF marker, or empty file",
+    "numeric_header": "range numbers ignored; trailing anchor retained",
+    "newline": "preserves original trailing LF presence; lines split and rejoined with LF"
+  },
+  "atomicity": "Parsing/planning/context failures write nothing for entire envelope. Actual postvalidation filesystem failures may partially apply and report applied sections/partial paths.",
+  "citations": {
+    "matching": "apply_patch.rs:1101-1213; diff_edit.rs:229-251,393-403",
+    "validation": "apply_patch.rs:212-232,358-482",
+    "matching_test": "apply_patch.rs:1447-1457",
+    "atomicity_tests": "apply_patch.rs:1840-1869,1931-1948",
+    "partial_io": "apply_patch.rs:1951 onward"
+  },
+  "android_binary_provenance": {
+    "clarification": "4bcfa4f5 is prefix of prebuilt binary SHA256, not a Git source revision.",
+    "local_kernel_sha256": "4bcfa4f5c60f7e8cad526b49481d40bf0556ce4853aad9c72f853ad866ded1e6",
+    "local_kernel_bytes": 148895392,
+    "build_script_output_path": ".sources/octos-kernel/target/aarch64-linux-android/release/build/octos-cli-54acd37d21843296/output",
+    "build_script_output": "cargo:rustc-env=OCTOS_GIT_HASH=056173e\ncargo:rustc-env=OCTOS_BUILD_DATE=2026-10-02\ncargo:rerun-if-changed=../../.git/HEAD\ncargo:rerun-if-changed=../../.git/refs/heads/\n",
+    "binary_contains_build_revision_string": true,
+    "current_source_head": "056173e85b150e387805fc307fe231064ac1ed35",
+    "patch_files_clean_against_head": true,
+    "packages": [
+      {
+        "package": "dev.makepad.octosense.studio",
+        "apk_sha256": "d1dbebdf602f01ee427d68109c500e607b7a5c50fc3f387d5a7c46a1f7b4f882",
+        "embedded_kernel_sha256": "4bcfa4f5c60f7e8cad526b49481d40bf0556ce4853aad9c72f853ad866ded1e6",
+        "embedded_matches_local_kernel": true,
+        "receipt_kernel": {
+          "source": "prebuilt",
+          "sha256": "4bcfa4f5c60f7e8cad526b49481d40bf0556ce4853aad9c72f853ad866ded1e6"
+        }
+      },
+      {
+        "package": "dev.makepad.octosense.studio.minimax",
+        "apk_sha256": "219a81645c60d315f1d7638e1efa15ab5ff4aa88f06fe0495edf44dbf4c2f34b",
+        "embedded_kernel_sha256": "4bcfa4f5c60f7e8cad526b49481d40bf0556ce4853aad9c72f853ad866ded1e6",
+        "embedded_matches_local_kernel": true,
+        "receipt_kernel": {
+          "source": "prebuilt",
+          "sha256": "4bcfa4f5c60f7e8cad526b49481d40bf0556ce4853aad9c72f853ad866ded1e6"
+        }
+      }
+    ],
+    "installed_hash_evidence": "collection/installed-builds-verified.json independently records matching APK hashes for both packages",
+    "conclusion": "Both archived APKs contain the exact local cross-built kernel binary. Its retained Cargo build-script output identifies056173e. Current patch sources are clean at full revision056173e85b150e387805fc307fe231064ac1ed35. This supports applying the inspected matcher semantics to the archived Android binaries.",
+    "limit": "Retained build output and clean source evidence are not a reproducible-build attestation or independent disassembly proof. No phone access performed for this audit."
+  },
+  "archive_metadata": {
+    "original_operator_receipt_sha256": "bb78842bbfc2476b6f95f8f1405361fee4686aebf7e36a666550aab330c018a3",
+    "transformation": "Only installed_hash_evidence absolute operator path replaced with archive-relative reference; source/binary/APK hashes and semantic findings unchanged."
+  }
+}

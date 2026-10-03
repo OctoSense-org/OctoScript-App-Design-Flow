@@ -14,7 +14,7 @@
 | [Health](health/README.zh-CN.md) | 原生卡片 / WASM | 虚构的体检预约旅程。 |
 | [Reunion](reunion/README.zh-CN.md) | 原生卡片 / WASM | 同学聚会的筹划、回复（RSVP）与付款旅程。 |
 | [Calendar](calendar/README.zh-CN.md) | 原生卡片 / 浏览器预览 + 同步服务器 | 双设备日历：10 个画面、4 个服务卡片，以及一个基于 SQLite 的操作日志服务器，每个客户端都重放同一份日志。 |
-| [Android 模型编写的卡片原型](android-a2app-card-templates/README.zh-CN.md) | Android Studio；概览／展开／完整应用 | 六类 Android 模型源码、可重放来源及原生证据；已评审原型，尚未达到 A− 体验目标。 |
+| [Android 模型编写的卡片原型](android-a2app-card-templates/README.zh-CN.md) | Android 上的 AppStudio；概览／展开／完整应用 | 两份模型编写的六类集合：各自离线原型整体 4.5/5、视觉 4.4/5；源码精确重放及原生证据。 |
 
 [shared/](shared/README.zh-CN.md) 存放通用的浏览器适配器和历史上的跨应用验证产物，它不是一个应用。
 

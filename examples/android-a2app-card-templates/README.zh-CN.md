@@ -2,58 +2,59 @@
 
 [English](README.md) | 简体中文
 
-[六类集合](collection/README.zh-CN.md)包含 Android 上 DeepSeek 编写并修订的
-邮件、日历、新闻、财经、照片和 YouTube 原型。每类都有声明式概览卡片，以及
-含概览、展开和完整应用展示的 Splash 应用。25 个最终文件逐字节保留，严格
-重放与记录中的 Android 模型修改完全匹配。
+DeepSeek 和 MiniMax 各自在 Android 上编写了邮件、日历、新闻、财经、照片
+和 YouTube 六类集合。每类都有声明式概览卡片，以及含概览、展开、完整应用
+视图的原生 Splash 应用。当前快照逐字节保留 **五十个模型文件**，附源码重放、
+原始设备截图和原生交互记录。
 
-**这是经过评审的原型，不是已验收模板集。** 独立视觉评审给集合 **4.1/5**，
-低于 **4.5/5 的 A− 目标**。原生测试验证了本地操作、选择和导航；照片与
-YouTube 展示诚实的媒体不可用状态，不是实际照片加载或视频播放。状态仅在
-本次会话内存中，不连接实时服务。
+另一评审代理给每份 **离线原型整体 4.5/5、视觉 4.4/5**。整体达到 A− 目标，
+单独视觉仍低于该目标。这是产物编辑评审，不是人工／商店批准或通用模型
+排名。本地状态演示不真正发送邮件、获取实时价格、加载照片或播放视频。
 
-用户要求手机模型编写设计、源码和修订。监督代理提供参考、反馈、操作工具
-及证据，不手动修改应用源码。L0／L1／L2 表示展示深度，不是语言准入等级
-或权限授权。
+## 当前集合
 
-## 查看集合
-
-| 类别 | 导出概览 | 原生行为证据 |
+| 模型快照 | 源码与证据 | 整体／视觉 |
 | --- | --- | --- |
-| 邮件 | [截图](collection/evidence/glances/mail.png) | 归档／撤销、邮件身份、键盘下可达的本地演示 Send |
-| 日历 | [截图](collection/evidence/glances/calendar.png) | RSVP 状态独立，最后一行详情导航已修复 |
-| 新闻 | [截图](collection/evidence/glances/news.png) | 保存／取消保存、选中文章及已存集合 |
-| 财经 | [截图](collection/evidence/glances/finance.png) | 关注／取消关注、证券身份及最后一行详情 |
-| 照片 | [截图](collection/evidence/glances/photo.png) | 本地已存项目及元数据详情；图片不可用 |
-| YouTube | [截图](collection/evidence/glances/youtube.png) | 稍后观看状态及元数据详情；播放不可用 |
+| DeepSeek 第 12 轮 | [六类原型、原生结果和截图](continuations/deepseek/turn-12/README.zh-CN.md) | 4.5／4.4 |
+| MiniMax 第 14 轮 | [六类原型、原生结果和截图](continuations/minimax/turn-14/README.zh-CN.md) | 4.5／4.4 |
 
-[集合源码、结果和复现说明](collection/README.zh-CN.md)区分行为断言、原始
-几何发现、直接视觉评审及仅渲染的概览证据，并包含真实 Android 键盘整屏图。
-不笼统宣称导出概览都满足 44 点触控目标。
+[后续评审](continuations/REVIEW.zh-CN.md)将各次原始失败与修正后的操作补测
+分开，并说明不同上下文、反馈、中断和轮数；这不是等预算基准。MiniMax
+整个展示界面为 4.3，组件表面为 4.4，分别记录。
 
-[源码来源](collection/source-receipt.json)、
-[作者来源重放](collection/model-authorship-validation.json)、
-[参考资料哈希](reference-index.json)及[归档哈希清单](artifact-inventory.json)
-关联了证据。保留成功的模型写入／编辑，不包含供应商配置、凭据或私有推理。
-本地 Studio 开发者准入与未运行的 App Hub／商店检查、发布者签名及发布不同。
+这里 L0 是简短概览，L1 是带本地操作的展开视图，L2 是应用列表／详情。
+展示深度不提升语言等级或权限；声明式 `.card` 与原生 `.splash` 仍是不同
+路径。[参考清单](reference-index.json)记录 A2App 源材料。导出卡片渲染验证
+像素，不证明 shell 发布或触控目标大小。
 
-## 早期邮件对比
+## 作者来源与复现
 
-冻结的 [DeepSeek 第 3 轮与 MiniMax 最终第 3 轮对比](COMPARISON.zh-CN.md)
-仍是独立历史证据。两份未完成产物分别为 3.4/5 和 3.3/5；工具可用性、对话
-历史及反馈不同，不能当作通用模型排名或等预算基准。
+用户要求 Android 模型编写设计、源码和修订。操作人员提供参考、反馈、测试
+工具和来源记录，没有手改应用。每个快照都有准确源码清单、成功模型修改
+历史和重放报告。模型设计文档保留原来的检查点，较新的操作报告说明实际验证。
 
-| 冻结尝试 | 源码来源 | 代表性原始截图 |
-| --- | --- | --- |
-| DeepSeek 第 3 轮 | [记录](attempts/deepseek-r3/source-receipt.json) | [详情发件人错误](attempts/deepseek-r3/evidence/deepseek-mail-r3-no-keyboard-suite/10-second-message-detail.png) |
-| MiniMax 最终第 3 轮 | [记录](attempts/minimax-r3/source-receipt.json) | [完整应用限制](attempts/minimax-r3/evidence/minimax-mail-r3-suite/06-full-app.png) |
+从本目录无需手机即可检查两份当前源码历史：
 
-[对比重放](model-authorship-validation.json)匹配十个归档文件。从本
-`android-a2app-card-templates/` 目录，无需手机即可用
-`python3 validate-model-authorship.py` 复跑；
-`python3 validate-model-authorship.py --case-dir collection` 检查最终集合的
-25 个文件。能够从记录修改中复现，不证明历史上绝无任何未记录干预。原始
-manifest 完整性占位值保持不变，作者来源不等于签名证明。
+```sh
+python3 validate-model-authorship.py \
+  --case-dir continuations/deepseek/turn-12 \
+  --case-dir continuations/minimax/turn-14
+```
 
-后续尝试使用[评审表](REVIEW-TEMPLATE.zh-CN.md)。保留失败证据，将应用源码
-修正交回手机模型，并明确未运行的检查。
+各集合说明如何用 [reproduce.py](reproduce.py) 复跑原生测试。
+[render-glances.py](render-glances.py) 渲染原字节卡片／数据；
+[流程](continuations/README.zh-CN.md)说明不可覆盖导入及
+[已验证补丁语义](pinned-apply-patch-semantics.json)。[哈希清单](artifact-inventory.json)
+覆盖归档产物。重放证明可从记录修改复现，不代表发布者签名或绝无未记录
+干预；未运行 App Hub／商店检查。
+
+[当前清理记录](continuations/cleanup.json)记录临时供应商／授权文件移除、
+测试包停止及屏幕超时恢复。归档不含供应商配置、凭据、设备序列号或私有推理。
+
+## 保留的早期阶段
+
+[前三轮邮件对比](COMPARISON.zh-CN.md)保持冻结：当时未完成的 DeepSeek 第 3 轮
+和 MiniMax 第 3 轮产物分别为 3.4 和 3.3。
+[DeepSeek 十轮集合](collection/README.zh-CN.md)保留原来 4.1 的分数和证据，
+不会把历史结果改称当前集合。后续可用[评审表](REVIEW-TEMPLATE.zh-CN.md)，
+应用修复交回手机模型，未执行检查明确保留。

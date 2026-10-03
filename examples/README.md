@@ -15,7 +15,7 @@ ignored. They were `apps/<name>/` before the restructure.
 | [Health](health/README.md) | Native cards / WASM | Fictional health-check booking journey. |
 | [Reunion](reunion/README.md) | Native cards / WASM | Reunion planning, RSVP and payment journey. |
 | [Calendar](calendar/README.md) | Native cards / browser preview + sync server | Calendar for two devices: 10 screens, 4 service cards, and a SQLite-backed operation-log server every client replays. |
-| [Android-authored card prototypes](android-a2app-card-templates/README.md) | Android Studio; glance / expanded / full app | Six Android-authored families with replayable source and native evidence; reviewed prototypes, below the A− UX target. |
+| [Android-authored card prototypes](android-a2app-card-templates/README.md) | AppStudio on Android; glance / expanded / full app | Two model-authored six-family collections: each 4.5/5 overall offline prototype, 4.4/5 visual; exact source replay and native evidence. |
 
 [shared/](shared/README.md) contains common browser adapters and historical
 cross-app verification artifacts; it is not an app.

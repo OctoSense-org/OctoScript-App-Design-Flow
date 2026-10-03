@@ -1,0 +1,64 @@
+{
+  "family": "news",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Harbor line",
+        "Demo Daily"
+      ]
+    },
+    {
+      "label": "reveal-preview-states",
+      "action": "tap",
+      "target": "states_btn",
+      "contains": [
+        "Loading",
+        "Empty",
+        "Error"
+      ]
+    },
+    {
+      "label": "loading",
+      "action": "tap",
+      "target": "Loading",
+      "contains": [
+        "Loading\u2026"
+      ]
+    },
+    {
+      "label": "empty",
+      "action": "tap",
+      "target": "Empty",
+      "contains": [
+        "No stories"
+      ]
+    },
+    {
+      "label": "error",
+      "action": "tap",
+      "target": "Error",
+      "contains": [
+        "Couldn't load stories"
+      ]
+    },
+    {
+      "label": "ready",
+      "action": "tap",
+      "target": "Ready",
+      "contains": [
+        "Harbor line"
+      ]
+    },
+    {
+      "label": "collapse-preview-states",
+      "action": "tap",
+      "target": "states_btn",
+      "excludes": [
+        "Loading",
+        "Empty",
+        "Error"
+      ]
+    }
+  ]
+}

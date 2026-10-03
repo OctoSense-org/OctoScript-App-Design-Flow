@@ -1,0 +1,130 @@
+# ledger mail.glance@0.1.0
+# level:   L0
+# profile: ui/l0
+# model:   dev.studio.cards.mail
+#
+theme taskplan_light
+#
+# MAIL family's compact L0 glance. Content-first: family, subject, sender/time,
+# ONE primary action, ONE honest demo cue. Body text, the reply composer and the
+# lifecycle rows live behind the card's own detail view, not in the glance.
+# L0/L1/L2 are PRESENTATION depths; this file is language L0 at every depth.
+#
+# Fixture: glance.data.json — synthetic demo records. No mailbox is read and
+# nothing is sent, so the card SAYS DEMO.
+#
+# OFFLINE SOURCE CONTRACT:
+#   * fixture keys are the SOURCE ALIASES (lead, more);
+#   * `id:` is OMITTED so fixture values lower to literals;
+#   * every lifecycle-bound read sits inside a `.$state == .ready` guard;
+#   * `when` takes no else; branches reference named views.
+#
+# State and event semantics are unchanged: mode, draft, read and kept keep their
+# declared shapes and transitions, and every event has card-local behaviour.
+
+source lead sys.dataset(fields: [title, subtitle, summary, as_of, status, metric1_label, metric1_value, metric2_label, metric2_value])
+
+state mode  { shape: enum[brief, open, reply, sent], initial: .brief }
+state draft { shape: text, initial: "" }
+state read  { shape: enum[unread, read], initial: .unread }
+state kept  { shape: enum[kept, gone], initial: .kept }
+
+event open_msg     { mode: set(.open) }
+event reply        { mode: set(.reply) }
+event cancel       { mode: set(.brief) }
+event back         { mode: set(.brief) }
+event send         { mode: set(.sent) }
+event mark_read    { read: set(.read) }
+event mark_unread  { read: set(.unread) }
+event archive      { kept: set(.gone) }
+event undo_archive { kept: set(.kept) }
+event edit         { draft: set($value) }
+
+copy app       { class: vocabulary, en: "Mail",         zh: "邮件" }
+copy open      { class: vocabulary, en: "Open",         zh: "打开" }
+copy back      { class: vocabulary, en: "‹ Back",       zh: "‹ 返回" }
+copy reply     { class: vocabulary, en: "Reply",        zh: "回复" }
+copy send      { class: vocabulary, en: "Send (demo)",  zh: "发送（演示）" }
+copy cancel    { class: vocabulary, en: "Cancel",       zh: "取消" }
+copy mark_r    { class: vocabulary, en: "Mark as read", zh: "标为已读" }
+copy mark_u    { class: vocabulary, en: "Mark as unread", zh: "标为未读" }
+copy archived  { class: vocabulary, en: "Archive (demo)", zh: "归档（演示）" }
+copy undo      { class: vocabulary, en: "Undo",         zh: "撤销" }
+copy h_draft   { class: vocabulary, en: "REPLY · DRAFT STAYS LOCAL", zh: "回复 · 草稿仅存本地" }
+copy demo_note { class: vocabulary, en: "Demo data. No mailbox, no send.", zh: "演示数据。无邮箱，不会发送。" }
+
+# Lifecycle strings are declared copy, never inline (framework-l0 §1).
+copy loading { class: vocabulary, en: "Loading demo messages…", zh: "正在加载演示邮件…" }
+copy offline { class: vocabulary, en: "Can't load demo messages", zh: "无法加载演示邮件" }
+copy sent    { class: vocabulary, en: "Queued (demo)", zh: "已入队（演示）" }
+
+view root Surface(pad: .tight) {
+  Col(gap: 8) {
+    Row(gap: 8, align: .center) {
+      Icon(name: .mail, size: .row)
+      TextCaption(text: copy.app, width: .fill)
+      TextCaption(value: lead.as_of)
+    }
+    when lead.$state == .pending { loading_row }
+    when lead.$state == .failed  { offline_row }
+    when lead.$state == .ready   {
+      when mode == .brief { glance_row }
+      when mode == .open  { detail }
+      when mode == .reply { compose }
+      when mode == .sent  { sent_row }
+    }
+  }
+}
+
+view loading_row Col {
+  TextBody(text: copy.loading, width: .fill)
+}
+
+view offline_row Col {
+  TextBody(text: copy.offline, width: .fill)
+}
+
+# The glance itself: five lines, one action, one cue.
+view glance_row Col(gap: 8) {
+  TextTitle(text: lead.title, width: .fill)
+  TextRow(text: lead.subtitle, width: .fill)
+  Row(gap: 8) {
+    Chip(text: copy.open, on_tap: open_msg, tone: .primary)
+  }
+  TextCaption(text: copy.demo_note, width: .fill)
+}
+
+view detail Col(gap: 8) {
+  TextTitle(text: lead.title, width: .fill)
+  TextRow(text: lead.subtitle, width: .fill)
+  TextBody(text: lead.summary, width: .fill)
+  Row(gap: 8) {
+    when read == .unread { Chip(text: copy.mark_r, on_tap: mark_read) }
+    when read == .read   { Chip(text: copy.mark_u, on_tap: mark_unread) }
+  }
+  Row(gap: 8) {
+    when kept == .kept { Chip(text: copy.archived, on_tap: archive, tone: .danger) }
+    when kept == .gone { Chip(text: copy.undo, on_tap: undo_archive, tone: .primary) }
+  }
+  Row(gap: 8) {
+    Chip(text: copy.reply, on_tap: reply, tone: .primary)
+    Chip(text: copy.back, on_tap: back)
+  }
+}
+
+view compose Col(gap: 8) {
+  TextEyebrow(text: copy.h_draft)
+  Field(text: draft, on_change: edit, width: .fill)
+  Row(gap: 8) {
+    Chip(text: copy.cancel, on_tap: cancel)
+    Chip(text: copy.send, on_tap: send, tone: .primary)
+  }
+}
+
+view sent_row Col(gap: 8) {
+  Row(gap: 8, align: .center) {
+    Icon(name: .check, size: .row)
+    TextBody(text: copy.sent, width: .fill)
+  }
+  Chip(text: copy.back, on_tap: back)
+}

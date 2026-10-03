@@ -1,0 +1,62 @@
+{
+  "family": "mail",
+  "draft": false,
+  "source_file": "minimax-round14-final/card-templates/mail/bundle/main.splash",
+  "source_sha256": "b0d68d4ccde75012e9ce586605313d63b7adb74271f5dee4912977ae13de6120",
+  "status": "Source-bound targeted operator input; execution pending at preparation. Original15-step failure retained.",
+  "selector_evidence": {
+    "snapshot": "minimax-r14-validation/mail/13-return-to-inbox.json",
+    "scroll": "l2@0 rect[0,162,384,498]",
+    "northwind_open": "-@30 exists as hidden Open in current full tree; preceding visible Opens are -@18,-@22,-@26. Scrolling must reveal -@30 before input."
+  },
+  "manual_checks": [
+    "After +360 scroll verify Northwind title and its complete44pt Open target are visible together before tapping; do not substitute a different visible ordinal without recording actual selector evidence.",
+    "Last-detail screenshot must show complete Northwind sender and Invoice2291-Augustretainer title at top, plus matching amount/body. Detect retained list scroll offset hiding detail header.",
+    "Keep viewport-edge clipping in scroll capture separate from actual truncated/hidden detail content."
+  ],
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Ana Ruiz",
+        "4 in Inbox",
+        "● L0"
+      ]
+    },
+    {
+      "label": "inbox",
+      "action": "tap",
+      "target": "b2",
+      "contains": [
+        "Ana Ruiz",
+        "City Library",
+        "● L2"
+      ]
+    },
+    {
+      "label": "reveal-northwind",
+      "action": "scroll",
+      "target": "l2",
+      "delta_y": 360,
+      "contains": [
+        "Northwind Studio",
+        "Invoice 2291 - retainer",
+        "● L2"
+      ],
+      "capture_android": true
+    },
+    {
+      "label": "northwind-detail",
+      "action": "tap",
+      "target": "-@30",
+      "contains": [
+        "Northwind Studio",
+        "Invoice 2291 - August retainer",
+        "Amount due 1,480.00",
+        "payable within 14 days",
+        "● L2"
+      ],
+      "capture_android": true
+    }
+  ]
+}

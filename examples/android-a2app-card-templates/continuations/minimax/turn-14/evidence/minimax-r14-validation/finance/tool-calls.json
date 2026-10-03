@@ -1,0 +1,5719 @@
+[
+  {
+    "request_id": "563c4d57-4e53-46ad-a981-c3684a8f230c",
+    "request": {
+      "name": "studio.bundle_check",
+      "args": {
+        "bundle_path": "card-templates/finance/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "563c4d57-4e53-46ad-a981-c3684a8f230c",
+      "data": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.finance",
+        "capabilities": [],
+        "digest": "ba0d952c405ed284b97f1f5e1859c2eb4278b3e599bf306c60cdab052b81076f",
+        "name": "Finance Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.499
+  },
+  {
+    "request_id": "34aea6cb-edd8-423f-a380-b03a6458447f",
+    "request": {
+      "name": "studio.open",
+      "args": {
+        "bundle_path": "card-templates/finance/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "34aea6cb-edd8-423f-a380-b03a6458447f",
+      "data": {
+        "bundle": {
+          "admission": "local_developer",
+          "app_id": "dev.studio.cards.finance",
+          "capabilities": [],
+          "digest": "ba0d952c405ed284b97f1f5e1859c2eb4278b3e599bf306c60cdab052b81076f",
+          "name": "Finance Cards",
+          "publisher_signed": false,
+          "source_modified": false,
+          "version": "0.1.0"
+        },
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "ready": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 1.027
+  },
+  {
+    "request_id": "c755f1ea-547e-4862-b398-4b4ef808febf",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "c755f1ea-547e-4862-b398-4b4ef808febf",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-a41f9740-fdf6-4fb3-af22-7e68a2dbf797.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 0 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "glance@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_sym@0",
+              "text": "HRB",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_price@0",
+              "text": "42.18",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_dir@0",
+              "text": "\u25b2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_change@0",
+              "text": "+1.24",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_name@0",
+              "text": "Harbour Rail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_brief@0",
+              "text": "Regional rail operator, demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_asof@0",
+              "text": "as of 08:45 \u00b7 demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "List",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "\u25cf L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L0 Glance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-9cce89a2-0539-4e13-aa29-0cd3f916fa6e.json",
+        "total_widgets": 32,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.35
+  },
+  {
+    "request_id": "22223c0f-2baa-406f-b947-3d38052a916f",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "b1@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "22223c0f-2baa-406f-b947-3d38052a916f",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.129
+  },
+  {
+    "request_id": "19821cdf-144c-4053-8df2-7fc0129d38c2",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "19821cdf-144c-4053-8df2-7fc0129d38c2",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-3089b5df-51d5-4039-a8b4-df70f79da574.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 0 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_sym@0",
+              "text": "HRB \u00b7 Harbour Rail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_price@0",
+              "text": "42.18",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_change@0",
+              "text": "+1.24",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_brief@0",
+              "text": "Regional rail operator, demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_asof@0",
+              "text": "as of 08:45 \u00b7 demo, not a live quote",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_action@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "List",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-5706693f-10d0-4aa4-9463-cbc4a41b2cce.json",
+        "total_widgets": 33,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.358
+  },
+  {
+    "request_id": "91a9ed32-3751-4b76-b676-210aface0e4c",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "b2@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "91a9ed32-3751-4b76-b676-210aface0e4c",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.143
+  },
+  {
+    "request_id": "6f5039c3-bd32-46bd-a423-4b4735fc8642",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "6f5039c3-bd32-46bd-a423-4b4735fc8642",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-2841da3a-16da-4fa1-8bb4-2102d673be0f.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 0 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "HRB \u00b7 Harbour Rail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "42.18  +1.24",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "DLK \u00b7 Delta Logistics",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "17.62  -0.38",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "SGE \u00b7 Sage Energy",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@10",
+              "text": "9.94  +0.07",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-ef439160-b165-444f-adc9-552fcfad91c9.json",
+        "total_widgets": 45,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.423
+  },
+  {
+    "request_id": "fbe23bb9-540b-44ba-a542-9cac65f865c6",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "-@21",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "fbe23bb9-540b-44ba-a542-9cac65f865c6",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.128
+  },
+  {
+    "request_id": "cdac36b2-551e-4e45-98b9-17a32d9b088d",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "cdac36b2-551e-4e45-98b9-17a32d9b088d",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-1a6c9b90-198f-4f81-b338-24730688b925.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 0 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_sym@0",
+              "text": "DLK \u00b7 Delta Logistics",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_price@0",
+              "text": "17.62",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_change_dn@0",
+              "text": "-0.38",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_asof@0",
+              "text": "as of 08:45 \u00b7 demo, not a live quote",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_body@0",
+              "text": "Delta Logistics handles port freight and warehousing. This demo record shows a fictional instrument: price, change and as-of time are fixed sample values, never",
+              "text_truncated": true,
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "text": "\u2039 List",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-9b8fbacd-aef7-4203-b6f7-28281253c0fb.json",
+        "total_widgets": 35,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.383
+  },
+  {
+    "request_id": "3200a458-082d-4dbf-9885-b5516312959d",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "rd_action@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "3200a458-082d-4dbf-9885-b5516312959d",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.123
+  },
+  {
+    "request_id": "d0afc319-dcbe-492c-aeba-19b43fae3a81",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "d0afc319-dcbe-492c-aeba-19b43fae3a81",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-0b8174a2-821f-4f37-9ba6-3f816428f09d.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 1 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_sym@0",
+              "text": "DLK \u00b7 Delta Logistics",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_price@0",
+              "text": "17.62",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_change_dn@0",
+              "text": "-0.38",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_asof@0",
+              "text": "as of 08:45 \u00b7 demo, not a live quote",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_body@0",
+              "text": "Delta Logistics handles port freight and warehousing. This demo record shows a fictional instrument: price, change and as-of time are fixed sample values, never",
+              "text_truncated": true,
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Remove from Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "text": "\u2039 List",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Watching DLK",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-cc60264f-f82d-4804-acbe-8b82cae8aaf1.json",
+        "total_widgets": 35,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.35
+  },
+  {
+    "request_id": "140e12b6-47ef-4d8a-b708-3616928d2f26",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "-@34",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "140e12b6-47ef-4d8a-b708-3616928d2f26",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.122
+  },
+  {
+    "request_id": "8e565d4c-e7ca-4b74-8da4-957da0ef5187",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "8e565d4c-e7ca-4b74-8da4-957da0ef5187",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-ee4f4e91-e022-44f8-bc53-dac7f8e65f0c.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 1 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "HRB \u00b7 Harbour Rail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "42.18  +1.24",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "DLK \u00b7 Delta Logistics",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "17.62  -0.38",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "SGE \u00b7 Sage Energy",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@10",
+              "text": "9.94  +0.07",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-3706657c-1292-48ce-b25a-0278bcd7bdde.json",
+        "total_widgets": 45,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.378
+  },
+  {
+    "request_id": "2c982b40-0190-4874-ae7d-6f2301b5fa20",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "tab_watch@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "2c982b40-0190-4874-ae7d-6f2301b5fa20",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.155
+  },
+  {
+    "request_id": "3a1c4f1e-7077-43ce-93df-ae3bfd4354c5",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "3a1c4f1e-7077-43ce-93df-ae3bfd4354c5",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-8f5fac18-6f12-4079-a2a2-aa1cad13b9da.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 1 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "\u25cf Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_w@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@22",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@23",
+              "text": "DLK \u00b7 Delta Logistics",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@9",
+              "text": "17.62  -0.38",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_wb@0",
+              "text": "Remove",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-ec139ee2-b05d-43fd-9410-b936f51dd4e8.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.402
+  },
+  {
+    "request_id": "e25844b7-f52a-4025-8585-636c9097a4ef",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "r2_wb@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "e25844b7-f52a-4025-8585-636c9097a4ef",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.123
+  },
+  {
+    "request_id": "ec85d264-7c51-4314-9252-6adbdde2bb76",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "ec85d264-7c51-4314-9252-6adbdde2bb76",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-a186dca7-4892-4757-8f1d-31a5419c8f95.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 0 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "\u25cf Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "watch_empty@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@31",
+              "text": "Not watching anything",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "text": "Watch an instrument from All to see it here.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Removed from Watching",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-4b5a6444-1c6d-4646-b7b9-87d1d47a44b3.json",
+        "total_widgets": 27,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.401
+  },
+  {
+    "request_id": "92b5960e-5fe4-43a1-a63e-bd8188d1cb0f",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "tab_all@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "92b5960e-5fe4-43a1-a63e-bd8188d1cb0f",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.154
+  },
+  {
+    "request_id": "143a7eb4-a107-4c8e-9b0b-2e5589bbaacc",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "143a7eb4-a107-4c8e-9b0b-2e5589bbaacc",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-e5274a2a-785c-4e32-aaa1-9cf6aeec2251.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 0 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "HRB \u00b7 Harbour Rail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "42.18  +1.24",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "DLK \u00b7 Delta Logistics",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "17.62  -0.38",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "SGE \u00b7 Sage Energy",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@10",
+              "text": "9.94  +0.07",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-669ffcbc-20cc-4897-9f99-8466d864d1b3.json",
+        "total_widgets": 45,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.394
+  },
+  {
+    "request_id": "1c120d8d-4a5d-44b6-b98e-3319e19f43e0",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "l2@0",
+        "action": "scroll",
+        "delta_y": 360
+      }
+    },
+    "reply": {
+      "call_id": "1c120d8d-4a5d-44b6-b98e-3319e19f43e0",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.141
+  },
+  {
+    "request_id": "42d16f73-75dc-495a-bd65-d5fdff42e671",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "42d16f73-75dc-495a-bd65-d5fdff42e671",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-ce26471a-f9c3-4ab2-a7da-38d3bf822f00.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 0 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "HRB \u00b7 Harbour Rail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "42.18  +1.24",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "DLK \u00b7 Delta Logistics",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "17.62  -0.38",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "SGE \u00b7 Sage Energy",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@10",
+              "text": "9.94  +0.07",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-7567a6b3-7f9e-4d8a-b896-635bc027fb55.json",
+        "total_widgets": 45,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.383
+  },
+  {
+    "request_id": "3a70d3df-776f-44f7-867e-2ee2fd7df874",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "-@27",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "3a70d3df-776f-44f7-867e-2ee2fd7df874",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.14
+  },
+  {
+    "request_id": "f490b900-c3db-4360-9ce6-c12c5ae84928",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "f490b900-c3db-4360-9ce6-c12c5ae84928",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-481d125c-3530-42f2-9976-bc90e0f3bf96.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 0 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_sym@0",
+              "text": "SGE \u00b7 Sage Energy",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_price@0",
+              "text": "9.94",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_change@0",
+              "text": "+0.07",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_asof@0",
+              "text": "as of 08:45 \u00b7 demo, not a live quote",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_body@0",
+              "text": "Sage Energy is a regional utility trialling shared rooftop solar. This demo record shows a fictional instrument: the price, change and as-of time are fixed samp",
+              "text_truncated": true,
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "text": "\u2039 List",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-21efd032-d74f-41de-af86-dabad8f6aab0.json",
+        "total_widgets": 35,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.366
+  },
+  {
+    "request_id": "46b4e632-7576-46e7-a7bd-758f8fc6f3b2",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "rd_action@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "46b4e632-7576-46e7-a7bd-758f8fc6f3b2",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.151
+  },
+  {
+    "request_id": "cb850470-5863-4771-8bc3-64ed7c1ec9c5",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "cb850470-5863-4771-8bc3-64ed7c1ec9c5",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-ad8c8676-b09f-460b-a8b0-112fc03ac72c.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 1 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_sym@0",
+              "text": "SGE \u00b7 Sage Energy",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_price@0",
+              "text": "9.94",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_change@0",
+              "text": "+0.07",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_asof@0",
+              "text": "as of 08:45 \u00b7 demo, not a live quote",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_body@0",
+              "text": "Sage Energy is a regional utility trialling shared rooftop solar. This demo record shows a fictional instrument: the price, change and as-of time are fixed samp",
+              "text_truncated": true,
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Remove from Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "text": "\u2039 List",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Watching SGE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-dfa34cb5-3c5c-45a8-86a2-96c92a03e8a7.json",
+        "total_widgets": 35,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.371
+  },
+  {
+    "request_id": "e38e8b97-3a00-45d8-8fdd-737e6eb7302a",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "-@34",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "e38e8b97-3a00-45d8-8fdd-737e6eb7302a",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.141
+  },
+  {
+    "request_id": "d14f4cba-cef6-479f-8eb5-c6707759264d",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "d14f4cba-cef6-479f-8eb5-c6707759264d",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-798c0743-093b-4264-b529-e46c79db6de1.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 1 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "HRB \u00b7 Harbour Rail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "42.18  +1.24",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "DLK \u00b7 Delta Logistics",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "17.62  -0.38",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "SGE \u00b7 Sage Energy",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@10",
+              "text": "9.94  +0.07",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-4e184229-b4ce-4698-9242-d0f9d525a9c1.json",
+        "total_widgets": 45,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.385
+  },
+  {
+    "request_id": "2c0803eb-0d41-4aa5-b550-cabe10e8a562",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "tab_watch@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "2c0803eb-0d41-4aa5-b550-cabe10e8a562",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.157
+  },
+  {
+    "request_id": "e9bd2048-e542-43cc-9b20-f39118006bae",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "e9bd2048-e542-43cc-9b20-f39118006bae",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-997c1d69-74e8-4255-ba02-97dece93ad86.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 1 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "\u25cf Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_w@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@28",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@29",
+              "text": "SGE \u00b7 Sage Energy",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "text": "9.94  +0.07",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_wb@0",
+              "text": "Remove",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@30",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-63d099bf-8fa1-4f52-a5de-6ea87fa6717d.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.399
+  },
+  {
+    "request_id": "e0dcebb1-e7e9-4377-a1a5-248286be6750",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "r3_wb@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "e0dcebb1-e7e9-4377-a1a5-248286be6750",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.154
+  },
+  {
+    "request_id": "5f3c8243-b415-4615-9dd5-66b41ab31d8b",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "5f3c8243-b415-4615-9dd5-66b41ab31d8b",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-2e5ed632-018d-4c72-927c-744e9c13c846.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 0 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "\u25cf Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "watch_empty@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@31",
+              "text": "Not watching anything",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "text": "Watch an instrument from All to see it here.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Removed from Watching",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-7858b21f-17e2-4b4b-b2a5-2118507f4890.json",
+        "total_widgets": 27,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.422
+  },
+  {
+    "request_id": "641be1fe-2cd4-4a4f-9b58-b18af46dd4a5",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "b1@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "641be1fe-2cd4-4a4f-9b58-b18af46dd4a5",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.13
+  },
+  {
+    "request_id": "95dc4483-d0df-4963-9ca2-5a7a3653d212",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "95dc4483-d0df-4963-9ca2-5a7a3653d212",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-7e3e1991-49e7-4ed3-b9b0-695d82b860d8.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 0 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_sym@0",
+              "text": "SGE \u00b7 Sage Energy",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_price@0",
+              "text": "9.94",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_change@0",
+              "text": "+0.07",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_brief@0",
+              "text": "Utility with a solar trial, demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_asof@0",
+              "text": "as of 08:45 \u00b7 demo, not a live quote",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_action@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "List",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-44922cbe-9491-4ed1-b365-66f9ea641b7d.json",
+        "total_widgets": 33,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.396
+  },
+  {
+    "request_id": "1892316c-86f0-4100-9ae6-f330f5d50ee5",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "x_action@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "1892316c-86f0-4100-9ae6-f330f5d50ee5",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.14
+  },
+  {
+    "request_id": "bf65b188-9f49-4c02-814e-4038cc730df1",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "bf65b188-9f49-4c02-814e-4038cc730df1",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-1ad96cb4-2ba8-4fa8-9ce4-7582bb3f8f24.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 1 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_sym@0",
+              "text": "SGE \u00b7 Sage Energy",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_price@0",
+              "text": "9.94",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_change@0",
+              "text": "+0.07",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_brief@0",
+              "text": "Utility with a solar trial, demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_asof@0",
+              "text": "as of 08:45 \u00b7 demo, not a live quote",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_action@0",
+              "text": "Remove",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "List",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Watching SGE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-787918b2-a899-4440-837d-50689f9bb60e.json",
+        "total_widgets": 33,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.41
+  },
+  {
+    "request_id": "23445fd2-bce2-4638-94b9-182ae43da9c7",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "x_action@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "23445fd2-bce2-4638-94b9-182ae43da9c7",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.144
+  },
+  {
+    "request_id": "859bb47e-3ed9-4318-bc49-7510205886c2",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "859bb47e-3ed9-4318-bc49-7510205886c2",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-0b2c64eb-574e-4548-986f-345c10ec0caa.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 0 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_sym@0",
+              "text": "SGE \u00b7 Sage Energy",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_price@0",
+              "text": "9.94",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_change@0",
+              "text": "+0.07",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_brief@0",
+              "text": "Utility with a solar trial, demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_asof@0",
+              "text": "as of 08:45 \u00b7 demo, not a live quote",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_action@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "List",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Removed from Watching",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-0e9ab2e3-d3de-452d-97d7-7735252ca93e.json",
+        "total_widgets": 33,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.395
+  },
+  {
+    "request_id": "15787d9a-54c8-494b-8dde-a1d5a9921622",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "b0@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "15787d9a-54c8-494b-8dde-a1d5a9921622",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.149
+  },
+  {
+    "request_id": "ef3d2bea-d5ce-4697-bc98-8f934376d6f6",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "ef3d2bea-d5ce-4697-bc98-8f934376d6f6",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-7bec5f3a-62a4-479e-a682-5e3ae6576e2c.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 0 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "glance@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_sym@0",
+              "text": "HRB",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_price@0",
+              "text": "42.18",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_dir@0",
+              "text": "\u25b2",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_change@0",
+              "text": "+1.24",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_name@0",
+              "text": "Harbour Rail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_brief@0",
+              "text": "Regional rail operator, demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_asof@0",
+              "text": "as of 08:45 \u00b7 demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "List",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "\u25cf L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-bfd33159-225c-47f7-bd65-6d4fcdc3d50a.json",
+        "total_widgets": 32,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.416
+  },
+  {
+    "request_id": "e21bb23f-8fca-4526-9e02-e42b78ff6f16",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "widget_id": "-@7",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "e21bb23f-8fca-4526-9e02-e42b78ff6f16",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.143
+  },
+  {
+    "request_id": "e2cb4a61-7f5c-4e96-bf0f-cb34693c8cbe",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "e2cb4a61-7f5c-4e96-bf0f-cb34693c8cbe",
+      "data": {
+        "height": 2132,
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-841c650c-9b91-461b-b327-2ba4bba4b353.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Finance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 instruments \u00b7 0 watched",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_watch@0",
+              "text": "\u25cf Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_sym@0",
+              "text": "HRB \u00b7 Harbour Rail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_price@0",
+              "text": "42.18",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_change@0",
+              "text": "+1.24",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_asof@0",
+              "text": "as of 08:45 \u00b7 demo, not a live quote",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_body@0",
+              "text": "Harbour Rail operates the coastal regional line. This demo record shows a fictional instrument used to exercise the card layouts: the price, the change and the ",
+              "text_truncated": true,
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "text": "\u2039 List",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-d2ece364-db87-4b29-8c15-7a96e3cae716.json",
+        "total_widgets": 35,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.359
+  },
+  {
+    "request_id": "93919597-9bc9-4481-814d-99d978e92432",
+    "request": {
+      "name": "studio.close",
+      "args": {
+        "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885"
+      }
+    },
+    "reply": {
+      "call_id": "93919597-9bc9-4481-814d-99d978e92432",
+      "data": {
+        "closed": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.16
+  }
+]

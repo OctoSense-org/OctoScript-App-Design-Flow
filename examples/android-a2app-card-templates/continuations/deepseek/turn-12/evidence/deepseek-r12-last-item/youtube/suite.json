@@ -1,0 +1,85 @@
+{
+  "family": "youtube",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Lo-fi build session"
+      ]
+    },
+    {
+      "label": "full-app",
+      "action": "tap",
+      "target": "d_ap"
+    },
+    {
+      "label": "last-row-scroll",
+      "action": "scroll",
+      "target": "stage",
+      "delta_y": 300,
+      "contains": [
+        "Desk setup tour 2026"
+      ]
+    },
+    {
+      "label": "last-detail-top",
+      "action": "tap",
+      "target": "Open \u203a",
+      "occurrence": -1,
+      "contains": [
+        "Desk setup tour 2026",
+        "Study Corner",
+        "2 months ago"
+      ],
+      "excludes": [
+        "Lo-fi build session"
+      ]
+    },
+    {
+      "label": "save-last",
+      "action": "tap",
+      "target": "Watch later",
+      "occurrence": -1,
+      "contains": [
+        "In Watch later \u2713"
+      ]
+    },
+    {
+      "label": "back-to-list",
+      "action": "tap",
+      "target": "\u2039 Back"
+    },
+    {
+      "label": "saved-only-last",
+      "action": "tap",
+      "target": "Watch later",
+      "occurrence": 0,
+      "contains": [
+        "Desk setup tour 2026"
+      ],
+      "excludes": [
+        "Lo-fi build session"
+      ]
+    },
+    {
+      "label": "remove-last",
+      "action": "tap",
+      "target": "In Watch later \u2713",
+      "contains": [
+        "Nothing saved yet"
+      ]
+    },
+    {
+      "label": "first-still-independent",
+      "action": "tap",
+      "target": "d_gl",
+      "contains": [
+        "Lo-fi build session",
+        "Watch later"
+      ],
+      "no_enabled_button_text": [
+        "In Watch later \u2713"
+      ]
+    }
+  ]
+}
