@@ -59,11 +59,12 @@ Rust、Splash 与 L0 应用的差别、跨应用工具限制、运行时版本�
 | **起步** | 下面的[快速上手](#快速上手)：2026-09-26 的实测中，一个新应用从空目录到 `— PASSED` 约 10 分钟（克隆 1.5 分钟、setup 20 秒、首次构建在 Apple silicon Mac 上约 1 分钟），大部分时间用在编写应用上。每一步都是 shell 命令，任何编码 Agent（或不用 Agent）都能执行。 |
 | **机器** | 已验证的平台是 Apple silicon 上的 macOS；Windows 和 Linux 未验证。需要 Rust stable（rustup）、Python 3.9+（macOS 自带的 `/usr/bin/python3` 即可）、git、图形会话、约 3 GB 可用空间（克隆约 1.9 GB，其中本仓库 1.3 GB，可用 `--depth 1`；构建产物约 1 GB），首次构建需要联网。 |
 | **应用能做什么** | 自己的存储、访问已声明主机的 HTTPS 请求、图片与网页、相机、定位，以及通过宿主服务使用 Mail：[CAPABILITIES](docs/CAPABILITIES.md)。语言与全部 API：[SCRIPT-API](docs/SCRIPT-API.md)。完整示例：[系统应用](https://github.com/OctoSense-org/OctoSense/tree/main/apps)（News、Photos、Maps、Camera、Mail）和[模板](templates/script-app/README.zh-CN.md)。 |
-| **应用不能做什么** | 持有密码、密钥或 token；自创权限或宿主服务（那是 App Hub 和 Shell 的修改）；使用 `llm` 或 `os.*` id（仅限系统应用）；侧载到手机。`card-host` 不提供任何宿主服务，所以类似 Mail 的应用在其中会显示 `no service answers`。 |
+| **应用不能做什么** | 持有密码、密钥或 token；自创权限或宿主服务（那是 App Hub 和 Shell 的修改）；使用 `llm` 或 `os.*` id（仅限系统应用）；把开发预览/安装当作商店发布。较新的 Android 版 OctoSense App Studio 工具有单独的[实测范围](docs/MODEL-VALIDATION.zh-CN.md#选择测试方式)。`card-host` 不提供任何宿主服务，所以类似 Mail 的应用在其中会显示 `no service answers`。 |
 | **应用中的 AI** | 开发应用不需要任何 AI 服务，可以用任何编程 Agent，也可以不用。在设备上，商店应用可以进行一次性模型调用（`model`），并在用户允许其 Agent 后与助手对话（`octos.*`）；`card-host` 两者都不提供（`no service answers "octos"`），所以要把应用做成不依赖它们也完整可用。现在能用什么、计划做什么，以及一个经过验证、能处理“不可用”状态的示例：[docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)。 |
 | **演示** | 在 `card-host` 中运行应用（`tools/octo run`，通过远程控制桥操作），并用 `tools/octo shot` 截取真实截图。要在 OctoSense 内展示，让 OctoSense 桌面端 Shell 读取本地目录（[PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)）。 |
 | **提交到 App Hub** | [发布](#发布)：`tools/octo check` 通过、回答 `hub scan` 的问题，然后由人签名，并在 [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues) 开一个 `Submit <app id> <version>` issue。参赛作品不等于自动提交到 App Hub；请向主办方确认他们需要什么。 |
 | **无头测试** | `tools/octo run … --hidden`：窗口不会出现，Agent 可以在不占用你屏幕的情况下测试应用（也可同时测多个应用，每个用自己的 `--port`）。见[无头测试](#无头测试同时测多个应用不占屏幕)。 |
+| **验证模型输出** | [开发与验证循环](docs/MODEL-VALIDATION.zh-CN.md)：Makepad 输入/截图、OctoSense App Studio 与跨 APK 截图边界、模型失败的具体修复方法，以及与最终源码绑定的证据。 |
 | **卡住了** | [QUICKSTART § Troubleshooting](docs/QUICKSTART.md#troubleshooting)，然后看 [SCRIPT-API § Gotchas](docs/SCRIPT-API.md#gotchas)。 |
 
 ## Agent 从这里开始

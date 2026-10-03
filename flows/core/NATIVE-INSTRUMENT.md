@@ -4,6 +4,11 @@ Use the app's built-in HTTP instrument for new native UI inspection and interact
 
 This is the default native testing workflow for image-to-appcard projects. The image intake, semantic mapping, L0 compilation, service reducer, bundle, and visual-review requirements remain in place. Older Studio capture commands have a compatibility boundary described below; documenting the direct instrument does not change their implementation.
 
+For a model that generates and repairs the app, pair this runbook with
+[model-driven validation](../../docs/MODEL-VALIDATION.md). It covers startup
+failures, language confusion, clipping, stale state and source-bound feedback,
+plus the separate Android capture and input paths.
+
 ## Build and launch an owned instance
 
 Follow Makepad's agent runbook (`AGENTS.md`) and app remote reference (`docs/agents/app-remote.md`) in the `makepad` checkout that `python3 tools/setup-native.py` prepares beside this repository (`$OCTOSENSE_WORKSPACE/makepad`). Read the running binary's `GET /` response for its actual protocol. Use a fresh release build after runtime changes, and record the source revisions and local adapter patches.
@@ -68,7 +73,7 @@ Use `/d` for the native tree and `/log?n=50` for app logs. Assert geometry and c
 
 ## Capture, provenance, and cleanup
 
-Use `/g` to capture the app's own drawable. It returns a `png` path; `/g?raw=1` returns PNG bytes. A screenshot is evidence for visual inspection, not automatic visual approval. Platform overlays such as WKWebView may require the app's existing WebKit inspection/snapshot hook; do not claim a Metal capture includes them. Never use an OS/window/display screenshot as a fallback.
+Use `/g` to capture the app's own drawable. It returns a `png` path; `/g?raw=1` returns PNG bytes. A screenshot is evidence for visual inspection, not automatic visual approval. Platform overlays such as WKWebView may require the app's existing WebKit inspection/snapshot hook; do not claim a Metal capture includes them. Do not substitute an OS/window/display screenshot for this app-owned rendering evidence. Platform integration captures have a separate scope, described below.
 
 Record at least:
 
@@ -111,12 +116,21 @@ documentation depend on a developer-specific absolute home directory.
 ## Other platforms
 
 The pinned Makepad release compiles its HTTP `--remote` instrument out on
-Android. Do not report desktop HTTP probes or Studio captures as Android or
-OpenHarmony passes. Device builds and device instrumentation belong to the
-runtime repository,
-[OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard).
-Never use OS capture methods (`adb screencap`, `screenrecord`, MediaProjection)
-as evidence.
+Android. Desktop HTTP or desktop Studio results do not establish an Android or
+OpenHarmony pass. Android's in-shell Studio tools are a separate implementation:
+the reviewed OctoSense build opens visible contained apps, injects Makepad events
+and captures their textures. Its L0 render tool returns a PNG without an
+interactive instance. Record the actual platform, runtime and capture route;
+see the [test-surface matrix](../../docs/MODEL-VALIDATION.md#choose-the-test-surface).
+
+Keep Android OS screenshots as separately labelled **platform integration
+evidence** when testing the real keyboard, system notifications or an authorized
+other APK. They do not replace app-texture captures or establish native widget
+geometry. Android offers MediaProjection and accessibility screenshot APIs, but
+the reviewed Studio tools do not expose arbitrary cross-APK capture or a fully
+hidden phone session. The [Android capture guide](../../docs/MODEL-VALIDATION.md#capturing-another-android-apk)
+records consent, protected-content and input-control boundaries. Supporting a new
+capture service belongs in the runtime, not in this flow's evidence adapters.
 
 ## Existing capture/gate compatibility
 

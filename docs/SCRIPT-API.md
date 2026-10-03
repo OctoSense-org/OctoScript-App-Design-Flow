@@ -291,6 +291,16 @@ Sources: `MP/widgets/src/widget_async.rs:15, 456-465`, `MP/platform/script/src/v
 
 ## Gotchas
 
+- **Comments depend on the language:** native Splash uses `//` and `/* … */`.
+  `#` starts color tokenization; it is not a prose-comment prefix. Copying
+  `.card`-style `#` comments into a Splash function can interrupt initialization
+  after some fields have already been filled. See the
+  [archived tokenizer/VM diagnostic](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/minimax/turn-14/history/diagnostics/round12-intermediate-hash-comment-diagnostic.json).
+- **Container boundaries:** `View{width: Fill height: Fit}` is already closed.
+  Indented widgets on following lines do not become its children. Keep the
+  container open through its intended children, and check for an extra closing
+  brace left after a layout edit. Open success alone does not prove a complete
+  root or startup callback; follow the [validation loop](MODEL-VALIDATION.md#run-a-complete-review-loop).
 - **Hex colors:** write `#x` before any hex color with an `e` next to a digit
   (`#x1e1e2e`, `#x2ecc71`); `#x` is always safe. Otherwise the tokenizer reads
   an exponent.

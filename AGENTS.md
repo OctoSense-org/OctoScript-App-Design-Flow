@@ -43,6 +43,11 @@ patch around it here.
    `widgets/src/splash*.rs`, `platform/script/src/`) or a working System App
    (`apps/*/bundle/main.splash`) and can cite. If neither has it, the app
    cannot use it: say so.
+6. **Validate model output against the final source.** Follow
+   [docs/MODEL-VALIDATION.md](docs/MODEL-VALIDATION.md) for native input, visual
+   review and focused repair. Check populated startup state, not just admission
+   or open success. Keep behavior, geometry and visual judgments separate;
+   preserve failures and distinguish operator-run checks from model-run checks.
 
 ## Rules for every app
 
@@ -145,6 +150,8 @@ End with a report a person can check without rerunning anything:
 
 ## Syntax reminders for `main.splash`
 
+Splash comments use `//` or `/* … */`, never `.card`-style `#` prose. Keep a
+container open until after its children; indentation does not reopen it.
 `#x` for hex colors containing `e` (`#x1e1e2e`); `for i in n`, no `range()`;
 `name := Widget{}` to address a widget as `ui.name`; `draw_bg +: {…}` merges;
 separate `if` and `for` in `on_render` (no `else for`). The full list is in

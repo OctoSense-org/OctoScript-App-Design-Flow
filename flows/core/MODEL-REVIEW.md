@@ -1,5 +1,11 @@
 # Image reading and reviewer portability
 
+For app authorship and iterative native testing, also follow
+[model-driven development and validation](../../docs/MODEL-VALIDATION.md).
+It separates the author's tool use, operator tests and independent visual
+judgment, and gives source-backed recovery steps for observed model failures.
+The image-to-card review contract below continues to apply to its saved rounds.
+
 The generated-image pipeline has no Astra-specific API, SDK, endpoint or image
 reader. A generator supplies a PNG; a separate reviewer interprets it. The
 successful reference conversions in this workspace used the coding assistant's
