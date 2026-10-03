@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "subtitle": "An agent proposes. You review and confirm.",
+  "description": "Review fictional email, ask its app agent for help, and confirm replies into a local demo outbox. Includes a labeled offline fallback. No real mail or calendar accounts are used.",
+  "category": "productivity",
+  "keywords": [
+    "hackathon",
+    "agent",
+    "reference",
+    "demo"
+  ],
+  "screenshots": [
+    "screenshots/01-main.png",
+    "screenshots/02-review.png",
+    "screenshots/03-receipt.png",
+    "screenshots/04-agent-unavailable.png"
+  ],
+  "icon": "assets/icon.svg",
+  "platforms": [
+    "macos"
+  ],
+  "publisher": {
+    "name": "Replace with your publisher name",
+    "support": "https://example.com/support",
+    "privacy_policy_url": "https://example.com/privacy"
+  },
+  "release_notes": "Hackathon reference with fictional data. Live agent and Android validation are recorded separately.",
+  "age_rating": "all",
+  "license": "Apache-2.0"
+}
