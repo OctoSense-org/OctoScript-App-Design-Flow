@@ -1,0 +1,33 @@
+{
+  "reviewer": "Independent artifact review supplied by supervising agent",
+  "scope": "Frozen DeepSeek Mail round3 versus MiniMax Mail final round3 only; not a general model ranking",
+  "target": 4.5,
+  "accepted": false,
+  "dimensions": [
+    "visual",
+    "presentation_depths",
+    "interactions",
+    "a2app_reference_use",
+    "verification_honesty"
+  ],
+  "deepseek_r3": {
+    "overall": 3.4,
+    "scores": [
+      3.5,
+      3.5,
+      3,
+      3.5,
+      3.5
+    ]
+  },
+  "minimax_r3": {
+    "overall": 3.3,
+    "scores": [
+      3.5,
+      3,
+      3.5,
+      2.5,
+      4
+    ]
+  }
+}

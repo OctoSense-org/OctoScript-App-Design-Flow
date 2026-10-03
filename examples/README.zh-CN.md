@@ -2,8 +2,9 @@
 
 [English](README.md) | 简体中文
 
-用 [image-to-card 流程](../flows/image-to-card/FLOW.md) 构建的参考旅程。
-每个示例各自拥有服务代码、已评审的卡片场景、设计源文件、启动器、测试和 fixture 证据。
+这里包括 [image-to-card 流程](../flows/image-to-card/FLOW.md) 的参考旅程，
+以及在手机上生成和评审的 Android 原型。image-to-card 示例各自拥有服务代码、
+已评审的卡片场景、设计源文件、启动器、测试和 fixture 证据。
 运行时状态和个人数据均被忽略，不入库。重构之前它们位于 `apps/<name>/`。
 
 | 示例 | 呈现方式 | 说明 |
@@ -13,6 +14,7 @@
 | [Health](health/README.zh-CN.md) | 原生卡片 / WASM | 虚构的体检预约旅程。 |
 | [Reunion](reunion/README.zh-CN.md) | 原生卡片 / WASM | 同学聚会的筹划、回复（RSVP）与付款旅程。 |
 | [Calendar](calendar/README.zh-CN.md) | 原生卡片 / 浏览器预览 + 同步服务器 | 双设备日历：10 个画面、4 个服务卡片，以及一个基于 SQLite 的操作日志服务器，每个客户端都重放同一份日志。 |
+| [Android 模型编写的卡片原型](android-a2app-card-templates/README.zh-CN.md) | Android Studio；概览／展开／完整应用 | 六类 Android 模型源码、可重放来源及原生证据；已评审原型，尚未达到 A− 体验目标。 |
 
 [shared/](shared/README.zh-CN.md) 存放通用的浏览器适配器和历史上的跨应用验证产物，它不是一个应用。
 

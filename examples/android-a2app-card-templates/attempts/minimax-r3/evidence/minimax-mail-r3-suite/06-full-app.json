@@ -1,0 +1,2495 @@
+{
+  "height": 2132,
+  "instance_id": "cfd35a0c-81ed-49f9-bb44-f48031d7ca1b",
+  "path": ".studio-c629d81c-87b8-4a6a-b2fa-d9ed424bcc72.png",
+  "settled": false,
+  "snapshot": {
+    "checks": {
+      "findings": [
+        {
+          "code": "text_clipped",
+          "id": "cmp_subj",
+          "severity": "error"
+        }
+      ],
+      "instrument": "makepad_widget_tree",
+      "pass": false
+    },
+    "geometry": {
+      "widgets": [
+        {
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 0,
+          "id": "-",
+          "kind": "Splash",
+          "parent": -1,
+          "text": "// Mail card template \u2014 dev.studio.cards.mail\n// All records are SYNTHETIC DEMO DATA held in this app's local list.\n// No mailbox, no account, no network. \"Send (demo)\" appends to the local\n// demo Sent list only; nothing is ever transmitted.\n//\n// Depths are PRESENTATION depths (UI), not parser levels:\n//   L0  compact glance card\n//   L1  expanded actionable card\n//   L2  full app view (reader + demo inbox + reply composer)\n\nlet msgs = [\n    {id: \"m1\" from: \"Ana Ruiz\" subject: \"Contract renewal - signature by Friday\"\n        preview: \"The revised payment terms are in the attached PDF. Can you confirm we can sign by Friday?\"\n        body: \"The revised payment terms are in the attached PDF: net 45 instead of net 30, and the renewal window moves to 60 days. Can we sign by Friday?\"\n        at: \"09:12\" tag: \"Work\" att: true unread: true}\n    {id: \"m2\" from: \"City Library\" subject: \"Hold ready: your request is available\"\n        preview: \"Three books from your request are on the holds shelf until Saturday.\"\n        body: \"Three books from your request are on the holds shelf until Saturday. The reading room closes at 20:00.\"\n        at: \"08:47\" tag: \"Personal\" att: false unread: true}\n    {id: \"m3\" from: \"Priya N.\" subject: \"Design review moved to Thursday 10:00\"\n        preview: \"Pushed to Thursday so Marcus can join. Same room, notes in the shared doc.\"\n        body: \"Pushed the design review to Thursday 10:00 so Marcus can join. Same room as before.\"\n        at: \"Yesterday\" tag: \"Work\" att: false unread: false}\n    {id: \"m4\" from: \"Northwind Studio\" subject: \"Invoice 2291 - August retainer\"\n        preview: \"Amount due 1,480.00, payable within 14 days. Details in the PDF statement.\"\n        body: \"Invoice 2291 for the August retainer. Amount due 1,480.00, payable within 14 days.\"\n        at: \"Mon\" tag: \"Finance\" att: false unread: false}\n]\n\nlet ground = #xf2f2f7\nlet surface = #xffffff\nlet ink = #x1c1c1e\nlet ink2 = #x3c3c43\nlet muted = #x8e8e93\nlet accent = #x007aff\nlet danger = #xd70015\nlet line = #xe5e5ea\nlet demo_bg = #xfff3cd\nlet demo_ink = #x8a0b00\n\nlet archived = []\nlet drafts = []\nlet sent = []\nlet last_id = \"\"\nlet status = \"Demo inbox.\"\nlet depth = 0\nlet sel = \"m1\"\n\n// ---------- state helpers ----------\n\nfn has_item(list, x){ for v in list { if v == x { return true } } false }\n\nfn pick(cond, on, off){ if cond { on } else { off } }\n\nfn msg_of(id){\n    for m in msgs { if m.id == id { return m } }\n    nil\n}\n\nfn n_rows(){\n    let n = 0\n    for m in msgs { if !has_item(archived, m.id) { n = n + 1 } }\n    n\n}\n\nfn n_unread(){\n    let n = 0\n    for m in msgs { if !has_item(archived, m.id) && m.unread { n = n + 1 } }\n    n\n}\n\nfn lead(){\n    for m in msgs { if !has_item(archived, m.id) { return m } }\n    nil\n}\n\nfn lead_id(){\n    let m = lead()\n    if m == nil { return \"\" }\n    m.id\n}\n\nfn unread_str(id){\n    for m in msgs {\n        if m.id == id {\n            if m.unread { return \"Unread\" }\n            return \"Read\"\n        }\n    }\n    \"\"\n}\n\nfn sel_archived(){ has_item(archived, sel) }\n\n// A draft belongs to the message it was typed for, so selecting a different\n// message never shows another one's text.\nfn draft_of(id){\n    for d in drafts { if d.id == id { return d.text } }\n    \"\"\n}\n\nfn set_draft(id, t){\n    for d in drafts { if d.id == id { d.text = t; return } }\n    drafts.push({id: id text: t})\n}\n\nfn say(s){ status = s; ui.status.set_text(s) }\n\nfn depth_name(){\n    if depth == 0 { return \"L0 \u00b7 compact glance\" }\n    if depth == 1 { return \"L1 \u00b7 expanded card\" }\n    return \"L2 \u00b7 full app\"\n}\n\nfn set_depth(d){\n    depth = d\n    say(\"Showing \" + depth_name())\n    sync()\n}\n\n// ---------- local actions ----------\n\nfn do_archive(id){\n    if has_item(archived, id) { return }\n    archived.push(id)\n    last_id = id\n    say(\"Archived (demo) \u00b7 tap Undo\")\n    sync()\n}\n\nfn do_undo(){\n    if last_id == \"\" { say(\"Nothing to undo.\"); return }\n    if !has_item(archived, last_id) { last_id = \"\"; say(\"Nothing to undo.\"); return }\n    archived.retain(|x| x != last_id)\n    last_id = \"\"\n    say(\"Restored to Inbox (demo)\")\n    sync()\n}\n\nfn do_read(id){\n    for m in msgs { if m.id == id { m.unread = !m.unread } }\n    if unread_str(id) == \"Unread\" { say(\"Marked unread (demo)\") } else { say(\"Marked read (demo)\") }\n    sync()\n}\n\nfn do_open(id){\n    sel = id\n    set_depth(1)\n}\n\nfn do_reply(id){\n    sel = id\n    set_depth(2)\n}\n\nfn do_send(){\n    let m = msg_of(sel)\n    if m == nil { say(\"Pick a message first\"); return }\n    if has_item(archived, m.id) { say(\"Unarchive before replying (demo)\"); return }\n    let body = draft_of(m.id).trim()\n    if body == \"\" { say(\"Nothing to send \u00b7 write a reply first\"); return }\n    sent.push({to: m.from subject: \"Re: \" + m.subject preview: body})\n    set_draft(m.id, \"\")\n    say(\"Sent (demo) to \" + m.from)\n    sync()\n}\n\n// ---------- chrome sync ----------\n\nfn sync(){\n    ui.glance.set_visible(depth == 0)\n    ui.expanded.set_visible(depth == 1)\n    ui.full.set_visible(depth == 2)\n\n    ui.count.set_text(\"\" + n_rows() + \" in Inbox \u00b7 \" + \"\" + n_unread() + \" unread\")\n    ui.depth_now.set_text(\"Showing \" + depth_name())\n\n    let m = lead()\n    if m == nil {\n        ui.g_card.set_visible(false)\n        ui.g_empty.set_visible(true)\n    } else {\n        ui.g_card.set_visible(true)\n        ui.g_empty.set_visible(false)\n        ui.g_from.set_text(m.from)\n        ui.g_time.set_text(m.at)\n        ui.g_subj.set_text(m.subject)\n        ui.g_prev.set_text(m.preview)\n        ui.g_meta.set_text(m.tag + \" \u00b7 \" + pick(m.unread, \"Unread\", \"Read\"))\n    }\n\n    // L1: the card is only live when the selected message is really in the inbox\n    let s = msg_of(sel)\n    let live = false\n    if s != nil && !has_item(archived, s.id) { live = true }\n    ui.x_card.set_visible(live)\n    ui.x_gone.set_visible(!live)\n    if live {\n        ui.x_from.set_text(s.from)\n        ui.x_time.set_text(s.at)\n        ui.x_subj.set_text(s.subject)\n        ui.x_meta.set_text(s.tag + \" \u00b7 \" + pick(s.unread, \"Unread\", \"Read\") + \" \u00b7 \" + pick(s.att, \"1 attachment\", \"no attachment\"))\n        ui.x_prev.set_text(s.preview)\n    }\n\n    ui.r1.set_visible(!has_item(archived, \"m1\"))\n    ui.r2.set_visible(!has_item(archived, \"m2\"))\n    ui.r3.set_visible(!has_item(archived, \"m3\"))\n    ui.r4.set_visible(!has_item(archived, \"m4\"))\n    ui.r1_u.set_text(unread_str(\"m1\"))\n    ui.r2_u.set_text(unread_str(\"m2\"))\n    ui.r3_u.set_text(unread_str(\"m3\"))\n    ui.r4_u.set_text(unread_str(\"m4\"))\n\n    // reader + composer follow the selection\n    let r = msg_of(sel)\n    if r != nil {\n        ui.rd_from.set_text(r.from + \" \u00b7 \" + r.at)\n        ui.rd_subj.set_text(r.subject)\n        ui.rd_body.set_text(r.body)\n        ui.cmp_to.set_text(\"To \" + r.from)\n        ui.cmp_subj.set_text(\"Re: \" + r.subject)\n    }\n    ui.field.set_text(draft_of(sel))\n\n    if sent.len() > 0 {\n        ui.sent_card.set_visible(true)\n        let last = sent[sent.len() - 1]\n        ui.sent_count.set_text(\"\" + sent.len())\n        ui.sent_to.set_text(\"To \" + last.to + \" \u00b7 \" + last.subject)\n        ui.sent_prev.set_text(last.preview)\n    } else {\n        ui.sent_card.set_visible(false)\n    }\n}\n\n// ---------- shared button styles ----------\n\nlet Flat = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}\n    draw_text +: {color: accent color_hover: accent color_down: accent text_style +: {font_size: 15}}}\n\nlet DangerFlat = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}\n    draw_text +: {color: danger color_hover: danger color_down: danger text_style +: {font_size: 15}}}\n\nlet Seg = ButtonFlat{height: 44 width: Fill align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000f color_down: #x0000001a border_size: 0.0}\n    draw_text +: {color: ink color_hover: ink color_down: ink text_style +: {font_size: 14}}}\n\nlet Chip = ButtonFlat{height: 44 padding: Inset{left: 10 right: 10} align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}\n    draw_text +: {color: ink2 color_hover: ink2 color_down: ink2 text_style +: {font_size: 13}}}\n\n// ---------- root ----------\n\nSolidView{width: Fill height: Fill flow: Down draw_bg.color: ground\n\n    // chrome\n    View{width: Fill height: Fit flow: Down spacing: 2\n        padding: Inset{left: 16 right: 16 top: 12 bottom: 8}\n        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n            Label{text: \"Mail\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 21}}\n            View{width: Fill height: 1}\n            RoundedView{width: Fit height: Fit\n                padding: Inset{left: 8 right: 8 top: 3 bottom: 3}\n                draw_bg.color: demo_bg draw_bg.border_radius: 6.0\n                Label{text: \"DEMO\" draw_text.color: demo_ink draw_text.text_style: theme.font_bold{font_size: 11}}\n            }\n        }\n        count := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n    }\n\n    View{width: Fill height: Fill flow: Down\n\n        // ===== L0 : compact glance =====\n        glance := View{width: Fill height: Fill flow: Down spacing: 10\n            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n            g_card := RoundedView{width: Fill height: Fit flow: Down spacing: 4\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                    g_from := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                    g_time := Label{text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                }\n                g_subj := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                g_prev := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n                g_meta := Label{text: \"\" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 12}}\n            }\n            g_empty := RoundedView{visible: false width: Fill height: Fit flow: Down spacing: 4\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                Label{width: Fill text: \"No demo messages\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                Label{width: Fill text: \"Everything is archived (demo).\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n            }\n            View{width: Fill height: 1}\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Flat{text: \"Open card\" on_click: || do_open(lead_id())}\n                Flat{text: \"Full app\" on_click: || set_depth(2)}\n            }\n        }\n\n        // ===== L1 : expanded actionable card =====\n        expanded := View{visible: false width: Fill height: Fill flow: Down spacing: 10\n            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n            x_card := RoundedView{width: Fill height: Fit flow: Down spacing: 4\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                    x_from := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 16}}\n                    x_time := Label{text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                }\n                x_subj := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                x_meta := Label{text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                SolidView{width: Fill height: 1 draw_bg.color: line}\n                x_prev := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 14}\n            }\n            x_gone := RoundedView{visible: false width: Fill height: Fit flow: Down spacing: 4\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                Label{width: Fill text: \"Message archived (demo)\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                Label{width: Fill text: \"Use Undo below, or open another message in the full app.\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n            }\n            View{width: Fill height: Fit flow: Right spacing: 8\n                DangerFlat{text: \"Archive\" on_click: || do_archive(sel)}\n                Flat{text: \"Toggle read\" on_click: || do_read(sel)}\n            }\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Flat{text: \"Reply (demo)\" on_click: || do_reply(sel)}\n                Flat{text: \"Full app\" on_click: || set_depth(2)}\n            }\n            View{width: Fill height: 1}\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Flat{text: \"\u2039 Glance\" on_click: || set_depth(0)}\n            }\n        }\n\n        // ===== L2 : full app view =====\n        full := View{visible: false width: Fill height: Fill flow: Down spacing: 8\n            padding: Inset{left: 16 right: 16 top: 4 bottom: 4}\n            // reader \u2014 the full body of the selected message\n            RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                padding: Inset{left: 14 right: 14 top: 8 bottom: 8}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                rd_from := Label{text: \"\" draw_text.color: demo_ink draw_text.text_style: theme.font_bold{font_size: 11}}\n                rd_subj := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 14}}\n                rd_body := Label{width: Fill height: 64 text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n            }\n            // compact inbox rows \u2014 one 44pt Open each\n            r1 := View{width: Fill height: Fit\n                RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                    padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                    draw_bg.color: surface draw_bg.border_radius: 10.0\n                    Label{width: Fill text: \"Ana Ruiz\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                    r1_u := Label{text: \"Unread\" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 12}}\n                    Flat{text: \"Open\" on_click: || do_open(\"m1\")}\n                }\n            }\n            r2 := View{width: Fill height: Fit\n                RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                    padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                    draw_bg.color: surface draw_bg.border_radius: 10.0\n                    Label{width: Fill text: \"City Library\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                    r2_u := Label{text: \"Unread\" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 12}}\n                    Flat{text: \"Open\" on_click: || do_open(\"m2\")}\n                }\n            }\n            r3 := View{width: Fill height: Fit\n                RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                    padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                    draw_bg.color: surface draw_bg.border_radius: 10.0\n                    Label{width: Fill text: \"Priya N.\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                    r3_u := Label{text: \"Read\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                    Flat{text: \"Open\" on_click: || do_open(\"m3\")}\n                }\n            }\n            r4 := View{width: Fill height: Fit\n                RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                    padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                    draw_bg.color: surface draw_bg.border_radius: 10.0\n                    Label{width: Fill text: \"Northwind Studio\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                    r4_u := Label{text: \"Read\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                    Flat{text: \"Open\" on_click: || do_open(\"m4\")}\n                }\n            }\n            // composer, addressed to the selected message\n            RoundedView{width: Fill height: Fit flow: Down spacing: 4\n                padding: Inset{left: 14 right: 14 top: 8 bottom: 8}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                cmp_to := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 12}}\n                cmp_subj := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                field := TextInput{width: Fill height: 44\n                    on_change: |t| set_draft(sel, t)}\n                View{width: Fill height: Fit flow: Right spacing: 8\n                    Flat{text: \"Send (demo)\" on_click: || do_send()}\n                }\n            }\n            sent_card := RoundedView{visible: false width: Fill height: Fit flow: Down spacing: 2\n                padding: Inset{left: 14 right: 14 top: 8 bottom: 8}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                    Label{text: \"SENT \u00b7 DEMO\" draw_text.color: demo_ink draw_text.text_style: theme.font_bold{font_size: 11}}\n                    sent_count := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                }\n                sent_to := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                sent_prev := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 12}\n            }\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Flat{text: \"\u2039 Glance\" on_click: || set_depth(0)}\n                Flat{text: \"Card\" on_click: || set_depth(1)}\n            }\n        }\n    }\n\n    // ---------- bottom bar ----------\n    View{width: Fill height: Fit flow: Down spacing: 4\n        padding: Inset{left: 16 right: 16 top: 6 bottom: 8}\n        SolidView{width: Fill height: 1 draw_bg.color: line}\n        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n            depth_now := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 12}}\n            Chip{text: \"Undo\" on_click: || do_undo()}\n        }\n        RoundedView{width: Fill height: Fit flow: Right spacing: 4\n            padding: Inset{left: 4 right: 4 top: 4 bottom: 4}\n            draw_bg.color: #xe5e5ea draw_bg.border_radius: 12.0\n            b0 := Seg{text: \"L0 Glance\" on_click: || set_depth(0)}\n            b1 := Seg{text: \"L1 Card\" on_click: || set_depth(1)}\n            b2 := Seg{text: \"L2 App\" on_click: || set_depth(2)}\n        }\n        status := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n    }\n}\n\nfn boot(){\n    say(\"Showing L0 \u00b7 compact glance\")\n    sync()\n}\n\nstart_timeout(0.05, || boot())",
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "bg": "#fff2f2f7",
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 1,
+          "id": "15",
+          "kind": "View",
+          "parent": 0,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 102,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 102,
+          "i": 2,
+          "id": "-",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 47,
+          "cw": 352,
+          "cx": 16,
+          "cy": 40,
+          "h": 47,
+          "i": 3,
+          "id": "-",
+          "kind": "View",
+          "parent": 2,
+          "w": 352,
+          "x": 16,
+          "y": 40
+        },
+        {
+          "ch": 40,
+          "cw": 63,
+          "cx": 20,
+          "cy": 44,
+          "fg": "#ff1c1c1e",
+          "h": 40,
+          "i": 4,
+          "id": "-",
+          "kind": "Label",
+          "parent": 3,
+          "text": "Mail",
+          "w": 63,
+          "x": 20,
+          "y": 44
+        },
+        {
+          "ch": 1,
+          "cw": 193,
+          "cx": 94,
+          "cy": 63,
+          "h": 1,
+          "i": 5,
+          "id": "1",
+          "kind": "View",
+          "parent": 3,
+          "w": 193,
+          "x": 94,
+          "y": 63
+        },
+        {
+          "bg": "#fffff3cd",
+          "ch": 37,
+          "cw": 73,
+          "cx": 295,
+          "cy": 45,
+          "h": 37,
+          "i": 6,
+          "id": "2",
+          "kind": "View",
+          "parent": 3,
+          "w": 73,
+          "x": 295,
+          "y": 45
+        },
+        {
+          "ch": 24,
+          "cw": 50,
+          "cx": 307,
+          "cy": 52,
+          "fg": "#ff8a0b00",
+          "h": 24,
+          "i": 7,
+          "id": "-",
+          "kind": "Label",
+          "parent": 6,
+          "text": "DEMO",
+          "w": 50,
+          "x": 307,
+          "y": 52
+        },
+        {
+          "ch": 26,
+          "cw": 345,
+          "cx": 20,
+          "cy": 93,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 8,
+          "id": "count",
+          "kind": "Label",
+          "parent": 2,
+          "text": "4 in Inbox \u00b7 2 unread",
+          "w": 345,
+          "x": 20,
+          "y": 93
+        },
+        {
+          "ch": 489,
+          "cw": 384,
+          "cx": 0,
+          "cy": 130,
+          "h": 489,
+          "i": 9,
+          "id": "1",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 130
+        },
+        {
+          "ch": 489,
+          "cw": 384,
+          "cx": 0,
+          "cy": 130,
+          "h": 489,
+          "i": 46,
+          "id": "full",
+          "kind": "View",
+          "parent": 9,
+          "w": 384,
+          "x": 0,
+          "y": 130
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 186,
+          "cw": 352,
+          "cx": 16,
+          "cy": 134,
+          "h": 186,
+          "i": 47,
+          "id": "-",
+          "kind": "View",
+          "parent": 46,
+          "w": 352,
+          "x": 16,
+          "y": 134
+        },
+        {
+          "ch": 24,
+          "cw": 115,
+          "cx": 34,
+          "cy": 146,
+          "fg": "#ff8a0b00",
+          "h": 24,
+          "i": 48,
+          "id": "rd_from",
+          "kind": "Label",
+          "parent": 47,
+          "text": "Ana Ruiz \u00b7 09:12",
+          "w": 115,
+          "x": 34,
+          "y": 146
+        },
+        {
+          "ch": 55,
+          "cw": 317,
+          "cx": 34,
+          "cy": 180,
+          "fg": "#ff1c1c1e",
+          "h": 55,
+          "i": 49,
+          "id": "rd_subj",
+          "kind": "Label",
+          "parent": 47,
+          "text": "Contract renewal - signature by Friday",
+          "w": 317,
+          "x": 34,
+          "y": 180
+        },
+        {
+          "ch": 64,
+          "cw": 317,
+          "cx": 34,
+          "cy": 245,
+          "fg": "#ff3c3c43",
+          "h": 64,
+          "i": 50,
+          "id": "rd_body",
+          "kind": "Label",
+          "parent": 47,
+          "text": "The revised payment terms are in the attached PDF: net 45 instead of net 30, and the renewal window moves to 60 days. Can we sign by Friday?",
+          "w": 317,
+          "x": 34,
+          "y": 245
+        },
+        {
+          "ch": 54,
+          "cw": 352,
+          "cx": 16,
+          "cy": 328,
+          "h": 54,
+          "i": 51,
+          "id": "r1",
+          "kind": "View",
+          "parent": 46,
+          "w": 352,
+          "x": 16,
+          "y": 328
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 54,
+          "cw": 352,
+          "cx": 16,
+          "cy": 328,
+          "h": 54,
+          "i": 52,
+          "id": "-",
+          "kind": "View",
+          "parent": 51,
+          "w": 352,
+          "x": 16,
+          "y": 328
+        },
+        {
+          "ch": 24,
+          "cw": 175,
+          "cx": 34,
+          "cy": 343,
+          "fg": "#ff1c1c1e",
+          "h": 24,
+          "i": 53,
+          "id": "-",
+          "kind": "Label",
+          "parent": 52,
+          "text": "Ana Ruiz",
+          "w": 175,
+          "x": 34,
+          "y": 343
+        },
+        {
+          "ch": 26,
+          "cw": 60,
+          "cx": 217,
+          "cy": 342,
+          "fg": "#ff007aff",
+          "h": 26,
+          "i": 54,
+          "id": "r1_u",
+          "kind": "Label",
+          "parent": 52,
+          "text": "Unread",
+          "w": 60,
+          "x": 217,
+          "y": 342
+        },
+        {
+          "ch": 44,
+          "cw": 71,
+          "cx": 289,
+          "cy": 333,
+          "glyphs": 1,
+          "h": 44,
+          "i": 55,
+          "id": "1",
+          "kind": "Button",
+          "parent": 52,
+          "tappable": true,
+          "text": "Open",
+          "w": 71,
+          "x": 289,
+          "y": 333
+        },
+        {
+          "ch": 54,
+          "cw": 352,
+          "cx": 16,
+          "cy": 390,
+          "h": 54,
+          "i": 56,
+          "id": "r2",
+          "kind": "View",
+          "parent": 46,
+          "w": 352,
+          "x": 16,
+          "y": 390
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 54,
+          "cw": 352,
+          "cx": 16,
+          "cy": 390,
+          "h": 54,
+          "i": 57,
+          "id": "-",
+          "kind": "View",
+          "parent": 56,
+          "w": 352,
+          "x": 16,
+          "y": 390
+        },
+        {
+          "ch": 24,
+          "cw": 175,
+          "cx": 34,
+          "cy": 405,
+          "fg": "#ff1c1c1e",
+          "h": 24,
+          "i": 58,
+          "id": "-",
+          "kind": "Label",
+          "parent": 57,
+          "text": "City Library",
+          "w": 175,
+          "x": 34,
+          "y": 405
+        },
+        {
+          "ch": 26,
+          "cw": 60,
+          "cx": 217,
+          "cy": 404,
+          "fg": "#ff007aff",
+          "h": 26,
+          "i": 59,
+          "id": "r2_u",
+          "kind": "Label",
+          "parent": 57,
+          "text": "Unread",
+          "w": 60,
+          "x": 217,
+          "y": 404
+        },
+        {
+          "ch": 44,
+          "cw": 71,
+          "cx": 289,
+          "cy": 395,
+          "glyphs": 1,
+          "h": 44,
+          "i": 60,
+          "id": "1",
+          "kind": "Button",
+          "parent": 57,
+          "tappable": true,
+          "text": "Open",
+          "w": 71,
+          "x": 289,
+          "y": 395
+        },
+        {
+          "ch": 54,
+          "cw": 352,
+          "cx": 16,
+          "cy": 452,
+          "h": 54,
+          "i": 61,
+          "id": "r3",
+          "kind": "View",
+          "parent": 46,
+          "w": 352,
+          "x": 16,
+          "y": 452
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 54,
+          "cw": 352,
+          "cx": 16,
+          "cy": 452,
+          "h": 54,
+          "i": 62,
+          "id": "-",
+          "kind": "View",
+          "parent": 61,
+          "w": 352,
+          "x": 16,
+          "y": 452
+        },
+        {
+          "ch": 24,
+          "cw": 193,
+          "cx": 34,
+          "cy": 467,
+          "fg": "#ff1c1c1e",
+          "h": 24,
+          "i": 63,
+          "id": "-",
+          "kind": "Label",
+          "parent": 62,
+          "text": "Priya N.",
+          "w": 193,
+          "x": 34,
+          "y": 467
+        },
+        {
+          "ch": 26,
+          "cw": 43,
+          "cx": 234,
+          "cy": 466,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 64,
+          "id": "r3_u",
+          "kind": "Label",
+          "parent": 62,
+          "text": "Read",
+          "w": 43,
+          "x": 234,
+          "y": 466
+        },
+        {
+          "ch": 44,
+          "cw": 71,
+          "cx": 289,
+          "cy": 457,
+          "glyphs": 1,
+          "h": 44,
+          "i": 65,
+          "id": "1",
+          "kind": "Button",
+          "parent": 62,
+          "tappable": true,
+          "text": "Open",
+          "w": 71,
+          "x": 289,
+          "y": 457
+        },
+        {
+          "ch": 54,
+          "cw": 352,
+          "cx": 16,
+          "cy": 514,
+          "h": 54,
+          "i": 66,
+          "id": "r4",
+          "kind": "View",
+          "parent": 46,
+          "w": 352,
+          "x": 16,
+          "y": 514
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 54,
+          "cw": 352,
+          "cx": 16,
+          "cy": 514,
+          "h": 54,
+          "i": 67,
+          "id": "-",
+          "kind": "View",
+          "parent": 66,
+          "w": 352,
+          "x": 16,
+          "y": 514
+        },
+        {
+          "ch": 24,
+          "cw": 193,
+          "cx": 34,
+          "cy": 529,
+          "fg": "#ff1c1c1e",
+          "h": 24,
+          "i": 68,
+          "id": "-",
+          "kind": "Label",
+          "parent": 67,
+          "text": "Northwind Studio",
+          "w": 193,
+          "x": 34,
+          "y": 529
+        },
+        {
+          "ch": 26,
+          "cw": 43,
+          "cx": 234,
+          "cy": 528,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 69,
+          "id": "r4_u",
+          "kind": "Label",
+          "parent": 67,
+          "text": "Read",
+          "w": 43,
+          "x": 234,
+          "y": 528
+        },
+        {
+          "ch": 44,
+          "cw": 71,
+          "cx": 289,
+          "cy": 519,
+          "glyphs": 1,
+          "h": 44,
+          "i": 70,
+          "id": "1",
+          "kind": "Button",
+          "parent": 67,
+          "tappable": true,
+          "text": "Open",
+          "w": 71,
+          "x": 289,
+          "y": 519
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 42,
+          "cw": 352,
+          "cx": 16,
+          "cy": 576,
+          "h": 198,
+          "i": 71,
+          "id": "1",
+          "kind": "View",
+          "parent": 46,
+          "w": 352,
+          "x": 16,
+          "y": 576
+        },
+        {
+          "ch": 26,
+          "cw": 317,
+          "cx": 34,
+          "cy": 588,
+          "fg": "#ff1c1c1e",
+          "h": 26,
+          "i": 72,
+          "id": "cmp_to",
+          "kind": "Label",
+          "parent": 71,
+          "text": "To Ana Ruiz",
+          "w": 317,
+          "x": 34,
+          "y": 588
+        },
+        {
+          "ch": 0,
+          "cw": 317,
+          "cx": 34,
+          "cy": 619,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 73,
+          "id": "cmp_subj",
+          "kind": "Label",
+          "parent": 71,
+          "text": "Re: Contract renewal - signature by Friday",
+          "w": 317,
+          "x": 34,
+          "y": 625
+        },
+        {
+          "ch": 0,
+          "cw": 324,
+          "cx": 30,
+          "cy": 619,
+          "h": 48,
+          "i": 74,
+          "id": "field",
+          "kind": "TextInput",
+          "parent": 71,
+          "w": 324,
+          "x": 30,
+          "y": 661
+        },
+        {
+          "ch": 0,
+          "cw": 324,
+          "cx": 30,
+          "cy": 619,
+          "h": 50,
+          "i": 75,
+          "id": "-",
+          "kind": "View",
+          "parent": 71,
+          "w": 324,
+          "x": 30,
+          "y": 716
+        },
+        {
+          "ch": 0,
+          "cw": 138,
+          "cx": 30,
+          "cy": 619,
+          "glyphs": 1,
+          "h": 44,
+          "i": 76,
+          "id": "-",
+          "kind": "Button",
+          "parent": 75,
+          "tappable": true,
+          "text": "Send (demo)",
+          "w": 138,
+          "x": 30,
+          "y": 719
+        },
+        {
+          "ch": 0,
+          "cw": 352,
+          "cx": 16,
+          "cy": 619,
+          "h": 50,
+          "i": 83,
+          "id": "2",
+          "kind": "View",
+          "parent": 46,
+          "w": 352,
+          "x": 16,
+          "y": 782
+        },
+        {
+          "ch": 0,
+          "cw": 97,
+          "cx": 16,
+          "cy": 619,
+          "glyphs": 1,
+          "h": 44,
+          "i": 84,
+          "id": "-",
+          "kind": "Button",
+          "parent": 83,
+          "tappable": true,
+          "text": "\u2039 Glance",
+          "w": 97,
+          "x": 16,
+          "y": 785
+        },
+        {
+          "ch": 0,
+          "cw": 66,
+          "cx": 121,
+          "cy": 619,
+          "glyphs": 1,
+          "h": 44,
+          "i": 85,
+          "id": "1",
+          "kind": "Button",
+          "parent": 83,
+          "tappable": true,
+          "text": "Card",
+          "w": 66,
+          "x": 121,
+          "y": 785
+        },
+        {
+          "ch": 168,
+          "cw": 384,
+          "cx": 0,
+          "cy": 619,
+          "h": 168,
+          "i": 86,
+          "id": "2",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 619
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 1,
+          "cw": 352,
+          "cx": 16,
+          "cy": 625,
+          "h": 1,
+          "i": 87,
+          "id": "-",
+          "kind": "View",
+          "parent": 86,
+          "w": 352,
+          "x": 16,
+          "y": 625
+        },
+        {
+          "ch": 50,
+          "cw": 352,
+          "cx": 16,
+          "cy": 630,
+          "h": 50,
+          "i": 88,
+          "id": "1",
+          "kind": "View",
+          "parent": 86,
+          "w": 352,
+          "x": 16,
+          "y": 630
+        },
+        {
+          "ch": 22,
+          "cw": 283,
+          "cx": 20,
+          "cy": 644,
+          "fg": "#ff1c1c1e",
+          "h": 22,
+          "i": 89,
+          "id": "depth_now",
+          "kind": "Label",
+          "parent": 88,
+          "text": "Showing L2 \u00b7 full app",
+          "w": 283,
+          "x": 20,
+          "y": 644
+        },
+        {
+          "ch": 44,
+          "cw": 61,
+          "cx": 307,
+          "cy": 633,
+          "glyphs": 1,
+          "h": 44,
+          "i": 90,
+          "id": "-",
+          "kind": "Button",
+          "parent": 88,
+          "tappable": true,
+          "text": "Undo",
+          "w": 61,
+          "x": 307,
+          "y": 633
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 58,
+          "cw": 352,
+          "cx": 16,
+          "cy": 684,
+          "h": 58,
+          "i": 91,
+          "id": "2",
+          "kind": "View",
+          "parent": 86,
+          "w": 352,
+          "x": 16,
+          "y": 684
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 20,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 92,
+          "id": "b0",
+          "kind": "Button",
+          "parent": 91,
+          "tappable": true,
+          "text": "L0 Glance",
+          "w": 112,
+          "x": 20,
+          "y": 691
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 136,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 93,
+          "id": "b1",
+          "kind": "Button",
+          "parent": 91,
+          "tappable": true,
+          "text": "L1 Card",
+          "w": 112,
+          "x": 136,
+          "y": 691
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 252,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 94,
+          "id": "b2",
+          "kind": "Button",
+          "parent": 91,
+          "tappable": true,
+          "text": "L2 App",
+          "w": 112,
+          "x": 252,
+          "y": 691
+        },
+        {
+          "ch": 26,
+          "cw": 345,
+          "cx": 20,
+          "cy": 749,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 95,
+          "id": "status",
+          "kind": "Label",
+          "parent": 86,
+          "text": "Showing L2 \u00b7 full app",
+          "w": 345,
+          "x": 20,
+          "y": 749
+        }
+      ]
+    },
+    "tree": "W3 47\n0 -1 - Splash 0 28 384 758\n1 0 15 View 0 28 384 758\n2 1 - View 0 28 384 102\n3 2 - View 16 40 352 47\n4 3 - Label 20 44 63 40\n5 3 1 View 94 63 193 1\n6 3 2 View 295 45 73 37\n7 6 - Label 307 52 50 24\n8 2 count Label 20 93 345 26\n9 1 1 View 0 130 384 489\n10 9 full View 0 130 384 489\n11 10 - View 16 134 352 186\n12 11 rd_from Label 34 146 115 24\n13 11 rd_subj Label 34 180 317 55\n14 11 rd_body Label 34 245 317 64\n15 10 r1 View 16 328 352 54\n16 15 - View 16 328 352 54\n17 16 - Label 34 343 175 24\n18 16 r1_u Label 217 342 60 26\n19 16 1 Button 289 333 71 44\n20 10 r2 View 16 390 352 54\n21 20 - View 16 390 352 54\n22 21 - Label 34 405 175 24\n23 21 r2_u Label 217 404 60 26\n24 21 1 Button 289 395 71 44\n25 10 r3 View 16 452 352 54\n26 25 - View 16 452 352 54\n27 26 - Label 34 467 193 24\n28 26 r3_u Label 234 466 43 26\n29 26 1 Button 289 457 71 44\n30 10 r4 View 16 514 352 54\n31 30 - View 16 514 352 54\n32 31 - Label 34 529 193 24\n33 31 r4_u Label 234 528 43 26\n34 31 1 Button 289 519 71 44\n35 10 1 View 16 576 352 42\n36 35 cmp_to Label 34 588 317 26\n37 1 2 View 0 619 384 168\n38 37 - View 16 625 352 1\n39 37 1 View 16 630 352 50\n40 39 depth_now Label 20 644 283 22\n41 39 - Button 307 633 61 44\n42 37 2 View 16 684 352 58\n43 42 b0 Button 20 691 112 44\n44 42 b1 Button 136 691 112 44\n45 42 b2 Button 252 691 112 44\n46 37 status Label 20 749 345 26\n",
+    "widgets": [
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "-@0",
+        "text": null,
+        "type": "Splash",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "15",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "15@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          102
+        ],
+        "selected": null,
+        "selector": "-@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          40,
+          352,
+          47
+        ],
+        "selected": null,
+        "selector": "-@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          20,
+          44,
+          63,
+          40
+        ],
+        "selected": null,
+        "selector": "-@3",
+        "text": "Mail",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          94,
+          63,
+          193,
+          1
+        ],
+        "selected": null,
+        "selector": "1@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          295,
+          45,
+          73,
+          37
+        ],
+        "selected": null,
+        "selector": "2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          307,
+          52,
+          50,
+          24
+        ],
+        "selected": null,
+        "selector": "-@4",
+        "text": "DEMO",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "count",
+        "rect": [
+          20,
+          93,
+          345,
+          26
+        ],
+        "selected": null,
+        "selector": "count@0",
+        "text": "4 in Inbox \u00b7 2 unread",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          130,
+          384,
+          489
+        ],
+        "selected": null,
+        "selector": "1@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "glance",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "glance@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_card",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_card@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@5",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_from",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_from@0",
+        "text": "Ana Ruiz",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_time",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_time@0",
+        "text": "09:12",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_subj",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_subj@0",
+        "text": "Contract renewal - signature by Friday",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_prev",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_prev@0",
+        "text": "The revised payment terms are in the attached PDF. Can you confirm we can sign by Friday?",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_meta",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_meta@0",
+        "text": "Work \u00b7 Unread",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_empty",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_empty@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@6",
+        "text": "No demo messages",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@2",
+        "text": "Everything is archived (demo).",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@7",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@3",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@8",
+        "text": "Open card",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@4",
+        "text": "Full app",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "expanded",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "expanded@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_card",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_card@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@9",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_from",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_from@0",
+        "text": "Ana Ruiz",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_time",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_time@0",
+        "text": "09:12",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_subj",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_subj@0",
+        "text": "Contract renewal - signature by Friday",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_meta",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_meta@0",
+        "text": "Work \u00b7 Unread \u00b7 1 attachment",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@5",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_prev",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_prev@0",
+        "text": "The revised payment terms are in the attached PDF. Can you confirm we can sign by Friday?",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_gone",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_gone@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@10",
+        "text": "Message archived (demo)",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@6",
+        "text": "Use Undo below, or open another message in the full app.",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@11",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@12",
+        "text": "Archive",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@7",
+        "text": "Toggle read",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@8",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@13",
+        "text": "Reply (demo)",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@9",
+        "text": "Full app",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "3",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "3@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@14",
+        "text": "\u2039 Glance",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "full",
+        "rect": [
+          0,
+          130,
+          384,
+          489
+        ],
+        "selected": null,
+        "selector": "full@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          134,
+          352,
+          186
+        ],
+        "selected": null,
+        "selector": "-@15",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_from",
+        "rect": [
+          34,
+          146,
+          115,
+          24
+        ],
+        "selected": null,
+        "selector": "rd_from@0",
+        "text": "Ana Ruiz \u00b7 09:12",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_subj",
+        "rect": [
+          34,
+          180,
+          317,
+          55
+        ],
+        "selected": null,
+        "selector": "rd_subj@0",
+        "text": "Contract renewal - signature by Friday",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_body",
+        "rect": [
+          34,
+          245,
+          317,
+          64
+        ],
+        "selected": null,
+        "selector": "rd_body@0",
+        "text": "The revised payment terms are in the attached PDF: net 45 instead of net 30, and the renewal window moves to 60 days. Can we sign by Friday?",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1",
+        "rect": [
+          16,
+          328,
+          352,
+          54
+        ],
+        "selected": null,
+        "selector": "r1@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          328,
+          352,
+          54
+        ],
+        "selected": null,
+        "selector": "-@16",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          34,
+          343,
+          175,
+          24
+        ],
+        "selected": null,
+        "selector": "-@17",
+        "text": "Ana Ruiz",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1_u",
+        "rect": [
+          217,
+          342,
+          60,
+          26
+        ],
+        "selected": null,
+        "selector": "r1_u@0",
+        "text": "Unread",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          289,
+          333,
+          71,
+          44
+        ],
+        "selected": null,
+        "selector": "1@10",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2",
+        "rect": [
+          16,
+          390,
+          352,
+          54
+        ],
+        "selected": null,
+        "selector": "r2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          390,
+          352,
+          54
+        ],
+        "selected": null,
+        "selector": "-@18",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          34,
+          405,
+          175,
+          24
+        ],
+        "selected": null,
+        "selector": "-@19",
+        "text": "City Library",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2_u",
+        "rect": [
+          217,
+          404,
+          60,
+          26
+        ],
+        "selected": null,
+        "selector": "r2_u@0",
+        "text": "Unread",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          289,
+          395,
+          71,
+          44
+        ],
+        "selected": null,
+        "selector": "1@11",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3",
+        "rect": [
+          16,
+          452,
+          352,
+          54
+        ],
+        "selected": null,
+        "selector": "r3@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          452,
+          352,
+          54
+        ],
+        "selected": null,
+        "selector": "-@20",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          34,
+          467,
+          193,
+          24
+        ],
+        "selected": null,
+        "selector": "-@21",
+        "text": "Priya N.",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3_u",
+        "rect": [
+          234,
+          466,
+          43,
+          26
+        ],
+        "selected": null,
+        "selector": "r3_u@0",
+        "text": "Read",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          289,
+          457,
+          71,
+          44
+        ],
+        "selected": null,
+        "selector": "1@12",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r4",
+        "rect": [
+          16,
+          514,
+          352,
+          54
+        ],
+        "selected": null,
+        "selector": "r4@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          514,
+          352,
+          54
+        ],
+        "selected": null,
+        "selector": "-@22",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          34,
+          529,
+          193,
+          24
+        ],
+        "selected": null,
+        "selector": "-@23",
+        "text": "Northwind Studio",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r4_u",
+        "rect": [
+          234,
+          528,
+          43,
+          26
+        ],
+        "selected": null,
+        "selector": "r4_u@0",
+        "text": "Read",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          289,
+          519,
+          71,
+          44
+        ],
+        "selected": null,
+        "selector": "1@13",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          16,
+          576,
+          352,
+          42
+        ],
+        "selected": null,
+        "selector": "1@14",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "cmp_to",
+        "rect": [
+          34,
+          588,
+          317,
+          26
+        ],
+        "selected": null,
+        "selector": "cmp_to@0",
+        "text": "To Ana Ruiz",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "cmp_subj",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "cmp_subj@0",
+        "text": "Re: Contract renewal - signature by Friday",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "field",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "field@0",
+        "text": "Your text here",
+        "type": "TextInput",
+        "value": "",
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@24",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@25",
+        "text": "Send (demo)",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "sent_card",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "sent_card@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@26",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@27",
+        "text": "SENT \u00b7 DEMO",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "sent_count",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "sent_count@0",
+        "text": null,
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "sent_to",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "sent_to@0",
+        "text": null,
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "sent_prev",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "sent_prev@0",
+        "text": null,
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@28",
+        "text": "\u2039 Glance",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@15",
+        "text": "Card",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          619,
+          384,
+          168
+        ],
+        "selected": null,
+        "selector": "2@3",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          625,
+          352,
+          1
+        ],
+        "selected": null,
+        "selector": "-@29",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          16,
+          630,
+          352,
+          50
+        ],
+        "selected": null,
+        "selector": "1@16",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "depth_now",
+        "rect": [
+          20,
+          644,
+          283,
+          22
+        ],
+        "selected": null,
+        "selector": "depth_now@0",
+        "text": "Showing L2 \u00b7 full app",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          307,
+          633,
+          61,
+          44
+        ],
+        "selected": null,
+        "selector": "-@30",
+        "text": "Undo",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          16,
+          684,
+          352,
+          58
+        ],
+        "selected": null,
+        "selector": "2@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b0",
+        "rect": [
+          20,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b0@0",
+        "text": "L0 Glance",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b1",
+        "rect": [
+          136,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b1@0",
+        "text": "L1 Card",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b2",
+        "rect": [
+          252,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b2@0",
+        "text": "L2 App",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "status",
+        "rect": [
+          20,
+          749,
+          345,
+          26
+        ],
+        "selected": null,
+        "selector": "status@0",
+        "text": "Showing L2 \u00b7 full app",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      }
+    ]
+  },
+  "width": 1080
+}

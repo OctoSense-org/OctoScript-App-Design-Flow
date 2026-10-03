@@ -1,0 +1,11 @@
+{
+  "video": {
+    "title": "Lo-fi build session · 42 min",
+    "subtitle": "Circuit Beats · 184K views · 3 days ago",
+    "summary": "Demo video item. No player or video data is available offline, so the video cannot be played.",
+    "as_of": "3d",
+    "$state": "ready",
+    "$status": "ready"
+  },
+  "_note": "Synthetic demo fixture for card-templates/youtube/glance.card (sys.dataset). Bound under the source alias `video`. Not fetched video data."
+}

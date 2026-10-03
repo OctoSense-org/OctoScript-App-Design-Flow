@@ -1,0 +1,62 @@
+{
+  "family": "photo",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Harbor sunset",
+        "UNAVAILABLE"
+      ],
+      "excludes": [
+        "local and real",
+        "local-image route"
+      ]
+    },
+    {
+      "label": "expanded",
+      "action": "tap",
+      "target": "Expand",
+      "contains": [
+        "Harbor sunset",
+        "UNAVAILABLE"
+      ],
+      "excludes": [
+        "local and real",
+        "local-image route"
+      ]
+    },
+    {
+      "label": "full-app",
+      "action": "tap",
+      "target": "Open app",
+      "occurrence": 0,
+      "contains": [
+        "Harbor sunset",
+        "Studio still life"
+      ],
+      "excludes": [
+        "local and real",
+        "local-image route"
+      ]
+    },
+    {
+      "label": "last-row-reachable",
+      "action": "scroll",
+      "target": "3@1",
+      "delta_y": 340,
+      "contains": [
+        "Trail ridge, mist"
+      ]
+    },
+    {
+      "label": "last-item-detail",
+      "action": "tap",
+      "target": "Open \u203a",
+      "occurrence": -1,
+      "contains": [
+        "Trail ridge, mist",
+        "North Ridge"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+[
+  {
+    "path": "card-templates/finance/glance.data.json",
+    "sha256": "6cdfcce3bc4ec944fc09d5d45c341c9a174060ae6f21bfcb99abc1631a11533f",
+    "bytes": 394
+  },
+  {
+    "path": "card-templates/finance/bundle/manifest.json",
+    "sha256": "9795fd981fe63b7db711853c5572583917d8ea908d4b94b85e350423466fe600",
+    "bytes": 235
+  },
+  {
+    "path": "card-templates/finance/bundle/main.splash",
+    "sha256": "7a784dfd5efd2b1734d36eb83cd862659c25fdcbf908ea0d49c1dd411b9ad5cb",
+    "bytes": 18261
+  },
+  {
+    "path": "card-templates/finance/glance.card",
+    "sha256": "d0e71e4d8fb8d99925b70806fba6236031d5e633a5c418570c71fcdb980071ce",
+    "bytes": 2240
+  },
+  {
+    "path": "card-templates/news/glance.card",
+    "sha256": "429f63f38f78345a31702f1e54dbc517884483d1adfb32c5fcff914a203489a2",
+    "bytes": 2035
+  },
+  {
+    "path": "card-templates/news/glance.data.json",
+    "sha256": "74fdc2e5e90524309c67a232958d38fc845ae793c3eda9f013a70b5f341ef517",
+    "bytes": 518
+  },
+  {
+    "path": "card-templates/news/bundle/main.splash",
+    "sha256": "4efc64f25cf4895430b8677b3199048a702c77f87eaf1301713aae34d0e213ca",
+    "bytes": 14247
+  },
+  {
+    "path": "card-templates/news/bundle/manifest.json",
+    "sha256": "9cd949a8b185004242b34fa41fc8700024b31241669840d52d058594d765ba48",
+    "bytes": 229
+  },
+  {
+    "path": "card-templates/mail/glance.card",
+    "sha256": "190f728d58cf07d692aed8ac82990277f47916c1166146ffeebc367d434ce529",
+    "bytes": 2798
+  },
+  {
+    "path": "card-templates/mail/glance.data.json",
+    "sha256": "9c1008f68ec958292d01195725491d07a0dd595a4c02073b92374766ad97aba9",
+    "bytes": 325
+  },
+  {
+    "path": "card-templates/mail/bundle/manifest.json",
+    "sha256": "98d814db46317a526acf1c4fad2f09c192f3a0a8e0177df701e1947f56411254",
+    "bytes": 229
+  },
+  {
+    "path": "card-templates/mail/bundle/main.splash",
+    "sha256": "8979e89aa28560ca61111b0cc72711e463825cc143c6c81d1b147b788b1d6f50",
+    "bytes": 15305
+  },
+  {
+    "path": "card-templates/photo/glance.card",
+    "sha256": "c0bf6dd80dcb8d2a4304df09eaf8099dd576f7409379b74b84073d1a90d652ef",
+    "bytes": 2265
+  },
+  {
+    "path": "card-templates/photo/bundle/manifest.json",
+    "sha256": "c6ba2216bff2c7543a6e301b23fb92964d4f9683b9380ff23aa3bd7def0a1ce6",
+    "bytes": 231
+  },
+  {
+    "path": "card-templates/photo/bundle/main.splash",
+    "sha256": "5375b6c77a0d338bd8b07a71847bb8f6f68711179b986149c2ab8ba0ee02635b",
+    "bytes": 15979
+  },
+  {
+    "path": "card-templates/photo/glance.data.json",
+    "sha256": "227fea10798c53833f2f3091e58c604a812acf5c3ac83e79db94231e5c80b6dd",
+    "bytes": 432
+  },
+  {
+    "path": "card-templates/calendar/bundle/manifest.json",
+    "sha256": "8056d4a9b8f6e21456ebde3833ff64e4e8326d11736891165c829de6c3721d92",
+    "bytes": 237
+  },
+  {
+    "path": "card-templates/calendar/bundle/main.splash",
+    "sha256": "f1509beab8547c15ecc230afb06f6d0026bedd3d326116a2010410fb9e45fb3d",
+    "bytes": 14750
+  },
+  {
+    "path": "card-templates/calendar/glance.data.json",
+    "sha256": "45bdb4cabc61ccba5926ab6e0cbd52ad1469d60b5565eeb1bd34fb154ec3d351",
+    "bytes": 344
+  },
+  {
+    "path": "card-templates/calendar/glance.card",
+    "sha256": "d2c5ffaa303933ffe577b2a7d7c3dbe30fe08951b5f7b08f2485fbc1bd936c82",
+    "bytes": 2602
+  },
+  {
+    "path": "card-templates/youtube/glance.data.json",
+    "sha256": "dcf54c34d871c2a45fa7baa816018ddfc0ea4108840a915a6e93a138e4a60a18",
+    "bytes": 458
+  },
+  {
+    "path": "card-templates/youtube/bundle/manifest.json",
+    "sha256": "711469c561b7a4ac90bc60fd00f0b7a6a0767a8af24edbef47c2fc8d44ec066a",
+    "bytes": 235
+  },
+  {
+    "path": "card-templates/youtube/bundle/main.splash",
+    "sha256": "303de4d02d08dc2265b6fe7d793dcb5f445427bcc29975a020aad903b6582cc5",
+    "bytes": 16268
+  },
+  {
+    "path": "card-templates/youtube/glance.card",
+    "sha256": "1732f6ac6f1aa9538ad8ca5254c6e752a39ebf60940a7a6925da19b18df2fecd",
+    "bytes": 2291
+  },
+  {
+    "path": "card-templates/DESIGN.md",
+    "sha256": "d0f3c8b257e87f944009401f5be2dcd04476e7a406e22fde40c005aefdd399c3",
+    "bytes": 12422
+  }
+]

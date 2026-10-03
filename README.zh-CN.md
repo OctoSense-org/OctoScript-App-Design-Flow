@@ -424,7 +424,7 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 
 ## 示例
 
-用 image-to-card 流程构建的参考流程。每个示例自带设计源文件、审核过的卡片场景、服务代码和测试。
+image-to-card 参考流程和 Android 模型编写的原型。各项目记录自己的源码、评审证据及当前限制。
 
 | 示例 | 形态 | 内容 |
 | --- | --- | --- |
@@ -433,6 +433,7 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 | [Health](examples/health/README.zh-CN.md) | 原生卡片 / WASM | 虚构的体检预约 |
 | [Reunion](examples/reunion/README.zh-CN.md) | 原生卡片 / WASM | 聚会筹划、回复与付款 |
 | [Calendar](examples/calendar/README.zh-CN.md) | 原生卡片 / 浏览器预览 + 同步服务器 | 两台设备共用一份日历，附基于 SQLite 的同步服务器 |
+| [Android 模型编写的卡片原型](examples/android-a2app-card-templates/README.zh-CN.md) | Android Studio；概览／展开／完整应用 | 六类 Android 模型源码、可重放来源及原生证据；已评审原型，尚未达到 A− 体验目标。 |
 
 脚本应用的完整示例是 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
 中的第一方应用包（`apps/<name>/bundle/`），以及 [templates/script-app](templates/script-app/README.zh-CN.md)。

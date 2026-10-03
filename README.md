@@ -495,8 +495,8 @@ Limits, stated plainly:
 
 ## Examples
 
-Reference journeys built with the image-to-card flow. Each owns its design
-source, reviewed card scenes, service code and tests.
+Image-to-card journeys and Android-authored prototypes. Each project records
+its source, review evidence and current limits.
 
 | Example | Surfaces | What it is |
 | --- | --- | --- |
@@ -505,6 +505,7 @@ source, reviewed card scenes, service code and tests.
 | [Health](examples/health/README.md) | Native cards / WASM | A fictional health-check booking |
 | [Reunion](examples/reunion/README.md) | Native cards / WASM | Reunion planning, RSVP and payment |
 | [Calendar](examples/calendar/README.md) | Native cards / browser preview + sync server | One calendar on two devices, with a SQLite-backed sync server |
+| [Android-authored card prototypes](examples/android-a2app-card-templates/README.md) | Android Studio; glance / expanded / full app | Six Android-authored families with replayable source and native evidence; reviewed prototypes, below the A− UX target. |
 
 For a script app, the complete examples are the first-party bundles in
 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)

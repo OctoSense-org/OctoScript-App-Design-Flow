@@ -1,0 +1,90 @@
+{
+  "scope": "Dedicated DeepSeek Android test runtime; build receipts plus independent installed APK hash readback; no provider configuration",
+  "runtime_lock": {
+    "schema_version": 1,
+    "url": "https://github.com/OctoSense-org/Octoscript-Makepad.git",
+    "revision": "2cc5ef37d7d6a3d2992673389ce74488f7bb2d87"
+  },
+  "framework_runtime": {
+    "schema_version": 1,
+    "repositories": {
+      "makepad": {
+        "url": "https://github.com/OctoSense-org/makepad.git",
+        "revision": "c155f61d0e1600d2ec474209374444a38a09a470"
+      },
+      "octoscript": {
+        "url": "https://github.com/OctoSense-org/Octoscript.git",
+        "revision": "5991dfae9344589e732b2605b530f788e8bbcd11"
+      }
+    }
+  },
+  "build": {
+    "variant": "standalone",
+    "development": true,
+    "dev_mode": true,
+    "home_package": "dev.makepad.octosense.studio",
+    "home_version_code": 2026100306,
+    "source_revision": "ccf8013f2bd7adbb6c20d5f52f47bcfbcbb55313",
+    "source_dirty": false,
+    "runtime": {
+      "schema_version": 1,
+      "url": "https://github.com/OctoSense-org/Octoscript-Makepad.git",
+      "revision": "2cc5ef37d7d6a3d2992673389ce74488f7bb2d87"
+    },
+    "runtime_patches": {
+      "schema_version": 1,
+      "makepad": {
+        "base_revision": "c155f61d0e1600d2ec474209374444a38a09a470",
+        "patch": "tools/runtime-patches/makepad-settings.patch",
+        "sha256": "b17352ebf59e50ab3db6ff1cb825c4e006bcdff47d83522e372b8fe585e57570",
+        "tree": "3eadf628ee75eb4c9b672446bf14c7b95d9f0f5b",
+        "product_fixes": [
+          "Settings integration: Android IME synchronization, accessibility and reduced motion, GLES program-cache validation, obscured-gesture cancellation and scroll-position observation.",
+          "Contained-app isolation and secret-input restrictions come from the pinned upstream runtime; the Settings overlay preserves those gates.",
+          "System Back callback owners suppress compatibility Back keys to avoid duplicate navigation on Android 13+.",
+          "A cancelled search's keyboard hides once: an editor session going inactive retires its input connection without restarting input, which brought the keyboard back empty while it was hiding (Android 11).",
+          "Windows remote grabs send raw RGBA pixels to the bounded PNG worker before presenting, keeping full-size encoding off the UI thread and scaling before encoding.",
+          "Windows frame completion: backport Makepad work c508ab0c8 GPU completion polls around native and hosted repaint so upload buffers can retire."
+        ],
+        "stacked": [
+          {
+            "patch": "tools/runtime-patches/makepad-system-back.patch",
+            "sha256": "3268cb486bbd05db7bb6920c26007e437017b6234a4d9f045a99a7d1954b7427"
+          },
+          {
+            "patch": "tools/runtime-patches/makepad-ime-inactive-no-restart.patch",
+            "sha256": "8ae6a6aceb93a013234c724ffdc6efc614cc8b9dddd7cae6ed8b1c569b94fdf1"
+          },
+          {
+            "patch": "tools/runtime-patches/makepad-windows-remote-capture.patch",
+            "sha256": "2c0fabb6f5c0733d9d3356cde4cc7c8d40aabebf9a4752740c94f332b7e1317a"
+          },
+          {
+            "patch": "tools/runtime-patches/makepad-windows-frame-completion.patch",
+            "sha256": "8d58e16bc12aae5f4313fdc5c9d3f6944b96ee20e609fe5ff069fe2403954595"
+          }
+        ]
+      }
+    },
+    "octos_kernel": {
+      "source": "prebuilt",
+      "sha256": "4bcfa4f5c60f7e8cad526b49481d40bf0556ce4853aad9c72f853ad866ded1e6"
+    },
+    "receipt": {
+      "file": "OctoSense/rom/out/home/standalone-dev-mode/dev.makepad.octosense.studio/build.json",
+      "bytes": 3251,
+      "sha256": "8558aa51199a0a35231a39561f62d307966c1b8493140e4fffc5f2ce761f221b"
+    },
+    "apk": {
+      "file": "OctoSense/rom/out/home/standalone-dev-mode/dev.makepad.octosense.studio/OctoSenseHome.apk",
+      "bytes": 251012307,
+      "sha256": "d1dbebdf602f01ee427d68109c500e607b7a5c50fc3f387d5a7c46a1f7b4f882",
+      "matches_build_receipt": true
+    },
+    "device_installed_hash": "d1dbebdf602f01ee427d68109c500e607b7a5c50fc3f387d5a7c46a1f7b4f882"
+  },
+  "reference_index": "../reference-index.json",
+  "installed_build_verification": "installed-builds-verified.json",
+  "cleanup": "final-cleanup.json",
+  "source_url": "https://github.com/OctoSense-org/OctoSense/commit/ccf8013f2bd7adbb6c20d5f52f47bcfbcbb55313"
+}

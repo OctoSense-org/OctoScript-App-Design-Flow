@@ -1,0 +1,58 @@
+{
+  "family": "mail",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Contract signing"
+      ]
+    },
+    {
+      "label": "expanded",
+      "action": "tap",
+      "target": "Expand",
+      "contains": [
+        "Send (demo)"
+      ]
+    },
+    {
+      "label": "typed-with-keyboard",
+      "action": "text",
+      "target": "reply_field",
+      "text": "Thanks Ana — I will review the demo terms today.",
+      "input_value": "Thanks Ana — I will review the demo terms today.",
+      "capture_android": true
+    },
+    {
+      "label": "send-reachable-with-keyboard",
+      "action": "scroll",
+      "target": "3@1",
+      "delta_y": 140,
+      "input_value": "Thanks Ana — I will review the demo terms today.",
+      "capture_android": true
+    },
+    {
+      "label": "local-send-confirmed",
+      "action": "tap",
+      "target": "Send (demo)",
+      "contains": [
+        "Draft queued (local demo)",
+        "no real mail was sent."
+      ]
+    },
+    {
+      "label": "return-to-glance",
+      "action": "tap",
+      "target": "Glance",
+      "contains": [
+        "Contract signing"
+      ]
+    },
+    {
+      "label": "draft-retained",
+      "action": "tap",
+      "target": "Expand",
+      "input_value": "Thanks Ana — I will review the demo terms today."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "path": "card-templates/mail/glance.data.json",
+    "sha256": "7737594f8cad20e29dafe461b3fb1eec1894eb792a35f851bf93bb7ce583b1ec",
+    "bytes": 1290
+  },
+  {
+    "path": "card-templates/mail/bundle/main.splash",
+    "sha256": "1c2cc7cb15149e642a3e971aaad8fb7ad418a7a71a15947301fcdba1b103f1a9",
+    "bytes": 19795
+  },
+  {
+    "path": "card-templates/mail/bundle/manifest.json",
+    "sha256": "bc5ca857f20a2ef5ce2bdb402afac2016f9574bae6307cad1f1a45f538c1809b",
+    "bytes": 235
+  },
+  {
+    "path": "card-templates/mail/glance.card",
+    "sha256": "9fdc2a4a610219496c435f4806948c4ff8d128eb65955a67877a691b1056617b",
+    "bytes": 4317
+  },
+  {
+    "path": "card-templates/DESIGN.md",
+    "sha256": "5603413b851679880e742b3e3dcbb576195095aa2533334ad345ed5421413054",
+    "bytes": 11331
+  }
+]

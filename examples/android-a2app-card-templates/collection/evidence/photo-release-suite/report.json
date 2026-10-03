@@ -1,0 +1,248 @@
+{
+  "family": "photo",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "Harbor sunset",
+          "UNAVAILABLE"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor sunset",
+          "pass": true
+        },
+        {
+          "contains": "UNAVAILABLE",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "action": "tap",
+        "target": "Expand",
+        "contains": [
+          "Harbor sunset",
+          "UNAVAILABLE"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        89,
+        134,
+        73,
+        44
+      ],
+      "target_selector": "1@2",
+      "png": "01-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor sunset",
+          "pass": true
+        },
+        {
+          "contains": "UNAVAILABLE",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-app",
+      "input": {
+        "label": "full-app",
+        "action": "tap",
+        "target": "Open app",
+        "occurrence": 0,
+        "contains": [
+          "Harbor sunset",
+          "Studio still life"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        170,
+        157,
+        89,
+        44
+      ],
+      "target_selector": "2@1",
+      "png": "02-full-app.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "1",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor sunset",
+          "pass": true
+        },
+        {
+          "contains": "Studio still life",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "last-row-reachable",
+      "input": {
+        "label": "last-row-reachable",
+        "action": "scroll",
+        "target": "3@1",
+        "delta_y": 340,
+        "contains": [
+          "Trail ridge, mist"
+        ]
+      },
+      "target_rect": [
+        12,
+        247,
+        360,
+        527
+      ],
+      "target_selector": "3@1",
+      "png": "03-last-row-reachable.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "-",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Trail ridge, mist",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "last-item-detail",
+      "input": {
+        "label": "last-item-detail",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": -1,
+        "contains": [
+          "Trail ridge, mist",
+          "North Ridge"
+        ]
+      },
+      "target_rect": [
+        122,
+        701,
+        108,
+        44
+      ],
+      "target_selector": "1@11",
+      "png": "04-last-item-detail.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Trail ridge, mist",
+          "pass": true
+        },
+        {
+          "contains": "North Ridge",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.photo",
+    "capabilities": [],
+    "digest": "895169ead8d11fb7ac44e04be0fa184198d00090069e58e6ff068c14c35e3331",
+    "name": "Photo Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

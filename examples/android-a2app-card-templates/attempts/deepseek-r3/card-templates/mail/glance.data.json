@@ -1,0 +1,10 @@
+{
+  "msg": {
+    "title": "Contract signing — Friday?",
+    "subtitle": "Ana Rivera · Can we sign by Friday?",
+    "as_of": "9:41",
+    "$state": "ready",
+    "$status": "ready"
+  },
+  "_note": "Synthetic demo fixture for card-templates/mail/glance.card (sys.dataset). Bound under the source name `msg`. Not real mail."
+}

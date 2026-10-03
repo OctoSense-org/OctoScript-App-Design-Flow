@@ -1,0 +1,80 @@
+{
+  "family": "youtube",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Lo-fi build session",
+        "UNAVAILABLE"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "expanded",
+      "action": "tap",
+      "target": "Expand",
+      "contains": [
+        "Lo-fi build session",
+        "UNAVAILABLE"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "full-app",
+      "action": "tap",
+      "target": "Open app",
+      "occurrence": 0,
+      "contains": [
+        "Lo-fi build session",
+        "Synth patch walkthrough"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ],
+      "excludes": [
+        "local and real",
+        "video route",
+        "player stream"
+      ]
+    },
+    {
+      "label": "last-row-reachable",
+      "action": "scroll",
+      "target": "3@1",
+      "delta_y": 340,
+      "contains": [
+        "Desk setup tour 2026"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ]
+    },
+    {
+      "label": "last-item-detail",
+      "action": "tap",
+      "target": "Open \u203a",
+      "occurrence": -1,
+      "contains": [
+        "Desk setup tour 2026",
+        "Study Corner"
+      ],
+      "no_enabled_button_text": [
+        "Play"
+      ]
+    }
+  ]
+}

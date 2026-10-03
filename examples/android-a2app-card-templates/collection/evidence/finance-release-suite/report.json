@@ -1,0 +1,227 @@
+{
+  "family": "finance",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "142.60 USD",
+          "Demo Corp"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "142.60 USD",
+          "pass": true
+        },
+        {
+          "contains": "Demo Corp",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "action": "tap",
+        "target": "Expand",
+        "contains": [
+          "140.10",
+          "30d trend"
+        ]
+      },
+      "target_rect": [
+        89,
+        134,
+        73,
+        44
+      ],
+      "target_selector": "1@2",
+      "png": "01-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "140.10",
+          "pass": true
+        },
+        {
+          "contains": "30d trend",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-app",
+      "input": {
+        "label": "full-app",
+        "action": "tap",
+        "target": "Open app",
+        "occurrence": 0,
+        "contains": [
+          "Northwind Energy",
+          "86.15 USD"
+        ]
+      },
+      "target_rect": [
+        170,
+        157,
+        89,
+        44
+      ],
+      "target_selector": "2@1",
+      "png": "02-full-app.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "-",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "1",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "2",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Northwind Energy",
+          "pass": true
+        },
+        {
+          "contains": "86.15 USD",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "last-row-reachable",
+      "input": {
+        "label": "last-row-reachable",
+        "action": "scroll",
+        "target": "3@1",
+        "delta_y": 340,
+        "contains": [
+          "GridWorks"
+        ]
+      },
+      "target_rect": [
+        12,
+        247,
+        360,
+        527
+      ],
+      "target_selector": "3@1",
+      "png": "03-last-row-reachable.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "-",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "1",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "GridWorks",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "last-item-detail",
+      "input": {
+        "label": "last-item-detail",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": -1,
+        "contains": [
+          "GridWorks",
+          "54.30 USD"
+        ]
+      },
+      "target_rect": [
+        111,
+        701,
+        108,
+        44
+      ],
+      "target_selector": "1@11",
+      "png": "04-last-item-detail.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "GridWorks",
+          "pass": true
+        },
+        {
+          "contains": "54.30 USD",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.finance",
+    "capabilities": [],
+    "digest": "1c592b58cfc4d6702f7202c4021a5a627a792859a396aeb9560d2970eec4ba53",
+    "name": "Finance Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

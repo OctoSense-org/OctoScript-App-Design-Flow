@@ -1,0 +1,106 @@
+{
+  "status": "final_manual_review_of_captured_snapshot",
+  "source_copy": "deepseek-round10-final",
+  "scale": {
+    "maximum": 5,
+    "a_minus_threshold": 4.5,
+    "method": "Manual reviewer judgment, not a benchmark or an arithmetic test-pass score."
+  },
+  "overall_visual_ux_score": 4.1,
+  "meets_a_minus_visual_ux": false,
+  "scope": "Six offline demo families on one OnePlus6 portrait configuration. Scores assess actual rendered card/app components; explicit gallery test chrome is excluded from component scores but considered in whole-screen usability limitations.",
+  "authorship_report": "final-collection-authorship-validation.json",
+  "scores_by_surface": {
+    "mail": {
+      "exported_L0_glance": 4.5,
+      "native_L1_expanded_card": 4.3,
+      "native_L2_app_component": 4.1,
+      "rationale": "Clear sender/subject and action hierarchy; native keyboard/draft/local-queue behavior has separate evidence. Expanded layout remains somewhat spacious."
+    },
+    "calendar": {
+      "exported_L0_glance": 4.5,
+      "native_L1_expanded_card": 4.2,
+      "native_L2_app_component": 4.1,
+      "rationale": "Readable event hierarchy and selected RSVP; round10 corrects retained list offset on detail navigation and preserves per-event responses. Agenda rows remain tall."
+    },
+    "news": {
+      "exported_L0_glance": 4.1,
+      "native_L1_expanded_card": 4.2,
+      "native_L2_app_component": 4.1,
+      "rationale": "Glance is substantially shorter; selected Feed/Saved and link-only copy are clear. Long titles consume more space than other families."
+    },
+    "finance": {
+      "exported_L0_glance": 4.2,
+      "native_L1_expanded_card": 4.2,
+      "native_L2_app_component": 4.0,
+      "rationale": "Stacked names/prices eliminate prior horizontal truncation; watch/detail controls are reachable. Tall rows reduce density; charts and prices are fixture-only."
+    },
+    "photo": {
+      "exported_L0_glance": 4.1,
+      "native_L1_expanded_card": 4.1,
+      "native_L2_app_component": 3.9,
+      "rationale": "Unavailable-image state is concise and honest, with clear Favorite/back controls. No actual image presentation was demonstrated; full app remains a sparse metadata list."
+    },
+    "youtube": {
+      "exported_L0_glance": 4.1,
+      "native_L1_expanded_card": 4.1,
+      "native_L2_app_component": 3.9,
+      "rationale": "False Play affordance and header overflow are removed; Watch later and selected tabs are clear. No playback was demonstrated; full app remains a sparse metadata list."
+    }
+  },
+  "strengths": [
+    "Consistent panels, typography, rounded controls and family accents.",
+    "All six exported L0 glances rendered at 968px width with settled:true; no visible horizontal truncation in reviewed final glances.",
+    "Selected tabs/RSVP are visible; unsupported network/media actions are described honestly.",
+    "Final native list-scroll captures reach and open the last Calendar, Finance, Photo and YouTube items."
+  ],
+  "remaining_polish": [
+    "Large primary glance buttons dominate the content; smaller secondary glance chips do not have independent 44pt compliance evidence.",
+    "Generous row spacing and prominent gallery controls consume substantial phone height; the whole L2 experience is less polished than individual cards.",
+    "Photo and YouTube demonstrate unavailable-media states only, not complete media app experiences."
+  ],
+  "calendar_regression": {
+    "report": "calendar-scroll-fixed-suite/report.json",
+    "behavior_passes": 21,
+    "steps": 21,
+    "raw_geometry_and_behavior_passes": 18,
+    "raw_failures": [
+      "week",
+      "last-event-reachable",
+      "back-after-last"
+    ],
+    "classification": "Reviewed images show ordinary vertical list viewport clipping. Detail header/date/place are visible after last-item navigation; this fixes the distinct earlier retained-offset defect.",
+    "reviewed_images": [
+      "calendar-scroll-fixed-suite/11-last-event-reachable.png",
+      "calendar-scroll-fixed-suite/12-last-event-detail.png",
+      "calendar-scroll-fixed-suite/13-last-event-going.png",
+      "calendar-scroll-fixed-suite/14-back-after-last.png",
+      "calendar-scroll-fixed-suite/15-first-response-still-independent.png"
+    ],
+    "implementation_note": "stage.on_render creates a fresh ScrollYView subtree. Both list and detail remain inside that recreated subtree; detail is not outside the ScrollYView."
+  },
+  "evidence_limits": [
+    "Read-only review; reviewer did not operate the device or author/edit app source.",
+    "Behavior credit is limited to captured reports/tool traces; screenshot appearance alone does not prove interaction correctness.",
+    "A geometry pass is not blanket 44pt touch-target, accessibility, stability or full-product acceptance.",
+    "Exported L0 settled:true is distinct from native studio.inspect settled:false snapshots.",
+    "Fixtures and in-memory state do not establish real mail/calendar/news/finance services, media playback, account sync or persistent storage.",
+    "The Mail keyboard-android.png was captured after IME dismissal; the typed-value/scroll/send trace is the keyboard-behavior evidence.",
+    "Manual scores assess this collection only, not general DeepSeek superiority or a controlled model benchmark."
+  ],
+  "evidence_sha256": {
+    "glances-final/report.json": "35e78672a93ed0454b612ee8cee01d8b99a20ce8c894f15c9456be39f612eb25",
+    "calendar-scroll-fixed-suite/report.json": "833c5f25654597d0305f0b0c80ee5b06b29dfeed190e4b7427f48256f706021c",
+    "mail-release-suite/report.json": "13822def9e672a15e49ed05b1b99c655d8c8797a67680b6611f539076db3a8ef",
+    "news-release-suite/report.json": "d71a9c018d160a258dddfaa4e60a672a06edfea8da120754119f53d67b625599",
+    "finance-release-suite/report.json": "1237b8635ce1159d8195f5964aa0d353e6b72b393fa5b96943e9047462cc2e51",
+    "photo-release-suite/report.json": "ab5611a734f183471eaaf7579d4da48991b5702df823e2fa0513ac5cbf019df4",
+    "youtube-release-suite/report.json": "84fff3761da60e230a1c81958ec238e79d9091b4143466b493151a6d0949567f",
+    "glances-final/mail.png": "631bef533f74e34d364e74fbad59e24e4df0276a001c90e41e4913890149e667",
+    "glances-final/calendar.png": "076ae812f00b872250816cea9caf677ef44708054a8db60f43b99bfca974e76c",
+    "glances-final/news.png": "57ad67a2943eb9dbc719d91bb67b9f9195f05b7b96a04e65005803e753d30a43",
+    "glances-final/finance.png": "d41480e64c139f13350ca7034a149b37e90e0095720ad85a0951580cf40104e6",
+    "glances-final/photo.png": "08db10b72b1b4a3cea945b26d36c9373f6d4ddc9e0250d213082ef36d3ce3efc",
+    "glances-final/youtube.png": "b862d5c771f356426ef8c4b408a5157aae93c4d84117b5aea0c012ad03ad98c1"
+  }
+}
