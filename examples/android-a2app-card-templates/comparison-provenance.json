@@ -1,0 +1,1302 @@
+{
+  "schema": 1,
+  "collected_utc": "2026-10-03T07:07:31.914670+00:00",
+  "status": "frozen_deepseek_r3_minimax_final_r3_no_accepted_templates",
+  "model_labels": {
+    "deepseek": "DeepSeek V4 Flash (operator attribution)",
+    "minimax": "MiniMax M3.1 Flash Preview (operator attribution)"
+  },
+  "model_identity_limit": "sanitized transcripts do not include authoritative provider response model IDs; no provider profiles read",
+  "runtime_lock": {
+    "schema_version": 1,
+    "url": "https://github.com/OctoSense-org/Octoscript-Makepad.git",
+    "revision": "2cc5ef37d7d6a3d2992673389ce74488f7bb2d87"
+  },
+  "framework_runtime": {
+    "schema_version": 1,
+    "repositories": {
+      "makepad": {
+        "url": "https://github.com/OctoSense-org/makepad.git",
+        "revision": "c155f61d0e1600d2ec474209374444a38a09a470"
+      },
+      "octoscript": {
+        "url": "https://github.com/OctoSense-org/Octoscript.git",
+        "revision": "5991dfae9344589e732b2605b530f788e8bbcd11"
+      }
+    }
+  },
+  "builds": [
+    {
+      "variant": "standalone",
+      "development": true,
+      "dev_mode": true,
+      "home_package": "dev.makepad.octosense.studio",
+      "home_version_code": 2026100306,
+      "source_revision": "ccf8013f2bd7adbb6c20d5f52f47bcfbcbb55313",
+      "source_dirty": false,
+      "runtime": {
+        "schema_version": 1,
+        "url": "https://github.com/OctoSense-org/Octoscript-Makepad.git",
+        "revision": "2cc5ef37d7d6a3d2992673389ce74488f7bb2d87"
+      },
+      "runtime_patches": {
+        "schema_version": 1,
+        "makepad": {
+          "base_revision": "c155f61d0e1600d2ec474209374444a38a09a470",
+          "patch": "tools/runtime-patches/makepad-settings.patch",
+          "sha256": "b17352ebf59e50ab3db6ff1cb825c4e006bcdff47d83522e372b8fe585e57570",
+          "tree": "3eadf628ee75eb4c9b672446bf14c7b95d9f0f5b",
+          "product_fixes": [
+            "Settings integration: Android IME synchronization, accessibility and reduced motion, GLES program-cache validation, obscured-gesture cancellation and scroll-position observation.",
+            "Contained-app isolation and secret-input restrictions come from the pinned upstream runtime; the Settings overlay preserves those gates.",
+            "System Back callback owners suppress compatibility Back keys to avoid duplicate navigation on Android 13+.",
+            "A cancelled search's keyboard hides once: an editor session going inactive retires its input connection without restarting input, which brought the keyboard back empty while it was hiding (Android 11).",
+            "Windows remote grabs send raw RGBA pixels to the bounded PNG worker before presenting, keeping full-size encoding off the UI thread and scaling before encoding.",
+            "Windows frame completion: backport Makepad work c508ab0c8 GPU completion polls around native and hosted repaint so upload buffers can retire."
+          ],
+          "stacked": [
+            {
+              "patch": "tools/runtime-patches/makepad-system-back.patch",
+              "sha256": "3268cb486bbd05db7bb6920c26007e437017b6234a4d9f045a99a7d1954b7427"
+            },
+            {
+              "patch": "tools/runtime-patches/makepad-ime-inactive-no-restart.patch",
+              "sha256": "8ae6a6aceb93a013234c724ffdc6efc614cc8b9dddd7cae6ed8b1c569b94fdf1"
+            },
+            {
+              "patch": "tools/runtime-patches/makepad-windows-remote-capture.patch",
+              "sha256": "2c0fabb6f5c0733d9d3356cde4cc7c8d40aabebf9a4752740c94f332b7e1317a"
+            },
+            {
+              "patch": "tools/runtime-patches/makepad-windows-frame-completion.patch",
+              "sha256": "8d58e16bc12aae5f4313fdc5c9d3f6944b96ee20e609fe5ff069fe2403954595"
+            }
+          ]
+        }
+      },
+      "octos_kernel": {
+        "source": "prebuilt",
+        "sha256": "4bcfa4f5c60f7e8cad526b49481d40bf0556ce4853aad9c72f853ad866ded1e6"
+      },
+      "receipt": {
+        "file": "OctoSense/rom/out/home/standalone-dev-mode/dev.makepad.octosense.studio/build.json",
+        "bytes": 3251,
+        "sha256": "8558aa51199a0a35231a39561f62d307966c1b8493140e4fffc5f2ce761f221b"
+      },
+      "apk": {
+        "file": "OctoSense/rom/out/home/standalone-dev-mode/dev.makepad.octosense.studio/OctoSenseHome.apk",
+        "bytes": 251012307,
+        "sha256": "d1dbebdf602f01ee427d68109c500e607b7a5c50fc3f387d5a7c46a1f7b4f882",
+        "matches_build_receipt": true
+      },
+      "device_installed_hash": "not independently read by this collector"
+    },
+    {
+      "variant": "standalone",
+      "development": true,
+      "dev_mode": true,
+      "home_package": "dev.makepad.octosense.studio.minimax",
+      "home_version_code": 2026100306,
+      "source_revision": "ccf8013f2bd7adbb6c20d5f52f47bcfbcbb55313",
+      "source_dirty": false,
+      "runtime": {
+        "schema_version": 1,
+        "url": "https://github.com/OctoSense-org/Octoscript-Makepad.git",
+        "revision": "2cc5ef37d7d6a3d2992673389ce74488f7bb2d87"
+      },
+      "runtime_patches": {
+        "schema_version": 1,
+        "makepad": {
+          "base_revision": "c155f61d0e1600d2ec474209374444a38a09a470",
+          "patch": "tools/runtime-patches/makepad-settings.patch",
+          "sha256": "b17352ebf59e50ab3db6ff1cb825c4e006bcdff47d83522e372b8fe585e57570",
+          "tree": "3eadf628ee75eb4c9b672446bf14c7b95d9f0f5b",
+          "product_fixes": [
+            "Settings integration: Android IME synchronization, accessibility and reduced motion, GLES program-cache validation, obscured-gesture cancellation and scroll-position observation.",
+            "Contained-app isolation and secret-input restrictions come from the pinned upstream runtime; the Settings overlay preserves those gates.",
+            "System Back callback owners suppress compatibility Back keys to avoid duplicate navigation on Android 13+.",
+            "A cancelled search's keyboard hides once: an editor session going inactive retires its input connection without restarting input, which brought the keyboard back empty while it was hiding (Android 11).",
+            "Windows remote grabs send raw RGBA pixels to the bounded PNG worker before presenting, keeping full-size encoding off the UI thread and scaling before encoding.",
+            "Windows frame completion: backport Makepad work c508ab0c8 GPU completion polls around native and hosted repaint so upload buffers can retire."
+          ],
+          "stacked": [
+            {
+              "patch": "tools/runtime-patches/makepad-system-back.patch",
+              "sha256": "3268cb486bbd05db7bb6920c26007e437017b6234a4d9f045a99a7d1954b7427"
+            },
+            {
+              "patch": "tools/runtime-patches/makepad-ime-inactive-no-restart.patch",
+              "sha256": "8ae6a6aceb93a013234c724ffdc6efc614cc8b9dddd7cae6ed8b1c569b94fdf1"
+            },
+            {
+              "patch": "tools/runtime-patches/makepad-windows-remote-capture.patch",
+              "sha256": "2c0fabb6f5c0733d9d3356cde4cc7c8d40aabebf9a4752740c94f332b7e1317a"
+            },
+            {
+              "patch": "tools/runtime-patches/makepad-windows-frame-completion.patch",
+              "sha256": "8d58e16bc12aae5f4313fdc5c9d3f6944b96ee20e609fe5ff069fe2403954595"
+            }
+          ]
+        }
+      },
+      "octos_kernel": {
+        "source": "prebuilt",
+        "sha256": "4bcfa4f5c60f7e8cad526b49481d40bf0556ce4853aad9c72f853ad866ded1e6"
+      },
+      "receipt": {
+        "file": "OctoSense/rom/out/home/standalone-dev-mode/dev.makepad.octosense.studio.minimax/build.json",
+        "bytes": 3259,
+        "sha256": "b8fa903df345818315b9963e92fbc722afee2362722633a054b1545031568fb5"
+      },
+      "apk": {
+        "file": "OctoSense/rom/out/home/standalone-dev-mode/dev.makepad.octosense.studio.minimax/OctoSenseHome.apk",
+        "bytes": 251012307,
+        "sha256": "219a81645c60d315f1d7638e1efa15ab5ff4aa88f06fe0495edf44dbf4c2f34b",
+        "matches_build_receipt": true
+      },
+      "device_installed_hash": "not independently read by this collector"
+    }
+  ],
+  "reference_index": {
+    "file": "operator-evidence/reference-index.json",
+    "bytes": 2006,
+    "sha256": "9371f7a20887359146b00d59f17ef160912496e01f55d9f54d1800f31b62fc00"
+  },
+  "references": [
+    {
+      "file": "framework-l0.md",
+      "source": "apps/appcard/a2app-l0/framework/l0.md",
+      "sha256": "1af1883a1cf6b4a1161787737cfb0e8be5a88c6a3fc93754bddc56c24c45301f",
+      "local_source_sha256": "1af1883a1cf6b4a1161787737cfb0e8be5a88c6a3fc93754bddc56c24c45301f",
+      "matches_local_source": true
+    },
+    {
+      "file": "catalog.md",
+      "source": "apps/appcard/a2app-l0/framework/catalog.md",
+      "sha256": "135fddd30fb5ef5226e07e68dbf0fe10e9f3e5e5c27b6fa62c8ca8a7edd50c5d",
+      "local_source_sha256": "135fddd30fb5ef5226e07e68dbf0fe10e9f3e5e5c27b6fa62c8ca8a7edd50c5d",
+      "matches_local_source": true
+    },
+    {
+      "file": "a2app-design-system.md",
+      "source": "apps/appcard/a2app/widgets/design-system.md",
+      "sha256": "ca5af031d1bb04d7f34c30c92fcce17eae3e125258460ca9b2265c42d2f554cc",
+      "local_source_sha256": "ca5af031d1bb04d7f34c30c92fcce17eae3e125258460ca9b2265c42d2f554cc",
+      "matches_local_source": true
+    },
+    {
+      "file": "news.card",
+      "source": "apps/appcard/a2app-l0/apps/news/exemplar.card",
+      "sha256": "93df5b5e9571774e1d5570e87ec7fb84cc91963c0f0da185da34626d080c9f51",
+      "local_source_sha256": "93df5b5e9571774e1d5570e87ec7fb84cc91963c0f0da185da34626d080c9f51",
+      "matches_local_source": true
+    },
+    {
+      "file": "finance.card",
+      "source": "apps/appcard/a2app-l0/apps/stock/exemplar.card",
+      "sha256": "466819c3d16724148b93b91fab27875ffc68991aaa8e5d9b5f8bbbc3d36dabbe",
+      "local_source_sha256": "466819c3d16724148b93b91fab27875ffc68991aaa8e5d9b5f8bbbc3d36dabbe",
+      "matches_local_source": true
+    },
+    {
+      "file": "youtube.card",
+      "source": "apps/appcard/a2app-l0/apps/youtube/exemplar.card",
+      "sha256": "67a977984e4f7648b7cd072c7b57478711401f43187d19b7f439914f555182c5",
+      "local_source_sha256": "67a977984e4f7648b7cd072c7b57478711401f43187d19b7f439914f555182c5",
+      "matches_local_source": true
+    },
+    {
+      "file": "mail-request.card",
+      "source": "crates/shell/resources/glance/mail-request.card",
+      "sha256": "9e3e136daf3edcf006a181c569f5e80f20d2e72178bceeef95f9a7bafbdc92e4",
+      "local_source_sha256": "9e3e136daf3edcf006a181c569f5e80f20d2e72178bceeef95f9a7bafbdc92e4",
+      "matches_local_source": true
+    },
+    {
+      "file": "calendar-event.card",
+      "source": "apps/calendar/host-service/resources/event.card",
+      "sha256": "ec92edc8d7a0a3ed7e302b14b8d61aa839e855e246402046da3fd9679e05c91f",
+      "local_source_sha256": "ec92edc8d7a0a3ed7e302b14b8d61aa839e855e246402046da3fd9679e05c91f",
+      "matches_local_source": true
+    },
+    {
+      "file": "calendar-agenda.card",
+      "source": "apps/calendar/host-service/resources/agenda.card",
+      "sha256": "711f3a47c0dbb2e1a6f4c36637c16d29e65f19096536b698560f2d4ae5ec9134",
+      "local_source_sha256": "711f3a47c0dbb2e1a6f4c36637c16d29e65f19096536b698560f2d4ae5ec9134",
+      "matches_local_source": true
+    },
+    {
+      "file": "photos.splash",
+      "source": "apps/photos/bundle/main.splash",
+      "sha256": "7d992912af9fc1a9a3c9c89d79f83a5203c168649244547e33b3c9910b4e1c5f",
+      "local_source_sha256": "7d992912af9fc1a9a3c9c89d79f83a5203c168649244547e33b3c9910b4e1c5f",
+      "matches_local_source": true
+    },
+    {
+      "file": "SCRIPT-API.md",
+      "source": "OctoScript-App-Design-Flow/docs/SCRIPT-API.md",
+      "sha256": "6953b7cd3f7faa363f165e413631b7fd17274ab1045bcea4d274c5e2e45e0cde",
+      "local_source_sha256": "6953b7cd3f7faa363f165e413631b7fd17274ab1045bcea4d274c5e2e45e0cde",
+      "matches_local_source": true
+    }
+  ],
+  "transcripts": {
+    "01-mail-design-failed-background": {
+      "file": "operator-evidence/01-mail-design-failed-background/transcript.json",
+      "bytes": 295,
+      "sha256": "1ac525760f279a112fe0a9e934959f48df3c634dd679df97e4bf6d7fbfd0a3c8",
+      "tool_calls": 0,
+      "tools": {},
+      "success": 0,
+      "failure": 0,
+      "pending_result": 0,
+      "assistant_finals": 0,
+      "turn_errors": 1,
+      "image_delivery_labels": {},
+      "elapsed_seconds": null,
+      "timing_scope": "not recorded; not inferred from file mtimes"
+    },
+    "01-mail-design": {
+      "file": "operator-evidence/01-mail-design/transcript.json",
+      "bytes": 33452,
+      "sha256": "b8b5ab704c528d1cc2f9a9880dced0dd73a3ac7840550406b5ddff0095bf3af4",
+      "tool_calls": 20,
+      "tools": {
+        "read_file": 9,
+        "write_file": 5,
+        "studio_bundle_check": 1,
+        "tool_search": 4,
+        "list_dir": 1
+      },
+      "success": 19,
+      "failure": 1,
+      "pending_result": 0,
+      "assistant_finals": 1,
+      "turn_errors": 0,
+      "image_delivery_labels": {},
+      "elapsed_seconds": null,
+      "timing_scope": "not recorded; not inferred from file mtimes"
+    },
+    "02-mail-review": {
+      "file": "operator-evidence/02-mail-review/transcript.json",
+      "bytes": 34058,
+      "sha256": "34dea3faaa03ad4d4ccc2dd17629f20c6546d52d51f4746bf2b82ee78be65523",
+      "tool_calls": 25,
+      "tools": {
+        "studio_bundle_check": 4,
+        "tool_search": 1,
+        "write_file": 2,
+        "edit_file": 6,
+        "studio_open": 3,
+        "studio_inspect": 3,
+        "read_file": 1,
+        "view_image": 3,
+        "studio_input": 1,
+        "studio_close": 1
+      },
+      "success": 25,
+      "failure": 0,
+      "pending_result": 0,
+      "assistant_finals": 1,
+      "turn_errors": 0,
+      "image_delivery_labels": {
+        "reported_shown_to_model": 3
+      },
+      "elapsed_seconds": null,
+      "timing_scope": "not recorded; not inferred from file mtimes"
+    },
+    "03-mail-revision": {
+      "file": "operator-evidence/03-mail-revision/transcript.json",
+      "bytes": 39975,
+      "sha256": "0eb086e1ecd3255cbcb15e73de0c1a431f26213287769d3b2b7de32d5e389739",
+      "tool_calls": 29,
+      "tools": {
+        "view_image": 5,
+        "grep": 2,
+        "write_file": 2,
+        "edit_file": 5,
+        "studio_bundle_check": 2,
+        "studio_open": 2,
+        "studio_inspect": 4,
+        "studio_input": 4,
+        "read_file": 1,
+        "studio_render": 1,
+        "studio_close": 1
+      },
+      "success": 29,
+      "failure": 0,
+      "pending_result": 0,
+      "assistant_finals": 1,
+      "turn_errors": 0,
+      "image_delivery_labels": {
+        "reported_shown_to_model": 5
+      },
+      "elapsed_seconds": null,
+      "timing_scope": "not recorded; not inferred from file mtimes"
+    },
+    "minimax-01-mail-design": {
+      "file": "operator-evidence/minimax-01-mail-design/transcript.json",
+      "bytes": 118590,
+      "sha256": "3bcce9a4b6b11e30bb6212cc98757711a6937cf857f29015b811815cada2e0b2",
+      "tool_calls": 57,
+      "tools": {
+        "list_dir": 2,
+        "read_file": 21,
+        "grep": 11,
+        "write_file": 7,
+        "apply_patch": 2,
+        "edit_file": 5,
+        "studio_bundle_check": 3,
+        "studio_open": 3,
+        "studio_inspect": 1,
+        "view_image": 1,
+        "studio_close": 1
+      },
+      "success": 52,
+      "failure": 5,
+      "pending_result": 0,
+      "assistant_finals": 1,
+      "turn_errors": 0,
+      "image_delivery_labels": {
+        "reported_shown_to_model": 1
+      },
+      "elapsed_seconds": 618.869,
+      "timing_scope": "session.py polling interval; not provider inference latency"
+    },
+    "minimax-02-mail-review": {
+      "file": "operator-evidence/minimax-02-mail-review/transcript.json",
+      "bytes": 76709,
+      "sha256": "befd1bf167e392292ad09704e20318dd7ab288e5a81a94951d0d620a70cf6b93",
+      "tool_calls": 35,
+      "tools": {
+        "write_file": 4,
+        "edit_file": 3,
+        "studio_bundle_check": 2,
+        "studio_open": 4,
+        "studio_inspect": 7,
+        "view_image": 3,
+        "studio_input": 5,
+        "apply_patch": 1,
+        "studio_close": 2,
+        "studio_render": 3,
+        "read_file": 1
+      },
+      "success": 30,
+      "failure": 5,
+      "pending_result": 0,
+      "assistant_finals": 1,
+      "turn_errors": 0,
+      "image_delivery_labels": {
+        "reported_shown_to_model": 3
+      },
+      "elapsed_seconds": 380.26,
+      "timing_scope": "session.py polling interval; not provider inference latency"
+    },
+    "minimax-03-mail-final-review": {
+      "file": "operator-evidence/minimax-03-mail-final-review/transcript.json",
+      "bytes": 78294,
+      "sha256": "9dd5728d5538e06a18cc2be00d2eee60137a86b910da087c6b6b8ffe54f54f23",
+      "tool_calls": 45,
+      "tools": {
+        "view_image": 2,
+        "write_file": 2,
+        "studio_open": 7,
+        "studio_bundle_check": 6,
+        "studio_input": 5,
+        "studio_inspect": 6,
+        "edit_file": 12,
+        "studio_close": 3,
+        "grep": 2
+      },
+      "success": 43,
+      "failure": 2,
+      "pending_result": 0,
+      "assistant_finals": 1,
+      "turn_errors": 0,
+      "image_delivery_labels": {
+        "reported_shown_to_model": 2
+      },
+      "elapsed_seconds": 263.388,
+      "timing_scope": "session.py polling interval; not provider inference latency"
+    }
+  },
+  "sources": {
+    "minimax-mail-round3-final": {
+      "original_receipt": {
+        "file": "operator-evidence/minimax-mail-round3-final/source-receipt.json",
+        "bytes": 798,
+        "sha256": "e1aed8871ec80f12730c3ad9f7304c62cd71d0dcf7a9bb730015e53695a74802"
+      },
+      "files": [
+        {
+          "path": "card-templates/mail/glance.data.json",
+          "bytes": 1290,
+          "sha256": "7737594f8cad20e29dafe461b3fb1eec1894eb792a35f851bf93bb7ce583b1ec",
+          "matches_original_receipt": true
+        },
+        {
+          "path": "card-templates/mail/bundle/main.splash",
+          "bytes": 19795,
+          "sha256": "1c2cc7cb15149e642a3e971aaad8fb7ad418a7a71a15947301fcdba1b103f1a9",
+          "matches_original_receipt": true
+        },
+        {
+          "path": "card-templates/mail/bundle/manifest.json",
+          "bytes": 235,
+          "sha256": "bc5ca857f20a2ef5ce2bdb402afac2016f9574bae6307cad1f1a45f538c1809b",
+          "matches_original_receipt": true
+        },
+        {
+          "path": "card-templates/mail/glance.card",
+          "bytes": 4317,
+          "sha256": "9fdc2a4a610219496c435f4806948c4ff8d128eb65955a67877a691b1056617b",
+          "matches_original_receipt": true
+        },
+        {
+          "path": "card-templates/DESIGN.md",
+          "bytes": 11331,
+          "sha256": "5603413b851679880e742b3e3dcbb576195095aa2533334ad345ed5421413054",
+          "matches_original_receipt": true
+        }
+      ],
+      "copied_bytes_match": true,
+      "authorship_replay": "Completed strict in-memory replay: all five files exactly match recorded successful Android write/edit arguments, including literal64-zero manifest placeholder; no normalization, real integrity/signing claim, or absence-of-unrecorded-intervention claim.",
+      "accepted_template": false
+    },
+    "deepseek-mail-round3": {
+      "original_receipt": {
+        "file": "operator-evidence/deepseek-mail-round3/source-receipt.json",
+        "bytes": 796,
+        "sha256": "e246a75a48de12e876aa6cb0306ac25853e8cf63f23cd27bade24e9e38caf3ae"
+      },
+      "files": [
+        {
+          "path": "card-templates/mail/glance.card",
+          "bytes": 2798,
+          "sha256": "190f728d58cf07d692aed8ac82990277f47916c1166146ffeebc367d434ce529",
+          "matches_original_receipt": true
+        },
+        {
+          "path": "card-templates/mail/glance.data.json",
+          "bytes": 325,
+          "sha256": "9c1008f68ec958292d01195725491d07a0dd595a4c02073b92374766ad97aba9",
+          "matches_original_receipt": true
+        },
+        {
+          "path": "card-templates/mail/bundle/manifest.json",
+          "bytes": 283,
+          "sha256": "dacbd301693ad71b28e25bea40cc9b0d8845929839f36d32ee29b3b7fd00ac13",
+          "matches_original_receipt": true
+        },
+        {
+          "path": "card-templates/mail/bundle/main.splash",
+          "bytes": 14615,
+          "sha256": "c1fcbb4b255ba15f749cc3da0e2d21a5f73114bdb46c0bfd2851f88263ab6729",
+          "matches_original_receipt": true
+        },
+        {
+          "path": "card-templates/DESIGN.md",
+          "bytes": 6909,
+          "sha256": "6fa07c8a98f28d1a28753231358f29532e6c9119bac434b91aa7026a901b438b",
+          "matches_original_receipt": true
+        }
+      ],
+      "copied_bytes_match": true,
+      "authorship_replay": "Completed strict in-memory replay: all five files exactly match recorded successful Android write/edit arguments, including literal64-zero manifest placeholder; no normalization, real integrity/signing claim, or absence-of-unrecorded-intervention claim.",
+      "accepted_template": false
+    }
+  },
+  "suites": {
+    "minimax-mail-r3-suite": {
+      "report": {
+        "file": "operator-evidence/minimax-mail-r3-suite/report.json",
+        "bytes": 7404,
+        "sha256": "24f9ca9931b6017126966718c1aca998486e0aa714964314f5d88021a7a0f6a1"
+      },
+      "tool_calls": {
+        "file": "operator-evidence/minimax-mail-r3-suite/tool-calls.json",
+        "bytes": 70802,
+        "sha256": "9f293a590cac7c12245904d37dbe13efbad272850a2fa9691db83bfa69752f6f"
+      },
+      "tool_call_count": 20,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.mail",
+        "capabilities": [
+          "storage"
+        ],
+        "digest": "22d5350a9afcf20bc2c17bb5391e5af0dcb0dec8bc62be598035a30fecaf401f",
+        "name": "Mail Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "closed": true,
+      "step_count": 10,
+      "passed": 7,
+      "steps": [
+        {
+          "label": "glance",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": {
+            "file": "operator-evidence/minimax-mail-r3-suite/00-glance.png",
+            "bytes": 146994,
+            "sha256": "921be5ded1560929ccb181f19b3f27c9d3a977350279300462c9b5f37c44b431"
+          }
+        },
+        {
+          "label": "expanded",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": [
+            136,
+            691,
+            112,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/minimax-mail-r3-suite/01-expanded.png",
+            "bytes": 178729,
+            "sha256": "5303bd164facda5358db882414fe1d72b19abfbdc163c7e5af44e2f2ae5aa2c2"
+          }
+        },
+        {
+          "label": "read",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": [
+            113,
+            406,
+            128,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/minimax-mail-r3-suite/02-read.png",
+            "bytes": 175727,
+            "sha256": "692366f0360126cbf44c96adac5243951225d62b8a02db17ee17567384d23705"
+          }
+        },
+        {
+          "label": "unread",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": [
+            113,
+            406,
+            128,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/minimax-mail-r3-suite/03-unread.png",
+            "bytes": 177345,
+            "sha256": "e8072592e2916164eb63e5149ae0b7eb7c5c557e2bbc04cc0fb0090c7f5854cf"
+          }
+        },
+        {
+          "label": "archived",
+          "pass": false,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [
+            {
+              "contains": "Nothing selected",
+              "pass": false
+            }
+          ],
+          "target_rect": [
+            16,
+            406,
+            89,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/minimax-mail-r3-suite/04-archived.png",
+            "bytes": 139252,
+            "sha256": "8ce32e942664292d9fe817111e45b0c74fdf2f44a824d683e8e3450ad756643d"
+          }
+        },
+        {
+          "label": "undo",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": [
+            307,
+            633,
+            61,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/minimax-mail-r3-suite/05-undo.png",
+            "bytes": 178620,
+            "sha256": "4517a0dfd73a1f1c471a705f086da8fff6cdf034a7404e8335b1dac7241c064a"
+          }
+        },
+        {
+          "label": "full-app",
+          "pass": false,
+          "error": null,
+          "findings": [
+            {
+              "code": "text_clipped",
+              "id": "cmp_subj",
+              "severity": "error"
+            }
+          ],
+          "failed_assertions": [
+            {
+              "contains": "Send (demo)",
+              "pass": false
+            }
+          ],
+          "target_rect": [
+            252,
+            691,
+            112,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/minimax-mail-r3-suite/06-full-app.png",
+            "bytes": 188345,
+            "sha256": "93531e5d86019d28c7cce2a348c6d5d992e1766562d17006e8968a20ec6f0544"
+          }
+        },
+        {
+          "label": "blank-send",
+          "pass": false,
+          "error": "Target 'Send (demo)' matches 0 enabled nodes",
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": null
+        },
+        {
+          "label": "second-message",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": [
+            289,
+            395,
+            71,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/minimax-mail-r3-suite/08-second-message.png",
+            "bytes": 167981,
+            "sha256": "a73e90c27783c3ec888c7ec864ff3e456d075d85c885ebf6026702cc0d2ce739"
+          }
+        },
+        {
+          "label": "glance-return",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": [
+            20,
+            691,
+            112,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/minimax-mail-r3-suite/09-glance-return.png",
+            "bytes": 150706,
+            "sha256": "33afede9dbdf1bd07c4ea9d262dfd1e73a0821125c16647f66570fd7ee6f01a8"
+          }
+        }
+      ]
+    },
+    "deepseek-mail-r3-suite": {
+      "report": {
+        "file": "operator-evidence/deepseek-mail-r3-suite/report.json",
+        "bytes": 7359,
+        "sha256": "d4df37cdb05e365cbca7a4cdbb99a01f2a0c168b1305f95cce46a5c5e05ff5e0"
+      },
+      "tool_calls": {
+        "file": "operator-evidence/deepseek-mail-r3-suite/tool-calls.json",
+        "bytes": 26283,
+        "sha256": "efca7cd6993e388b44e330069f4dec6189c9ef3ca1a032bf042a71e98464116c"
+      },
+      "tool_call_count": 10,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.mail",
+        "capabilities": [
+          "storage"
+        ],
+        "digest": "9281aaec32391be5a274a3ba54764ebf528f653e7d4f3464f41a618c52d90f67",
+        "name": "Mail Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "closed": true,
+      "step_count": 16,
+      "passed": 3,
+      "steps": [
+        {
+          "label": "glance",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-suite/00-glance.png",
+            "bytes": 137903,
+            "sha256": "ca33055a6e56a31a6352fa30766c92357881f73d738ff33990189f3ca83ead37"
+          }
+        },
+        {
+          "label": "expanded",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": [
+            87,
+            436,
+            69,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-suite/01-expanded.png",
+            "bytes": 207148,
+            "sha256": "856b68b6baca299859b625f2f6e2e9f5e8ac63b4fd2a82d68575748c2a2f9fa4"
+          }
+        },
+        {
+          "label": "blank-send",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": [
+            28,
+            544,
+            115,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-suite/02-blank-send.png",
+            "bytes": 211211,
+            "sha256": "bf0d929d8e17a393aa77b744c2fe97b4eb7bf6f05d4ec560bfdb3e8c6748b929"
+          }
+        },
+        {
+          "label": "typed-draft",
+          "pass": false,
+          "error": null,
+          "findings": [
+            {
+              "code": "text_clipped",
+              "id": "reply_field",
+              "severity": "error"
+            },
+            {
+              "code": "text_clipped",
+              "id": "3",
+              "severity": "error"
+            },
+            {
+              "code": "text_clipped",
+              "id": "depth_status",
+              "severity": "error"
+            }
+          ],
+          "failed_assertions": [
+            {
+              "input_value": "Friday at 10 works for me.",
+              "pass": false
+            }
+          ],
+          "target_rect": [
+            28,
+            480,
+            328,
+            48
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-suite/03-typed-draft.png",
+            "bytes": 121606,
+            "sha256": "4d68342494498e2a1bd891ba3478181639c5e8a33f7e2f56551c11de17a4f663"
+          }
+        },
+        {
+          "label": "glance-return",
+          "pass": false,
+          "error": "Target 'Glance' matches 0 enabled nodes",
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": null
+        },
+        {
+          "label": "draft-retained",
+          "pass": false,
+          "error": "Target 'Expand' matches 0 enabled nodes",
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": null
+        },
+        {
+          "label": "local-send",
+          "pass": false,
+          "error": "Target 'Send (demo)' matches 0 enabled nodes",
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": null
+        },
+        {
+          "label": "archived",
+          "pass": false,
+          "error": "Target 'Archive' matches 0 enabled nodes",
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": null
+        },
+        {
+          "label": "inbox-after-archive",
+          "pass": false,
+          "error": "list index out of range",
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": null
+        },
+        {
+          "label": "archived-folder",
+          "pass": false,
+          "error": "Target 'Archived' matches 0 enabled nodes",
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": null
+        },
+        {
+          "label": "expand-for-undo",
+          "pass": false,
+          "error": "Target 'Expand' matches 0 enabled nodes",
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": null
+        },
+        {
+          "label": "undo",
+          "pass": false,
+          "error": "Target 'Undo' matches 0 enabled nodes",
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": null
+        },
+        {
+          "label": "full-app",
+          "pass": false,
+          "error": "list index out of range",
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": null
+        },
+        {
+          "label": "inbox",
+          "pass": false,
+          "error": "Target 'Inbox' matches 0 enabled nodes",
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": null
+        },
+        {
+          "label": "second-message-detail",
+          "pass": false,
+          "error": "list index out of range",
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": null
+        },
+        {
+          "label": "back-to-list",
+          "pass": false,
+          "error": "Target '‹ Back to list' matches 0 enabled nodes",
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": null
+        }
+      ]
+    },
+    "deepseek-mail-r3-no-keyboard-suite": {
+      "report": {
+        "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/report.json",
+        "bytes": 10079,
+        "sha256": "9c1cb6f65cdd4ba7b31b69cb78ac3bb4b4aec74b7e886e085da18ae633c368f4"
+      },
+      "tool_calls": {
+        "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/tool-calls.json",
+        "bytes": 85013,
+        "sha256": "f9a001e9fd83107b2f3ee9bca6fd164045c7d1f98325df9c1520282fd49c2e09"
+      },
+      "tool_call_count": 26,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.mail",
+        "capabilities": [
+          "storage"
+        ],
+        "digest": "9281aaec32391be5a274a3ba54764ebf528f653e7d4f3464f41a618c52d90f67",
+        "name": "Mail Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "closed": true,
+      "step_count": 12,
+      "passed": 11,
+      "steps": [
+        {
+          "label": "glance",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": null,
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/00-glance.png",
+            "bytes": 137767,
+            "sha256": "223dded64ae7f061d5e4ba2664edd01900408899b73b00f0210555b0e17e21ae"
+          }
+        },
+        {
+          "label": "expanded",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": [
+            87,
+            436,
+            69,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/01-expanded.png",
+            "bytes": 206723,
+            "sha256": "3e1dabc7efea98e55c2e8cb998620a0d5a214d149978afd3859aecaf99047892"
+          }
+        },
+        {
+          "label": "blank-send",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": [
+            28,
+            544,
+            115,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/02-blank-send.png",
+            "bytes": 211037,
+            "sha256": "7bcfb1c48ba7f9528127cdd20ae51d45a0f69f5be2fd052e98e026d80186a692"
+          }
+        },
+        {
+          "label": "archived",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": [
+            151,
+            544,
+            76,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/03-archived.png",
+            "bytes": 207501,
+            "sha256": "d11be8eea9587c617517300b1d32ebfca1f95db60f814ddd42bf8e4613ab3acd"
+          }
+        },
+        {
+          "label": "inbox-after-archive",
+          "pass": true,
+          "error": null,
+          "findings": [
+            {
+              "code": "small_tap_target",
+              "id": "3",
+              "severity": "warning"
+            }
+          ],
+          "failed_assertions": [],
+          "target_rect": [
+            164,
+            768,
+            85,
+            18
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/04-inbox-after-archive.png",
+            "bytes": 143659,
+            "sha256": "18bb4a2dd3e89c1084a4a54712c7b4082448a0bd2c69c1e8ab2dbd11b8afdf01"
+          }
+        },
+        {
+          "label": "archived-folder",
+          "pass": true,
+          "error": null,
+          "findings": [
+            {
+              "code": "small_tap_target",
+              "id": "3",
+              "severity": "warning"
+            },
+            {
+              "code": "small_tap_target",
+              "id": "3",
+              "severity": "warning"
+            }
+          ],
+          "failed_assertions": [],
+          "target_rect": [
+            99,
+            112,
+            77,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/05-archived-folder.png",
+            "bytes": 165892,
+            "sha256": "181811d5fbfaeeabf69fea2e863c153e34b4a435626f909e70ff5ac66ca20c49"
+          }
+        },
+        {
+          "label": "expand-for-undo",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": [
+            87,
+            633,
+            69,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/06-expand-for-undo.png",
+            "bytes": 208733,
+            "sha256": "7c3a28b3a158e26f46f988b97cac6535e4feacddd6d3c716d1ade3bfe03c770e"
+          }
+        },
+        {
+          "label": "undo",
+          "pass": true,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [],
+          "target_rect": [
+            151,
+            544,
+            54,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/07-undo.png",
+            "bytes": 206278,
+            "sha256": "5c082aa2fdc929f76a5c64e6c446fcf00ef606aea9577b953f0c1d87e731ef13"
+          }
+        },
+        {
+          "label": "full-app",
+          "pass": true,
+          "error": null,
+          "findings": [
+            {
+              "code": "small_tap_target",
+              "id": "3",
+              "severity": "warning"
+            }
+          ],
+          "failed_assertions": [],
+          "target_rect": [
+            164,
+            660,
+            85,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/08-full-app.png",
+            "bytes": 125383,
+            "sha256": "f2e72d7b51b29ddeda6ab00afd24ad3aef653309cfaff7c1df7c790c10c850b1"
+          }
+        },
+        {
+          "label": "inbox",
+          "pass": true,
+          "error": null,
+          "findings": [
+            {
+              "code": "small_tap_target",
+              "id": "3",
+              "severity": "warning"
+            },
+            {
+              "code": "small_tap_target",
+              "id": "3",
+              "severity": "warning"
+            }
+          ],
+          "failed_assertions": [],
+          "target_rect": [
+            28,
+            112,
+            55,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/09-inbox.png",
+            "bytes": 177888,
+            "sha256": "1bc8ca2c9253a2a26528a2c40f913755f13a328a5e3a1f4f4bed9cfcb94a52f3"
+          }
+        },
+        {
+          "label": "second-message-detail",
+          "pass": false,
+          "error": null,
+          "findings": [],
+          "failed_assertions": [
+            {
+              "contains": "Design Weekly",
+              "pass": false
+            },
+            {
+              "excludes": "Ana Rivera",
+              "pass": false
+            }
+          ],
+          "target_rect": [
+            40,
+            512,
+            100,
+            40
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/10-second-message-detail.png",
+            "bytes": 174044,
+            "sha256": "29bf2ac8752bb8f0925038c4c4b13e435ee8dcaeaadf1ae880ceaa942866bb8e"
+          }
+        },
+        {
+          "label": "back-to-list",
+          "pass": true,
+          "error": null,
+          "findings": [
+            {
+              "code": "small_tap_target",
+              "id": "3",
+              "severity": "warning"
+            },
+            {
+              "code": "small_tap_target",
+              "id": "3",
+              "severity": "warning"
+            }
+          ],
+          "failed_assertions": [],
+          "target_rect": [
+            28,
+            381,
+            102,
+            44
+          ],
+          "png": {
+            "file": "operator-evidence/deepseek-mail-r3-no-keyboard-suite/11-back-to-list.png",
+            "bytes": 177888,
+            "sha256": "1bc8ca2c9253a2a26528a2c40f913755f13a328a5e3a1f4f4bed9cfcb94a52f3"
+          }
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Three prompt turns each, but different fixtures, feedback, writes, source revisions, tool-call counts and action sequences; raw pass percentages are not a controlled model benchmark.",
+    "Local developer admission is unsigned, storage-only; no hub check, store scan, publisher signing or publication acceptance established.",
+    "Native geometry pass is not visual acceptance; unsettled captures remain reported as unsettled.",
+    "Source/model files not modified; no phone operations; collector emits no transcript arguments, outputs, finals or private reasoning.",
+    "DeepSeek's initial Studio tools were unavailable because of the developer grant canonical-workspace-path mismatch; MiniMax had initial Studio access.",
+    "DeepSeek reused the prior Task Planner/Mail conversation; MiniMax started a fresh conversation. No equal-budget or equal-context claim.",
+    "MiniMax cmp_subj is the composer subject Label, not a text input. DeepSeek second-message detail has the correct subject, wrong sender and generic body."
+  ],
+  "archive_notes": [
+    "Frozen DeepSeek round 3 vs MiniMax final round 3; incoming DeepSeek round 4 excluded.",
+    "Reviewed prototypes with known blockers, not accepted templates.",
+    "Paths beginning operator-evidence/ or OctoSense/ identify original receipt inventory locations, not files included in this archive.",
+    "MiniMax archived step literal Nothing selected changed to Message archived: preserve raw assertion failure; do not classify as an archive functional regression.",
+    "Only selected unmodified captures/full snapshots are included. Omitted report PNG names identify original operator evidence and are not broken Markdown links."
+  ],
+  "independent_review": {
+    "reviewer": "Independent artifact review supplied by supervising agent",
+    "scope": "Frozen DeepSeek Mail round3 versus MiniMax Mail final round3 only; not a general model ranking",
+    "target": 4.5,
+    "accepted": false,
+    "dimensions": [
+      "visual",
+      "presentation_depths",
+      "interactions",
+      "a2app_reference_use",
+      "verification_honesty"
+    ],
+    "deepseek_r3": {
+      "overall": 3.4,
+      "scores": [
+        3.5,
+        3.5,
+        3,
+        3.5,
+        3.5
+      ]
+    },
+    "minimax_r3": {
+      "overall": 3.3,
+      "scores": [
+        3.5,
+        3,
+        3.5,
+        2.5,
+        4
+      ]
+    }
+  },
+  "authorship_validation": {
+    "result": "model-authorship-validation.json",
+    "helper": "validate-model-authorship.py",
+    "files_exactly_matched": 10,
+    "portable_helper_rerun": "passed",
+    "source_edited": false
+  },
+  "subsequent_installed_apk_verification": "collection/installed-builds-verified.json"
+}

@@ -1,0 +1,59 @@
+{
+  "scope": "Historical environment, interruptions, recovery and failed checkpoints; not final14quality scores",
+  "events": [
+    {
+      "turn": 4,
+      "type": "operator_environment",
+      "description": "Developer grant used run-as canonical namespace instead of app namespace; Studio tools unavailable until operator corrected grant. Exclude this environmental failure from model-quality comparison.",
+      "attribution": "Coordinating operator report"
+    },
+    {
+      "turn": 8,
+      "kind": "operator_interruption",
+      "receipt": "../turn-evidence/minimax-08-news-finance-build/operator-interruption.json",
+      "recorded_tool_calls": 42,
+      "assistant_finals": 0,
+      "description": "Interrupted after complete recorded calls; not a completed model response."
+    },
+    {
+      "turn": 9,
+      "kind": "collector_recovery_and_readonly_model_choice",
+      "receipt": "../turn-evidence/minimax-09-precise-native-repair/collector-recovery.json",
+      "artifact_hashes": "../turn-evidence/minimax-09-precise-native-repair/collector-artifact-hashes.json",
+      "recovery_reference": "../turn-evidence/minimax-09-precise-native-repair/model-source-recovery-reference.json",
+      "recorded_tool_calls": 8,
+      "source_mutations": 0,
+      "assistant_finals": 1,
+      "elapsed_seconds": null,
+      "description": "Recovered same original invocation after a prior-turn orphan event. No extra prompt or UI action; the model chose read-only inspection. Original MiniMax News bytes copied only as a separate recovery reference, never substituted into app source."
+    },
+    {
+      "turn": 12,
+      "kind": "intermediate_diagnostics",
+      "index": "diagnostics/index.json",
+      "description": "Six exact source hashes and22reported premature closes during active turn; grammar probes are operator diagnostics, not authored app code or final quality."
+    },
+    {
+      "turn": 12,
+      "kind": "failed_final_checkpoint",
+      "index": "checkpoints/round12-news-open-failed/index.json",
+      "description": "Final12 News local admission passed but studio.open failed; zero input steps. Retained separately from earlier intermediate errors and later model repair."
+    },
+    {
+      "turn": 13,
+      "kind": "commented_theme_checkpoint",
+      "description": "All six # theme taskplan_light lines remained comments. No applied-theme credit. Model repaired a Calendar footer close after its own failed open."
+    },
+    {
+      "turn": 14,
+      "kind": "final_source_change",
+      "recorded_tool_calls": 14,
+      "studio_calls": 0,
+      "assistant_finals": 1,
+      "turn_errors": 0,
+      "actual_changed_files": 7,
+      "description": "Six bare theme declarations plus DESIGN changed; native sources/manifests and fixtures unchanged from13. Model self-count9files is not used."
+    }
+  ],
+  "fairness": "Continued work and operator feedback differ between models; not an equal-budget benchmark or general model ranking."
+}

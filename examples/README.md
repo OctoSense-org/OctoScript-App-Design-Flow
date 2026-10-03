@@ -2,8 +2,9 @@
 
 English | [简体中文](README.zh-CN.md)
 
-Reference journeys built with the [image-to-card flow](../flows/image-to-card/FLOW.md).
-Each example owns its service code, reviewed card scenes, design source,
+Reference journeys built with the [image-to-card flow](../flows/image-to-card/FLOW.md),
+plus Android-authored prototypes reviewed on the phone. The image-to-card
+examples own their service code, reviewed card scenes, design source,
 launcher, tests and fixture evidence. Runtime state and personal data stay
 ignored. They were `apps/<name>/` before the restructure.
 
@@ -14,6 +15,7 @@ ignored. They were `apps/<name>/` before the restructure.
 | [Health](health/README.md) | Native cards / WASM | Fictional health-check booking journey. |
 | [Reunion](reunion/README.md) | Native cards / WASM | Reunion planning, RSVP and payment journey. |
 | [Calendar](calendar/README.md) | Native cards / browser preview + sync server | Calendar for two devices: 10 screens, 4 service cards, and a SQLite-backed operation-log server every client replays. |
+| [Android-authored card prototypes](android-a2app-card-templates/README.md) | AppStudio on Android; glance / expanded / full app | Two model-authored six-family collections: each 4.5/5 overall offline prototype, 4.4/5 visual; exact source replay and native evidence. |
 
 [shared/](shared/README.md) contains common browser adapters and historical
 cross-app verification artifacts; it is not an app.

@@ -1,0 +1,108 @@
+{
+  "review_kind": "Independent manual review of existing Android screenshots and operator reports",
+  "model_attempt": "MiniMax round 14",
+  "source_directory": "minimax-round14-final",
+  "scope": "Six offline prototype families: Mail, Calendar, News, Finance, Photo and YouTube; exported L0 glances plus native L0/L1/L2 and exercised item-state/navigation/keyboard paths. This is not acceptance of live email, accounts, market data, photo loading or video playback.",
+  "method": "Reviewer inspected original captured images and existing reports; reviewer did not operate the phone or edit application/design source. Scores are editorial judgments, not instrument measurements.",
+  "scores_out_of_5": {
+    "overall_offline_prototype": 4.5,
+    "visual_presentation": 4.4,
+    "component_surfaces_excluding_explicit_gallery_chrome": 4.4,
+    "whole_gallery_presentation": 4.3,
+    "rubric": [
+      {
+        "criterion": "Hierarchy and compactness",
+        "score": 4.3,
+        "reason": "Six exported glances are now concise and readable; native lists and details retain generous gaps and prominent actions."
+      },
+      {
+        "criterion": "L0/L1/L2 navigation and reachability",
+        "score": 4.6,
+        "reason": "Persistent selected-depth markers remain visible. Final-item details show the correct headers at the top; Mail last-item reachability is established by a separate real-scroll follow-up."
+      },
+      {
+        "criterion": "Per-item state, reversibility and keyboard interaction",
+        "score": 4.6,
+        "reason": "Operator reports cover identity, reversible state, filtered collections and Mail typing/Queue under the real Android keyboard. Scope is the exercised offline paths."
+      },
+      {
+        "criterion": "Family coherence and honest offline presentation",
+        "score": 4.4,
+        "reason": "Consistent pale surfaces and clear titles tie the six families together. Photo and YouTube explicitly disclose unavailable media. Red DEMO badges and technical depth labels still compete with content in the whole gallery."
+      },
+      {
+        "criterion": "Source-bound verification and reporting",
+        "score": 4.6,
+        "reason": "Both full matrix and targeted follow-up match all 25 frozen source files before and after. Original failed assertions remain recorded; screenshot inspection confirms repaired overflow instead of relying only on geometry checks."
+      }
+    ]
+  },
+  "evidence": {
+    "main_report": "minimax-r14-validation/summary.json",
+    "main_steps": 115,
+    "main_behavior_pass": 114,
+    "main_raw_pass": 113,
+    "main_source_before_after_exact_files": 25,
+    "followup_report": "minimax-r14-mail-last-followup/summary.json",
+    "followup_steps": 4,
+    "followup_behavior_pass": 4,
+    "followup_raw_pass": 4,
+    "followup_source_before_after_exact_files": 25,
+    "failure_interpretation": "The original Mail last-item selector used a visible occurrence that was absent without scrolling. The unchanged-source follow-up scrolls the native list and opens Northwind successfully. Keep the original 114/115 result and separate 4/4 result; do not rewrite this as an original 115/115 run. The other Mail raw failure occurs before scrolling the keyboard-resized view; the revealed Queue control and actual queue action pass.",
+    "exports": "minimax-r14-glances/{mail,calendar,news,finance,photo,youtube}.png",
+    "export_dimensions": "All width 968 physical pixels; heights Mail 640, Calendar 555, News 640, Finance 551, Photo 555, YouTube 614. Export rendering reported settled; this does not imply native inspect frames reported settled.",
+    "key_original_images": [
+      "minimax-r14-validation/mail/06-inbox.png",
+      "minimax-r14-validation/mail/11-send-scroll-keyboard-android.png",
+      "minimax-r14-mail-last-followup/02-reveal-northwind.png",
+      "minimax-r14-mail-last-followup/03-northwind-detail.png",
+      "minimax-r14-validation/calendar/05-last-detail.png",
+      "minimax-r14-validation/news/02-full-list.png",
+      "minimax-r14-validation/news/10-last-item-detail.png",
+      "minimax-r14-validation/news/13-filtered-last.png",
+      "minimax-r14-validation/news/17-expanded-remove.png",
+      "minimax-r14-validation/finance/03-second-item-detail.png",
+      "minimax-r14-validation/finance/02-full-list.png",
+      "minimax-r14-validation/finance/13-filtered-last.png",
+      "minimax-r14-validation/finance/17-expanded-remove.png",
+      "minimax-r14-validation/photo/04-save-second.png",
+      "minimax-r14-validation/photo/02-full-list.png",
+      "minimax-r14-validation/photo/10-last-item-detail.png",
+      "minimax-r14-validation/photo/13-filtered-last.png",
+      "minimax-r14-validation/youtube/02-full-list.png",
+      "minimax-r14-validation/youtube/10-last-item-detail.png",
+      "minimax-r14-validation/youtube/13-filtered-last.png"
+    ]
+  },
+  "confirmed_visual_repairs": [
+    "Finance second-item detail displays the complete red -0.38 alongside the correct Delta Logistics identity.",
+    "News, Finance, Photo and YouTube all/filtered list titles and metadata fit horizontally in the inspected frames.",
+    "Photo favorite-status footer fits after saving the second item.",
+    "Last-item detail headers are visible at the top, including Mail after real list scrolling.",
+    "Mail Queue is fully reachable after scrolling with the actual Android keyboard present; successful local queuing is in the operator report.",
+    "Six exported glances are materially shorter and readable; Photo and YouTube retain explicit offline-media cues without an enabled pretend Play action."
+  ],
+  "remaining_nonblocking_polish": [
+    {
+      "issue": "Native Mail rows consume considerable vertical space; the fourth message requires scrolling. Other detail views leave large empty areas between content and the fixed depth controls.",
+      "acceptance_condition": "Reduce internal gaps while preserving readable titles and existing full-size touch targets; rerun last-item and keyboard tests after any change."
+    },
+    {
+      "issue": "Exported Open labels are visually prominent relative to content, and a few time/date fields repeat information.",
+      "acceptance_condition": "Let title and primary data remain the first focal point; remove only redundant metadata while retaining clear actions."
+    },
+    {
+      "issue": "The whole gallery still gives strong emphasis to red DEMO badges and technical L0/L1/L2/footer chrome. Calendar No answer uses action-like blue emphasis.",
+      "acceptance_condition": "Keep prototype/offline disclosures visible but subordinate, and distinguish passive statuses from actions without hiding selected-depth feedback."
+    }
+  ],
+  "blockers_in_exercised_paths": [],
+  "limits": [
+    "No claim of complete coverage, persistence across process restart, live providers, real media, or production readiness.",
+    "Expected partial content at a scrolling viewport edge is not horizontal text truncation and is not by itself a defect.",
+    "Do not generalize measured native touch-target checks to all exported glance controls.",
+    "Native inspect reports can say settled:false; reviewed captures and behavior checks are not a universal asynchronous-settling guarantee.",
+    "A 4.5 overall offline-prototype score does not mean visual design independently reached 4.5.",
+    "Comparison with DeepSeek uses the same rubric but unequal prompting/tool histories; it is not a controlled model benchmark or a general superiority claim."
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "$comment": "Fixture for finance glance.card. Keys are the SOURCE ALIASES (lead, rest) because the offline realizer looks fixture values up by alias, not by sys.dataset id. Field names are the sys.dataset answer names declared in catalog.md. All records are SYNTHETIC demo instruments: no market data is fetched, no quote is live, and no trade can be placed.",
+  "ledger": "finance.glance@0.1.0",
+  "published_as": "os.finance",
+  "lead": {
+    "title": "HRB · Harbour Rail",
+    "subtitle": "Regional rail operator · demo record",
+    "summary": "Fixed demo quote used to exercise the card layouts. Not a live price, and nothing here can be traded.",
+    "as_of": "08:45",
+    "status": "Demo",
+    "metric1_label": "Price",
+    "metric1_value": "42.18",
+    "metric2_label": "Change",
+    "metric2_value": "+1.24"
+  },
+  "rest": {
+    "title": "3 instruments",
+    "subtitle": "Sage Energy +0.07",
+    "as_of": "08:45",
+    "status": "Demo"
+  }
+}

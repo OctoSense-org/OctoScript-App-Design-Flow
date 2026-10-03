@@ -1,0 +1,22 @@
+{
+  "$comment": "Fixture for news glance.card. Keys are the SOURCE ALIASES (lead, rest) because the offline realizer looks fixture values up by alias, not by sys.dataset id. Field names are the sys.dataset answer names declared in catalog.md. All records are SYNTHETIC demo stories: no feed is fetched and no article page is opened.",
+  "ledger": "news.glance@0.1.0",
+  "published_as": "os.news",
+  "lead": {
+    "title": "Riverside bridge reopens after inspection",
+    "subtitle": "Harbour Times · 08:20 · Local",
+    "summary": "Mill Street bridge reopens today after a six-day structural inspection. Two corroded lower joints were replaced. Demo summary, not a fetched article.",
+    "as_of": "08:20",
+    "status": "Unread",
+    "metric1_label": "Points",
+    "metric1_value": "142",
+    "metric2_label": "Comments",
+    "metric2_value": "31"
+  },
+  "rest": {
+    "title": "2 more stories",
+    "subtitle": "Docklands solar trial powers first block",
+    "as_of": "Yesterday",
+    "status": "Ready"
+  }
+}

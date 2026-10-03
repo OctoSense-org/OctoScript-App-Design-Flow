@@ -1,0 +1,877 @@
+{
+  "height": 2132,
+  "instance_id": "53e50ea3-1b9a-4185-92fe-57255dc533fe",
+  "path": ".studio-e606b0bb-e19e-40eb-a183-47b13a0f1cf6.png",
+  "settled": false,
+  "snapshot": {
+    "checks": {
+      "findings": [],
+      "instrument": "makepad_widget_tree",
+      "pass": true
+    },
+    "geometry": {
+      "widgets": [
+        {
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 0,
+          "id": "-",
+          "kind": "Splash",
+          "parent": -1,
+          "text": "// Mail Cards \u2014 native interactive preview of the MAIL card template.\n// Presentation depths: L0 compact glance / L1 expanded / L2 full app.\n// Synthetic demo content only. No mailbox access, no network, no mail sent.\n//\n// Layout intent: navigation + status are pinned at the TOP so they stay\n// reachable even when the Android keyboard shrinks the viewport; the card sits\n// in a Fill ScrollYView below and scrolls. All active tap targets >= 44 logical px.\n\nlet depth = \"glance\"\nlet view_state = \"ready\"\nlet show_states = false\nlet archived = false\nlet folder = \"inbox\"\nlet detail_open = false\nlet open_id = \"\"\nlet reply_text = \"\"\nlet sent_demo = false\nlet msg_note = \"\"\n\n// ---- review chrome (gallery controls; NOT part of the reusable glance) ----\nlet NavBtn = ButtonFlat{height: 44 padding: 10 draw_bg +: {color: #xe8edf3 color_hover: #xdde5ef color_down: #xd0dae7} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}\nlet AccentBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #x2f6fed color_hover: #x3d7cf0 color_down: #x275fd0} draw_text +: {color: #xffffff color_hover: #xffffff color_down: #xffffff}}\nlet GhostBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xffffff color_hover: #xf0f4f8 color_down: #xe6ecf3} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}\nlet OpenBtn = ButtonFlat{height: 44 width: 108 padding: 8 draw_bg +: {color: #xe8edf3 color_hover: #xdde5ef color_down: #xd0dae7} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}\n\nfn depth_name(){\n    if depth == \"glance\" { return \"L0 glance\" }\n    if depth == \"expand\" { return \"L1 expanded\" }\n    return \"L2 app\"\n}\nfn title_of(id){\n    if id == \"ana\" { return \"Contract signing \u2014 Friday?\" }\n    if id == \"digest\" { return \"Your Thursday digest is ready\" }\n    return \"Quarterly report draft\"\n}\nfn sender_of(id){\n    if id == \"ana\" { return \"Ana Rivera \u00b7 ana@acme.demo\" }\n    if id == \"digest\" { return \"Design Weekly \u00b7 digest@demo.weekly\" }\n    return \"Finance team \u00b7 ops@acme.demo\"\n}\nfn body_of(id){\n    if id == \"ana\" { return \"Can we sign by Friday? I've attached the revised payment terms for review.\" }\n    if id == \"digest\" { return \"Five short reads on card UI, motion and type. No tracking, just a weekly list.\" }\n    return \"Draft numbers for review before Monday's sync.\"\n}\n\nfn refresh_nav(){\n    let s = \"Mail Cards   \u00b7   \" + depth_name() + \"   \u00b7   \" + view_state\n    if archived { s = s + \"   \u00b7   mail: archived\" }\n    ui.depth_status.set_text(s)\n    if depth == \"glance\" { ui.d_gl.set_text(\"\u2022 Glance\") } else { ui.d_gl.set_text(\"Glance\") }\n    if depth == \"expand\" { ui.d_ex.set_text(\"\u2022 Expand\") } else { ui.d_ex.set_text(\"Expand\") }\n    if depth == \"app\" { ui.d_ap.set_text(\"\u2022 Open app\") } else { ui.d_ap.set_text(\"Open app\") }\n}\nfn toggle_states(){\n    if show_states { show_states = false } else { show_states = true }\n    if show_states { ui.states_btn.set_text(\"States \u25be\") } else { ui.states_btn.set_text(\"States \u25b8\") }\n    ui.states_row.set_visible(show_states)\n}\n\nfn set_depth(d){ depth = d detail_open = false sent_demo = false msg_note = \"\" refresh_nav() ui.stage.render() }\nfn set_state(s){ view_state = s refresh_nav() ui.stage.render() }\nfn do_archive(){ archived = true refresh_nav() ui.stage.render() }\nfn do_undo(){ archived = false sent_demo = false msg_note = \"\" refresh_nav() ui.stage.render() }\nfn set_folder(f){ folder = f detail_open = false refresh_nav() ui.stage.render() }\nfn open_detail(id){ open_id = id detail_open = true ui.stage.render() }\nfn close_detail(){ detail_open = false ui.stage.render() }\nfn on_field(t){ reply_text = t }\n\nfn do_send(){\n    if reply_text.trim().len() == 0 {\n        sent_demo = false\n        msg_note = \"Write a reply first \u2014 nothing was sent.\"\n    } else {\n        sent_demo = true\n        msg_note = \"Draft queued (local demo) \u2014 no real mail was sent.\"\n    }\n    ui.stage.render()\n}\n\nfn boot(){ refresh_nav() ui.states_row.set_visible(false) ui.stage.render() }\n\nstart_timeout(0.05, || boot())\n\nSolidView{width: Fill height: Fill flow: Down padding: 12 spacing: 8 draw_bg.color: #xf4f6f8\n    depth_status := Label{width: Fill height: Fit text: \"Mail Cards   \u00b7   L0 glance   \u00b7   ready\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}\n    View{width: Fill height: Fit flow: Right spacing: 8\n        d_gl := NavBtn{text: \"\u2022 Glance\" on_click: || set_depth(\"glance\")}\n        d_ex := NavBtn{text: \"Expand\" on_click: || set_depth(\"expand\")}\n        d_ap := NavBtn{text: \"Open app\" on_click: || set_depth(\"app\")}\n        View{width: Fill height: Fit}\n        states_btn := NavBtn{text: \"States \u25b8\" on_click: || toggle_states()}\n    }\n    states_row := View{width: Fill height: Fit flow: Right spacing: 8\n        NavBtn{text: \"Ready\" on_click: || set_state(\"ready\")}\n        NavBtn{text: \"Loading\" on_click: || set_state(\"loading\")}\n        NavBtn{text: \"Empty\" on_click: || set_state(\"empty\")}\n        NavBtn{text: \"Error\" on_click: || set_state(\"error\")}\n    }\n\n    ScrollYView{width: Fill height: Fill flow: Down spacing: 8\n        stage := RoundedView{width: Fill height: Fit flow: Down padding: 14 spacing: 8 draw_bg.color: #xffffff draw_bg.radius: 16 on_render: || {\n\n            // ---------- L0 \u00b7 compact glance ----------\n            if depth == \"glance\" {\n                View{width: Fill height: Fit flow: Right spacing: 8\n                    Label{text: \"MAIL\" draw_text.color: #x2f6fed draw_text.text_style.font_size: 12}\n                    View{width: Fill height: Fit}\n                    Label{text: \"9:41\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}\n                }\n                if view_state == \"loading\" { Label{text: \"Loading\u2026\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }\n                if view_state == \"empty\" { Label{text: \"No messages\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }\n                if view_state == \"error\" { Label{width: Fill height: Fit text: \"Couldn't load mail \u2014 demo error state\" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }\n                if view_state == \"ready\" {\n                    Label{text: \"Ana Rivera\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                    Label{width: Fill height: Fit text: \"Contract signing \u2014 Friday?\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}\n                    Label{width: Fill height: Fit text: \"Can we sign by Friday? Revised terms attached.\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                    if archived { Label{text: \"Archived (demo)\" draw_text.color: #x2f6fed draw_text.text_style.font_size: 12} }\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        AccentBtn{text: \"Reply\" on_click: || set_depth(\"expand\")}\n                    }\n                }\n            }\n\n            // ---------- L1 \u00b7 expanded actionable ----------\n            if depth == \"expand\" {\n                View{width: Fill height: Fit flow: Right spacing: 8\n                    Label{text: \"MAIL\" draw_text.color: #x2f6fed draw_text.text_style.font_size: 11}\n                    View{width: Fill height: Fit}\n                    Label{text: \"9:41\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}\n                }\n                if view_state == \"loading\" { Label{text: \"Loading\u2026\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }\n                if view_state == \"empty\" { Label{text: \"No messages\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }\n                if view_state == \"error\" { Label{width: Fill height: Fit text: \"Couldn't load mail \u2014 demo error state\" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }\n                if view_state == \"ready\" {\n                    Label{width: Fill height: Fit text: \"Contract signing \u2014 Friday?\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}\n                    Label{text: \"Ana Rivera \u00b7 ana@acme.demo\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}\n                    SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}\n                    Label{text: \"SUMMARY (demo)\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11}\n                    Label{width: Fill height: Fit text: \"Ana attached the revised payment terms and would like to sign by Friday.\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 14 draw_text.wrap: true}\n                    reply_field := TextInput{width: Fill height: 44 padding: 10 text: reply_text empty_text: \"Draft a reply\u2026\" draw_bg.color: #xf7f9fb draw_bg.radius: 12 draw_text.color: #x1c2430 on_change: |t| on_field(t)}\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        AccentBtn{text: \"Send (demo)\" on_click: || do_send()}\n                        if archived { NavBtn{text: \"Undo\" on_click: || do_undo()} }\n                        if archived == false { GhostBtn{text: \"Archive\" on_click: || do_archive()} }\n                        NavBtn{text: \"Open app\" on_click: || set_depth(\"app\")}\n                    }\n                    if msg_note != \"\" { Label{width: Fill height: Fit text: msg_note draw_text.color: #x1f9d55 draw_text.text_style.font_size: 12 draw_text.wrap: true} }\n                    if archived { Label{width: Fill height: Fit text: \"Archived (demo). Undo restores it.\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true} }\n                }\n            }\n\n            // ---------- L2 \u00b7 full app view ----------\n            if depth == \"app\" {\n                View{width: Fill height: Fit flow: Right spacing: 8\n                    if folder == \"inbox\" { AccentBtn{text: \"Inbox\" on_click: || set_folder(\"inbox\")} } else { NavBtn{text: \"Inbox\" on_click: || set_folder(\"inbox\")} }\n                    if folder == \"archived\" { AccentBtn{text: \"Archived\" on_click: || set_folder(\"archived\")} } else { NavBtn{text: \"Archived\" on_click: || set_folder(\"archived\")} }\n                    View{width: Fill height: Fit}\n                    Label{text: \"Mail\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 14}\n                }\n                SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}\n                if detail_open {\n                    Label{width: Fill height: Fit text: title_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}\n                    Label{width: Fill height: Fit text: sender_of(open_id) draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}\n                    SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}\n                    Label{width: Fill height: Fit text: body_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 14 draw_text.wrap: true}\n                    Label{text: \"Demo message \u00b7 no real mail read or sent\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        NavBtn{text: \"\u2039 Back to list\" on_click: || close_detail()}\n                    }\n                }\n                if detail_open == false {\n                    if folder == \"inbox\" {\n                        if archived == false {\n                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                                View{width: Fill height: Fit flow: Right spacing: 6\n                                    Label{text: \"Ana Rivera\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                                    View{width: Fill height: Fit}\n                                    Label{text: \"9:41\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}\n                                }\n                                Label{width: Fill height: Fit text: \"Contract signing \u2014 Friday?\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                                Label{width: Fill height: Fit text: \"Can we sign by Friday?\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                                OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"ana\")}\n                            }\n                        }\n                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                            View{width: Fill height: Fit flow: Right spacing: 6\n                                Label{text: \"Design Weekly\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                                View{width: Fill height: Fit}\n                                Label{text: \"8:05\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}\n                            }\n                            Label{width: Fill height: Fit text: \"Your Thursday digest is ready\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                            Label{width: Fill height: Fit text: \"Five short reads on card UI.\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                            OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"digest\")}\n                        }\n                    }\n                    if folder == \"archived\" {\n                        if archived {\n                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                                View{width: Fill height: Fit flow: Right spacing: 6\n                                    Label{text: \"Ana Rivera\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                                    View{width: Fill height: Fit}\n                                    Label{text: \"9:41\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}\n                                }\n                                Label{width: Fill height: Fit text: \"Contract signing \u2014 Friday?\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                                Label{text: \"Archived (demo)\" draw_text.color: #x2f6fed draw_text.text_style.font_size: 12}\n                                OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"ana\")}\n                            }\n                        }\n                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                            View{width: Fill height: Fit flow: Right spacing: 6\n                                Label{text: \"Finance team\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                                View{width: Fill height: Fit}\n                                Label{text: \"Mon\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}\n                            }\n                            Label{width: Fill height: Fit text: \"Quarterly report draft\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                            Label{text: \"Archived (demo)\" draw_text.color: #x2f6fed draw_text.text_style.font_size: 12}\n                            OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"finance\")}\n                        }\n                    }\n                }\n            }\n\n        }}\n    }\n}",
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "bg": "#fff4f6f8",
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 1,
+          "id": "11",
+          "kind": "View",
+          "parent": 0,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 26,
+          "cw": 353,
+          "cx": 16,
+          "cy": 44,
+          "fg": "#ff5b6672",
+          "h": 26,
+          "i": 2,
+          "id": "depth_status",
+          "kind": "Label",
+          "parent": 1,
+          "text": "Mail Cards   \u00b7   L2 app   \u00b7   ready",
+          "w": 353,
+          "x": 16,
+          "y": 44
+        },
+        {
+          "ch": 50,
+          "cw": 360,
+          "cx": 12,
+          "cy": 81,
+          "h": 50,
+          "i": 3,
+          "id": "-",
+          "kind": "View",
+          "parent": 1,
+          "w": 360,
+          "x": 12,
+          "y": 81
+        },
+        {
+          "ch": 44,
+          "cw": 69,
+          "cx": 12,
+          "cy": 84,
+          "glyphs": 1,
+          "h": 44,
+          "i": 4,
+          "id": "d_gl",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "Glance",
+          "w": 69,
+          "x": 12,
+          "y": 84
+        },
+        {
+          "ch": 44,
+          "cw": 73,
+          "cx": 89,
+          "cy": 84,
+          "glyphs": 1,
+          "h": 44,
+          "i": 5,
+          "id": "d_ex",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "Expand",
+          "w": 73,
+          "x": 89,
+          "y": 84
+        },
+        {
+          "ch": 44,
+          "cw": 99,
+          "cx": 170,
+          "cy": 84,
+          "glyphs": 1,
+          "h": 44,
+          "i": 6,
+          "id": "d_ap",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "\u2022 Open app",
+          "w": 99,
+          "x": 170,
+          "y": 84
+        },
+        {
+          "ch": 44,
+          "cw": 74,
+          "cx": 298,
+          "cy": 84,
+          "glyphs": 1,
+          "h": 44,
+          "i": 8,
+          "id": "states_btn",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "States \u25b8",
+          "w": 74,
+          "x": 298,
+          "y": 84
+        },
+        {
+          "ch": 635,
+          "cw": 360,
+          "cx": 12,
+          "cy": 139,
+          "h": 635,
+          "i": 14,
+          "id": "1",
+          "kind": "View",
+          "parent": 1,
+          "w": 360,
+          "x": 12,
+          "y": 139
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 287,
+          "cw": 360,
+          "cx": 12,
+          "cy": 139,
+          "h": 287,
+          "i": 15,
+          "id": "stage",
+          "kind": "View",
+          "parent": 14,
+          "w": 360,
+          "x": 12,
+          "y": 139
+        },
+        {
+          "ch": 50,
+          "cw": 332,
+          "cx": 26,
+          "cy": 153,
+          "h": 50,
+          "i": 16,
+          "id": "-",
+          "kind": "View",
+          "parent": 15,
+          "w": 332,
+          "x": 26,
+          "y": 153
+        },
+        {
+          "ch": 44,
+          "cw": 59,
+          "cx": 26,
+          "cy": 156,
+          "glyphs": 1,
+          "h": 44,
+          "i": 17,
+          "id": "-",
+          "kind": "Button",
+          "parent": 16,
+          "tappable": true,
+          "text": "Inbox",
+          "w": 59,
+          "x": 26,
+          "y": 156
+        },
+        {
+          "ch": 44,
+          "cw": 85,
+          "cx": 93,
+          "cy": 156,
+          "glyphs": 1,
+          "h": 44,
+          "i": 18,
+          "id": "1",
+          "kind": "Button",
+          "parent": 16,
+          "tappable": true,
+          "text": "Archived",
+          "w": 85,
+          "x": 93,
+          "y": 156
+        },
+        {
+          "ch": 29,
+          "cw": 42,
+          "cx": 312,
+          "cy": 157,
+          "fg": "#ff1c2430",
+          "h": 29,
+          "i": 20,
+          "id": "3",
+          "kind": "Label",
+          "parent": 16,
+          "text": "Mail",
+          "w": 42,
+          "x": 312,
+          "y": 157
+        },
+        {
+          "bg": "#ffe2e7ec",
+          "ch": 1,
+          "cw": 332,
+          "cx": 26,
+          "cy": 211,
+          "h": 1,
+          "i": 21,
+          "id": "1",
+          "kind": "View",
+          "parent": 15,
+          "w": 332,
+          "x": 26,
+          "y": 211
+        },
+        {
+          "bg": "#fff7f9fb",
+          "ch": 192,
+          "cw": 332,
+          "cx": 26,
+          "cy": 220,
+          "h": 192,
+          "i": 22,
+          "id": "2",
+          "kind": "View",
+          "parent": 15,
+          "w": 332,
+          "x": 26,
+          "y": 220
+        },
+        {
+          "ch": 34,
+          "cw": 308,
+          "cx": 38,
+          "cy": 232,
+          "h": 34,
+          "i": 23,
+          "id": "-",
+          "kind": "View",
+          "parent": 22,
+          "w": 308,
+          "x": 38,
+          "y": 232
+        },
+        {
+          "ch": 27,
+          "cw": 111,
+          "cx": 42,
+          "cy": 236,
+          "fg": "#ff5b6672",
+          "h": 27,
+          "i": 24,
+          "id": "-",
+          "kind": "Label",
+          "parent": 23,
+          "text": "Finance team",
+          "w": 111,
+          "x": 42,
+          "y": 236
+        },
+        {
+          "ch": 26,
+          "cw": 39,
+          "cx": 304,
+          "cy": 236,
+          "fg": "#ff9aa4b0",
+          "h": 26,
+          "i": 26,
+          "id": "2",
+          "kind": "Label",
+          "parent": 23,
+          "text": "Mon",
+          "w": 39,
+          "x": 304,
+          "y": 236
+        },
+        {
+          "ch": 32,
+          "cw": 301,
+          "cx": 42,
+          "cy": 274,
+          "fg": "#ff1c2430",
+          "h": 32,
+          "i": 27,
+          "id": "1",
+          "kind": "Label",
+          "parent": 22,
+          "text": "Quarterly report draft",
+          "w": 301,
+          "x": 42,
+          "y": 274
+        },
+        {
+          "ch": 26,
+          "cw": 124,
+          "cx": 42,
+          "cy": 317,
+          "fg": "#ff2f6fed",
+          "h": 26,
+          "i": 28,
+          "id": "2",
+          "kind": "Label",
+          "parent": 22,
+          "text": "Archived (demo)",
+          "w": 124,
+          "x": 42,
+          "y": 317
+        },
+        {
+          "ch": 44,
+          "cw": 108,
+          "cx": 38,
+          "cy": 353,
+          "glyphs": 1,
+          "h": 44,
+          "i": 29,
+          "id": "3",
+          "kind": "Button",
+          "parent": 22,
+          "tappable": true,
+          "text": "Open \u203a",
+          "w": 108,
+          "x": 38,
+          "y": 353
+        }
+      ]
+    },
+    "tree": "W3 22\n0 -1 - Splash 0 28 384 758\n1 0 11 View 0 28 384 758\n2 1 depth_status Label 16 44 353 26\n3 1 - View 12 81 360 50\n4 3 d_gl Button 12 84 69 44\n5 3 d_ex Button 89 84 73 44\n6 3 d_ap Button 170 84 99 44\n7 3 states_btn Button 298 84 74 44\n8 1 1 View 12 139 360 635\n9 8 stage View 12 139 360 287\n10 9 - View 26 153 332 50\n11 10 - Button 26 156 59 44\n12 10 1 Button 93 156 85 44\n13 10 3 Label 312 157 42 29\n14 9 1 View 26 211 332 1\n15 9 2 View 26 220 332 192\n16 15 - View 38 232 308 34\n17 16 - Label 42 236 111 27\n18 16 2 Label 304 236 39 26\n19 15 1 Label 42 274 301 32\n20 15 2 Label 42 317 124 26\n21 15 3 Button 38 353 108 44\n",
+    "widgets": [
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "-@0",
+        "text": null,
+        "type": "Splash",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "11",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "11@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "depth_status",
+        "rect": [
+          16,
+          44,
+          353,
+          26
+        ],
+        "selected": null,
+        "selector": "depth_status@0",
+        "text": "Mail Cards   \u00b7   L2 app   \u00b7   ready",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          12,
+          81,
+          360,
+          50
+        ],
+        "selected": null,
+        "selector": "-@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_gl",
+        "rect": [
+          12,
+          84,
+          69,
+          44
+        ],
+        "selected": null,
+        "selector": "d_gl@0",
+        "text": "Glance",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_ex",
+        "rect": [
+          89,
+          84,
+          73,
+          44
+        ],
+        "selected": null,
+        "selector": "d_ex@0",
+        "text": "Expand",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_ap",
+        "rect": [
+          170,
+          84,
+          99,
+          44
+        ],
+        "selected": null,
+        "selector": "d_ap@0",
+        "text": "\u2022 Open app",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "states_btn",
+        "rect": [
+          298,
+          84,
+          74,
+          44
+        ],
+        "selected": null,
+        "selector": "states_btn@0",
+        "text": "States \u25b8",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "states_row",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "states_row@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@3",
+        "text": "Ready",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@0",
+        "text": "Loading",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@0",
+        "text": "Empty",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "3",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "3@0",
+        "text": "Error",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          12,
+          139,
+          360,
+          635
+        ],
+        "selected": null,
+        "selector": "1@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "stage",
+        "rect": [
+          12,
+          139,
+          360,
+          287
+        ],
+        "selected": null,
+        "selector": "stage@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          26,
+          153,
+          332,
+          50
+        ],
+        "selected": null,
+        "selector": "-@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          26,
+          156,
+          59,
+          44
+        ],
+        "selected": null,
+        "selector": "-@5",
+        "text": "Inbox",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          93,
+          156,
+          85,
+          44
+        ],
+        "selected": null,
+        "selector": "1@2",
+        "text": "Archived",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "3",
+        "rect": [
+          312,
+          157,
+          42,
+          29
+        ],
+        "selected": null,
+        "selector": "3@1",
+        "text": "Mail",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          26,
+          211,
+          332,
+          1
+        ],
+        "selected": null,
+        "selector": "1@3",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          26,
+          220,
+          332,
+          192
+        ],
+        "selected": null,
+        "selector": "2@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          38,
+          232,
+          308,
+          34
+        ],
+        "selected": null,
+        "selector": "-@6",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          42,
+          236,
+          111,
+          27
+        ],
+        "selected": null,
+        "selector": "-@7",
+        "text": "Finance team",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          304,
+          236,
+          39,
+          26
+        ],
+        "selected": null,
+        "selector": "2@3",
+        "text": "Mon",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          42,
+          274,
+          301,
+          32
+        ],
+        "selected": null,
+        "selector": "1@5",
+        "text": "Quarterly report draft",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          42,
+          317,
+          124,
+          26
+        ],
+        "selected": null,
+        "selector": "2@4",
+        "text": "Archived (demo)",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "3",
+        "rect": [
+          38,
+          353,
+          108,
+          44
+        ],
+        "selected": null,
+        "selector": "3@2",
+        "text": "Open \u203a",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      }
+    ]
+  },
+  "width": 1080
+}

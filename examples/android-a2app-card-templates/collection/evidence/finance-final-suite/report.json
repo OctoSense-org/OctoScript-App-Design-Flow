@@ -1,0 +1,573 @@
+{
+  "family": "finance",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "142.60 USD",
+          "Demo Corp"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "142.60 USD",
+          "pass": true
+        },
+        {
+          "contains": "Demo Corp",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "watch",
+      "input": {
+        "label": "watch",
+        "action": "tap",
+        "target": "Watch",
+        "contains": [
+          "Watching \u2713",
+          "watching: 1"
+        ]
+      },
+      "target_rect": [
+        26,
+        460,
+        69,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "01-watch.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Watching \u2713",
+          "pass": true
+        },
+        {
+          "contains": "watching: 1",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "unwatch",
+      "input": {
+        "label": "unwatch",
+        "action": "tap",
+        "target": "Watching \u2713",
+        "contains": [
+          "Watch",
+          "watching: 0"
+        ]
+      },
+      "target_rect": [
+        26,
+        460,
+        109,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "02-unwatch.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Watch",
+          "pass": true
+        },
+        {
+          "contains": "watching: 0",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "action": "tap",
+        "target": "Expand",
+        "contains": [
+          "140.10",
+          "30d trend"
+        ]
+      },
+      "target_rect": [
+        89,
+        134,
+        73,
+        44
+      ],
+      "target_selector": "1@2",
+      "png": "03-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "140.10",
+          "pass": true
+        },
+        {
+          "contains": "30d trend",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-app",
+      "input": {
+        "label": "full-app",
+        "action": "tap",
+        "target": "Open app",
+        "occurrence": 0,
+        "contains": [
+          "Northwind Energy",
+          "86.15 USD"
+        ]
+      },
+      "target_rect": [
+        170,
+        157,
+        89,
+        44
+      ],
+      "target_selector": "2@1",
+      "png": "04-full-app.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "-",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "1",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "2",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Northwind Energy",
+          "pass": true
+        },
+        {
+          "contains": "86.15 USD",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "second-instrument",
+      "input": {
+        "label": "second-instrument",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": 1,
+        "contains": [
+          "Northwind Energy",
+          "86.15 USD"
+        ],
+        "excludes": [
+          "142.60 USD",
+          "Demo Corp"
+        ]
+      },
+      "target_rect": [
+        111,
+        674,
+        108,
+        44
+      ],
+      "target_selector": "1@9",
+      "png": "05-second-instrument.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Northwind Energy",
+          "pass": true
+        },
+        {
+          "contains": "86.15 USD",
+          "pass": true
+        },
+        {
+          "excludes": "142.60 USD",
+          "pass": true
+        },
+        {
+          "excludes": "Demo Corp",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "watch-second",
+      "input": {
+        "label": "watch-second",
+        "action": "tap",
+        "target": "Watch",
+        "contains": [
+          "Watching \u2713"
+        ]
+      },
+      "target_rect": [
+        26,
+        650,
+        69,
+        44
+      ],
+      "target_selector": "-@9",
+      "png": "06-watch-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Watching \u2713",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back",
+      "input": {
+        "label": "back",
+        "action": "tap",
+        "target": "\u2039 Back",
+        "contains": [
+          "Demo Corp",
+          "Northwind Energy"
+        ]
+      },
+      "target_rect": [
+        143,
+        650,
+        64,
+        44
+      ],
+      "target_selector": "1@8",
+      "png": "07-back.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "-",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "1",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "2",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Demo Corp",
+          "pass": true
+        },
+        {
+          "contains": "Northwind Energy",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "watching-collection",
+      "input": {
+        "label": "watching-collection",
+        "action": "tap",
+        "target": "Watching",
+        "contains": [
+          "Northwind Energy"
+        ],
+        "excludes": [
+          "Demo Corp"
+        ]
+      },
+      "target_rect": [
+        150,
+        264,
+        126,
+        44
+      ],
+      "target_selector": "1@4",
+      "png": "08-watching-collection.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Northwind Energy",
+          "pass": true
+        },
+        {
+          "excludes": "Demo Corp",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-second",
+      "input": {
+        "label": "remove-second",
+        "action": "tap",
+        "target": "Watching \u2713",
+        "contains": [
+          "No instruments watched"
+        ]
+      },
+      "target_rect": [
+        38,
+        465,
+        105,
+        44
+      ],
+      "target_selector": "-@8",
+      "png": "09-remove-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "No instruments watched",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "return",
+      "input": {
+        "label": "return",
+        "action": "tap",
+        "target": "Glance",
+        "contains": [
+          "Demo Corp"
+        ]
+      },
+      "target_rect": [
+        12,
+        134,
+        69,
+        44
+      ],
+      "target_selector": "-@3",
+      "png": "10-return.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Demo Corp",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "empty",
+      "input": {
+        "label": "empty",
+        "action": "tap",
+        "target": "Empty",
+        "contains": [
+          "No quotes"
+        ]
+      },
+      "target_rect": [
+        169,
+        192,
+        64,
+        44
+      ],
+      "target_selector": "2@3",
+      "png": "11-empty.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "No quotes",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "error",
+      "input": {
+        "label": "error",
+        "action": "tap",
+        "target": "Error",
+        "contains": [
+          "Couldn't load quotes"
+        ]
+      },
+      "target_rect": [
+        241,
+        215,
+        54,
+        44
+      ],
+      "target_selector": "3@0",
+      "png": "12-error.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Couldn't load quotes",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "ready",
+      "input": {
+        "label": "ready",
+        "action": "tap",
+        "target": "Ready",
+        "contains": [
+          "142.60 USD"
+        ]
+      },
+      "target_rect": [
+        12,
+        192,
+        63,
+        44
+      ],
+      "target_selector": "-@4",
+      "png": "13-ready.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "142.60 USD",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.finance",
+    "capabilities": [
+      "storage"
+    ],
+    "digest": "1c592b58cfc4d6702f7202c4021a5a627a792859a396aeb9560d2970eec4ba53",
+    "name": "Finance Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

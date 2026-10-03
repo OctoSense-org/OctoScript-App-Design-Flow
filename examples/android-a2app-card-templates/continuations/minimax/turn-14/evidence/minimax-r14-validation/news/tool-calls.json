@@ -1,0 +1,5242 @@
+[
+  {
+    "request_id": "baecb7d0-dbf0-478e-bfa7-caeb0a87746b",
+    "request": {
+      "name": "studio.bundle_check",
+      "args": {
+        "bundle_path": "card-templates/news/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "baecb7d0-dbf0-478e-bfa7-caeb0a87746b",
+      "data": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.news",
+        "capabilities": [],
+        "digest": "de6b47f27d4729a6ac13830dbbb5060b1ffe83052d610b77339d67d984dc8c81",
+        "name": "News Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.681
+  },
+  {
+    "request_id": "70e28cb5-20fc-453e-bf37-7b50c8c8192f",
+    "request": {
+      "name": "studio.open",
+      "args": {
+        "bundle_path": "card-templates/news/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "70e28cb5-20fc-453e-bf37-7b50c8c8192f",
+      "data": {
+        "bundle": {
+          "admission": "local_developer",
+          "app_id": "dev.studio.cards.news",
+          "capabilities": [],
+          "digest": "de6b47f27d4729a6ac13830dbbb5060b1ffe83052d610b77339d67d984dc8c81",
+          "name": "News Cards",
+          "publisher_signed": false,
+          "source_modified": false,
+          "version": "0.1.0"
+        },
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "ready": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 1.05
+  },
+  {
+    "request_id": "18de912b-a1cc-4dd8-9e62-978ba54e9ae7",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "18de912b-a1cc-4dd8-9e62-978ba54e9ae7",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-82f90c4d-ba24-4538-be8b-d2d036361e4b.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 0 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "glance@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_outlet@0",
+              "text": "Harbour Times",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_at@0",
+              "text": "08:20",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_title@0",
+              "text": "Riverside bridge reopens after inspection",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_brief@0",
+              "text": "Mill Street bridge reopens today after a six-day structural inspection.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_meta@0",
+              "text": "Local \u00b7 142 pts",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "\u25cf L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Demo feed",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-4e01ce9f-bb92-404a-98c8-eaa2dfb40f81.json",
+        "total_widgets": 29,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.376
+  },
+  {
+    "request_id": "d60a4003-51b8-47d4-b3a8-7fc9978e68ee",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "b1@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "d60a4003-51b8-47d4-b3a8-7fc9978e68ee",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.117
+  },
+  {
+    "request_id": "aa4bf10d-d525-4a24-a606-02b602682dea",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "aa4bf10d-d525-4a24-a606-02b602682dea",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-555bc8be-47ca-461a-8025-e9c8ae56c2f8.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 0 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_outlet@0",
+              "text": "Harbour Times \u00b7 08:20",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_title@0",
+              "text": "Riverside bridge reopens after inspection",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_meta@0",
+              "text": "Local \u00b7 142 pts \u00b7 31 comments",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_brief@0",
+              "text": "Mill Street bridge reopens today after a six-day structural inspection.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_action@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-4641770d-6fda-401a-b5d6-99e39614647e.json",
+        "total_widgets": 29,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.386
+  },
+  {
+    "request_id": "0cc6274e-9d92-4d2a-9fc5-4ccceee688bd",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "b2@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "0cc6274e-9d92-4d2a-9fc5-4ccceee688bd",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.138
+  },
+  {
+    "request_id": "29a1b837-a6a0-470b-9b86-52839f5836ea",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "29a1b837-a6a0-470b-9b86-52839f5836ea",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-51106781-4386-476e-98cd-745f4b2d9ebb.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 0 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_saved@0",
+              "text": "Saved",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Riverside bridge reopens after inspection",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Harbour Times \u00b7 08:20",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "text": "Library extends weekend hours",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "Harbour Times \u00b7 07:55",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Docklands solar trial powers first block",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Field Notes \u00b7 Yesterday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@22",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-907e0b3b-0b2e-49ba-a81d-1e3fd9ba8fe0.json",
+        "total_widgets": 43,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.324
+  },
+  {
+    "request_id": "4c6a2e1d-3734-467b-a9d0-cb38196fbe50",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "-@19",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "4c6a2e1d-3734-467b-a9d0-cb38196fbe50",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.151
+  },
+  {
+    "request_id": "c688de17-3997-4743-94b9-3180102159ed",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "c688de17-3997-4743-94b9-3180102159ed",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-1a899b09-ab68-4fa9-b63d-4aa313bcd1c4.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 0 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_outlet@0",
+              "text": "Harbour Times \u00b7 07:55",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_title@0",
+              "text": "Library extends weekend hours",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_meta@0",
+              "text": "Local \u00b7 88 pts \u00b7 12 comments",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_body@0",
+              "text": "From November the central library will open on Saturdays until 19:00, two hours later than now, funded by two extra weekend posts. Reading room capacity is unch",
+              "text_truncated": true,
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "text": "\u2039 Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-891d6950-81d7-48e0-917c-46d581b41139.json",
+        "total_widgets": 28,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.383
+  },
+  {
+    "request_id": "0dd612ba-5493-41fe-bc99-b2c6ecee4e63",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "rd_action@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "0dd612ba-5493-41fe-bc99-b2c6ecee4e63",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.126
+  },
+  {
+    "request_id": "8d7a96c1-f5ce-4e91-9224-828e5d3222ad",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "8d7a96c1-f5ce-4e91-9224-828e5d3222ad",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-b151cad2-da8b-44e0-b25d-4c9bb6c98bea.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 1 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_outlet@0",
+              "text": "Harbour Times \u00b7 07:55",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_title@0",
+              "text": "Library extends weekend hours",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_meta@0",
+              "text": "Local \u00b7 88 pts \u00b7 12 comments",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_body@0",
+              "text": "From November the central library will open on Saturdays until 19:00, two hours later than now, funded by two extra weekend posts. Reading room capacity is unch",
+              "text_truncated": true,
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Remove from Saved",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "text": "\u2039 Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Saved Harbour Times",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-db781e1e-d525-47ba-ad0d-f0be6ece09c1.json",
+        "total_widgets": 28,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.326
+  },
+  {
+    "request_id": "125d146f-2f1b-4b11-a69b-f185e4e0846c",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "-@35",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "125d146f-2f1b-4b11-a69b-f185e4e0846c",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.119
+  },
+  {
+    "request_id": "73415b64-f7c3-4853-849f-3caef6e9a3e7",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "73415b64-f7c3-4853-849f-3caef6e9a3e7",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-a6210454-469a-42bd-afdf-35dcf2c7ce78.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 1 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_saved@0",
+              "text": "Saved",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Riverside bridge reopens after inspection",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Harbour Times \u00b7 08:20",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "text": "Library extends weekend hours",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "Harbour Times \u00b7 07:55",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Remove",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Docklands solar trial powers first block",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Field Notes \u00b7 Yesterday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@22",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-2eb2ebaf-2ab4-4db2-a6ce-86e3ea47e795.json",
+        "total_widgets": 43,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.379
+  },
+  {
+    "request_id": "0b139819-4e20-4ba1-8cd2-7069a2dcecad",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "tab_saved@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "0b139819-4e20-4ba1-8cd2-7069a2dcecad",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.14
+  },
+  {
+    "request_id": "8e23b35e-7abe-47d6-a71e-5a884814b4a7",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "8e23b35e-7abe-47d6-a71e-5a884814b4a7",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-ff6cd573-8eda-4b95-865e-ada78f4d5ddb.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 1 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_saved@0",
+              "text": "\u25cf Saved",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_s@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "text": "Library extends weekend hours",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@9",
+              "text": "Harbour Times \u00b7 07:55",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_sb@0",
+              "text": "Remove",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@28",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing Saved",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-6ee590a8-a9bb-4768-9775-fe59b61df31a.json",
+        "total_widgets": 29,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.395
+  },
+  {
+    "request_id": "f5165ceb-4e9b-4b9d-a310-e3b1f12ba287",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "r2_sb@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "f5165ceb-4e9b-4b9d-a310-e3b1f12ba287",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.135
+  },
+  {
+    "request_id": "12ee5cfa-0a7c-4e0f-8e91-5a626a74b18c",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "12ee5cfa-0a7c-4e0f-8e91-5a626a74b18c",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-3ce02073-2dcc-4233-900a-d491ac7b0e8d.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 0 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_saved@0",
+              "text": "\u25cf Saved",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "saved_empty@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "text": "Nothing saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "text": "Save a story from All to read it here.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Removed from Saved \u00b7 Harbour Times",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-6348bbe2-117a-474a-9c29-60524f8c9e58.json",
+        "total_widgets": 25,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.412
+  },
+  {
+    "request_id": "384cc57d-6982-4ec5-befd-e5b59889520c",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "tab_all@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "384cc57d-6982-4ec5-befd-e5b59889520c",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.137
+  },
+  {
+    "request_id": "179f71e4-ab55-470d-a2b3-e0ce51f269a1",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "179f71e4-ab55-470d-a2b3-e0ce51f269a1",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-4b576c8d-6c44-48d9-9c05-7ac18875ef75.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 0 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_saved@0",
+              "text": "Saved",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Riverside bridge reopens after inspection",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Harbour Times \u00b7 08:20",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "text": "Library extends weekend hours",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "Harbour Times \u00b7 07:55",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Docklands solar trial powers first block",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Field Notes \u00b7 Yesterday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@22",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing All stories",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-d1fbddb7-f6c6-4946-9662-73cc80bff1fb.json",
+        "total_widgets": 43,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.355
+  },
+  {
+    "request_id": "860f40ef-3f67-489c-b6b5-f69412275cb2",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "l2@0",
+        "action": "scroll",
+        "delta_y": 360
+      }
+    },
+    "reply": {
+      "call_id": "860f40ef-3f67-489c-b6b5-f69412275cb2",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.137
+  },
+  {
+    "request_id": "abb59cfe-d774-4594-addb-6763c74e45be",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "abb59cfe-d774-4594-addb-6763c74e45be",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-2b637315-6421-423f-8325-2135b70a839c.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 0 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_saved@0",
+              "text": "Saved",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Riverside bridge reopens after inspection",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Harbour Times \u00b7 08:20",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "text": "Library extends weekend hours",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "Harbour Times \u00b7 07:55",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Docklands solar trial powers first block",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Field Notes \u00b7 Yesterday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@22",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing All stories",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-1f4a7b25-4a2c-41f0-89c9-14e1f372552c.json",
+        "total_widgets": 43,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.431
+  },
+  {
+    "request_id": "355a394f-270f-406c-9aad-65016f789a08",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "-@22",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "355a394f-270f-406c-9aad-65016f789a08",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.141
+  },
+  {
+    "request_id": "a6c53206-a6aa-4c9f-b522-08d07cf137e6",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "a6c53206-a6aa-4c9f-b522-08d07cf137e6",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-4d94e234-c289-4c94-ae4c-69c5127052e8.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 0 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_outlet@0",
+              "text": "Field Notes \u00b7 Yesterday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_title@0",
+              "text": "Docklands solar trial powers first block",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_meta@0",
+              "text": "Energy \u00b7 264 pts \u00b7 57 comments",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_body@0",
+              "text": "A rooftop solar array on the old grain warehouse began supplying the surrounding block this week, the first shared scheme in the district. Early figures suggest",
+              "text_truncated": true,
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "text": "\u2039 Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-2195f63d-5645-4ea9-b6c9-ff164e1d1142.json",
+        "total_widgets": 28,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.386
+  },
+  {
+    "request_id": "2a4fd0cb-b331-4899-bb95-21011e438f40",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "rd_action@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "2a4fd0cb-b331-4899-bb95-21011e438f40",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.151
+  },
+  {
+    "request_id": "af4a03cb-8e2f-4596-b3d9-f2cd7c44eab2",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "af4a03cb-8e2f-4596-b3d9-f2cd7c44eab2",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-58a19e7b-7bca-4998-9dac-4f7a78e4d780.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 1 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_outlet@0",
+              "text": "Field Notes \u00b7 Yesterday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_title@0",
+              "text": "Docklands solar trial powers first block",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_meta@0",
+              "text": "Energy \u00b7 264 pts \u00b7 57 comments",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_body@0",
+              "text": "A rooftop solar array on the old grain warehouse began supplying the surrounding block this week, the first shared scheme in the district. Early figures suggest",
+              "text_truncated": true,
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Remove from Saved",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "text": "\u2039 Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Saved Field Notes",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-a46d6372-0f0d-4923-a582-f9ea0e3fa5cd.json",
+        "total_widgets": 28,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.396
+  },
+  {
+    "request_id": "81db975f-5b16-4f2b-8eb8-0cea41737d38",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "-@35",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "81db975f-5b16-4f2b-8eb8-0cea41737d38",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.141
+  },
+  {
+    "request_id": "a6909a1b-c86b-476d-9e43-988771eb261a",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "a6909a1b-c86b-476d-9e43-988771eb261a",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-f9bd19f2-e96c-4c4f-bfdf-940a7fbb6aee.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 1 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_saved@0",
+              "text": "Saved",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Riverside bridge reopens after inspection",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Harbour Times \u00b7 08:20",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "text": "Library extends weekend hours",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "Harbour Times \u00b7 07:55",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Docklands solar trial powers first block",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Field Notes \u00b7 Yesterday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Remove",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@22",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-2194f43c-af27-4f44-88ff-16f910c26a3c.json",
+        "total_widgets": 43,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.373
+  },
+  {
+    "request_id": "571f534d-1c39-40f0-a06a-632f54bbd329",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "tab_saved@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "571f534d-1c39-40f0-a06a-632f54bbd329",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.343
+  },
+  {
+    "request_id": "a522e43d-6b0f-48f4-b4b1-62a743c9bc38",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "a522e43d-6b0f-48f4-b4b1-62a743c9bc38",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-65ab305a-e924-4232-a825-2d71d876343b.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 1 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_saved@0",
+              "text": "\u25cf Saved",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_s@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@29",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@30",
+              "text": "Docklands solar trial powers first block",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@10",
+              "text": "Field Notes \u00b7 Yesterday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_sb@0",
+              "text": "Remove",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@31",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing Saved",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-df293def-8cde-4144-bb5e-85384708ef56.json",
+        "total_widgets": 29,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.393
+  },
+  {
+    "request_id": "ffe04348-80b4-40a1-a007-b67813fa6a9d",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "r3_sb@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "ffe04348-80b4-40a1-a007-b67813fa6a9d",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.137
+  },
+  {
+    "request_id": "c4eb4cdf-8b5c-417d-b9f1-466477c3e3c9",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "c4eb4cdf-8b5c-417d-b9f1-466477c3e3c9",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-5340a697-c809-4f15-89e2-39eb0ad1c53a.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 0 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_saved@0",
+              "text": "\u25cf Saved",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "saved_empty@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "text": "Nothing saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "text": "Save a story from All to read it here.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Removed from Saved \u00b7 Field Notes",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-f3653e4b-88e6-4a89-92ea-4b68b59c721f.json",
+        "total_widgets": 25,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.401
+  },
+  {
+    "request_id": "43a18413-a73a-4719-909f-7c34474ca6f7",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "b1@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "43a18413-a73a-4719-909f-7c34474ca6f7",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.137
+  },
+  {
+    "request_id": "b0c0e455-5368-4e56-b774-ae72430f6dbd",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "b0c0e455-5368-4e56-b774-ae72430f6dbd",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-331bfeab-e929-4031-b597-f60db2fb37ba.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 0 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_outlet@0",
+              "text": "Field Notes \u00b7 Yesterday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_title@0",
+              "text": "Docklands solar trial powers first block",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_meta@0",
+              "text": "Energy \u00b7 264 pts \u00b7 57 comments",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_brief@0",
+              "text": "A rooftop array on the old warehouse now covers block demand.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_action@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-637d3387-8839-48a8-aa41-5ba0106646c9.json",
+        "total_widgets": 29,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.391
+  },
+  {
+    "request_id": "f85d3763-ac65-4029-890e-fc76db1192fe",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "x_action@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "f85d3763-ac65-4029-890e-fc76db1192fe",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.151
+  },
+  {
+    "request_id": "163f09ca-72d9-4d40-81ca-6f6557722314",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "163f09ca-72d9-4d40-81ca-6f6557722314",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-a2bc5876-833a-4bdd-8be5-1f45ddb1cfaf.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 1 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_outlet@0",
+              "text": "Field Notes \u00b7 Yesterday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_title@0",
+              "text": "Docklands solar trial powers first block",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_meta@0",
+              "text": "Energy \u00b7 264 pts \u00b7 57 comments",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_brief@0",
+              "text": "A rooftop array on the old warehouse now covers block demand.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_action@0",
+              "text": "Remove from Saved",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Saved Field Notes",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-a8fdaafb-ed06-4702-90e1-a6d67a87786c.json",
+        "total_widgets": 29,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.385
+  },
+  {
+    "request_id": "af7657a1-d1d7-4e18-bec5-1781c683e8e6",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "x_action@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "af7657a1-d1d7-4e18-bec5-1781c683e8e6",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.153
+  },
+  {
+    "request_id": "9313c27b-b985-4a57-bfb9-e625595a49c4",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "9313c27b-b985-4a57-bfb9-e625595a49c4",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-1dc754a4-b5a9-44c3-99b5-82f53f4d2f4e.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 0 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_outlet@0",
+              "text": "Field Notes \u00b7 Yesterday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_title@0",
+              "text": "Docklands solar trial powers first block",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_meta@0",
+              "text": "Energy \u00b7 264 pts \u00b7 57 comments",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_brief@0",
+              "text": "A rooftop array on the old warehouse now covers block demand.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_action@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Removed from Saved \u00b7 Field Notes",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-3ecabefa-ed76-41ea-a49b-c9fc2c445042.json",
+        "total_widgets": 29,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.409
+  },
+  {
+    "request_id": "b8555e8d-7280-49d6-9fe9-70943501f590",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "b0@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "b8555e8d-7280-49d6-9fe9-70943501f590",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.146
+  },
+  {
+    "request_id": "e2580853-74c3-4b9f-b230-1bfddb959db5",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "e2580853-74c3-4b9f-b230-1bfddb959db5",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-528be687-a041-4c7e-bbbc-283c40a5d39e.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 0 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "glance@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_outlet@0",
+              "text": "Harbour Times",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_at@0",
+              "text": "08:20",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_title@0",
+              "text": "Riverside bridge reopens after inspection",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_brief@0",
+              "text": "Mill Street bridge reopens today after a six-day structural inspection.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_meta@0",
+              "text": "Local \u00b7 142 pts",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "\u25cf L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-62b061f1-d802-4bec-8b1a-484f30e4dba6.json",
+        "total_widgets": 29,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.412
+  },
+  {
+    "request_id": "4efbae7b-6af0-4d8e-9dd3-e5083791d405",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "widget_id": "-@8",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "4efbae7b-6af0-4d8e-9dd3-e5083791d405",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.131
+  },
+  {
+    "request_id": "e7b405bc-ea6d-4ac8-9ef6-874bc33d2e67",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "e7b405bc-ea6d-4ac8-9ef6-874bc33d2e67",
+      "data": {
+        "height": 2132,
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-9a01350c-0354-4f97-be3f-7a7f65bcab02.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "News",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 stories \u00b7 0 saved",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_outlet@0",
+              "text": "Harbour Times \u00b7 08:20",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_title@0",
+              "text": "Riverside bridge reopens after inspection",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_meta@0",
+              "text": "Local \u00b7 142 pts \u00b7 31 comments",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_body@0",
+              "text": "The pedestrian bridge on Mill Street reopens today after a six-day structural inspection. Engineers replaced two corroded lower joints. The council says the bri",
+              "text_truncated": true,
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "text": "\u2039 Feed",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@36",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-5fedb2be-568c-4df5-8579-416a7f70a1d8.json",
+        "total_widgets": 28,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.334
+  },
+  {
+    "request_id": "58a096a4-e6b5-4349-bcce-d7359ac969b9",
+    "request": {
+      "name": "studio.close",
+      "args": {
+        "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739"
+      }
+    },
+    "reply": {
+      "call_id": "58a096a4-e6b5-4349-bcce-d7359ac969b9",
+      "data": {
+        "closed": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.139
+  }
+]

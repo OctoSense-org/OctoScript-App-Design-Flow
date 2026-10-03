@@ -1,0 +1,40 @@
+{
+  "scope": "Operator-only minimal grammar probe, exact hash-comment lines copied from YouTube diagnostic01; original model source unchanged.",
+  "runtime": "Makepad c155f61d0e1600d2ec474209374444a38a09a470 plus reviewed composite overlay",
+  "source_lines": [
+    139,
+    140,
+    141
+  ],
+  "results": [
+    {
+      "kind": "hash",
+      "code": "let steps = \"start\"\nfn probe(){\n steps = \"before\"\n    # The selected depth is marked persistently with a bullet in the segment\n    # bar, so it survives child actions and detail navigation; the separate\n    # depth label is redundant and is gone.\n steps = \"after\"\n}\nprobe()\nsteps\n",
+      "output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"variable depth not found in scope. Did you mean: steps(\\\"before\\\") or mod(obj1), probe(fn393) (.sources/makepad/platform/script/src/object_heap.rs:726)\",\"level\":\"error\",\"spans\":[{\"file_name\":\"helper-diagnostic\",\"byte_start\":0,\"byte_end\":0,\"line_start\":4,\"line_end\":4,\"column_start\":26,\"column_end\":26,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nRESULT None\n"
+    },
+    {
+      "kind": "slash",
+      "code": "let steps = \"start\"\nfn probe(){\n steps = \"before\"\n// syntax-control comment\n steps = \"after\"\n}\nprobe()\nsteps\n",
+      "output": "RESULT Some(after)\nTEXT after\n"
+    },
+    {
+      "kind": "hash_with_depth",
+      "code": "let depth = 0\nlet steps = \"start\"\nfn probe(){\n steps = \"before\"\n    # The selected depth is marked persistently with a bullet in the segment\n    # bar, so it survives child actions and detail navigation; the separate\n    # depth label is redundant and is gone.\n steps = \"after\"\n}\nprobe()\nsteps\n",
+      "output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"variable actions not found in scope. Did you mean: steps(\\\"before\\\") or mod(obj1), probe(fn393), depth(0) (.sources/makepad/platform/script/src/object_heap.rs:726)\",\"level\":\"error\",\"spans\":[{\"file_name\":\"helper-diagnostic\",\"byte_start\":0,\"byte_end\":0,\"line_start\":6,\"line_end\":6,\"column_start\":41,\"column_end\":41,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nRESULT None\n"
+    },
+    {
+      "kind": "slash_with_depth",
+      "code": "let depth = 0\nlet steps = \"start\"\nfn probe(){\n steps = \"before\"\n// language control\n steps = \"after\"\n}\nprobe()\nsteps\n",
+      "output": "RESULT Some(after)\nTEXT after\n"
+    }
+  ],
+  "source_sha256": "f75709993027aa64649d309a67196a557cedddace41854491954c71fc703a922",
+  "citations": {
+    "source": ".sources/makepad/platform/script/src/tokenizer.rs",
+    "hash_is_color": "680-681",
+    "comments": "835-841",
+    "color_and_following_identifiers": "1096-1120",
+    "invalid_hex_fallback": "555-564"
+  },
+  "conclusion": "Hash-prefixed prose is not discarded in native Splash. Operator-only checked VM probe reproduces failure after entering function, whereas slash-comment control finishes. Supports diagnostic explanation for partial sync; does not independently prove current Android pixels or final source state."
+}

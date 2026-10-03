@@ -1,0 +1,2333 @@
+{
+  "height": 2132,
+  "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+  "path": ".studio-be902bc5-ea39-4564-909b-e6ec157cc76a.png",
+  "settled": false,
+  "snapshot": {
+    "checks": {
+      "findings": [],
+      "instrument": "makepad_widget_tree",
+      "pass": true
+    },
+    "geometry": {
+      "widgets": [
+        {
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 0,
+          "id": "-",
+          "kind": "Splash",
+          "parent": -1,
+          "text": "// Photo card template \u2014 dev.studio.cards.photo\n// All records are SYNTHETIC DEMO DATA in this app's local list. This offline\n// Studio cannot load image assets, so no picture is ever shown: each row states\n// plainly that the photo is not loaded here, and no control pretends otherwise.\n//\n// Depths are PRESENTATION depths (UI), not parser levels:\n//   L0  lead photo at a glance\n//   L1  expanded record with a reversible Favorite\n//   L2  list (All / Favorites) -> record detail\n\nlet photos = [\n    {id: \"p1\" title: \"Mill Street at first light\" date: \"17 Sep\" place: \"Riverside\"\n        people: \"Alex, Sofia\" moment: \"September snapshots\"\n        note: \"Long exposure from the north bank, taken before the bridge opened to traffic. Demo record.\"}\n    {id: \"p2\" title: \"Reading room, west window\" date: \"15 Sep\" place: \"Central Library\"\n        people: \"Noah, Lily\" moment: \"Everyday moments\"\n        note: \"Saturday morning reading hour. Demo record.\"}\n    {id: \"p3\" title: \"Harbour cranes at dusk\" date: \"12 Sep\" place: \"Docklands\"\n        people: \"James\" moment: \"September snapshots\"\n        note: \"Shot from the north quay as the yard lights came on. Demo record.\"}\n]\n\nlet ground = #xf2f2f7\nlet surface = #xffffff\nlet ink = #x1c1c1e\nlet ink2 = #x3c3c43\nlet muted = #x8e8e93\nlet accent = #x007aff\nlet line = #xe5e5ea\nlet demo_bg = #xfff3cd\nlet demo_ink = #x8a0b00\n\nlet fav = []\nlet status = \"Demo album.\"\nlet depth = 0\nlet sel = \"p1\"\nlet route = \"list\"\nlet tab = \"all\"\n\n// ---------- state helpers ----------\n\nfn pick(cond, on, off){ if cond { on } else { off } }\n\nfn ph_of(id){\n    for p in photos { if p.id == id { return p } }\n    nil\n}\n\nfn is_fav(id){\n    for f in fav { if f == id { return true } }\n    false\n}\n\nfn n_fav(){ fav.len() }\n\nfn lead(){\n    for p in photos { return p }\n    nil\n}\n\n// L0 always shows the first record, so its action must target that record\n// rather than whatever a previous route left selected.\nfn lead_id(){\n    let m = lead()\n    if m == nil { return \"\" }\n    m.id\n}\n\nfn say(s){ status = s; ui.status.set_text(status) }\n\nfn depth_name(){\n    if depth == 0 { return \"L0 Glance\" }\n    if depth == 1 { return \"L1 Photo\" }\n    if route == \"detail\" { return \"L2 Photo\" }\n    return \"L2 Album\"\n}\n\nfn set_depth(d){\n    depth = d\n    route = \"list\"\n    say(\"Showing \" + depth_name())\n    sync()\n}\n\nfn do_open(id){\n    sel = id\n    route = \"detail\"\n    set_depth(2)\n    route = \"detail\"\n    say(\"Showing \" + depth_name())\n    sync()\n}\n\nfn do_back(){\n    route = \"list\"\n    say(\"Showing \" + depth_name())\n    sync()\n}\n\nfn do_fav(id){\n    if is_fav(id) { return }\n    fav.push(id)\n    let p = ph_of(id)\n    if p == nil { return }\n    say(\"Favorited \" + p.title)\n    sync()\n}\n\nfn do_unfav(id){\n    if !is_fav(id) { return }\n    fav.retain(|x| x != id)\n    let p = ph_of(id)\n    if p == nil { return }\n    say(\"Removed from Favorites\")\n    sync()\n}\n\n// The dynamically labelled button must do what its label currently says, so one\n// action serves both directions and is reversible wherever it appears.\nfn do_toggle_fav(id){\n    if is_fav(id) { do_unfav(id) } else { do_fav(id) }\n}\n\nfn set_tab(t){\n    tab = t\n    say(\"Showing \" + pick(t == \"all\", \"All photos\", \"Favorites\"))\n    sync()\n}\n\n// ---------- chrome sync ----------\n\nfn sync(){\n    ui.glance.set_visible(depth == 0)\n    ui.expanded.set_visible(depth == 1)\n    ui.full.set_visible(depth == 2)\n\n    ui.count.set_text(\"\" + photos.len() + \" photos \u00b7 \" + \"\" + n_fav() + \" favorites\")\n    ui.status.set_text(status)\n    ui.b0.set_text(pick(depth == 0, \"\u25cf L0\", \"L0\"))\n    ui.b1.set_text(pick(depth == 1, \"\u25cf L1\", \"L1\"))\n    ui.b2.set_text(pick(depth == 2, \"\u25cf L2\", \"L2\"))\n\n    let m = lead()\n    ui.g_title.set_text(m.title)\n    ui.g_date.set_text(m.date)\n    ui.g_place.set_text(m.place)\n    ui.g_people.set_text(m.people)\n\n    let s = ph_of(sel)\n    ui.x_title.set_text(s.title)\n    ui.x_date.set_text(s.date)\n    ui.x_place.set_text(s.place)\n    ui.x_people.set_text(s.people)\n    ui.x_note.set_text(s.note)\n    ui.x_action.set_text(pick(is_fav(s.id), \"Remove from Favorites\", \"Favorite\"))\n\n    ui.rd_title.set_text(s.title)\n    ui.rd_date.set_text(s.date)\n    ui.rd_place.set_text(s.place)\n    ui.rd_people.set_text(s.people)\n    ui.rd_note.set_text(s.note)\n    ui.rd_action.set_text(pick(is_fav(s.id), \"Remove from Favorites\", \"Favorite\"))\n\n    ui.l2_list.set_visible(route == \"list\")\n    ui.l2_detail.set_visible(route == \"detail\")\n\n    ui.r1.set_visible(tab == \"all\")\n    ui.r2.set_visible(tab == \"all\")\n    ui.r3.set_visible(tab == \"all\")\n    ui.r1_f.set_visible(tab == \"fav\" && is_fav(\"p1\"))\n    ui.r2_f.set_visible(tab == \"fav\" && is_fav(\"p2\"))\n    ui.r3_f.set_visible(tab == \"fav\" && is_fav(\"p3\"))\n    ui.fav_empty.set_visible(tab == \"fav\" && n_fav() == 0)\n\n    ui.r1_b.set_text(pick(is_fav(\"p1\"), \"Remove\", \"Favorite\"))\n    ui.r2_b.set_text(pick(is_fav(\"p2\"), \"Remove\", \"Favorite\"))\n    ui.r3_b.set_text(pick(is_fav(\"p3\"), \"Remove\", \"Favorite\"))\n    ui.r1_fb.set_text(pick(is_fav(\"p1\"), \"Remove\", \"Favorite\"))\n    ui.r2_fb.set_text(pick(is_fav(\"p2\"), \"Remove\", \"Favorite\"))\n    ui.r3_fb.set_text(pick(is_fav(\"p3\"), \"Remove\", \"Favorite\"))\n\n    ui.tab_all.set_text(pick(tab == \"all\", \"\u25cf All\", \"All\"))\n    ui.tab_fav.set_text(pick(tab == \"fav\", \"\u25cf Favorites\", \"Favorites\"))\n}\n\n// ---------- shared button styles ----------\n\nlet Flat = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}\n    draw_text +: {color: accent color_hover: accent color_down: accent text_style +: {font_size: 15}}}\n\nlet Quiet = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}\n    draw_text +: {color: ink2 color_hover: ink2 color_down: ink2 text_style +: {font_size: 15}}}\n\nlet Seg = ButtonFlat{height: 44 width: Fill align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000f color_down: #x0000001a border_size: 0.0}\n    draw_text +: {color: ink color_hover: ink color_down: ink text_style +: {font_size: 14}}}\n\n// ---------- root ----------\n\nSolidView{width: Fill height: Fill flow: Down draw_bg.color: ground\n\n    View{width: Fill height: Fit flow: Down spacing: 2\n        padding: Inset{left: 16 right: 16 top: 12 bottom: 8}\n        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n            Label{text: \"Photo\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 19}}\n            View{width: Fill height: 1}\n            RoundedView{width: Fit height: Fit\n                padding: Inset{left: 8 right: 8 top: 3 bottom: 3}\n                draw_bg.color: demo_bg draw_bg.border_radius: 6.0\n                Label{text: \"DEMO\" draw_text.color: demo_ink draw_text.text_style: theme.font_bold{font_size: 11}}\n            }\n        }\n        count := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n    }\n\n    View{width: Fill height: Fill flow: Down\n\n        // ===== L0 =====\n        glance := View{width: Fill height: Fill flow: Down spacing: 8\n            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n            g_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                Label{text: \"PHOTO NOT LOADED OFFLINE\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                g_title := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                    g_date := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 12}\n                    g_place := Label{text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                }\n                g_people := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n            }\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Flat{text: \"Open\" on_click: || do_open(lead_id())}\n                Flat{text: \"Album\" on_click: || set_depth(2)}\n            }\n        }\n\n        // ===== L1 =====\n        expanded := View{visible: false width: Fill height: Fill flow: Down spacing: 8\n            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n            x_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                Label{text: \"PHOTO NOT LOADED OFFLINE\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                x_title := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                    x_date := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 12}\n                    x_place := Label{text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                }\n                x_people := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                SolidView{width: Fill height: 1 draw_bg.color: line}\n                x_note := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n            }\n            View{width: Fill height: Fit flow: Right spacing: 8\n                x_action := Flat{text: \"Favorite\" on_click: || do_toggle_fav(sel)}\n                Flat{text: \"Album\" on_click: || set_depth(2)}\n            }\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Quiet{text: \"\u2039 Glance\" on_click: || set_depth(0)}\n            }\n        }\n\n        // ===== L2 =====\n        full := View{visible: false width: Fill height: Fill\n            l2 := ScrollYView{width: Fill height: Fill flow: Down spacing: 8\n                padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n\n                l2_list := View{width: Fill height: Fit flow: Down spacing: 6\n                    RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 6\n                        padding: Inset{left: 12 right: 12 top: 4 bottom: 4}\n                        draw_bg.color: surface draw_bg.border_radius: 12.0\n                        tab_all := Flat{text: \"All\" on_click: || set_tab(\"all\")}\n                        tab_fav := Flat{text: \"Favorites\" on_click: || set_tab(\"fav\")}\n                    }\n                    r1 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Mill Street at first light\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"17 Sep \u00b7 Riverside\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r1_b := Flat{text: \"Favorite\" on_click: || do_toggle_fav(\"p1\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"p1\")}\n                            }\n                        }\n                    }\n                    r2 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Reading room, west window\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"15 Sep \u00b7 Central Library\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r2_b := Flat{text: \"Favorite\" on_click: || do_toggle_fav(\"p2\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"p2\")}\n                            }\n                        }\n                    }\n                    r3 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Harbour cranes at dusk\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"12 Sep \u00b7 Docklands\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r3_b := Flat{text: \"Favorite\" on_click: || do_toggle_fav(\"p3\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"p3\")}\n                            }\n                        }\n                    }\n                    r1_f := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Mill Street at first light\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"17 Sep \u00b7 Riverside\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r1_fb := Flat{text: \"Remove\" on_click: || do_toggle_fav(\"p1\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"p1\")}\n                            }\n                        }\n                    }\n                    r2_f := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Reading room, west window\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"15 Sep \u00b7 Central Library\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r2_fb := Flat{text: \"Remove\" on_click: || do_toggle_fav(\"p2\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"p2\")}\n                            }\n                        }\n                    }\n                    r3_f := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Harbour cranes at dusk\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"12 Sep \u00b7 Docklands\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r3_fb := Flat{text: \"Remove\" on_click: || do_toggle_fav(\"p3\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"p3\")}\n                            }\n                        }\n                    }\n                    fav_empty := RoundedView{visible: false width: Fill height: Fit flow: Down spacing: 3\n                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                        draw_bg.color: surface draw_bg.border_radius: 14.0\n                        Label{width: Fill text: \"No favorites yet\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 14}}\n                        Label{width: Fill text: \"Favorite a photo from All to see it here.\" draw_text.color: ink2 draw_text.text_style.font_size: 12}\n                    }\n                }\n\n                l2_detail := View{visible: false width: Fill height: Fit flow: Down spacing: 6\n                    RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                        draw_bg.color: surface draw_bg.border_radius: 14.0\n                        Label{text: \"PHOTO NOT LOADED OFFLINE\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                        rd_title := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                            rd_date := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 12}\n                            rd_place := Label{text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                        }\n                        rd_people := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                        SolidView{width: Fill height: 1 draw_bg.color: line}\n                        rd_note := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n                    }\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        rd_action := Flat{text: \"Favorite\" on_click: || do_toggle_fav(sel)}\n                        Quiet{text: \"\u2039 Album\" on_click: || do_back()}\n                    }\n                }\n            }\n        }\n    }\n\n    View{width: Fill height: Fit flow: Down spacing: 4\n        padding: Inset{left: 16 right: 16 top: 6 bottom: 8}\n        SolidView{width: Fill height: 1 draw_bg.color: line}\n        RoundedView{width: Fill height: Fit flow: Right spacing: 4\n            padding: Inset{left: 4 right: 4 top: 4 bottom: 4}\n            draw_bg.color: #xe5e5ea draw_bg.border_radius: 12.0\n            b0 := Seg{text: \"L0\" on_click: || set_depth(0)}\n            b1 := Seg{text: \"L1\" on_click: || set_depth(1)}\n            b2 := Seg{text: \"L2\" on_click: || set_depth(2)}\n        }\n        status := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n    }\n}\n\nfn boot(){\n    say(\"Demo album\")\n    sync()\n}\n\nstart_timeout(0.05, || boot())",
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "bg": "#fff2f2f7",
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 1,
+          "id": "10",
+          "kind": "View",
+          "parent": 0,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 98,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 98,
+          "i": 2,
+          "id": "-",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 44,
+          "cw": 352,
+          "cx": 16,
+          "cy": 40,
+          "h": 44,
+          "i": 3,
+          "id": "-",
+          "kind": "View",
+          "parent": 2,
+          "w": 352,
+          "x": 16,
+          "y": 40
+        },
+        {
+          "ch": 37,
+          "cw": 75,
+          "cx": 20,
+          "cy": 44,
+          "fg": "#ff1c1c1e",
+          "h": 37,
+          "i": 4,
+          "id": "-",
+          "kind": "Label",
+          "parent": 3,
+          "text": "Photo",
+          "w": 75,
+          "x": 20,
+          "y": 44
+        },
+        {
+          "ch": 1,
+          "cw": 181,
+          "cx": 106,
+          "cy": 62,
+          "h": 1,
+          "i": 5,
+          "id": "1",
+          "kind": "View",
+          "parent": 3,
+          "w": 181,
+          "x": 106,
+          "y": 62
+        },
+        {
+          "bg": "#fffff3cd",
+          "ch": 37,
+          "cw": 73,
+          "cx": 295,
+          "cy": 44,
+          "h": 37,
+          "i": 6,
+          "id": "2",
+          "kind": "View",
+          "parent": 3,
+          "w": 73,
+          "x": 295,
+          "y": 44
+        },
+        {
+          "ch": 24,
+          "cw": 50,
+          "cx": 307,
+          "cy": 50,
+          "fg": "#ff8a0b00",
+          "h": 24,
+          "i": 7,
+          "id": "-",
+          "kind": "Label",
+          "parent": 6,
+          "text": "DEMO",
+          "w": 50,
+          "x": 307,
+          "y": 50
+        },
+        {
+          "ch": 26,
+          "cw": 345,
+          "cx": 20,
+          "cy": 90,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 8,
+          "id": "count",
+          "kind": "Label",
+          "parent": 2,
+          "text": "3 photos \u00b7 0 favorites",
+          "w": 345,
+          "x": 20,
+          "y": 90
+        },
+        {
+          "ch": 546,
+          "cw": 384,
+          "cx": 0,
+          "cy": 127,
+          "h": 546,
+          "i": 9,
+          "id": "1",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 127
+        },
+        {
+          "ch": 546,
+          "cw": 384,
+          "cx": 0,
+          "cy": 127,
+          "h": 546,
+          "i": 21,
+          "id": "expanded",
+          "kind": "View",
+          "parent": 9,
+          "w": 384,
+          "x": 0,
+          "y": 127
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 253,
+          "cw": 352,
+          "cx": 16,
+          "cy": 131,
+          "h": 253,
+          "i": 22,
+          "id": "x_card",
+          "kind": "View",
+          "parent": 21,
+          "w": 352,
+          "x": 16,
+          "y": 131
+        },
+        {
+          "ch": 24,
+          "cw": 207,
+          "cx": 34,
+          "cy": 144,
+          "fg": "#ff8e8e93",
+          "h": 24,
+          "i": 23,
+          "id": "-",
+          "kind": "Label",
+          "parent": 22,
+          "text": "PHOTO NOT LOADED OFFLINE",
+          "w": 207,
+          "x": 34,
+          "y": 144
+        },
+        {
+          "ch": 30,
+          "cw": 317,
+          "cx": 34,
+          "cy": 179,
+          "fg": "#ff1c1c1e",
+          "h": 30,
+          "i": 24,
+          "id": "x_title",
+          "kind": "Label",
+          "parent": 22,
+          "text": "Mill Street at first light",
+          "w": 317,
+          "x": 34,
+          "y": 179
+        },
+        {
+          "ch": 33,
+          "cw": 324,
+          "cx": 30,
+          "cy": 216,
+          "h": 33,
+          "i": 25,
+          "id": "1",
+          "kind": "View",
+          "parent": 22,
+          "w": 324,
+          "x": 30,
+          "y": 216
+        },
+        {
+          "ch": 22,
+          "cw": 238,
+          "cx": 34,
+          "cy": 221,
+          "fg": "#ff3c3c43",
+          "h": 22,
+          "i": 26,
+          "id": "x_date",
+          "kind": "Label",
+          "parent": 25,
+          "text": "17 Sep",
+          "w": 238,
+          "x": 34,
+          "y": 221
+        },
+        {
+          "ch": 26,
+          "cw": 71,
+          "cx": 279,
+          "cy": 219,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 27,
+          "id": "x_place",
+          "kind": "Label",
+          "parent": 25,
+          "text": "Riverside",
+          "w": 71,
+          "x": 279,
+          "y": 219
+        },
+        {
+          "ch": 26,
+          "cw": 317,
+          "cx": 34,
+          "cy": 255,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 28,
+          "id": "x_people",
+          "kind": "Label",
+          "parent": 22,
+          "text": "Alex, Sofia",
+          "w": 317,
+          "x": 34,
+          "y": 255
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 1,
+          "cw": 324,
+          "cx": 30,
+          "cy": 287,
+          "h": 1,
+          "i": 29,
+          "id": "2",
+          "kind": "View",
+          "parent": 22,
+          "w": 324,
+          "x": 30,
+          "y": 287
+        },
+        {
+          "ch": 76,
+          "cw": 317,
+          "cx": 34,
+          "cy": 295,
+          "fg": "#ff3c3c43",
+          "h": 76,
+          "i": 30,
+          "id": "x_note",
+          "kind": "Label",
+          "parent": 22,
+          "text": "Long exposure from the north bank, taken before the bridge opened to traffic. Demo record.",
+          "w": 317,
+          "x": 34,
+          "y": 295
+        },
+        {
+          "ch": 50,
+          "cw": 352,
+          "cx": 16,
+          "cy": 392,
+          "h": 50,
+          "i": 31,
+          "id": "-",
+          "kind": "View",
+          "parent": 21,
+          "w": 352,
+          "x": 16,
+          "y": 392
+        },
+        {
+          "ch": 44,
+          "cw": 94,
+          "cx": 16,
+          "cy": 395,
+          "glyphs": 1,
+          "h": 44,
+          "i": 32,
+          "id": "x_action",
+          "kind": "Button",
+          "parent": 31,
+          "tappable": true,
+          "text": "Favorite",
+          "w": 94,
+          "x": 16,
+          "y": 395
+        },
+        {
+          "ch": 44,
+          "cw": 81,
+          "cx": 118,
+          "cy": 395,
+          "glyphs": 1,
+          "h": 44,
+          "i": 33,
+          "id": "-",
+          "kind": "Button",
+          "parent": 31,
+          "tappable": true,
+          "text": "Album",
+          "w": 81,
+          "x": 118,
+          "y": 395
+        },
+        {
+          "ch": 50,
+          "cw": 352,
+          "cx": 16,
+          "cy": 450,
+          "h": 50,
+          "i": 34,
+          "id": "1",
+          "kind": "View",
+          "parent": 21,
+          "w": 352,
+          "x": 16,
+          "y": 450
+        },
+        {
+          "ch": 44,
+          "cw": 97,
+          "cx": 16,
+          "cy": 453,
+          "glyphs": 1,
+          "h": 44,
+          "i": 35,
+          "id": "-",
+          "kind": "Button",
+          "parent": 34,
+          "tappable": true,
+          "text": "\u2039 Glance",
+          "w": 97,
+          "x": 16,
+          "y": 453
+        },
+        {
+          "ch": 114,
+          "cw": 384,
+          "cx": 0,
+          "cy": 673,
+          "h": 114,
+          "i": 100,
+          "id": "2",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 673
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 1,
+          "cw": 352,
+          "cx": 16,
+          "cy": 679,
+          "h": 1,
+          "i": 101,
+          "id": "-",
+          "kind": "View",
+          "parent": 100,
+          "w": 352,
+          "x": 16,
+          "y": 679
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 58,
+          "cw": 352,
+          "cx": 16,
+          "cy": 684,
+          "h": 58,
+          "i": 102,
+          "id": "1",
+          "kind": "View",
+          "parent": 100,
+          "w": 352,
+          "x": 16,
+          "y": 684
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 20,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 103,
+          "id": "b0",
+          "kind": "Button",
+          "parent": 102,
+          "tappable": true,
+          "text": "L0",
+          "w": 112,
+          "x": 20,
+          "y": 691
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 136,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 104,
+          "id": "b1",
+          "kind": "Button",
+          "parent": 102,
+          "tappable": true,
+          "text": "\u25cf L1",
+          "w": 112,
+          "x": 136,
+          "y": 691
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 252,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 105,
+          "id": "b2",
+          "kind": "Button",
+          "parent": 102,
+          "tappable": true,
+          "text": "L2",
+          "w": 112,
+          "x": 252,
+          "y": 691
+        },
+        {
+          "ch": 26,
+          "cw": 345,
+          "cx": 20,
+          "cy": 749,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 106,
+          "id": "status",
+          "kind": "Label",
+          "parent": 100,
+          "text": "Showing L1 Photo",
+          "w": 345,
+          "x": 20,
+          "y": 749
+        }
+      ]
+    },
+    "tree": "W3 32\n0 -1 - Splash 0 28 384 758\n1 0 10 View 0 28 384 758\n2 1 - View 0 28 384 98\n3 2 - View 16 40 352 44\n4 3 - Label 20 44 75 37\n5 3 1 View 106 62 181 1\n6 3 2 View 295 44 73 37\n7 6 - Label 307 50 50 24\n8 2 count Label 20 90 345 26\n9 1 1 View 0 127 384 546\n10 9 expanded View 0 127 384 546\n11 10 x_card View 16 131 352 253\n12 11 - Label 34 144 207 24\n13 11 x_title Label 34 179 317 30\n14 11 1 View 30 216 324 33\n15 14 x_date Label 34 221 238 22\n16 14 x_place Label 279 219 71 26\n17 11 x_people Label 34 255 317 26\n18 11 2 View 30 287 324 1\n19 11 x_note Label 34 295 317 76\n20 10 - View 16 392 352 50\n21 20 x_action Button 16 395 94 44\n22 20 - Button 118 395 81 44\n23 10 1 View 16 450 352 50\n24 23 - Button 16 453 97 44\n25 1 2 View 0 673 384 114\n26 25 - View 16 679 352 1\n27 25 1 View 16 684 352 58\n28 27 b0 Button 20 691 112 44\n29 27 b1 Button 136 691 112 44\n30 27 b2 Button 252 691 112 44\n31 25 status Label 20 749 345 26\n",
+    "widgets": [
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "-@0",
+        "text": null,
+        "type": "Splash",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "10",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "10@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          98
+        ],
+        "selected": null,
+        "selector": "-@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          40,
+          352,
+          44
+        ],
+        "selected": null,
+        "selector": "-@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          20,
+          44,
+          75,
+          37
+        ],
+        "selected": null,
+        "selector": "-@3",
+        "text": "Photo",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          106,
+          62,
+          181,
+          1
+        ],
+        "selected": null,
+        "selector": "1@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          295,
+          44,
+          73,
+          37
+        ],
+        "selected": null,
+        "selector": "2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          307,
+          50,
+          50,
+          24
+        ],
+        "selected": null,
+        "selector": "-@4",
+        "text": "DEMO",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "count",
+        "rect": [
+          20,
+          90,
+          345,
+          26
+        ],
+        "selected": null,
+        "selector": "count@0",
+        "text": "3 photos \u00b7 0 favorites",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          127,
+          384,
+          546
+        ],
+        "selected": null,
+        "selector": "1@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "glance",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "glance@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_card",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_card@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@5",
+        "text": "PHOTO NOT LOADED OFFLINE",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_title",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_title@0",
+        "text": "Mill Street at first light",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_date",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_date@0",
+        "text": "17 Sep",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_place",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_place@0",
+        "text": "Riverside",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_people",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_people@0",
+        "text": "Alex, Sofia",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@6",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@7",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@3",
+        "text": "Album",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "expanded",
+        "rect": [
+          0,
+          127,
+          384,
+          546
+        ],
+        "selected": null,
+        "selector": "expanded@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_card",
+        "rect": [
+          16,
+          131,
+          352,
+          253
+        ],
+        "selected": null,
+        "selector": "x_card@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          34,
+          144,
+          207,
+          24
+        ],
+        "selected": null,
+        "selector": "-@8",
+        "text": "PHOTO NOT LOADED OFFLINE",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_title",
+        "rect": [
+          34,
+          179,
+          317,
+          30
+        ],
+        "selected": null,
+        "selector": "x_title@0",
+        "text": "Mill Street at first light",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          30,
+          216,
+          324,
+          33
+        ],
+        "selected": null,
+        "selector": "1@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_date",
+        "rect": [
+          34,
+          221,
+          238,
+          22
+        ],
+        "selected": null,
+        "selector": "x_date@0",
+        "text": "17 Sep",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_place",
+        "rect": [
+          279,
+          219,
+          71,
+          26
+        ],
+        "selected": null,
+        "selector": "x_place@0",
+        "text": "Riverside",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_people",
+        "rect": [
+          34,
+          255,
+          317,
+          26
+        ],
+        "selected": null,
+        "selector": "x_people@0",
+        "text": "Alex, Sofia",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          30,
+          287,
+          324,
+          1
+        ],
+        "selected": null,
+        "selector": "2@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_note",
+        "rect": [
+          34,
+          295,
+          317,
+          76
+        ],
+        "selected": null,
+        "selector": "x_note@0",
+        "text": "Long exposure from the north bank, taken before the bridge opened to traffic. Demo record.",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          392,
+          352,
+          50
+        ],
+        "selected": null,
+        "selector": "-@9",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_action",
+        "rect": [
+          16,
+          395,
+          94,
+          44
+        ],
+        "selected": null,
+        "selector": "x_action@0",
+        "text": "Favorite",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          118,
+          395,
+          81,
+          44
+        ],
+        "selected": null,
+        "selector": "-@10",
+        "text": "Album",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          16,
+          450,
+          352,
+          50
+        ],
+        "selected": null,
+        "selector": "1@5",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          453,
+          97,
+          44
+        ],
+        "selected": null,
+        "selector": "-@11",
+        "text": "\u2039 Glance",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "full",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "full@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "l2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2_list",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "l2_list@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@12",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "tab_all",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "tab_all@0",
+        "text": "\u25cf All",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "tab_fav",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "tab_fav@0",
+        "text": "Favorites",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@13",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@14",
+        "text": "Mill Street at first light",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@6",
+        "text": "17 Sep \u00b7 Riverside",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1_b",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1_b@0",
+        "text": "Favorite",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@15",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@16",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@17",
+        "text": "Reading room, west window",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@7",
+        "text": "15 Sep \u00b7 Central Library",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@3",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2_b",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2_b@0",
+        "text": "Favorite",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@18",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@19",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@20",
+        "text": "Harbour cranes at dusk",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@8",
+        "text": "12 Sep \u00b7 Docklands",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3_b",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3_b@0",
+        "text": "Favorite",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@21",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1_f",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1_f@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@22",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@23",
+        "text": "Mill Street at first light",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@9",
+        "text": "17 Sep \u00b7 Riverside",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@5",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1_fb",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1_fb@0",
+        "text": "Favorite",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@24",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2_f",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2_f@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@25",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@26",
+        "text": "Reading room, west window",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@10",
+        "text": "15 Sep \u00b7 Central Library",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@6",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2_fb",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2_fb@0",
+        "text": "Favorite",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@27",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3_f",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3_f@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@28",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@29",
+        "text": "Harbour cranes at dusk",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@11",
+        "text": "12 Sep \u00b7 Docklands",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@7",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3_fb",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3_fb@0",
+        "text": "Favorite",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@30",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "fav_empty",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "fav_empty@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@31",
+        "text": "No favorites yet",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@12",
+        "text": "Favorite a photo from All to see it here.",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2_detail",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "l2_detail@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@32",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@33",
+        "text": "PHOTO NOT LOADED OFFLINE",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_title",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "rd_title@0",
+        "text": "Mill Street at first light",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@13",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_date",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "rd_date@0",
+        "text": "17 Sep",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_place",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "rd_place@0",
+        "text": "Riverside",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_people",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "rd_people@0",
+        "text": "Alex, Sofia",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@8",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_note",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "rd_note@0",
+        "text": "Long exposure from the north bank, taken before the bridge opened to traffic. Demo record.",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@14",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_action",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "rd_action@0",
+        "text": "Favorite",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@34",
+        "text": "\u2039 Album",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          673,
+          384,
+          114
+        ],
+        "selected": null,
+        "selector": "2@9",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          679,
+          352,
+          1
+        ],
+        "selected": null,
+        "selector": "-@35",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          16,
+          684,
+          352,
+          58
+        ],
+        "selected": null,
+        "selector": "1@15",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b0",
+        "rect": [
+          20,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b0@0",
+        "text": "L0",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b1",
+        "rect": [
+          136,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b1@0",
+        "text": "\u25cf L1",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b2",
+        "rect": [
+          252,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b2@0",
+        "text": "L2",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "status",
+        "rect": [
+          20,
+          749,
+          345,
+          26
+        ],
+        "selected": null,
+        "selector": "status@0",
+        "text": "Showing L1 Photo",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      }
+    ]
+  },
+  "width": 1080
+}

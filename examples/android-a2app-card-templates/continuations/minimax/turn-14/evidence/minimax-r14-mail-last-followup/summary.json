@@ -1,0 +1,15 @@
+{
+  "source_before": {
+    "files": 25,
+    "exact": true
+  },
+  "source_after": {
+    "files": 25,
+    "exact": true
+  },
+  "exit": 0,
+  "steps": 4,
+  "behavior_pass": 4,
+  "raw_pass": 4,
+  "helper_sha256": "37faf491caedfa3fbdf95f707b4d02c3750de86db481090fd2166da144339298"
+}

@@ -1,0 +1,356 @@
+{
+  "family": "finance",
+  "draft": false,
+  "source_file": "minimax-round14-final/card-templates/finance/bundle/main.splash",
+  "source_sha256": "7d80be0c7e0f1753a0368c7f0fda5be751169b3aee84bd93070f5fd396ce1a06",
+  "status": "Operator confirmed native source byte-identical from reconciled round13 to final round14; input suite ready, actual runtime outcomes pending.",
+  "assumptions": [
+    "Fresh disposable preview starts with no saved/watched records.",
+    "Named widget ids are from source; unlabelled Read/Open uses visible-list occurrence 1 for second and 2 for last. Inspect actual final snapshots before relying on these ordinals.",
+    "Positive wheel delta scrolls down; l2 is the named ScrollYView. If the compact list has no overflow this is a no-op, not a retained-offset stress test.",
+    "Contains checks alone do not prove title is at viewport top. Manually inspect last-item-detail JSON/PNG and Android screenshot for visible title/metadata and clipping.",
+    "L1 removal and L0 action identity retain acceptance probes from the intermediate draft. Round10 now calls toggle helpers and lead_id; do not carry forward historical defect claims without actual test failures.",
+    "No loading/error controls exist in this intermediate source; no invented state controls are tested.",
+    "L0 here is native presentation depth. Exported glance.card admission/rendering needs a separate renderer check.",
+    "Round13 native source is reconciled; only final round14 byte equality remains. This is not native test evidence."
+  ],
+  "manual_checks": [
+    "Confirm full last-item title and metadata begin visibly at top after list navigation; do not treat offscreen snapshot text as visual pass.",
+    "In Finance second-item detail, verify -0.38 is displayed with the negative color. Current draft source uses a separate down-colored label; source intent alone is not visual verification.",
+    "Inspect any failed geometry report: distinguish expected scroll-edge partial rows from horizontal truncation or unreachable controls.",
+    "No enabled controls may falsely promise online article access, trading, or other unavailable services. This suite checks named prohibitions and empty-state controls, not every possible dead action.",
+    "Required: inspect03-second-item-detail.png for the complete red -0.38 after opening Delta Logistics. A readable list row or snapshot string does not prove detail pixels fit."
+  ],
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "● L0",
+        "Harbour Rail",
+        "3 instruments · 0 watched",
+        "DEMO"
+      ],
+      "delay_ms": 150,
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade"
+      ]
+    },
+    {
+      "label": "expanded",
+      "contains": [
+        "● L1",
+        "Harbour Rail",
+        "Watch"
+      ],
+      "action": "tap",
+      "target": "b1",
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade"
+      ]
+    },
+    {
+      "label": "full-list",
+      "contains": [
+        "● L2",
+        "DLK · Delta Logistics",
+        "3 instruments · 0 watched"
+      ],
+      "action": "tap",
+      "target": "b2",
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "second-item-detail",
+      "contains": [
+        "● L2",
+        "DLK · Delta Logistics",
+        "17.62",
+        "demo, not a live quote",
+        "-0.38"
+      ],
+      "action": "tap",
+      "target": "Open",
+      "occurrence": 1,
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade"
+      ]
+    },
+    {
+      "label": "save-second",
+      "contains": [
+        "3 instruments · 1 watched",
+        "Remove",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "rd_action",
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade"
+      ]
+    },
+    {
+      "label": "back-to-list",
+      "contains": [
+        "● L2",
+        "DLK · Delta Logistics"
+      ],
+      "action": "tap",
+      "target": "‹ List",
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "filtered-second",
+      "contains": [
+        "DLK · Delta Logistics",
+        "3 instruments · 1 watched",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "tab_watch",
+      "excludes": [
+        "Harbour Rail",
+        "SGE · Sage Energy"
+      ],
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "remove-second",
+      "contains": [
+        "Not watching anything",
+        "3 instruments · 0 watched",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "r2_wb",
+      "no_enabled_button_text": [
+        "Open",
+        "Remove",
+        "Buy",
+        "Sell",
+        "Trade",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "return-all",
+      "contains": [
+        "DLK · Delta Logistics",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "tab_all",
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "scroll-list",
+      "contains": [
+        "SGE · Sage Energy",
+        "● L2"
+      ],
+      "action": "scroll",
+      "target": "l2",
+      "delta_y": 360,
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade"
+      ]
+    },
+    {
+      "label": "last-item-detail",
+      "contains": [
+        "● L2",
+        "SGE · Sage Energy",
+        "9.94",
+        "demo, not a live quote"
+      ],
+      "action": "tap",
+      "target": "Open",
+      "occurrence": 2,
+      "capture_android": true,
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade"
+      ]
+    },
+    {
+      "label": "save-last",
+      "contains": [
+        "3 instruments · 1 watched",
+        "Remove",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "rd_action",
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade"
+      ]
+    },
+    {
+      "label": "back-after-last",
+      "contains": [
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "‹ List",
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "filtered-last",
+      "contains": [
+        "SGE · Sage Energy",
+        "3 instruments · 1 watched",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "tab_watch",
+      "excludes": [
+        "Harbour Rail",
+        "DLK · Delta Logistics"
+      ],
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "remove-last",
+      "contains": [
+        "Not watching anything",
+        "3 instruments · 0 watched",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "r3_wb",
+      "no_enabled_button_text": [
+        "Open",
+        "Remove",
+        "Buy",
+        "Sell",
+        "Trade",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "expanded-selected-last",
+      "contains": [
+        "● L1",
+        "SGE · Sage Energy",
+        "Watch"
+      ],
+      "action": "tap",
+      "target": "b1",
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade"
+      ]
+    },
+    {
+      "label": "expanded-save",
+      "contains": [
+        "3 instruments · 1 watched",
+        "Remove",
+        "● L1"
+      ],
+      "action": "tap",
+      "target": "x_action",
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade"
+      ]
+    },
+    {
+      "label": "expanded-remove",
+      "contains": [
+        "3 instruments · 0 watched",
+        "Watch",
+        "● L1"
+      ],
+      "action": "tap",
+      "target": "x_action",
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade"
+      ]
+    },
+    {
+      "label": "return-lead-glance",
+      "contains": [
+        "● L0",
+        "Harbour Rail"
+      ],
+      "action": "tap",
+      "target": "b0",
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade"
+      ]
+    },
+    {
+      "label": "glance-opens-displayed-lead",
+      "contains": [
+        "● L2",
+        "Harbour Rail"
+      ],
+      "action": "tap",
+      "target": "Open",
+      "excludes": [
+        "SGE · Sage Energy"
+      ],
+      "no_enabled_button_text": [
+        "Buy",
+        "Sell",
+        "Trade"
+      ]
+    }
+  ],
+  "reconciliation": "Read native diffs round12→13: Mail/Photo/YouTube unchanged; News removes extra closing brace; Finance reflows six list rows with same IDs/copy/actions; Calendar adds persistent depth markers and moves status. All115 steps retained; marker assertions reflect actual controls. Round14 native hash confirmation still pending.",
+  "native_source_reconciled": true,
+  "awaiting_round14_hash_confirmation": true,
+  "final_round14_binding": {
+    "main_and_manifest_byte_identical_to_round13": true,
+    "execution_status_at_preparation": "pending"
+  }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "request_id": "b99f9f3b-e67b-4b48-9444-6a6d7daf9a53",
+    "request": {
+      "name": "studio.bundle_check",
+      "args": {
+        "bundle_path": "card-templates/news/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "b99f9f3b-e67b-4b48-9444-6a6d7daf9a53",
+      "data": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.news",
+        "capabilities": [],
+        "digest": "492237466d6800ecfde108b00214e54216c1634d5b6267159688743b5146ad77",
+        "name": "News Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.667
+  },
+  {
+    "request_id": "a821c729-c1c1-42de-9243-f12d95249bc2",
+    "request": {
+      "name": "studio.open",
+      "args": {
+        "bundle_path": "card-templates/news/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "a821c729-c1c1-42de-9243-f12d95249bc2",
+      "error": {
+        "kind": "studio_app_failed",
+        "message": "studio_eval_failed: 0cc6a2d1-6493-4a14-a5cd-f86c8887c251/main.splash produced no root content or exceeded its admitted instruction budget"
+      },
+      "ok": false
+    },
+    "elapsed_seconds": 0.315
+  }
+]

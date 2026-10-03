@@ -1,0 +1,11 @@
+{
+  "photo": {
+    "title": "Harbor sunset",
+    "subtitle": "San Remo Pier · 12 May · 4032×3024",
+    "summary": "Demo library item. No image data is available offline, so the media cannot be shown.",
+    "as_of": "Today",
+    "$state": "ready",
+    "$status": "ready"
+  },
+  "_note": "Synthetic demo fixture for card-templates/photo/glance.card (sys.dataset). Bound under the source alias `photo`. Not real account content."
+}

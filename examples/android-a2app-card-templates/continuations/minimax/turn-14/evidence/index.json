@@ -1,0 +1,321 @@
+{
+  "scope": "Final14 original native reports/call records; exact input steps with portable source metadata; selected original capture pairs",
+  "groups": [
+    {
+      "group": "minimax-r14-validation",
+      "source_receipt_matches_final25": true,
+      "totals": {
+        "steps": 115,
+        "behavior_pass": 114,
+        "raw_pass": 113
+      },
+      "suites": [
+        {
+          "family": "mail",
+          "report": "minimax-r14-validation/mail/report.json",
+          "calls": "minimax-r14-validation/mail/tool-calls.json",
+          "input": "minimax-r14-validation/mail/suite.json",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.mail",
+            "capabilities": [],
+            "digest": "86802d868870e702f8ae6141e0f61b3ba0149dd00307e853a765b918de11c7b9",
+            "name": "Mail Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "calendar",
+          "report": "minimax-r14-validation/calendar/report.json",
+          "calls": "minimax-r14-validation/calendar/tool-calls.json",
+          "input": "minimax-r14-validation/calendar/suite.json",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.calendar",
+            "capabilities": [],
+            "digest": "ed21d351e33b28dfaf07b835843a23847ea5c88d4956cc250e359be66e8ed276",
+            "name": "Calendar Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "news",
+          "report": "minimax-r14-validation/news/report.json",
+          "calls": "minimax-r14-validation/news/tool-calls.json",
+          "input": "minimax-r14-validation/news/suite.json",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.news",
+            "capabilities": [],
+            "digest": "de6b47f27d4729a6ac13830dbbb5060b1ffe83052d610b77339d67d984dc8c81",
+            "name": "News Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "finance",
+          "report": "minimax-r14-validation/finance/report.json",
+          "calls": "minimax-r14-validation/finance/tool-calls.json",
+          "input": "minimax-r14-validation/finance/suite.json",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.finance",
+            "capabilities": [],
+            "digest": "ba0d952c405ed284b97f1f5e1859c2eb4278b3e599bf306c60cdab052b81076f",
+            "name": "Finance Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "photo",
+          "report": "minimax-r14-validation/photo/report.json",
+          "calls": "minimax-r14-validation/photo/tool-calls.json",
+          "input": "minimax-r14-validation/photo/suite.json",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.photo",
+            "capabilities": [],
+            "digest": "408243929418fff1534eaaadb9837160228144b44c539f9af5c74583876f7a9f",
+            "name": "Photo Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "youtube",
+          "report": "minimax-r14-validation/youtube/report.json",
+          "calls": "minimax-r14-validation/youtube/tool-calls.json",
+          "input": "minimax-r14-validation/youtube/suite.json",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.youtube",
+            "capabilities": [],
+            "digest": "ee4fb2bac62d32f75cfa1ed1f78e2e49f11674e30fe4f94f999e14b5b3d91f04",
+            "name": "Video Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        }
+      ]
+    },
+    {
+      "group": "minimax-r14-mail-last-followup",
+      "source_receipt_matches_final25": true,
+      "totals": {
+        "steps": 4,
+        "behavior_pass": 4,
+        "raw_pass": 4
+      },
+      "suites": [
+        {
+          "family": "mail",
+          "report": "minimax-r14-mail-last-followup/report.json",
+          "calls": "minimax-r14-mail-last-followup/tool-calls.json",
+          "input": "minimax-r14-mail-last-followup/suite.json",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.mail",
+            "capabilities": [],
+            "digest": "86802d868870e702f8ae6141e0f61b3ba0149dd00307e853a765b918de11c7b9",
+            "name": "Mail Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        }
+      ]
+    }
+  ],
+  "selected_captures": [
+    {
+      "png": "minimax-r14-validation/mail/01-expanded.png",
+      "snapshot": "minimax-r14-validation/mail/01-expanded.json",
+      "png_sha256": "c91de6124662a93d36cfd50985d2e3b04d36d362d23d74dadb8d3d5ce49bfb9f",
+      "snapshot_sha256": "faf612a47987cfc2cf911ddbf5ccd0af564b6a1cd05a94d34a45d3f866df1e34",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "minimax-r14-mail-last-followup/03-northwind-detail.png",
+      "snapshot": "minimax-r14-mail-last-followup/03-northwind-detail.json",
+      "png_sha256": "693718805d7a0f938dc0f4fbcc6caad4482f1e720a517442ca4eaf3f33030353",
+      "snapshot_sha256": "462476476700d0789ddc27f23d834c19d0b761d01079f31a1d59cc5e1901c380",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "minimax-r14-validation/mail/11-send-scroll-keyboard-android.png",
+      "snapshot": "minimax-r14-validation/mail/11-send-scroll-keyboard.json",
+      "png_sha256": "0cc7c5c0bac9299acb1ba93ee6e59c74a2e852c06bd581f46e135648c7955ed0",
+      "snapshot_sha256": "374fefc82195827f03adcf300c1b7181b90c47f78c721544cfaa9ac8814c27ca",
+      "android_screen_with_keyboard": true
+    },
+    {
+      "png": "minimax-r14-validation/calendar/01-expanded.png",
+      "snapshot": "minimax-r14-validation/calendar/01-expanded.json",
+      "png_sha256": "be780702406c6a06777eaf20831ba4d08f12337bb1fd9946b2d595b5138fd55f",
+      "snapshot_sha256": "c6895be5ed2c7e3daef39a06ad8377518537588be870c281df96dbdee17f4f9e",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "minimax-r14-validation/calendar/05-last-detail.png",
+      "snapshot": "minimax-r14-validation/calendar/05-last-detail.json",
+      "png_sha256": "295f91c0c6f091a9d52aae6e01a129cf076c216c24a31a5aa9d93f59567915de",
+      "snapshot_sha256": "88b197d09f085cd344b220366efd641c914ccf614228cba82ed6593a81ec51bf",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "minimax-r14-validation/news/01-expanded.png",
+      "snapshot": "minimax-r14-validation/news/01-expanded.json",
+      "png_sha256": "5d43751299a3164de95d34270e1bbd2f3db1636624c6a1f9b3c4c4a884cebec4",
+      "snapshot_sha256": "bf713481ba79ddc4c0b60c41f08964603e82a328646d9cc156d49728906e1454",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "minimax-r14-validation/news/10-last-item-detail.png",
+      "snapshot": "minimax-r14-validation/news/10-last-item-detail.json",
+      "png_sha256": "00f99ab77a1509928bd695c4d23a36602888ff713e6f1a5675d61930c9669ea9",
+      "snapshot_sha256": "6b70c6af573bc28fe00cf727ed8b5d7348d9563df05d035b3eeba27ec2c9d591",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "minimax-r14-validation/finance/01-expanded.png",
+      "snapshot": "minimax-r14-validation/finance/01-expanded.json",
+      "png_sha256": "ffb1ae1978cc1dcd307de1262694c4a10663d7af2c1d411da0f8cc388511fbd2",
+      "snapshot_sha256": "9c348c0e379e5956d2015c72a62cec0d51ec325cb4a3f14d7c0579e4780bd110",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "minimax-r14-validation/finance/10-last-item-detail.png",
+      "snapshot": "minimax-r14-validation/finance/10-last-item-detail.json",
+      "png_sha256": "b6ed1b9c390787dd7baf129aad8b2dd0929639d7aea16e5f90cce0ae9c6b7c43",
+      "snapshot_sha256": "d2249f1e69306c8bc602a7f5d432e05cf66f454d0546bf0b1ff1cc96234b9656",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "minimax-r14-validation/photo/01-expanded.png",
+      "snapshot": "minimax-r14-validation/photo/01-expanded.json",
+      "png_sha256": "77f605c1a5acd9f29facb280755fdf43cd5a610ac2edd087ffb49ace0c05bea3",
+      "snapshot_sha256": "5ea4e964d2d86b7ba7eebf3f274dc5a9bae10895ce0aa857f054ee0d2a53e131",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "minimax-r14-validation/photo/10-last-item-detail.png",
+      "snapshot": "minimax-r14-validation/photo/10-last-item-detail.json",
+      "png_sha256": "5c9672fcbebda9817ea1c4eb2a9075c2d89b14eb05236095800f67da5837798b",
+      "snapshot_sha256": "f7c908d3170a0709a01397df44d7872733174a09d154b8993a5a5967b6c4694e",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "minimax-r14-validation/youtube/01-expanded.png",
+      "snapshot": "minimax-r14-validation/youtube/01-expanded.json",
+      "png_sha256": "cc7d946a2cc49b14cbca7bbd769ae81c87ec9673c24fed5a87559f90cd18753d",
+      "snapshot_sha256": "0036f7274e7c15f8d75604485bd0d828c65ab638ecbaf5a794e17cd8ded38ce0",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "minimax-r14-validation/youtube/10-last-item-detail.png",
+      "snapshot": "minimax-r14-validation/youtube/10-last-item-detail.json",
+      "png_sha256": "6229fed02a2cd40d5c138c4b26068a40b11209a2ed7cab66e607875e3fb67986",
+      "snapshot_sha256": "6845e67200181bf5b437b7eebefd3d1d23cbd253aad5be5f500791ec7bb3d164",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "glances/mail.png",
+      "png_sha256": "1d7e1251c11bad5c01fe386c2ed2e5522d1900355f99221239e224a9511ebb0e",
+      "render_only": true
+    },
+    {
+      "png": "glances/calendar.png",
+      "png_sha256": "ec21f89277697f23b324722331de02be32d395d7459d9de905ad485ae68c6d2b",
+      "render_only": true
+    },
+    {
+      "png": "glances/news.png",
+      "png_sha256": "13cc3ae74517c33954eb5a611157e5c85caa9d30f8d6ae1cf564aff2ff572ecc",
+      "render_only": true
+    },
+    {
+      "png": "glances/finance.png",
+      "png_sha256": "ef375ab808295960bdf0bf6a71721d1e0cc68b3b532ee750d9d123d149159f3e",
+      "render_only": true
+    },
+    {
+      "png": "glances/photo.png",
+      "png_sha256": "0e454bc304d9cd5c2c38d1bc425d875d1cf09efb4287dab97567f7e99b4fcfc4",
+      "render_only": true
+    },
+    {
+      "png": "glances/youtube.png",
+      "png_sha256": "48ddb8338decd3150d22b7ca14cef92ecf069d5209e8dcc50f7db499089ca0e0",
+      "render_only": true
+    },
+    {
+      "png": "minimax-r14-validation/finance/03-second-item-detail.png",
+      "snapshot": "minimax-r14-validation/finance/03-second-item-detail.json",
+      "png_sha256": "ecac858b666bd77366ad10a0407b8c345de443b9cbf4582ab7871ad2e56f2a20",
+      "snapshot_sha256": "5f73d668f80e3d216f03ed0d3582e94fe8f9983cdc328d5031f412abe6a4b519",
+      "purpose": "Observed complete negative -0.38 and correct second-instrument identity."
+    }
+  ],
+  "suite_metadata_transformations": [
+    {
+      "suite": "minimax-r14-validation/mail/suite.json",
+      "original_operator_sha256": "1c28636d673e3de99451219316a06fd3f21e36c1ad2db1ee805c99448c45a06c",
+      "archived_sha256": "30f7eafd8a2fff43717eb1738c40f16e8ec3bd479200528434e345b0b44a0945",
+      "transformation": "Only absolute operator artifact prefix removed from source_file metadata; input steps, source hash and assertions unchanged."
+    },
+    {
+      "suite": "minimax-r14-validation/calendar/suite.json",
+      "original_operator_sha256": "4cfc806147116d2d99bbe40d706f3680887bd4cbd59502774a86feb075d4f570",
+      "archived_sha256": "539e37fd36e0eaea13e11276c0ff25a1d72df1d37d804fe25c6e4281002a5d38",
+      "transformation": "Only absolute operator artifact prefix removed from source_file metadata; input steps, source hash and assertions unchanged."
+    },
+    {
+      "suite": "minimax-r14-validation/news/suite.json",
+      "original_operator_sha256": "90603933b3fc89f0c262915654c28836a9ff3b0e5c0ec381ed68485d59b2993c",
+      "archived_sha256": "8f757d5d0aec1c45ab3ee34c31064d5c177b052fe834ff40f26032ff31d9c88f",
+      "transformation": "Only absolute operator artifact prefix removed from source_file metadata; input steps, source hash and assertions unchanged."
+    },
+    {
+      "suite": "minimax-r14-validation/finance/suite.json",
+      "original_operator_sha256": "959245fca857adb64fdc59087d084f27e5b6e29b83bc8ee5d8b6623e6b98aabb",
+      "archived_sha256": "4f2330fa18745942e9d8db9778af425bc251acfb45c250241790af7fc84ef618",
+      "transformation": "Only absolute operator artifact prefix removed from source_file metadata; input steps, source hash and assertions unchanged."
+    },
+    {
+      "suite": "minimax-r14-validation/photo/suite.json",
+      "original_operator_sha256": "1645a5fb24ed365243e23285ce0caae999e85f1f9a08e2341cc53db7707c340c",
+      "archived_sha256": "0d90bde774281dffeb0fed163042a44292b3c08aedec165d81564f43220f8b46",
+      "transformation": "Only absolute operator artifact prefix removed from source_file metadata; input steps, source hash and assertions unchanged."
+    },
+    {
+      "suite": "minimax-r14-validation/youtube/suite.json",
+      "original_operator_sha256": "344c8db54cd6c75219e841753f2a8e22849b89d62389c7785f0aa146c3086796",
+      "archived_sha256": "d7f69d89c5515c94979a6e6549b754720ad6b18db04cc8e0be3fa20acffa7ae6",
+      "transformation": "Only absolute operator artifact prefix removed from source_file metadata; input steps, source hash and assertions unchanged."
+    },
+    {
+      "suite": "minimax-r14-mail-last-followup/suite.json",
+      "original_operator_sha256": "e5f35076b5252ce0d37ae2551c2727690afebb450ebf10a287da434f29be17d8",
+      "archived_sha256": "336de6539882e90d18a23cbbde4abae92c3d395990555cff9652193c279adc2c",
+      "transformation": "Only absolute operator artifact prefix removed from source_file metadata; input steps, source hash and assertions unchanged."
+    }
+  ],
+  "limits": [
+    "Initial115steps:114behavior/113raw; preserve failed last-item operator path and partial visible Queue reply target129x22 during typing.",
+    "Separate4step Mail followup includes native Scroll then confirms Northwind/Invoice2291 detail heading and amount at top.",
+    "No source changes between run groups; all25 before/after exact.",
+    "Only selected captures copied; other paths in raw reports identify retained operator originals outside this compact archive.",
+    "Exported glance render is not input/target-size or shell-publication evidence."
+  ],
+  "cleanup": "../../../cleanup.json"
+}

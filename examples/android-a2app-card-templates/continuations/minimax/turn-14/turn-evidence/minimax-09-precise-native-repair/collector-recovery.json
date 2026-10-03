@@ -1,0 +1,7 @@
+{
+  "reason": "Original collector exited on prior turn orphaned_by_restart event; read same original baseline without new UI actions or model prompt.",
+  "prior_turn_id": "09d2f598-0986-4b1c-ad2c-f96bf2249edd",
+  "original_events_preserved": true,
+  "recovered_calls": 8,
+  "recovered_finals": 1
+}

@@ -1,0 +1,980 @@
+{
+  "family": "news",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "\u25cf L0",
+          "Riverside bridge reopens after inspection",
+          "3 stories \u00b7 0 saved",
+          "DEMO"
+        ],
+        "delay_ms": 150
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L0",
+          "pass": true
+        },
+        {
+          "contains": "Riverside bridge reopens after inspection",
+          "pass": true
+        },
+        {
+          "contains": "3 stories \u00b7 0 saved",
+          "pass": true
+        },
+        {
+          "contains": "DEMO",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "contains": [
+          "\u25cf L1",
+          "Riverside bridge reopens after inspection",
+          "Save"
+        ],
+        "action": "tap",
+        "target": "b1"
+      },
+      "target_rect": [
+        136,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b1@0",
+      "png": "01-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        },
+        {
+          "contains": "Riverside bridge reopens after inspection",
+          "pass": true
+        },
+        {
+          "contains": "Save",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-list",
+      "input": {
+        "label": "full-list",
+        "contains": [
+          "\u25cf L2",
+          "Library extends weekend hours",
+          "3 stories \u00b7 0 saved"
+        ],
+        "action": "tap",
+        "target": "b2",
+        "no_enabled_button_text": [
+          "\u2039 Feed"
+        ]
+      },
+      "target_rect": [
+        252,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b2@0",
+      "png": "02-full-list.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "Library extends weekend hours",
+          "pass": true
+        },
+        {
+          "contains": "3 stories \u00b7 0 saved",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 Feed",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-item-detail",
+      "input": {
+        "label": "second-item-detail",
+        "contains": [
+          "\u25cf L2",
+          "Library extends weekend hours",
+          "Harbour Times \u00b7 07:55",
+          "Demo summary, not a fetched article."
+        ],
+        "action": "tap",
+        "target": "Read",
+        "occurrence": 1
+      },
+      "target_rect": [
+        104,
+        399,
+        69,
+        44
+      ],
+      "target_selector": "-@19",
+      "png": "03-second-item-detail.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "Library extends weekend hours",
+          "pass": true
+        },
+        {
+          "contains": "Harbour Times \u00b7 07:55",
+          "pass": true
+        },
+        {
+          "contains": "Demo summary, not a fetched article.",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-second",
+      "input": {
+        "label": "save-second",
+        "contains": [
+          "3 stories \u00b7 1 saved",
+          "Remove",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "rd_action"
+      },
+      "target_rect": [
+        16,
+        429,
+        66,
+        44
+      ],
+      "target_selector": "rd_action@0",
+      "png": "04-save-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "3 stories \u00b7 1 saved",
+          "pass": true
+        },
+        {
+          "contains": "Remove",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back-to-list",
+      "input": {
+        "label": "back-to-list",
+        "contains": [
+          "\u25cf L2",
+          "Library extends weekend hours"
+        ],
+        "action": "tap",
+        "target": "\u2039 Feed",
+        "no_enabled_button_text": [
+          "\u2039 Feed"
+        ]
+      },
+      "target_rect": [
+        223,
+        429,
+        79,
+        44
+      ],
+      "target_selector": "-@35",
+      "png": "05-back-to-list.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "Library extends weekend hours",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 Feed",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "filtered-second",
+      "input": {
+        "label": "filtered-second",
+        "contains": [
+          "Library extends weekend hours",
+          "3 stories \u00b7 1 saved",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "tab_saved",
+        "excludes": [
+          "Riverside bridge reopens after inspection",
+          "Docklands solar trial powers first block"
+        ],
+        "no_enabled_button_text": [
+          "\u2039 Feed"
+        ]
+      },
+      "target_rect": [
+        105,
+        138,
+        78,
+        44
+      ],
+      "target_selector": "tab_saved@0",
+      "png": "06-filtered-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Library extends weekend hours",
+          "pass": true
+        },
+        {
+          "contains": "3 stories \u00b7 1 saved",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "excludes": "Riverside bridge reopens after inspection",
+          "pass": true
+        },
+        {
+          "excludes": "Docklands solar trial powers first block",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 Feed",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-second",
+      "input": {
+        "label": "remove-second",
+        "contains": [
+          "Nothing saved",
+          "3 stories \u00b7 0 saved",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "r2_sb",
+        "no_enabled_button_text": [
+          "Read",
+          "Remove",
+          "\u2039 Feed"
+        ]
+      },
+      "target_rect": [
+        30,
+        269,
+        95,
+        44
+      ],
+      "target_selector": "r2_sb@0",
+      "png": "07-remove-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Nothing saved",
+          "pass": true
+        },
+        {
+          "contains": "3 stories \u00b7 0 saved",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Read",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Remove",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 Feed",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "return-all",
+      "input": {
+        "label": "return-all",
+        "contains": [
+          "Library extends weekend hours",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "tab_all",
+        "no_enabled_button_text": [
+          "\u2039 Feed"
+        ]
+      },
+      "target_rect": [
+        28,
+        138,
+        46,
+        44
+      ],
+      "target_selector": "tab_all@0",
+      "png": "08-return-all.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Library extends weekend hours",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 Feed",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "scroll-list",
+      "input": {
+        "label": "scroll-list",
+        "contains": [
+          "Docklands solar trial powers first block",
+          "\u25cf L2"
+        ],
+        "action": "scroll",
+        "target": "l2",
+        "delta_y": 360
+      },
+      "target_rect": [
+        0,
+        127,
+        384,
+        546
+      ],
+      "target_selector": "l2@0",
+      "png": "09-scroll-list.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Docklands solar trial powers first block",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "last-item-detail",
+      "input": {
+        "label": "last-item-detail",
+        "contains": [
+          "\u25cf L2",
+          "Docklands solar trial powers first block",
+          "Field Notes \u00b7 Yesterday",
+          "Demo summary, not a fetched article."
+        ],
+        "action": "tap",
+        "target": "Read",
+        "occurrence": 2,
+        "capture_android": true
+      },
+      "target_rect": [
+        104,
+        528,
+        69,
+        44
+      ],
+      "target_selector": "-@22",
+      "png": "10-last-item-detail.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "android_screenshot": "10-last-item-detail-android.png",
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "Docklands solar trial powers first block",
+          "pass": true
+        },
+        {
+          "contains": "Field Notes \u00b7 Yesterday",
+          "pass": true
+        },
+        {
+          "contains": "Demo summary, not a fetched article.",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-last",
+      "input": {
+        "label": "save-last",
+        "contains": [
+          "3 stories \u00b7 1 saved",
+          "Remove",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "rd_action"
+      },
+      "target_rect": [
+        16,
+        506,
+        66,
+        44
+      ],
+      "target_selector": "rd_action@0",
+      "png": "11-save-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "3 stories \u00b7 1 saved",
+          "pass": true
+        },
+        {
+          "contains": "Remove",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back-after-last",
+      "input": {
+        "label": "back-after-last",
+        "contains": [
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "\u2039 Feed",
+        "no_enabled_button_text": [
+          "\u2039 Feed"
+        ]
+      },
+      "target_rect": [
+        223,
+        506,
+        79,
+        44
+      ],
+      "target_selector": "-@35",
+      "png": "12-back-after-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 Feed",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "filtered-last",
+      "input": {
+        "label": "filtered-last",
+        "contains": [
+          "Docklands solar trial powers first block",
+          "3 stories \u00b7 1 saved",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "tab_saved",
+        "excludes": [
+          "Riverside bridge reopens after inspection",
+          "Library extends weekend hours"
+        ],
+        "no_enabled_button_text": [
+          "\u2039 Feed"
+        ]
+      },
+      "target_rect": [
+        105,
+        138,
+        78,
+        44
+      ],
+      "target_selector": "tab_saved@0",
+      "png": "13-filtered-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Docklands solar trial powers first block",
+          "pass": true
+        },
+        {
+          "contains": "3 stories \u00b7 1 saved",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "excludes": "Riverside bridge reopens after inspection",
+          "pass": true
+        },
+        {
+          "excludes": "Library extends weekend hours",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 Feed",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-last",
+      "input": {
+        "label": "remove-last",
+        "contains": [
+          "Nothing saved",
+          "3 stories \u00b7 0 saved",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "r3_sb",
+        "no_enabled_button_text": [
+          "Read",
+          "Remove",
+          "\u2039 Feed"
+        ]
+      },
+      "target_rect": [
+        30,
+        269,
+        95,
+        44
+      ],
+      "target_selector": "r3_sb@0",
+      "png": "14-remove-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Nothing saved",
+          "pass": true
+        },
+        {
+          "contains": "3 stories \u00b7 0 saved",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Read",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Remove",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 Feed",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded-selected-last",
+      "input": {
+        "label": "expanded-selected-last",
+        "contains": [
+          "\u25cf L1",
+          "Docklands solar trial powers first block",
+          "Save"
+        ],
+        "action": "tap",
+        "target": "b1"
+      },
+      "target_rect": [
+        136,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b1@0",
+      "png": "15-expanded-selected-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        },
+        {
+          "contains": "Docklands solar trial powers first block",
+          "pass": true
+        },
+        {
+          "contains": "Save",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded-save",
+      "input": {
+        "label": "expanded-save",
+        "contains": [
+          "3 stories \u00b7 1 saved",
+          "Remove from Saved",
+          "\u25cf L1"
+        ],
+        "action": "tap",
+        "target": "x_action"
+      },
+      "target_rect": [
+        16,
+        362,
+        66,
+        44
+      ],
+      "target_selector": "x_action@0",
+      "png": "16-expanded-save.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "3 stories \u00b7 1 saved",
+          "pass": true
+        },
+        {
+          "contains": "Remove from Saved",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded-remove",
+      "input": {
+        "label": "expanded-remove",
+        "contains": [
+          "3 stories \u00b7 0 saved",
+          "Save",
+          "\u25cf L1"
+        ],
+        "action": "tap",
+        "target": "x_action"
+      },
+      "target_rect": [
+        16,
+        362,
+        199,
+        44
+      ],
+      "target_selector": "x_action@0",
+      "png": "17-expanded-remove.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "3 stories \u00b7 0 saved",
+          "pass": true
+        },
+        {
+          "contains": "Save",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "return-lead-glance",
+      "input": {
+        "label": "return-lead-glance",
+        "contains": [
+          "\u25cf L0",
+          "Riverside bridge reopens after inspection"
+        ],
+        "action": "tap",
+        "target": "b0"
+      },
+      "target_rect": [
+        20,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b0@0",
+      "png": "18-return-lead-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L0",
+          "pass": true
+        },
+        {
+          "contains": "Riverside bridge reopens after inspection",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "glance-opens-displayed-lead",
+      "input": {
+        "label": "glance-opens-displayed-lead",
+        "contains": [
+          "\u25cf L2",
+          "Riverside bridge reopens after inspection"
+        ],
+        "action": "tap",
+        "target": "Read",
+        "excludes": [
+          "Docklands solar trial powers first block"
+        ]
+      },
+      "target_rect": [
+        16,
+        368,
+        69,
+        44
+      ],
+      "target_selector": "-@8",
+      "png": "19-glance-opens-displayed-lead.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "Riverside bridge reopens after inspection",
+          "pass": true
+        },
+        {
+          "excludes": "Docklands solar trial powers first block",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.news",
+    "capabilities": [],
+    "digest": "de6b47f27d4729a6ac13830dbbb5060b1ffe83052d610b77339d67d984dc8c81",
+    "name": "News Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

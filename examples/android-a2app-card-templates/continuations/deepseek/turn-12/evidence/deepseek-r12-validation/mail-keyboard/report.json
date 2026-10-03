@@ -1,0 +1,355 @@
+{
+  "family": "mail",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "Contract signing"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Contract signing",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "action": "tap",
+        "target": "d_ex",
+        "contains": [
+          "Send (demo)"
+        ]
+      },
+      "target_rect": [
+        99,
+        84,
+        73,
+        44
+      ],
+      "target_selector": "d_ex@0",
+      "png": "01-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Send (demo)",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "focus-before-ime",
+      "input": {
+        "label": "focus-before-ime",
+        "action": "tap",
+        "target": "reply_field",
+        "capture_android": true
+      },
+      "target_rect": [
+        26,
+        406,
+        332,
+        48
+      ],
+      "target_selector": "reply_field@0",
+      "png": "02-focus-before-ime.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "android_screenshot": "02-focus-before-ime-android.png",
+      "small_button_targets": [],
+      "assertions": [],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "reveal-field-after-ime",
+      "input": {
+        "label": "reveal-field-after-ime",
+        "action": "scroll",
+        "target": "stage",
+        "delta_y": 180,
+        "capture_android": true
+      },
+      "target_rect": [
+        12,
+        139,
+        360,
+        322
+      ],
+      "target_selector": "stage@0",
+      "png": "03-reveal-field-after-ime.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "-",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "2",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "1",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "android_screenshot": "03-reveal-field-after-ime-android.png",
+      "small_button_targets": [],
+      "assertions": [],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "typed-with-keyboard",
+      "input": {
+        "label": "typed-with-keyboard",
+        "action": "text",
+        "target": "reply_field",
+        "text": "Thanks Ana \u2014 I will review the demo terms today.",
+        "input_value": "Thanks Ana \u2014 I will review the demo terms today.",
+        "capture_android": true
+      },
+      "target_rect": [
+        26,
+        326,
+        332,
+        48
+      ],
+      "target_selector": "reply_field@0",
+      "png": "04-typed-with-keyboard.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "-",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "2",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "1",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "android_screenshot": "04-typed-with-keyboard-android.png",
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "input_value": "Thanks Ana \u2014 I will review the demo terms today.",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "send-reachable-with-keyboard",
+      "input": {
+        "label": "send-reachable-with-keyboard",
+        "action": "scroll",
+        "target": "stage",
+        "delta_y": 80,
+        "input_value": "Thanks Ana \u2014 I will review the demo terms today.",
+        "capture_android": true
+      },
+      "target_rect": [
+        12,
+        139,
+        360,
+        310
+      ],
+      "target_selector": "stage@0",
+      "png": "05-send-reachable-with-keyboard.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "-",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "2",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "1",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "android_screenshot": "05-send-reachable-with-keyboard-android.png",
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "input_value": "Thanks Ana \u2014 I will review the demo terms today.",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "local-send-confirmed",
+      "input": {
+        "label": "local-send-confirmed",
+        "action": "tap",
+        "target": "Send (demo)",
+        "contains": [
+          "Draft queued (local demo)",
+          "no real mail was sent."
+        ]
+      },
+      "target_rect": [
+        26,
+        388,
+        115,
+        44
+      ],
+      "target_selector": "-@6",
+      "png": "06-local-send-confirmed.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Draft queued (local demo)",
+          "pass": true
+        },
+        {
+          "contains": "no real mail was sent.",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "return-to-glance",
+      "input": {
+        "label": "return-to-glance",
+        "action": "tap",
+        "target": "d_gl",
+        "contains": [
+          "Contract signing"
+        ]
+      },
+      "target_rect": [
+        12,
+        84,
+        69,
+        44
+      ],
+      "target_selector": "d_gl@0",
+      "png": "07-return-to-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Contract signing",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "draft-retained",
+      "input": {
+        "label": "draft-retained",
+        "action": "tap",
+        "target": "d_ex",
+        "input_value": "Thanks Ana \u2014 I will review the demo terms today."
+      },
+      "target_rect": [
+        99,
+        84,
+        73,
+        44
+      ],
+      "target_selector": "d_ex@0",
+      "png": "08-draft-retained.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "input_value": "Thanks Ana \u2014 I will review the demo terms today.",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.mail",
+    "capabilities": [],
+    "digest": "09b64aaf8e8923a1177ea0bb267b6cbeaaa92dbb8fef78ae4198485b07a55552",
+    "name": "Mail Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

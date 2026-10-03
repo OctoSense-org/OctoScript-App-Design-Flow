@@ -1,0 +1,742 @@
+{
+  "family": "youtube",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "Lo-fi build session",
+          "UNAVAILABLE"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ],
+        "excludes": [
+          "local and real",
+          "video route",
+          "player stream"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Lo-fi build session",
+          "pass": true
+        },
+        {
+          "contains": "UNAVAILABLE",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "video route",
+          "pass": true
+        },
+        {
+          "excludes": "player stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-first",
+      "input": {
+        "label": "save-first",
+        "action": "tap",
+        "target": "Watch later",
+        "contains": [
+          "In Watch later \u2713"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ],
+        "excludes": [
+          "local and real",
+          "video route",
+          "player stream"
+        ]
+      },
+      "target_rect": [
+        26,
+        404,
+        104,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "01-save-first.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "In Watch later \u2713",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "video route",
+          "pass": true
+        },
+        {
+          "excludes": "player stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-first",
+      "input": {
+        "label": "remove-first",
+        "action": "tap",
+        "target": "In Watch later \u2713",
+        "contains": [
+          "Watch later"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ],
+        "excludes": [
+          "local and real",
+          "video route",
+          "player stream"
+        ]
+      },
+      "target_rect": [
+        26,
+        404,
+        140,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "02-remove-first.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Watch later",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "video route",
+          "pass": true
+        },
+        {
+          "excludes": "player stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "action": "tap",
+        "target": "d_ex",
+        "contains": [
+          "Lo-fi build session",
+          "UNAVAILABLE"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ],
+        "excludes": [
+          "local and real",
+          "video route",
+          "player stream"
+        ]
+      },
+      "target_rect": [
+        99,
+        107,
+        73,
+        44
+      ],
+      "target_selector": "d_ex@0",
+      "png": "03-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Lo-fi build session",
+          "pass": true
+        },
+        {
+          "contains": "UNAVAILABLE",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "video route",
+          "pass": true
+        },
+        {
+          "excludes": "player stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-app",
+      "input": {
+        "label": "full-app",
+        "action": "tap",
+        "target": "Open app",
+        "occurrence": 0,
+        "contains": [
+          "Lo-fi build session",
+          "Synth patch walkthrough"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ],
+        "excludes": [
+          "local and real",
+          "video route",
+          "player stream"
+        ]
+      },
+      "target_rect": [
+        180,
+        107,
+        89,
+        44
+      ],
+      "target_selector": "d_ap@0",
+      "png": "04-full-app.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Lo-fi build session",
+          "pass": true
+        },
+        {
+          "contains": "Synth patch walkthrough",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "video route",
+          "pass": true
+        },
+        {
+          "excludes": "player stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-item",
+      "input": {
+        "label": "second-item",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": 1,
+        "contains": [
+          "Synth patch walkthrough"
+        ],
+        "excludes": [
+          "Lo-fi build session",
+          "local and real",
+          "video route",
+          "player stream"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ]
+      },
+      "target_rect": [
+        146,
+        502,
+        108,
+        44
+      ],
+      "target_selector": "1@7",
+      "png": "05-second-item.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Synth patch walkthrough",
+          "pass": true
+        },
+        {
+          "excludes": "Lo-fi build session",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "video route",
+          "pass": true
+        },
+        {
+          "excludes": "player stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-second",
+      "input": {
+        "label": "save-second",
+        "action": "tap",
+        "target": "Watch later",
+        "occurrence": -1,
+        "contains": [
+          "In Watch later \u2713"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ],
+        "excludes": [
+          "local and real",
+          "video route",
+          "player stream"
+        ]
+      },
+      "target_rect": [
+        26,
+        429,
+        104,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "06-save-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "In Watch later \u2713",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "video route",
+          "pass": true
+        },
+        {
+          "excludes": "player stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back",
+      "input": {
+        "label": "back",
+        "action": "tap",
+        "target": "\u2039 Back",
+        "contains": [
+          "Lo-fi build session",
+          "Synth patch walkthrough"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ],
+        "excludes": [
+          "local and real",
+          "video route",
+          "player stream"
+        ]
+      },
+      "target_rect": [
+        174,
+        429,
+        64,
+        44
+      ],
+      "target_selector": "1@5",
+      "png": "07-back.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Lo-fi build session",
+          "pass": true
+        },
+        {
+          "contains": "Synth patch walkthrough",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "video route",
+          "pass": true
+        },
+        {
+          "excludes": "player stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "saved-collection",
+      "input": {
+        "label": "saved-collection",
+        "action": "tap",
+        "target": "Watch later",
+        "occurrence": 0,
+        "contains": [
+          "Synth patch walkthrough"
+        ],
+        "excludes": [
+          "Lo-fi build session",
+          "local and real",
+          "video route",
+          "player stream"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ]
+      },
+      "target_rect": [
+        138,
+        179,
+        126,
+        44
+      ],
+      "target_selector": "1@2",
+      "png": "08-saved-collection.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Synth patch walkthrough",
+          "pass": true
+        },
+        {
+          "excludes": "Lo-fi build session",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "video route",
+          "pass": true
+        },
+        {
+          "excludes": "player stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-second",
+      "input": {
+        "label": "remove-second",
+        "action": "tap",
+        "target": "In Watch later \u2713",
+        "contains": [
+          "Nothing saved yet"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ],
+        "excludes": [
+          "local and real",
+          "video route",
+          "player stream"
+        ]
+      },
+      "target_rect": [
+        38,
+        380,
+        136,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "09-remove-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Nothing saved yet",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "video route",
+          "pass": true
+        },
+        {
+          "excludes": "player stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "return",
+      "input": {
+        "label": "return",
+        "action": "tap",
+        "target": "d_gl",
+        "contains": [
+          "Lo-fi build session"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ],
+        "excludes": [
+          "local and real",
+          "video route",
+          "player stream"
+        ]
+      },
+      "target_rect": [
+        12,
+        107,
+        69,
+        44
+      ],
+      "target_selector": "d_gl@0",
+      "png": "10-return.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Lo-fi build session",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "video route",
+          "pass": true
+        },
+        {
+          "excludes": "player stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "empty",
+      "input": {
+        "label": "empty",
+        "action": "tap",
+        "target": "Empty",
+        "contains": [
+          "No videos"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ],
+        "excludes": [
+          "local and real",
+          "video route",
+          "player stream"
+        ]
+      },
+      "pass": false,
+      "error": "Target 'Empty' matches 0 enabled nodes"
+    },
+    {
+      "label": "error",
+      "input": {
+        "label": "error",
+        "action": "tap",
+        "target": "Error",
+        "contains": [
+          "Couldn't load"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ],
+        "excludes": [
+          "local and real",
+          "video route",
+          "player stream"
+        ]
+      },
+      "pass": false,
+      "error": "Target 'Error' matches 0 enabled nodes"
+    },
+    {
+      "label": "ready",
+      "input": {
+        "label": "ready",
+        "action": "tap",
+        "target": "Ready",
+        "contains": [
+          "Lo-fi build session"
+        ],
+        "no_enabled_button_text": [
+          "Play"
+        ],
+        "excludes": [
+          "local and real",
+          "video route",
+          "player stream"
+        ]
+      },
+      "pass": false,
+      "error": "Target 'Ready' matches 0 enabled nodes"
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.youtube",
+    "capabilities": [],
+    "digest": "10699a2b3e3a5c8881a41e934f97088bb5eaace2a416aa1a8ac26eb2e846ebc4",
+    "name": "YouTube Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

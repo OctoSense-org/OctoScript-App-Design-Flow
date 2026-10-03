@@ -1,0 +1,63 @@
+{
+  "status": "Intermediate revision diagnostics; turn12 active at capture, not final quality or acceptance",
+  "native_diagnostic": {
+    "file": "round12-intermediate-native-diagnosis.json",
+    "original_sha256": "696cdea09f98423ce0d7ca7deac1ce81257e1f58049fc57821aacac10a6edaaa",
+    "portable_sha256": "0adbc9ebf590e75bb8c589df06507cc9b5cf7b855af8dcb212234d044eebff64",
+    "scope": "Original model bytes evaluated natively with pinned compiled libraries; no GPU, phone, source repair or runtime modification.",
+    "sources": [
+      {
+        "family": "news",
+        "source_sha256": "32a9bc7cdc13a3d19b6f1c5719869cab3cc5b6d4aac9fabe3ff3b83b20600655",
+        "bytes": 19481,
+        "reported_close_sites": 6,
+        "native_exit_code": 0
+      },
+      {
+        "family": "photo",
+        "source_sha256": "d09d14637bd9c3952c74d8de78bf6c03581aa19d0d70aac19477ebce9faa0fb7",
+        "bytes": 19399,
+        "reported_close_sites": 6,
+        "native_exit_code": 0
+      },
+      {
+        "family": "youtube",
+        "source_sha256": "f75709993027aa64649d309a67196a557cedddace41854491954c71fc703a922",
+        "bytes": 18918,
+        "reported_close_sites": 6,
+        "native_exit_code": 0
+      },
+      {
+        "family": "mail",
+        "source_sha256": "cdad1eec14b14805dcfd2566721dcf98273a9e2eb7defd77bc520b4e09a0a2cb",
+        "bytes": 23246,
+        "reported_close_sites": 4,
+        "native_exit_code": 0
+      },
+      {
+        "family": "finance",
+        "source_sha256": "779fc7d594c4689311929ffe20737dd028a1b5fba7d1c067969b83fb37bffa43",
+        "bytes": 21119,
+        "reported_close_sites": 0,
+        "native_exit_code": 0
+      },
+      {
+        "family": "calendar",
+        "source_sha256": "9df515379942153fafa48d4e12d2a8f239baa538f89f7b0c23e1fe9091636708",
+        "bytes": 16137,
+        "reported_close_sites": 0,
+        "native_exit_code": 0
+      }
+    ]
+  },
+  "hash_comment_probe": {
+    "file": "round12-intermediate-hash-comment-diagnostic.json",
+    "sha256": "c62a8167216664d55e31784ae67f3fcb3cbc9ee5ff231173ac37f91fd95ae3b9",
+    "copied_unchanged": true,
+    "source_snapshot_sha256_verified": true,
+    "scope": "Operator-only grammar diagnostic and slash-comment controls; no app source authored or modified; no final Android pixel conclusion."
+  },
+  "interpretation": "Premature-close and hash-comment findings belong only to the listed source hashes. Later model repairs require their own exact source replay and native tests; this packet assigns no score.",
+  "authorship_constraint": "All app/design repairs remain Android model-authored.",
+  "privacy": "No provider settings, secrets, device serial or private reasoning included."
+}

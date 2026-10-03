@@ -1,0 +1,50 @@
+{
+  "family": "finance",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "142.60 USD",
+        "Demo Corp"
+      ]
+    },
+    {
+      "label": "expanded",
+      "action": "tap",
+      "target": "Expand",
+      "contains": [
+        "140.10",
+        "30d trend"
+      ]
+    },
+    {
+      "label": "full-app",
+      "action": "tap",
+      "target": "Open app",
+      "occurrence": 0,
+      "contains": [
+        "Northwind Energy",
+        "86.15 USD"
+      ]
+    },
+    {
+      "label": "last-row-reachable",
+      "action": "scroll",
+      "target": "3@1",
+      "delta_y": 340,
+      "contains": [
+        "GridWorks"
+      ]
+    },
+    {
+      "label": "last-item-detail",
+      "action": "tap",
+      "target": "Open \u203a",
+      "occurrence": -1,
+      "contains": [
+        "GridWorks",
+        "54.30 USD"
+      ]
+    }
+  ]
+}

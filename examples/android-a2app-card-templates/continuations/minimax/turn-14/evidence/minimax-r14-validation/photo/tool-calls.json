@@ -1,0 +1,5369 @@
+[
+  {
+    "request_id": "451fc8df-3821-45bc-a6ca-0946f0ce744d",
+    "request": {
+      "name": "studio.bundle_check",
+      "args": {
+        "bundle_path": "card-templates/photo/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "451fc8df-3821-45bc-a6ca-0946f0ce744d",
+      "data": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.photo",
+        "capabilities": [],
+        "digest": "408243929418fff1534eaaadb9837160228144b44c539f9af5c74583876f7a9f",
+        "name": "Photo Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.676
+  },
+  {
+    "request_id": "93c73eb3-70e5-4895-be6c-bc8bb321a232",
+    "request": {
+      "name": "studio.open",
+      "args": {
+        "bundle_path": "card-templates/photo/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "93c73eb3-70e5-4895-be6c-bc8bb321a232",
+      "data": {
+        "bundle": {
+          "admission": "local_developer",
+          "app_id": "dev.studio.cards.photo",
+          "capabilities": [],
+          "digest": "408243929418fff1534eaaadb9837160228144b44c539f9af5c74583876f7a9f",
+          "name": "Photo Cards",
+          "publisher_signed": false,
+          "source_modified": false,
+          "version": "0.1.0"
+        },
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "ready": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 1.009
+  },
+  {
+    "request_id": "03e31fb0-1f26-4ce5-a871-83adf02adcde",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "03e31fb0-1f26-4ce5-a871-83adf02adcde",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-2ce6bac6-f6e8-468d-9fbe-36b6704f79a9.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 0 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "glance@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "PHOTO NOT LOADED OFFLINE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_title@0",
+              "text": "Mill Street at first light",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_date@0",
+              "text": "17 Sep",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_place@0",
+              "text": "Riverside",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_people@0",
+              "text": "Alex, Sofia",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Album",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "\u25cf L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Demo album",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-47918114-e0ec-4bbf-a75a-74864028d815.json",
+        "total_widgets": 27,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.364
+  },
+  {
+    "request_id": "a4c5cd37-05d5-4879-9e67-e2d481bce815",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "b1@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "a4c5cd37-05d5-4879-9e67-e2d481bce815",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.124
+  },
+  {
+    "request_id": "f0a3f54b-9888-45ef-8407-770b4fd9e4df",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "f0a3f54b-9888-45ef-8407-770b4fd9e4df",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-be902bc5-ea39-4564-909b-e6ec157cc76a.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 0 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "PHOTO NOT LOADED OFFLINE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_title@0",
+              "text": "Mill Street at first light",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_date@0",
+              "text": "17 Sep",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_place@0",
+              "text": "Riverside",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_people@0",
+              "text": "Alex, Sofia",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_note@0",
+              "text": "Long exposure from the north bank, taken before the bridge opened to traffic. Demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_action@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Album",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L1 Photo",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-8fee23ed-3396-4861-8946-5231319a6d44.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.362
+  },
+  {
+    "request_id": "1fa5cf7a-7a49-4d0e-b6ce-99f3bcb1640a",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "b2@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "1fa5cf7a-7a49-4d0e-b6ce-99f3bcb1640a",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.167
+  },
+  {
+    "request_id": "aeeef3b4-b4fd-49a7-9717-b4b0b8798b17",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "aeeef3b4-b4fd-49a7-9717-b4b0b8798b17",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-ebde6512-f105-4b48-bd52-fd7cd3a20e90.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 0 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_fav@0",
+              "text": "Favorites",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "Mill Street at first light",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "17 Sep \u00b7 Riverside",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "text": "Reading room, west window",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "15 Sep \u00b7 Central Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "Harbour cranes at dusk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "12 Sep \u00b7 Docklands",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Album",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-b2ff8da2-1b8d-4d54-baa5-e32dc73df56e.json",
+        "total_widgets": 43,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.364
+  },
+  {
+    "request_id": "c185f446-3b46-4fe8-b39b-2a22f7b94da1",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "-@18",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "c185f446-3b46-4fe8-b39b-2a22f7b94da1",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.126
+  },
+  {
+    "request_id": "9c2881c5-4e5f-4e10-b58a-7e23a4d2c1d8",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "9c2881c5-4e5f-4e10-b58a-7e23a4d2c1d8",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-c6430454-5745-4b62-9c5b-31ed6dc7e94b.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 0 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "text": "PHOTO NOT LOADED OFFLINE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_title@0",
+              "text": "Reading room, west window",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_date@0",
+              "text": "15 Sep",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_place@0",
+              "text": "Central Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_people@0",
+              "text": "Noah, Lily",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_note@0",
+              "text": "Saturday morning reading hour. Demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "text": "\u2039 Album",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Photo",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-0696f123-7c09-4388-8aa2-c4f2b4ea55cf.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.352
+  },
+  {
+    "request_id": "990b1efc-afb9-4245-b050-adb30da0772f",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "rd_action@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "990b1efc-afb9-4245-b050-adb30da0772f",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.129
+  },
+  {
+    "request_id": "656017e1-8a08-480d-92d9-fbce26104941",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "656017e1-8a08-480d-92d9-fbce26104941",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-473273e0-6362-4be0-8174-6e0a2184b002.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 1 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "text": "PHOTO NOT LOADED OFFLINE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_title@0",
+              "text": "Reading room, west window",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_date@0",
+              "text": "15 Sep",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_place@0",
+              "text": "Central Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_people@0",
+              "text": "Noah, Lily",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_note@0",
+              "text": "Saturday morning reading hour. Demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Remove from Favorites",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "text": "\u2039 Album",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Favorited Reading room, west window",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-f8583cd0-f79d-4d8b-8128-4261c87053fa.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.383
+  },
+  {
+    "request_id": "50073fd0-f08d-443c-97c3-6737b39baeb9",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "-@34",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "50073fd0-f08d-443c-97c3-6737b39baeb9",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.148
+  },
+  {
+    "request_id": "7694ade1-e681-4513-9c95-88e8fdac7da4",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "7694ade1-e681-4513-9c95-88e8fdac7da4",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-a4c45893-8a61-4340-b6b0-114ce3b7bc63.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 1 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_fav@0",
+              "text": "Favorites",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "Mill Street at first light",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "17 Sep \u00b7 Riverside",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "text": "Reading room, west window",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "15 Sep \u00b7 Central Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Remove",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "Harbour cranes at dusk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "12 Sep \u00b7 Docklands",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Album",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-bb8932d7-044b-45c9-b5b2-6f7d9c06558c.json",
+        "total_widgets": 43,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.393
+  },
+  {
+    "request_id": "9036bab3-71f0-49b8-98a2-8c720d0ffed6",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "tab_fav@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "9036bab3-71f0-49b8-98a2-8c720d0ffed6",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.141
+  },
+  {
+    "request_id": "8850585a-bdac-4392-95a9-24dd9da627cc",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "8850585a-bdac-4392-95a9-24dd9da627cc",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-f9c84e20-714b-4317-a261-ccb4e05c582f.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 1 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_fav@0",
+              "text": "\u25cf Favorites",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "Reading room, west window",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@10",
+              "text": "15 Sep \u00b7 Central Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_fb@0",
+              "text": "Remove",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing Favorites",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-6b0d3919-2382-43ef-a080-d49ded00e448.json",
+        "total_widgets": 29,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.381
+  },
+  {
+    "request_id": "a4cce069-466b-4e30-b184-022ae178ffae",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "r2_fb@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "a4cce069-466b-4e30-b184-022ae178ffae",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.143
+  },
+  {
+    "request_id": "c54108c6-89e3-4773-9aee-fc3a3fa93032",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "c54108c6-89e3-4773-9aee-fc3a3fa93032",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-bc50bd41-ead4-45c4-8d7b-0906f3eea65b.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 0 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_fav@0",
+              "text": "\u25cf Favorites",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "fav_empty@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@31",
+              "text": "No favorites yet",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "text": "Favorite a photo from All to see it here.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Removed from Favorites",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-3e8b26a0-0b2b-4faf-b31f-9bb43dd3ea57.json",
+        "total_widgets": 25,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.403
+  },
+  {
+    "request_id": "2310e744-cf34-4e5d-aa0f-17eb939a05d1",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "tab_all@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "2310e744-cf34-4e5d-aa0f-17eb939a05d1",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.169
+  },
+  {
+    "request_id": "98811b68-660f-43f5-97d8-1aa2fa7c4fc5",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "98811b68-660f-43f5-97d8-1aa2fa7c4fc5",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-db20c09c-dd41-423a-9571-3b28ff9be4d1.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 0 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_fav@0",
+              "text": "Favorites",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "Mill Street at first light",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "17 Sep \u00b7 Riverside",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "text": "Reading room, west window",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "15 Sep \u00b7 Central Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "Harbour cranes at dusk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "12 Sep \u00b7 Docklands",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing All photos",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-80ed5507-a408-4d80-b0ae-f89c68a233c1.json",
+        "total_widgets": 43,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.37
+  },
+  {
+    "request_id": "ac56a2ee-41d9-4f53-b049-b156bac3715a",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "l2@0",
+        "action": "scroll",
+        "delta_y": 360
+      }
+    },
+    "reply": {
+      "call_id": "ac56a2ee-41d9-4f53-b049-b156bac3715a",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.148
+  },
+  {
+    "request_id": "01982c21-23e3-4df7-a29a-5214d2decf75",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "01982c21-23e3-4df7-a29a-5214d2decf75",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-19d3f144-8732-4b84-a23d-36311cc613ab.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 0 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_fav@0",
+              "text": "Favorites",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "Mill Street at first light",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "17 Sep \u00b7 Riverside",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "text": "Reading room, west window",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "15 Sep \u00b7 Central Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "Harbour cranes at dusk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "12 Sep \u00b7 Docklands",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing All photos",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-75ba9aa8-3de2-4990-a423-712ca8a39d4c.json",
+        "total_widgets": 43,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.394
+  },
+  {
+    "request_id": "59695297-d058-4d5d-8e1c-e8351e854291",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "-@21",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "59695297-d058-4d5d-8e1c-e8351e854291",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.158
+  },
+  {
+    "request_id": "d80d4929-86ff-45c5-8bd5-75740fc36a90",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "d80d4929-86ff-45c5-8bd5-75740fc36a90",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-df8ab96e-681b-4e56-aef6-936e413be640.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 0 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "text": "PHOTO NOT LOADED OFFLINE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_title@0",
+              "text": "Harbour cranes at dusk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_date@0",
+              "text": "12 Sep",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_place@0",
+              "text": "Docklands",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_people@0",
+              "text": "James",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_note@0",
+              "text": "Shot from the north quay as the yard lights came on. Demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "text": "\u2039 Album",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Photo",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-b3fb8d6d-bac9-482f-88f5-c005464d6c70.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.38
+  },
+  {
+    "request_id": "3755bbc6-1b04-4f30-918c-859063cdee28",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "rd_action@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "3755bbc6-1b04-4f30-918c-859063cdee28",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.144
+  },
+  {
+    "request_id": "17f2d8ea-15dd-4d95-90d6-a1a5a091d505",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "17f2d8ea-15dd-4d95-90d6-a1a5a091d505",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-03271c2c-574d-4ec5-a20f-c6e9a159513b.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 1 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "text": "PHOTO NOT LOADED OFFLINE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_title@0",
+              "text": "Harbour cranes at dusk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_date@0",
+              "text": "12 Sep",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_place@0",
+              "text": "Docklands",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_people@0",
+              "text": "James",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_note@0",
+              "text": "Shot from the north quay as the yard lights came on. Demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Remove from Favorites",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "text": "\u2039 Album",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Favorited Harbour cranes at dusk",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-38943ca6-4ade-4ee8-a14c-f28454178e8e.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.39
+  },
+  {
+    "request_id": "757c4120-d9fb-4c2e-b2b4-e6d6c8200c99",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "-@34",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "757c4120-d9fb-4c2e-b2b4-e6d6c8200c99",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.152
+  },
+  {
+    "request_id": "8ff6b640-3100-4d42-9f4a-d42dc7cb3e0c",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "8ff6b640-3100-4d42-9f4a-d42dc7cb3e0c",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-8924ea33-c31d-4286-85b6-fa21f7f32d46.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 1 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "\u25cf All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_fav@0",
+              "text": "Favorites",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "Mill Street at first light",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "17 Sep \u00b7 Riverside",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_b@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "text": "Reading room, west window",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "15 Sep \u00b7 Central Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_b@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "Harbour cranes at dusk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "12 Sep \u00b7 Docklands",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_b@0",
+              "text": "Remove",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Album",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-2c01a450-ae14-4084-be91-66142fa9750a.json",
+        "total_widgets": 43,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.414
+  },
+  {
+    "request_id": "69b09f82-e209-40e3-a34b-08e54ee6002d",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "tab_fav@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "69b09f82-e209-40e3-a34b-08e54ee6002d",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.14
+  },
+  {
+    "request_id": "de47ee47-339c-4fef-b67e-3a513d4dd462",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "de47ee47-339c-4fef-b67e-3a513d4dd462",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-5fe4fbb9-3f72-4e84-93da-c233c56a40e4.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 1 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_fav@0",
+              "text": "\u25cf Favorites",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_f@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@28",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@29",
+              "text": "Harbour cranes at dusk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "text": "12 Sep \u00b7 Docklands",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_fb@0",
+              "text": "Remove",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@30",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing Favorites",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-900c7623-329a-4003-a6a3-1978938f922c.json",
+        "total_widgets": 29,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.412
+  },
+  {
+    "request_id": "f87d7437-a429-4bd3-a32d-2eab1b3f7534",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "r3_fb@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "f87d7437-a429-4bd3-a32d-2eab1b3f7534",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.15
+  },
+  {
+    "request_id": "9d6ddbdc-f1cd-45f9-899b-d096bd3384a4",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "9d6ddbdc-f1cd-45f9-899b-d096bd3384a4",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-b6bdd777-284b-4439-abbe-6d469201815e.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 0 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_all@0",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "tab_fav@0",
+              "text": "\u25cf Favorites",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "fav_empty@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@31",
+              "text": "No favorites yet",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@12",
+              "text": "Favorite a photo from All to see it here.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Removed from Favorites",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-4e6b93cd-2048-43a4-95fe-f95809289da0.json",
+        "total_widgets": 25,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.418
+  },
+  {
+    "request_id": "a209f9d1-1b2b-4367-9fdc-f8d08acf760c",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "b1@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "a209f9d1-1b2b-4367-9fdc-f8d08acf760c",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.151
+  },
+  {
+    "request_id": "1e1d7b1b-6049-4fb8-8bd5-a56d3dc2cdf5",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "1e1d7b1b-6049-4fb8-8bd5-a56d3dc2cdf5",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-795a33a8-bc92-4e6d-b04d-c83a01613185.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 0 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "PHOTO NOT LOADED OFFLINE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_title@0",
+              "text": "Harbour cranes at dusk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_date@0",
+              "text": "12 Sep",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_place@0",
+              "text": "Docklands",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_people@0",
+              "text": "James",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_note@0",
+              "text": "Shot from the north quay as the yard lights came on. Demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_action@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Album",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L1 Photo",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-17289a94-bd86-42b1-807d-4db293458ee9.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.401
+  },
+  {
+    "request_id": "db902bf7-020d-43df-be3d-7deddbed0e66",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "x_action@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "db902bf7-020d-43df-be3d-7deddbed0e66",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.157
+  },
+  {
+    "request_id": "570bb0f2-f158-4aca-aa30-a5ad7fc1fe29",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "570bb0f2-f158-4aca-aa30-a5ad7fc1fe29",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-d1652924-f6b0-4f2e-a84a-a06861cee0ae.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 1 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "PHOTO NOT LOADED OFFLINE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_title@0",
+              "text": "Harbour cranes at dusk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_date@0",
+              "text": "12 Sep",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_place@0",
+              "text": "Docklands",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_people@0",
+              "text": "James",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_note@0",
+              "text": "Shot from the north quay as the yard lights came on. Demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_action@0",
+              "text": "Remove from Favorites",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Album",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Favorited Harbour cranes at dusk",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-ae5444bc-59b9-414d-ae33-e2b92bc134f2.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.37
+  },
+  {
+    "request_id": "c304a214-4688-4292-ae2d-31e4ae490946",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "x_action@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "c304a214-4688-4292-ae2d-31e4ae490946",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.168
+  },
+  {
+    "request_id": "52b2cb80-eff8-4e87-beb5-31e1af67d518",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "52b2cb80-eff8-4e87-beb5-31e1af67d518",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-d188aa8e-6a92-4742-9e6f-a2af0ece96f0.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 0 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "PHOTO NOT LOADED OFFLINE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_title@0",
+              "text": "Harbour cranes at dusk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_date@0",
+              "text": "12 Sep",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_place@0",
+              "text": "Docklands",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_people@0",
+              "text": "James",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_note@0",
+              "text": "Shot from the north quay as the yard lights came on. Demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_action@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "Album",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Removed from Favorites",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-73cd7289-b2c9-43ce-9dc4-9f8a7af1b4d2.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.374
+  },
+  {
+    "request_id": "09d3c99b-b54b-4062-a114-d1de5eb80d54",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "b0@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "09d3c99b-b54b-4062-a114-d1de5eb80d54",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.152
+  },
+  {
+    "request_id": "77750c48-1be3-4711-8a24-5e8b930fb290",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "77750c48-1be3-4711-8a24-5e8b930fb290",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-4d62e1dc-10db-463f-8b10-2732cedbcb4d.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 0 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "glance@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "PHOTO NOT LOADED OFFLINE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_title@0",
+              "text": "Mill Street at first light",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_date@0",
+              "text": "17 Sep",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_place@0",
+              "text": "Riverside",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_people@0",
+              "text": "Alex, Sofia",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Album",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "\u25cf L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L0 Glance",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-837e1b4e-6814-485f-80ac-55837175dcb8.json",
+        "total_widgets": 27,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.396
+  },
+  {
+    "request_id": "f550bb4c-bcbb-4bfc-a85d-8d492eeab165",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "widget_id": "-@7",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "f550bb4c-bcbb-4bfc-a85d-8d492eeab165",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.157
+  },
+  {
+    "request_id": "e5d2872d-f8a2-4f70-8d22-a1649025bf3b",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "e5d2872d-f8a2-4f70-8d22-a1649025bf3b",
+      "data": {
+        "height": 2132,
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-2953753e-9f92-4ad3-ab0e-0170070edc9f.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Photo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 photos \u00b7 0 favorites",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_detail@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "text": "PHOTO NOT LOADED OFFLINE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_title@0",
+              "text": "Mill Street at first light",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_date@0",
+              "text": "17 Sep",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_place@0",
+              "text": "Riverside",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_people@0",
+              "text": "Alex, Sofia",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@8",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_note@0",
+              "text": "Long exposure from the north bank, taken before the bridge opened to traffic. Demo record.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@14",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_action@0",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "text": "\u2039 Album",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Showing L2 Photo",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-0a3cf6c3-81cf-4c83-bc51-5a2fe43541d3.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.368
+  },
+  {
+    "request_id": "5060c0ad-4b8a-46cf-9427-302bbe20edbd",
+    "request": {
+      "name": "studio.close",
+      "args": {
+        "instance_id": "af4b6733-a2cc-439b-8947-45855c22ac33"
+      }
+    },
+    "reply": {
+      "call_id": "5060c0ad-4b8a-46cf-9427-302bbe20edbd",
+      "data": {
+        "closed": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.162
+  }
+]

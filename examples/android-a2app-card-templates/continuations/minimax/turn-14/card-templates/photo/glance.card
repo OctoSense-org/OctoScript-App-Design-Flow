@@ -1,0 +1,91 @@
+# ledger photo.glance@0.1.0
+# level:   L0
+# profile: ui/l0
+# model:   dev.studio.cards.photo
+#
+theme taskplan_light
+#
+# PHOTO family's compact L0 glance: one photo record. Title, date and place, one
+# action, one honest offline cue. The album list, the full record and the
+# Favorites filter live behind the card's own detail, not in the glance.
+# L0/L1/L2 are PRESENTATION depths; this file is language L0 at every depth.
+#
+# Fixture: glance.data.json — synthetic demo records. This offline build loads no
+# image assets and reads no photo library, so the card STATES that no picture is
+# shown here rather than implying a photo is on screen.
+#
+# OFFLINE SOURCE CONTRACT:
+#   * fixture keys are the SOURCE ALIASES (lead, more);
+#   * `id:` is OMITTED so fixture values lower to literals;
+#   * every lifecycle-bound read sits inside a `.$state == .ready` guard;
+#   * `when` takes no else; branches reference named views.
+
+source lead sys.dataset(fields: [title, subtitle, summary, as_of, status, metric1_label, metric1_value, metric2_label, metric2_value])
+
+state mode { shape: enum[glance, detail], initial: .glance }
+state fav  { shape: enum[plain, favorite], initial: .plain }
+
+event open_detail { mode: set(.detail) }
+event back        { mode: set(.glance) }
+event favorite    { fav: set(.favorite) }
+event unfavorite  { fav: set(.plain) }
+
+copy app      { class: vocabulary, en: "Photo", zh: "照片" }
+copy nomedia  { class: vocabulary, en: "NO IMAGE OFFLINE", zh: "离线无图像" }
+copy open     { class: vocabulary, en: "Open", zh: "打开" }
+copy back     { class: vocabulary, en: "‹ Back", zh: "‹ 返回" }
+copy favorite { class: vocabulary, en: "Favorite", zh: "收藏" }
+copy unfav    { class: vocabulary, en: "Remove from Favorites", zh: "取消收藏" }
+
+# Lifecycle strings are declared copy, never inline (framework-l0 §1).
+copy loading { class: vocabulary, en: "Loading demo album…", zh: "正在加载演示相册…" }
+copy offline { class: vocabulary, en: "Can't load demo album", zh: "无法加载演示相册" }
+
+view root Surface(pad: .tight) {
+  Col(gap: 8) {
+    Row(gap: 8, align: .center) {
+      Icon(name: .image, size: .row)
+      TextCaption(text: copy.app, width: .fill)
+      TextCaption(value: lead.as_of)
+    }
+    when lead.$state == .pending { loading_row }
+    when lead.$state == .failed  { offline_row }
+    when lead.$state == .ready   {
+      when mode == .glance { glance_row }
+      when mode == .detail { detail }
+    }
+  }
+}
+
+view loading_row Col {
+  TextBody(text: copy.loading, width: .fill)
+}
+
+view offline_row Col {
+  TextBody(text: copy.offline, width: .fill)
+}
+
+view glance_row Col(gap: 8) {
+  TextCaption(text: copy.nomedia, width: .fill)
+  TextTitle(text: lead.title, width: .fill)
+  TextRow(text: lead.subtitle, width: .fill)
+  Row(gap: 8) {
+    Chip(text: copy.open, on_tap: open_detail, tone: .primary)
+  }
+}
+
+view detail Col(gap: 8) {
+  TextTitle(text: lead.title, width: .fill)
+  Row(gap: 8, align: .center) {
+    Icon(name: .location, size: .row)
+    TextRow(text: lead.subtitle, width: .fill)
+  }
+  TextBody(text: lead.summary, width: .fill)
+  Row(gap: 8) {
+    when fav == .plain    { Chip(text: copy.favorite, on_tap: favorite, tone: .primary) }
+    when fav == .favorite { Chip(text: copy.unfav, on_tap: unfavorite) }
+  }
+  Row(gap: 8) {
+    Chip(text: copy.back, on_tap: back)
+  }
+}

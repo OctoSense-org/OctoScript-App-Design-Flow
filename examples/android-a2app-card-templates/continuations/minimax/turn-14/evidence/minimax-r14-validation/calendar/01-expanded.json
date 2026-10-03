@@ -1,0 +1,1957 @@
+{
+  "height": 2132,
+  "instance_id": "c11bb981-8235-4377-b10a-b58a207f91a5",
+  "path": ".studio-3419f00e-16c1-4c92-914f-e6f7aa53d169.png",
+  "settled": false,
+  "snapshot": {
+    "checks": {
+      "findings": [],
+      "instrument": "makepad_widget_tree",
+      "pass": true
+    },
+    "geometry": {
+      "widgets": [
+        {
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 0,
+          "id": "-",
+          "kind": "Splash",
+          "parent": -1,
+          "text": "// Calendar card template \u2014 dev.studio.cards.calendar\n// All events are SYNTHETIC DEMO DATA in this app's local list. No account, no\n// calendar service, no network, nothing is ever synced.\n//\n// Depths are PRESENTATION depths (UI), not parser levels:\n//   L0  next event at a glance\n//   L1  expanded event with a reversible RSVP cycle\n//   L2  agenda -> selected detail\n\nlet events = [\n    {id: \"e1\" title: \"Design review\" day: \"Thu 8 Oct\" time: \"10:00 - 11:00\"\n        place: \"Studio B\" tag: \"Work\"\n        note: \"Bring the revised invoice mockups. Marcus joins from the office.\"}\n    {id: \"e2\" title: \"Dentist check-up\" day: \"Fri 9 Oct\" time: \"16:30\"\n        place: \"Riverside Clinic\" tag: \"Health\"\n        note: \"Six-month check-up. Arrive ten minutes early to fill the form in.\"}\n    {id: \"e3\" title: \"Dinner with Priya\" day: \"Sat 10 Oct\" time: \"19:00 - 21:00\"\n        place: \"Cafe Lumen, 4 Riverside\" tag: \"Personal\"\n        note: \"Terrace table booked for four. Priya is bringing Lena.\"}\n]\n\nlet ground = #xf2f2f7\nlet surface = #xffffff\nlet ink = #x1c1c1e\nlet ink2 = #x3c3c43\nlet muted = #x8e8e93\nlet accent = #x007aff\nlet danger = #xd70015\nlet line = #xe5e5ea\nlet demo_bg = #xfff3cd\nlet demo_ink = #x8a0b00\n\nlet rsvp = []\nlet status = \"Demo agenda.\"\nlet depth = 0\nlet sel = \"e1\"\nlet route = \"list\"\n\n// ---------- state helpers ----------\n\nfn pick(cond, on, off){ if cond { on } else { off } }\n\nfn ev_of(id){\n    for e in events { if e.id == id { return e } }\n    nil\n}\n\n// 0 = unanswered, then Going, Maybe, No, wrapping back to 0. The cycle wraps,\n// so every state is reachable again by tapping \u2014 that is the reversibility.\nfn state_of(id){\n    for r in rsvp {\n        if r.id == id {\n            if r.state == \"going\" { return 1 }\n            if r.state == \"maybe\" { return 2 }\n            if r.state == \"no\" { return 3 }\n            return 0\n        }\n    }\n    0\n}\n\nfn set_state(id, s){\n    for r in rsvp { if r.id == id { r.state = s; return } }\n    rsvp.push({id: id state: s})\n}\n\nfn rsvp_of(id){\n    let s = state_of(id)\n    if s == 1 { return \"Going\" }\n    if s == 2 { return \"Maybe\" }\n    if s == 3 { return \"No\" }\n    return \"No answer\"\n}\n\n// the button always names the NEXT state, never the current one\nfn rsvp_step(id){\n    let s = state_of(id)\n    if s == 0 { return \"RSVP: Going\" }\n    if s == 1 { return \"RSVP: Maybe\" }\n    if s == 2 { return \"RSVP: No\" }\n    return \"RSVP: clear\"\n}\n\nfn cycle_rsvp(id){\n    let s = state_of(id)\n    if s == 0 { set_state(id, \"going\") }\n    if s == 1 { set_state(id, \"maybe\") }\n    if s == 2 { set_state(id, \"no\") }\n    if s == 3 { set_state(id, \"\") }\n    let e = ev_of(id)\n    if e == nil { return }\n    say(e.title + \" \u00b7 \" + rsvp_of(id))\n    sync()\n}\n\nfn answered(){\n    let n = 0\n    for e in events { if state_of(e.id) != 0 { n = n + 1 } }\n    n\n}\n\n// the next event still being considered; none once every event is declined\nfn next_event(){\n    for e in events { if state_of(e.id) != 3 { return e } }\n    nil\n}\n\nfn next_id(){\n    let n = next_event()\n    if n == nil { return \"\" }\n    n.id\n}\n\nfn say(s){ status = s; ui.status.set_text(s) }\n\nfn depth_name(){\n    if depth == 0 { return \"L0 Glance\" }\n    if depth == 1 { return \"L1 Event\" }\n    return \"L2 Agenda\"\n}\n\nfn set_depth(d){\n    depth = d\n    route = \"list\"\n    say(\"Showing \" + depth_name())\n    sync()\n}\n\nfn do_open(id){\n    sel = id\n    route = \"detail\"\n    set_depth(2)\n    route = \"detail\"\n    sync()\n}\n\nfn do_back(){\n    route = \"list\"\n    say(\"Showing \" + depth_name())\n    sync()\n}\n\n// ---------- chrome sync ----------\n\nfn sync(){\n    ui.glance.set_visible(depth == 0)\n    ui.expanded.set_visible(depth == 1)\n    ui.full.set_visible(depth == 2)\n\n    ui.count.set_text(\"\" + events.len() + \" events \u00b7 \" + \"\" + answered() + \" answered\")\n    ui.status.set_text(status)\n    // Same persistent marker as the other families: the active depth is shown by\n    // a bullet in the segment bar, so it survives an RSVP tap and detail\n    // navigation. No separate depth label, so no new container nesting.\n    ui.b0.set_text(pick(depth == 0, \"\u25cf L0\", \"L0\"))\n    ui.b1.set_text(pick(depth == 1, \"\u25cf L1\", \"L1\"))\n    ui.b2.set_text(pick(depth == 2, \"\u25cf L2\", \"L2\"))\n\n    let n = next_event()\n    if n == nil {\n        ui.g_card.set_visible(false)\n        ui.g_empty.set_visible(true)\n    } else {\n        ui.g_card.set_visible(true)\n        ui.g_empty.set_visible(false)\n        ui.g_day.set_text(n.day)\n        ui.g_time.set_text(n.time)\n        ui.g_title.set_text(n.title)\n        ui.g_place.set_text(n.place + \" \u00b7 \" + n.tag)\n        ui.g_rsvp.set_text(rsvp_of(n.id))\n    }\n    // ButtonFlat has no set_visible, so the action is hidden via a View wrapper.\n    // With every event declined there is no next event, so the action goes away.\n    ui.open_wrap.set_visible(next_id() != \"\")\n\n    let s = ev_of(sel)\n    if s != nil {\n        ui.x_title.set_text(s.title)\n        ui.x_day.set_text(s.day + \" \u00b7 \" + s.time)\n        ui.x_place.set_text(s.place + \" \u00b7 \" + s.tag)\n        ui.x_note.set_text(s.note)\n        ui.x_rsvp.set_text(rsvp_of(s.id))\n        ui.x_next.set_text(rsvp_step(s.id))\n        ui.d_title.set_text(s.title)\n        ui.d_day.set_text(s.day + \" \u00b7 \" + s.time)\n        ui.d_place.set_text(s.place + \" \u00b7 \" + s.tag)\n        ui.d_note.set_text(s.note)\n        ui.d_rsvp.set_text(rsvp_of(s.id))\n        ui.d_next.set_text(rsvp_step(s.id))\n    }\n\n    ui.l2_list.set_visible(route == \"list\")\n    ui.l2_detail.set_visible(route == \"detail\")\n\n    ui.e1_u.set_text(rsvp_of(\"e1\"))\n    ui.e2_u.set_text(rsvp_of(\"e2\"))\n    ui.e3_u.set_text(rsvp_of(\"e3\"))\n}\n\n// ---------- shared button styles ----------\n\nlet Flat = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}\n    draw_text +: {color: accent color_hover: accent color_down: accent text_style +: {font_size: 15}}}\n\nlet Quiet = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}\n    draw_text +: {color: ink2 color_hover: ink2 color_down: ink2 text_style +: {font_size: 15}}}\n\nlet Seg = ButtonFlat{height: 44 width: Fill align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000f color_down: #x0000001a border_size: 0.0}\n    draw_text +: {color: ink color_hover: ink color_down: ink text_style +: {font_size: 14}}}\n\n// ---------- root ----------\n\nSolidView{width: Fill height: Fill flow: Down draw_bg.color: ground\n\n    View{width: Fill height: Fit flow: Down spacing: 2\n        padding: Inset{left: 16 right: 16 top: 12 bottom: 8}\n        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n            Label{text: \"Calendar\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 19}}\n            View{width: Fill height: 1}\n            RoundedView{width: Fit height: Fit\n                padding: Inset{left: 8 right: 8 top: 3 bottom: 3}\n                draw_bg.color: demo_bg draw_bg.border_radius: 6.0\n                Label{text: \"DEMO\" draw_text.color: demo_ink draw_text.text_style: theme.font_bold{font_size: 11}}\n            }\n        }\n        count := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n    }\n\n    View{width: Fill height: Fill flow: Down\n\n        // ===== L0 =====\n        glance := View{width: Fill height: Fill flow: Down spacing: 8\n            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n            g_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                    g_day := Label{text: \"\" draw_text.color: muted draw_text.text_style: theme.font_bold{font_size: 12}}\n                    View{width: Fill height: 1}\n                    g_time := Label{text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                }\n                g_title := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                g_place := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n                g_rsvp := Label{text: \"\" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 12}}\n            }\n            g_empty := RoundedView{visible: false width: Fill height: Fit flow: Down spacing: 3\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                Label{width: Fill text: \"Nothing scheduled\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                Label{width: Fill text: \"Every demo event is declined.\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n            }\n            View{width: Fill height: 1}\n            View{width: Fill height: Fit flow: Right spacing: 8\n                open_wrap := View{width: Fit height: Fit Flat{text: \"Open event\" on_click: || do_open(next_id())}}\n                Flat{text: \"Agenda\" on_click: || set_depth(2)}\n            }\n        }\n\n        // ===== L1 =====\n        expanded := View{visible: false width: Fill height: Fill flow: Down spacing: 8\n            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n            x_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                x_day := Label{text: \"\" draw_text.color: muted draw_text.text_style: theme.font_bold{font_size: 12}}\n                x_title := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                x_place := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n                SolidView{width: Fill height: 1 draw_bg.color: line}\n                x_note := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n            }\n            View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                x_rsvp := Label{text: \"\" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 13}}\n                x_next := Flat{text: \"RSVP: Going\" on_click: || cycle_rsvp(sel)}\n            }\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Flat{text: \"Agenda\" on_click: || set_depth(2)}\n            }\n            View{width: Fill height: 1}\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Quiet{text: \"\u2039 Glance\" on_click: || set_depth(0)}\n            }\n        }\n\n        // ===== L2 =====\n        full := View{visible: false width: Fill height: Fill\n            l2 := ScrollYView{width: Fill height: Fill flow: Down spacing: 8\n                padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n\n                l2_list := View{width: Fill height: Fit flow: Down spacing: 6\n                    e1 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            View{width: Fill height: Fit flow: Down spacing: 1\n                                Label{text: \"Thu 8 Oct \u00b7 10:00\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                                Label{text: \"Design review\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            }\n                            e1_u := Label{text: \"No answer\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                            Flat{text: \"Open\" on_click: || do_open(\"e1\")}\n                        }\n                    }\n                    e2 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            View{width: Fill height: Fit flow: Down spacing: 1\n                                Label{text: \"Fri 9 Oct \u00b7 16:30\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                                Label{text: \"Dentist check-up\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            }\n                            e2_u := Label{text: \"No answer\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                            Flat{text: \"Open\" on_click: || do_open(\"e2\")}\n                        }\n                    }\n                    e3 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            View{width: Fill height: Fit flow: Down spacing: 1\n                                Label{text: \"Sat 10 Oct \u00b7 19:00\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                                Label{text: \"Dinner with Priya\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            }\n                            e3_u := Label{text: \"No answer\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                            Flat{text: \"Open\" on_click: || do_open(\"e3\")}\n                        }\n                    }\n                }\n\n                l2_detail := View{visible: false width: Fill height: Fit flow: Down spacing: 6\n                    RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                        draw_bg.color: surface draw_bg.border_radius: 14.0\n                        d_day := Label{text: \"\" draw_text.color: muted draw_text.text_style: theme.font_bold{font_size: 12}}\n                        d_title := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                        d_place := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n                        SolidView{width: Fill height: 1 draw_bg.color: line}\n                        d_note := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n                    }\n                    View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                        d_rsvp := Label{text: \"\" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 13}}\n                        d_next := Flat{text: \"RSVP: Going\" on_click: || cycle_rsvp(sel)}\n                    }\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        Quiet{text: \"\u2039 Agenda\" on_click: || do_back()}\n                    }\n                }\n            }\n        }\n    }\n\n    View{width: Fill height: Fit flow: Down spacing: 4\n        padding: Inset{left: 16 right: 16 top: 6 bottom: 8}\n        SolidView{width: Fill height: 1 draw_bg.color: line}\n        RoundedView{width: Fill height: Fit flow: Right spacing: 4\n            padding: Inset{left: 4 right: 4 top: 4 bottom: 4}\n            draw_bg.color: #xe5e5ea draw_bg.border_radius: 12.0\n            b0 := Seg{text: \"L0\" on_click: || set_depth(0)}\n            b1 := Seg{text: \"L1\" on_click: || set_depth(1)}\n            b2 := Seg{text: \"L2\" on_click: || set_depth(2)}\n        }\n        status := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n    }\n}\n\nfn boot(){\n    say(\"Showing L0 Glance\")\n    sync()\n}\n\nstart_timeout(0.05, || boot())",
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "bg": "#fff2f2f7",
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 1,
+          "id": "10",
+          "kind": "View",
+          "parent": 0,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 98,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 98,
+          "i": 2,
+          "id": "-",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 44,
+          "cw": 352,
+          "cx": 16,
+          "cy": 40,
+          "h": 44,
+          "i": 3,
+          "id": "-",
+          "kind": "View",
+          "parent": 2,
+          "w": 352,
+          "x": 16,
+          "y": 40
+        },
+        {
+          "ch": 37,
+          "cw": 112,
+          "cx": 20,
+          "cy": 44,
+          "fg": "#ff1c1c1e",
+          "h": 37,
+          "i": 4,
+          "id": "-",
+          "kind": "Label",
+          "parent": 3,
+          "text": "Calendar",
+          "w": 112,
+          "x": 20,
+          "y": 44
+        },
+        {
+          "ch": 1,
+          "cw": 144,
+          "cx": 143,
+          "cy": 62,
+          "h": 1,
+          "i": 5,
+          "id": "1",
+          "kind": "View",
+          "parent": 3,
+          "w": 144,
+          "x": 143,
+          "y": 62
+        },
+        {
+          "bg": "#fffff3cd",
+          "ch": 37,
+          "cw": 73,
+          "cx": 295,
+          "cy": 44,
+          "h": 37,
+          "i": 6,
+          "id": "2",
+          "kind": "View",
+          "parent": 3,
+          "w": 73,
+          "x": 295,
+          "y": 44
+        },
+        {
+          "ch": 24,
+          "cw": 50,
+          "cx": 307,
+          "cy": 50,
+          "fg": "#ff8a0b00",
+          "h": 24,
+          "i": 7,
+          "id": "-",
+          "kind": "Label",
+          "parent": 6,
+          "text": "DEMO",
+          "w": 50,
+          "x": 307,
+          "y": 50
+        },
+        {
+          "ch": 26,
+          "cw": 345,
+          "cx": 20,
+          "cy": 90,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 8,
+          "id": "count",
+          "kind": "Label",
+          "parent": 2,
+          "text": "3 events \u00b7 0 answered",
+          "w": 345,
+          "x": 20,
+          "y": 90
+        },
+        {
+          "ch": 546,
+          "cw": 384,
+          "cx": 0,
+          "cy": 127,
+          "h": 546,
+          "i": 9,
+          "id": "1",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 127
+        },
+        {
+          "ch": 546,
+          "cw": 384,
+          "cx": 0,
+          "cy": 127,
+          "h": 546,
+          "i": 27,
+          "id": "expanded",
+          "kind": "View",
+          "parent": 9,
+          "w": 384,
+          "x": 0,
+          "y": 127
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 196,
+          "cw": 352,
+          "cx": 16,
+          "cy": 131,
+          "h": 196,
+          "i": 28,
+          "id": "x_card",
+          "kind": "View",
+          "parent": 27,
+          "w": 352,
+          "x": 16,
+          "y": 131
+        },
+        {
+          "ch": 26,
+          "cw": 186,
+          "cx": 34,
+          "cy": 144,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 29,
+          "id": "x_day",
+          "kind": "Label",
+          "parent": 28,
+          "text": "Thu 8 Oct \u00b7 10:00 - 11:00",
+          "w": 186,
+          "x": 34,
+          "y": 144
+        },
+        {
+          "ch": 30,
+          "cw": 317,
+          "cx": 34,
+          "cy": 180,
+          "fg": "#ff1c1c1e",
+          "h": 30,
+          "i": 30,
+          "id": "x_title",
+          "kind": "Label",
+          "parent": 28,
+          "text": "Design review",
+          "w": 317,
+          "x": 34,
+          "y": 180
+        },
+        {
+          "ch": 27,
+          "cw": 317,
+          "cx": 34,
+          "cy": 221,
+          "fg": "#ff3c3c43",
+          "h": 27,
+          "i": 31,
+          "id": "x_place",
+          "kind": "Label",
+          "parent": 28,
+          "text": "Studio B \u00b7 Work",
+          "w": 317,
+          "x": 34,
+          "y": 221
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 1,
+          "cw": 324,
+          "cx": 30,
+          "cy": 254,
+          "h": 1,
+          "i": 32,
+          "id": "-",
+          "kind": "View",
+          "parent": 28,
+          "w": 324,
+          "x": 30,
+          "y": 254
+        },
+        {
+          "ch": 52,
+          "cw": 317,
+          "cx": 34,
+          "cy": 262,
+          "fg": "#ff3c3c43",
+          "h": 52,
+          "i": 33,
+          "id": "x_note",
+          "kind": "Label",
+          "parent": 28,
+          "text": "Bring the revised invoice mockups. Marcus joins from the office.",
+          "w": 317,
+          "x": 34,
+          "y": 262
+        },
+        {
+          "ch": 50,
+          "cw": 352,
+          "cx": 16,
+          "cy": 335,
+          "h": 50,
+          "i": 34,
+          "id": "-",
+          "kind": "View",
+          "parent": 27,
+          "w": 352,
+          "x": 16,
+          "y": 335
+        },
+        {
+          "ch": 27,
+          "cw": 92,
+          "cx": 20,
+          "cy": 346,
+          "fg": "#ff007aff",
+          "h": 27,
+          "i": 35,
+          "id": "x_rsvp",
+          "kind": "Label",
+          "parent": 34,
+          "text": "No answer",
+          "w": 92,
+          "x": 20,
+          "y": 346
+        },
+        {
+          "ch": 44,
+          "cw": 135,
+          "cx": 123,
+          "cy": 338,
+          "glyphs": 1,
+          "h": 44,
+          "i": 36,
+          "id": "x_next",
+          "kind": "Button",
+          "parent": 34,
+          "tappable": true,
+          "text": "RSVP: Going",
+          "w": 135,
+          "x": 123,
+          "y": 338
+        },
+        {
+          "ch": 50,
+          "cw": 352,
+          "cx": 16,
+          "cy": 393,
+          "h": 50,
+          "i": 37,
+          "id": "1",
+          "kind": "View",
+          "parent": 27,
+          "w": 352,
+          "x": 16,
+          "y": 393
+        },
+        {
+          "ch": 44,
+          "cw": 92,
+          "cx": 16,
+          "cy": 396,
+          "glyphs": 1,
+          "h": 44,
+          "i": 38,
+          "id": "-",
+          "kind": "Button",
+          "parent": 37,
+          "tappable": true,
+          "text": "Agenda",
+          "w": 92,
+          "x": 16,
+          "y": 396
+        },
+        {
+          "ch": 1,
+          "cw": 352,
+          "cx": 16,
+          "cy": 451,
+          "h": 1,
+          "i": 39,
+          "id": "2",
+          "kind": "View",
+          "parent": 27,
+          "w": 352,
+          "x": 16,
+          "y": 451
+        },
+        {
+          "ch": 50,
+          "cw": 352,
+          "cx": 16,
+          "cy": 460,
+          "h": 50,
+          "i": 40,
+          "id": "3",
+          "kind": "View",
+          "parent": 27,
+          "w": 352,
+          "x": 16,
+          "y": 460
+        },
+        {
+          "ch": 44,
+          "cw": 97,
+          "cx": 16,
+          "cy": 463,
+          "glyphs": 1,
+          "h": 44,
+          "i": 41,
+          "id": "-",
+          "kind": "Button",
+          "parent": 40,
+          "tappable": true,
+          "text": "\u2039 Glance",
+          "w": 97,
+          "x": 16,
+          "y": 463
+        },
+        {
+          "ch": 114,
+          "cw": 384,
+          "cx": 0,
+          "cy": 673,
+          "h": 114,
+          "i": 78,
+          "id": "2",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 673
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 1,
+          "cw": 352,
+          "cx": 16,
+          "cy": 679,
+          "h": 1,
+          "i": 79,
+          "id": "-",
+          "kind": "View",
+          "parent": 78,
+          "w": 352,
+          "x": 16,
+          "y": 679
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 58,
+          "cw": 352,
+          "cx": 16,
+          "cy": 684,
+          "h": 58,
+          "i": 80,
+          "id": "1",
+          "kind": "View",
+          "parent": 78,
+          "w": 352,
+          "x": 16,
+          "y": 684
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 20,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 81,
+          "id": "b0",
+          "kind": "Button",
+          "parent": 80,
+          "tappable": true,
+          "text": "L0",
+          "w": 112,
+          "x": 20,
+          "y": 691
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 136,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 82,
+          "id": "b1",
+          "kind": "Button",
+          "parent": 80,
+          "tappable": true,
+          "text": "\u25cf L1",
+          "w": 112,
+          "x": 136,
+          "y": 691
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 252,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 83,
+          "id": "b2",
+          "kind": "Button",
+          "parent": 80,
+          "tappable": true,
+          "text": "L2",
+          "w": 112,
+          "x": 252,
+          "y": 691
+        },
+        {
+          "ch": 26,
+          "cw": 345,
+          "cx": 20,
+          "cy": 749,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 84,
+          "id": "status",
+          "kind": "Label",
+          "parent": 78,
+          "text": "Showing L1 Event",
+          "w": 345,
+          "x": 20,
+          "y": 749
+        }
+      ]
+    },
+    "tree": "W3 32\n0 -1 - Splash 0 28 384 758\n1 0 10 View 0 28 384 758\n2 1 - View 0 28 384 98\n3 2 - View 16 40 352 44\n4 3 - Label 20 44 112 37\n5 3 1 View 143 62 144 1\n6 3 2 View 295 44 73 37\n7 6 - Label 307 50 50 24\n8 2 count Label 20 90 345 26\n9 1 1 View 0 127 384 546\n10 9 expanded View 0 127 384 546\n11 10 x_card View 16 131 352 196\n12 11 x_day Label 34 144 186 26\n13 11 x_title Label 34 180 317 30\n14 11 x_place Label 34 221 317 27\n15 11 - View 30 254 324 1\n16 11 x_note Label 34 262 317 52\n17 10 - View 16 335 352 50\n18 17 x_rsvp Label 20 346 92 27\n19 17 x_next Button 123 338 135 44\n20 10 1 View 16 393 352 50\n21 20 - Button 16 396 92 44\n22 10 2 View 16 451 352 1\n23 10 3 View 16 460 352 50\n24 23 - Button 16 463 97 44\n25 1 2 View 0 673 384 114\n26 25 - View 16 679 352 1\n27 25 1 View 16 684 352 58\n28 27 b0 Button 20 691 112 44\n29 27 b1 Button 136 691 112 44\n30 27 b2 Button 252 691 112 44\n31 25 status Label 20 749 345 26\n",
+    "widgets": [
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "-@0",
+        "text": null,
+        "type": "Splash",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "10",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "10@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          98
+        ],
+        "selected": null,
+        "selector": "-@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          40,
+          352,
+          44
+        ],
+        "selected": null,
+        "selector": "-@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          20,
+          44,
+          112,
+          37
+        ],
+        "selected": null,
+        "selector": "-@3",
+        "text": "Calendar",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          143,
+          62,
+          144,
+          1
+        ],
+        "selected": null,
+        "selector": "1@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          295,
+          44,
+          73,
+          37
+        ],
+        "selected": null,
+        "selector": "2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          307,
+          50,
+          50,
+          24
+        ],
+        "selected": null,
+        "selector": "-@4",
+        "text": "DEMO",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "count",
+        "rect": [
+          20,
+          90,
+          345,
+          26
+        ],
+        "selected": null,
+        "selector": "count@0",
+        "text": "3 events \u00b7 0 answered",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          127,
+          384,
+          546
+        ],
+        "selected": null,
+        "selector": "1@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "glance",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "glance@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_card",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_card@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@5",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_day",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_day@0",
+        "text": "Thu 8 Oct",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@6",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_time",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_time@0",
+        "text": "10:00 - 11:00",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_title",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_title@0",
+        "text": "Design review",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_place",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_place@0",
+        "text": "Studio B \u00b7 Work",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_rsvp",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_rsvp@0",
+        "text": "No answer",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_empty",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_empty@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@7",
+        "text": "Nothing scheduled",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@2",
+        "text": "Every demo event is declined.",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@8",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@3",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "open_wrap",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "open_wrap@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@9",
+        "text": "Open event",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@10",
+        "text": "Agenda",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "expanded",
+        "rect": [
+          0,
+          127,
+          384,
+          546
+        ],
+        "selected": null,
+        "selector": "expanded@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_card",
+        "rect": [
+          16,
+          131,
+          352,
+          196
+        ],
+        "selected": null,
+        "selector": "x_card@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_day",
+        "rect": [
+          34,
+          144,
+          186,
+          26
+        ],
+        "selected": null,
+        "selector": "x_day@0",
+        "text": "Thu 8 Oct \u00b7 10:00 - 11:00",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_title",
+        "rect": [
+          34,
+          180,
+          317,
+          30
+        ],
+        "selected": null,
+        "selector": "x_title@0",
+        "text": "Design review",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_place",
+        "rect": [
+          34,
+          221,
+          317,
+          27
+        ],
+        "selected": null,
+        "selector": "x_place@0",
+        "text": "Studio B \u00b7 Work",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          30,
+          254,
+          324,
+          1
+        ],
+        "selected": null,
+        "selector": "-@11",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_note",
+        "rect": [
+          34,
+          262,
+          317,
+          52
+        ],
+        "selected": null,
+        "selector": "x_note@0",
+        "text": "Bring the revised invoice mockups. Marcus joins from the office.",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          335,
+          352,
+          50
+        ],
+        "selected": null,
+        "selector": "-@12",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_rsvp",
+        "rect": [
+          20,
+          346,
+          92,
+          27
+        ],
+        "selected": null,
+        "selector": "x_rsvp@0",
+        "text": "No answer",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_next",
+        "rect": [
+          123,
+          338,
+          135,
+          44
+        ],
+        "selected": null,
+        "selector": "x_next@0",
+        "text": "RSVP: Going",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          16,
+          393,
+          352,
+          50
+        ],
+        "selected": null,
+        "selector": "1@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          396,
+          92,
+          44
+        ],
+        "selected": null,
+        "selector": "-@13",
+        "text": "Agenda",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          16,
+          451,
+          352,
+          1
+        ],
+        "selected": null,
+        "selector": "2@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "3",
+        "rect": [
+          16,
+          460,
+          352,
+          50
+        ],
+        "selected": null,
+        "selector": "3@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          463,
+          97,
+          44
+        ],
+        "selected": null,
+        "selector": "-@14",
+        "text": "\u2039 Glance",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "full",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "full@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "l2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2_list",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "l2_list@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "e1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "e1@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@15",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@16",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@17",
+        "text": "Thu 8 Oct \u00b7 10:00",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@5",
+        "text": "Design review",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "e1_u",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "e1_u@0",
+        "text": "No answer",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@6",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "e2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "e2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@18",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@19",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@20",
+        "text": "Fri 9 Oct \u00b7 16:30",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@7",
+        "text": "Dentist check-up",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "e2_u",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "e2_u@0",
+        "text": "No answer",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@8",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "e3",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "e3@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@21",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@22",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@23",
+        "text": "Sat 10 Oct \u00b7 19:00",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@9",
+        "text": "Dinner with Priya",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "e3_u",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "e3_u@0",
+        "text": "No answer",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@10",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2_detail",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "l2_detail@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@24",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_day",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "d_day@0",
+        "text": "Thu 8 Oct \u00b7 10:00 - 11:00",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_title",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "d_title@0",
+        "text": "Design review",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_place",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "d_place@0",
+        "text": "Studio B \u00b7 Work",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@25",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_note",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "d_note@0",
+        "text": "Bring the revised invoice mockups. Marcus joins from the office.",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@11",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_rsvp",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "d_rsvp@0",
+        "text": "No answer",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_next",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "d_next@0",
+        "text": "RSVP: Going",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@26",
+        "text": "\u2039 Agenda",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          673,
+          384,
+          114
+        ],
+        "selected": null,
+        "selector": "2@3",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          679,
+          352,
+          1
+        ],
+        "selected": null,
+        "selector": "-@27",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          16,
+          684,
+          352,
+          58
+        ],
+        "selected": null,
+        "selector": "1@12",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b0",
+        "rect": [
+          20,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b0@0",
+        "text": "L0",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b1",
+        "rect": [
+          136,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b1@0",
+        "text": "\u25cf L1",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b2",
+        "rect": [
+          252,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b2@0",
+        "text": "L2",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "status",
+        "rect": [
+          20,
+          749,
+          345,
+          26
+        ],
+        "selected": null,
+        "selector": "status@0",
+        "text": "Showing L1 Event",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      }
+    ]
+  },
+  "width": 1080
+}

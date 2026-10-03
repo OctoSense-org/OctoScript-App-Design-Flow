@@ -1,0 +1,2248 @@
+{
+  "height": 2132,
+  "instance_id": "4c254c25-6b82-4db0-b17d-cb4e4de94739",
+  "path": ".studio-555bc8be-47ca-461a-8025-e9c8ae56c2f8.png",
+  "settled": false,
+  "snapshot": {
+    "checks": {
+      "findings": [],
+      "instrument": "makepad_widget_tree",
+      "pass": true
+    },
+    "geometry": {
+      "widgets": [
+        {
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 0,
+          "id": "-",
+          "kind": "Splash",
+          "parent": -1,
+          "text": "// News card template \u2014 dev.studio.cards.news\n// All stories are SYNTHETIC DEMO DATA in this app's local list. Nothing is\n// fetched, no live feed is read, and no article page is opened: the body shown\n// here is a demo summary written with the record, not a retrieved article.\n//\n// Depths are PRESENTATION depths (UI), not parser levels:\n//   L0  lead story at a glance\n//   L1  expanded story with a reversible Save\n//   L2  feed (All / Saved) -> story detail\n\nlet stories = [\n    {id: \"n1\" title: \"Riverside bridge reopens after inspection\" outlet: \"Harbour Times\"\n        at: \"08:20\" tag: \"Local\" points: 142 comments: 31\n        brief: \"Mill Street bridge reopens today after a six-day structural inspection.\"\n        body: \"The pedestrian bridge on Mill Street reopens today after a six-day structural inspection. Engineers replaced two corroded lower joints. The council says the bridge is back to full capacity and the temporary shuttle has been retired. This is a demo summary, not a fetched article.\"}\n    {id: \"n2\" title: \"Library extends weekend hours\" outlet: \"Harbour Times\"\n        at: \"07:55\" tag: \"Local\" points: 88 comments: 12\n        brief: \"Saturday opening moves to 09:00-19:00 from November.\"\n        body: \"From November the central library will open on Saturdays until 19:00, two hours later than now, funded by two extra weekend posts. Reading room capacity is unchanged at 240. Demo summary, not a fetched article.\"}\n    {id: \"n3\" title: \"Docklands solar trial powers first block\" outlet: \"Field Notes\"\n        at: \"Yesterday\" tag: \"Energy\" points: 264 comments: 57\n        brief: \"A rooftop array on the old warehouse now covers block demand.\"\n        body: \"A rooftop solar array on the old grain warehouse began supplying the surrounding block this week, the first shared scheme in the district. Early figures suggest it covers roughly sixty per cent of daytime demand for the four streets around it. Demo summary, not a fetched article.\"}\n]\n\nlet ground = #xf2f2f7\nlet surface = #xffffff\nlet ink = #x1c1c1e\nlet ink2 = #x3c3c43\nlet muted = #x8e8e93\nlet accent = #x007aff\nlet line = #xe5e5ea\nlet demo_bg = #xfff3cd\nlet demo_ink = #x8a0b00\n\nlet saved = []\nlet status = \"Demo feed.\"\nlet depth = 0\nlet sel = \"n1\"\nlet route = \"list\"\nlet tab = \"all\"\n\n// ---------- state helpers ----------\n\nfn pick(cond, on, off){ if cond { on } else { off } }\n\nfn st_of(id){\n    for s in stories { if s.id == id { return s } }\n    nil\n}\n\nfn is_saved(id){\n    for s in saved { if s == id { return true } }\n    false\n}\n\nfn n_saved(){ saved.len() }\n\nfn lead(){\n    for s in stories { return s }\n    nil\n}\n\nfn say(s){ status = s; ui.status.set_text(s) }\n\nfn depth_name(){\n    if depth == 0 { return \"L0 Glance\" }\n    if depth == 1 { return \"L1 Story\" }\n    if route == \"detail\" { return \"L2 Story\" }\n    return \"L2 Feed\"\n}\n\nfn set_depth(d){\n    depth = d\n    route = \"list\"\n    say(\"\")\n    sync()\n}\n\nfn do_open(id){\n    sel = id\n    route = \"detail\"\n    set_depth(2)\n    route = \"detail\"\n    sync()\n}\n\nfn do_back(){\n    route = \"list\"\n    say(\"\")\n    sync()\n}\n\nfn do_save(id){\n    if is_saved(id) { return }\n    saved.push(id)\n    let s = st_of(id)\n    if s == nil { return }\n    say(\"Saved \" + s.outlet)\n    sync()\n}\n\nfn do_remove(id){\n    if !is_saved(id) { return }\n    saved.retain(|x| x != id)\n    let s = st_of(id)\n    if s == nil { return }\n    say(\"Removed from Saved \u00b7 \" + s.outlet)\n    sync()\n}\n\n// The dynamically labelled button must do what its current label says, so one\n// action serves both directions and stays reversible in L1 and in detail.\nfn do_toggle_saved(id){\n    if is_saved(id) { do_remove(id) } else { do_save(id) }\n}\n\nfn set_tab(t){\n    tab = t\n    say(\"Showing \" + pick(t == \"all\", \"All stories\", \"Saved\"))\n    sync()\n}\n\n// ---------- chrome sync ----------\n\nfn sync(){\n    ui.glance.set_visible(depth == 0)\n    ui.expanded.set_visible(depth == 1)\n    ui.full.set_visible(depth == 2)\n\n    ui.count.set_text(\"\" + stories.len() + \" stories \u00b7 \" + \"\" + n_saved() + \" saved\")\n    ui.status.set_text(status)\n    ui.b0.set_text(pick(depth == 0, \"\u25cf L0\", \"L0\"))\n    ui.b1.set_text(pick(depth == 1, \"\u25cf L1\", \"L1\"))\n    ui.b2.set_text(pick(depth == 2, \"\u25cf L2\", \"L2\"))\n\n    let m = lead()\n    ui.g_outlet.set_text(m.outlet)\n    ui.g_at.set_text(m.at)\n    ui.g_title.set_text(m.title)\n    ui.g_brief.set_text(m.brief)\n    ui.g_meta.set_text(m.tag + \" \u00b7 \" + \"\" + m.points + \" pts\")\n\n    let s = st_of(sel)\n    ui.x_outlet.set_text(s.outlet + \" \u00b7 \" + s.at)\n    ui.x_title.set_text(s.title)\n    ui.x_meta.set_text(s.tag + \" \u00b7 \" + \"\" + s.points + \" pts \u00b7 \" + \"\" + s.comments + \" comments\")\n    ui.x_brief.set_text(s.brief)\n    ui.x_action.set_text(pick(is_saved(s.id), \"Remove from Saved\", \"Save\"))\n\n    ui.rd_outlet.set_text(s.outlet + \" \u00b7 \" + s.at)\n    ui.rd_title.set_text(s.title)\n    ui.rd_meta.set_text(s.tag + \" \u00b7 \" + \"\" + s.points + \" pts \u00b7 \" + \"\" + s.comments + \" comments\")\n    ui.rd_body.set_text(s.body)\n    ui.rd_action.set_text(pick(is_saved(s.id), \"Remove from Saved\", \"Save\"))\n\n    ui.l2_list.set_visible(route == \"list\")\n    ui.l2_detail.set_visible(route == \"detail\")\n\n    ui.r1.set_visible(tab == \"all\")\n    ui.r2.set_visible(tab == \"all\")\n    ui.r3.set_visible(tab == \"all\")\n    ui.r1_s.set_visible(tab == \"saved\" && is_saved(\"n1\"))\n    ui.r2_s.set_visible(tab == \"saved\" && is_saved(\"n2\"))\n    ui.r3_s.set_visible(tab == \"saved\" && is_saved(\"n3\"))\n    ui.saved_empty.set_visible(tab == \"saved\" && n_saved() == 0)\n\n    ui.r1_b.set_text(pick(is_saved(\"n1\"), \"Remove\", \"Save\"))\n    ui.r2_b.set_text(pick(is_saved(\"n2\"), \"Remove\", \"Save\"))\n    ui.r3_b.set_text(pick(is_saved(\"n3\"), \"Remove\", \"Save\"))\n    ui.r1_sb.set_text(pick(is_saved(\"n1\"), \"Remove\", \"Save\"))\n    ui.r2_sb.set_text(pick(is_saved(\"n2\"), \"Remove\", \"Save\"))\n    ui.r3_sb.set_text(pick(is_saved(\"n3\"), \"Remove\", \"Save\"))\n\n    ui.tab_all.set_text(pick(tab == \"all\", \"\u25cf All\", \"All\"))\n    ui.tab_saved.set_text(pick(tab == \"saved\", \"\u25cf Saved\", \"Saved\"))\n}\n\n// ---------- shared button styles ----------\n\nlet Flat = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}\n    draw_text +: {color: accent color_hover: accent color_down: accent text_style +: {font_size: 15}}}\n\nlet Quiet = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}\n    draw_text +: {color: ink2 color_hover: ink2 color_down: ink2 text_style +: {font_size: 15}}}\n\nlet Seg = ButtonFlat{height: 44 width: Fill align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000f color_down: #x0000001a border_size: 0.0}\n    draw_text +: {color: ink color_hover: ink color_down: ink text_style +: {font_size: 14}}}\n\n// ---------- root ----------\n\nSolidView{width: Fill height: Fill flow: Down draw_bg.color: ground\n\n    View{width: Fill height: Fit flow: Down spacing: 2\n        padding: Inset{left: 16 right: 16 top: 12 bottom: 8}\n        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n            Label{text: \"News\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 19}}\n            View{width: Fill height: 1}\n            RoundedView{width: Fit height: Fit\n                padding: Inset{left: 8 right: 8 top: 3 bottom: 3}\n                draw_bg.color: demo_bg draw_bg.border_radius: 6.0\n                Label{text: \"DEMO\" draw_text.color: demo_ink draw_text.text_style: theme.font_bold{font_size: 11}}\n            }\n        }\n        count := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n    }\n\n    View{width: Fill height: Fill flow: Down\n\n        // ===== L0 =====\n        glance := View{width: Fill height: Fill flow: Down spacing: 8\n            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n            g_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                    g_outlet := Label{text: \"\" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 11}}\n                    View{width: Fill height: 1}\n                    g_at := Label{text: \"\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                }\n                g_title := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                g_brief := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n                g_meta := Label{text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n            }\n            View{width: Fill height: 1}\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Flat{text: \"Read\" on_click: || do_open(lead_id())}\n                Flat{text: \"Feed\" on_click: || set_depth(2)}\n            }\n        }\n\n        // ===== L1 =====\n        expanded := View{visible: false width: Fill height: Fill flow: Down spacing: 8\n            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n            x_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                x_outlet := Label{text: \"\" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 11}}\n                x_title := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                x_meta := Label{text: \"\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                SolidView{width: Fill height: 1 draw_bg.color: line}\n                x_brief := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n            }\n            View{width: Fill height: Fit flow: Right spacing: 8\n                x_action := Flat{text: \"Save\" on_click: || do_toggle_saved(sel)}\n                Flat{text: \"Feed\" on_click: || set_depth(2)}\n            }\n            View{width: Fill height: 1}\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Quiet{text: \"\u2039 Glance\" on_click: || set_depth(0)}\n            }\n        }\n\n        // ===== L2 =====\n        full := View{visible: false width: Fill height: Fill\n            l2 := ScrollYView{width: Fill height: Fill flow: Down spacing: 8\n                padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n\n                l2_list := View{width: Fill height: Fit flow: Down spacing: 6\n                    RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 6\n                        padding: Inset{left: 12 right: 12 top: 4 bottom: 4}\n                        draw_bg.color: surface draw_bg.border_radius: 12.0\n                        tab_all := Flat{text: \"All\" on_click: || set_tab(\"all\")}\n                        tab_saved := Flat{text: \"Saved\" on_click: || set_tab(\"saved\")}\n                    }\n                    r1 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Riverside bridge reopens after inspection\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"Harbour Times \u00b7 08:20\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r1_b := Flat{text: \"Save\" on_click: || do_toggle_saved(\"n1\")}\n                            Flat{text: \"Read\" on_click: || do_open(\"n1\")}\n                            }\n                        }\n                    }\n                    r2 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Library extends weekend hours\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"Harbour Times \u00b7 07:55\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r2_b := Flat{text: \"Save\" on_click: || do_toggle_saved(\"n2\")}\n                            Flat{text: \"Read\" on_click: || do_open(\"n2\")}\n                            }\n                        }\n                    }\n                    r3 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Docklands solar trial powers first block\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"Field Notes \u00b7 Yesterday\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r3_b := Flat{text: \"Save\" on_click: || do_toggle_saved(\"n3\")}\n                            Flat{text: \"Read\" on_click: || do_open(\"n3\")}\n                            }\n                        }\n                    }\n                    r1_s := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Riverside bridge reopens after inspection\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"Harbour Times \u00b7 08:20\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r1_sb := Flat{text: \"Remove\" on_click: || do_toggle_saved(\"n1\")}\n                            Flat{text: \"Read\" on_click: || do_open(\"n1\")}\n                            }\n                        }\n                    }\n                    r2_s := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Library extends weekend hours\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"Harbour Times \u00b7 07:55\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r2_sb := Flat{text: \"Remove\" on_click: || do_toggle_saved(\"n2\")}\n                            Flat{text: \"Read\" on_click: || do_open(\"n2\")}\n                            }\n                        }\n                    }\n                    r3_s := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Docklands solar trial powers first block\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"Field Notes \u00b7 Yesterday\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r3_sb := Flat{text: \"Remove\" on_click: || do_toggle_saved(\"n3\")}\n                            Flat{text: \"Read\" on_click: || do_open(\"n3\")}\n                            }\n                        }\n                    }\n                    saved_empty := RoundedView{visible: false width: Fill height: Fit flow: Down spacing: 3\n                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                        draw_bg.color: surface draw_bg.border_radius: 14.0\n                        Label{width: Fill text: \"Nothing saved\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 14}}\n                        Label{width: Fill text: \"Save a story from All to read it here.\" draw_text.color: ink2 draw_text.text_style.font_size: 12}\n                    }\n                }\n\n                l2_detail := View{visible: false width: Fill height: Fit flow: Down spacing: 6\n                    RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                        draw_bg.color: surface draw_bg.border_radius: 14.0\n                        rd_outlet := Label{text: \"\" draw_text.color: accent draw_text.text_style: theme.font_bold{font_size: 11}}\n                        rd_title := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                        rd_meta := Label{text: \"\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                        SolidView{width: Fill height: 1 draw_bg.color: line}\n                        rd_body := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n                    }\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        rd_action := Flat{text: \"Save\" on_click: || do_toggle_saved(sel)}\n                        Quiet{text: \"\u2039 Feed\" on_click: || do_back()}\n                    }\n                }\n            }\n        }\n    }\n\n    View{width: Fill height: Fit flow: Down spacing: 4\n        padding: Inset{left: 16 right: 16 top: 6 bottom: 8}\n        SolidView{width: Fill height: 1 draw_bg.color: line}\n        RoundedView{width: Fill height: Fit flow: Right spacing: 4\n            padding: Inset{left: 4 right: 4 top: 4 bottom: 4}\n            draw_bg.color: #xe5e5ea draw_bg.border_radius: 12.0\n            b0 := Seg{text: \"L0\" on_click: || set_depth(0)}\n            b1 := Seg{text: \"L1\" on_click: || set_depth(1)}\n            b2 := Seg{text: \"L2\" on_click: || set_depth(2)}\n        }\n        status := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n    }\n}\n\nfn lead_id(){\n    let m = lead()\n    if m == nil { return \"\" }\n    m.id\n}\n\nfn boot(){\n    say(\"Demo feed\")\n    sync()\n}\n\nstart_timeout(0.05, || boot())",
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "bg": "#fff2f2f7",
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 1,
+          "id": "f",
+          "kind": "View",
+          "parent": 0,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 98,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 98,
+          "i": 2,
+          "id": "-",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 44,
+          "cw": 352,
+          "cx": 16,
+          "cy": 40,
+          "h": 44,
+          "i": 3,
+          "id": "-",
+          "kind": "View",
+          "parent": 2,
+          "w": 352,
+          "x": 16,
+          "y": 40
+        },
+        {
+          "ch": 37,
+          "cw": 72,
+          "cx": 20,
+          "cy": 44,
+          "fg": "#ff1c1c1e",
+          "h": 37,
+          "i": 4,
+          "id": "-",
+          "kind": "Label",
+          "parent": 3,
+          "text": "News",
+          "w": 72,
+          "x": 20,
+          "y": 44
+        },
+        {
+          "ch": 1,
+          "cw": 184,
+          "cx": 103,
+          "cy": 62,
+          "h": 1,
+          "i": 5,
+          "id": "1",
+          "kind": "View",
+          "parent": 3,
+          "w": 184,
+          "x": 103,
+          "y": 62
+        },
+        {
+          "bg": "#fffff3cd",
+          "ch": 37,
+          "cw": 73,
+          "cx": 295,
+          "cy": 44,
+          "h": 37,
+          "i": 6,
+          "id": "2",
+          "kind": "View",
+          "parent": 3,
+          "w": 73,
+          "x": 295,
+          "y": 44
+        },
+        {
+          "ch": 24,
+          "cw": 50,
+          "cx": 307,
+          "cy": 50,
+          "fg": "#ff8a0b00",
+          "h": 24,
+          "i": 7,
+          "id": "-",
+          "kind": "Label",
+          "parent": 6,
+          "text": "DEMO",
+          "w": 50,
+          "x": 307,
+          "y": 50
+        },
+        {
+          "ch": 26,
+          "cw": 345,
+          "cx": 20,
+          "cy": 90,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 8,
+          "id": "count",
+          "kind": "Label",
+          "parent": 2,
+          "text": "3 stories \u00b7 0 saved",
+          "w": 345,
+          "x": 20,
+          "y": 90
+        },
+        {
+          "ch": 546,
+          "cw": 384,
+          "cx": 0,
+          "cy": 127,
+          "h": 546,
+          "i": 9,
+          "id": "1",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 127
+        },
+        {
+          "ch": 546,
+          "cw": 384,
+          "cx": 0,
+          "cy": 127,
+          "h": 546,
+          "i": 23,
+          "id": "expanded",
+          "kind": "View",
+          "parent": 9,
+          "w": 384,
+          "x": 0,
+          "y": 127
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 220,
+          "cw": 352,
+          "cx": 16,
+          "cy": 131,
+          "h": 220,
+          "i": 24,
+          "id": "x_card",
+          "kind": "View",
+          "parent": 23,
+          "w": 352,
+          "x": 16,
+          "y": 131
+        },
+        {
+          "ch": 24,
+          "cw": 156,
+          "cx": 34,
+          "cy": 144,
+          "fg": "#ff007aff",
+          "h": 24,
+          "i": 25,
+          "id": "x_outlet",
+          "kind": "Label",
+          "parent": 24,
+          "text": "Harbour Times \u00b7 08:20",
+          "w": 156,
+          "x": 34,
+          "y": 144
+        },
+        {
+          "ch": 59,
+          "cw": 317,
+          "cx": 34,
+          "cy": 179,
+          "fg": "#ff1c1c1e",
+          "h": 59,
+          "i": 26,
+          "id": "x_title",
+          "kind": "Label",
+          "parent": 24,
+          "text": "Riverside bridge reopens after inspection",
+          "w": 317,
+          "x": 34,
+          "y": 179
+        },
+        {
+          "ch": 24,
+          "cw": 203,
+          "cx": 34,
+          "cy": 247,
+          "fg": "#ff8e8e93",
+          "h": 24,
+          "i": 27,
+          "id": "x_meta",
+          "kind": "Label",
+          "parent": 24,
+          "text": "Local \u00b7 142 pts \u00b7 31 comments",
+          "w": 203,
+          "x": 34,
+          "y": 247
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 1,
+          "cw": 324,
+          "cx": 30,
+          "cy": 278,
+          "h": 1,
+          "i": 28,
+          "id": "-",
+          "kind": "View",
+          "parent": 24,
+          "w": 324,
+          "x": 30,
+          "y": 278
+        },
+        {
+          "ch": 52,
+          "cw": 317,
+          "cx": 34,
+          "cy": 285,
+          "fg": "#ff3c3c43",
+          "h": 52,
+          "i": 29,
+          "id": "x_brief",
+          "kind": "Label",
+          "parent": 24,
+          "text": "Mill Street bridge reopens today after a six-day structural inspection.",
+          "w": 317,
+          "x": 34,
+          "y": 285
+        },
+        {
+          "ch": 50,
+          "cw": 352,
+          "cx": 16,
+          "cy": 359,
+          "h": 50,
+          "i": 30,
+          "id": "-",
+          "kind": "View",
+          "parent": 23,
+          "w": 352,
+          "x": 16,
+          "y": 359
+        },
+        {
+          "ch": 44,
+          "cw": 66,
+          "cx": 16,
+          "cy": 362,
+          "glyphs": 1,
+          "h": 44,
+          "i": 31,
+          "id": "x_action",
+          "kind": "Button",
+          "parent": 30,
+          "tappable": true,
+          "text": "Save",
+          "w": 66,
+          "x": 16,
+          "y": 362
+        },
+        {
+          "ch": 44,
+          "cw": 68,
+          "cx": 90,
+          "cy": 362,
+          "glyphs": 1,
+          "h": 44,
+          "i": 32,
+          "id": "-",
+          "kind": "Button",
+          "parent": 30,
+          "tappable": true,
+          "text": "Feed",
+          "w": 68,
+          "x": 90,
+          "y": 362
+        },
+        {
+          "ch": 1,
+          "cw": 352,
+          "cx": 16,
+          "cy": 417,
+          "h": 1,
+          "i": 33,
+          "id": "1",
+          "kind": "View",
+          "parent": 23,
+          "w": 352,
+          "x": 16,
+          "y": 417
+        },
+        {
+          "ch": 50,
+          "cw": 352,
+          "cx": 16,
+          "cy": 426,
+          "h": 50,
+          "i": 34,
+          "id": "2",
+          "kind": "View",
+          "parent": 23,
+          "w": 352,
+          "x": 16,
+          "y": 426
+        },
+        {
+          "ch": 44,
+          "cw": 97,
+          "cx": 16,
+          "cy": 429,
+          "glyphs": 1,
+          "h": 44,
+          "i": 35,
+          "id": "-",
+          "kind": "Button",
+          "parent": 34,
+          "tappable": true,
+          "text": "\u2039 Glance",
+          "w": 97,
+          "x": 16,
+          "y": 429
+        },
+        {
+          "ch": 114,
+          "cw": 384,
+          "cx": 0,
+          "cy": 673,
+          "h": 114,
+          "i": 97,
+          "id": "2",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 673
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 1,
+          "cw": 352,
+          "cx": 16,
+          "cy": 679,
+          "h": 1,
+          "i": 98,
+          "id": "-",
+          "kind": "View",
+          "parent": 97,
+          "w": 352,
+          "x": 16,
+          "y": 679
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 58,
+          "cw": 352,
+          "cx": 16,
+          "cy": 684,
+          "h": 58,
+          "i": 99,
+          "id": "1",
+          "kind": "View",
+          "parent": 97,
+          "w": 352,
+          "x": 16,
+          "y": 684
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 20,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 100,
+          "id": "b0",
+          "kind": "Button",
+          "parent": 99,
+          "tappable": true,
+          "text": "L0",
+          "w": 112,
+          "x": 20,
+          "y": 691
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 136,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 101,
+          "id": "b1",
+          "kind": "Button",
+          "parent": 99,
+          "tappable": true,
+          "text": "\u25cf L1",
+          "w": 112,
+          "x": 136,
+          "y": 691
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 252,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 102,
+          "id": "b2",
+          "kind": "Button",
+          "parent": 99,
+          "tappable": true,
+          "text": "L2",
+          "w": 112,
+          "x": 252,
+          "y": 691
+        },
+        {
+          "ch": 26,
+          "cw": 345,
+          "cx": 20,
+          "cy": 749,
+          "h": 26,
+          "i": 103,
+          "id": "status",
+          "kind": "Label",
+          "parent": 97,
+          "w": 345,
+          "x": 20,
+          "y": 749
+        }
+      ]
+    },
+    "tree": "W3 30\n0 -1 - Splash 0 28 384 758\n1 0 f View 0 28 384 758\n2 1 - View 0 28 384 98\n3 2 - View 16 40 352 44\n4 3 - Label 20 44 72 37\n5 3 1 View 103 62 184 1\n6 3 2 View 295 44 73 37\n7 6 - Label 307 50 50 24\n8 2 count Label 20 90 345 26\n9 1 1 View 0 127 384 546\n10 9 expanded View 0 127 384 546\n11 10 x_card View 16 131 352 220\n12 11 x_outlet Label 34 144 156 24\n13 11 x_title Label 34 179 317 59\n14 11 x_meta Label 34 247 203 24\n15 11 - View 30 278 324 1\n16 11 x_brief Label 34 285 317 52\n17 10 - View 16 359 352 50\n18 17 x_action Button 16 362 66 44\n19 17 - Button 90 362 68 44\n20 10 1 View 16 417 352 1\n21 10 2 View 16 426 352 50\n22 21 - Button 16 429 97 44\n23 1 2 View 0 673 384 114\n24 23 - View 16 679 352 1\n25 23 1 View 16 684 352 58\n26 25 b0 Button 20 691 112 44\n27 25 b1 Button 136 691 112 44\n28 25 b2 Button 252 691 112 44\n29 23 status Label 20 749 345 26\n",
+    "widgets": [
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "-@0",
+        "text": null,
+        "type": "Splash",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "f",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "f@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          98
+        ],
+        "selected": null,
+        "selector": "-@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          40,
+          352,
+          44
+        ],
+        "selected": null,
+        "selector": "-@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          20,
+          44,
+          72,
+          37
+        ],
+        "selected": null,
+        "selector": "-@3",
+        "text": "News",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          103,
+          62,
+          184,
+          1
+        ],
+        "selected": null,
+        "selector": "1@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          295,
+          44,
+          73,
+          37
+        ],
+        "selected": null,
+        "selector": "2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          307,
+          50,
+          50,
+          24
+        ],
+        "selected": null,
+        "selector": "-@4",
+        "text": "DEMO",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "count",
+        "rect": [
+          20,
+          90,
+          345,
+          26
+        ],
+        "selected": null,
+        "selector": "count@0",
+        "text": "3 stories \u00b7 0 saved",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          127,
+          384,
+          546
+        ],
+        "selected": null,
+        "selector": "1@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "glance",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "glance@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_card",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_card@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@5",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_outlet",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_outlet@0",
+        "text": "Harbour Times",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@6",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_at",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_at@0",
+        "text": "08:20",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_title",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_title@0",
+        "text": "Riverside bridge reopens after inspection",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_brief",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_brief@0",
+        "text": "Mill Street bridge reopens today after a six-day structural inspection.",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_meta",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_meta@0",
+        "text": "Local \u00b7 142 pts",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@7",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@8",
+        "text": "Read",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@3",
+        "text": "Feed",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "expanded",
+        "rect": [
+          0,
+          127,
+          384,
+          546
+        ],
+        "selected": null,
+        "selector": "expanded@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_card",
+        "rect": [
+          16,
+          131,
+          352,
+          220
+        ],
+        "selected": null,
+        "selector": "x_card@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_outlet",
+        "rect": [
+          34,
+          144,
+          156,
+          24
+        ],
+        "selected": null,
+        "selector": "x_outlet@0",
+        "text": "Harbour Times \u00b7 08:20",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_title",
+        "rect": [
+          34,
+          179,
+          317,
+          59
+        ],
+        "selected": null,
+        "selector": "x_title@0",
+        "text": "Riverside bridge reopens after inspection",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_meta",
+        "rect": [
+          34,
+          247,
+          203,
+          24
+        ],
+        "selected": null,
+        "selector": "x_meta@0",
+        "text": "Local \u00b7 142 pts \u00b7 31 comments",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          30,
+          278,
+          324,
+          1
+        ],
+        "selected": null,
+        "selector": "-@9",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_brief",
+        "rect": [
+          34,
+          285,
+          317,
+          52
+        ],
+        "selected": null,
+        "selector": "x_brief@0",
+        "text": "Mill Street bridge reopens today after a six-day structural inspection.",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          359,
+          352,
+          50
+        ],
+        "selected": null,
+        "selector": "-@10",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_action",
+        "rect": [
+          16,
+          362,
+          66,
+          44
+        ],
+        "selected": null,
+        "selector": "x_action@0",
+        "text": "Save",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          90,
+          362,
+          68,
+          44
+        ],
+        "selected": null,
+        "selector": "-@11",
+        "text": "Feed",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          16,
+          417,
+          352,
+          1
+        ],
+        "selected": null,
+        "selector": "1@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          16,
+          426,
+          352,
+          50
+        ],
+        "selected": null,
+        "selector": "2@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          429,
+          97,
+          44
+        ],
+        "selected": null,
+        "selector": "-@12",
+        "text": "\u2039 Glance",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "full",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "full@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "l2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2_list",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "l2_list@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@13",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "tab_all",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "tab_all@0",
+        "text": "\u25cf All",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "tab_saved",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "tab_saved@0",
+        "text": "Saved",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@14",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@15",
+        "text": "Riverside bridge reopens after inspection",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@5",
+        "text": "Harbour Times \u00b7 08:20",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1_b",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1_b@0",
+        "text": "Save",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@16",
+        "text": "Read",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@17",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@18",
+        "text": "Library extends weekend hours",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@6",
+        "text": "Harbour Times \u00b7 07:55",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@3",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2_b",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2_b@0",
+        "text": "Save",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@19",
+        "text": "Read",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@20",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@21",
+        "text": "Docklands solar trial powers first block",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@7",
+        "text": "Field Notes \u00b7 Yesterday",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3_b",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3_b@0",
+        "text": "Save",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@22",
+        "text": "Read",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1_s",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1_s@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@23",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@24",
+        "text": "Riverside bridge reopens after inspection",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@8",
+        "text": "Harbour Times \u00b7 08:20",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@5",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1_sb",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1_sb@0",
+        "text": "Save",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@25",
+        "text": "Read",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2_s",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2_s@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@26",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@27",
+        "text": "Library extends weekend hours",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@9",
+        "text": "Harbour Times \u00b7 07:55",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@6",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2_sb",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2_sb@0",
+        "text": "Save",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@28",
+        "text": "Read",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3_s",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3_s@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@29",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@30",
+        "text": "Docklands solar trial powers first block",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@10",
+        "text": "Field Notes \u00b7 Yesterday",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@7",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3_sb",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3_sb@0",
+        "text": "Save",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@31",
+        "text": "Read",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "saved_empty",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "saved_empty@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@32",
+        "text": "Nothing saved",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@11",
+        "text": "Save a story from All to read it here.",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2_detail",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "l2_detail@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@33",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_outlet",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "rd_outlet@0",
+        "text": "Harbour Times \u00b7 08:20",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_title",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "rd_title@0",
+        "text": "Riverside bridge reopens after inspection",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_meta",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "rd_meta@0",
+        "text": "Local \u00b7 142 pts \u00b7 31 comments",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@34",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_body",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "rd_body@0",
+        "text": "The pedestrian bridge on Mill Street reopens today after a six-day structural inspection. Engineers replaced two corroded lower joints. The council says the bridge is back to full capacity and the temporary shuttle has been retired. This is a demo summary, not a fetched article.",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@12",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_action",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "rd_action@0",
+        "text": "Save",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@35",
+        "text": "\u2039 Feed",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          673,
+          384,
+          114
+        ],
+        "selected": null,
+        "selector": "2@8",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          679,
+          352,
+          1
+        ],
+        "selected": null,
+        "selector": "-@36",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          16,
+          684,
+          352,
+          58
+        ],
+        "selected": null,
+        "selector": "1@13",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b0",
+        "rect": [
+          20,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b0@0",
+        "text": "L0",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b1",
+        "rect": [
+          136,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b1@0",
+        "text": "\u25cf L1",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b2",
+        "rect": [
+          252,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b2@0",
+        "text": "L2",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "status",
+        "rect": [
+          20,
+          749,
+          345,
+          26
+        ],
+        "selected": null,
+        "selector": "status@0",
+        "text": " ",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      }
+    ]
+  },
+  "width": 1080
+}

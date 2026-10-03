@@ -1,0 +1,35 @@
+{
+  "status": "source_replayed_native_and_visual_review_pending",
+  "model": "deepseek",
+  "model_identity_scope": "operator attribution, not provider attestation",
+  "phase": "six-family continuation; not an equal-budget benchmark",
+  "base_case": "collection",
+  "base_receipt_sha256": "01e58ad2f8a62f5eaf925279fd668c5586a22306ab49dd080e5534ed1ad2815e",
+  "base_mutations_sha256": "28b0e067519b69f134a623c8e68d89364a3c70901e0ae07cfaf74967898e3a42",
+  "source_receipt_sha256": "c42c924f1f788d9cb8b4588c16d8479ee1fd4acb588f8b4f88630016869928eb",
+  "files": 25,
+  "source_modified_on_import": false,
+  "new_turns": [
+    {
+      "turn": "deepseek-11-collection-completion",
+      "transcript_sha256": "cd976ad1d1df7b43f6d39519c4d0e805c8b9ee111bc8bb6a52244febfe22ec57",
+      "tool_calls": 72,
+      "successful_tool_calls": 67,
+      "failed_tool_calls": 5,
+      "elapsed_seconds": 383.339,
+      "assistant_finals": 1,
+      "turn_errors": 0
+    },
+    {
+      "turn": "deepseek-12-density-and-provenance",
+      "transcript_sha256": "89ff4615ff2e3d46a020cc8d36a433ccb5e01f5a1678796a611879e8334e1042",
+      "tool_calls": 64,
+      "successful_tool_calls": 64,
+      "failed_tool_calls": 0,
+      "elapsed_seconds": 263.967,
+      "assistant_finals": 1,
+      "turn_errors": 0
+    }
+  ],
+  "timing_scope": "operator polling interval; not inference latency; null means unrecorded"
+}

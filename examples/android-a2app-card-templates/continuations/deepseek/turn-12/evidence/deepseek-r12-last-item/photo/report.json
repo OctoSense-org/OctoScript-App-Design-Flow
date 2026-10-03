@@ -1,0 +1,337 @@
+{
+  "family": "photo",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "Harbor sunset"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor sunset",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-app",
+      "input": {
+        "label": "full-app",
+        "action": "tap",
+        "target": "d_ap"
+      },
+      "target_rect": [
+        180,
+        107,
+        89,
+        44
+      ],
+      "target_selector": "d_ap@0",
+      "png": "01-full-app.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "last-row-scroll",
+      "input": {
+        "label": "last-row-scroll",
+        "action": "scroll",
+        "target": "stage",
+        "delta_y": 300,
+        "contains": [
+          "Trail ridge, mist"
+        ]
+      },
+      "target_rect": [
+        12,
+        139,
+        360,
+        577
+      ],
+      "target_selector": "stage@0",
+      "png": "02-last-row-scroll.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Trail ridge, mist",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "last-detail-top",
+      "input": {
+        "label": "last-detail-top",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": -1,
+        "contains": [
+          "Trail ridge, mist",
+          "North Ridge",
+          "21 Apr"
+        ],
+        "excludes": [
+          "Harbor sunset"
+        ]
+      },
+      "target_rect": [
+        122,
+        643,
+        108,
+        44
+      ],
+      "target_selector": "1@9",
+      "png": "03-last-detail-top.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Trail ridge, mist",
+          "pass": true
+        },
+        {
+          "contains": "North Ridge",
+          "pass": true
+        },
+        {
+          "contains": "21 Apr",
+          "pass": true
+        },
+        {
+          "excludes": "Harbor sunset",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-last",
+      "input": {
+        "label": "save-last",
+        "action": "tap",
+        "target": "Favorite",
+        "occurrence": -1,
+        "contains": [
+          "Favorited \u2713"
+        ]
+      },
+      "target_rect": [
+        26,
+        406,
+        80,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "04-save-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Favorited \u2713",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back-to-list",
+      "input": {
+        "label": "back-to-list",
+        "action": "tap",
+        "target": "\u2039 Back"
+      },
+      "target_rect": [
+        142,
+        406,
+        64,
+        44
+      ],
+      "target_selector": "1@5",
+      "png": "05-back-to-list.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "saved-only-last",
+      "input": {
+        "label": "saved-only-last",
+        "action": "tap",
+        "target": "Favorites",
+        "occurrence": 0,
+        "contains": [
+          "Trail ridge, mist"
+        ],
+        "excludes": [
+          "Harbor sunset"
+        ]
+      },
+      "target_rect": [
+        150,
+        156,
+        126,
+        44
+      ],
+      "target_selector": "1@2",
+      "png": "06-saved-only-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Trail ridge, mist",
+          "pass": true
+        },
+        {
+          "excludes": "Harbor sunset",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-last",
+      "input": {
+        "label": "remove-last",
+        "action": "tap",
+        "target": "Favorited \u2713",
+        "contains": [
+          "Nothing saved yet"
+        ]
+      },
+      "target_rect": [
+        38,
+        357,
+        104,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "07-remove-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Nothing saved yet",
+          "pass": false
+        }
+      ],
+      "behavior_pass": false,
+      "pass": false
+    },
+    {
+      "label": "first-still-independent",
+      "input": {
+        "label": "first-still-independent",
+        "action": "tap",
+        "target": "d_gl",
+        "contains": [
+          "Harbor sunset",
+          "Favorite"
+        ],
+        "no_enabled_button_text": [
+          "Favorited \u2713"
+        ]
+      },
+      "target_rect": [
+        12,
+        84,
+        69,
+        44
+      ],
+      "target_selector": "d_gl@0",
+      "png": "08-first-still-independent.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor sunset",
+          "pass": true
+        },
+        {
+          "contains": "Favorite",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Favorited \u2713",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.photo",
+    "capabilities": [],
+    "digest": "a3c9d4301df224f43bb64b02f0520e2f323663522b1174d1a95cbca8c0110b98",
+    "name": "Photo Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

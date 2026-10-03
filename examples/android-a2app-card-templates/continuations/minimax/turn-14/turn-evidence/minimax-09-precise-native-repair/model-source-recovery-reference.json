@@ -1,0 +1,10 @@
+{
+  "kind": "unchanged prior model source supplied as recovery reference",
+  "model": "minimax",
+  "source_snapshot": "minimax-round8-diagnostic-01",
+  "source_path": "card-templates/news/bundle/main.splash",
+  "reference_path": "card-template-review/your-news-full-turn8.splash",
+  "sha256": "b0a733e9c9d9770ea67bb9cb8e41f822ea3ace4353d135241dc5f67d59043311",
+  "bytes": 19065,
+  "operator_app_source_edited": false
+}

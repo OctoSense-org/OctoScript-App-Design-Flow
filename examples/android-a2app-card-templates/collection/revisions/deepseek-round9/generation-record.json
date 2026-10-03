@@ -1,0 +1,103 @@
+{
+  "status": "intermediate_round9_reviewed_prototypes_pending_model_navigation_repair",
+  "model": "DeepSeek V4 Flash (operator attribution; no provider profiles included)",
+  "source_receipt_sha256": "22f61440cb6c9d93746f8dc93fe5a2a4cb34e5983e32fecc8eb178d25294dfa5",
+  "files": 25,
+  "source_modified_on_import": false,
+  "turns": [
+    {
+      "turn": "01-mail-design",
+      "transcript_sha256": "b8b5ab704c528d1cc2f9a9880dced0dd73a3ac7840550406b5ddff0095bf3af4",
+      "tool_calls": 20,
+      "successful_tool_calls": 19,
+      "failed_tool_calls": 1,
+      "elapsed_seconds": null,
+      "assistant_finals": 1,
+      "turn_errors": 0
+    },
+    {
+      "turn": "02-mail-review",
+      "transcript_sha256": "34dea3faaa03ad4d4ccc2dd17629f20c6546d52d51f4746bf2b82ee78be65523",
+      "tool_calls": 25,
+      "successful_tool_calls": 25,
+      "failed_tool_calls": 0,
+      "elapsed_seconds": null,
+      "assistant_finals": 1,
+      "turn_errors": 0
+    },
+    {
+      "turn": "03-mail-revision",
+      "transcript_sha256": "0eb086e1ecd3255cbcb15e73de0c1a431f26213287769d3b2b7de32d5e389739",
+      "tool_calls": 29,
+      "successful_tool_calls": 29,
+      "failed_tool_calls": 0,
+      "elapsed_seconds": null,
+      "assistant_finals": 1,
+      "turn_errors": 0
+    },
+    {
+      "turn": "deepseek-04-mail-calendar",
+      "transcript_sha256": "fde54cb80231957f3e2b6ded124d54c8433da6c96247db8180e0ffe6dd0c310d",
+      "tool_calls": 45,
+      "successful_tool_calls": 43,
+      "failed_tool_calls": 2,
+      "elapsed_seconds": 251.45,
+      "assistant_finals": 1,
+      "turn_errors": 0
+    },
+    {
+      "turn": "deepseek-05-news-finance",
+      "transcript_sha256": "55fd8cc60089d48a8ea4deb4576fc79fd3868b894aea77ef9565491539e93de5",
+      "tool_calls": 45,
+      "successful_tool_calls": 42,
+      "failed_tool_calls": 3,
+      "elapsed_seconds": 251.028,
+      "assistant_finals": 1,
+      "turn_errors": 0
+    },
+    {
+      "turn": "deepseek-06-photo-youtube",
+      "transcript_sha256": "0e146de2b09b6a933337a4c2e088b7359bbf5926770c54836d204d5f5b7ca880",
+      "tool_calls": 60,
+      "successful_tool_calls": 55,
+      "failed_tool_calls": 5,
+      "elapsed_seconds": 279.456,
+      "assistant_finals": 1,
+      "turn_errors": 0
+    },
+    {
+      "turn": "deepseek-07-final-polish",
+      "transcript_sha256": "e9992c2215fb3204c1f416dc2512c06b947c0d83f021d4ad6efa61f227a5207b",
+      "tool_calls": 61,
+      "successful_tool_calls": 60,
+      "failed_tool_calls": 1,
+      "elapsed_seconds": 251.523,
+      "assistant_finals": 1,
+      "turn_errors": 0
+    },
+    {
+      "turn": "deepseek-08-final-metadata",
+      "transcript_sha256": "86465fb769b0e56fcd3480d20a1d61d11c849b412e1ca4a8758e7795336920b6",
+      "tool_calls": 33,
+      "successful_tool_calls": 33,
+      "failed_tool_calls": 0,
+      "elapsed_seconds": 131.373,
+      "assistant_finals": 1,
+      "turn_errors": 0
+    },
+    {
+      "turn": "deepseek-09-reference-audit",
+      "transcript_sha256": "415c4863b3eb3063e6ca55375eba3b98d05e45b2007dedb0d834a8299bc3e65a",
+      "tool_calls": 13,
+      "successful_tool_calls": 13,
+      "failed_tool_calls": 0,
+      "elapsed_seconds": 60.838,
+      "assistant_finals": 1,
+      "turn_errors": 0
+    }
+  ],
+  "timing_scope": "operator polling loop, not provider inference latency; null means not recorded",
+  "language_vs_depth": "L0/L1/L2 mean presentation depth; .card retains actual language L0",
+  "reference_index": "../../../reference-index.json",
+  "known_blocker": "After scrolling to the last calendar row and opening detail, the shared scroll offset hides title/date above the viewport; detail navigation needs model correction and fresh tests."
+}

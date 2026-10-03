@@ -1,0 +1,2199 @@
+{
+  "height": 2132,
+  "instance_id": "5d58bd5f-d99a-4d97-90ad-98bb677bdc9a",
+  "path": ".studio-60b7e527-8a52-4b53-ad8d-9687a97452f5.png",
+  "settled": false,
+  "snapshot": {
+    "checks": {
+      "findings": [],
+      "instrument": "makepad_widget_tree",
+      "pass": true
+    },
+    "geometry": {
+      "widgets": [
+        {
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 0,
+          "id": "-",
+          "kind": "Splash",
+          "parent": -1,
+          "text": "// Video card template \u2014 dev.studio.cards.youtube\n// All records are SYNTHETIC DEMO DATA in this app's local list. This offline\n// Studio loads no thumbnails and opens no player url, so nothing is previewed\n// or played here: each row states that plainly and no control pretends to play.\n//\n// Depths are PRESENTATION depths (UI), not parser levels:\n//   L0  lead video at a glance\n//   L1  expanded record with a reversible Watch later\n//   L2  list (All / Watch later) -> record detail\n\nlet vids = [\n    {id: \"v1\" title: \"Slow harbour morning, timelapse\" channel: \"Riverside Field Notes\"\n        length: \"08:24\" ago: \"2 days ago\" views: \"41.2K\"\n        note: \"A demo record written to exercise this card. Nothing is streamed or played here.\"}\n    {id: \"v2\" title: \"Restoring a harbour crane, part 2\" channel: \"Docklands Workshop\"\n        length: \"21:07\" ago: \"5 days ago\" views: \"128K\"\n        note: \"A demo record written to exercise this card. No player is opened from this build.\"}\n    {id: \"v3\" title: \"Weeknight cycling: four rivers route\" channel: \"Alex Outdoors\"\n        length: \"14:51\" ago: \"1 week ago\" views: \"17.9K\"\n        note: \"A demo record written to exercise this card. Video is not loaded offline.\"}\n]\n\nlet ground = #xf2f2f7\nlet surface = #xffffff\nlet ink = #x1c1c1e\nlet ink2 = #x3c3c43\nlet muted = #x8e8e93\nlet accent = #x007aff\nlet line = #xe5e5ea\nlet demo_bg = #xfff3cd\nlet demo_ink = #x8a0b00\n\nlet later = []\nlet status = \"Demo queue.\"\nlet depth = 0\nlet sel = \"v1\"\nlet route = \"list\"\nlet tab = \"all\"\n\n// ---------- state helpers ----------\n\nfn pick(cond, on, off){ if cond { on } else { off } }\n\nfn vd_of(id){\n    for v in vids { if v.id == id { return v } }\n    nil\n}\n\nfn is_later(id){\n    for l in later { if l == id { return true } }\n    false\n}\n\nfn n_later(){ later.len() }\n\nfn lead(){\n    for v in vids { return v }\n    nil\n}\n\n// L0 always shows the first record, so its action must target that record\n// rather than whatever a previous route left selected.\nfn lead_id(){\n    let m = lead()\n    if m == nil { return \"\" }\n    m.id\n}\n\nfn say(s){ status = s; ui.status.set_text(s) }\n\nfn depth_name(){\n    if depth == 0 { return \"L0 Glance\" }\n    if depth == 1 { return \"L1 Video\" }\n    if route == \"detail\" { return \"L2 Video\" }\n    return \"L2 List\"\n}\n\nfn set_depth(d){\n    depth = d\n    route = \"list\"\n    say(\"Showing \" + depth_name())\n    sync()\n}\n\nfn do_open(id){\n    sel = id\n    route = \"detail\"\n    set_depth(2)\n    route = \"detail\"\n    say(\"Showing \" + depth_name())\n    sync()\n}\n\nfn do_back(){\n    route = \"list\"\n    say(\"Showing \" + depth_name())\n    sync()\n}\n\nfn do_later(id){\n    if is_later(id) { return }\n    later.push(id)\n    let v = vd_of(id)\n    if v == nil { return }\n    say(\"Added to Watch later\")\n    sync()\n}\n\nfn do_drop(id){\n    if !is_later(id) { return }\n    later.retain(|x| x != id)\n    let v = vd_of(id)\n    if v == nil { return }\n    say(\"Removed from Watch later\")\n    sync()\n}\n\n// The dynamically labelled button must do what its label currently says, so one\n// action serves both directions and is reversible wherever it appears.\nfn do_toggle_later(id){\n    if is_later(id) { do_drop(id) } else { do_later(id) }\n}\n\nfn set_tab(t){\n    tab = t\n    say(\"Showing \" + pick(t == \"all\", \"All videos\", \"Watch later\"))\n    sync()\n}\n\n// ---------- chrome sync ----------\n\nfn sync(){\n    ui.glance.set_visible(depth == 0)\n    ui.expanded.set_visible(depth == 1)\n    ui.full.set_visible(depth == 2)\n\n    ui.count.set_text(\"\" + vids.len() + \" videos \u00b7 \" + \"\" + n_later() + \" in Watch later\")\n    ui.status.set_text(status)\n    ui.b0.set_text(pick(depth == 0, \"\u25cf L0\", \"L0\"))\n    ui.b1.set_text(pick(depth == 1, \"\u25cf L1\", \"L1\"))\n    ui.b2.set_text(pick(depth == 2, \"\u25cf L2\", \"L2\"))\n\n    let m = lead()\n    ui.g_title.set_text(m.title)\n    ui.g_channel.set_text(m.channel)\n    ui.g_meta.set_text(m.length + \" \u00b7 \" + m.ago)\n\n    let s = vd_of(sel)\n    ui.x_title.set_text(s.title)\n    ui.x_channel.set_text(s.channel)\n    ui.x_meta.set_text(s.length + \" \u00b7 \" + s.ago + \" \u00b7 \" + s.views + \" views\")\n    ui.x_note.set_text(s.note)\n    ui.x_action.set_text(pick(is_later(s.id), \"Remove from Watch later\", \"Watch later\"))\n\n    ui.rd_title.set_text(s.title)\n    ui.rd_channel.set_text(s.channel)\n    ui.rd_meta.set_text(s.length + \" \u00b7 \" + s.ago + \" \u00b7 \" + s.views + \" views\")\n    ui.rd_note.set_text(s.note)\n    ui.rd_action.set_text(pick(is_later(s.id), \"Remove from Watch later\", \"Watch later\"))\n\n    ui.l2_list.set_visible(route == \"list\")\n    ui.l2_detail.set_visible(route == \"detail\")\n\n    ui.r1.set_visible(tab == \"all\")\n    ui.r2.set_visible(tab == \"all\")\n    ui.r3.set_visible(tab == \"all\")\n    ui.r1_l.set_visible(tab == \"later\" && is_later(\"v1\"))\n    ui.r2_l.set_visible(tab == \"later\" && is_later(\"v2\"))\n    ui.r3_l.set_visible(tab == \"later\" && is_later(\"v3\"))\n    ui.later_empty.set_visible(tab == \"later\" && n_later() == 0)\n\n    ui.r1_b.set_text(pick(is_later(\"v1\"), \"Remove\", \"Watch later\"))\n    ui.r2_b.set_text(pick(is_later(\"v2\"), \"Remove\", \"Watch later\"))\n    ui.r3_b.set_text(pick(is_later(\"v3\"), \"Remove\", \"Watch later\"))\n    ui.r1_lb.set_text(pick(is_later(\"v1\"), \"Remove\", \"Watch later\"))\n    ui.r2_lb.set_text(pick(is_later(\"v2\"), \"Remove\", \"Watch later\"))\n    ui.r3_lb.set_text(pick(is_later(\"v3\"), \"Remove\", \"Watch later\"))\n\n    ui.tab_all.set_text(pick(tab == \"all\", \"\u25cf All\", \"All\"))\n    ui.tab_later.set_text(pick(tab == \"later\", \"\u25cf Watch later\", \"Watch later\"))\n}\n\n// ---------- shared button styles ----------\n\nlet Flat = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}\n    draw_text +: {color: accent color_hover: accent color_down: accent text_style +: {font_size: 15}}}\n\nlet Quiet = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}\n    draw_text +: {color: ink2 color_hover: ink2 color_down: ink2 text_style +: {font_size: 15}}}\n\nlet Seg = ButtonFlat{height: 44 width: Fill align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000f color_down: #x0000001a border_size: 0.0}\n    draw_text +: {color: ink color_hover: ink color_down: ink text_style +: {font_size: 14}}}\n\n// ---------- root ----------\n\nSolidView{width: Fill height: Fill flow: Down draw_bg.color: ground\n\n    View{width: Fill height: Fit flow: Down spacing: 2\n        padding: Inset{left: 16 right: 16 top: 12 bottom: 8}\n        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n            Label{text: \"Videos\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 19}}\n            View{width: Fill height: 1}\n            RoundedView{width: Fit height: Fit\n                padding: Inset{left: 8 right: 8 top: 3 bottom: 3}\n                draw_bg.color: demo_bg draw_bg.border_radius: 6.0\n                Label{text: \"DEMO\" draw_text.color: demo_ink draw_text.text_style: theme.font_bold{font_size: 11}}\n            }\n        }\n        count := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n    }\n\n    View{width: Fill height: Fill flow: Down\n\n        // ===== L0 =====\n        glance := View{width: Fill height: Fill flow: Down spacing: 8\n            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n            g_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                Label{text: \"THUMBNAIL NOT LOADED OFFLINE\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                g_title := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                g_channel := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 12}\n                g_meta := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n            }\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Flat{text: \"Open\" on_click: || do_open(lead_id())}\n                Flat{text: \"List\" on_click: || set_depth(2)}\n            }\n        }\n\n        // ===== L1 =====\n        expanded := View{visible: false width: Fill height: Fill flow: Down spacing: 8\n            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n            x_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                Label{text: \"PLAYBACK UNAVAILABLE OFFLINE\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                x_title := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                x_channel := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 12}\n                x_meta := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                SolidView{width: Fill height: 1 draw_bg.color: line}\n                x_note := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n            }\n            View{width: Fill height: Fit flow: Right spacing: 8\n                x_action := Flat{text: \"Watch later\" on_click: || do_toggle_later(sel)}\n                Flat{text: \"List\" on_click: || set_depth(2)}\n            }\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Quiet{text: \"\u2039 Glance\" on_click: || set_depth(0)}\n            }\n        }\n\n        // ===== L2 =====\n        full := View{visible: false width: Fill height: Fill\n            l2 := ScrollYView{width: Fill height: Fill flow: Down spacing: 8\n                padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n\n                l2_list := View{width: Fill height: Fit flow: Down spacing: 6\n                    RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 6\n                        padding: Inset{left: 12 right: 12 top: 4 bottom: 4}\n                        draw_bg.color: surface draw_bg.border_radius: 12.0\n                        tab_all := Flat{text: \"All\" on_click: || set_tab(\"all\")}\n                        tab_later := Flat{text: \"Watch later\" on_click: || set_tab(\"later\")}\n                    }\n                    r1 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Slow harbour morning, timelapse\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"Riverside Field Notes \u00b7 08:24\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r1_b := Flat{text: \"Watch later\" on_click: || do_toggle_later(\"v1\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"v1\")}\n                            }\n                        }\n                    }\n                    r2 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Restoring a harbour crane, part 2\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"Docklands Workshop \u00b7 21:07\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r2_b := Flat{text: \"Watch later\" on_click: || do_toggle_later(\"v2\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"v2\")}\n                            }\n                        }\n                    }\n                    r3 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Weeknight cycling: four rivers route\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"Alex Outdoors \u00b7 14:51\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r3_b := Flat{text: \"Watch later\" on_click: || do_toggle_later(\"v3\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"v3\")}\n                            }\n                        }\n                    }\n                    r1_l := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Slow harbour morning, timelapse\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"Riverside Field Notes \u00b7 08:24\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r1_lb := Flat{text: \"Remove\" on_click: || do_toggle_later(\"v1\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"v1\")}\n                            }\n                        }\n                    }\n                    r2_l := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Restoring a harbour crane, part 2\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"Docklands Workshop \u00b7 21:07\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r2_lb := Flat{text: \"Remove\" on_click: || do_toggle_later(\"v2\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"v2\")}\n                            }\n                        }\n                    }\n                    r3_l := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"Weeknight cycling: four rivers route\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"Alex Outdoors \u00b7 14:51\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r3_lb := Flat{text: \"Remove\" on_click: || do_toggle_later(\"v3\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"v3\")}\n                            }\n                        }\n                    }\n                    later_empty := RoundedView{visible: false width: Fill height: Fit flow: Down spacing: 3\n                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                        draw_bg.color: surface draw_bg.border_radius: 14.0\n                        Label{width: Fill text: \"Watch later is empty\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 14}}\n                        Label{width: Fill text: \"Add a video from All to see it here.\" draw_text.color: ink2 draw_text.text_style.font_size: 12}\n                    }\n                }\n\n                l2_detail := View{visible: false width: Fill height: Fit flow: Down spacing: 6\n                    RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                        draw_bg.color: surface draw_bg.border_radius: 14.0\n                        Label{text: \"PLAYBACK UNAVAILABLE OFFLINE\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                        rd_title := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                        rd_channel := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 12}\n                        rd_meta := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n                        SolidView{width: Fill height: 1 draw_bg.color: line}\n                        rd_note := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n                    }\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        rd_action := Flat{text: \"Watch later\" on_click: || do_toggle_later(sel)}\n                        Quiet{text: \"\u2039 List\" on_click: || do_back()}\n                    }\n                }\n            }\n        }\n    }\n\n    View{width: Fill height: Fit flow: Down spacing: 4\n        padding: Inset{left: 16 right: 16 top: 6 bottom: 8}\n        SolidView{width: Fill height: 1 draw_bg.color: line}\n        RoundedView{width: Fill height: Fit flow: Right spacing: 4\n            padding: Inset{left: 4 right: 4 top: 4 bottom: 4}\n            draw_bg.color: #xe5e5ea draw_bg.border_radius: 12.0\n            b0 := Seg{text: \"L0\" on_click: || set_depth(0)}\n            b1 := Seg{text: \"L1\" on_click: || set_depth(1)}\n            b2 := Seg{text: \"L2\" on_click: || set_depth(2)}\n        }\n        status := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n    }\n}\n\nfn boot(){\n    say(\"Demo list\")\n    sync()\n}\n\nstart_timeout(0.05, || boot())",
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "bg": "#fff2f2f7",
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 1,
+          "id": "10",
+          "kind": "View",
+          "parent": 0,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 98,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 98,
+          "i": 2,
+          "id": "-",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 44,
+          "cw": 352,
+          "cx": 16,
+          "cy": 40,
+          "h": 44,
+          "i": 3,
+          "id": "-",
+          "kind": "View",
+          "parent": 2,
+          "w": 352,
+          "x": 16,
+          "y": 40
+        },
+        {
+          "ch": 37,
+          "cw": 87,
+          "cx": 20,
+          "cy": 44,
+          "fg": "#ff1c1c1e",
+          "h": 37,
+          "i": 4,
+          "id": "-",
+          "kind": "Label",
+          "parent": 3,
+          "text": "Videos",
+          "w": 87,
+          "x": 20,
+          "y": 44
+        },
+        {
+          "ch": 1,
+          "cw": 169,
+          "cx": 118,
+          "cy": 62,
+          "h": 1,
+          "i": 5,
+          "id": "1",
+          "kind": "View",
+          "parent": 3,
+          "w": 169,
+          "x": 118,
+          "y": 62
+        },
+        {
+          "bg": "#fffff3cd",
+          "ch": 37,
+          "cw": 73,
+          "cx": 295,
+          "cy": 44,
+          "h": 37,
+          "i": 6,
+          "id": "2",
+          "kind": "View",
+          "parent": 3,
+          "w": 73,
+          "x": 295,
+          "y": 44
+        },
+        {
+          "ch": 24,
+          "cw": 50,
+          "cx": 307,
+          "cy": 50,
+          "fg": "#ff8a0b00",
+          "h": 24,
+          "i": 7,
+          "id": "-",
+          "kind": "Label",
+          "parent": 6,
+          "text": "DEMO",
+          "w": 50,
+          "x": 307,
+          "y": 50
+        },
+        {
+          "ch": 26,
+          "cw": 345,
+          "cx": 20,
+          "cy": 90,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 8,
+          "id": "count",
+          "kind": "Label",
+          "parent": 2,
+          "text": "3 videos \u00b7 0 in Watch later",
+          "w": 345,
+          "x": 20,
+          "y": 90
+        },
+        {
+          "ch": 546,
+          "cw": 384,
+          "cx": 0,
+          "cy": 127,
+          "h": 546,
+          "i": 9,
+          "id": "1",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 127
+        },
+        {
+          "ch": 546,
+          "cw": 384,
+          "cx": 0,
+          "cy": 127,
+          "h": 546,
+          "i": 32,
+          "id": "full",
+          "kind": "View",
+          "parent": 9,
+          "w": 384,
+          "x": 0,
+          "y": 127
+        },
+        {
+          "ch": 546,
+          "cw": 384,
+          "cx": 0,
+          "cy": 127,
+          "h": 546,
+          "i": 33,
+          "id": "l2",
+          "kind": "View",
+          "parent": 32,
+          "scroll_y": true,
+          "w": 384,
+          "x": 0,
+          "y": 127
+        },
+        {
+          "ch": 313,
+          "cw": 352,
+          "cx": 16,
+          "cy": 131,
+          "h": 313,
+          "i": 83,
+          "id": "l2_detail",
+          "kind": "View",
+          "parent": 33,
+          "w": 352,
+          "x": 16,
+          "y": 131
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 257,
+          "cw": 352,
+          "cx": 16,
+          "cy": 131,
+          "h": 257,
+          "i": 84,
+          "id": "-",
+          "kind": "View",
+          "parent": 83,
+          "w": 352,
+          "x": 16,
+          "y": 131
+        },
+        {
+          "ch": 24,
+          "cw": 235,
+          "cx": 34,
+          "cy": 144,
+          "fg": "#ff8e8e93",
+          "h": 24,
+          "i": 85,
+          "id": "-",
+          "kind": "Label",
+          "parent": 84,
+          "text": "PLAYBACK UNAVAILABLE OFFLINE",
+          "w": 235,
+          "x": 34,
+          "y": 144
+        },
+        {
+          "ch": 59,
+          "cw": 317,
+          "cx": 34,
+          "cy": 179,
+          "fg": "#ff1c1c1e",
+          "h": 59,
+          "i": 86,
+          "id": "rd_title",
+          "kind": "Label",
+          "parent": 84,
+          "text": "Weeknight cycling: four rivers route",
+          "w": 317,
+          "x": 34,
+          "y": 179
+        },
+        {
+          "ch": 26,
+          "cw": 317,
+          "cx": 34,
+          "cy": 247,
+          "fg": "#ff3c3c43",
+          "h": 26,
+          "i": 87,
+          "id": "rd_channel",
+          "kind": "Label",
+          "parent": 84,
+          "text": "Alex Outdoors",
+          "w": 317,
+          "x": 34,
+          "y": 247
+        },
+        {
+          "ch": 26,
+          "cw": 317,
+          "cx": 34,
+          "cy": 283,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 88,
+          "id": "rd_meta",
+          "kind": "Label",
+          "parent": 84,
+          "text": "14:51 \u00b7 1 week ago \u00b7 17.9K views",
+          "w": 317,
+          "x": 34,
+          "y": 283
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 1,
+          "cw": 324,
+          "cx": 30,
+          "cy": 315,
+          "h": 1,
+          "i": 89,
+          "id": "1",
+          "kind": "View",
+          "parent": 84,
+          "w": 324,
+          "x": 30,
+          "y": 315
+        },
+        {
+          "ch": 52,
+          "cw": 317,
+          "cx": 34,
+          "cy": 323,
+          "fg": "#ff3c3c43",
+          "h": 52,
+          "i": 90,
+          "id": "rd_note",
+          "kind": "Label",
+          "parent": 84,
+          "text": "A demo record written to exercise this card. Video is not loaded offline.",
+          "w": 317,
+          "x": 34,
+          "y": 323
+        },
+        {
+          "ch": 50,
+          "cw": 352,
+          "cx": 16,
+          "cy": 394,
+          "h": 50,
+          "i": 91,
+          "id": "1",
+          "kind": "View",
+          "parent": 83,
+          "w": 352,
+          "x": 16,
+          "y": 394
+        },
+        {
+          "ch": 44,
+          "cw": 124,
+          "cx": 16,
+          "cy": 397,
+          "glyphs": 1,
+          "h": 44,
+          "i": 92,
+          "id": "rd_action",
+          "kind": "Button",
+          "parent": 91,
+          "tappable": true,
+          "text": "Watch later",
+          "w": 124,
+          "x": 16,
+          "y": 397
+        },
+        {
+          "ch": 44,
+          "cw": 67,
+          "cx": 148,
+          "cy": 397,
+          "glyphs": 1,
+          "h": 44,
+          "i": 93,
+          "id": "-",
+          "kind": "Button",
+          "parent": 91,
+          "tappable": true,
+          "text": "\u2039 List",
+          "w": 67,
+          "x": 148,
+          "y": 397
+        },
+        {
+          "ch": 114,
+          "cw": 384,
+          "cx": 0,
+          "cy": 673,
+          "h": 114,
+          "i": 94,
+          "id": "2",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 673
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 1,
+          "cw": 352,
+          "cx": 16,
+          "cy": 679,
+          "h": 1,
+          "i": 95,
+          "id": "-",
+          "kind": "View",
+          "parent": 94,
+          "w": 352,
+          "x": 16,
+          "y": 679
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 58,
+          "cw": 352,
+          "cx": 16,
+          "cy": 684,
+          "h": 58,
+          "i": 96,
+          "id": "1",
+          "kind": "View",
+          "parent": 94,
+          "w": 352,
+          "x": 16,
+          "y": 684
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 20,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 97,
+          "id": "b0",
+          "kind": "Button",
+          "parent": 96,
+          "tappable": true,
+          "text": "L0",
+          "w": 112,
+          "x": 20,
+          "y": 691
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 136,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 98,
+          "id": "b1",
+          "kind": "Button",
+          "parent": 96,
+          "tappable": true,
+          "text": "L1",
+          "w": 112,
+          "x": 136,
+          "y": 691
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 252,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 99,
+          "id": "b2",
+          "kind": "Button",
+          "parent": 96,
+          "tappable": true,
+          "text": "\u25cf L2",
+          "w": 112,
+          "x": 252,
+          "y": 691
+        },
+        {
+          "ch": 26,
+          "cw": 345,
+          "cx": 20,
+          "cy": 749,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 100,
+          "id": "status",
+          "kind": "Label",
+          "parent": 94,
+          "text": "Showing L2 Video",
+          "w": 345,
+          "x": 20,
+          "y": 749
+        }
+      ]
+    },
+    "tree": "W3 30\n0 -1 - Splash 0 28 384 758\n1 0 10 View 0 28 384 758\n2 1 - View 0 28 384 98\n3 2 - View 16 40 352 44\n4 3 - Label 20 44 87 37\n5 3 1 View 118 62 169 1\n6 3 2 View 295 44 73 37\n7 6 - Label 307 50 50 24\n8 2 count Label 20 90 345 26\n9 1 1 View 0 127 384 546\n10 9 full View 0 127 384 546\n11 10 l2 View 0 127 384 546\n12 11 l2_detail View 16 131 352 313\n13 12 - View 16 131 352 257\n14 13 - Label 34 144 235 24\n15 13 rd_title Label 34 179 317 59\n16 13 rd_channel Label 34 247 317 26\n17 13 rd_meta Label 34 283 317 26\n18 13 1 View 30 315 324 1\n19 13 rd_note Label 34 323 317 52\n20 12 1 View 16 394 352 50\n21 20 rd_action Button 16 397 124 44\n22 20 - Button 148 397 67 44\n23 1 2 View 0 673 384 114\n24 23 - View 16 679 352 1\n25 23 1 View 16 684 352 58\n26 25 b0 Button 20 691 112 44\n27 25 b1 Button 136 691 112 44\n28 25 b2 Button 252 691 112 44\n29 23 status Label 20 749 345 26\n",
+    "widgets": [
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "-@0",
+        "text": null,
+        "type": "Splash",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "10",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "10@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          98
+        ],
+        "selected": null,
+        "selector": "-@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          40,
+          352,
+          44
+        ],
+        "selected": null,
+        "selector": "-@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          20,
+          44,
+          87,
+          37
+        ],
+        "selected": null,
+        "selector": "-@3",
+        "text": "Videos",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          118,
+          62,
+          169,
+          1
+        ],
+        "selected": null,
+        "selector": "1@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          295,
+          44,
+          73,
+          37
+        ],
+        "selected": null,
+        "selector": "2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          307,
+          50,
+          50,
+          24
+        ],
+        "selected": null,
+        "selector": "-@4",
+        "text": "DEMO",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "count",
+        "rect": [
+          20,
+          90,
+          345,
+          26
+        ],
+        "selected": null,
+        "selector": "count@0",
+        "text": "3 videos \u00b7 0 in Watch later",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          127,
+          384,
+          546
+        ],
+        "selected": null,
+        "selector": "1@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "glance",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "glance@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_card",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_card@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@5",
+        "text": "THUMBNAIL NOT LOADED OFFLINE",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_title",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_title@0",
+        "text": "Slow harbour morning, timelapse",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_channel",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_channel@0",
+        "text": "Riverside Field Notes",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_meta",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_meta@0",
+        "text": "08:24 \u00b7 2 days ago",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@6",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@7",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@2",
+        "text": "List",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "expanded",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "expanded@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_card",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_card@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@8",
+        "text": "PLAYBACK UNAVAILABLE OFFLINE",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_title",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_title@0",
+        "text": "Weeknight cycling: four rivers route",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_channel",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_channel@0",
+        "text": "Alex Outdoors",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_meta",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_meta@0",
+        "text": "14:51 \u00b7 1 week ago \u00b7 17.9K views",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@3",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_note",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_note@0",
+        "text": "A demo record written to exercise this card. Video is not loaded offline.",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@9",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_action",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_action@0",
+        "text": "Watch later",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@10",
+        "text": "List",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@11",
+        "text": "\u2039 Glance",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "full",
+        "rect": [
+          0,
+          127,
+          384,
+          546
+        ],
+        "selected": null,
+        "selector": "full@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2",
+        "rect": [
+          0,
+          127,
+          384,
+          546
+        ],
+        "selected": null,
+        "selector": "l2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2_list",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "l2_list@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@12",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "tab_all",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "tab_all@0",
+        "text": "\u25cf All",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "tab_later",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "tab_later@0",
+        "text": "Watch later",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@13",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@14",
+        "text": "Slow harbour morning, timelapse",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@5",
+        "text": "Riverside Field Notes \u00b7 08:24",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1_b",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1_b@0",
+        "text": "Watch later",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@15",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@16",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@17",
+        "text": "Restoring a harbour crane, part 2",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@6",
+        "text": "Docklands Workshop \u00b7 21:07",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2_b",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2_b@0",
+        "text": "Watch later",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@18",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@19",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@20",
+        "text": "Weeknight cycling: four rivers route",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@7",
+        "text": "Alex Outdoors \u00b7 14:51",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@3",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3_b",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3_b@0",
+        "text": "Watch later",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@21",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1_l",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1_l@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@22",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@23",
+        "text": "Slow harbour morning, timelapse",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@8",
+        "text": "Riverside Field Notes \u00b7 08:24",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1_lb",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1_lb@0",
+        "text": "Watch later",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@24",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2_l",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2_l@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@25",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@26",
+        "text": "Restoring a harbour crane, part 2",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@9",
+        "text": "Docklands Workshop \u00b7 21:07",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@5",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2_lb",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2_lb@0",
+        "text": "Watch later",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@27",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3_l",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3_l@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@28",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@29",
+        "text": "Weeknight cycling: four rivers route",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@10",
+        "text": "Alex Outdoors \u00b7 14:51",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@6",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3_lb",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3_lb@0",
+        "text": "Watch later",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@30",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "later_empty",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "later_empty@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@31",
+        "text": "Watch later is empty",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@11",
+        "text": "Add a video from All to see it here.",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2_detail",
+        "rect": [
+          16,
+          131,
+          352,
+          313
+        ],
+        "selected": null,
+        "selector": "l2_detail@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          131,
+          352,
+          257
+        ],
+        "selected": null,
+        "selector": "-@32",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          34,
+          144,
+          235,
+          24
+        ],
+        "selected": null,
+        "selector": "-@33",
+        "text": "PLAYBACK UNAVAILABLE OFFLINE",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_title",
+        "rect": [
+          34,
+          179,
+          317,
+          59
+        ],
+        "selected": null,
+        "selector": "rd_title@0",
+        "text": "Weeknight cycling: four rivers route",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_channel",
+        "rect": [
+          34,
+          247,
+          317,
+          26
+        ],
+        "selected": null,
+        "selector": "rd_channel@0",
+        "text": "Alex Outdoors",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_meta",
+        "rect": [
+          34,
+          283,
+          317,
+          26
+        ],
+        "selected": null,
+        "selector": "rd_meta@0",
+        "text": "14:51 \u00b7 1 week ago \u00b7 17.9K views",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          30,
+          315,
+          324,
+          1
+        ],
+        "selected": null,
+        "selector": "1@12",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_note",
+        "rect": [
+          34,
+          323,
+          317,
+          52
+        ],
+        "selected": null,
+        "selector": "rd_note@0",
+        "text": "A demo record written to exercise this card. Video is not loaded offline.",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          16,
+          394,
+          352,
+          50
+        ],
+        "selected": null,
+        "selector": "1@13",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_action",
+        "rect": [
+          16,
+          397,
+          124,
+          44
+        ],
+        "selected": null,
+        "selector": "rd_action@0",
+        "text": "Watch later",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          148,
+          397,
+          67,
+          44
+        ],
+        "selected": null,
+        "selector": "-@34",
+        "text": "\u2039 List",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          673,
+          384,
+          114
+        ],
+        "selected": null,
+        "selector": "2@7",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          679,
+          352,
+          1
+        ],
+        "selected": null,
+        "selector": "-@35",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          16,
+          684,
+          352,
+          58
+        ],
+        "selected": null,
+        "selector": "1@14",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b0",
+        "rect": [
+          20,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b0@0",
+        "text": "L0",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b1",
+        "rect": [
+          136,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b1@0",
+        "text": "L1",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b2",
+        "rect": [
+          252,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b2@0",
+        "text": "\u25cf L2",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "status",
+        "rect": [
+          20,
+          749,
+          345,
+          26
+        ],
+        "selected": null,
+        "selector": "status@0",
+        "text": "Showing L2 Video",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      }
+    ]
+  },
+  "width": 1080
+}

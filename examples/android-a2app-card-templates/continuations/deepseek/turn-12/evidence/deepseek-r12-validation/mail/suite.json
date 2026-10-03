@@ -1,0 +1,119 @@
+{
+  "family": "mail",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Ana Rivera",
+        "Contract signing"
+      ]
+    },
+    {
+      "label": "expanded",
+      "action": "tap",
+      "target": "d_ex",
+      "contains": [
+        "Send (demo)",
+        "Contract signing"
+      ]
+    },
+    {
+      "label": "blank-send",
+      "action": "tap",
+      "target": "Send (demo)",
+      "contains": [
+        "Write a reply first"
+      ],
+      "excludes": [
+        "Reply queued"
+      ]
+    },
+    {
+      "label": "archived",
+      "action": "tap",
+      "target": "Archive",
+      "contains": [
+        "Undo",
+        "Archived (demo)"
+      ]
+    },
+    {
+      "label": "inbox-after-archive",
+      "action": "tap",
+      "target": "Open app",
+      "occurrence": -1,
+      "contains": [
+        "Design Weekly"
+      ],
+      "excludes": [
+        "Ana Rivera"
+      ]
+    },
+    {
+      "label": "archived-folder",
+      "action": "tap",
+      "target": "Archived",
+      "contains": [
+        "Ana Rivera",
+        "Finance"
+      ]
+    },
+    {
+      "label": "expand-for-undo",
+      "action": "tap",
+      "target": "d_ex",
+      "contains": [
+        "Undo"
+      ]
+    },
+    {
+      "label": "undo",
+      "action": "tap",
+      "target": "Undo",
+      "contains": [
+        "Archive"
+      ],
+      "excludes": [
+        "Archived (demo)"
+      ]
+    },
+    {
+      "label": "full-app",
+      "action": "tap",
+      "target": "Open app",
+      "occurrence": -1
+    },
+    {
+      "label": "inbox",
+      "action": "tap",
+      "target": "Inbox",
+      "contains": [
+        "Ana Rivera",
+        "Design Weekly"
+      ]
+    },
+    {
+      "label": "second-message-detail",
+      "action": "tap",
+      "target": "Open \u203a",
+      "occurrence": 1,
+      "contains": [
+        "Your Thursday digest is ready",
+        "Design Weekly",
+        "Five short reads on card UI, motion and type."
+      ],
+      "excludes": [
+        "Ana Rivera"
+      ]
+    },
+    {
+      "label": "back-to-list",
+      "action": "tap",
+      "target": "\u2039 Back to list",
+      "contains": [
+        "Design Weekly",
+        "Ana Rivera"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "family": "mail",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Ana Ruiz",
+        "4 in Inbox",
+        "● L0"
+      ]
+    },
+    {
+      "label": "expanded",
+      "action": "tap",
+      "target": "b1",
+      "contains": [
+        "Mark as read",
+        "● L1"
+      ]
+    },
+    {
+      "label": "mark-read",
+      "action": "tap",
+      "target": "Mark as read",
+      "contains": [
+        "Mark as unread",
+        "1 unread",
+        "● L1"
+      ]
+    },
+    {
+      "label": "mark-unread",
+      "action": "tap",
+      "target": "Mark as unread",
+      "contains": [
+        "Mark as read",
+        "2 unread",
+        "● L1"
+      ]
+    },
+    {
+      "label": "archive",
+      "action": "tap",
+      "target": "Archive",
+      "contains": [
+        "3 in Inbox",
+        "● L1"
+      ]
+    },
+    {
+      "label": "undo",
+      "action": "tap",
+      "target": "Undo",
+      "contains": [
+        "4 in Inbox",
+        "● L1"
+      ]
+    },
+    {
+      "label": "inbox",
+      "action": "tap",
+      "target": "b2",
+      "contains": [
+        "City Library",
+        "Priya",
+        "● L2"
+      ]
+    },
+    {
+      "label": "second-message",
+      "action": "tap",
+      "target": "Open",
+      "occurrence": 1,
+      "contains": [
+        "City Library",
+        "Holds ready until Saturday",
+        "Three books",
+        "● L2"
+      ]
+    },
+    {
+      "label": "reply",
+      "action": "tap",
+      "target": "Reply",
+      "contains": [
+        "To City Library",
+        "Queue reply",
+        "● L2"
+      ]
+    },
+    {
+      "label": "blank-rejected",
+      "action": "tap",
+      "target": "Queue reply",
+      "contains": [
+        "Nothing to send",
+        "● L2"
+      ]
+    },
+    {
+      "label": "typed-with-keyboard",
+      "action": "text",
+      "target": "field",
+      "text": "Thanks, I will collect the books Saturday.",
+      "input_value": "Thanks, I will collect the books Saturday.",
+      "capture_android": true,
+      "excludes": [
+        "Nothing to send"
+      ],
+      "contains": [
+        "● L2"
+      ]
+    },
+    {
+      "label": "send-scroll-keyboard",
+      "action": "scroll",
+      "target": "l2",
+      "delta_y": 180,
+      "capture_android": true,
+      "contains": [
+        "● L2"
+      ]
+    },
+    {
+      "label": "queue-with-keyboard",
+      "action": "tap",
+      "target": "Queue reply",
+      "contains": [
+        "Queued for City Library",
+        "● L2"
+      ]
+    },
+    {
+      "label": "return-to-inbox",
+      "action": "tap",
+      "target": "‹ Inbox",
+      "contains": [
+        "Ana Ruiz",
+        "City Library",
+        "Priya",
+        "● L2"
+      ]
+    },
+    {
+      "label": "last-item",
+      "action": "tap",
+      "target": "Open",
+      "occurrence": 3,
+      "contains": [
+        "Northwind Studio",
+        "Invoice 2291",
+        "● L2"
+      ]
+    }
+  ],
+  "draft": false,
+  "source_file": "minimax-round14-final/card-templates/mail/bundle/main.splash",
+  "source_sha256": "b0d68d4ccde75012e9ce586605313d63b7adb74271f5dee4912977ae13de6120",
+  "status": "Operator confirmed native source byte-identical from reconciled round13 to final round14; input suite ready, actual runtime outcomes pending.",
+  "reconciliation": "Read native diffs round12→13: Mail/Photo/YouTube unchanged; News removes extra closing brace; Finance reflows six list rows with same IDs/copy/actions; Calendar adds persistent depth markers and moves status. All115 steps retained; marker assertions reflect actual controls. Round14 native hash confirmation still pending.",
+  "assumptions": [
+    "Round13 native source is reconciled; only final round14 byte equality remains. This is not native test evidence."
+  ],
+  "native_source_reconciled": true,
+  "awaiting_round14_hash_confirmation": true,
+  "final_round14_binding": {
+    "main_and_manifest_byte_identical_to_round13": true,
+    "execution_status_at_preparation": "pending"
+  }
+}

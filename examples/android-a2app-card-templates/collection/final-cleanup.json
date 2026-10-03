@@ -1,0 +1,27 @@
+{
+  "scope": "Temporary isolated test packages only; source/evidence retained",
+  "original_provider_profiles_absent": true,
+  "original_developer_grants_absent": true,
+  "packages": [
+    {
+      "package": "dev.makepad.octosense.studio",
+      "temporary_provider_configuration_removed": true,
+      "temporary_developer_grants_removed": true,
+      "test_package_stopped": true
+    },
+    {
+      "package": "dev.makepad.octosense.studio.minimax",
+      "temporary_provider_configuration_removed": true,
+      "temporary_developer_grants_removed": true,
+      "test_package_stopped": true
+    }
+  ],
+  "production_home_modified": false,
+  "rom_modified": false,
+  "default_launcher_modified": false,
+  "network_policy_modified": false,
+  "screen_timeout_ms": 60000,
+  "screen_timeout_restored": true,
+  "adb_shell_unprivileged": true,
+  "recorded_at_utc": "2026-10-03T08:12:38Z"
+}
