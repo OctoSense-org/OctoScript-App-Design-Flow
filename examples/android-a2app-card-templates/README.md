@@ -56,7 +56,8 @@ this is not a general model ranking or an equal-budget benchmark.
 | MiniMax final round 3 | [Receipt](attempts/minimax-r3/source-receipt.json) | [Full-app limitation](attempts/minimax-r3/evidence/minimax-mail-r3-suite/06-full-app.png) |
 
 The [comparison replay](model-authorship-validation.json) matches all ten archived
-files. `python3 validate-model-authorship.py` reruns it without a phone;
+files. From this `android-a2app-card-templates/` directory,
+`python3 validate-model-authorship.py` reruns it without a phone;
 `python3 validate-model-authorship.py --case-dir collection` checks the 25 final
 collection files. Reproducibility from recorded mutations does not prove the
 absence of every unrecorded historical intervention. Original manifest integrity

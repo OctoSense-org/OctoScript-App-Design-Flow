@@ -9,23 +9,23 @@
     },
     {
       "path": "COMPARISON.md",
-      "bytes": 8362,
-      "sha256": "2a4c1bf3d79151d3f2efaf63bb7c761d894fee87fa9b00648094f6056107667d"
+      "bytes": 8378,
+      "sha256": "7d8269d14508264e0f3dc1bbcc026622cd19421b4e3009b02e246dee190d76c6"
     },
     {
       "path": "COMPARISON.zh-CN.md",
-      "bytes": 7639,
-      "sha256": "6fa365b2dd9f1d03154552d54a376521bd10bb3e7b2d1a0675e622c18f237bde"
+      "bytes": 7655,
+      "sha256": "a8d49947f306245093b839ec3e72e25ef32c1f7f2879a616f9eb37d69c4fe0d1"
     },
     {
       "path": "README.md",
-      "bytes": 4194,
-      "sha256": "32df8615ef1b7671c9314a0ab2971045511a0f0e4b2b7eeec03b9c54aa55efa4"
+      "bytes": 4247,
+      "sha256": "9ee9e1133f50d16c4883f66f43104c5b9df5fb02da1684e0ad96a96ec0a9cf99"
     },
     {
       "path": "README.zh-CN.md",
-      "bytes": 3811,
-      "sha256": "96f2d5ef00747039780fe8a29e65b74608b21e834504bc5426f5c9afcff170f4"
+      "bytes": 3859,
+      "sha256": "1b729064fb97c311ccb0de2819357b5e757f58b8fe552ca85861bcab2b3f3a3c"
     },
     {
       "path": "REVIEW-TEMPLATE.md",

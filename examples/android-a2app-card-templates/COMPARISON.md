@@ -4,14 +4,14 @@ English | [简体中文](COMPARISON.zh-CN.md)
 
 **Frozen comparison: DeepSeek round 3 versus MiniMax final round 3. Neither is
 an accepted template; no winner is declared here.** MiniMax completed its third
-turn. The incoming DeepSeek round 4 repair is excluded from this comparison.
+turn. DeepSeek repairs from round 4 onward are excluded from this comparison.
 Calendar, News, Finance, Photos and YouTube are outside these Mail test results.
 
 The frozen [provenance record](comparison-provenance.json) contains the collection
 time, source/reference hashes, build receipts and tool counts. The archive includes
 selected unmodified captures, native reports and successful model source mutations.
 Original operator inventory paths in the record are provenance identifiers, not
-promises that every original file is included. See [reproduction](README.md#reproduction)
+promises that every original file is included. See [reproduction](collection/README.md#reproduce-checks)
 for the parameterized review harness. No provider settings or private reasoning
 are included.
 

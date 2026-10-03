@@ -48,7 +48,8 @@ YouTube 展示诚实的媒体不可用状态，不是实际照片加载或视频
 | DeepSeek 第 3 轮 | [记录](attempts/deepseek-r3/source-receipt.json) | [详情发件人错误](attempts/deepseek-r3/evidence/deepseek-mail-r3-no-keyboard-suite/10-second-message-detail.png) |
 | MiniMax 最终第 3 轮 | [记录](attempts/minimax-r3/source-receipt.json) | [完整应用限制](attempts/minimax-r3/evidence/minimax-mail-r3-suite/06-full-app.png) |
 
-[对比重放](model-authorship-validation.json)匹配十个归档文件。无需手机即可用
+[对比重放](model-authorship-validation.json)匹配十个归档文件。从本
+`android-a2app-card-templates/` 目录，无需手机即可用
 `python3 validate-model-authorship.py` 复跑；
 `python3 validate-model-authorship.py --case-dir collection` 检查最终集合的
 25 个文件。能够从记录修改中复现，不证明历史上绝无任何未记录干预。原始
