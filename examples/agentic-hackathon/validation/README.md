@@ -7,6 +7,10 @@ This is a macOS release build using the actual Makepad Metal renderer in a
 hidden window, with a 412 × 892 logical viewport and 824 × 1784 captures.
 Codex drove the native instrument; no app-agent model operated these tests.
 
+**Follow-up:** [DeepSeek and OnePlus 6 checks](LIVE-SHELL.md) now cover the
+real shell path. This desktop report and its original provenance remain
+unchanged: their scope is the standalone host's local/unavailable behavior.
+
 Reproduce from the repository root after the normal native setup:
 
 ```sh
@@ -63,21 +67,20 @@ after later draft edits and to derive the inbox count from handled state.
 Final screenshot review also caught the question field reverting to its default after an agent error; submitted questions now remain visible for review and retry. The final run includes those repairs. Earlier raw failures remain in the
 local ignored build directories.
 
-## Still unverified
+## Separate live validation
 
-Real model answers, workspace file-tool reads, shell consent, a successful
-agent draft, busy/cancel/late-response behavior and Android execution have
-not been exercised. `card-host` implements no agent service, so its error
-path cannot validate these. The separate OctoSense desktop shell and pinned
-octos CLI build successfully; starting a real-agent rehearsal still needs
-the private catalog/provider setup. A private catalog signing key requires
-the person's explicit request under the [publishing rule](../../../docs/PUBLISHING.md#36-publisher-key--human).
+The [follow-up report](LIVE-SHELL.md) records successful desktop and OnePlus 6
+DeepSeek turns, consent, Android scoped file reads and confirmation flows.
+It also records local Stop behavior, restart persistence and remaining limits.
+`card-host` implements no agent service; none of those results is inferred
+from its unavailable response. The private catalog keys and provider reuse
+were authorized for the isolated rehearsal; no credentials enter this repo.
 
-The reviewed Android App Studio accepts storage-only previews and cannot
-host these agent-capable manifests. Android must use the normal catalog/app
-path in a separate test package. Neither listing currently claims Android.
-These examples do not implement custom agent tools, cross-app delegation,
-notifications or glance cards.
+The phone ran normal catalog-admitted apps in a separate test package.
+Android App Studio's storage-only preview is not equivalent coverage.
+The reference listings remain the original macOS metadata; this is a device
+rehearsal, not an Android App Hub release. These examples do not implement
+custom agent tools, cross-app delegation, notifications or glance cards.
 
 ## 中文说明
 
@@ -86,8 +89,9 @@ notifications or glance cards.
 测试由 Codex 驱动 Makepad 原生工具执行，没有由应用中的模型操作测试。
 报告记录最终 bundle 的 SHA-256；运行时版本与测试脚本哈希见 provenance.json。
 
-真实模型回答、Agent 文件读取、宿主授权、取消/延迟回调及 Android 尚未验证。
+后续的[真实模型验证](LIVE-SHELL.md)已覆盖桌面和 OnePlus 6 的 DeepSeek 回答、
+授权、手机受限文件读取及确认流程，并记录本地停止、重启持久化和剩余限制。
 独立 card-host 没有 Agent 服务，不能把不可用路径当成真实 Agent 成功证据。
-桌面 Shell 与内核已构建；私有目录和模型配置仍需准备。按上方发布规则，
-创建私钥需要用户明确授权。Android 应走独立测试包的正常目录安装路径，
-不能删掉 Agent 权限后声称等价验证。示例目前只声明 macOS。
+私有目录签名和提供商复用已获用户授权，凭据不进入仓库。
+Android 使用独立测试包的正常目录应用宿主，保留全部 Agent 权限。
+商店列表仍是原始 macOS 元数据；本次是设备验证，不是 Android 商店发布。

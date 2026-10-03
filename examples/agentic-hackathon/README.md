@@ -47,7 +47,9 @@ configured provider and allow each app's agent. The app uses the person's
 provider settings without receiving credentials. See the [shell integration
 path](../../docs/PUBLISHING.md#4-rehearse-the-store-path-locally) and
 [agent service contract](../../docs/AI-SERVICES.md#the-assistant-capabilities).
-Live shell and Android validation are tracked separately below. On the
+DeepSeek V4 Flash has been exercised in both the desktop shell and an isolated
+OnePlus 6 package. See the [phone setup and walkthrough](ANDROID.md) and
+[live evidence](validation/LIVE-SHELL.md). On the
 reviewed Android build, App Studio accepts storage-only previews: it cannot
 run these agent-capable manifests. Use the normal catalog/app hosting path,
 not a modified manifest presented as equivalent coverage.
@@ -141,8 +143,11 @@ assertions alone cannot prove legibility. `OCTO_HUB`, `OCTO_CARD_HOST` and
 
 **Current evidence:** [51/51 desktop native checks passed](validation/README.md) with App Hub `927f2fe`,
 Makepad `c155f61d`, Octoscript-Makepad `2cc5ef37`, in a release build. This covers
-local behavior and the agent-unavailable path. Live model responses, shell
-peer reads and Android remain separate, pending checks. Publisher identity
+local behavior and the agent-unavailable path. Separate live checks verified
+DeepSeek responses, Android app-agent consent and scoped file reads, reviewed
+local email delivery, stale-calendar rejection and a confirmed alternative.
+The Android evidence records the initial automated cold-launch failure and
+the working App Hub launch path. Publisher identity
 and support/privacy URLs still need the contestant's own details; these
 unsigned references are not store submissions.
 

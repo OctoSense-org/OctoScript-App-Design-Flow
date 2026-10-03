@@ -43,3 +43,8 @@ Rules:
 - Native driver: `../scripts/verify_native.py` from this repository. Preserve
   its failed runs, inspect the new screenshots and recheck final source.
   It verifies the agent-unavailable path, not real model delivery.
+
+- Phone rehearsal: [Android setup](../ANDROID.md) and
+  [live evidence](../validation/LIVE-SHELL.md). Use the isolated catalog host
+  and host-owned provider profile; record actual tool audits and saved state.
+  Never treat a successful draft as proof of delivery.

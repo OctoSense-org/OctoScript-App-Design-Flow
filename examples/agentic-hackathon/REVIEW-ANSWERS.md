@@ -10,9 +10,12 @@ and local screenshot paths.
    and `undo` implement the local scheduling journey. Both `ask` functions call
    `octos.turn.start`. Native fallback behavior is tested; live shell and Android
    delivery have separate evidence and must not be inferred from admission.
-2. **Platforms/category:** productivity, macOS. The native Metal run and inputs
-   substantiate desktop local behavior. Do not add Android to the listing until
-   its own device checks pass. These are fictional-data learning references.
+2. **Platforms/category:** productivity; original listings say macOS. The native
+   Metal run substantiates desktop local behavior. The separate [OnePlus 6
+   rehearsal](validation/LIVE-SHELL.md) now verifies real agents and the main
+   phone confirmation flows, with its cold-launch and coverage limits recorded.
+   This does not constitute an Android store release. These are fictional-data
+   learning references.
 3. **Grants:** `storage` saves fixtures, drafts/booking and activity in the account
    workspace. `octos.turn.start` is used by the visible agent control;
    `octos.turn.interrupt` by Stop. No network hosts or account-service permissions

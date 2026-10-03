@@ -39,7 +39,8 @@ curl --fail http://127.0.0.1:8472/quit
 
 真实 Agent 需要将同一 bundle 运行在已配置模型的 OctoSense Shell 中，并允许该应用的 Agent。
 应用使用宿主的提供商配置，接触不到凭据。参见[本地 Shell 安装路径](../../docs/PUBLISHING.md#4-rehearse-the-store-path-locally)
-和 [Agent API](../../docs/AI-SERVICES.md#the-assistant-capabilities)。真实模型与 Android 的验证单独记录。
+和 [Agent API](../../docs/AI-SERVICES.md#the-assistant-capabilities)。DeepSeek V4 Flash 已在桌面 Shell
+和 OnePlus 6 独立测试包中运行，见 [Android 操作说明](ANDROID.md)与[真实模型证据](validation/LIVE-SHELL.md)。
 已审查的 Android App Studio 只接纳 storage-only 预览，不能运行这些带 Agent 权限的 manifest；
 应使用正常的目录安装/应用宿主路径，不应删掉权限后声称得到了等价验证。
 
@@ -115,7 +116,9 @@ tools/octo check examples/agentic-hackathon/meeting-planner/bundle
 
 **当前证据：** App Hub `927f2fe`、Makepad `c155f61d`、Octoscript-Makepad `2cc5ef37` 的 release 构建，
 桌面原生检查 [**51/51** 通过](validation/README.md)，覆盖本地行为和 Agent 不可用路径。
-真实模型回答、Shell Agent 文件读取和 Android 是单独的待验证项。
+另已验证 DeepSeek 真实回答、Android 应用 Agent 授权及受限文件读取、审核后本地邮件投递、
+日历新增冲突后的拒绝及替代时段确认。Android 记录保留了自动冷启动的首次失败，
+并说明已验证可用的 App Hub 启动路径。
 发布者身份、支持及隐私网址需参赛者自行填写；未签名示例不是商店提交。
 
 扩展示例时遵循[模型验证指南](../../docs/MODEL-VALIDATION.zh-CN.md)：先完成一条完整路径，
