@@ -1,0 +1,27 @@
+{
+  "recorded_date": "2026-10-03",
+  "platform": "macOS / native Metal / release / hidden",
+  "operator": "Codex native-instrument driver; no live app-agent model",
+  "viewport_logical": [
+    412,
+    892
+  ],
+  "capture_pixels": [
+    824,
+    1784
+  ],
+  "source": {
+    "OctoSense-App-Hub": "927f2fe0c06b620f47f2f25befd0b2cb0bafe244",
+    "makepad": "c155f61d0e1600d2ec474209374444a38a09a470",
+    "Octoscript-Makepad": "2cc5ef37d7d6a3d2992673389ce74488f7bb2d87",
+    "Octoscript": "5991dfae9344589e732b2605b530f788e8bbcd11"
+  },
+  "driver_sha256": "033d71bf826cb3de2352a687b4a631c1f709116e72fba797bb195ffa03bbd585",
+  "unverified": [
+    "live agent responses",
+    "workspace tool reads",
+    "shell consent",
+    "busy/cancel/late responses",
+    "Android"
+  ]
+}

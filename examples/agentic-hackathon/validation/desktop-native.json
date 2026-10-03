@@ -1,0 +1,869 @@
+{
+  "scope": "desktop native / offline and agent-unavailable only",
+  "checks": [
+    {
+      "check": "email-action: populated inbox",
+      "passed": true
+    },
+    {
+      "check": "email-action: empty draft refused",
+      "passed": true
+    },
+    {
+      "check": "email-action: review binds exact recipient",
+      "passed": true
+    },
+    {
+      "check": "email-action: review uses edited draft",
+      "passed": true
+    },
+    {
+      "check": "email: one reply to selected message",
+      "passed": true
+    },
+    {
+      "check": "email: edited draft committed",
+      "passed": true
+    },
+    {
+      "check": "email-action: repeat confirmation refused",
+      "passed": true
+    },
+    {
+      "check": "email: original delivery unchanged by duplicate",
+      "passed": true
+    },
+    {
+      "check": "email-action: receipt shows delivered body, not edited draft",
+      "passed": true
+    },
+    {
+      "check": "email: targeted undo",
+      "passed": true
+    },
+    {
+      "check": "email-action: second record has its own recipient",
+      "passed": true
+    },
+    {
+      "check": "email: second message committed independently",
+      "passed": true
+    },
+    {
+      "check": "email-action: empty needs-action filter",
+      "passed": true
+    },
+    {
+      "check": "email-action: inbox count reflects handled requests",
+      "passed": true
+    },
+    {
+      "check": "email-action: newsletter accessible outside action filter",
+      "passed": true
+    },
+    {
+      "check": "email-action: empty agent question refused",
+      "passed": true
+    },
+    {
+      "check": "email-action: honest standalone host error",
+      "passed": true
+    },
+    {
+      "check": "email-action: no script/runtime errors: ",
+      "passed": true
+    },
+    {
+      "check": "email: state survives restart",
+      "passed": true
+    },
+    {
+      "check": "email-action: edited draft survives restart",
+      "passed": true
+    },
+    {
+      "check": "email-action: draft request reports unavailable host",
+      "passed": true
+    },
+    {
+      "check": "email: failed agent draft preserves human edit",
+      "passed": true
+    },
+    {
+      "check": "email-action: reset restores actionable inbox",
+      "passed": true
+    },
+    {
+      "check": "email: reset clears only demo actions",
+      "passed": true
+    },
+    {
+      "check": "email-action: no script/runtime errors: ",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: populated calendar",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: selection required",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: known conflict blocked",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: offline calculation finds shared free slot",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: review lists attendees",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: late calendar conflict rechecked",
+      "passed": true
+    },
+    {
+      "check": "meeting: stale proposal causes no mutation",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: recalculation skips new conflict",
+      "passed": true
+    },
+    {
+      "check": "meeting: chosen valid slot committed",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: repeat booking refused",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: no script/runtime errors: ",
+      "passed": true
+    },
+    {
+      "check": "meeting: booking survives restart",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: persisted receipt renders correct time",
+      "passed": true
+    },
+    {
+      "check": "meeting: booking undo",
+      "passed": true
+    },
+    {
+      "check": "meeting: original busy events preserved",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: fully booked day has no invented slot",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: empty agent question refused",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: honest standalone host error",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: reset confirms fixture restoration",
+      "passed": true
+    },
+    {
+      "check": "meeting: reset clears simulated conflicts and booking",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: no script/runtime errors: ",
+      "passed": true
+    },
+    {
+      "check": "email-action: final App Hub gate",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: final App Hub gate",
+      "passed": true
+    }
+  ],
+  "inputs": {
+    "email-action": [
+      {
+        "action": "click",
+        "id": "3",
+        "text": "Open / Maya Chen",
+        "rect": [
+          28,
+          599,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "review_reply",
+        "text": "Review reply",
+        "rect": [
+          28,
+          717,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "sample_reply",
+        "text": "Use sample reply / offline",
+        "rect": [
+          28,
+          438,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "draft",
+        "text": "Hi Maya, Sam can join Friday's science museum visit. Thank you for sharing the 09:00 departure and 15:30 return times. Alex",
+        "rect": [
+          28,
+          572,
+          356,
+          112
+        ]
+      },
+      {
+        "action": "text",
+        "id": "draft",
+        "value": "Hi Maya, Sam can attend. Please confirm the return time. Alex"
+      },
+      {
+        "action": "click",
+        "id": "review_reply",
+        "text": "Review reply",
+        "rect": [
+          28,
+          696,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "confirm_reply",
+        "text": "Confirm demo delivery",
+        "rect": [
+          28,
+          492,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "card_tab",
+        "text": "Action card",
+        "rect": [
+          145,
+          182,
+          121,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "draft",
+        "text": "Hi Maya, Sam can attend. Please confirm the return time. Alex",
+        "rect": [
+          28,
+          792,
+          356,
+          49
+        ]
+      },
+      {
+        "action": "text",
+        "id": "draft",
+        "value": "A later unsent edit"
+      },
+      {
+        "action": "click",
+        "id": "review_reply",
+        "text": "Review reply",
+        "rect": [
+          28,
+          666,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "confirm_reply",
+        "text": "Confirm demo delivery",
+        "rect": [
+          28,
+          467,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "card_tab",
+        "text": "Action card",
+        "rect": [
+          145,
+          182,
+          121,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "receipt",
+        "text": "View delivery receipt",
+        "rect": [
+          28,
+          786,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "undo_delivery",
+        "text": "Undo demo delivery",
+        "rect": [
+          28,
+          510,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "inbox_tab",
+        "text": "Inbox",
+        "rect": [
+          16,
+          182,
+          121,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "3",
+        "text": "Open / Jordan Lee",
+        "rect": [
+          28,
+          711,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "sample_reply",
+        "text": "Use sample reply / offline",
+        "rect": [
+          28,
+          694,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "review_reply",
+        "text": "Review reply",
+        "rect": [
+          28,
+          723,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "confirm_reply",
+        "text": "Confirm demo delivery",
+        "rect": [
+          28,
+          574,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "inbox_tab",
+        "text": "Inbox",
+        "rect": [
+          16,
+          182,
+          121,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "3",
+        "text": "Open / Maya Chen",
+        "rect": [
+          28,
+          599,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "done",
+        "text": "Mark done",
+        "rect": [
+          28,
+          777,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "inbox_tab",
+        "text": "Inbox",
+        "rect": [
+          16,
+          182,
+          121,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "filter",
+        "text": "Show all messages",
+        "rect": [
+          28,
+          393,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "3",
+        "text": "Open / Weekly Studio",
+        "rect": [
+          28,
+          794,
+          356,
+          46
+        ]
+      },
+      {
+        "action": "click",
+        "id": "agent_tab",
+        "text": "Agent",
+        "rect": [
+          275,
+          182,
+          121,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "question",
+        "text": "Which emails need a reply?",
+        "rect": [
+          28,
+          389,
+          356,
+          46
+        ]
+      },
+      {
+        "action": "text",
+        "id": "question",
+        "value": "   "
+      },
+      {
+        "action": "click",
+        "id": "ask_agent",
+        "text": "Ask app agent",
+        "rect": [
+          28,
+          447,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "question",
+        "text": "   ",
+        "rect": [
+          28,
+          389,
+          356,
+          46
+        ]
+      },
+      {
+        "action": "text",
+        "id": "question",
+        "value": "Does this newsletter need a reply?"
+      },
+      {
+        "action": "click",
+        "id": "ask_agent",
+        "text": "Ask app agent",
+        "rect": [
+          28,
+          447,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "card_tab",
+        "text": "Action card",
+        "rect": [
+          145,
+          182,
+          121,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "draft_live",
+        "text": "Ask agent to draft",
+        "rect": [
+          28,
+          696,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "inbox_tab",
+        "text": "Inbox",
+        "rect": [
+          16,
+          182,
+          121,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "reset_demo",
+        "text": "Reset demo",
+        "rect": [
+          16,
+          610,
+          380,
+          48
+        ]
+      }
+    ],
+    "meeting-planner": [
+      {
+        "action": "click",
+        "id": "review_invite",
+        "text": "Review invitation",
+        "rect": [
+          28,
+          699,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "1",
+        "text": "10:00\u201310:30 UTC",
+        "rect": [
+          28,
+          317,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "suggest_time",
+        "text": "Find first free time / offline",
+        "rect": [
+          28,
+          398,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "review_invite",
+        "text": "Review invitation",
+        "rect": [
+          28,
+          699,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "change_before_confirm",
+        "text": "Simulate calendar change",
+        "rect": [
+          28,
+          651,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "confirm_invite",
+        "text": "Confirm demo invitation",
+        "rect": [
+          28,
+          591,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "suggest_time",
+        "text": "Find first free time / offline",
+        "rect": [
+          28,
+          431,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "review_invite",
+        "text": "Review invitation",
+        "rect": [
+          28,
+          699,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "confirm_invite",
+        "text": "Confirm demo invitation",
+        "rect": [
+          28,
+          591,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "plan_tab",
+        "text": "Find a time",
+        "rect": [
+          16,
+          182,
+          121,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "review_invite",
+        "text": "Review invitation",
+        "rect": [
+          28,
+          699,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "receipt_tab",
+        "text": "Activity",
+        "rect": [
+          275,
+          182,
+          121,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "undo_booking",
+        "text": "Undo demo booking",
+        "rect": [
+          28,
+          492,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "plan_tab",
+        "text": "Find a time",
+        "rect": [
+          16,
+          182,
+          121,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "busy_day",
+        "text": "Simulate fully booked day",
+        "rect": [
+          28,
+          751,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "suggest_time",
+        "text": "Find first free time / offline",
+        "rect": [
+          28,
+          431,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "agent_tab",
+        "text": "Agent",
+        "rect": [
+          145,
+          182,
+          121,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "question",
+        "text": "Which time works for all three, and why?",
+        "rect": [
+          28,
+          410,
+          356,
+          46
+        ]
+      },
+      {
+        "action": "text",
+        "id": "question",
+        "value": "   "
+      },
+      {
+        "action": "click",
+        "id": "ask_agent",
+        "text": "Ask app agent",
+        "rect": [
+          28,
+          468,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "question",
+        "text": "   ",
+        "rect": [
+          28,
+          410,
+          356,
+          46
+        ]
+      },
+      {
+        "action": "text",
+        "id": "question",
+        "value": "Is there any shared time available?"
+      },
+      {
+        "action": "click",
+        "id": "ask_agent",
+        "text": "Ask app agent",
+        "rect": [
+          28,
+          468,
+          356,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "plan_tab",
+        "text": "Find a time",
+        "rect": [
+          16,
+          182,
+          121,
+          48
+        ]
+      },
+      {
+        "action": "click",
+        "id": "reset_demo",
+        "text": "Reset demo",
+        "rect": [
+          28,
+          777,
+          356,
+          48
+        ]
+      }
+    ]
+  },
+  "sha256": {
+    "email-action/bundle/AGENT.md": "e19b5909b2e17bfa69c1cf6b605452d0f56f2838e1ccd98a817520aadf4015ec",
+    "email-action/bundle/assets/icon.svg": "a5c623ebe1db3953f9180d3077f70ff6ac6f76850e34d6dc83e3b7f563b1b922",
+    "email-action/bundle/listing.json": "931a70215455f527a76dc3f863f1ad8ee222ea6949834a056646208d2a3ce4a2",
+    "email-action/bundle/main.splash": "b7e03219a1520abb0e4f55e52efa095d6fdb01c9e3a204a6f267b0044b3fe972",
+    "email-action/bundle/manifest.json": "b3f9ae0e045e58180da1533bac1148b6c8d1bb6a7e4548aa43312b16e65f9c9c",
+    "email-action/bundle/screenshots/01-main.png": "ce946b6ffa01b5e42e45a2fb38bb12238914280f5b6fcb969066afbcbc3c9b94",
+    "email-action/bundle/screenshots/02-review.png": "89043dfb5aca8476889a44cecf8db9c0af154a989ce5029fbb57c844b5156cd4",
+    "email-action/bundle/screenshots/03-receipt.png": "ce1f6e59df5d536d41f21316123ccc3906a6794192e5b13b11e902da8694d21a",
+    "email-action/bundle/screenshots/04-agent-unavailable.png": "1f38de97df674d254c1e64caf961cea353baa718ff0087c582da7e08d21793bc",
+    "meeting-planner/bundle/AGENT.md": "389a4508a8baa6765ead2b472cbcf4c42417225cd13d082875d371bc0d7b0b9d",
+    "meeting-planner/bundle/assets/icon.svg": "fc176502210c846a31339938a5043d6c82dc687229266d93a8dbfa95a8ddadb6",
+    "meeting-planner/bundle/listing.json": "006826095f6aba0e6d67bb8edb05ea876288efd3f4cd312926ead982126fbef4",
+    "meeting-planner/bundle/main.splash": "07313c5523f03da8072f4e786aad7e0445b17558cc824b0a2fa639c5b45f84d7",
+    "meeting-planner/bundle/manifest.json": "292318a020b427b9b82e4850c04d8d81691d960555ff8715a3f6dd7fd919733e",
+    "meeting-planner/bundle/screenshots/01-main.png": "133b1d2ac66ce4158036f5e409013a189a97db8334b13a2c88a2f3adc5549e10",
+    "meeting-planner/bundle/screenshots/02-review.png": "83b38808400479b5a4744c34072320429a2f48b4c21abb2b603136339696fa9c",
+    "meeting-planner/bundle/screenshots/03-receipt.png": "27489201565f90c57cb07346b25353b3b7168a0c298b9728e4ea1b31f27e5843",
+    "meeting-planner/bundle/screenshots/04-agent-unavailable.png": "834643c9576a3abbe9c049a73f7dd5e29e5c9d00a65b429e482215c9ec8763d7"
+  }
+}

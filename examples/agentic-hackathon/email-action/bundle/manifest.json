@@ -1,0 +1,30 @@
+{
+  "agent": {
+    "instructions": "AGENT.md",
+    "model": {
+      "needs": [
+        "tool_calling"
+      ]
+    },
+    "profile": "read-only",
+    "tools": [
+      "ask_user_question"
+    ]
+  },
+  "capabilities": [
+    "storage",
+    "octos.turn.start",
+    "octos.turn.interrupt"
+  ],
+  "id": "demo.email-action",
+  "integrity": {
+    "bundle_blake3": "849c0e4b40f2c936cae991c91e32cac79afa9d95705dde40c24e25fa7e0f423d"
+  },
+  "name": "Email Action",
+  "schema": 1,
+  "storage": {
+    "accounts": false,
+    "agent_workspace": "account"
+  },
+  "version": "0.1.0"
+}
