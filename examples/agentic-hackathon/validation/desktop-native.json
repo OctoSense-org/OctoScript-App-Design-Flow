@@ -70,6 +70,10 @@
       "passed": true
     },
     {
+      "check": "email-action: submitted question survives host error",
+      "passed": true
+    },
+    {
       "check": "email-action: no script/runtime errors: ",
       "passed": true
     },
@@ -83,6 +87,10 @@
     },
     {
       "check": "email-action: draft request reports unavailable host",
+      "passed": true
+    },
+    {
+      "check": "email-action: draft request identifies selected sender",
       "passed": true
     },
     {
@@ -171,6 +179,10 @@
     },
     {
       "check": "meeting-planner: honest standalone host error",
+      "passed": true
+    },
+    {
+      "check": "meeting-planner: submitted question survives host error",
       "passed": true
     },
     {
@@ -850,20 +862,20 @@
     "email-action/bundle/AGENT.md": "e19b5909b2e17bfa69c1cf6b605452d0f56f2838e1ccd98a817520aadf4015ec",
     "email-action/bundle/assets/icon.svg": "a5c623ebe1db3953f9180d3077f70ff6ac6f76850e34d6dc83e3b7f563b1b922",
     "email-action/bundle/listing.json": "931a70215455f527a76dc3f863f1ad8ee222ea6949834a056646208d2a3ce4a2",
-    "email-action/bundle/main.splash": "b7e03219a1520abb0e4f55e52efa095d6fdb01c9e3a204a6f267b0044b3fe972",
-    "email-action/bundle/manifest.json": "b3f9ae0e045e58180da1533bac1148b6c8d1bb6a7e4548aa43312b16e65f9c9c",
+    "email-action/bundle/main.splash": "ddb17913f3965185d44df6b263469323a94e2daefc65dd7dbd935ec4d5e1f118",
+    "email-action/bundle/manifest.json": "628a8dc07426c44d0b708dd5452868eaf9a4452d355d1b794fb92def445b4618",
     "email-action/bundle/screenshots/01-main.png": "ce946b6ffa01b5e42e45a2fb38bb12238914280f5b6fcb969066afbcbc3c9b94",
     "email-action/bundle/screenshots/02-review.png": "89043dfb5aca8476889a44cecf8db9c0af154a989ce5029fbb57c844b5156cd4",
     "email-action/bundle/screenshots/03-receipt.png": "ce1f6e59df5d536d41f21316123ccc3906a6794192e5b13b11e902da8694d21a",
-    "email-action/bundle/screenshots/04-agent-unavailable.png": "1f38de97df674d254c1e64caf961cea353baa718ff0087c582da7e08d21793bc",
+    "email-action/bundle/screenshots/04-agent-unavailable.png": "580974878de71fb769b009c408beac417c65c61eaf449332e38a06095c490be7",
     "meeting-planner/bundle/AGENT.md": "389a4508a8baa6765ead2b472cbcf4c42417225cd13d082875d371bc0d7b0b9d",
     "meeting-planner/bundle/assets/icon.svg": "fc176502210c846a31339938a5043d6c82dc687229266d93a8dbfa95a8ddadb6",
     "meeting-planner/bundle/listing.json": "006826095f6aba0e6d67bb8edb05ea876288efd3f4cd312926ead982126fbef4",
-    "meeting-planner/bundle/main.splash": "07313c5523f03da8072f4e786aad7e0445b17558cc824b0a2fa639c5b45f84d7",
-    "meeting-planner/bundle/manifest.json": "292318a020b427b9b82e4850c04d8d81691d960555ff8715a3f6dd7fd919733e",
+    "meeting-planner/bundle/main.splash": "0e3338bc9f9543dd2a247680d2286355104333e2fb4725badd82baca53c92259",
+    "meeting-planner/bundle/manifest.json": "02e8c03f3ebbad10accb68679dd46eac1b6433740c58bbd9a6b34175153feaef",
     "meeting-planner/bundle/screenshots/01-main.png": "133b1d2ac66ce4158036f5e409013a189a97db8334b13a2c88a2f3adc5549e10",
     "meeting-planner/bundle/screenshots/02-review.png": "83b38808400479b5a4744c34072320429a2f48b4c21abb2b603136339696fa9c",
     "meeting-planner/bundle/screenshots/03-receipt.png": "27489201565f90c57cb07346b25353b3b7168a0c298b9728e4ea1b31f27e5843",
-    "meeting-planner/bundle/screenshots/04-agent-unavailable.png": "834643c9576a3abbe9c049a73f7dd5e29e5c9d00a65b429e482215c9ec8763d7"
+    "meeting-planner/bundle/screenshots/04-agent-unavailable.png": "212fcdf9343aff8157b038ed28dc89c086d6c71e394cc41ddec46593f4aecbfc"
   }
 }

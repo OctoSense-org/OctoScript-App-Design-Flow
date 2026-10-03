@@ -1,6 +1,6 @@
 # Desktop evidence — 2026-10-03
 
-**48/48 native checks passed.** [The report](desktop-native.json) records
+**51/51 native checks passed.** [The report](desktop-native.json) records
 each assertion, injected input and SHA-256 of every final bundle file.
 [Provenance](provenance.json) identifies the runtime revisions and test driver.
 This is a macOS release build using the actual Makepad Metal renderer in a
@@ -31,7 +31,7 @@ make old evidence match changed source.
   refusal without a write, successful alternative, duplicate prevention,
   persistence, targeted undo, no-slot state and reset.
 - Both: blank questions, explicit standalone-host agent-unavailable results,
-  clean native runtime logs and final App Hub checks. File reads inspect the
+  preserved submitted questions, clean native runtime logs and final App Hub checks. File reads inspect the
   local action results; a screen label alone is not considered a saved action.
 - All eight bundle captures were visually inspected. Review screens show the
   recipient or attendees, full proposal and confirmation controls. Receipt
@@ -60,7 +60,7 @@ foreground/background colors. Reusing a scroller retained its offset between
 pages and hid confirmation details; each page now owns a separate scroller.
 Tests also caught the need to preserve the committed reply in its receipt
 after later draft edits and to derive the inbox count from handled state.
-The final run includes those repairs. Earlier raw failures remain in the
+Final screenshot review also caught the question field reverting to its default after an agent error; submitted questions now remain visible for review and retry. The final run includes those repairs. Earlier raw failures remain in the
 local ignored build directories.
 
 ## Still unverified
@@ -81,7 +81,7 @@ notifications or glance cards.
 
 ## 中文说明
 
-**48/48 桌面原生检查通过**，包括真实控件输入、文件结果、重启、冲突复核、
+**51/51 桌面原生检查通过**，包括真实控件输入、文件结果、重启、冲突复核、
 防重复、撤销、重置，以及 Agent 不可用时保留人工草稿。8 张截图均已打开审查。
 测试由 Codex 驱动 Makepad 原生工具执行，没有由应用中的模型操作测试。
 报告记录最终 bundle 的 SHA-256；运行时版本与测试脚本哈希见 provenance.json。

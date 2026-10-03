@@ -139,7 +139,7 @@ refreshes real screenshots in each bundle. Inspect those images after running;
 assertions alone cannot prove legibility. `OCTO_HUB`, `OCTO_CARD_HOST` and
 `OCTOSENSE_APP_HUB` can select an already prepared runtime as in the quickstart.
 
-**Current evidence:** [48/48 desktop native checks passed](validation/README.md) with App Hub `927f2fe`,
+**Current evidence:** [51/51 desktop native checks passed](validation/README.md) with App Hub `927f2fe`,
 Makepad `c155f61d`, Octoscript-Makepad `2cc5ef37`, in a release build. This covers
 local behavior and the agent-unavailable path. Live model responses, shell
 peer reads and Android remain separate, pending checks. Publisher identity

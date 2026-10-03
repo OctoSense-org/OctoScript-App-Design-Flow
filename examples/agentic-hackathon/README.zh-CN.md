@@ -114,7 +114,7 @@ tools/octo check examples/agentic-hackathon/meeting-planner/bundle
 可按快速上手文档通过 `OCTO_HUB`、`OCTO_CARD_HOST` 和 `OCTOSENSE_APP_HUB` 选择已准备的运行时。
 
 **当前证据：** App Hub `927f2fe`、Makepad `c155f61d`、Octoscript-Makepad `2cc5ef37` 的 release 构建，
-桌面原生检查 [**48/48** 通过](validation/README.md)，覆盖本地行为和 Agent 不可用路径。
+桌面原生检查 [**51/51** 通过](validation/README.md)，覆盖本地行为和 Agent 不可用路径。
 真实模型回答、Shell Agent 文件读取和 Android 是单独的待验证项。
 发布者身份、支持及隐私网址需参赛者自行填写；未签名示例不是商店提交。
 

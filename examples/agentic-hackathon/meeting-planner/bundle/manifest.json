@@ -18,7 +18,7 @@
   ],
   "id": "demo.meeting-planner",
   "integrity": {
-    "bundle_blake3": "ae79bf670cfa45e5759dc67185cb622af7439dd4e0727b3bf0dc434322e4b74d"
+    "bundle_blake3": "3cf252bfdc542342e3a58ab5a77a6255963ca9f5263854534181f97241556127"
   },
   "name": "Meeting Planner",
   "schema": 1,

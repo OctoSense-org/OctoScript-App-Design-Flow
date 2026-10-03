@@ -15,6 +15,7 @@ let selected = -1
 let page = "plan"
 let busy = false
 let generation = 0
+let question_text = "Which time works for all three, and why?"
 let answer = "Ask the app agent to compare these fictional calendars. It can recommend; the app checks and you confirm."
 let provenance = "No model called"
 let note = "30 minutes / 3 people / one shared time zone."
@@ -99,6 +100,7 @@ fn reset(){
     generation = generation + 1
     state = {version: 1 extra_conflict: false all_busy: false booking: nil activity: []}
     selected = -1; page = "plan"; provenance = "No model called"
+    question_text = "Which time works for all three, and why?"
     answer = "Ask the app agent to compare these fictional calendars. It can recommend; the app checks and you confirm."
     note = "Fictional calendars restored."; save(); refresh()
 }
@@ -106,6 +108,7 @@ fn ask(){
     if busy { return }
     let question = ui.question.text().trim()
     if question == "" { note = "Enter a question first."; ui.notice.set_text(note); return }
+    question_text = question
     save()
     let availability = []
     for i in slots.len() { availability.push({slot: slots[i] conflict: conflict(i)}) }
@@ -220,7 +223,7 @@ SolidView{width: Fill height: Fill flow: Down padding: 16 spacing: 6 draw_bg.col
                 Small{text: "APP AGENT / FAKE CALENDAR"}
                 Heading{text: "Find a time together"}
                 Small{text: "Ask why a slot works, compare alternatives, or explain a conflict. Fictional data goes to your configured provider."}
-                question := Field{text: "Which time works for all three, and why?" empty_text: "Ask about the fictional calendar"}
+                question := Field{text: question_text empty_text: "Ask about the fictional calendar"}
                 ask_agent := Action{text: if busy { "Agent is working…" } else { "Ask app agent" } on_click: || ask()}
                 if busy { stop_agent := Secondary{text: "Stop agent" on_click: || stop()} }
             }

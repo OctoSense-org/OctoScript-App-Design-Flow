@@ -18,6 +18,7 @@ let page = "inbox"
 let only_action = true
 let busy = false
 let generation = 0
+let question_text = "Which emails need a reply?"
 let answer = "Ask this app's agent about a fictional message. Its answer will appear here."
 let provenance = "No model called"
 let note = "Start with a message. Every action stays in this demo."
@@ -108,6 +109,7 @@ fn reset(){
     generation = generation + 1
     state = {version: 1 done: [false, false, false] drafts: ["", "", ""] origins: ["Your draft", "Your draft", "Your draft"] outbox: [] activity: []}
     current = 0; page = "inbox"; only_action = true
+    question_text = "Which emails need a reply?"
     answer = "Ask this app's agent about a fictional message. Its answer will appear here."
     provenance = "No model called"; note = "Fictional inbox restored."; save(); refresh()
 }
@@ -116,8 +118,9 @@ fn ask(drafting){
     let question = ""
     if drafting {
         state.drafts[current] = ui.draft.text(); save()
+        question_text = "Draft a reply to " + messages[current].sender
         question = "Draft a concise reply. Return only the editable reply body, no introduction or Markdown. Never invent availability or claim to have sent anything."
-    } else { question = ui.question.text().trim() }
+    } else { question = ui.question.text().trim(); question_text = question }
     if question == "" { note = "Enter a question first."; ui.notice.set_text(note); return }
     let index = current
     let token = generation + 1
@@ -252,7 +255,7 @@ SolidView{width: Fill height: Fill flow: Down padding: 16 spacing: 6 draw_bg.col
                 Small{text: "APP AGENT / " + messages[current].id}
                 Heading{text: "Ask about this message"}
                 Small{text: "Fictional data goes to your configured provider. The agent proposes; you confirm in the action card."}
-                question := Field{text: "Which emails need a reply?" empty_text: "Ask about the fictional inbox"}
+                question := Field{text: question_text empty_text: "Ask about the fictional inbox"}
                 ask_agent := Action{text: if busy { "Agent is working…" } else { "Ask app agent" } on_click: || ask(false)}
                 if busy { stop_agent := Secondary{text: "Stop agent" on_click: || stop()} }
             }
