@@ -123,6 +123,9 @@ Math is bare too: `floor ceil round abs min max clamp pow sqrt sin cos …`
 The app's jail (`<app-data>/<id>/`; in `card-host` `<app>/.local-state/<id>/`).
 Paths are relative to it; a leading `/` means the jail root; `..` above the
 root is an error; symlinks are refused (`MP/widgets/src/splash_storage.rs`).
+Only an app granted `storage` has a jail. Without it every call below errors
+with `storage not available in this context` (see
+[CAPABILITIES](CAPABILITIES.md)).
 
 | Call | Returns | |
 | --- | --- | --- |
