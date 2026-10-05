@@ -90,6 +90,21 @@ Rust、Splash 与 L0 应用的差别、跨应用工具限制、运行时版本�
 [flows/README.md](flows/README.zh-CN.md#每个流程都遵循同一份约定) 中。Agent
 绝不伪造批准、审核结果或提交记录。
 
+### AppCard UX 技能
+
+设计或验收 Glance 应用卡片时，使用
+[octoscript-app-card-ux](skills/octoscript-app-card-ux/SKILL.md)。它补充摘要 →
+展开卡片 → 完整工作区的任务流程、Chat／编辑／审核共用状态、键盘和滚动检查，
+以及保留指定模型创作归属的修复循环。验收矩阵区分本地行为、真实 Agent 执行、
+外部业务效果和视觉批准，历史分数不能代替新卡片的验收。
+
+任何编程 Agent 都可以配合所选流程直接阅读该技能。需要 Codex 自动发现时，
+把整个 `skills/octoscript-app-card-ux` 目录复制到自己的 Codex skills 目录，
+再在加载了该目录的会话中使用：`用 $octoscript-app-card-ux 设计并验收这个应用卡片。`
+采用后续修订时同步更新已安装的副本。该技能不会给手机系统／应用 Agent 自动配置
+指令，也不替代 App Hub 发布检查。它适配所选运行时、作者和设备；DeepSeek、
+MiniMax 和 OnePlus 6 是历史案例，不是每个应用的固定要求。
+
 ## 现状
 
 脚本应用依赖的工作已于 2026-09-26 合入各仓库的 `main`；请使用各仓库的 `main`。

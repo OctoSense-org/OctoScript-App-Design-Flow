@@ -48,6 +48,10 @@ patch around it here.
    review and focused repair. Check populated startup state, not just admission
    or open success. Keep behavior, geometry and visual judgments separate;
    preserve failures and distinguish operator-run checks from model-run checks.
+   For new Glance cards or card UX acceptance, also use
+   [the app-card UX skill](skills/octoscript-app-card-ux/SKILL.md): summary-to-workspace
+   transitions, shared editing state, keyboard/scrolling checks and source-bound
+   acceptance. This is a development workflow, not runtime app-agent provisioning.
 
 ## Rules for every app
 

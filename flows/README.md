@@ -12,6 +12,11 @@ by what you have. Run every command from the repository root.
 | A licensed Sketch design kit | [kits/sketch](kits/sketch/FLOW.md) | A **theme kit** (native L0 components and themes). Not an app | Consumed by the other flows and by Octoscript-Makepad |
 | An existing app in this repository | its `examples/<name>/README.md`; see [examples/](../examples/README.md) | Whatever that example records | As recorded per example |
 
+For Glance app cards, pair the chosen flow with the
+[app-card UX skill](../skills/octoscript-app-card-ux/SKILL.md). It covers usable
+presentation depths, host workspace/Chat integration and evidence-based UX
+acceptance. It supplements the flow; it does not replace its publishing gates.
+
 Supporting code, not flows:
 
 - [core/](core/README.md): policy, review packets, repair, Studio bridge,

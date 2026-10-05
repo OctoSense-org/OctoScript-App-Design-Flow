@@ -11,6 +11,10 @@
 | 一套已获授权的 Sketch 设计套件 | [kits/sketch](kits/sketch/FLOW.md) | 一个**主题套件**（原生 L0 组件和主题）。不是应用 | 供其他流程和 Octoscript-Makepad 使用 |
 | 本仓库中已有的应用 | 它的 `examples/<name>/README.md`；见 [examples/](../examples/README.zh-CN.md) | 该示例所记录的内容 | 以各示例的记录为准 |
 
+Glance 应用卡片还应配合
+[AppCard UX 技能](../skills/octoscript-app-card-ux/SKILL.md)，检查各层展示、宿主
+工作区／Chat 集成，并凭实际证据验收。该技能补充所选流程，不替代发布检查。
+
 以下是支撑代码，不是流程：
 
 - [core/](core/README.md)：所有流程共用的策略、评审包、修复、Studio 桥接、组合与检查门；
