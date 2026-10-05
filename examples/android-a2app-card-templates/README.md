@@ -8,11 +8,17 @@ card and a native Splash app with glance, expanded and full-app views. The curre
 snapshots preserve **50 model-authored files byte for byte**, with source replay,
 original device captures and recorded native interactions.
 
-A separate reviewing agent gives each **offline prototype 4.5/5 overall and
+A separate reviewing agent gave the archived **offline prototypes 4.5/5 overall and
 4.4/5 visually**. The overall A− target is met; visual polish alone remains below
 it. These are editorial artifact reviews, not human/store approval or a general
 model ranking. Local state demonstrations do not send real mail, fetch live
 prices, load photos or play videos.
+
+The later [OnePlus 6 workspace review](continuations/deepseek/workspace-ux-20261005/README.md)
+found clipped Photo/YouTube explanations. Android DeepSeek corrected both after
+viewing the phone captures; exact replacement sources and before/after evidence
+are preserved separately. The historical score above is not acceptance of the
+current integrated workspace and is not a new 9/10 rating.
 
 ## Current collections
 
