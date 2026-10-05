@@ -12,7 +12,8 @@ DeepSeek 和 MiniMax 各自在 Android 上编写了邮件、日历、新闻、�
 排名。本地状态演示不真正发送邮件、获取实时价格、加载照片或播放视频。
 
 后续 [OnePlus 6 工作区评审](continuations/deepseek/workspace-ux-20261005/README.zh-CN.md)
-发现照片和 YouTube 的说明被截断。Android DeepSeek 看过手机截图后完成修改，
+发现照片和 YouTube 的说明被截断，以及完整应用导航溢出。Android DeepSeek
+看过手机截图后完成修改。[MiniMax 也修正了邮件 L1 Reply 路由](continuations/minimax/workspace-ux-20261005/README.zh-CN.md)。
 替代源码及修改前后证据单独保留。上面的历史分数不代表当前集成工作区通过验收，
 也不是新一轮 9/10 评分。
 

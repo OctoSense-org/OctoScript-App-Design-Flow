@@ -1,0 +1,246 @@
+// YouTube Cards — native interactive preview of the YOUTUBE card template.
+// Presentation depths: L0 compact glance / L1 expanded actionable / L2 full app.
+//
+// HONEST MEDIA: this offline Studio slice has no video/player route. The video is
+// shown as a concise non-interactive unavailable state — there is NO play button,
+// so no playback is implied. Metadata and the watch-later choice are the local,
+// functional content. Layout: nav + status pinned at TOP; card scrolls below.
+
+let depth = "glance"
+let view_state = "ready"
+let show_states = false
+let tab = "feed"
+let detail_open = false
+let open_id = ""
+let w_a = false
+let w_b = false
+let w_c = false
+
+let NavBtn = ButtonFlat{height: 44 padding: 6 draw_bg +: {color: #xedecec color_hover: #xe2e0e0 color_down: #xd6d3d3} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430 text_style +: {font_size: 11}}}
+let AccentBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xe22b2b color_hover: #xef3b3b color_down: #xcb2222} draw_text +: {color: #xffffff color_hover: #xffffff color_down: #xffffff}}
+let GhostBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xffffff color_hover: #xf0f4f8 color_down: #xe6ecf3} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+let OpenBtn = ButtonFlat{height: 44 width: 108 padding: 8 draw_bg +: {color: #xedecec color_hover: #xe2e0e0 color_down: #xd6d3d3} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+
+fn depth_name(){
+    if depth == "glance" { return "L0 glance" }
+    if depth == "expand" { return "L1 expanded" }
+    return "L2 app"
+}
+fn name_of(id){
+    if id == "synth" { return "Synth patch walkthrough" }
+    if id == "desk" { return "Desk setup tour 2026" }
+    return "Lo-fi build session · 42 min"
+}
+fn meta_of(id){
+    if id == "synth" { return "Circuit Beats · 92K views · 1 week ago" }
+    if id == "desk" { return "Study Corner · 3.1M views · 2 months ago" }
+    return "Circuit Beats · 184K views · 3 days ago"
+}
+fn is_saved(id){
+    if id == "synth" { return w_b }
+    if id == "desk" { return w_c }
+    return w_a
+}
+fn later_label(id){
+    if is_saved(id) { return "In Watch later ✓" }
+    return "Watch later"
+}
+fn saved_count(){
+    let n = 0
+    if w_a { n = n + 1 }
+    if w_b { n = n + 1 }
+    if w_c { n = n + 1 }
+    return n
+}
+
+fn refresh_nav(){
+    let s = "YouTube Cards   ·   " + depth_name() + "   ·   " + view_state + "   ·   watch later: " + saved_count()
+    ui.depth_status.set_text(s)
+    if depth == "glance" { ui.d_gl.set_text("• Glance") } else { ui.d_gl.set_text("Glance") }
+    if depth == "expand" { ui.d_ex.set_text("• Expand") } else { ui.d_ex.set_text("Expand") }
+    if depth == "app" { ui.d_ap.set_text("• Open app") } else { ui.d_ap.set_text("Open app") }
+}
+fn toggle_states(){
+    if show_states { show_states = false } else { show_states = true }
+    if show_states { ui.states_btn.set_text("States ▾") } else { ui.states_btn.set_text("States ▸") }
+    ui.states_row.set_visible(show_states)
+}
+
+fn set_depth(d){ depth = d detail_open = false refresh_nav() ui.stage.render() }
+fn set_state(s){ view_state = s refresh_nav() ui.stage.render() }
+fn set_tab(t){ tab = t detail_open = false refresh_nav() ui.stage.render() }
+fn open_detail(id){ open_id = id detail_open = true ui.stage.render() }
+fn close_detail(){ detail_open = false ui.stage.render() }
+fn toggle_save(id){
+    if id == "synth" { if w_b { w_b = false } else { w_b = true } }
+    elif id == "desk" { if w_c { w_c = false } else { w_c = true } }
+    else { if w_a { w_a = false } else { w_a = true } }
+    refresh_nav() ui.stage.render()
+}
+
+fn boot(){ refresh_nav() ui.states_row.set_visible(false) ui.stage.render() }
+
+start_timeout(0.05, || boot())
+
+SolidView{width: Fill height: Fill flow: Down padding: 12 spacing: 8 draw_bg.color: #xf5f4f4
+    // Title folded into the consolidated status line below (density).
+    depth_status := Label{width: Fill height: Fit text: "Depth: L0 glance   ·   state: ready   ·   watch later: 0" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}
+    View{width: Fill height: Fit flow: Right spacing: 8
+        d_gl := NavBtn{text: "• Glance" on_click: || set_depth("glance")}
+        d_ex := NavBtn{text: "Expand" on_click: || set_depth("expand")}
+        d_ap := NavBtn{text: "Open app" on_click: || set_depth("app")}
+        View{width: Fill height: Fit}
+        states_btn := NavBtn{text: "States ▸" on_click: || toggle_states()}
+    }
+    states_row := View{width: Fill height: Fit flow: Right spacing: 8
+        NavBtn{text: "Ready" on_click: || set_state("ready")}
+        NavBtn{text: "Loading" on_click: || set_state("loading")}
+        NavBtn{text: "Empty" on_click: || set_state("empty")}
+        NavBtn{text: "Error" on_click: || set_state("error")}
+    }
+
+    ScrollYView{width: Fill height: Fill flow: Down spacing: 8
+        stage := RoundedView{width: Fill height: Fit flow: Down padding: 14 spacing: 8 draw_bg.color: #xffffff draw_bg.radius: 16 on_render: || {
+
+            // ---------- L0 · compact glance ----------
+            if depth == "glance" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    Label{text: "YOUTUBE" draw_text.color: #xe22b2b draw_text.text_style.font_size: 12}
+                    View{width: Fill height: Fit}
+                    Label{text: "3d" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}
+                }
+                if view_state == "loading" { Label{text: "Loading…" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }
+                if view_state == "empty" { Label{text: "No videos" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }
+                if view_state == "error" { Label{width: Fill height: Fit text: "Couldn't load videos — demo error state" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }
+                if view_state == "ready" {
+                    RoundedView{width: Fill height: 84 flow: Down padding: 12 spacing: 4 draw_bg.color: #xeef0f2 draw_bg.radius: 12
+                        Label{text: "VIDEO UNAVAILABLE" draw_text.color: #x6b7280 draw_text.text_style.font_size: 12}
+                        Label{width: Fill height: Fit text: "Can't play in this demo" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}
+                    }
+                    Label{width: Fill height: Fit text: "Lo-fi build session · 42 min" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{text: "Circuit Beats · 184K views" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        AccentBtn{text: later_label("lofi") on_click: || toggle_save("lofi")}
+                    }
+                }
+            }
+
+            // ---------- L1 · expanded actionable ----------
+            if depth == "expand" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    Label{text: "YOUTUBE" draw_text.color: #xe22b2b draw_text.text_style.font_size: 11}
+                    View{width: Fill height: Fit}
+                    Label{text: "3d" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}
+                }
+                if view_state == "loading" { Label{text: "Loading…" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }
+                if view_state == "empty" { Label{text: "No videos" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }
+                if view_state == "error" { Label{width: Fill height: Fit text: "Couldn't load videos — demo error state" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }
+                if view_state == "ready" {
+                    RoundedView{width: Fill height: 84 flow: Down padding: 12 spacing: 4 draw_bg.color: #xeef0f2 draw_bg.radius: 12
+                        Label{text: "VIDEO UNAVAILABLE" draw_text.color: #x6b7280 draw_text.text_style.font_size: 13}
+                        Label{width: Fill height: Fit text: "Video can't play in this offline demo." draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}
+                    }
+                    Label{width: Fill height: Fit text: "Lo-fi build session · 42 min" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{text: "Circuit Beats · 184K views · 3 days ago" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                    Label{width: Fill height: Fit text: "Demo description: building a lo-fi track layer by layer." draw_text.color: #x1c2430 draw_text.text_style.font_size: 14 draw_text.wrap: true}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        AccentBtn{text: later_label("lofi") on_click: || toggle_save("lofi")}
+                        NavBtn{text: "Open app" on_click: || set_depth("app")}
+                    }
+                }
+            }
+
+            // ---------- L2 · full app (feed / watch later) ----------
+            if depth == "app" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    if tab == "feed" {
+                        AccentBtn{text: "Feed" width: 104 on_click: || set_tab("feed")}
+                        NavBtn{text: "Watch later" width: 126 on_click: || set_tab("later")}
+                    }
+                    if tab == "later" {
+                        NavBtn{text: "Feed" width: 104 on_click: || set_tab("feed")}
+                        AccentBtn{text: "Watch later" width: 126 on_click: || set_tab("later")}
+                    }
+                }
+                SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}
+                if detail_open {
+                    RoundedView{width: Fill height: 84 flow: Down padding: 12 spacing: 4 draw_bg.color: #xeef0f2 draw_bg.radius: 12
+                        Label{text: "VIDEO UNAVAILABLE" draw_text.color: #x6b7280 draw_text.text_style.font_size: 13}
+                        Label{width: Fill height: Fit text: "Video can't play in this offline demo." draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}
+                    }
+                    Label{width: Fill height: Fit text: name_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{width: Fill height: Fit text: meta_of(open_id) draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        AccentBtn{text: later_label(open_id) on_click: || toggle_save(open_id)}
+                        NavBtn{text: "‹ Back" on_click: || close_detail()}
+                    }
+                }
+                if detail_open == false {
+                    if tab == "feed" {
+                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                            Label{width: Fill height: Fit text: "Lo-fi build session · 42 min" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            Label{width: Fill height: Fit text: "Circuit Beats · 184K views" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                NavBtn{text: later_label("lofi") on_click: || toggle_save("lofi")}
+                                OpenBtn{text: "Open ›" on_click: || open_detail("lofi")}
+                            }
+                        }
+                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                            Label{width: Fill height: Fit text: "Synth patch walkthrough" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            Label{width: Fill height: Fit text: "Circuit Beats · 92K views" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                NavBtn{text: later_label("synth") on_click: || toggle_save("synth")}
+                                OpenBtn{text: "Open ›" on_click: || open_detail("synth")}
+                            }
+                        }
+                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                            Label{width: Fill height: Fit text: "Desk setup tour 2026" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            Label{width: Fill height: Fit text: "Study Corner · 3.1M views" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                NavBtn{text: later_label("desk") on_click: || toggle_save("desk")}
+                                OpenBtn{text: "Open ›" on_click: || open_detail("desk")}
+                            }
+                        }
+                    }
+                    if tab == "later" {
+                        Label{width: Fill height: Fit text: "Watch later · " + saved_count() draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                        if saved_count() == 0 {
+                            Label{text: "Nothing saved yet" draw_text.color: #x8a8a8e draw_text.text_style.font_size: 15}
+                        }
+                        if w_a {
+                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                                Label{width: Fill height: Fit text: "Lo-fi build session · 42 min" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                                Label{width: Fill height: Fit text: "Circuit Beats · 184K views" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                                View{width: Fill height: Fit flow: Right spacing: 8
+                                    NavBtn{text: "In Watch later ✓" on_click: || toggle_save("lofi")}
+                                    OpenBtn{text: "Open ›" on_click: || open_detail("lofi")}
+                                }
+                            }
+                        }
+                        if w_b {
+                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                                Label{width: Fill height: Fit text: "Synth patch walkthrough" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                                Label{width: Fill height: Fit text: "Circuit Beats · 92K views" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                                View{width: Fill height: Fit flow: Right spacing: 8
+                                    NavBtn{text: "In Watch later ✓" on_click: || toggle_save("synth")}
+                                    OpenBtn{text: "Open ›" on_click: || open_detail("synth")}
+                                }
+                            }
+                        }
+                        if w_c {
+                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                                Label{width: Fill height: Fit text: "Desk setup tour 2026" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                                Label{width: Fill height: Fit text: "Study Corner · 3.1M views" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                                View{width: Fill height: Fit flow: Right spacing: 8
+                                    NavBtn{text: "In Watch later ✓" on_click: || toggle_save("desk")}
+                                    OpenBtn{text: "Open ›" on_click: || open_detail("desk")}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }}
+    }
+}

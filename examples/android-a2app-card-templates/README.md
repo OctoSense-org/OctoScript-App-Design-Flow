@@ -15,9 +15,11 @@ model ranking. Local state demonstrations do not send real mail, fetch live
 prices, load photos or play videos.
 
 The later [OnePlus 6 workspace review](continuations/deepseek/workspace-ux-20261005/README.md)
-found clipped Photo/YouTube explanations. Android DeepSeek corrected both after
-viewing the phone captures; exact replacement sources and before/after evidence
-are preserved separately. The historical score above is not acceptance of the
+found clipped Photo/YouTube explanations and overflowing full-app navigation.
+Android DeepSeek corrected them after viewing the phone captures. Android
+[MiniMax also corrected Mail's L1 Reply route](continuations/minimax/workspace-ux-20261005/README.md).
+Exact replacement sources and before/after evidence are preserved separately.
+The historical score above is not acceptance of the
 current integrated workspace and is not a new 9/10 rating.
 
 ## Current collections

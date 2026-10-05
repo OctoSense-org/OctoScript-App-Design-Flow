@@ -1,4 +1,4 @@
-# 手机工作区说明文字修正
+# 手机工作区说明文字与导航修正
 
 [English](README.md) | 简体中文
 
@@ -7,9 +7,25 @@ YouTube 卡片的离线数据说明被截断。Android 上的 DeepSeek v4 flash 
 `view_image` 读取两张真实手机截图，把对应说明设置为 `width: .fill`。
 操作员提供反馈并原样复制模型输出，没有修改生成源码。
 
-这两个文件只替代[第 12 轮](../turn-12/README.zh-CN.md)中对应的
-`glance.card`；数据和 Splash 应用不变。[来源记录](provenance.json)保存两次
-成功的模型修改以及原文件、输出文件的 SHA-256，不包含凭据或私有推理。
+两个 `.glance.card` 文件替代[第 12 轮](../turn-12/README.zh-CN.md)中对应的
+`glance.card`；六个 `.main.splash` 替代各类型的 `bundle/main.splash`。
+输入数据和其余安装包文件不变。[来源记录](provenance.json)保存成功的模型修改
+以及原文件、输出文件的 SHA-256，不包含凭据或私有推理。
+
+深色 Paper 宿主还暴露出六个 Splash 程序的导航按钮截断。DeepSeek 看真实截图后
+给出第一次字体修改，操作员复查发现 States 仍被截断，遂把新截图退回模型。
+第二次 Android 输出把 `NavBtn` 改为明确的 11 点字体、6 点内边距，保留 44 点
+高度，四个按钮已在 OnePlus 6 完整显示。两次连续修改都保留并可重放；第一次
+未达标的输出不计为通过。
+
+导航证据：[原始](screenshots/navigation-before.png)、
+[第一次修正](screenshots/navigation-first-attempt.png)、最终
+[邮件](screenshots/mail-navigation-after.png)、
+[日历](screenshots/calendar-navigation-after.png)、
+[新闻](screenshots/news-navigation-after.png)、
+[财经](screenshots/finance-navigation-after.png)、
+[照片](screenshots/photo-navigation-after.png)、
+[YouTube](screenshots/youtube-navigation-after.png)。
 
 复测截图显示，点击收藏或稍后观看后，完整说明可以换行显示。收起并重新打开
 仍保留本地选项，宿主 Chat 输入框在 Android 键盘弹出后仍可操作。卡片继续
@@ -20,7 +36,8 @@ YouTube 卡片的离线数据说明被截断。Android 上的 DeepSeek v4 flash 
 | 照片 | [文字被截断](screenshots/photo-before.png) | [完整换行](screenshots/photo-after.png) |
 | YouTube | [文字被截断](screenshots/youtube-before.png) | [完整换行](screenshots/youtube-after.png) |
 
-验证使用 OctoSense 独立 Android 验收包，版本 `2026100503`，基于
+验证使用 OctoSense 独立 Android 验收包：说明文字为 `2026100503`，导航为
+`2026100504`，基于
 `a2a0524d` 加工作区验收修改。在本目录已执行以下来源验证命令：
 
 ```sh
