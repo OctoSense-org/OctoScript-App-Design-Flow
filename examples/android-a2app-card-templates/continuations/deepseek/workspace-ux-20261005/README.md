@@ -3,12 +3,12 @@
 English | [简体中文](README.zh-CN.md)
 
 On 2026-10-05, Glance workspace acceptance on a OnePlus 6 found that the
-DeepSeek Photo and YouTube cards clipped their offline-data explanation.
-DeepSeek v4 flash read both actual phone screenshots with `view_image` on
-Android and changed each caption to `width: .fill`. The operator provided
+DeepSeek Photo, YouTube and News cards clipped their offline-data explanation.
+DeepSeek v4 flash read actual phone screenshots with `view_image` on
+Android and changed all six families' explanation captions to `width: .fill`. The operator provided
 feedback and copied the resulting files without editing their source.
 
-The two `.glance.card` files supersede the corresponding `glance.card` files in
+The six `.glance.card` files supersede the corresponding `glance.card` files in
 [turn 12](../turn-12/README.md). The six `.main.splash` files replace their
 families' `bundle/main.splash`; all fixture data and other bundle files remain
 unchanged.
@@ -33,7 +33,7 @@ Navigation evidence: [before](screenshots/navigation-before.png),
 [YouTube](screenshots/youtube-navigation-after.png).
 
 The follow-up phone captures below show the complete explanation after the
-Favorite / Watch later action. Collapse/reopen preserved that local choice;
+Favorite / Watch later / Save actions. Collapse/reopen preserved the local choices;
 the host's Chat composer remained reachable with the Android keyboard.
 The cards still use fictional data and cannot load media or perform external
 actions. This correction does not establish a new overall UX score.
@@ -42,9 +42,17 @@ actions. This correction does not establish a new overall UX score.
 | --- | --- | --- |
 | Photos | [Clipped caption](screenshots/photo-before.png) | [Wrapped caption](screenshots/photo-after.png) |
 | YouTube | [Clipped caption](screenshots/youtube-before.png) | [Wrapped caption](screenshots/youtube-after.png) |
+| News | [Clipped caption](screenshots/news-before.png) | [Wrapped caption](screenshots/news-after.png) |
+
+Mail, Calendar and Finance had the same unbounded caption pattern. DeepSeek
+made that same minimal correction; their local actions and collapse/reopen were
+retested along with News. A locked-screen background network restriction caused
+failed requests before the final successful Android model turn; they produced
+no imported edits.
 
 Verified on OctoSense's isolated Android acceptance package, build
-`2026100503` for captions and `2026100504` for navigation, based on `a2a0524d`
+`2026100503` for Photo/YouTube captions and `2026100504` for the remaining captions
+and navigation, based on `a2a0524d`
 plus the workspace acceptance changes.
 From this directory, the executed source verification command is:
 
