@@ -502,7 +502,7 @@ What an app author can do today:
   so do not use a field the shells' pin does not know.
 - This repository's `card-host` and `card-studio` are built against the
   runtime its [`native-runtime.lock.json`](../native-runtime.lock.json)
-  pins: Octoscript-Makepad `2cc5ef37`, which pins Octoscript `5991dfae`,
+  pins: Octoscript-Makepad `aa80f72c`, which pins Octoscript `2e37d9e6`,
   the shells' pin. It has `sys.digest`, `model-copy` in text slots,
   `sys.chat` and `ChatEntry` (OctoScript #40, #53).
 
@@ -1009,7 +1009,7 @@ on your glance screen".
 The L0 source is **available**: merged as
 [OctoScript#40](https://github.com/OctoSense-org/OctoScript/pull/40),
 repinned by [OctoScript-Makepad#50](https://github.com/OctoSense-org/OctoScript-Makepad/pull/50),
-and in the shells' runtime pin (Octoscript `5991dfae`). The shell filling it
+and in the shells' runtime pin (Octoscript `2e37d9e6`). The shell filling it
 is **coming**: [OctoSense#87](https://github.com/OctoSense-org/OctoSense/pull/87)
 (open; `crates/shell/src/glance_digest.rs`). A digest's `summary` and its
 points' `text` and `label` are model text, shown marked AI-written
@@ -1088,7 +1088,7 @@ view root  Surface(pad: .page) {
 (Its header comment is shortened here.) The shells' L0 checker admits
 `sys.digest`; until #87 lands no shell fills it from the toolbox's runs
 (what such a card then shows was not run for this page). This repository's
-pinned runtime (Octoscript `5991dfae`) includes OctoScript#40, so its
+pinned runtime (Octoscript `2e37d9e6`) includes OctoScript#40, so its
 checker knows the source as well (not run for this page).
 
 ## AI-written text and in-card chat: `model-copy`, `sys.chat`
