@@ -25,6 +25,16 @@ the first-party apps moved to OctoSense-System-Apps and, since 2026-09-27,
 live in [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
 (OctoSense-System-Apps is archived and no longer public).
 
+## Connected apps: GitHub, Gmail and Google Calendar
+
+[Three development samples](examples/connected-apps/README.md) use shared
+provider login without creating an OctoSense account: Rinx-backed GitHub Notes,
+Inbox Assistant and Google Calendar. Their guide gives exact app IDs, matching
+host/tool revisions and native evidence. Provider services require the new
+connected-services OctoSense build; standalone `card-host` is insufficient for
+live login, and it lacks the native Markdown editor. Live provider/model and
+phone acceptance remain pending; Android Google login needs its native adapter.
+
 ## Code walkthrough
 
 [docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md) follows the Python CLI

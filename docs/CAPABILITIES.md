@@ -21,6 +21,35 @@ below as of App Hub `79a2c4f`; the `research`, `crawl`, `prompt` and `agent` row
 Ask for the least the app needs; the scan asks the reviewer to "name any grant
 nothing on screen needs".
 
+## Connected-provider additions
+
+App Hub `eaaffffd695caf7ebf6205c455377c1f8567b906` adds `auth`, `github`,
+`gcalendar` and `gmail`. They are for ordinary store apps, with matching
+OctoSense `feat/app-hub-connected-samples` host implementations. `auth` manages
+provider consent and opaque app-bound accounts; the other capabilities grant
+GitHub, Google Calendar or Gmail business operations. `auth` alone grants no
+mail, calendar or repository data. No OctoSense cloud account is required.
+
+Use `storage.accounts: true` for these account-bound peers. Google scope aliases
+such as `mail.read`, `mail.send`, `calendar.list` and `calendar.events` belong in
+`auth.connect`; they are separate from manifest capabilities. Do not add
+provider API hosts to `network.hosts` when all requests go through these native
+services. Declare only what the app calls. See the [sample bundles](../examples/connected-apps/README.md)
+and [host setup guide](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/crates/oauth-service/README.md).
+
+A tool's `host_method` mapping needs the target service capability, a reviewed
+method, sufficient risk and its required `private_data` declaration. It is not
+a wildcard for arbitrary service calls. The shell loads admitted `AGENT.md`
+and skill text as trusted turn guidance. The connected Gmail collector supports
+its declared `<app namespace>.new_message` event with account/agent consent;
+this does not establish generic scheduling or trigger support on older shells.
+Standalone `card-host` provides neither OAuth nor the peer runtime. Live
+provider/phone tests remain pending; Android Google authorization is unsupported
+until its native adapter is implemented.
+
+The table below retains its earlier dated capability descriptions; use this
+section and the linked guide for the four provider additions.
+
 ## The list
 
 | Capability | Unlocks | The person sees (store) | Rules and runtime behavior |
@@ -67,7 +96,7 @@ consent; a prefix (`octos.`, `matrix.`) or any other name is refused.
 | `storage.max_bytes` | Whole-jail quota | 16 MiB / 64 MiB |
 | `compute.instruction_budget` | Script instructions per session, cumulative | 20 000 000 / 4 000 000 000 |
 | `compute.memory_bytes` | Isolate heap | 64 MiB / 128 MiB |
-| `agent` | The app's own agent: `profile` one of `read-only`, `workspace-write`, `workspace-write-never-ask`; `tools` from `ledger.read ledger.write net.fetch storage.read storage.write card.render` and the kernel's `ask_user_question` (no other kernel tool); iterations ≤ 8, tokens ≤ 200 000; `model` needs and tier, `background`, `triggers`, `instructions` (`AGENT.md`) and `skills`. The person sees "Runs an assistant limited to this app's own data…" (or "Runs no assistant."). The OctoSense shells give a declared agent its own peer once the person allows it, with `ask_user_question` and read tools over its account folder; they do not yet choose its model, fire its triggers, install `AGENT.md` or skills, or implement the generic host tools. See [AI-SERVICES](AI-SERVICES.md#an-apps-own-agent). | – |
+| `agent` | The app's own agent: `profile` one of `read-only`, `workspace-write`, `workspace-write-never-ask`; `tools` from `ledger.read ledger.write net.fetch storage.read storage.write card.render` and the kernel's `ask_user_question` (no other kernel tool); iterations ≤ 8, tokens ≤ 200 000; `model` needs and tier, `background`, `triggers`, `instructions` (`AGENT.md`) and `skills`. The person sees "Runs an assistant limited to this app's own data…" (or "Runs no assistant."). The OctoSense shells give a declared agent its own peer once the person allows it, with `ask_user_question` and read tools over its account folder; the dated baseline here does not provide all requested features. The connected-services branch loads admitted guidance and supports the bounded Gmail event route described above; generic host tools/scheduling are not implied. See [AI-SERVICES](AI-SERVICES.md#an-apps-own-agent). | – |
 | `storage.accounts` | `true`: data and one agent per account; default one `device` folder | – |
 | `storage.agent_workspace` | `"account"` (default): the agent reads its account's folder; `"none"`: no files | – |
 | `storage.cache_max_bytes` | Ceiling for the jail's `cache/` | – |

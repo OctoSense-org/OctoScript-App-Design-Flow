@@ -1,0 +1,19 @@
+{
+  "result": "pass for the recorded consent/cancel/account-selection scenario only",
+  "reviewer": "Codex",
+  "method": "Individual original native PNG inspection and decoded-RGB retained-ink assertions",
+  "observed": [
+    "Host consent shows requested public-repository scopes",
+    "Host sheet itself shows missing-registration error",
+    "Both cancellation paths retain exact Unicode note",
+    "Host active account B is visibly selected",
+    "Returning to the note retains content and local destination"
+  ],
+  "limits": [
+    "No live OAuth registration or account",
+    "Account fixtures contain metadata only, with no scopes or credentials",
+    "No remote repository read, commit or physical approval",
+    "Not a full UX score or cross-platform acceptance"
+  ],
+  "receipt": "receipt.json"
+}

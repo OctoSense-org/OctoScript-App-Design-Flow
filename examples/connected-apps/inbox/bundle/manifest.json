@@ -1,0 +1,42 @@
+{
+  "agent": {
+    "background": true,
+    "instructions": "AGENT.md",
+    "model": {
+      "needs": [
+        "tool_calling"
+      ]
+    },
+    "profile": "read-only",
+    "skills": [
+      "incoming-mail-triage"
+    ],
+    "tools": [
+      "ask_user_question"
+    ],
+    "triggers": {
+      "events": [
+        "inbox.new_message"
+      ]
+    }
+  },
+  "capabilities": [
+    "storage",
+    "auth",
+    "gmail",
+    "model",
+    "glance",
+    "octos.session.open",
+    "octos.turn.start"
+  ],
+  "id": "org.octosense.samples.inbox",
+  "integrity": {
+    "bundle_blake3": "0b005c320205df3b59f61174f717a11456f3534e577cd49c30fd70eb4c1bca5e"
+  },
+  "name": "Inbox Assistant",
+  "schema": 1,
+  "storage": {
+    "accounts": true
+  },
+  "version": "0.1.0"
+}

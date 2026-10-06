@@ -1,0 +1,81 @@
+{
+  "case": "Native OAuth consent, missing host registration, cancellation and draft retention",
+  "result": "pass",
+  "platform": "macOS hidden native window",
+  "external_sign_in": "not attempted; no provider registration or account",
+  "binary_sha256": "17e414f258ea820f4e167d316598678518de6fe2bdfe6afc8898a74a97bc1303",
+  "source_sha256": {
+    "OctoSense/tools/check-connected-oauth.py": "691a1e257bae1eb85e5fc5ac39b64d738373587f8554c7da7be23aa31babfea8",
+    "OctoSense/crates/shell/examples/connected-app-host.rs": "e91ac8d89c0aaa9ea0a443781583d5b99beff9de310b372e0378471a6207e40b",
+    "OctoSense/crates/markdown-editor/src/lib.rs": "5081d03ecedff31ffef1f1a71c9d545a1803b086dd638383504990cd1cd544a4",
+    "OctoSense/runtime-patches.lock.json": "b61d301259b755603fca21257b77c5a38be1a5bce3e2b65016387258f5d1ffe3",
+    "OctoSense/Cargo.lock": "dc39e58e834d6ec2e5f6699cc5ed8b84ad423a80136b472732aa52a1d4a29f3b",
+    "OctoSense/crates/oauth-service/src/api.rs": "c173b0c78ffdd0fa2ce0eb63e93d0e2f9aad52983d8fb692bb4c7c3a76543aae",
+    "OctoSense/crates/oauth-service/src/api_tests.rs": "3e96b6c129220baa5bb1d81c6992430f7504ec549db9a8c73aa6eb20f74176fd",
+    "OctoSense/crates/oauth-service/src/authorize.rs": "e7bc663d773728e64a801ec6c1bd2aa0fa28df336a9484f4095fbcdc2c26163d",
+    "OctoSense/crates/oauth-service/src/calendar_cache.rs": "035dd21be1012c61d3a7dee93126f6e745d8ea917abac0e40f333048f78e3c63",
+    "OctoSense/crates/oauth-service/src/host.rs": "ec5f9d5720f2aeadf647472c7dc7c9e12130f4699f54182be30f7027c2567583",
+    "OctoSense/crates/oauth-service/src/host_api.rs": "8875fdfb691831e4e253c7d65769b47db5fa8538f9fd050cdf0e274eca9b452f",
+    "OctoSense/crates/oauth-service/src/host_inbox.rs": "7cd1ed1ea488ab39de96bd67fb5e58a7dbe9dbaf73fcc73df47df8902e3a2881",
+    "OctoSense/crates/oauth-service/src/inbox.rs": "1310a30b6e50a36c97c811499a01c45653a3a4f303a8b97617edaec012e1c1be",
+    "OctoSense/crates/oauth-service/src/inbox_events.rs": "967bf1895dd2328d4f9f4793b52352c2eb3344806acaa396a5564c7b0006cfdf",
+    "OctoSense/crates/oauth-service/src/lib.rs": "6a6c3e76c0e32540124d897edbc8069187f0e52405db3496d01d6ab5f6557dee",
+    "OctoSense/crates/oauth-service/src/oauth.rs": "3dbe3d770b28cad780d988a7853594adb67cfc29c15a4e8842c2dd7dc8331ffb",
+    "OctoSense/crates/oauth-service/src/providers.rs": "11fe35880cd6a64194d99e2ab74b052a125f12cfc5de1127e9d8dffbe4102b8e",
+    "OctoSense/crates/oauth-service/src/store.rs": "8c8d708a21603c77862fc1d0f15ceb7fd7969d9801c1f4eeac42addd3d003c0b",
+    "OctoSense/crates/oauth-service/src/transport.rs": "1db7518fa5ed853412e2bdddb836d45266c21f9a793d82e3351e7eabaa5d5960",
+    "OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle/main.splash": "274385b0970581978b3dcfa8380b54c6b2c1ac354c6e16e39c33ad9bb72bcfef",
+    "OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle/manifest.json": "5c2b847a03e11fa8dfd718aa07fa17de862a1f5bd5bccc95814fa4514ac6fa47",
+    "OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle/tools.json": "768ab5450ab763cc2d67b60eb7d4f50e13662c028936db26694df9996230ab1a"
+  },
+  "bundle_manifest_sha256": "5c2b847a03e11fa8dfd718aa07fa17de862a1f5bd5bccc95814fa4514ac6fa47",
+  "driver": "Codex via native Makepad instrument; no physical approval",
+  "steps": [
+    "click Markdown",
+    "click Repository",
+    "click Connect public repositories",
+    "click Continue",
+    "click Cancel",
+    "click Back to note",
+    "click Repository",
+    "click Connect public repositories",
+    "click Cancel",
+    "click Back to note",
+    "click Repository",
+    "click Fixture account B",
+    "click Back to note"
+  ],
+  "visual_review": "See manual-review.json; reviewed the recorded native frames separately from functional assertions",
+  "native_log_bytes_at_capture": {
+    "01-host-consent": 4896,
+    "02-missing-registration": 4896,
+    "03-return-to-draft": 4896,
+    "04-cancel-before-continue": 5033,
+    "05-selected-host-account": 5033,
+    "06-account-selection-retains-draft": 5033
+  },
+  "retained_ink": [
+    {
+      "text": "Connect GitHub",
+      "before": 5542,
+      "after": 5542
+    },
+    {
+      "text": "org.octosense.samples.githubnotes requests:\nRead and update your public repositories\nRead your GitHub profile\n\nCredentials stay with OctoSense.",
+      "before": 17199,
+      "after": 17199
+    }
+  ],
+  "account_selection": "pass: host active A loaded, B selected and persisted; unbound local draft unchanged",
+  "account_fixture": "Synthetic metadata only, no scopes or credentials; provider reads stop at missing host registration",
+  "exit_code": 0,
+  "captures": {
+    "01-host-consent.png": "8e079ee923d1bddbbd268a74ef5aec51f52dfa82b719070183450e33343b6226",
+    "03-return-to-draft.png": "88bb62e7745cf210a38d772d717c027b95201bbd360d2ac5483263a181af710f",
+    "04-cancel-before-continue.png": "f875ca96ecdf8e59258bdadb5b84e4e78623fa0c657815c2f55e15fdb1890d74",
+    "05-selected-host-account.png": "209c80c47c5fbe8c48e58d3556953217013fd2f9c7c2a415c759ade8be3131c5",
+    "02-missing-registration.png": "c0071b0c3aa46c6841726b2f689806409d109e081bd37ebb8015f24197dbabb4",
+    "06-account-selection-retains-draft.png": "484039f729e4a84bde6aaff6d0fbf650516cc27f4f5090698066974526d4ecdf"
+  },
+  "local_run_name": "run-20261006T182638Z-1791311198445340000"
+}
