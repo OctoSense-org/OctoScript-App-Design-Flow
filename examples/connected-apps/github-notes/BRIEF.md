@@ -8,9 +8,10 @@ publication controller.
 
 ## Journey
 
-1. Open a local draft immediately. Write with Rinx rich text, edit exact
-   Markdown, or read the full preview. Toolbar formatting, tables, code, math,
-   links, image URL syntax, theme and undo/redo remain available. Remote images
+1. Open a local draft immediately in the Rinx article writer layout. Edit exact
+   Markdown or read the preview; wide windows also offer split view. The writer
+   uses the original icon toolbar and phone bottom formatting bar. Rich block
+   editing and undo/redo remain available through the style panel. Remote images
    are not fetched by this sample, and image binary upload is not implemented.
 2. Connect GitHub through the OctoSense OAuth sheet. Passwords and device codes
    never enter the app's UI or storage. Choose public-repository access or the
@@ -29,8 +30,11 @@ publication controller.
 
 ## Screens and data
 
-- Editor: compact title/status, Write/Markdown/Preview, one Save action and an
-  optional repository drawer. The editor gets the remaining viewport.
+- Editor: Rinx article writer header and formatting icons, with Source/Split/Preview
+  on desktop and Source/Preview plus bottom formatting on phones. The back/file
+  icon opens repository settings; the publish icon opens GitHub save review.
+  A compact local-save status and document caption replace the extra Notes
+  title, text button rows and destination row. Editing uses the whole viewport.
 - Repository drawer: connection status, connection/revocation actions,
   repositories, branch, directory/file selection, path and commit message.
 - Replace confirmation: describes the incoming file and offers Keep draft or
@@ -61,6 +65,7 @@ and explicit human review. Tests must distinguish that path from local UI.
 
 Author: Codex. Test driver/reviewer: Codex native Makepad instrument, hidden
 owned process with synthetic notes; real account consent remains with the user.
+Compare original native Rinx writer captures at the same narrow and wide sizes.
 Exercise source → rich → preview → source without losing Markdown; edit a
 second block, undo/redo, long-document scrolling, narrow viewport, restart,
 missing service and failed load. Test actual repository read/commit/conflict in

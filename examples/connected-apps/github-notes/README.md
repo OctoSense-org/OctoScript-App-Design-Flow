@@ -7,11 +7,16 @@ Markdown drafts and host-reviewed GitHub commits. It requests `storage`, `auth`
 and `github`, never a provider token or direct network access. Connecting does
 not create an OctoSense cloud account.
 
-The editor is the host's Rinx-backed `MarkdownEditor`: Write, exact Markdown,
-Preview, formatting, rich selection, undo/redo, code/table/math rendering and
-local recovery. It shares the existing Rinx v1.1.0 component revision. The Rinx
+The editor uses the Rinx article writer layout: icon-only header and formatting
+controls, desktop Source/Split/Preview, and a bottom formatting bar on phones.
+The style palette also opens rich block editing. Exact Markdown, rich selection,
+undo/redo, code/table/math rendering and local recovery remain available. It shares the existing Rinx v1.1.0 component revision. The Rinx
 Matrix publication flow and binary image picker/upload are not included. Remote
 image URLs remain Markdown; this sample does not fetch their pixels.
+
+See the [Rinx writer validation](VALIDATION.md#rinx-writer-layout) for original
+reference comparisons, the revised installed workflow and OnePlus 6 captures.
+Earlier screenshots/soak receipts describe the previous editor layout.
 
 ## Run
 
@@ -21,14 +26,14 @@ image URLs remain Markdown; this sample does not fetch their pixels.
 2. Install this bundle through App Hub using a test catalog/local bundle. Grant
    the displayed capabilities. It uses its own ordinary identity, not `os.mail`
    or an installed Rinx account.
-3. Write a note before connecting. Open **Repository**, choose public or private
+3. Write a note before connecting. Use the top-left back/file icon to open **Repository & file**, choose public or private
    repository access, and complete GitHub consent in the OctoSense sheet and
    external browser. Private access uses GitHub's broader `repo` scope; review
    that choice carefully in the host sheet.
 4. Select the account, repository, branch and file. For a new note, enter a new
    Markdown path and choose **Use as new path**. Existing files load their blob
    SHA; a conflicting remote version cannot be silently overwritten.
-5. Set the commit message, return to the note and choose **Save**. Review the
+5. Set the commit message, return to the note and tap the paper-plane icon. Review the
    exact content and destination in the host sheet. A returned commit SHA is
    required before the app reports a committed result.
 
@@ -104,3 +109,8 @@ The small installed test host does not validate peer tool dispatch or Glance.
 The listing retains explicit publisher placeholders pending human identity and
 privacy-policy review. This is a development sample, not a published app or a
 claim of full Rinx feature parity. See [BRIEF.md](BRIEF.md) for the task contract.
+
+Rinx limits a parsed article to 512 KiB. A saved draft that fails to load stays
+protected in the recovery/repository screen; it cannot be overwritten by typing
+into a blank editor. Explicitly replacing it with a valid file preserves its
+exact recovery copy.

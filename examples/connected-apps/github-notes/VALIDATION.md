@@ -1,5 +1,49 @@
 # GitHub Notes development validation
 
+## Rinx writer layout
+
+The Notes editor now uses the article writer's icon header, Source/Split/Preview
+on wide windows, narrow bottom formatting bar, style palette, native table picker
+and paper preview. The extra Notes title, Repository/Save text-button row and
+mode-label rows are gone. Repository setup and exact GitHub review remain separate
+surfaces. The document caption identifies the file; it does not rewrite a heading.
+
+The [native reference report](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/tools/connected-e2e/evidence/rinx-writer-20261006/README.md)
+contains original Rinx writer captures, the diagnostic entry hook, source hashes
+and the Notes component captures at matching window dimensions. Both narrow and
+wide native interaction suites pass Unicode retention, selection formatting,
+undo/redo, mode switching, rich input and table insertion. This is a source-based
+layout adaptation with GitHub semantics, not a claim of every Rinx feature.
+
+The [installed receipt](evidence/rinx-writer-installed/receipt.json) and
+[visual review](evidence/rinx-writer-installed/manual-review.json) validate the
+actual signed sample, including exact host review/cancel, synthetic existing/new
+commits, conflict, uncertain response and offline restart. All ten original PNGs
+were inspected. The first run exposed an offscreen repository-status row; the
+corrected layout passed the same assertions. Earlier receipts below describe the
+previous text-button UI and remain historical evidence.
+
+The final review also reproduced a rejected-load hazard: an oversized saved note
+left an editable blank document. The corrected app keeps that draft closed until
+a valid file/recovery is explicitly chosen; typing cannot mark the rejected draft
+ready. The [native recovery regression](evidence/rejected-draft-recovery/receipt.json)
+and [original frames](evidence/rejected-draft-recovery/manual-review.json) pass.
+The full ten-case installed flow passed again afterward, with byte-identical UI
+captures. The prior receipt remains alongside the final one for comparison.
+
+The [revised writer soak](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/tools/connected-e2e/evidence/notes-rinx-soak-20261006/README.md)
+records 36 cycles over ten minutes before the recovery guard and a 12-cycle final
+regression after it. Both preserve exact drafts, rich-edit undo and cancelled
+review without provider writes. Finite memory growth is reported, not treated
+as proof of leak-free operation.
+
+The [OnePlus 6 report](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/tools/connected-e2e/evidence/notes-rinx-phone-20261006/README.md)
+records the separate test APK, retained draft, real soft Enter/text input, keyboard
+open/dismiss, exact cold restart and preview. The floating shell navigation hides
+while the IME is visible. It returns afterward at its previous dock. No normal
+Home profile or provider account was copied, and no live GitHub save ran.
+
+
 2026-10-06. Source authored, native input injected and original PNGs reviewed
 by Codex. Data is fictional; there was no account login, provider key, GitHub
 commit or physical phone interaction. This is scoped development evidence, not
@@ -56,8 +100,8 @@ was not part of that capture.
   editor toolbar scrolled to Undo/Redo. No measured scrolling benchmark, phone
   IME test or accessibility audit was performed.
 
-The final captures are [preview](bundle/screenshots/01-preview.png) and
-[unavailable connection](bundle/screenshots/02-connection-unavailable.png).
+The historical captures are [preview](evidence/initial-editor/01-preview.png) and
+[unavailable connection](evidence/initial-editor/02-connection-unavailable.png).
 They are original native captures from the exact source above. The latter
 clearly states that this is an offline editor test host.
 

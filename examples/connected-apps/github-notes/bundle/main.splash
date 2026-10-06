@@ -16,7 +16,7 @@ let save_timer = nil
 let local_revision = 0
 let local_file = "draft-b.json"
 let editor_ready = false
-fn notice(text){ ui.status.set_text(text) }
+fn notice(text){ ui.editor.set_status(text) ui.status.set_text(text) }
 fn persist(){
     // Verify the alternate snapshot before advancing it. The previous good
     // draft remains intact if the process stops or storage becomes full.
@@ -34,23 +34,26 @@ fn persist(){
     saved
 }
 fn edited(text){
-    editor_ready = true
+    if !editor_ready { notice("Saved draft could not load · choose a valid file or recovery draft first") return }
     draft.content = text
     draft.dirty = true
     if save_timer != nil { stop_timer(save_timer) }
-    save_timer = start_timeout(0.35, || {if persist() {notice("Draft kept on this device · not committed")}})
+    save_timer = start_timeout(0.35, || {if persist() {notice("Saved locally")}})
 }
 fn show_editor(){
+    if !editor_ready { notice("Saved draft could not load · choose a valid file or recovery draft first") return }
     ui.repository.set_visible(false)
     ui.workspace.set_visible(true)
+    ui.status.set_visible(false)
     ui.replace_prompt.set_visible(false)
-    ui.destination.set_text(draft.owner + "/" + draft.repo + " · " + draft.path)
-    if draft.repo == "" { ui.destination.set_text("Local note · choose a repository when ready") }
+    ui.editor.set_destination(draft.path)
+    if draft.repo == "" { ui.editor.set_destination("Untitled note") }
 }
 fn show_repository(){
     persist()
     ui.workspace.set_visible(false)
     ui.repository.set_visible(true)
+    ui.status.set_visible(true)
     ui.path_entry.set_text(draft.path)
     ui.commit_entry.set_text(draft.message)
     ui.branch_entry.set_text(browse_branch)
@@ -96,11 +99,11 @@ fn boot(){
     }
     let error = ui.editor.load(draft.content)
     if error != "" { notice(error + " · original draft remains on disk") }
-    else { editor_ready = true notice("Local draft restored · GitHub changes require review") }
+    else { editor_ready = true notice("Saved locally") }
     browse_owner = draft.owner
     browse_repo = draft.repo
     browse_branch = draft.branch
-    show_editor()
+    if editor_ready { show_editor() } else { show_repository() notice(error + " · saved draft retained; choose a valid file or recovery draft") }
     load_accounts()
 }
 fn connect(private_repos){
@@ -274,17 +277,15 @@ fn save_remote(){
 start_timeout(0.05, || boot())
 let ink = #x172b40
 let muted = #x576d80
-SolidView {width: Fill height: Fill flow: Down padding: 12 spacing: 8 draw_bg.color: #xf8fafc
-    workspace := View {width: Fill height: Fill flow: Down spacing: 6
-        View {width: Fill height: 44 flow: Right spacing: 8 align: Align{y: 0.5}
-            Label {width: Fill text: "GitHub Notes" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 21}}
-            ButtonFlat {height: 44 text: "Repository" on_click: || show_repository()}
-            Button {height: 44 text: "Save" on_click: || save_remote()}
+SolidView {width: Fill height: Fill flow: Down draw_bg.color: #xffffff
+    workspace := View {width: Fill height: Fill flow: Down
+        editor := MarkdownEditor {width: Fill height: Fill
+            on_change: |text| edited(text)
+            on_repository: || show_repository()
+            on_save: || save_remote()
         }
-        destination := Label {width: Fill height: Fit text: "Local note" draw_text.color: muted draw_text.wrap: Words draw_text.text_style.font_size: 11}
-        editor := MarkdownEditor {width: Fill height: Fill on_change: |text| edited(text)}
     }
-    repository := View {width: Fill height: Fill flow: Down spacing: 8 visible: false
+    repository := View {width: Fill height: Fill flow: Down padding: 16 spacing: 8 visible: false
         View {width: Fill height: 44 spacing: 8 align: Align{y: 0.5}
             Label {width: Fill text: "Repository & file" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 20}}
             ButtonFlat {height: 44 text: "Back to note" on_click: || {draft.message = ui.commit_entry.text() persist() show_editor()}}
@@ -334,12 +335,12 @@ SolidView {width: Fill height: Fill flow: Down padding: 12 spacing: 8 draw_bg.co
             ButtonFlat {width: Fill height: 44 text: "Recover previous draft" on_click: || recover()}
         }
     }
-    replace_prompt := View {width: Fill height: Fit flow: Down spacing: 6 visible: false
+    replace_prompt := View {width: Fill height: Fit flow: Down padding: 16 spacing: 6 visible: false
         replace_text := Label {width: Fill draw_text.color: ink draw_text.wrap: Words}
         View {width: Fill height: 44 spacing: 8
             ButtonFlat {width: Fill height: 44 text: "Keep current draft" on_click: || {pending = nil ui.replace_prompt.set_visible(false)}}
             Button {width: Fill height: 44 text: "Open & keep recovery" on_click: || apply_pending()}
         }
     }
-    status := Label {width: Fill height: Fit text: "Opening local draft…" draw_text.color: muted draw_text.wrap: Words draw_text.text_style.font_size: 11}
+    status := Label {width: Fill height: Fit visible: false padding: Inset{left: 16 right: 16 top: 6 bottom: 8} text: "Opening local draft…" draw_text.color: muted draw_text.wrap: Words draw_text.text_style.font_size: 11}
 }

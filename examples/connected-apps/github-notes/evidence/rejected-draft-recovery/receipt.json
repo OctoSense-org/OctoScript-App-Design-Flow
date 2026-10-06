@@ -1,0 +1,25 @@
+{
+  "result": "pass",
+  "scope": "signed installed Notes rejected-draft recovery, fictional oversized data",
+  "binary_sha256": "a4a11541df397758d7121a94af8b931ac83b1b7b586049ece5af27fd03c75522",
+  "source_sha256": {
+    "OctoSense/tools/connected-e2e/notes_recovery.py": "c326cb2201eda0000de761825588e2a860ac47b7960c14a497daad826a83d30a",
+    "OctoSense/tools/connected-e2e/native.py": "3182c430d9b3797a823a67403543d056891598b404cf7fda577836f09e7ae7b6",
+    "OctoSense/tools/connected-e2e/notes_native.py": "66f32ddc8b29e2cbd3b4f2f8ae1cc8997fa9b47b23bc7b9d4cec2b56d573ff5e",
+    "OctoSense/crates/markdown-editor/src/lib.rs": "4ed1f604a1c273a183629bba29bef195ebd6b7b638b9fc06c707680cda64480c",
+    "OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle/main.splash": "733f68da86ba76b51766386e99d51d2e12b67feb9496fc32d6d8c8ba6acf85c6",
+    "OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle/manifest.json": "f36c461bd813c04a7b8436127e8057b13cf9a3bad40ad25933bcd2dc050218a4"
+  },
+  "live_provider": false,
+  "checks": [
+    "Rejected reload routes to recovery/settings; Back cannot expose blank editor; original draft remains exact",
+    "Explicit valid-file replacement preserves exact oversized recovery; new editing works afterward"
+  ],
+  "visual_review": "pending",
+  "provider_write_attempts": 0,
+  "exit_code": 0,
+  "captures": {
+    "01-rejected-draft-retained.png": "bf551bcc7d276c8b6cb56a114ecbf90098eb2f51524d5192980d7d4af9251df7",
+    "02-explicit-replacement-retains-recovery.png": "bf71d642e3d12588cb6ec240b9ee0ad99b232ec5257f0157ab6b7b7ef1d7e398"
+  }
+}
