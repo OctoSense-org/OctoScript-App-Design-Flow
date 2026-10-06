@@ -52,8 +52,9 @@ OAuth 请求中的 `mail.read`、`mail.send` 是主机定义的 Google 权限别
 
 允许后台执行时，主机大约每五分钟检查当前已授权、已同意代理处理的账户。
 代理失败或没有持久化处理决定会在之后重试；Android 可能延迟静默任务。本次
-实现了主机收集器、应用代理与工具路由，但本示例尚未完成真实 Gmail → 模型 →
-Glance 的端到端验证。连接账户并允许应用代理后，点击 **Refresh**，直到界面显示
+实现了主机收集器、应用代理与工具路由，并在 macOS 完整 Shell 中用真实
+DeepSeek 推理和仅测试构建可用的模拟 Gmail 依赖执行了该生产流程。真实 Google
+登录及 Gmail 送达尚未验证，准确源码与截图见[集成证据](evidence/integrated/README.md)。连接账户并允许应用代理后，点击 **Refresh**，直到界面显示
 **New-mail baseline ready**，再发送新的测试邮件。旧邮件仍可阅读，但不会补发
 通知。此状态只说明增量基线已建立，不等于代理同意目前仍然开启；还需检查
 主机的应用代理设置。
@@ -86,7 +87,8 @@ OctoSense `inbox.rs`、`inbox_events.rs` 的测试覆盖注入输入、版本冲
 重试、账户隔离及完整队列恢复。模拟传输成功不代表真实 Gmail 送达。
 
 当前测试与视觉问题见[证据记录](evidence/README.md)。没有使用真实 Google
-账户、DeepSeek／MiniMax 推理或真实邮件。应用尚未签名、发布；发布者身份、
+账户或真实邮件；独立 card-host 测试不使用模型，完整 Shell 集成测试使用真实
+DeepSeek 和模拟 Gmail，未测试 MiniMax。源应用包尚未签名、发布；发布者身份、
 支持／隐私信息和发布批准仍是人工检查点。
 
 ## 隐私

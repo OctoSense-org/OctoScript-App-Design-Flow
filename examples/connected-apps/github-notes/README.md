@@ -61,10 +61,37 @@ Do not interpret its “first frame drawn” as a functioning editor. The owned
 OctoSense `editor-host` fixture exercises the real widget and exact bundle source
 without an account. The integrated `connected-app-host` additionally validates
 ordinary bundle admission, real host consent, missing-registration errors,
-cancellation and exact local draft retention; see [VALIDATION.md](VALIDATION.md).
+cancellation and exact local draft retention.
 
-Live OAuth, host-approved GitHub commits, remote conflicts, clean installed-app
-execution, phone keyboard/lifecycle, Windows and Linux are not yet validated.
+The installed acceptance journey now also passes with the real Store,
+`prepare_launch`, editor, host APIs and review sheets, using a compile-only
+synthetic GitHub transport and in-memory vault. It covers repository pagination,
+empty repositories, a second file, dirty-note protection, exact review/cancel,
+existing/new-file commits, SHA conflict, a lost response without automatic retry,
+and offline restart. Original native PNGs and source-bound receipts are in
+[VALIDATION.md](VALIDATION.md#signed-installed-provider-acceptance). Failed local
+runs are preserved separately. The [final host regression](VALIDATION.md#final-modal-and-cancellation-regression)
+reruns the complete journeys after modal-input and cancellation fixes. To reproduce
+from the OctoSense worktree:
+
+```sh
+cargo build --locked --release -p octosense-shell \
+  --features mobile-apps,acceptance-fixtures \
+  --example connected-app-host --example connected-install
+python3 tools/connected-e2e/notes.py \
+  --bundle ../OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle
+```
+
+The feature is not enabled in normal builds and refuses unmarked profiles or
+real provider registrations. Only synthetic fixture data goes into this test.
+The sample itself uses normal host APIs and has no fixture switch.
+
+Live GitHub OAuth/read/commit/conflict, physical approval, phone keyboard and
+lifecycle, and Windows/Linux UI remain unverified. Live acceptance needs a
+GitHub OAuth client ID with device flow enabled in the host's
+`<apps root>/.host/oauth/clients.json`, human GitHub consent, and an explicitly
+chosen disposable repository/branch/path. No GitHub CLI credential is reused.
+The small installed test host does not validate peer tool dispatch or Glance.
 The listing retains explicit publisher placeholders pending human identity and
 privacy-policy review. This is a development sample, not a published app or a
 claim of full Rinx feature parity. See [BRIEF.md](BRIEF.md) for the task contract.

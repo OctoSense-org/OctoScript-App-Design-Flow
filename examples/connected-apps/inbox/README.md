@@ -63,7 +63,10 @@ The shell collector checks the active, consented account approximately every
 five minutes while background execution is allowed. An unsuccessful turn or
 missing durable decision is eligible for a later retry; Android can defer quiet
 jobs. The host collector and peer/tool route are implemented in this change,
-but no live Gmail-to-model-to-Glance run has been verified for this sample.
+and the macOS acceptance run exercised that production route with real DeepSeek
+inference and a compile-only synthetic Gmail provider. Live Google OAuth and
+real Gmail delivery remain unverified. See the source-bound
+[integrated evidence](evidence/integrated/README.md).
 After connecting and allowing the app agent, press **Refresh** until the Inbox
 shows **New-mail baseline ready**. Only then send a new test email. Older mail
 remains readable but is deliberately not backfilled into notifications. The
@@ -103,8 +106,9 @@ and bounded queue recovery. Fake transport
 success does not establish live Gmail delivery.
 
 See [evidence](evidence/README.md) for current executed checks and remaining
-visual/runtime gaps. No live Google account, DeepSeek/MiniMax run or real email
-was used for these fixtures. The bundle is unsigned and unpublished; publisher
+visual/runtime gaps. The standalone fixtures use no model. The separate installed full-shell run
+uses real DeepSeek with synthetic Gmail; no live Google account, MiniMax run or
+real email was used. The bundle is unsigned and unpublished; publisher
 identity, support/privacy details and release approval remain human checkpoints.
 
 ## Privacy

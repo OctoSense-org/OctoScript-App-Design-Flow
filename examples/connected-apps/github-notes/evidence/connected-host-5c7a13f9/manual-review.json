@@ -1,0 +1,26 @@
+{
+  "reviewer": "Codex",
+  "date": "2026-10-06",
+  "hub_revision": "5c7a13f92fa25d36ba1fe7fb99dc9fb1b235f8d3",
+  "result": "pass within recorded scope",
+  "scope": "Original native macOS PNGs at 430x850 logical points / 860x1700 pixels; no registered provider or real account",
+  "checks": [
+    "Host consent clearly shows requested public repository and profile access",
+    "Missing-registration error appears inside the opaque host sheet; title and consent text remain readable",
+    "Cancel before and after Continue returns exact Unicode note",
+    "Synthetic host account B selection is visible and retained without changing the open local note"
+  ],
+  "not_verified": [
+    "Live OAuth or provider API",
+    "Physical approval",
+    "Phone or non-macOS UI"
+  ],
+  "captures": {
+    "01-host-consent.png": "8e079ee923d1bddbbd268a74ef5aec51f52dfa82b719070183450e33343b6226",
+    "02-missing-registration.png": "c0071b0c3aa46c6841726b2f689806409d109e081bd37ebb8015f24197dbabb4",
+    "03-return-to-draft.png": "88bb62e7745cf210a38d772d717c027b95201bbd360d2ac5483263a181af710f",
+    "04-cancel-before-continue.png": "f875ca96ecdf8e59258bdadb5b84e4e78623fa0c657815c2f55e15fdb1890d74",
+    "05-selected-host-account.png": "ad0ef2d9829963d1c8504b447480b9cb548b6d7edbb37c7bbc6ccbd41b79d6f4",
+    "06-account-selection-retains-draft.png": "484039f729e4a84bde6aaff6d0fbf650516cc27f4f5090698066974526d4ecdf"
+  }
+}

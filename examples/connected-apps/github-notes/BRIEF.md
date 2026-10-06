@@ -51,7 +51,9 @@ publication controller.
 
 Runtime changes live in OctoSense. The normal standalone `card-host` currently
 lacks this host-installed editor vocabulary and live provider services; native
-fixture testing uses OctoSense's `editor-host` with no account and no writes.
+local widget testing uses OctoSense's `editor-host` with no account and no writes.
+The signed installed `connected-app-host` acceptance additionally exercises the
+real host APIs with an explicitly synthetic provider transport and vault.
 Installed-shell authentication and remote commits need a configured OAuth app
 and explicit human review. Tests must distinguish that path from local UI.
 

@@ -27,7 +27,7 @@ admitted tool mappings, app-agent consent, a model configuration and the shell's
 incoming-event collector. Glance templates and routes need the integrated shell.
 
 Use the matching App Hub policy at commit
-`eaaffffd695caf7ebf6205c455377c1f8567b906` or the compatible revision pinned by
+`5c7a13f92fa25d36ba1fe7fb99dc9fb1b235f8d3` or the compatible revision pinned by
 OctoSense. Rebuild **both** `hub` and `card-host` after changing that policy; an
 older binary rejects the new provider capabilities or `host_method` mappings.
 An admission result says what the host may allow; it does not install those
@@ -53,7 +53,10 @@ provider API/consent/testing settings configured for the intended users.
 **Google authorization on Android is currently unsupported in this shared
 service until the native adapter is implemented.** The desktop loopback flow is
 not a phone workaround. Windows and Linux credential adapters are implemented
-in source but have not been executed on those platforms for these samples.
+in source. Linux protocol tests and host compilation passed on the build host;
+its native vault test could not write to the locked/unavailable Secret Service.
+Windows cross-compilation stopped before this crate because the Mac lacks the
+Windows SDK. Neither result proves native UI or provider login on those platforms.
 
 Use a clean development profile and the App Hub local/test-catalog workflow for
 integration testing. A complete live test still needs provider sign-in, actual
@@ -65,18 +68,22 @@ that real Gmail or an agent ran.
 A deterministic `connected-install` check has installed all three actual
 bundles through a fresh signed private catalog and signed bundles, reopened
 the stored policy, and rejected tampering/another app’s staging. Source files
-were unchanged and temporary data was removed. This validates the Store
-installation boundary, not the installed UI or provider/model execution; see
+were unchanged and temporary data was removed. That original run validates the Store
+installation boundary; the later installed-UI and model runs are recorded separately. See
 the per-app evidence and the host’s local `target/connected-install/receipt.json`.
 It was rebuilt and rerun against Hub
 `eaaffffd695caf7ebf6205c455377c1f8567b906`; the
 [portable signed-install receipt](evidence/signed-install-eaaffffd.json) records
 all three bundle digests and the exact source, lockfile and binary hashes.
 
-Not yet verified for these samples: live OAuth, real brokered peer/model
-processing, integrated shell Glance expansion/routing, remote write effects,
-or the OnePlus 6 keyboard/background lifecycle. Source implementation and local
-fixture success must not be presented as those results. ADR 0010 in the
+The later signed-install journeys exercise actual host services and native
+review UI with synthetic provider transport: Notes covers edit/save/conflict/
+offline restart; Calendar covers create/edit/ETag/cache and warm/cold Glance
+routes. A real DeepSeek peer also processed two synthetic Inbox events, kept
+the newsletter quiet, published the clinic card and updated the same saved
+reply through chat. Per-app evidence separates these results from remaining
+checks. Live OAuth, remote write effects, physical send approval and the
+OnePlus 6 keyboard/background lifecycle remain unverified. ADR 0010 in the
 companion OctoSense repository tracks the architecture and remaining acceptance.
 
 ## Reproducible checks and data boundary
@@ -90,7 +97,9 @@ which checks must be rerun after a change. Inbox also preserves machine-readable
 results, not a numeric UX or release score.
 
 Codex authored these samples and drove the native fixtures. The examples do not
-claim DeepSeek/MiniMax authorship or model validation. All supplied email,
+claim DeepSeek/MiniMax authorship. Recorded DeepSeek tool turns use the app’s
+admitted guidance and synthetic content; MiniMax acceptance for these new
+samples has not been run. All supplied email,
 calendar and repository contents are fictional. Never commit provider tokens,
 client secrets, personal mailbox/calendar exports, private repository contents,
 real-account screenshots, or `.local-state/`. App-agent consent controls model
@@ -101,3 +110,9 @@ Bundles remain unsigned and unpublished. Publisher/support/privacy placeholders
 must be replaced by the actual publisher before release, and publishing requires
 the normal Design Flow/App Hub checks. This directory is not a production
 catalog or a claim that every platform can already install and run all three.
+
+The [final three-app installation rerun](evidence/signed-install-5c7a13f9.json)
+uses Hub `5c7a13f92fa25d36ba1fe7fb99dc9fb1b235f8d3` and the current bundle digests.
+Signed install/reopen and catalog/source/cross-app tamper refusals passed again.
+Historical receipts remain unchanged; this proof does not establish live OAuth
+or provider delivery.

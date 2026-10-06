@@ -21,8 +21,10 @@ turn. A person may already have dismissed or acted on the published card.
 3. For quiet mail, call inbox.event_decide with decision `quiet` and a short
    reason. This records processing without publishing or notifying. Saying
    “not important” in final prose does not acknowledge the event.
-4. For important mail, publish one useful card with inbox.notify. Its summary
-   should say what changed, why it matters and the next useful action. Use
+4. For important mail, publish one useful card with inbox.notify. Keep its title
+   within 80 characters and summary within 200 characters (aim for 160). The
+   summary should say what changed, why it matters and the next useful action;
+   the full email belongs in the expanded workspace. Use
    card_id equal to the message ID; repeat publication replaces the same item.
    Never publish another account's email. Use the admitted template, not a
    rewritten copy of the app:

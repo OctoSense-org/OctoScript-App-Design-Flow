@@ -87,7 +87,7 @@ org.octosense.samples.githubnotes 0.1.0 — PASSED
 ```
 
 The normalized identity and all three `host_method` read aliases passed the
-rebuilt Hub gate. Current bundle BLAKE3:
+rebuilt Hub gate. The bundle BLAKE3 at that point was:
 `be32e021bf4d87f3b8226e8372dfc18193574eb718b4e08e274e7093dd74030d`.
 This is manifest/alias admission, not brokered provider execution.
 
@@ -201,3 +201,106 @@ remote image loading/upload, Android/iOS/Windows/Linux, Glance/chat, model
 execution and physical sending. Rinx's full Matrix publication and image-picker
 feature set is not reproduced by this component. These limits must remain in
 handoff and store claims.
+
+
+## Signed installed provider acceptance
+
+The later run `run-1791313763946328000` passes the installed Notes journey with
+bundle BLAKE3 `c254ddb25658e9243e2313cf7edcc953452cf15c5afe96ba4227ad0482c65016`.
+It uses real signed private-catalog Store installation, `prepare_launch` and
+verified installed source, the Rinx editor, normal account selection, host
+GitHub API adapter and immutable host review. A non-default
+`acceptance-fixtures` build injects only a synthetic GitHub HTTPS transport and
+in-memory vault for an explicitly marked disposable profile. No real provider
+registration, account token or repository was used. This supersedes the earlier
+“installed UI execution not verified” limit for this scoped macOS test only.
+
+The [source-bound receipt](evidence/installed-synthetic-provider/receipt.json)
+records binary, driver, service, editor and bundle hashes, every native action,
+and a sanitized method/path/status provider journal. The binary SHA-256 is
+`f0f6448a42a5a6fbdf3180e633fd82d44eb4d5bfdbb051a3226853e3471a5842`.
+All nine published original PNGs were opened individually at 860 × 1700 pixels;
+[visual review](evidence/installed-synthetic-provider/manual-review.json) is
+separate from the automated assertions. No profiles, private keys, account
+metadata, raw tokens or private logs are included in these artifacts.
+
+The journey proves:
+
+- Signed installation and reopen preserve an exact unsent Unicode note.
+- Empty repository pages retain **Previous**; an empty repository explains how
+  to choose a new file. The directory list opens the selected second file.
+- Refusing dirty-note replacement keeps the original; accepting replacement
+  stores a recovery copy and loads the intended remote Markdown.
+- [Host review](evidence/installed-synthetic-provider/02-exact-host-review.png)
+  shows the exact repository, branch, file, commit message and changed time.
+  Cancel sends no provider write and retains the exact edited content.
+- A [successful synthetic commit](evidence/installed-synthetic-provider/04-synthetic-commit-confirmed.png)
+  returns a commit SHA and clears dirty state only for the reviewed content.
+- A [409 conflict](evidence/installed-synthetic-provider/05-provider-conflict.png)
+  retains the draft; the consumed approval action is removed, with a visible
+  return to editing. There is no overwrite or automatic retry.
+- An explicit new `.md` path is created through the same host review/API path.
+- The [lost-response case](evidence/installed-synthetic-provider/07-uncertain-save-response.png)
+  models a provider storing the commit before the connection fails. Local state
+  stays dirty, approval cannot be reused, and no duplicate request is issued.
+- [Offline installed restart](evidence/installed-synthetic-provider/08-offline-restart-retains-note.png)
+  preserves the exact unsent text and destination and displays the provider error.
+
+The provider journal contains four explicit PUT attempts: successful existing
+file, conflict, successful new file, and uncertain response. All normal
+app/account/scope/review gates remain in the path. Synthetic instrument clicks
+on this isolated fixture are not evidence of physical human approval.
+
+Failures retained under ignored `target/connected-notes-e2e` include an invalid
+64-hex fixture revision correctly refused by production validation, a driver
+that queried the selected Markdown tab by its inactive label, an overstrict
+footer margin, an offscreen label selector, and input attempted while the review
+sheet was still closing. The hardened driver waits for actual modal retirement
+before editing again. Two real sample defects were fixed: **Previous** was
+missing on an empty repository page, and a delayed local-save timer could hide
+an immediate host save error. No validation rule was relaxed to pass the tests.
+
+A separate [current three-app install receipt](evidence/signed-install-current.json)
+records successful signed installation/reopen plus unsigned catalog, untrusted
+anchor, source tamper and cross-app staging rejection for the three current
+bundles. Private signing keys existed only in memory; temporary install data was
+removed and the source bundles remained unchanged.
+
+Reproduction commands are in [README.md](README.md) and OctoSense's
+`tools/connected-e2e/README.md`. Real GitHub device authorization and network
+read/write remain outstanding: they require a registered OAuth client with
+device flow enabled, human consent and an explicit disposable repository,
+branch and file. This small host does not run the production agent kernel,
+peer tool broker or Glance. Android, Windows/Linux UI, live GitHub delivery,
+physical approval and public catalog publication remain unverified.
+
+## Final modal and cancellation regression
+
+After the host modal-input and sheet-lifecycle fixes, both complete native
+journeys were rebuilt and rerun against Hub
+`5c7a13f92fa25d36ba1fe7fb99dc9fb1b235f8d3`. Notes run
+`run-1791315334124061000` passed all ten installed/provider-fixture checks;
+consent run `run-20261006T193534Z-1791315334138335000` passed missing registration,
+cancellation before/after Continue, account selection and retained Unicode text.
+Both used host binary SHA-256
+`ef8b5e4c7fcb01b52b6c71fbec2980b87d0b69e7b1a106e8658159fb06e6ff9d`.
+
+The new [installed receipt](evidence/installed-synthetic-provider-5c7a13f9/receipt.json)
+and [visual review](evidence/installed-synthetic-provider-5c7a13f9/manual-review.json)
+record the final sources and nine individually inspected original frames. The
+new [consent receipt](evidence/connected-host-5c7a13f9/receipt.json) and
+[visual review](evidence/connected-host-5c7a13f9/manual-review.json) contain six
+individually inspected frames. Earlier successes and failures remain separate.
+No credentials, private profiles or raw runtime logs were copied into evidence.
+
+This build routes pointer, keyboard and text input only to the visible host
+sheet, captures host widget references before app evaluation, and cancels the
+exact pending review when its host surface is dismissed. The focused native
+Glance policy test and Gmail sheet-close gate test passed separately; Notes is
+not being claimed as a Glance or physical-send test.
+
+The [final three-app signed-install receipt](evidence/signed-install-5c7a13f9.json)
+passed installation, reopen and tamper refusal for the current Notes, Inbox and
+Calendar bundle digests. Provider transport remains synthetic in the installed
+journey. Live GitHub OAuth/read/write still requires a registered device-flow
+client, human consent and a chosen disposable repository/branch/path.

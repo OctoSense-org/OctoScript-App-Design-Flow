@@ -58,7 +58,12 @@ fn account_list(){
             }
         }
         ui.account_rows.render()
-        if found { load_calendars("") }
+        if found {
+            // A provider list failure must not hide the saved, authorized
+            // agenda after restart. Refresh both independently.
+            if calendar != "" { ui.calendar_title.set_text(calendar_name); load_cache() }
+            load_calendars("")
+        }
         else { connection = ""; calendar = ""; events = []; ui.event_rows.render(); status("Connect Google to read your calendar. Local drafts stay on this device.") }
     })
 }
@@ -112,7 +117,11 @@ fn load_calendars(page){
     if page != "" { args.page_token = page }
     host.request("gcalendar.calendars", args, fn(r){
         if expected != connection { return }
-        if !r.is_ok { status(r.error); return }
+        if !r.is_ok {
+            if calendar != "" { status("Calendar list unavailable; keeping the saved selection. " + r.error) }
+            else { status(r.error) }
+            return
+        }
         let data = {items: [] nextPageToken: ""}.to_json().parse_json(); merge_fields(data, r.data)
         for raw in data.items {
             let item = {id: "" summary: "Calendar" timeZone: "Etc/UTC" accessRole: "reader"}.to_json().parse_json(); merge_fields(item, raw)
@@ -123,7 +132,7 @@ fn load_calendars(page){
         if calendar == "" { status("Choose the calendar you want to work with."); pane("calendars"); return }
         let found = false
         for item in calendars { if item.id == calendar { found = true; calendar_name = item.summary } }
-        if found { ui.calendar_title.set_text(calendar_name); load_cache() }
+        if found { ui.calendar_title.set_text(calendar_name); keep_selection() }
         else { calendar = ""; status("The selected calendar is no longer available. Choose another."); pane("calendars") }
     })
 }

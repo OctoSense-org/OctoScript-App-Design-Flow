@@ -46,6 +46,42 @@ synthetic data on port 8165. It does not simulate shell routing or chat replies.
 The bundle's four screenshots are native captures of these local states, not
 Google API results.
 
+## Run signed integration acceptance
+
+Build the companion OctoSense fixture host, then run from this Flow checkout:
+
+```sh
+# In ../OctoSense:
+cargo build --locked --release -p octosense-shell \
+  --features mobile-apps,acceptance-fixtures \
+  --example connected-app-host --example connected-inbox-e2e --example connected-install
+# In this checkout:
+python3 examples/connected-apps/google-calendar/scripts/verify-installed.py \
+  --host ../OctoSense/target/release/examples/connected-app-host
+python3 examples/connected-apps/google-calendar/scripts/verify-shell.py \
+  --shell ../OctoSense/target/release/examples/connected-inbox-e2e \
+  --installer ../OctoSense/target/release/examples/connected-install
+```
+
+The installed verifier passed eight cases again after the final host
+cancellation/modal-input changes (App Hub `5c7a13f9`), through a temporary signed catalog
+and the real app/host services: populated agenda, exact review/cancel,
+create/reopen, ETag edit/conflict, retained draft and offline cached restart.
+The conflict state shows an error and Back; a consumed approval cannot be retried.
+The Calendar transport and vault are explicitly synthetic. These checks do not
+sign into Google, send invitations, or prove physical-input approval. The
+separate full-shell verifier passed six cases with the actual Glance panel and
+installed launcher: exact-event warm/cold routes, same-event chat input, and
+restoration without agent consent or renewed expiry.
+An optional run adds `--model-profile /private/path/profile.json` and
+`--kernel /path/to/octos`. It passed with real DeepSeek v4 Flash: the Calendar
+peer called its declared `googlecalendar.event` read tool and answered the
+selected synthetic event without any provider writes. The corrected consent
+sheet and actual answer are in [the acceptance record](ACCEPTANCE.md).
+
+Both clean up their own hidden processes and temporary profiles and save
+source/executable-bound receipts under `.local-state/`.
+
 ## Connect real Google Calendar
 
 This path is implemented in source but **not live-validated for this sample**.
@@ -55,9 +91,9 @@ OAuth client outside the bundle; the person completes provider consent on the
 host screen. Android needs its native Google authorization adapter and cannot
 reuse a desktop loopback login flow.
 
-1. Install the unsigned development bundle through the host's developer path.
-   A production publication still needs publisher identity, privacy details and
-   signing. The repository does not publish or sign this sample automatically.
+1. Install a signed, reviewed bundle through App Hub. The fixture catalog above
+   is private test evidence, not public publication. A real release still needs
+   publisher identity, privacy details, signing and catalog acceptance.
 2. Select **Account → Connect Google**, complete host/provider consent, then
    choose the account and calendar. **Refresh** reads the real Google API.
 3. Choose an event and **Edit**, or select **+ Event**. **Keep draft** retains
@@ -68,7 +104,8 @@ reuse a desktop loopback login flow.
 5. From event details, **Glance** publishes the event for 24 hours without a
    notification. **Open Calendar** uses the host's app-bound route handoff to
    return to that same account/calendar/event. Glance, real chat and this route
-   still require integrated-shell validation.
+   are exercised separately by the integrated-shell verifier; live Google and
+   actual model conversation results require their own evidence.
 
 ## Service and privacy boundary
 
@@ -90,8 +127,8 @@ the granted `gcalendar` service; they are private and not shareable. The host's 
 and consent govern where that context is processed. Chat is advisory in this
 version; no cross-app event-writing tool is declared or fabricated.
 
-Remaining acceptance: live sign-in/read/create/edit/conflict/revocation,
-provider-backed populated UI, host approval, Glance expansion/reopening/chat,
-Android keyboard/lifecycle, Linux and Windows. Current source and local checks
+Remaining acceptance: live Google sign-in/read/create/edit/conflict/revocation,
+physical approval, expanded-card workspace, Glance-card chat/shared history, Android
+keyboard/lifecycle, Linux and Windows. Current source and local checks
 must not be presented as those results. Publisher placeholders deliberately
 remain in `listing.json` until the publisher supplies their real information.

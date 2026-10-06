@@ -2,8 +2,10 @@
 
 Codex authored the sample, drove the real Makepad instrument and inspected the
 original native PNGs. All messages, recipients and edits here are fictional.
-No Google account, DeepSeek/MiniMax inference, real email, physical approval or
-phone interaction was used for these checks.
+This page records the earlier standalone fixture checks. They used no Google
+account, model inference, real email, physical approval or phone interaction.
+The later [installed full-shell acceptance](integrated/README.md) separately
+exercises the actual peer and real DeepSeek with synthetic Gmail.
 
 The machine-readable [interaction receipt](run-receipt.json) and
 [restart receipt](restart-receipt.json) identify source, workspace template,
@@ -109,9 +111,10 @@ mandatory Splash properties, unreadable focused placeholders, and reliance on
 one-shot model output for draft chat. Current chat uses the account's app peer
 and reads the authoritative host draft after its tools finish.
 
-Not verified: live Google sign-in/read/send, app-peer tool execution with an
-actual model, relevance quality, cross-app calendar booking, real notification
-and shell Glance transitions, physical native send approval, recipient delivery,
+The standalone fixture alone did not verify actual peers, models or Shell
+Glance; see the later integrated run above for those bounded checks. Still not
+verified: live Google sign-in/read/send, broad relevance quality, cross-app
+calendar booking, physical native send approval, recipient delivery,
 Android keyboard/lifecycle/background scheduling, Linux or Windows. Android
 Google authorization is unsupported until its native adapter is implemented.
 No numerical UX score or production sign-off is claimed.
@@ -122,4 +125,5 @@ No numerical UX score or production sign-off is claimed.
 重启回执记录准确源码和截图摘要；它们不代表真实 Google 登录、模型筛选、
 手机通知或发送成功。当前截图中的导航、编辑器和聊天输入可见。早期按钮偶发
 消失的原图仍保留，当前无法复现，不能据此宣称底层渲染问题已修复。应用尚未
-签名或发布；真实账户、模型、Glance 主机流程及 OnePlus 6 验收仍待执行。
+签名或发布；后续完整 Shell 测试已单独验证真实 DeepSeek 与模拟 Gmail 的代理、
+工具和 Glance 流程，详见集成证据。真实 Google 账户、送达及 OnePlus 6 仍待验证。

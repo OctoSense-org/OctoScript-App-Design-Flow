@@ -248,6 +248,9 @@ fn recover(){
 fn save_remote(){
     if busy { return }
     if !editor_ready { notice("The saved draft could not load · recover it before saving") return }
+    // Saving settles the debounce first, so a late local-save message cannot
+    // erase a host validation error or the review status.
+    if save_timer != nil { stop_timer(save_timer) save_timer = nil }
     draft.content = ui.editor.text()
     if !persist() { return }
     if draft.connection == "" || draft.repo == "" { show_repository() notice("Connect GitHub, select a repository and choose a file or new path") return }
@@ -301,10 +304,11 @@ SolidView {width: Fill height: Fill flow: Down padding: 12 spacing: 8 draw_bg.co
             ButtonFlat {width: Fill height: 44 text: "Refresh repositories" on_click: || list_repos(1)}
             repo_list := View {width: Fill height: Fit flow: Down spacing: 4 on_render: || {
                 for i in repos.len() { ButtonFlat {width: Fill height: 44 text: repos[i].full_name on_click: || choose_repo(i)} }
-                if repos.len() > 0 {
+                if repos.len() == 0 { Label {width: Fill text: "No repositories on this page" draw_text.color: muted} }
+                if repos.len() > 0 || repo_page > 1 {
                     View {width: Fill height: 44 spacing: 8
                         ButtonFlat {width: Fill height: 44 text: "Previous" on_click: || {if repo_page > 1 {list_repos(repo_page - 1)}}}
-                        ButtonFlat {width: Fill height: 44 text: "Next" on_click: || list_repos(repo_page + 1)}
+                        if repos.len() > 0 { ButtonFlat {width: Fill height: 44 text: "Next" on_click: || list_repos(repo_page + 1)} }
                     }
                 }
             }}
@@ -312,6 +316,7 @@ SolidView {width: Fill height: Fill flow: Down padding: 12 spacing: 8 draw_bg.co
             branch_entry := TextInput {width: Fill height: 44 text: "main" empty_text: "Branch"}
             ButtonFlat {width: Fill height: 44 text: "Browse root on this branch" on_click: || list_files("")}
             file_list := View {width: Fill height: Fit flow: Down spacing: 4 on_render: || {
+                if browse_repo != "" && files.len() == 0 { Label {width: Fill text: "No Markdown files here · choose a new path below" draw_text.color: muted draw_text.wrap: Words} }
                 for i in files.len() {
                     if files[i].type == "dir" || regex("[.](md|markdown)$", "i").test(files[i].name) {
                         ButtonFlat {width: Fill height: 44 text: files[i].path on_click: || choose_file(i)}

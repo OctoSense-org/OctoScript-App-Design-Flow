@@ -38,6 +38,30 @@ bundle。不要把客户端密钥或访问令牌放进应用包或应用数据�
 对真实组件和源码进行原生 UI 测试。集成 `connected-app-host` 还验证普通应用
 准入、真实宿主授权页、缺少 OAuth 配置时的错误、取消及本地草稿完整保留。
 记录见 [VALIDATION.md](VALIDATION.md)。
-真实 OAuth/提交/冲突、安装后的完整宿主路径、手机键盘及生命周期、Windows 和
-Linux 尚未验证。发布者身份和隐私政策仍保留显式占位符，等待人工审核；这不是
-已发布应用，也不声称已实现 Rinx 的全部功能。
+安装后的原生流程也已通过：使用真实 Store、`prepare_launch`、编辑器、宿主 API
+和审核页，仅通过非默认编译功能替换 GitHub 传输和内存凭据库。覆盖仓库分页、空仓库、
+第二个文件、脏草稿保护、确切内容审核/取消、已有及新文件提交、SHA 冲突、响应丢失时
+不自动重试、离线重启恢复。原始原生截图和绑定源码的记录见
+[VALIDATION.md](VALIDATION.md#signed-installed-provider-acceptance)，失败的本地记录单独保留。
+在 OctoSense 工作目录执行：
+
+```sh
+cargo build --locked --release -p octosense-shell \
+  --features mobile-apps,acceptance-fixtures \
+  --example connected-app-host --example connected-install
+python3 tools/connected-e2e/notes.py \
+  --bundle ../OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle
+```
+
+[最终宿主回归](VALIDATION.md#final-modal-and-cancellation-regression)已在模态输入与取消生命周期修复后
+重新通过完整安装和授权界面流程；新增回执保留确切源码、二进制摘要及逐张检查的原始截图。
+
+普通构建不启用该测试功能；测试拒绝未标记的用户目录或真实 OAuth 客户端配置。
+测试目录只存放虚构数据，示例应用本身只使用正常宿主 API，没有测试切换开关。
+
+真实 GitHub OAuth/读取/提交/冲突、人工物理审批、手机键盘和生命周期、Windows/Linux
+界面仍未验证。真实验收需要在宿主 `<apps root>/.host/oauth/clients.json` 配置启用
+设备流程的 GitHub OAuth 客户端 ID，由用户完成 GitHub 授权，并明确指定可删除的
+测试仓库、分支和文件路径；不复用 GitHub CLI 凭据。该小型宿主不验证代理工具调用或
+Glance。发布者身份和隐私政策仍保留显式占位符，等待人工审核；这不是已发布应用，
+也不声称已实现 Rinx 的全部功能。

@@ -47,3 +47,14 @@ Add this app's own requirements, data sources and tests below.
   Never make recurring series look like one editable occurrence.
 - Read cache/prepare behavior in OctoSense crates/oauth-service/src/calendar_cache.rs
   and connector dispatch in host_api.rs before changing method names or shapes.
+
+- Integrated acceptance uses `scripts/verify-installed.py` and
+  `scripts/verify-shell.py` against the companion OctoSense examples built with
+  the non-default `acceptance-fixtures` feature. They sign temporary copies and
+  install through the real Store; only Calendar transport/vault are synthetic.
+  Preserve source/executable/capture hashes and distinguish this from Google
+  OAuth, physical approval, phone tests and real model calls.
+- Never put model profiles, OAuth configuration, keys or private run directories
+  in public evidence. An optional real-model run uses caller-supplied private
+  profile and kernel paths, copies only the needed model settings into an
+  isolated temporary home, and exposes only synthetic event data.

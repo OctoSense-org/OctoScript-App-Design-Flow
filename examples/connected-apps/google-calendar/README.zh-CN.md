@@ -37,6 +37,38 @@ tools/octo check examples/connected-apps/google-calendar/bundle
 端口使用明确的虚构数据渲染原封不动的内嵌 L0 模板，不模拟宿主路由或聊天回答。
 应用包内四张截图均为这些本地状态的原生截图，不是 Google API 结果。
 
+## 运行签名安装后的集成验收
+
+先构建相邻 OctoSense 仓库的测试宿主，再从本 Flow 仓库执行：
+
+```sh
+# 在 ../OctoSense：
+cargo build --locked --release -p octosense-shell \
+  --features mobile-apps,acceptance-fixtures \
+  --example connected-app-host --example connected-inbox-e2e --example connected-install
+# 在本仓库：
+python3 examples/connected-apps/google-calendar/scripts/verify-installed.py \
+  --host ../OctoSense/target/release/examples/connected-app-host
+python3 examples/connected-apps/google-calendar/scripts/verify-shell.py \
+  --shell ../OctoSense/target/release/examples/connected-inbox-e2e \
+  --installer ../OctoSense/target/release/examples/connected-install
+```
+
+最终宿主取消审核及模态输入修复后（App Hub `5c7a13f9`），安装验收再次通过八项：经临时签名目录安装、实际事件列表、精确审核与取消、创建与
+重新打开、ETag 编辑和冲突、草稿保留及离线重启缓存。冲突时保留错误与返回操作，
+已经使用的批准按钮不会继续显示。应用、安装验证及宿主服务是真实代码，只有
+日历提供商传输与令牌保险库采用明确的虚构测试实现；这些结果不代表已登录
+Google、发送邀请或验证物理点击。独立完整 Shell 验证器通过六项检查，使用实际 Glance 面板
+与已安装应用启动器，验证热／冷启动准确返回事件、相同事件的聊天输入，以及
+首次代理授权前恢复原卡片、保留原过期时间。可选参数 `--model-profile /private/path/profile.json` 与
+`--kernel /path/to/octos` 可加入真实模型检查。本次使用真实 DeepSeek v4 Flash
+通过验收：Calendar 代理调用已声明的 `googlecalendar.event` 只读工具，准确回答
+虚构事件信息，提供商写入次数为零。正确的授权说明及实际回答截图见
+[验收记录](ACCEPTANCE.md)。
+
+两者均清理自己启动的隐藏进程与临时配置，并把绑定源文件
+及执行文件哈希的记录保存在 `.local-state/`。
+
 ## 连接真实 Google Calendar
 
 此流程已接入源代码，但**尚未对本示例进行真实账号验证**。需要包含共享 OAuth
@@ -44,8 +76,8 @@ tools/octo check examples/connected-apps/google-calendar/bundle
 由宿主管理员在应用包外配置，使用者在宿主／提供商界面完成授权。Android 需要
 原生 Google 授权适配器，不能复用桌面的回环登录流程。
 
-1. 通过宿主开发模式安装未签名示例。正式发布仍需要真实发布者身份、隐私资料和
-   签名；仓库不会自动签名或发布。
+1. 通过 App Hub 安装已签名、审核的应用包。上述测试目录仅用于私有验收，不代表
+   已公开发布；正式发布仍需要真实发布者身份、隐私资料、签名及目录接纳。
 2. 点击 **Account → Connect Google**，完成授权，选择账号与日历；**Refresh**
    调用真实 Google API。
 3. 选择事件后点击 **Edit**，或用 **+ Event** 新建。**Keep draft** 保留未提交修改，
@@ -53,8 +85,8 @@ tools/octo check examples/connected-apps/google-calendar/bundle
 4. 检查账号、日历、标题、时间与备注后再批准。提供商确认后重新同步；失败会保留
    草稿。遇到版本冲突应对照最新事件处理，不能强制覆盖。
 5. 事件详情中的 **Glance** 会发布 24 小时卡片，不发送通知。卡内 **Open Calendar**
-   通过绑定应用的路由回到相同账号、日历与事件。Glance、真实聊天与路由仍需在
-   集成宿主中验证。
+   通过绑定应用的路由回到相同账号、日历与事件。完整 Shell 验证器单独验证
+   Glance 与路由；真实 Google 与模型会话仍需要各自的验收证据。
 
 ## 服务与隐私边界
 
@@ -74,7 +106,7 @@ Google 权限别名 `calendar.list`、`calendar.events` 由宿主转换。
 已授权的 `gcalendar` 服务，均标为私有且不可共享。本版聊天
 只提供建议，没有虚构跨应用写入日程工具。
 
-尚待验收：真实登录／读取／创建／编辑／冲突／撤销授权、提供商数据界面、宿主审核、
-Glance 展开／返回／聊天、Android 键盘与生命周期、Linux 和 Windows。不可将当前
+尚待验收：真实 Google 登录／读取／创建／编辑／冲突／撤销授权、物理批准、
+展开卡片工作区、Glance 卡片聊天及与应用会话共享历史、Android 键盘与生命周期、Linux 和 Windows。不可将当前
 源码与本地检查描述成这些项目已通过。`listing.json` 暂保留发布者占位信息，等待
 发布者提供真实内容。当前应用界面以英文为主。
