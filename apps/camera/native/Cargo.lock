@@ -907,6 +907,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "octosense-app-host"
+version = "0.1.0"
+source = "git+https://github.com/OctoSense-org/OctoSense-App-Hub.git?rev=36cfb4e963afccc9c733f18918423988306d2978#36cfb4e963afccc9c733f18918423988306d2978"
+dependencies = [
+ "makepad-app-module",
+ "makepad-widgets",
+]
+
+[[package]]
 name = "octosense-camera"
 version = "0.1.0"
 dependencies = [
@@ -916,6 +925,7 @@ dependencies = [
  "octoscript-node",
  "octoscript-ui-l0",
  "octoscript-widgets",
+ "octosense-app-host",
  "octosense-camera-logic",
  "serde",
  "serde_json",
