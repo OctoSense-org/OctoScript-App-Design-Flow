@@ -66,8 +66,10 @@ Inbox 还需要允许应用代理，并等待后续新邮件基线建立后再�
 验证编辑／保存／冲突／离线重启；Calendar 验证创建／修改／ETag／缓存和
 Glance 热启动、冷启动跳转。真实 DeepSeek peer 还处理了两封合成 Inbox 邮件，
 静默处理通讯简报、发布诊所卡片，并通过 Chat 修改同一份持久化回复。各应用证据
-区分这些结果和剩余项目。真实 OAuth、远程写入结果、物理发送批准，以及
-OnePlus 6 键盘和后台生命周期仍未验证。配套 OctoSense 的 ADR 0010 记录架构及待验收项目。
+区分这些结果和剩余项目。Notes 另在独立 OnePlus 6 测试 APK 通过本地编辑、软键盘／
+硬件 Enter 和精确冷启动恢复，见其 [README](github-notes/README.zh-CN.md)。
+真实 OAuth、远程写入结果、物理发送批准及 Android 后台生命周期仍未验证。
+配套 OctoSense 的 ADR 0010 记录架构及待验收项目。
 
 ## 可复现检查与数据边界
 

@@ -86,7 +86,16 @@ The feature is not enabled in normal builds and refuses unmarked profiles or
 real provider registrations. Only synthetic fixture data goes into this test.
 The sample itself uses normal host APIs and has no fixture switch.
 
-Live GitHub OAuth/read/commit/conflict, physical approval, phone keyboard and
+The [Mac soak report](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/tools/connected-e2e/evidence/notes-soak-20261006/README.md)
+records 156 cycles, including a ten-minute run, exact draft recovery and review
+cancellation. Memory grew during the runs; long-term stability remains open.
+The separate OnePlus 6 **OctoSenseNotesTest** APK now passes local editing,
+soft/hardware Enter and exact cold-restart recovery after an Android composing-word
+fix. [Phone setup and boundaries](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/tools/connected-e2e/android-notes.md)
+use a signed private catalog and no provider credentials. The phone has no GitHub
+connection configured; this is not live repository acceptance.
+
+Live GitHub OAuth/read/commit/conflict, physical approval, Android background
 lifecycle, and Windows/Linux UI remain unverified. Live acceptance needs a
 GitHub OAuth client ID with device flow enabled in the host's
 `<apps root>/.host/oauth/clients.json`, human GitHub consent, and an explicitly

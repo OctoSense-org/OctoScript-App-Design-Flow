@@ -67,8 +67,9 @@ and the macOS acceptance run exercised that production route with real DeepSeek
 inference and a compile-only synthetic Gmail provider. Live Google OAuth and
 real Gmail delivery remain unverified. See the source-bound
 [integrated evidence](evidence/integrated/README.md).
-After connecting and allowing the app agent, press **Refresh** until the Inbox
-shows **New-mail baseline ready**. Only then send a new test email. Older mail
+After connecting and allowing the app agent, keep the inbox list open until it
+shows **New-mail baseline ready**. Local status refreshes every three seconds;
+**Refresh** also checks immediately. Only then send a new test email. Older mail
 remains readable but is deliberately not backfilled into notifications. The
 readiness row records a completed baseline, not proof that agent consent is
 currently enabled; check the host agent setting as well.
@@ -128,3 +129,5 @@ publication stores a compact account/message binding and a workspace program;
 full real message contents are loaded through the authorized service. Do not
 check private app data, OAuth configuration, real email captures or tokens into
 this repository. All supplied screenshots/fixtures must remain fictional.
+
+The [macOS soak report](evidence/soak/README.md) adds 33 native cycles over 610 seconds and cold restoration. It separates two remaining instrument frame-submission errors from passing draft/state checks and records the finite RSS trend.

@@ -82,6 +82,19 @@ sheet and actual answer are in [the acceptance record](ACCEPTANCE.md).
 Both clean up their own hidden processes and temporary profiles and save
 source/executable-bound receipts under `.local-state/`.
 
+For sustained native UX checks, run:
+
+```sh
+python3 examples/connected-apps/google-calendar/scripts/soak.py \
+  --host ../OctoSense/target/release/examples/connected-app-host
+```
+
+The macOS run passed 36 cycles over 620 seconds: editing, scrolling, review and
+cancel, three saved-event readbacks, three revision conflicts and four cold
+restarts. RSS grew within each process; this is a functional pass, not a
+leak-free claim. [The acceptance record](ACCEPTANCE.md#sustained-macos-ux-soak)
+contains original captures, timing limits and measured memory trends.
+
 ## Connect real Google Calendar
 
 This path is implemented in source but **not live-validated for this sample**.

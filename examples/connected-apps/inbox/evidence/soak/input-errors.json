@@ -1,0 +1,25 @@
+[
+  {
+    "route": "click",
+    "parameters": {
+      "x": 650,
+      "y": 570,
+      "wait": 1
+    },
+    "status": 404,
+    "body": "{\"err\":\"requested input frame could not be submitted; retry\"}",
+    "milliseconds": 38.53
+  },
+  {
+    "route": "k",
+    "parameters": {
+      "k": "down",
+      "c": "KeyA",
+      "cmd": 1,
+      "wait": 1
+    },
+    "status": 404,
+    "body": "{\"err\":\"requested input frame could not be submitted; retry\"}",
+    "milliseconds": 5.889
+  }
+]

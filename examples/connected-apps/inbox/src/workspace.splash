@@ -62,6 +62,8 @@ fn load(){
     }
 }
 // CARD-LOGIN-START
+let monitoring_busy = false
+let monitoring_account = ""
 fn connect(){
     notice("Continue in the host Google sign-in sheet…")
     host.request("auth.connect", {provider:"google" scopes:["openid" "email" "profile" "mail.read" "mail.send"]}, fn(r){
@@ -69,17 +71,25 @@ fn connect(){
         connection=r.data.handle demo=false selected=nil draft=nil messages=[] save_local() paint() refresh()
     })
 }
+// Read local durable status while the inbox list is open. This timer does not
+// fetch Gmail, trigger a model, or claim that a baseline means agent consent.
 fn monitoring(){
-    if demo {return}
+    if demo || connection == "" || selected != nil || monitoring_busy {return}
     let bound=connection
-    ui.monitor_status.set_text("Monitoring begins after agent consent and a new-mail baseline")
+    monitoring_busy=true
+    if monitoring_account != bound {
+        monitoring_account=bound
+        ui.monitor_status.set_text("Checking new-mail baseline…")
+    }
     host.request("gmail.events.status",{connection:bound},fn(r){
+        monitoring_busy=false
         if bound != connection || demo {return}
         if !r.is_ok {ui.monitor_status.set_text("Monitoring status unavailable: "+r.error) return}
         if r.data.baseline_ready {ui.monitor_status.set_text("New-mail baseline ready · "+r.data.pending+" pending. Requires enabled app agent.")}
-        else {ui.monitor_status.set_text("Waiting for agent consent and first baseline. Send test mail only after it is ready.")}
+        else {ui.monitor_status.set_text("Waiting for first new-mail baseline. Enable the app agent before sending test mail.")}
     })
 }
+start_interval(3.0, || monitoring())
 fn refresh(){
     if demo {messages=[] for message in fixture {if label == "INBOX" || (label == "IMPORTANT" && message.important) {messages.push(message)}} paint() notice("Fictional folder · local editing only") return}
     monitoring()

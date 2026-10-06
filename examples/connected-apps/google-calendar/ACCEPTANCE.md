@@ -197,6 +197,47 @@ error to the original request, so the person resends after allowing the agent.
 The Glance card's own chat thread and the full app conversation have not been
 shown to share history.
 
+## Sustained macOS UX soak
+
+```sh
+python3 examples/connected-apps/google-calendar/scripts/soak.py \
+  --host ../OctoSense/target/release/examples/connected-app-host
+```
+
+The signed installed app passed **36 cycles over 620.010 seconds** with the
+synthetic Calendar provider. Each cycle opened `event00001`, visited its Chat
+input without sending, edited title/location/twelve-line notes, scrolled,
+reviewed the exact draft and cancelled with zero provider writes. Three cycles
+then saved and read back the exact event; three forced stale-ETag saves returned
+412 without overwriting the newer provider state. Four cold restarts preserved
+the exact draft. Every conflict exposed Back and removed the consumed approval.
+No crashes or blocked controls occurred. The owned processes and temporary
+profile were removed after the run.
+
+The 1,743 instrument input requests had a **1.127 ms median, 2.228 ms p95 and
+6.023 ms maximum** HTTP round trip through macOS `wait=1` applied-frame
+submission. These are not FPS, display completion or physical-input latency.
+The run overlapped an Android cross-compile with four jobs and the other app
+soaks on an arm64 Mac; it is not an idle-machine benchmark.
+
+RSS increased within each process: **301.4→333.7, 283.8→329.1,
+299.3→333.0 and 284.3→310.3 MiB** across the four longer process lifetimes.
+The final restart measured 322.5 MiB. Restarts prevent a steady-state or
+leak-free conclusion; uninterrupted memory profiling remains open. The
+always-visible Resume draft action on a fresh agenda is also a remaining
+polish issue; it currently explains that no draft exists when clicked.
+
+The first driver attempt read the retained draft before the input's 300 ms
+debounce had flushed. The driver now waits for the actual persisted values;
+that failed receipt is retained locally. No product source was changed for
+this soak. It does not extend Google, phone, real-model or full-shell Glance
+coverage.
+
+- [Portable soak receipt, identities, timings and RSS samples](evidence/soak.json)
+- [Exact review during sustained use](evidence/09-soak-exact-review.png)
+- [Final conflict with reachable Back action](evidence/10-soak-conflict.png)
+- [Final agenda after refresh](evidence/11-soak-final-agenda.png)
+
 ## Failures retained and repaired
 
 1. The first editor layout wasted vertical space on an unrelated global service

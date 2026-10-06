@@ -59,7 +59,14 @@ python3 tools/connected-e2e/notes.py \
 普通构建不启用该测试功能；测试拒绝未标记的用户目录或真实 OAuth 客户端配置。
 测试目录只存放虚构数据，示例应用本身只使用正常宿主 API，没有测试切换开关。
 
-真实 GitHub OAuth/读取/提交/冲突、人工物理审批、手机键盘和生命周期、Windows/Linux
+[Mac 浸泡记录](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/tools/connected-e2e/evidence/notes-soak-20261006/README.zh-CN.md)
+包含 156 轮，其中一次持续十分钟，验证精确草稿恢复及审核取消。内存有所增长，
+长期稳定性仍待分析。独立的 OnePlus 6 **OctoSenseNotesTest** APK 在修复 Android
+组合末词丢失后，通过本地编辑、软键盘／硬件 Enter 和精确冷启动恢复。
+[手机配置及边界](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/tools/connected-e2e/android-notes.zh-CN.md)
+使用签名私有目录，不复制提供商凭据；手机尚未配置 GitHub 连接，不能据此声称真实仓库验收通过。
+
+真实 GitHub OAuth/读取/提交/冲突、人工物理审批、Android 后台生命周期、Windows/Linux
 界面仍未验证。真实验收需要在宿主 `<apps root>/.host/oauth/clients.json` 配置启用
 设备流程的 GitHub OAuth 客户端 ID，由用户完成 GitHub 授权，并明确指定可删除的
 测试仓库、分支和文件路径；不复用 GitHub CLI 凭据。该小型宿主不验证代理工具调用或

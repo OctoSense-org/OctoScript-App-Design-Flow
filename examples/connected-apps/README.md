@@ -82,8 +82,10 @@ offline restart; Calendar covers create/edit/ETag/cache and warm/cold Glance
 routes. A real DeepSeek peer also processed two synthetic Inbox events, kept
 the newsletter quiet, published the clinic card and updated the same saved
 reply through chat. Per-app evidence separates these results from remaining
-checks. Live OAuth, remote write effects, physical send approval and the
-OnePlus 6 keyboard/background lifecycle remain unverified. ADR 0010 in the
+checks. Notes additionally passed local editing, soft/hardware Enter and exact
+cold-restart recovery in a separate OnePlus 6 test APK; see its [README](github-notes/README.md).
+Live OAuth, remote write effects, physical send approval and Android background
+lifecycle remain unverified. ADR 0010 in the
 companion OctoSense repository tracks the architecture and remaining acceptance.
 
 ## Reproducible checks and data boundary

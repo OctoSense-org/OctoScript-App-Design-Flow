@@ -69,6 +69,18 @@ Google、发送邀请或验证物理点击。独立完整 Shell 验证器通过�
 两者均清理自己启动的隐藏进程与临时配置，并把绑定源文件
 及执行文件哈希的记录保存在 `.local-state/`。
 
+持续原生界面测试可运行：
+
+```sh
+python3 examples/connected-apps/google-calendar/scripts/soak.py \
+  --host ../OctoSense/target/release/examples/connected-app-host
+```
+
+macOS 本次通过 620 秒内的 36 轮编辑、滚动、审核与取消，其中包括三次保存后
+读取核对、三次版本冲突及四次冷重启。每个进程的 RSS 都有增长，因此这里只表示
+功能测试通过，不能声称没有内存泄漏。[验收记录](ACCEPTANCE.md#sustained-macos-ux-soak)
+包含原始截图、计时方法的限制及内存变化。
+
 ## 连接真实 Google Calendar
 
 此流程已接入源代码，但**尚未对本示例进行真实账号验证**。需要包含共享 OAuth
