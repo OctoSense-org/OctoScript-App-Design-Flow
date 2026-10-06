@@ -244,11 +244,10 @@ python3 tools/l0-bindings-lint.py ./bundle
 
 ```
   ok   events[open]: service 'octos.turn.start' is granted
+  ok   events[note]: service 'octos.session.open' is granted
   ok   page.card: 'read' is declared, seeded, guarded
-  warn events[open]: target 'session' is neither referenced by page.card nor seeded …
-  ERR  page.card reads 'reply' but the card never declares it — a name a card
-       reads must be a `source`, `state` or `copy` …
-  …
+  warn events[note]: target 'session' is neither referenced by page.card nor seeded — harmless today, since an unread name is never resolved, but seed it so a later reference cannot fail the whole card.
+  ERR  page.card reads 'reply' but the card never declares it — a name a card reads must be a `source`, `state` or `copy` ('reply' is not a declared name), so `check_ui_l0` refuses and App Hub admission rejects the bundle. A binding target does not declare one: add `state reply { shape: record }`.
 l0-bindings-lint: 3 ok, 1 warn, 1 error
 ```
 

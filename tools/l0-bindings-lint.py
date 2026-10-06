@@ -611,8 +611,12 @@ def main(argv):
     for name in sorted(undeclared):
         errors.append(undeclared_finding(name))
 
+    # Names page.card actually reads (or guards). Deliberately WITHOUT the
+    # binding targets: a target the card never reads is the case the "neither
+    # referenced nor seeded" warning below is for, and folding targets in here
+    # made that branch unreachable.
     referenced = ({name for name, _pos in reads}
-                  | {name for _s, _e, name in spans} | target_names)
+                  | {name for _s, _e, name in spans})
 
     for name in sorted(referenced):
         # A name already reported as undeclared gets no "is seeded, guarded" line:
