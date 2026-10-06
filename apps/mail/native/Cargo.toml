@@ -5,6 +5,8 @@ edition = "2021"
 license = "Apache-2.0"
 
 [dependencies]
+# The pinned shared one-window host for src/bin/mail.rs.
+octosense-app-host = { git = "https://github.com/OctoSense-org/OctoSense-App-Hub.git", rev = "36cfb4e963afccc9c733f18918423988306d2978" }
 makepad-widgets = { git = "https://github.com/OctoSense-org/makepad.git", rev = "d4502ef1e4d196d2829a07aa137740cb0581e9b4" }
 makepad-app-module = { git = "https://github.com/OctoSense-org/makepad.git", rev = "d4502ef1e4d196d2829a07aa137740cb0581e9b4" }
 octoscript-makepad = { git = "https://github.com/OctoSense-org/Octoscript-Makepad.git", rev = "b1596d9c2cee6e80cca9d27b1b0c2d57b9d28dd8" }
@@ -19,3 +21,24 @@ rustls = { version = "0.23", default-features = false, features = ["std", "ring"
 webpki-roots = "1"
 sha2 = "0.10"
 scraper = { version = "0.24", default-features = false }
+
+# Standalone app: the module in its own window, no window manager.
+[[bin]]
+name = "mail"
+path = "src/bin/mail.rs"
+
+# Match the module and shared host to the repository native workspace.
+[patch."https://github.com/OctoSense-org/makepad.git"]
+makepad-widgets = { path = "../../../../makepad/widgets" }
+makepad-app-module = { path = "../../../../makepad/libs/app_module" }
+makepad-script = { path = "../../../../makepad/platform/script" }
+makepad-ai-services = { path = "../../../../makepad/libs/ai/services" }
+makepad-strict-json = { path = "../../../../makepad/libs/strict_json" }
+makepad-studio-protocol = { path = "../../../../makepad/platform/studio" }
+makepad-network = { path = "../../../../makepad/platform/network" }
+[patch."https://github.com/OctoSense-org/Octoscript-Makepad.git"]
+octoscript-makepad = { path = "../../../../octoscript-makepad/crates/octoscript-makepad" }
+octoscript-widgets = { path = "../../../../octoscript-makepad/crates/octoscript-widgets" }
+octoscript-node = { path = "../../../../octoscript-makepad/crates/octoscript-node" }
+[patch."https://github.com/OctoSense-org/Octoscript.git"]
+octoscript-ui-l0 = { path = "../../../../octoscript/crates/octoscript-ui-l0" }
