@@ -32,7 +32,7 @@ def ocr(path):
         old=json.loads(dest.read_text())
         if old.get('image_sha256')==sha:return old
     value=json.loads(subprocess.check_output(['swift','-O',str(HERE/'ocr.swift'),str(path)]))
-    value.update(image_sha256=sha,engine='Apple Vision VNRecognizeTextRequest accurate, en-US')
+    value.update(image_sha256=sha,engine='Apple Vision VNRecognizeTextRequest accurate, zh-Hans and en-US')
     dest.write_text(json.dumps(value,indent=2)+'\n');return value
 
 

@@ -1,0 +1,337 @@
+{
+  "app": "finance",
+  "artboard": [
+    366.0,
+    124.0
+  ],
+  "graphics": {
+    "spark_0": {
+      "kind": "line"
+    },
+    "spark_1": {
+      "kind": "line"
+    },
+    "spark_2": {
+      "kind": "line"
+    },
+    "spark_3": {
+      "kind": "line"
+    },
+    "spark_4": {
+      "kind": "line"
+    },
+    "spark_5": {
+      "kind": "line"
+    }
+  },
+  "id": "finance-watchlist",
+  "number": 1,
+  "schema_version": 1,
+  "title": "watchlist",
+  "tree": {
+    "bg": 4278651148,
+    "c": [
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 58.0,
+            "id": "stock_0_control",
+            "t": "button",
+            "w": 366.0,
+            "x": 0.0,
+            "y": 0.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4278879487,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 17.68,
+            "id": "stock_0_label",
+            "line_height": 17.68,
+            "size": 13.0,
+            "t": "text",
+            "text": "",
+            "variant": "single_line",
+            "w": 358.0,
+            "weight": 400,
+            "x": 4.0,
+            "y": 20.0
+          }
+        ],
+        "h": 58.0,
+        "id": "stock_0",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 366.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "color": 4294243831,
+        "font_src": "self:resources/ux/Inter-600.ttf",
+        "h": 21.76,
+        "id": "stock_0_symbol",
+        "line_height": 21.76,
+        "size": 16.0,
+        "t": "text",
+        "text": "AAPL",
+        "variant": "single_line",
+        "w": 112.0,
+        "weight": 600,
+        "x": 4.0,
+        "y": 7.0
+      },
+      {
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 14.96,
+        "id": "stock_0_name",
+        "line_height": 14.96,
+        "size": 11.0,
+        "t": "text",
+        "text": "Apple",
+        "variant": "single_line",
+        "w": 132.0,
+        "weight": 400,
+        "x": 4.0,
+        "y": 31.0
+      },
+      {
+        "bg": 4279506975,
+        "c": [],
+        "h": 21.0,
+        "id": "stock_0_badge",
+        "radius": 4,
+        "t": "stack",
+        "variant": "surface",
+        "w": 29.0,
+        "x": 119.0,
+        "y": 18.0
+      },
+      {
+        "alignx": 0.5,
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 10.88,
+        "id": "stock_0_market",
+        "line_height": 10.88,
+        "size": 8.0,
+        "t": "text",
+        "text": "US",
+        "variant": "single_line",
+        "w": 27.0,
+        "weight": 400,
+        "x": 120.0,
+        "y": 22.0
+      },
+      {
+        "alignx": 1,
+        "color": 4294243831,
+        "font_src": "self:resources/ux/Inter-600.ttf",
+        "h": 21.76,
+        "id": "stock_0_price",
+        "line_height": 21.76,
+        "size": 16.0,
+        "t": "text",
+        "text": "220.00",
+        "variant": "single_line",
+        "w": 102.0,
+        "weight": 600,
+        "x": 254.0,
+        "y": 7.0
+      },
+      {
+        "alignx": 1,
+        "color": 4280862602,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 16.32,
+        "id": "stock_0_change",
+        "line_height": 16.32,
+        "size": 12.0,
+        "t": "text",
+        "text": "+1.20%",
+        "variant": "single_line",
+        "w": 92.0,
+        "weight": 400,
+        "x": 264.0,
+        "y": 31.0
+      },
+      {
+        "h": 25.0,
+        "id": "spark_0",
+        "t": "stockplot",
+        "w": 82.0,
+        "x": 161.0,
+        "y": 17.0
+      },
+      {
+        "bg": 4279506975,
+        "c": [],
+        "h": 0.5,
+        "id": "stock_0_rule",
+        "radius": 12,
+        "t": "stack",
+        "variant": "surface",
+        "w": 356.0,
+        "x": 4.0,
+        "y": 58.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 58.0,
+            "id": "stock_1_control",
+            "t": "button",
+            "w": 366.0,
+            "x": 0.0,
+            "y": 62.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4278879487,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 17.68,
+            "id": "stock_1_label",
+            "line_height": 17.68,
+            "size": 13.0,
+            "t": "text",
+            "text": "",
+            "variant": "single_line",
+            "w": 358.0,
+            "weight": 400,
+            "x": 4.0,
+            "y": 82.0
+          }
+        ],
+        "h": 58.0,
+        "id": "stock_1",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 366.0,
+        "x": 0.0,
+        "y": 62.0
+      },
+      {
+        "color": 4294243831,
+        "font_src": "self:resources/ux/Inter-600.ttf",
+        "h": 21.76,
+        "id": "stock_1_symbol",
+        "line_height": 21.76,
+        "size": 16.0,
+        "t": "text",
+        "text": "MSFT",
+        "variant": "single_line",
+        "w": 112.0,
+        "weight": 600,
+        "x": 4.0,
+        "y": 69.0
+      },
+      {
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 14.96,
+        "id": "stock_1_name",
+        "line_height": 14.96,
+        "size": 11.0,
+        "t": "text",
+        "text": "Microsoft",
+        "variant": "single_line",
+        "w": 132.0,
+        "weight": 400,
+        "x": 4.0,
+        "y": 93.0
+      },
+      {
+        "bg": 4279506975,
+        "c": [],
+        "h": 21.0,
+        "id": "stock_1_badge",
+        "radius": 4,
+        "t": "stack",
+        "variant": "surface",
+        "w": 29.0,
+        "x": 119.0,
+        "y": 80.0
+      },
+      {
+        "alignx": 0.5,
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 10.88,
+        "id": "stock_1_market",
+        "line_height": 10.88,
+        "size": 8.0,
+        "t": "text",
+        "text": "US",
+        "variant": "single_line",
+        "w": 27.0,
+        "weight": 400,
+        "x": 120.0,
+        "y": 84.0
+      },
+      {
+        "alignx": 1,
+        "color": 4294243831,
+        "font_src": "self:resources/ux/Inter-600.ttf",
+        "h": 21.76,
+        "id": "stock_1_price",
+        "line_height": 21.76,
+        "size": 16.0,
+        "t": "text",
+        "text": "420.00",
+        "variant": "single_line",
+        "w": 102.0,
+        "weight": 600,
+        "x": 254.0,
+        "y": 69.0
+      },
+      {
+        "alignx": 1,
+        "color": 4294924645,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 16.32,
+        "id": "stock_1_change",
+        "line_height": 16.32,
+        "size": 12.0,
+        "t": "text",
+        "text": "-0.40%",
+        "variant": "single_line",
+        "w": 92.0,
+        "weight": 400,
+        "x": 264.0,
+        "y": 93.0
+      },
+      {
+        "h": 25.0,
+        "id": "spark_1",
+        "t": "stockplot",
+        "w": 82.0,
+        "x": 161.0,
+        "y": 79.0
+      },
+      {
+        "bg": 4279506975,
+        "c": [],
+        "h": 0.5,
+        "id": "stock_1_rule",
+        "radius": 12,
+        "t": "stack",
+        "variant": "surface",
+        "w": 356.0,
+        "x": 4.0,
+        "y": 120.0
+      }
+    ],
+    "h": 124.0,
+    "id": "watchlist_card",
+    "radius": 12,
+    "t": "stack",
+    "variant": "surface",
+    "w": 366.0,
+    "x": 0.0,
+    "y": 0.0
+  },
+  "standalone_service_card": true
+}

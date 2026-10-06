@@ -1,0 +1,12 @@
+# ledger robrix-message-summary@1.0.0
+# level: L0
+# profile: ui/l0
+theme light
+state title { shape: text, initial: "Conversation" }
+state summary { shape: text, initial: "" }
+state status { shape: text, initial: "" }
+view root Kit(component: "surface", instance: "card") {
+    Kit(component: "title", instance: "title", text: title)
+    Kit(component: "body", instance: "summary", text: summary)
+    Kit(component: "caption", instance: "status", text: status)
+}

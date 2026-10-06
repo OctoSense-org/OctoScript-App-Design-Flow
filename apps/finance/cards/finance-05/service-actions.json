@@ -1,0 +1,62 @@
+{
+  "controls": {
+    "back": {
+      "event": "navigate",
+      "value": "watchlist"
+    },
+    "company_news": {
+      "event": "navigate",
+      "value": "company_news"
+    },
+    "detail_refresh": {
+      "event": "refresh",
+      "value": ""
+    },
+    "follow": {
+      "event": "follow",
+      "value": "XNAS:AAPL"
+    },
+    "range_0": {
+      "event": "range",
+      "value": "1D"
+    },
+    "range_1": {
+      "event": "range",
+      "value": "1W"
+    },
+    "range_2": {
+      "event": "range",
+      "value": "1M"
+    },
+    "range_3": {
+      "event": "range",
+      "value": "6M"
+    },
+    "range_4": {
+      "event": "range",
+      "value": "1Y"
+    },
+    "tab_markets": {
+      "event": "navigate",
+      "value": "markets"
+    },
+    "tab_news": {
+      "event": "navigate",
+      "value": "news"
+    },
+    "tab_saved": {
+      "event": "navigate",
+      "value": "saved"
+    },
+    "tab_settings": {
+      "event": "navigate",
+      "value": "settings"
+    },
+    "tab_watchlist": {
+      "event": "navigate",
+      "value": "watchlist"
+    }
+  },
+  "owner": "finance",
+  "schema_version": 1
+}

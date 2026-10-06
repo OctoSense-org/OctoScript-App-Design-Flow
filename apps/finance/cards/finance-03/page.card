@@ -1,0 +1,825 @@
+# ledger finance-03@1.0.0
+# level: L0
+# profile: ui/l0
+# Static design fixture, runtime native Kit composition.
+theme light
+copy heading_text { class: user-copy, en: "Search" }
+copy data_status_text { class: user-copy, en: "Preview · Fictional prices & news" }
+copy tab_settings_label_text { class: user-copy, en: "" }
+copy settings_glyph_text { class: user-copy, en: "" }
+copy search_input_placeholder { class: user-copy, en: "Symbol or company · Apple / 腾讯" }
+copy search_input_text { class: user-copy, en: "" }
+copy region_0_label_text { class: user-copy, en: "All" }
+copy region_1_label_text { class: user-copy, en: "US" }
+copy region_2_label_text { class: user-copy, en: "HK" }
+copy region_3_label_text { class: user-copy, en: "CN" }
+copy directory_scope_text { class: user-copy, en: "Public directory · access depends on your plan" }
+copy stock_0_label_text { class: user-copy, en: "" }
+copy stock_0_symbol_text { class: user-copy, en: "AAPL" }
+copy stock_0_name_text { class: user-copy, en: "Apple" }
+copy stock_0_market_text { class: user-copy, en: "US" }
+copy add_0_label_text { class: user-copy, en: "−" }
+copy stock_1_label_text { class: user-copy, en: "" }
+copy stock_1_symbol_text { class: user-copy, en: "MSFT" }
+copy stock_1_name_text { class: user-copy, en: "Microsoft" }
+copy stock_1_market_text { class: user-copy, en: "US" }
+copy add_1_label_text { class: user-copy, en: "−" }
+copy stock_2_label_text { class: user-copy, en: "" }
+copy stock_2_symbol_text { class: user-copy, en: "00700" }
+copy stock_2_name_text { class: user-copy, en: "腾讯控股" }
+copy stock_2_market_text { class: user-copy, en: "HK" }
+copy add_2_label_text { class: user-copy, en: "−" }
+copy stock_3_label_text { class: user-copy, en: "" }
+copy stock_3_symbol_text { class: user-copy, en: "09988" }
+copy stock_3_name_text { class: user-copy, en: "阿里巴巴" }
+copy stock_3_market_text { class: user-copy, en: "HK" }
+copy add_3_label_text { class: user-copy, en: "−" }
+copy stock_4_label_text { class: user-copy, en: "" }
+copy stock_4_symbol_text { class: user-copy, en: "600519" }
+copy stock_4_name_text { class: user-copy, en: "贵州茅台" }
+copy stock_4_market_text { class: user-copy, en: "CN" }
+copy add_4_label_text { class: user-copy, en: "−" }
+copy stock_5_label_text { class: user-copy, en: "" }
+copy stock_5_symbol_text { class: user-copy, en: "300750" }
+copy stock_5_name_text { class: user-copy, en: "宁德时代" }
+copy stock_5_market_text { class: user-copy, en: "CN" }
+copy add_5_label_text { class: user-copy, en: "−" }
+copy stock_6_label_text { class: user-copy, en: "" }
+copy stock_6_symbol_text { class: user-copy, en: "TSLA" }
+copy stock_6_name_text { class: user-copy, en: "Tesla" }
+copy stock_6_market_text { class: user-copy, en: "US" }
+copy add_6_label_text { class: user-copy, en: "+" }
+copy stock_7_label_text { class: user-copy, en: "" }
+copy stock_7_symbol_text { class: user-copy, en: "NVDA" }
+copy stock_7_name_text { class: user-copy, en: "NVIDIA" }
+copy stock_7_market_text { class: user-copy, en: "US" }
+copy add_7_label_text { class: user-copy, en: "+" }
+copy stock_8_label_text { class: user-copy, en: "" }
+copy stock_8_symbol_text { class: user-copy, en: "BABA" }
+copy stock_8_name_text { class: user-copy, en: "Alibaba ADR" }
+copy stock_8_market_text { class: user-copy, en: "US" }
+copy add_8_label_text { class: user-copy, en: "+" }
+copy stock_9_label_text { class: user-copy, en: "" }
+copy stock_9_symbol_text { class: user-copy, en: "01810" }
+copy stock_9_name_text { class: user-copy, en: "小米集团" }
+copy stock_9_market_text { class: user-copy, en: "HK" }
+copy add_9_label_text { class: user-copy, en: "+" }
+copy stock_10_label_text { class: user-copy, en: "" }
+copy stock_10_symbol_text { class: user-copy, en: "601318" }
+copy stock_10_name_text { class: user-copy, en: "中国平安" }
+copy stock_10_market_text { class: user-copy, en: "CN" }
+copy add_10_label_text { class: user-copy, en: "+" }
+copy stock_11_label_text { class: user-copy, en: "" }
+copy stock_11_symbol_text { class: user-copy, en: "000001" }
+copy stock_11_name_text { class: user-copy, en: "平安银行" }
+copy stock_11_market_text { class: user-copy, en: "CN" }
+copy add_11_label_text { class: user-copy, en: "+" }
+copy stock_12_label_text { class: user-copy, en: "" }
+copy stock_12_symbol_text { class: user-copy, en: "GOOG" }
+copy stock_12_name_text { class: user-copy, en: "谷歌C" }
+copy stock_12_market_text { class: user-copy, en: "US" }
+copy add_12_label_text { class: user-copy, en: "+" }
+copy stock_13_label_text { class: user-copy, en: "" }
+copy stock_13_symbol_text { class: user-copy, en: "GOOGL" }
+copy stock_13_name_text { class: user-copy, en: "谷歌A" }
+copy stock_13_market_text { class: user-copy, en: "US" }
+copy add_13_label_text { class: user-copy, en: "+" }
+copy stock_14_label_text { class: user-copy, en: "" }
+copy stock_14_symbol_text { class: user-copy, en: "AMZN" }
+copy stock_14_name_text { class: user-copy, en: "亚马逊" }
+copy stock_14_market_text { class: user-copy, en: "US" }
+copy add_14_label_text { class: user-copy, en: "+" }
+copy stock_15_label_text { class: user-copy, en: "" }
+copy stock_15_symbol_text { class: user-copy, en: "META" }
+copy stock_15_name_text { class: user-copy, en: "Meta" }
+copy stock_15_market_text { class: user-copy, en: "US" }
+copy add_15_label_text { class: user-copy, en: "+" }
+copy stock_16_label_text { class: user-copy, en: "" }
+copy stock_16_symbol_text { class: user-copy, en: "LLY" }
+copy stock_16_name_text { class: user-copy, en: "礼来" }
+copy stock_16_market_text { class: user-copy, en: "US" }
+copy add_16_label_text { class: user-copy, en: "+" }
+copy stock_17_label_text { class: user-copy, en: "" }
+copy stock_17_symbol_text { class: user-copy, en: "UNH" }
+copy stock_17_name_text { class: user-copy, en: "联合健康" }
+copy stock_17_market_text { class: user-copy, en: "US" }
+copy add_17_label_text { class: user-copy, en: "+" }
+copy stock_18_label_text { class: user-copy, en: "" }
+copy stock_18_symbol_text { class: user-copy, en: "XOM" }
+copy stock_18_name_text { class: user-copy, en: "埃克森美孚" }
+copy stock_18_market_text { class: user-copy, en: "US" }
+copy add_18_label_text { class: user-copy, en: "+" }
+copy stock_19_label_text { class: user-copy, en: "" }
+copy stock_19_symbol_text { class: user-copy, en: "TSM" }
+copy stock_19_name_text { class: user-copy, en: "台积电" }
+copy stock_19_market_text { class: user-copy, en: "US" }
+copy add_19_label_text { class: user-copy, en: "+" }
+copy stock_20_label_text { class: user-copy, en: "" }
+copy stock_20_symbol_text { class: user-copy, en: "V" }
+copy stock_20_name_text { class: user-copy, en: "维萨" }
+copy stock_20_market_text { class: user-copy, en: "US" }
+copy add_20_label_text { class: user-copy, en: "+" }
+copy stock_21_label_text { class: user-copy, en: "" }
+copy stock_21_symbol_text { class: user-copy, en: "WMT" }
+copy stock_21_name_text { class: user-copy, en: "沃尔玛" }
+copy stock_21_market_text { class: user-copy, en: "US" }
+copy add_21_label_text { class: user-copy, en: "+" }
+copy stock_22_label_text { class: user-copy, en: "" }
+copy stock_22_symbol_text { class: user-copy, en: "JPM" }
+copy stock_22_name_text { class: user-copy, en: "摩根大通" }
+copy stock_22_market_text { class: user-copy, en: "US" }
+copy add_22_label_text { class: user-copy, en: "+" }
+copy stock_23_label_text { class: user-copy, en: "" }
+copy stock_23_symbol_text { class: user-copy, en: "JNJ" }
+copy stock_23_name_text { class: user-copy, en: "强生" }
+copy stock_23_market_text { class: user-copy, en: "US" }
+copy add_23_label_text { class: user-copy, en: "+" }
+copy tab_watchlist_label_text { class: user-copy, en: "Stocks" }
+copy tab_watchlist_glyph_text { class: user-copy, en: "" }
+copy tab_markets_label_text { class: user-copy, en: "Markets" }
+copy tab_markets_glyph_text { class: user-copy, en: "" }
+copy tab_news_label_text { class: user-copy, en: "News" }
+copy tab_news_glyph_text { class: user-copy, en: "" }
+copy tab_saved_label_text { class: user-copy, en: "Saved" }
+copy tab_saved_glyph_text { class: user-copy, en: "" }
+state tab_settings_control_enabled { shape: bool, initial: true }
+state region_0_control_enabled { shape: bool, initial: true }
+state region_1_control_enabled { shape: bool, initial: true }
+state region_2_control_enabled { shape: bool, initial: true }
+state region_3_control_enabled { shape: bool, initial: true }
+state stock_0_control_enabled { shape: bool, initial: true }
+state add_0_control_enabled { shape: bool, initial: true }
+state stock_1_control_enabled { shape: bool, initial: true }
+state add_1_control_enabled { shape: bool, initial: true }
+state stock_2_control_enabled { shape: bool, initial: true }
+state add_2_control_enabled { shape: bool, initial: true }
+state stock_3_control_enabled { shape: bool, initial: true }
+state add_3_control_enabled { shape: bool, initial: true }
+state stock_4_control_enabled { shape: bool, initial: true }
+state add_4_control_enabled { shape: bool, initial: true }
+state stock_5_control_enabled { shape: bool, initial: true }
+state add_5_control_enabled { shape: bool, initial: true }
+state stock_6_control_enabled { shape: bool, initial: true }
+state add_6_control_enabled { shape: bool, initial: true }
+state stock_7_control_enabled { shape: bool, initial: true }
+state add_7_control_enabled { shape: bool, initial: true }
+state stock_8_control_enabled { shape: bool, initial: true }
+state add_8_control_enabled { shape: bool, initial: true }
+state stock_9_control_enabled { shape: bool, initial: true }
+state add_9_control_enabled { shape: bool, initial: true }
+state stock_10_control_enabled { shape: bool, initial: true }
+state add_10_control_enabled { shape: bool, initial: true }
+state stock_11_control_enabled { shape: bool, initial: true }
+state add_11_control_enabled { shape: bool, initial: true }
+state stock_12_control_enabled { shape: bool, initial: true }
+state add_12_control_enabled { shape: bool, initial: true }
+state stock_13_control_enabled { shape: bool, initial: true }
+state add_13_control_enabled { shape: bool, initial: true }
+state stock_14_control_enabled { shape: bool, initial: true }
+state add_14_control_enabled { shape: bool, initial: true }
+state stock_15_control_enabled { shape: bool, initial: true }
+state add_15_control_enabled { shape: bool, initial: true }
+state stock_16_control_enabled { shape: bool, initial: true }
+state add_16_control_enabled { shape: bool, initial: true }
+state stock_17_control_enabled { shape: bool, initial: true }
+state add_17_control_enabled { shape: bool, initial: true }
+state stock_18_control_enabled { shape: bool, initial: true }
+state add_18_control_enabled { shape: bool, initial: true }
+state stock_19_control_enabled { shape: bool, initial: true }
+state add_19_control_enabled { shape: bool, initial: true }
+state stock_20_control_enabled { shape: bool, initial: true }
+state add_20_control_enabled { shape: bool, initial: true }
+state stock_21_control_enabled { shape: bool, initial: true }
+state add_21_control_enabled { shape: bool, initial: true }
+state stock_22_control_enabled { shape: bool, initial: true }
+state add_22_control_enabled { shape: bool, initial: true }
+state stock_23_control_enabled { shape: bool, initial: true }
+state add_23_control_enabled { shape: bool, initial: true }
+state tab_watchlist_control_enabled { shape: bool, initial: true }
+state tab_markets_control_enabled { shape: bool, initial: true }
+state tab_news_control_enabled { shape: bool, initial: true }
+state tab_saved_control_enabled { shape: bool, initial: true }
+component Surface25cdc448447b(instance: text) {
+  view Kit(component: "Surface25cdc448447b", instance: instance) { slot }
+}
+component Texta1b340ab5096(instance: text, text: text) {
+  view Kit(component: "Texta1b340ab5096", instance: instance, text: text)
+}
+component Text419774faffd8(instance: text, text: text) {
+  view Kit(component: "Text419774faffd8", instance: instance, text: text)
+}
+component KitButton943d8a6ae6d8(instance: text) {
+  view Kit(component: "KitButton943d8a6ae6d8", instance: instance) { slot }
+}
+component NativeButton02f1d1bd99b4(instance: text, enabled: bool) {
+  view Kit(component: "NativeButton02f1d1bd99b4", instance: instance, enabled: enabled)
+}
+component Text4abc1db2683f(instance: text, text: text) {
+  view Kit(component: "Text4abc1db2683f", instance: instance, text: text)
+}
+component Text9258cc1c09d5(instance: text, text: text) {
+  view Kit(component: "Text9258cc1c09d5", instance: instance, text: text)
+}
+component Group5fb60150eb73(instance: text) {
+  view Kit(component: "Group5fb60150eb73", instance: instance) { slot }
+}
+component Group3d2637879433(instance: text) {
+  view Kit(component: "Group3d2637879433", instance: instance) { slot }
+}
+component Surfacec68d54b1b8e2(instance: text) {
+  view Kit(component: "Surfacec68d54b1b8e2", instance: instance) { slot }
+}
+component KitFormField8f5157cf85c3(instance: text) {
+  view Kit(component: "KitFormField8f5157cf85c3", instance: instance) { slot }
+}
+component Input13713ca84ad2(instance: text, placeholder: text, text: text) {
+  view Kit(component: "Input13713ca84ad2", instance: instance, placeholder: placeholder, text: text)
+}
+component Surface1d2f352a5c9c(instance: text) {
+  view Kit(component: "Surface1d2f352a5c9c", instance: instance) { slot }
+}
+component Text04a63d81feb3(instance: text, text: text) {
+  view Kit(component: "Text04a63d81feb3", instance: instance, text: text)
+}
+component Surface59e1a0f60533(instance: text) {
+  view Kit(component: "Surface59e1a0f60533", instance: instance) { slot }
+}
+component Texteb5864166c31(instance: text, text: text) {
+  view Kit(component: "Texteb5864166c31", instance: instance, text: text)
+}
+component Texta644e07c2dcd(instance: text, text: text) {
+  view Kit(component: "Texta644e07c2dcd", instance: instance, text: text)
+}
+component Text486876a697bd(instance: text, text: text) {
+  view Kit(component: "Text486876a697bd", instance: instance, text: text)
+}
+component Surfaced0355e9fd549(instance: text) {
+  view Kit(component: "Surfaced0355e9fd549", instance: instance) { slot }
+}
+component Text6460b5af4a0d(instance: text, text: text) {
+  view Kit(component: "Text6460b5af4a0d", instance: instance, text: text)
+}
+component Text9fa03093b726(instance: text, text: text) {
+  view Kit(component: "Text9fa03093b726", instance: instance, text: text)
+}
+component Text43b4c1f25877(instance: text, text: text) {
+  view Kit(component: "Text43b4c1f25877", instance: instance, text: text)
+}
+component Surfaceb18d10e62d63(instance: text) {
+  view Kit(component: "Surfaceb18d10e62d63", instance: instance) { slot }
+}
+
+view root Surface25cdc448447b(instance: "page") {
+  Texta1b340ab5096(instance: "heading", text: copy.heading_text)
+  Text419774faffd8(instance: "data_status", text: copy.data_status_text)
+  KitButton943d8a6ae6d8(instance: "tab_settings") {
+    NativeButton02f1d1bd99b4(instance: "tab_settings_control", enabled: tab_settings_control_enabled)
+    Text4abc1db2683f(instance: "tab_settings_label", text: copy.tab_settings_label_text)
+  }
+  Text9258cc1c09d5(instance: "settings_glyph", text: copy.settings_glyph_text)
+  Group5fb60150eb73(instance: "body_scroll") {
+    Group3d2637879433(instance: "body_content") {
+      Surfacec68d54b1b8e2(instance: "search_bg") {
+
+      }
+      KitFormField8f5157cf85c3(instance: "search") {
+        Input13713ca84ad2(instance: "search_input", placeholder: copy.search_input_placeholder, text: copy.search_input_text)
+      }
+      KitButton943d8a6ae6d8(instance: "region_0") {
+        NativeButton02f1d1bd99b4(instance: "region_0_control", enabled: region_0_control_enabled)
+        Surface1d2f352a5c9c(instance: "region_0_bg") {
+
+        }
+        Text04a63d81feb3(instance: "region_0_label", text: copy.region_0_label_text)
+      }
+      KitButton943d8a6ae6d8(instance: "region_1") {
+        NativeButton02f1d1bd99b4(instance: "region_1_control", enabled: region_1_control_enabled)
+        Surface59e1a0f60533(instance: "region_1_bg") {
+
+        }
+        Texteb5864166c31(instance: "region_1_label", text: copy.region_1_label_text)
+      }
+      KitButton943d8a6ae6d8(instance: "region_2") {
+        NativeButton02f1d1bd99b4(instance: "region_2_control", enabled: region_2_control_enabled)
+        Surface59e1a0f60533(instance: "region_2_bg") {
+
+        }
+        Texteb5864166c31(instance: "region_2_label", text: copy.region_2_label_text)
+      }
+      KitButton943d8a6ae6d8(instance: "region_3") {
+        NativeButton02f1d1bd99b4(instance: "region_3_control", enabled: region_3_control_enabled)
+        Surface59e1a0f60533(instance: "region_3_bg") {
+
+        }
+        Texteb5864166c31(instance: "region_3_label", text: copy.region_3_label_text)
+      }
+      Texta644e07c2dcd(instance: "directory_scope", text: copy.directory_scope_text)
+      KitButton943d8a6ae6d8(instance: "stock_0") {
+        NativeButton02f1d1bd99b4(instance: "stock_0_control", enabled: stock_0_control_enabled)
+        Text4abc1db2683f(instance: "stock_0_label", text: copy.stock_0_label_text)
+      }
+      Text486876a697bd(instance: "stock_0_symbol", text: copy.stock_0_symbol_text)
+      Texta644e07c2dcd(instance: "stock_0_name", text: copy.stock_0_name_text)
+      Surfaced0355e9fd549(instance: "stock_0_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_0_market", text: copy.stock_0_market_text)
+      KitButton943d8a6ae6d8(instance: "add_0") {
+        NativeButton02f1d1bd99b4(instance: "add_0_control", enabled: add_0_control_enabled)
+        Surface59e1a0f60533(instance: "add_0_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_0_label", text: copy.add_0_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_0_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_1") {
+        NativeButton02f1d1bd99b4(instance: "stock_1_control", enabled: stock_1_control_enabled)
+        Text4abc1db2683f(instance: "stock_1_label", text: copy.stock_1_label_text)
+      }
+      Text486876a697bd(instance: "stock_1_symbol", text: copy.stock_1_symbol_text)
+      Texta644e07c2dcd(instance: "stock_1_name", text: copy.stock_1_name_text)
+      Surfaced0355e9fd549(instance: "stock_1_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_1_market", text: copy.stock_1_market_text)
+      KitButton943d8a6ae6d8(instance: "add_1") {
+        NativeButton02f1d1bd99b4(instance: "add_1_control", enabled: add_1_control_enabled)
+        Surface59e1a0f60533(instance: "add_1_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_1_label", text: copy.add_1_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_1_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_2") {
+        NativeButton02f1d1bd99b4(instance: "stock_2_control", enabled: stock_2_control_enabled)
+        Text4abc1db2683f(instance: "stock_2_label", text: copy.stock_2_label_text)
+      }
+      Text486876a697bd(instance: "stock_2_symbol", text: copy.stock_2_symbol_text)
+      Texta644e07c2dcd(instance: "stock_2_name", text: copy.stock_2_name_text)
+      Surfaced0355e9fd549(instance: "stock_2_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_2_market", text: copy.stock_2_market_text)
+      KitButton943d8a6ae6d8(instance: "add_2") {
+        NativeButton02f1d1bd99b4(instance: "add_2_control", enabled: add_2_control_enabled)
+        Surface59e1a0f60533(instance: "add_2_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_2_label", text: copy.add_2_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_2_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_3") {
+        NativeButton02f1d1bd99b4(instance: "stock_3_control", enabled: stock_3_control_enabled)
+        Text4abc1db2683f(instance: "stock_3_label", text: copy.stock_3_label_text)
+      }
+      Text486876a697bd(instance: "stock_3_symbol", text: copy.stock_3_symbol_text)
+      Texta644e07c2dcd(instance: "stock_3_name", text: copy.stock_3_name_text)
+      Surfaced0355e9fd549(instance: "stock_3_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_3_market", text: copy.stock_3_market_text)
+      KitButton943d8a6ae6d8(instance: "add_3") {
+        NativeButton02f1d1bd99b4(instance: "add_3_control", enabled: add_3_control_enabled)
+        Surface59e1a0f60533(instance: "add_3_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_3_label", text: copy.add_3_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_3_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_4") {
+        NativeButton02f1d1bd99b4(instance: "stock_4_control", enabled: stock_4_control_enabled)
+        Text4abc1db2683f(instance: "stock_4_label", text: copy.stock_4_label_text)
+      }
+      Text486876a697bd(instance: "stock_4_symbol", text: copy.stock_4_symbol_text)
+      Texta644e07c2dcd(instance: "stock_4_name", text: copy.stock_4_name_text)
+      Surfaced0355e9fd549(instance: "stock_4_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_4_market", text: copy.stock_4_market_text)
+      KitButton943d8a6ae6d8(instance: "add_4") {
+        NativeButton02f1d1bd99b4(instance: "add_4_control", enabled: add_4_control_enabled)
+        Surface59e1a0f60533(instance: "add_4_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_4_label", text: copy.add_4_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_4_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_5") {
+        NativeButton02f1d1bd99b4(instance: "stock_5_control", enabled: stock_5_control_enabled)
+        Text4abc1db2683f(instance: "stock_5_label", text: copy.stock_5_label_text)
+      }
+      Text486876a697bd(instance: "stock_5_symbol", text: copy.stock_5_symbol_text)
+      Texta644e07c2dcd(instance: "stock_5_name", text: copy.stock_5_name_text)
+      Surfaced0355e9fd549(instance: "stock_5_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_5_market", text: copy.stock_5_market_text)
+      KitButton943d8a6ae6d8(instance: "add_5") {
+        NativeButton02f1d1bd99b4(instance: "add_5_control", enabled: add_5_control_enabled)
+        Surface59e1a0f60533(instance: "add_5_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_5_label", text: copy.add_5_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_5_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_6") {
+        NativeButton02f1d1bd99b4(instance: "stock_6_control", enabled: stock_6_control_enabled)
+        Text4abc1db2683f(instance: "stock_6_label", text: copy.stock_6_label_text)
+      }
+      Text486876a697bd(instance: "stock_6_symbol", text: copy.stock_6_symbol_text)
+      Texta644e07c2dcd(instance: "stock_6_name", text: copy.stock_6_name_text)
+      Surfaced0355e9fd549(instance: "stock_6_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_6_market", text: copy.stock_6_market_text)
+      KitButton943d8a6ae6d8(instance: "add_6") {
+        NativeButton02f1d1bd99b4(instance: "add_6_control", enabled: add_6_control_enabled)
+        Surface59e1a0f60533(instance: "add_6_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_6_label", text: copy.add_6_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_6_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_7") {
+        NativeButton02f1d1bd99b4(instance: "stock_7_control", enabled: stock_7_control_enabled)
+        Text4abc1db2683f(instance: "stock_7_label", text: copy.stock_7_label_text)
+      }
+      Text486876a697bd(instance: "stock_7_symbol", text: copy.stock_7_symbol_text)
+      Texta644e07c2dcd(instance: "stock_7_name", text: copy.stock_7_name_text)
+      Surfaced0355e9fd549(instance: "stock_7_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_7_market", text: copy.stock_7_market_text)
+      KitButton943d8a6ae6d8(instance: "add_7") {
+        NativeButton02f1d1bd99b4(instance: "add_7_control", enabled: add_7_control_enabled)
+        Surface59e1a0f60533(instance: "add_7_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_7_label", text: copy.add_7_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_7_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_8") {
+        NativeButton02f1d1bd99b4(instance: "stock_8_control", enabled: stock_8_control_enabled)
+        Text4abc1db2683f(instance: "stock_8_label", text: copy.stock_8_label_text)
+      }
+      Text486876a697bd(instance: "stock_8_symbol", text: copy.stock_8_symbol_text)
+      Texta644e07c2dcd(instance: "stock_8_name", text: copy.stock_8_name_text)
+      Surfaced0355e9fd549(instance: "stock_8_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_8_market", text: copy.stock_8_market_text)
+      KitButton943d8a6ae6d8(instance: "add_8") {
+        NativeButton02f1d1bd99b4(instance: "add_8_control", enabled: add_8_control_enabled)
+        Surface59e1a0f60533(instance: "add_8_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_8_label", text: copy.add_8_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_8_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_9") {
+        NativeButton02f1d1bd99b4(instance: "stock_9_control", enabled: stock_9_control_enabled)
+        Text4abc1db2683f(instance: "stock_9_label", text: copy.stock_9_label_text)
+      }
+      Text486876a697bd(instance: "stock_9_symbol", text: copy.stock_9_symbol_text)
+      Texta644e07c2dcd(instance: "stock_9_name", text: copy.stock_9_name_text)
+      Surfaced0355e9fd549(instance: "stock_9_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_9_market", text: copy.stock_9_market_text)
+      KitButton943d8a6ae6d8(instance: "add_9") {
+        NativeButton02f1d1bd99b4(instance: "add_9_control", enabled: add_9_control_enabled)
+        Surface59e1a0f60533(instance: "add_9_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_9_label", text: copy.add_9_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_9_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_10") {
+        NativeButton02f1d1bd99b4(instance: "stock_10_control", enabled: stock_10_control_enabled)
+        Text4abc1db2683f(instance: "stock_10_label", text: copy.stock_10_label_text)
+      }
+      Text486876a697bd(instance: "stock_10_symbol", text: copy.stock_10_symbol_text)
+      Texta644e07c2dcd(instance: "stock_10_name", text: copy.stock_10_name_text)
+      Surfaced0355e9fd549(instance: "stock_10_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_10_market", text: copy.stock_10_market_text)
+      KitButton943d8a6ae6d8(instance: "add_10") {
+        NativeButton02f1d1bd99b4(instance: "add_10_control", enabled: add_10_control_enabled)
+        Surface59e1a0f60533(instance: "add_10_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_10_label", text: copy.add_10_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_10_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_11") {
+        NativeButton02f1d1bd99b4(instance: "stock_11_control", enabled: stock_11_control_enabled)
+        Text4abc1db2683f(instance: "stock_11_label", text: copy.stock_11_label_text)
+      }
+      Text486876a697bd(instance: "stock_11_symbol", text: copy.stock_11_symbol_text)
+      Texta644e07c2dcd(instance: "stock_11_name", text: copy.stock_11_name_text)
+      Surfaced0355e9fd549(instance: "stock_11_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_11_market", text: copy.stock_11_market_text)
+      KitButton943d8a6ae6d8(instance: "add_11") {
+        NativeButton02f1d1bd99b4(instance: "add_11_control", enabled: add_11_control_enabled)
+        Surface59e1a0f60533(instance: "add_11_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_11_label", text: copy.add_11_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_11_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_12") {
+        NativeButton02f1d1bd99b4(instance: "stock_12_control", enabled: stock_12_control_enabled)
+        Text4abc1db2683f(instance: "stock_12_label", text: copy.stock_12_label_text)
+      }
+      Text486876a697bd(instance: "stock_12_symbol", text: copy.stock_12_symbol_text)
+      Texta644e07c2dcd(instance: "stock_12_name", text: copy.stock_12_name_text)
+      Surfaced0355e9fd549(instance: "stock_12_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_12_market", text: copy.stock_12_market_text)
+      KitButton943d8a6ae6d8(instance: "add_12") {
+        NativeButton02f1d1bd99b4(instance: "add_12_control", enabled: add_12_control_enabled)
+        Surface59e1a0f60533(instance: "add_12_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_12_label", text: copy.add_12_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_12_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_13") {
+        NativeButton02f1d1bd99b4(instance: "stock_13_control", enabled: stock_13_control_enabled)
+        Text4abc1db2683f(instance: "stock_13_label", text: copy.stock_13_label_text)
+      }
+      Text486876a697bd(instance: "stock_13_symbol", text: copy.stock_13_symbol_text)
+      Texta644e07c2dcd(instance: "stock_13_name", text: copy.stock_13_name_text)
+      Surfaced0355e9fd549(instance: "stock_13_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_13_market", text: copy.stock_13_market_text)
+      KitButton943d8a6ae6d8(instance: "add_13") {
+        NativeButton02f1d1bd99b4(instance: "add_13_control", enabled: add_13_control_enabled)
+        Surface59e1a0f60533(instance: "add_13_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_13_label", text: copy.add_13_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_13_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_14") {
+        NativeButton02f1d1bd99b4(instance: "stock_14_control", enabled: stock_14_control_enabled)
+        Text4abc1db2683f(instance: "stock_14_label", text: copy.stock_14_label_text)
+      }
+      Text486876a697bd(instance: "stock_14_symbol", text: copy.stock_14_symbol_text)
+      Texta644e07c2dcd(instance: "stock_14_name", text: copy.stock_14_name_text)
+      Surfaced0355e9fd549(instance: "stock_14_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_14_market", text: copy.stock_14_market_text)
+      KitButton943d8a6ae6d8(instance: "add_14") {
+        NativeButton02f1d1bd99b4(instance: "add_14_control", enabled: add_14_control_enabled)
+        Surface59e1a0f60533(instance: "add_14_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_14_label", text: copy.add_14_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_14_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_15") {
+        NativeButton02f1d1bd99b4(instance: "stock_15_control", enabled: stock_15_control_enabled)
+        Text4abc1db2683f(instance: "stock_15_label", text: copy.stock_15_label_text)
+      }
+      Text486876a697bd(instance: "stock_15_symbol", text: copy.stock_15_symbol_text)
+      Texta644e07c2dcd(instance: "stock_15_name", text: copy.stock_15_name_text)
+      Surfaced0355e9fd549(instance: "stock_15_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_15_market", text: copy.stock_15_market_text)
+      KitButton943d8a6ae6d8(instance: "add_15") {
+        NativeButton02f1d1bd99b4(instance: "add_15_control", enabled: add_15_control_enabled)
+        Surface59e1a0f60533(instance: "add_15_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_15_label", text: copy.add_15_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_15_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_16") {
+        NativeButton02f1d1bd99b4(instance: "stock_16_control", enabled: stock_16_control_enabled)
+        Text4abc1db2683f(instance: "stock_16_label", text: copy.stock_16_label_text)
+      }
+      Text486876a697bd(instance: "stock_16_symbol", text: copy.stock_16_symbol_text)
+      Texta644e07c2dcd(instance: "stock_16_name", text: copy.stock_16_name_text)
+      Surfaced0355e9fd549(instance: "stock_16_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_16_market", text: copy.stock_16_market_text)
+      KitButton943d8a6ae6d8(instance: "add_16") {
+        NativeButton02f1d1bd99b4(instance: "add_16_control", enabled: add_16_control_enabled)
+        Surface59e1a0f60533(instance: "add_16_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_16_label", text: copy.add_16_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_16_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_17") {
+        NativeButton02f1d1bd99b4(instance: "stock_17_control", enabled: stock_17_control_enabled)
+        Text4abc1db2683f(instance: "stock_17_label", text: copy.stock_17_label_text)
+      }
+      Text486876a697bd(instance: "stock_17_symbol", text: copy.stock_17_symbol_text)
+      Texta644e07c2dcd(instance: "stock_17_name", text: copy.stock_17_name_text)
+      Surfaced0355e9fd549(instance: "stock_17_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_17_market", text: copy.stock_17_market_text)
+      KitButton943d8a6ae6d8(instance: "add_17") {
+        NativeButton02f1d1bd99b4(instance: "add_17_control", enabled: add_17_control_enabled)
+        Surface59e1a0f60533(instance: "add_17_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_17_label", text: copy.add_17_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_17_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_18") {
+        NativeButton02f1d1bd99b4(instance: "stock_18_control", enabled: stock_18_control_enabled)
+        Text4abc1db2683f(instance: "stock_18_label", text: copy.stock_18_label_text)
+      }
+      Text486876a697bd(instance: "stock_18_symbol", text: copy.stock_18_symbol_text)
+      Texta644e07c2dcd(instance: "stock_18_name", text: copy.stock_18_name_text)
+      Surfaced0355e9fd549(instance: "stock_18_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_18_market", text: copy.stock_18_market_text)
+      KitButton943d8a6ae6d8(instance: "add_18") {
+        NativeButton02f1d1bd99b4(instance: "add_18_control", enabled: add_18_control_enabled)
+        Surface59e1a0f60533(instance: "add_18_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_18_label", text: copy.add_18_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_18_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_19") {
+        NativeButton02f1d1bd99b4(instance: "stock_19_control", enabled: stock_19_control_enabled)
+        Text4abc1db2683f(instance: "stock_19_label", text: copy.stock_19_label_text)
+      }
+      Text486876a697bd(instance: "stock_19_symbol", text: copy.stock_19_symbol_text)
+      Texta644e07c2dcd(instance: "stock_19_name", text: copy.stock_19_name_text)
+      Surfaced0355e9fd549(instance: "stock_19_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_19_market", text: copy.stock_19_market_text)
+      KitButton943d8a6ae6d8(instance: "add_19") {
+        NativeButton02f1d1bd99b4(instance: "add_19_control", enabled: add_19_control_enabled)
+        Surface59e1a0f60533(instance: "add_19_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_19_label", text: copy.add_19_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_19_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_20") {
+        NativeButton02f1d1bd99b4(instance: "stock_20_control", enabled: stock_20_control_enabled)
+        Text4abc1db2683f(instance: "stock_20_label", text: copy.stock_20_label_text)
+      }
+      Text486876a697bd(instance: "stock_20_symbol", text: copy.stock_20_symbol_text)
+      Texta644e07c2dcd(instance: "stock_20_name", text: copy.stock_20_name_text)
+      Surfaced0355e9fd549(instance: "stock_20_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_20_market", text: copy.stock_20_market_text)
+      KitButton943d8a6ae6d8(instance: "add_20") {
+        NativeButton02f1d1bd99b4(instance: "add_20_control", enabled: add_20_control_enabled)
+        Surface59e1a0f60533(instance: "add_20_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_20_label", text: copy.add_20_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_20_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_21") {
+        NativeButton02f1d1bd99b4(instance: "stock_21_control", enabled: stock_21_control_enabled)
+        Text4abc1db2683f(instance: "stock_21_label", text: copy.stock_21_label_text)
+      }
+      Text486876a697bd(instance: "stock_21_symbol", text: copy.stock_21_symbol_text)
+      Texta644e07c2dcd(instance: "stock_21_name", text: copy.stock_21_name_text)
+      Surfaced0355e9fd549(instance: "stock_21_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_21_market", text: copy.stock_21_market_text)
+      KitButton943d8a6ae6d8(instance: "add_21") {
+        NativeButton02f1d1bd99b4(instance: "add_21_control", enabled: add_21_control_enabled)
+        Surface59e1a0f60533(instance: "add_21_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_21_label", text: copy.add_21_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_21_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_22") {
+        NativeButton02f1d1bd99b4(instance: "stock_22_control", enabled: stock_22_control_enabled)
+        Text4abc1db2683f(instance: "stock_22_label", text: copy.stock_22_label_text)
+      }
+      Text486876a697bd(instance: "stock_22_symbol", text: copy.stock_22_symbol_text)
+      Texta644e07c2dcd(instance: "stock_22_name", text: copy.stock_22_name_text)
+      Surfaced0355e9fd549(instance: "stock_22_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_22_market", text: copy.stock_22_market_text)
+      KitButton943d8a6ae6d8(instance: "add_22") {
+        NativeButton02f1d1bd99b4(instance: "add_22_control", enabled: add_22_control_enabled)
+        Surface59e1a0f60533(instance: "add_22_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_22_label", text: copy.add_22_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_22_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "stock_23") {
+        NativeButton02f1d1bd99b4(instance: "stock_23_control", enabled: stock_23_control_enabled)
+        Text4abc1db2683f(instance: "stock_23_label", text: copy.stock_23_label_text)
+      }
+      Text486876a697bd(instance: "stock_23_symbol", text: copy.stock_23_symbol_text)
+      Texta644e07c2dcd(instance: "stock_23_name", text: copy.stock_23_name_text)
+      Surfaced0355e9fd549(instance: "stock_23_badge") {
+
+      }
+      Text6460b5af4a0d(instance: "stock_23_market", text: copy.stock_23_market_text)
+      KitButton943d8a6ae6d8(instance: "add_23") {
+        NativeButton02f1d1bd99b4(instance: "add_23_control", enabled: add_23_control_enabled)
+        Surface59e1a0f60533(instance: "add_23_bg") {
+
+        }
+        Text4abc1db2683f(instance: "add_23_label", text: copy.add_23_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "stock_23_rule") {
+
+      }
+    }
+  }
+  Surface25cdc448447b(instance: "tab_surface") {
+
+  }
+  KitButton943d8a6ae6d8(instance: "tab_watchlist") {
+    NativeButton02f1d1bd99b4(instance: "tab_watchlist_control", enabled: tab_watchlist_control_enabled)
+    Text9fa03093b726(instance: "tab_watchlist_label", text: copy.tab_watchlist_label_text)
+  }
+  Text43b4c1f25877(instance: "tab_watchlist_glyph", text: copy.tab_watchlist_glyph_text)
+  KitButton943d8a6ae6d8(instance: "tab_markets") {
+    NativeButton02f1d1bd99b4(instance: "tab_markets_control", enabled: tab_markets_control_enabled)
+    Text9fa03093b726(instance: "tab_markets_label", text: copy.tab_markets_label_text)
+  }
+  Text43b4c1f25877(instance: "tab_markets_glyph", text: copy.tab_markets_glyph_text)
+  KitButton943d8a6ae6d8(instance: "tab_news") {
+    NativeButton02f1d1bd99b4(instance: "tab_news_control", enabled: tab_news_control_enabled)
+    Text9fa03093b726(instance: "tab_news_label", text: copy.tab_news_label_text)
+  }
+  Text43b4c1f25877(instance: "tab_news_glyph", text: copy.tab_news_glyph_text)
+  KitButton943d8a6ae6d8(instance: "tab_saved") {
+    NativeButton02f1d1bd99b4(instance: "tab_saved_control", enabled: tab_saved_control_enabled)
+    Text9fa03093b726(instance: "tab_saved_label", text: copy.tab_saved_label_text)
+  }
+  Text43b4c1f25877(instance: "tab_saved_glyph", text: copy.tab_saved_glyph_text)
+  Surfaceb18d10e62d63(instance: "home_indicator") {
+
+  }
+}

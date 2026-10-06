@@ -1,0 +1,297 @@
+{
+  "$kit": {
+    "theme": "light",
+    "placements": {
+      "page": {
+        "component": "Surface25cdc448447b",
+        "layout": {
+          "h": 776.0,
+          "w": 406.0,
+          "x": 0.0,
+          "y": 0.0
+        }
+      },
+      "heading": {
+        "component": "Texta1b340ab5096",
+        "layout": {
+          "h": 40.800000000000004,
+          "w": 316.0,
+          "x": 20.0,
+          "y": 30.0
+        }
+      },
+      "data_status": {
+        "component": "Text419774faffd8",
+        "layout": {
+          "h": 13.600000000000001,
+          "w": 354.0,
+          "x": 24.0,
+          "y": 75.0
+        }
+      },
+      "back": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 48.0,
+          "x": 8.0,
+          "y": 3.0
+        }
+      },
+      "back_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 48.0,
+          "x": 8.0,
+          "y": 3.0
+        }
+      },
+      "back_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 40.0,
+          "x": 12.0,
+          "y": 12.0
+        }
+      },
+      "bookmark": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 42.0,
+          "w": 104.0,
+          "x": 280.0,
+          "y": 40.0
+        }
+      },
+      "bookmark_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 42.0,
+          "w": 104.0,
+          "x": 280.0,
+          "y": 40.0
+        }
+      },
+      "bookmark_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 96.0,
+          "x": 284.0,
+          "y": 52.0
+        }
+      },
+      "article_web": {
+        "component": "Web823c2892e0cd",
+        "layout": {
+          "h": 578,
+          "src": "data:text/html;charset=utf-8;base64,PCFkb2N0eXBlIGh0bWw+PGh0bWw+PGhlYWQ+PG1ldGEgbmFtZT0ndmlld3BvcnQnIGNvbnRlbnQ9J3dpZHRoPWRldmljZS13aWR0aCxpbml0aWFsLXNjYWxlPTEnPjxzdHlsZT5ib2R5e2JhY2tncm91bmQ6IzA3MDkwQztjb2xvcjojRjRGNUY3O2ZvbnQ6MThweCAtYXBwbGUtc3lzdGVtLHNhbnMtc2VyaWY7cGFkZGluZzoxOHB4O2xpbmUtaGVpZ2h0OjEuNjV9aDF7Zm9udC1zaXplOjI5cHh9c21hbGx7Y29sb3I6IzkyOUFBOH1he2NvbG9yOiM0NThmZmZ9PC9zdHlsZT48L2hlYWQ+PGJvZHk+PHNtYWxsPlByZXZpZXcgSm91cm5hbDwvc21hbGw+PGgxPlRocmVlIG1hcmtldHMsIG9uZSB3YXRjaGxpc3Q8L2gxPjxwPlRocmVlIG1hcmtldHMsIG9uZSB3YXRjaGxpc3QuIFRoaXMgaXMgYSBmaWN0aW9uYWwgYXJ0aWNsZSBmb3IgcmV2aWV3aW5nIHRoZSBGaW5hbmNlIGFwcC4gUHJpY2VzIGFuZCBoZWFkbGluZXMgc2hvd24gaW4gcHJldmlldyBtb2RlIGFyZSBkZXRlcm1pbmlzdGljIGZpeHR1cmVzLjwvcD48cD5VUywgSG9uZyBLb25nIGFuZCBtYWlubGFuZCBDaGluYSBsaXN0aW5ncyBrZWVwIHNlcGFyYXRlIGN1cnJlbmNpZXMgYW5kIGV4Y2hhbmdlIGlkZW50aXRpZXMuIFRoaXMgYXJ0aWNsZSBkZW1vbnN0cmF0ZXMgY29udGludW91cyByZWFkaW5nIGFuZCBib29rbWFya2luZy48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+PC9wPjwvYm9keT48L2h0bWw+",
+          "w": 406,
+          "x": 0,
+          "y": 116
+        }
+      },
+      "share": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 38.0,
+          "w": 160.0,
+          "x": 20.0,
+          "y": 695.0
+        }
+      },
+      "share_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 38.0,
+          "w": 160.0,
+          "x": 20.0,
+          "y": 695.0
+        }
+      },
+      "share_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 38.0,
+          "w": 160.0,
+          "x": 20.0,
+          "y": 695.0
+        }
+      },
+      "share_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 152.0,
+          "x": 24.0,
+          "y": 705.0
+        }
+      },
+      "tab_surface": {
+        "component": "Surface25cdc448447b",
+        "layout": {
+          "h": 72.0,
+          "w": 406.0,
+          "x": 0.0,
+          "y": 704.0
+        }
+      },
+      "tab_watchlist": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 2.0,
+          "y": 707.0
+        }
+      },
+      "tab_watchlist_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 2.0,
+          "y": 707.0
+        }
+      },
+      "tab_watchlist_label": {
+        "component": "Text9fa03093b726",
+        "layout": {
+          "h": 12.24,
+          "w": 91.0,
+          "x": 6.0,
+          "y": 744.0
+        }
+      },
+      "tab_watchlist_glyph": {
+        "component": "Text43b4c1f25877",
+        "layout": {
+          "h": 25.840000000000003,
+          "w": 23.0,
+          "x": 40.0,
+          "y": 712.0
+        }
+      },
+      "tab_markets": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 103.0,
+          "y": 707.0
+        }
+      },
+      "tab_markets_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 103.0,
+          "y": 707.0
+        }
+      },
+      "tab_markets_label": {
+        "component": "Text9fa03093b726",
+        "layout": {
+          "h": 12.24,
+          "w": 91.0,
+          "x": 107.0,
+          "y": 744.0
+        }
+      },
+      "tab_markets_glyph": {
+        "component": "Text43b4c1f25877",
+        "layout": {
+          "h": 25.840000000000003,
+          "w": 23.0,
+          "x": 141.0,
+          "y": 712.0
+        }
+      },
+      "tab_news": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 204.0,
+          "y": 707.0
+        }
+      },
+      "tab_news_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 204.0,
+          "y": 707.0
+        }
+      },
+      "tab_news_label": {
+        "component": "Text9fa03093b726",
+        "layout": {
+          "h": 12.24,
+          "w": 91.0,
+          "x": 208.0,
+          "y": 744.0
+        }
+      },
+      "tab_news_glyph": {
+        "component": "Text43b4c1f25877",
+        "layout": {
+          "h": 25.840000000000003,
+          "w": 23.0,
+          "x": 242.0,
+          "y": 712.0
+        }
+      },
+      "tab_saved": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 305.0,
+          "y": 707.0
+        }
+      },
+      "tab_saved_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 305.0,
+          "y": 707.0
+        }
+      },
+      "tab_saved_label": {
+        "component": "Text9fa03093b726",
+        "layout": {
+          "h": 12.24,
+          "w": 91.0,
+          "x": 309.0,
+          "y": 744.0
+        }
+      },
+      "tab_saved_glyph": {
+        "component": "Text43b4c1f25877",
+        "layout": {
+          "h": 25.840000000000003,
+          "w": 23.0,
+          "x": 343.0,
+          "y": 712.0
+        }
+      },
+      "home_indicator": {
+        "component": "Surfaceb18d10e62d63",
+        "layout": {
+          "h": 4.0,
+          "w": 116.0,
+          "x": 145.0,
+          "y": 765.0
+        }
+      }
+    },
+    "bindings": []
+  }
+}

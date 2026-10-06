@@ -1,0 +1,14 @@
+{
+  "provider": "OpenAI built-in image_gen",
+  "actual_atlas_size": [
+    1024,
+    1536
+  ],
+  "source_crop": [
+    520,
+    25,
+    240,
+    489
+  ],
+  "reference_sha256": "7783e6f27ac00fdb087e8f3d94cf533d6312e638313d00c560c1aac5340051f6"
+}

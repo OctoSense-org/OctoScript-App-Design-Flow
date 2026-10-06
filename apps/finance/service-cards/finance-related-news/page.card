@@ -1,0 +1,67 @@
+# ledger finance-related-news@1.0.0
+# level: L0
+# profile: ui/l0
+# Static design fixture, runtime native Kit composition.
+theme light
+copy story_0_label_text { class: user-copy, en: "" }
+copy story_0_source_text { class: user-copy, en: "Preview Journal · US" }
+copy story_0_title_0_text { class: user-copy, en: "Three markets, one watchlist" }
+copy save_0_label_text { class: user-copy, en: "☆" }
+copy story_1_label_text { class: user-copy, en: "" }
+copy story_1_source_text { class: user-copy, en: "Preview Journal · US" }
+copy story_1_title_0_text { class: user-copy, en: "Apple supplier outlook in focus" }
+copy save_1_label_text { class: user-copy, en: "☆" }
+state story_0_control_enabled { shape: bool, initial: true }
+state save_0_control_enabled { shape: bool, initial: true }
+state story_1_control_enabled { shape: bool, initial: true }
+state save_1_control_enabled { shape: bool, initial: true }
+component Surface25cdc448447b(instance: text) {
+  view Kit(component: "Surface25cdc448447b", instance: instance) { slot }
+}
+component KitButton943d8a6ae6d8(instance: text) {
+  view Kit(component: "KitButton943d8a6ae6d8", instance: instance) { slot }
+}
+component NativeButton02f1d1bd99b4(instance: text, enabled: bool) {
+  view Kit(component: "NativeButton02f1d1bd99b4", instance: instance, enabled: enabled)
+}
+component Text4abc1db2683f(instance: text, text: text) {
+  view Kit(component: "Text4abc1db2683f", instance: instance, text: text)
+}
+component Texta644e07c2dcd(instance: text, text: text) {
+  view Kit(component: "Texta644e07c2dcd", instance: instance, text: text)
+}
+component Textd59114640426(instance: text, text: text) {
+  view Kit(component: "Textd59114640426", instance: instance, text: text)
+}
+component Surfacec68d54b1b8e2(instance: text) {
+  view Kit(component: "Surfacec68d54b1b8e2", instance: instance) { slot }
+}
+
+view root Surface25cdc448447b(instance: "related_news_card") {
+  KitButton943d8a6ae6d8(instance: "story_0") {
+    NativeButton02f1d1bd99b4(instance: "story_0_control", enabled: story_0_control_enabled)
+    Text4abc1db2683f(instance: "story_0_label", text: copy.story_0_label_text)
+  }
+  Texta644e07c2dcd(instance: "story_0_source", text: copy.story_0_source_text)
+  Textd59114640426(instance: "story_0_title_0", text: copy.story_0_title_0_text)
+  KitButton943d8a6ae6d8(instance: "save_0") {
+    NativeButton02f1d1bd99b4(instance: "save_0_control", enabled: save_0_control_enabled)
+    Text4abc1db2683f(instance: "save_0_label", text: copy.save_0_label_text)
+  }
+  Surfacec68d54b1b8e2(instance: "story_0_rule") {
+
+  }
+  KitButton943d8a6ae6d8(instance: "story_1") {
+    NativeButton02f1d1bd99b4(instance: "story_1_control", enabled: story_1_control_enabled)
+    Text4abc1db2683f(instance: "story_1_label", text: copy.story_1_label_text)
+  }
+  Texta644e07c2dcd(instance: "story_1_source", text: copy.story_1_source_text)
+  Textd59114640426(instance: "story_1_title_0", text: copy.story_1_title_0_text)
+  KitButton943d8a6ae6d8(instance: "save_1") {
+    NativeButton02f1d1bd99b4(instance: "save_1_control", enabled: save_1_control_enabled)
+    Text4abc1db2683f(instance: "save_1_label", text: copy.save_1_label_text)
+  }
+  Surfacec68d54b1b8e2(instance: "story_1_rule") {
+
+  }
+}

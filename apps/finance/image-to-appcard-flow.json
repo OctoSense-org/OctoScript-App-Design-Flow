@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "id": "finance-ios",
+  "artboard": [
+    406,
+    776
+  ],
+  "locales": [
+    "en",
+    "cn"
+  ],
+  "generation": {
+    "atlas": "source/finance-atlas.png",
+    "prompt": "source/atlas-prompt.md",
+    "provider": "OpenAI built-in image_gen",
+    "requested_size": [
+      3200,
+      4800
+    ],
+    "quality": "high"
+  },
+  "scenes": [
+    {
+      "id": "1",
+      "design_id": "finance-01",
+      "directory": "cards/finance-01",
+      "crop": [
+        12,
+        25,
+        240,
+        489
+      ],
+      "surface": "app",
+      "title": "Watchlist"
+    },
+    {
+      "id": "2",
+      "design_id": "finance-02",
+      "directory": "cards/finance-02",
+      "crop": [
+        266,
+        25,
+        240,
+        489
+      ],
+      "surface": "app",
+      "title": "Markets"
+    },
+    {
+      "id": "3",
+      "design_id": "finance-03",
+      "directory": "cards/finance-03",
+      "crop": [
+        520,
+        25,
+        240,
+        489
+      ],
+      "surface": "app",
+      "title": "Search"
+    },
+    {
+      "id": "4",
+      "design_id": "finance-04",
+      "directory": "cards/finance-04",
+      "crop": [
+        774,
+        25,
+        240,
+        489
+      ],
+      "surface": "app",
+      "title": "Edit watchlist"
+    },
+    {
+      "id": "5",
+      "design_id": "finance-05",
+      "directory": "cards/finance-05",
+      "crop": [
+        12,
+        550,
+        240,
+        483
+      ],
+      "surface": "app",
+      "title": "Stock details"
+    },
+    {
+      "id": "6",
+      "design_id": "finance-06",
+      "directory": "cards/finance-06",
+      "crop": [
+        266,
+        550,
+        240,
+        483
+      ],
+      "surface": "app",
+      "title": "Chart inspection"
+    },
+    {
+      "id": "7",
+      "design_id": "finance-07",
+      "directory": "cards/finance-07",
+      "crop": [
+        520,
+        550,
+        240,
+        483
+      ],
+      "surface": "app",
+      "title": "Company news"
+    },
+    {
+      "id": "8",
+      "design_id": "finance-08",
+      "directory": "cards/finance-08",
+      "crop": [
+        774,
+        550,
+        240,
+        483
+      ],
+      "surface": "app",
+      "title": "Business news"
+    },
+    {
+      "id": "9",
+      "design_id": "finance-09",
+      "directory": "cards/finance-09",
+      "crop": [
+        12,
+        1066,
+        240,
+        449
+      ],
+      "surface": "app",
+      "title": "Article reader"
+    },
+    {
+      "id": "10",
+      "design_id": "finance-10",
+      "directory": "cards/finance-10",
+      "crop": [
+        266,
+        1066,
+        240,
+        449
+      ],
+      "surface": "app",
+      "title": "Saved news"
+    },
+    {
+      "id": "11",
+      "design_id": "finance-11",
+      "directory": "cards/finance-11",
+      "crop": [
+        520,
+        1066,
+        240,
+        449
+      ],
+      "surface": "app",
+      "title": "Settings"
+    },
+    {
+      "id": "12",
+      "design_id": "finance-12",
+      "directory": "cards/finance-12",
+      "crop": [
+        774,
+        1066,
+        240,
+        449
+      ],
+      "surface": "app",
+      "title": "Offline watchlist"
+    }
+  ],
+  "cards": [
+    {
+      "id": "finance-quote",
+      "scene": "5",
+      "root": "quote_card",
+      "owner": "finance"
+    },
+    {
+      "id": "finance-watchlist",
+      "scene": "1",
+      "root": "watchlist_card",
+      "owner": "finance"
+    },
+    {
+      "id": "finance-related-news",
+      "scene": "7",
+      "root": "related_news_card",
+      "owner": "finance"
+    },
+    {
+      "id": "finance-market-brief",
+      "scene": "2",
+      "root": "market_brief_card",
+      "owner": "finance"
+    }
+  ],
+  "artwork": {
+    "source_prefix": "http://127.0.0.1:8170/ux-images/",
+    "root": "assets"
+  },
+  "outputs": {
+    "intake": "pipeline-output/intake-matplot",
+    "cards": "pipeline-output/service-cards-matplot",
+    "bundle": "pipeline-output/bundle",
+    "runs": "pipeline-output/runs"
+  },
+  "browser_modules": [],
+  "checks": {
+    "service-test": [
+      {
+        "argv": [
+          "cargo",
+          "test",
+          "--release",
+          "-p",
+          "octosense-finance-service"
+        ],
+        "cwd": "."
+      }
+    ]
+  }
+}

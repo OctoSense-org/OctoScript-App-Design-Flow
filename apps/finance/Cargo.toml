@@ -1,0 +1,15 @@
+[workspace]
+resolver = "2"
+members = ["service", "native"]
+
+[profile.release]
+lto = false
+
+# Unify the node model used transitively by Octoscript with the selected UI runtime.
+[patch."https://github.com/OctoSense-org/Octoscript-Makepad.git"]
+octoscript-node = { path = "../../../octoscript-makepad/crates/octoscript-node" }
+
+# Use the shared StockPlot's host-supplied series API, also used by the hosts.
+[patch."https://github.com/OctoSense-org/makepad.git"]
+makepad-widgets = { path = "../../../makepad/widgets" }
+makepad-app-module = { path = "../../../makepad/libs/app_module" }

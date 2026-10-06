@@ -1,0 +1,3048 @@
+{
+  "$kit": {
+    "theme": "light",
+    "placements": {
+      "page": {
+        "component": "Surface25cdc448447b",
+        "layout": {
+          "h": 776.0,
+          "w": 406.0,
+          "x": 0.0,
+          "y": 0.0
+        }
+      },
+      "heading": {
+        "component": "Texta1b340ab5096",
+        "layout": {
+          "h": 40.800000000000004,
+          "w": 316.0,
+          "x": 20.0,
+          "y": 30.0
+        }
+      },
+      "data_status": {
+        "component": "Text419774faffd8",
+        "layout": {
+          "h": 13.600000000000001,
+          "w": 354.0,
+          "x": 24.0,
+          "y": 75.0
+        }
+      },
+      "tab_settings": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 358.0,
+          "y": 28.0
+        }
+      },
+      "tab_settings_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 358.0,
+          "y": 28.0
+        }
+      },
+      "tab_settings_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 362.0,
+          "y": 37.0
+        }
+      },
+      "settings_glyph": {
+        "component": "Text9258cc1c09d5",
+        "layout": {
+          "h": 24.48,
+          "w": 22.0,
+          "x": 365.0,
+          "y": 36.0
+        }
+      },
+      "body_scroll": {
+        "component": "Group5fb60150eb73",
+        "layout": {
+          "h": 580.0,
+          "w": 406.0,
+          "x": 0.0,
+          "y": 112.0
+        }
+      },
+      "body_content": {
+        "component": "Group3d2637879433",
+        "layout": {
+          "h": 677556.0,
+          "w": 406.0,
+          "x": 0.0,
+          "y": 112.0
+        }
+      },
+      "search_bg": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 42.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 112.0
+        }
+      },
+      "search": {
+        "component": "KitFormField8f5157cf85c3",
+        "layout": {
+          "h": 38.0,
+          "w": 346.0,
+          "x": 30.0,
+          "y": 114.0
+        }
+      },
+      "search_input": {
+        "component": "Input13713ca84ad2",
+        "layout": {
+          "h": 21.76,
+          "w": 338.0,
+          "x": 34.0,
+          "y": 122.0
+        }
+      },
+      "region_0": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 28.0,
+          "w": 90.0,
+          "x": 20.0,
+          "y": 158.0
+        }
+      },
+      "region_0_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 28.0,
+          "w": 90.0,
+          "x": 20.0,
+          "y": 158.0
+        }
+      },
+      "region_0_bg": {
+        "component": "Surface1d2f352a5c9c",
+        "layout": {
+          "h": 28.0,
+          "w": 90.0,
+          "x": 20.0,
+          "y": 158.0
+        }
+      },
+      "region_0_label": {
+        "component": "Text04a63d81feb3",
+        "layout": {
+          "h": 17.68,
+          "w": 82.0,
+          "x": 24.0,
+          "y": 163.0
+        }
+      },
+      "region_1": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 28.0,
+          "w": 90.0,
+          "x": 113.0,
+          "y": 158.0
+        }
+      },
+      "region_1_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 28.0,
+          "w": 90.0,
+          "x": 113.0,
+          "y": 158.0
+        }
+      },
+      "region_1_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 28.0,
+          "w": 90.0,
+          "x": 113.0,
+          "y": 158.0
+        }
+      },
+      "region_1_label": {
+        "component": "Texteb5864166c31",
+        "layout": {
+          "h": 17.68,
+          "w": 82.0,
+          "x": 117.0,
+          "y": 163.0
+        }
+      },
+      "region_2": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 28.0,
+          "w": 90.0,
+          "x": 206.0,
+          "y": 158.0
+        }
+      },
+      "region_2_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 28.0,
+          "w": 90.0,
+          "x": 206.0,
+          "y": 158.0
+        }
+      },
+      "region_2_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 28.0,
+          "w": 90.0,
+          "x": 206.0,
+          "y": 158.0
+        }
+      },
+      "region_2_label": {
+        "component": "Texteb5864166c31",
+        "layout": {
+          "h": 17.68,
+          "w": 82.0,
+          "x": 210.0,
+          "y": 163.0
+        }
+      },
+      "region_3": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 28.0,
+          "w": 90.0,
+          "x": 299.0,
+          "y": 158.0
+        }
+      },
+      "region_3_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 28.0,
+          "w": 90.0,
+          "x": 299.0,
+          "y": 158.0
+        }
+      },
+      "region_3_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 28.0,
+          "w": 90.0,
+          "x": 299.0,
+          "y": 158.0
+        }
+      },
+      "region_3_label": {
+        "component": "Texteb5864166c31",
+        "layout": {
+          "h": 17.68,
+          "w": 82.0,
+          "x": 303.0,
+          "y": 163.0
+        }
+      },
+      "directory_scope": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 354.0,
+          "x": 24.0,
+          "y": 198.0
+        }
+      },
+      "stock_0": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 226.0
+        }
+      },
+      "stock_0_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 226.0
+        }
+      },
+      "stock_0_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 246.0
+        }
+      },
+      "stock_0_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 233.0
+        }
+      },
+      "stock_0_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 257.0
+        }
+      },
+      "stock_0_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 244.0
+        }
+      },
+      "stock_0_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 248.0
+        }
+      },
+      "add_0": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 237.0
+        }
+      },
+      "add_0_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 237.0
+        }
+      },
+      "add_0_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 237.0
+        }
+      },
+      "add_0_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 246.0
+        }
+      },
+      "stock_0_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 284.0
+        }
+      },
+      "stock_1": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 288.0
+        }
+      },
+      "stock_1_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 288.0
+        }
+      },
+      "stock_1_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 308.0
+        }
+      },
+      "stock_1_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 295.0
+        }
+      },
+      "stock_1_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 319.0
+        }
+      },
+      "stock_1_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 306.0
+        }
+      },
+      "stock_1_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 310.0
+        }
+      },
+      "add_1": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 299.0
+        }
+      },
+      "add_1_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 299.0
+        }
+      },
+      "add_1_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 299.0
+        }
+      },
+      "add_1_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 308.0
+        }
+      },
+      "stock_1_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 346.0
+        }
+      },
+      "stock_2": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 350.0
+        }
+      },
+      "stock_2_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 350.0
+        }
+      },
+      "stock_2_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 370.0
+        }
+      },
+      "stock_2_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 357.0
+        }
+      },
+      "stock_2_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 381.0
+        }
+      },
+      "stock_2_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 368.0
+        }
+      },
+      "stock_2_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 372.0
+        }
+      },
+      "add_2": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 361.0
+        }
+      },
+      "add_2_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 361.0
+        }
+      },
+      "add_2_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 361.0
+        }
+      },
+      "add_2_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 370.0
+        }
+      },
+      "stock_2_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 408.0
+        }
+      },
+      "stock_3": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 412.0
+        }
+      },
+      "stock_3_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 412.0
+        }
+      },
+      "stock_3_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 432.0
+        }
+      },
+      "stock_3_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 419.0
+        }
+      },
+      "stock_3_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 443.0
+        }
+      },
+      "stock_3_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 430.0
+        }
+      },
+      "stock_3_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 434.0
+        }
+      },
+      "add_3": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 423.0
+        }
+      },
+      "add_3_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 423.0
+        }
+      },
+      "add_3_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 423.0
+        }
+      },
+      "add_3_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 432.0
+        }
+      },
+      "stock_3_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 470.0
+        }
+      },
+      "stock_4": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 474.0
+        }
+      },
+      "stock_4_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 474.0
+        }
+      },
+      "stock_4_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 494.0
+        }
+      },
+      "stock_4_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 481.0
+        }
+      },
+      "stock_4_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 505.0
+        }
+      },
+      "stock_4_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 492.0
+        }
+      },
+      "stock_4_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 496.0
+        }
+      },
+      "add_4": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 485.0
+        }
+      },
+      "add_4_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 485.0
+        }
+      },
+      "add_4_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 485.0
+        }
+      },
+      "add_4_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 494.0
+        }
+      },
+      "stock_4_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 532.0
+        }
+      },
+      "stock_5": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 536.0
+        }
+      },
+      "stock_5_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 536.0
+        }
+      },
+      "stock_5_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 556.0
+        }
+      },
+      "stock_5_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 543.0
+        }
+      },
+      "stock_5_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 567.0
+        }
+      },
+      "stock_5_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 554.0
+        }
+      },
+      "stock_5_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 558.0
+        }
+      },
+      "add_5": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 547.0
+        }
+      },
+      "add_5_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 547.0
+        }
+      },
+      "add_5_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 547.0
+        }
+      },
+      "add_5_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 556.0
+        }
+      },
+      "stock_5_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 594.0
+        }
+      },
+      "stock_6": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 598.0
+        }
+      },
+      "stock_6_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 598.0
+        }
+      },
+      "stock_6_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 618.0
+        }
+      },
+      "stock_6_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 605.0
+        }
+      },
+      "stock_6_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 629.0
+        }
+      },
+      "stock_6_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 616.0
+        }
+      },
+      "stock_6_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 620.0
+        }
+      },
+      "add_6": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 609.0
+        }
+      },
+      "add_6_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 609.0
+        }
+      },
+      "add_6_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 609.0
+        }
+      },
+      "add_6_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 618.0
+        }
+      },
+      "stock_6_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 656.0
+        }
+      },
+      "stock_7": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 660.0
+        }
+      },
+      "stock_7_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 660.0
+        }
+      },
+      "stock_7_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 680.0
+        }
+      },
+      "stock_7_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 667.0
+        }
+      },
+      "stock_7_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 691.0
+        }
+      },
+      "stock_7_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 678.0
+        }
+      },
+      "stock_7_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 682.0
+        }
+      },
+      "add_7": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 671.0
+        }
+      },
+      "add_7_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 671.0
+        }
+      },
+      "add_7_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 671.0
+        }
+      },
+      "add_7_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 680.0
+        }
+      },
+      "stock_7_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 718.0
+        }
+      },
+      "stock_8": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 722.0
+        }
+      },
+      "stock_8_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 722.0
+        }
+      },
+      "stock_8_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 742.0
+        }
+      },
+      "stock_8_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 729.0
+        }
+      },
+      "stock_8_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 753.0
+        }
+      },
+      "stock_8_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 740.0
+        }
+      },
+      "stock_8_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 744.0
+        }
+      },
+      "add_8": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 733.0
+        }
+      },
+      "add_8_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 733.0
+        }
+      },
+      "add_8_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 733.0
+        }
+      },
+      "add_8_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 742.0
+        }
+      },
+      "stock_8_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 780.0
+        }
+      },
+      "stock_9": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 784.0
+        }
+      },
+      "stock_9_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 784.0
+        }
+      },
+      "stock_9_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 804.0
+        }
+      },
+      "stock_9_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 791.0
+        }
+      },
+      "stock_9_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 815.0
+        }
+      },
+      "stock_9_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 802.0
+        }
+      },
+      "stock_9_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 806.0
+        }
+      },
+      "add_9": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 795.0
+        }
+      },
+      "add_9_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 795.0
+        }
+      },
+      "add_9_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 795.0
+        }
+      },
+      "add_9_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 804.0
+        }
+      },
+      "stock_9_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 842.0
+        }
+      },
+      "stock_10": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 846.0
+        }
+      },
+      "stock_10_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 846.0
+        }
+      },
+      "stock_10_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 866.0
+        }
+      },
+      "stock_10_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 853.0
+        }
+      },
+      "stock_10_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 877.0
+        }
+      },
+      "stock_10_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 864.0
+        }
+      },
+      "stock_10_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 868.0
+        }
+      },
+      "add_10": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 857.0
+        }
+      },
+      "add_10_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 857.0
+        }
+      },
+      "add_10_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 857.0
+        }
+      },
+      "add_10_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 866.0
+        }
+      },
+      "stock_10_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 904.0
+        }
+      },
+      "stock_11": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 908.0
+        }
+      },
+      "stock_11_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 908.0
+        }
+      },
+      "stock_11_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 928.0
+        }
+      },
+      "stock_11_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 915.0
+        }
+      },
+      "stock_11_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 939.0
+        }
+      },
+      "stock_11_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 926.0
+        }
+      },
+      "stock_11_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 930.0
+        }
+      },
+      "add_11": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 919.0
+        }
+      },
+      "add_11_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 919.0
+        }
+      },
+      "add_11_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 919.0
+        }
+      },
+      "add_11_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 928.0
+        }
+      },
+      "stock_11_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 966.0
+        }
+      },
+      "stock_12": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 970.0
+        }
+      },
+      "stock_12_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 970.0
+        }
+      },
+      "stock_12_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 990.0
+        }
+      },
+      "stock_12_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 977.0
+        }
+      },
+      "stock_12_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 1001.0
+        }
+      },
+      "stock_12_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 988.0
+        }
+      },
+      "stock_12_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 992.0
+        }
+      },
+      "add_12": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 981.0
+        }
+      },
+      "add_12_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 981.0
+        }
+      },
+      "add_12_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 981.0
+        }
+      },
+      "add_12_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 990.0
+        }
+      },
+      "stock_12_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 1028.0
+        }
+      },
+      "stock_13": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1032.0
+        }
+      },
+      "stock_13_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1032.0
+        }
+      },
+      "stock_13_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 1052.0
+        }
+      },
+      "stock_13_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 1039.0
+        }
+      },
+      "stock_13_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 1063.0
+        }
+      },
+      "stock_13_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 1050.0
+        }
+      },
+      "stock_13_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 1054.0
+        }
+      },
+      "add_13": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1043.0
+        }
+      },
+      "add_13_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1043.0
+        }
+      },
+      "add_13_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1043.0
+        }
+      },
+      "add_13_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 1052.0
+        }
+      },
+      "stock_13_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 1090.0
+        }
+      },
+      "stock_14": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1094.0
+        }
+      },
+      "stock_14_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1094.0
+        }
+      },
+      "stock_14_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 1114.0
+        }
+      },
+      "stock_14_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 1101.0
+        }
+      },
+      "stock_14_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 1125.0
+        }
+      },
+      "stock_14_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 1112.0
+        }
+      },
+      "stock_14_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 1116.0
+        }
+      },
+      "add_14": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1105.0
+        }
+      },
+      "add_14_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1105.0
+        }
+      },
+      "add_14_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1105.0
+        }
+      },
+      "add_14_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 1114.0
+        }
+      },
+      "stock_14_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 1152.0
+        }
+      },
+      "stock_15": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1156.0
+        }
+      },
+      "stock_15_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1156.0
+        }
+      },
+      "stock_15_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 1176.0
+        }
+      },
+      "stock_15_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 1163.0
+        }
+      },
+      "stock_15_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 1187.0
+        }
+      },
+      "stock_15_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 1174.0
+        }
+      },
+      "stock_15_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 1178.0
+        }
+      },
+      "add_15": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1167.0
+        }
+      },
+      "add_15_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1167.0
+        }
+      },
+      "add_15_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1167.0
+        }
+      },
+      "add_15_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 1176.0
+        }
+      },
+      "stock_15_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 1214.0
+        }
+      },
+      "stock_16": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1218.0
+        }
+      },
+      "stock_16_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1218.0
+        }
+      },
+      "stock_16_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 1238.0
+        }
+      },
+      "stock_16_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 1225.0
+        }
+      },
+      "stock_16_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 1249.0
+        }
+      },
+      "stock_16_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 1236.0
+        }
+      },
+      "stock_16_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 1240.0
+        }
+      },
+      "add_16": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1229.0
+        }
+      },
+      "add_16_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1229.0
+        }
+      },
+      "add_16_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1229.0
+        }
+      },
+      "add_16_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 1238.0
+        }
+      },
+      "stock_16_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 1276.0
+        }
+      },
+      "stock_17": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1280.0
+        }
+      },
+      "stock_17_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1280.0
+        }
+      },
+      "stock_17_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 1300.0
+        }
+      },
+      "stock_17_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 1287.0
+        }
+      },
+      "stock_17_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 1311.0
+        }
+      },
+      "stock_17_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 1298.0
+        }
+      },
+      "stock_17_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 1302.0
+        }
+      },
+      "add_17": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1291.0
+        }
+      },
+      "add_17_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1291.0
+        }
+      },
+      "add_17_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1291.0
+        }
+      },
+      "add_17_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 1300.0
+        }
+      },
+      "stock_17_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 1338.0
+        }
+      },
+      "stock_18": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1342.0
+        }
+      },
+      "stock_18_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1342.0
+        }
+      },
+      "stock_18_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 1362.0
+        }
+      },
+      "stock_18_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 1349.0
+        }
+      },
+      "stock_18_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 1373.0
+        }
+      },
+      "stock_18_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 1360.0
+        }
+      },
+      "stock_18_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 1364.0
+        }
+      },
+      "add_18": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1353.0
+        }
+      },
+      "add_18_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1353.0
+        }
+      },
+      "add_18_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1353.0
+        }
+      },
+      "add_18_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 1362.0
+        }
+      },
+      "stock_18_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 1400.0
+        }
+      },
+      "stock_19": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1404.0
+        }
+      },
+      "stock_19_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1404.0
+        }
+      },
+      "stock_19_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 1424.0
+        }
+      },
+      "stock_19_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 1411.0
+        }
+      },
+      "stock_19_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 1435.0
+        }
+      },
+      "stock_19_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 1422.0
+        }
+      },
+      "stock_19_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 1426.0
+        }
+      },
+      "add_19": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1415.0
+        }
+      },
+      "add_19_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1415.0
+        }
+      },
+      "add_19_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1415.0
+        }
+      },
+      "add_19_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 1424.0
+        }
+      },
+      "stock_19_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 1462.0
+        }
+      },
+      "stock_20": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1466.0
+        }
+      },
+      "stock_20_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1466.0
+        }
+      },
+      "stock_20_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 1486.0
+        }
+      },
+      "stock_20_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 1473.0
+        }
+      },
+      "stock_20_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 1497.0
+        }
+      },
+      "stock_20_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 1484.0
+        }
+      },
+      "stock_20_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 1488.0
+        }
+      },
+      "add_20": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1477.0
+        }
+      },
+      "add_20_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1477.0
+        }
+      },
+      "add_20_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1477.0
+        }
+      },
+      "add_20_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 1486.0
+        }
+      },
+      "stock_20_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 1524.0
+        }
+      },
+      "stock_21": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1528.0
+        }
+      },
+      "stock_21_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1528.0
+        }
+      },
+      "stock_21_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 1548.0
+        }
+      },
+      "stock_21_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 1535.0
+        }
+      },
+      "stock_21_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 1559.0
+        }
+      },
+      "stock_21_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 1546.0
+        }
+      },
+      "stock_21_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 1550.0
+        }
+      },
+      "add_21": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1539.0
+        }
+      },
+      "add_21_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1539.0
+        }
+      },
+      "add_21_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1539.0
+        }
+      },
+      "add_21_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 1548.0
+        }
+      },
+      "stock_21_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 1586.0
+        }
+      },
+      "stock_22": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1590.0
+        }
+      },
+      "stock_22_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1590.0
+        }
+      },
+      "stock_22_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 1610.0
+        }
+      },
+      "stock_22_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 1597.0
+        }
+      },
+      "stock_22_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 1621.0
+        }
+      },
+      "stock_22_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 1608.0
+        }
+      },
+      "stock_22_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 1612.0
+        }
+      },
+      "add_22": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1601.0
+        }
+      },
+      "add_22_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1601.0
+        }
+      },
+      "add_22_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1601.0
+        }
+      },
+      "add_22_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 1610.0
+        }
+      },
+      "stock_22_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 1648.0
+        }
+      },
+      "stock_23": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1652.0
+        }
+      },
+      "stock_23_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 58.0,
+          "w": 366.0,
+          "x": 20.0,
+          "y": 1652.0
+        }
+      },
+      "stock_23_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 358.0,
+          "x": 24.0,
+          "y": 1672.0
+        }
+      },
+      "stock_23_symbol": {
+        "component": "Text486876a697bd",
+        "layout": {
+          "h": 21.76,
+          "w": 112.0,
+          "x": 24.0,
+          "y": 1659.0
+        }
+      },
+      "stock_23_name": {
+        "component": "Texta644e07c2dcd",
+        "layout": {
+          "h": 14.96,
+          "w": 132.0,
+          "x": 24.0,
+          "y": 1683.0
+        }
+      },
+      "stock_23_badge": {
+        "component": "Surfaced0355e9fd549",
+        "layout": {
+          "h": 21.0,
+          "w": 29.0,
+          "x": 139.0,
+          "y": 1670.0
+        }
+      },
+      "stock_23_market": {
+        "component": "Text6460b5af4a0d",
+        "layout": {
+          "h": 10.88,
+          "w": 27.0,
+          "x": 140.0,
+          "y": 1674.0
+        }
+      },
+      "add_23": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1663.0
+        }
+      },
+      "add_23_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1663.0
+        }
+      },
+      "add_23_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 36.0,
+          "w": 36.0,
+          "x": 334.0,
+          "y": 1663.0
+        }
+      },
+      "add_23_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 28.0,
+          "x": 338.0,
+          "y": 1672.0
+        }
+      },
+      "stock_23_rule": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 0.5,
+          "w": 356.0,
+          "x": 24.0,
+          "y": 1710.0
+        }
+      },
+      "tab_surface": {
+        "component": "Surface25cdc448447b",
+        "layout": {
+          "h": 72.0,
+          "w": 406.0,
+          "x": 0.0,
+          "y": 704.0
+        }
+      },
+      "tab_watchlist": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 2.0,
+          "y": 707.0
+        }
+      },
+      "tab_watchlist_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 2.0,
+          "y": 707.0
+        }
+      },
+      "tab_watchlist_label": {
+        "component": "Text9fa03093b726",
+        "layout": {
+          "h": 12.24,
+          "w": 91.0,
+          "x": 6.0,
+          "y": 744.0
+        }
+      },
+      "tab_watchlist_glyph": {
+        "component": "Text43b4c1f25877",
+        "layout": {
+          "h": 25.840000000000003,
+          "w": 23.0,
+          "x": 40.0,
+          "y": 712.0
+        }
+      },
+      "tab_markets": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 103.0,
+          "y": 707.0
+        }
+      },
+      "tab_markets_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 103.0,
+          "y": 707.0
+        }
+      },
+      "tab_markets_label": {
+        "component": "Text9fa03093b726",
+        "layout": {
+          "h": 12.24,
+          "w": 91.0,
+          "x": 107.0,
+          "y": 744.0
+        }
+      },
+      "tab_markets_glyph": {
+        "component": "Text43b4c1f25877",
+        "layout": {
+          "h": 25.840000000000003,
+          "w": 23.0,
+          "x": 141.0,
+          "y": 712.0
+        }
+      },
+      "tab_news": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 204.0,
+          "y": 707.0
+        }
+      },
+      "tab_news_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 204.0,
+          "y": 707.0
+        }
+      },
+      "tab_news_label": {
+        "component": "Text9fa03093b726",
+        "layout": {
+          "h": 12.24,
+          "w": 91.0,
+          "x": 208.0,
+          "y": 744.0
+        }
+      },
+      "tab_news_glyph": {
+        "component": "Text43b4c1f25877",
+        "layout": {
+          "h": 25.840000000000003,
+          "w": 23.0,
+          "x": 242.0,
+          "y": 712.0
+        }
+      },
+      "tab_saved": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 305.0,
+          "y": 707.0
+        }
+      },
+      "tab_saved_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 54.0,
+          "w": 99.0,
+          "x": 305.0,
+          "y": 707.0
+        }
+      },
+      "tab_saved_label": {
+        "component": "Text9fa03093b726",
+        "layout": {
+          "h": 12.24,
+          "w": 91.0,
+          "x": 309.0,
+          "y": 744.0
+        }
+      },
+      "tab_saved_glyph": {
+        "component": "Text43b4c1f25877",
+        "layout": {
+          "h": 25.840000000000003,
+          "w": 23.0,
+          "x": 343.0,
+          "y": 712.0
+        }
+      },
+      "home_indicator": {
+        "component": "Surfaceb18d10e62d63",
+        "layout": {
+          "h": 4.0,
+          "w": 116.0,
+          "x": 145.0,
+          "y": 765.0
+        }
+      }
+    },
+    "bindings": [
+      {
+        "id": "search",
+        "role": "input",
+        "basis": "authored KitFormField with native TextInput binding",
+        "confidence": 1,
+        "decision": "reviewed",
+        "behavior": {
+          "event": "changed",
+          "target": "search_input",
+          "property": "text"
+        }
+      },
+      {
+        "id": "search_input",
+        "role": "input",
+        "basis": "authored input node",
+        "confidence": 1,
+        "decision": "reviewed",
+        "behavior": {
+          "event": "changed",
+          "target": "search_input",
+          "property": "text"
+        }
+      }
+    ]
+  }
+}

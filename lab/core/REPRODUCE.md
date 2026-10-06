@@ -1,5 +1,11 @@
 # Reproduce the Sketch and generated-image beauty-card pipelines
 
+For **new native UI testing**, follow [the built-in Makepad instrument guide](NATIVE-INSTRUMENT.md):
+build a standalone release executable, launch with `--remote`, and use hidden
+native windows for automated checks. It requires no Studio process or bridge.
+This page retains the older Studio capture/gate setup for explicit historical
+reproduction. Its `RunItem` instructions are not the default for direct native tests.
+
 For the full image → service state → interactive native App Cards → WASM website
 workflow, see [image-to-appcard-flow](../image-to-appcard-flow/README.md). It reuses
 the native setup and visual gates below, adding one-atlas 8–12-screen intake,
@@ -21,7 +27,7 @@ See [the reviewer contract](MODEL-REVIEW.md) for the division of work.
   and `Octoscript-Makepad/`. Include this workspace's native widget, chart and
   Studio inspection changes. A bare upstream Makepad checkout is insufficient.
   Record repository/submodule revisions and any local patch with a reproduction.
-- Release Makepad Studio and `cargo-makepad` built from the same compatible
+- For legacy Studio capture only: release Makepad Studio and `cargo-makepad` built from the same compatible
   Makepad source revision. The client/server inspection protocol must match.
 - For Sketch input: your source archive, Sketch installation and the exact
   fonts used by the design. The native importer accepts a ZIP containing a

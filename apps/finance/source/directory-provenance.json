@@ -1,0 +1,23 @@
+{
+  "fetched_at": "2026-09-17T06:22:34.371387+00:00",
+  "records": 10926,
+  "sources": [
+    {
+      "market": "US",
+      "url": "https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/export?format=csv&gid=583033325",
+      "sha256": "84d3111b71d58887456ace4b6cd62c136e39a2efcac805b9a71dc735675b9c2a"
+    },
+    {
+      "market": "HK",
+      "url": "https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/export?format=csv&gid=1134034911",
+      "sha256": "b0acd9ed5c02a04d9f0b2dcb781d9ea528f6e5fa006024bc9994c9ce6d3485e2"
+    },
+    {
+      "market": "CN",
+      "url": "https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/export?format=csv&gid=1702052913",
+      "sha256": "cdcc65a7d3917446c5124234cfaf1a734fcb190477bda4ffa2fb21095e6b064f"
+    }
+  ],
+  "sha256": "66f1e7b511c7eff137d3d685fcc058f3227dff0f68404bcd4277659d61bba288",
+  "scope": "Public provider instrument directory; US venue and security class not supplied. Membership is not subscription entitlement."
+}

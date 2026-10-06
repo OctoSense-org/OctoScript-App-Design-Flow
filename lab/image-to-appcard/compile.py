@@ -29,7 +29,7 @@ def literal(value):
 # Historical generated SVGs are retained in per-design assets and capture rounds.
 # New compilations consume only explicitly mapped, verified artwork assets.
 
-def compile_page(directory):
+def compile_page(directory, font_root=None):
     directory=Path(directory).resolve();contract=json.loads((directory/'contract.json').read_text())
     overrides=directory/'mapped.json'
     tree=json.loads(overrides.read_text())['tree'] if overrides.exists() else contract['tree']
@@ -75,7 +75,14 @@ def compile_page(directory):
                         'text':node.get('text'),'enabled':node.get('enabled'),
                         'font':rawstyle.get('font_src'),'size':rawstyle.get('size')})
         if node.get('font_src'):
-            font=repository('splash-makepad')/'apps/kit-host'/node['font_src'].removeprefix('self:')
+            src=node['font_src']
+            if src.startswith('makepad_widgets:'):
+                font=repository('makepad')/'widgets'/src.removeprefix('makepad_widgets:')
+            elif src.startswith('self:'):
+                base=Path(font_root) if font_root is not None else repository('splash-makepad')/'apps/kit-host'
+                font=base/src.removeprefix('self:')
+            else:
+                raise ValueError(f'Unsupported exact font resource: {src}')
             if not font.is_file():raise ValueError(f'Missing exact font: {font}')
             fonts[node['font_src']]=digest(font.read_bytes())
         result='  '*depth+component+'('+', '.join(use)+')'

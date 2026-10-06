@@ -1,0 +1,1099 @@
+{
+  "schema_version": 1,
+  "policy_version": "1.1.0",
+  "contract_sha256": "41fdd82e073c2113dc610a9d790434360456c9cac32e2a3e4d9a975fed237a3f",
+  "reference_sha256": "01bb78be588241d6ab80f2e32f7790178b582d3a1f6d001bf56f76f4d2796b2e",
+  "classification_scope": "Authored intent and explicit review candidates; no claim of automatic visual recognition.",
+  "elements": [
+    {
+      "id": "page",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "heading",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "data_status",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "edit",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "edit_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "edit_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_settings",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_settings_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_settings_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "settings_glyph",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "body_scroll",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "body_content",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "search_open",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "search_open_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "search_open_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "search_open_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "search_glyph",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_0",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_0_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_0_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_0_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_1",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_1_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_1_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_1_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_2",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_2_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_2_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_2_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_3",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_3_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_3_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "region_3_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "watchlist_card",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_symbol",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_name",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_badge",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_market",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_price",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_change",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "spark_0",
+      "role": "chart.line",
+      "basis": "Numeric fixture series rendered by the Stock AppCard Matplot PlotView engine through FinancePlot; no pixels traced from generated chart",
+      "confidence": 1,
+      "decision": "reviewed",
+      "data": {
+        "origin": "fixture",
+        "path": "data/spark_0.json",
+        "sha256": "7c6f26690a688e84dfe94694aadcf069a726c4d04c945e286ce955cab14a43fc",
+        "x_key": "time",
+        "y_keys": [
+          "price"
+        ],
+        "units": {
+          "x": "Unix seconds UTC",
+          "y": "listing currency"
+        },
+        "domain": {
+          "x": [
+            1789558200,
+            1789574400
+          ],
+          "y": [
+            217.4,
+            220.0
+          ]
+        }
+      }
+    },
+    {
+      "id": "stock_0_rule",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_symbol",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_name",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_badge",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_market",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_price",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_change",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "spark_1",
+      "role": "chart.line",
+      "basis": "Numeric fixture series rendered by the Stock AppCard Matplot PlotView engine through FinancePlot; no pixels traced from generated chart",
+      "confidence": 1,
+      "decision": "reviewed",
+      "data": {
+        "origin": "fixture",
+        "path": "data/spark_1.json",
+        "sha256": "b7909f3d63c8471f2820e9edd75cabcf3aaced0286480ac408e9702256e04525",
+        "x_key": "time",
+        "y_keys": [
+          "price"
+        ],
+        "units": {
+          "x": "Unix seconds UTC",
+          "y": "listing currency"
+        },
+        "domain": {
+          "x": [
+            1789558200,
+            1789574400
+          ],
+          "y": [
+            415.03636363636366,
+            420.0
+          ]
+        }
+      }
+    },
+    {
+      "id": "stock_1_rule",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_2",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_2_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_2_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_2_symbol",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_2_name",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_2_badge",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_2_market",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_2_price",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_2_change",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "spark_2",
+      "role": "chart.line",
+      "basis": "Numeric fixture series rendered by the Stock AppCard Matplot PlotView engine through FinancePlot; no pixels traced from generated chart",
+      "confidence": 1,
+      "decision": "reviewed",
+      "data": {
+        "origin": "fixture",
+        "path": "data/spark_2.json",
+        "sha256": "c3bfe6667047ad59b5c00f90923552c93d57fe136482cc579192e37b41f0e4ff",
+        "x_key": "time",
+        "y_keys": [
+          "price"
+        ],
+        "units": {
+          "x": "Unix seconds UTC",
+          "y": "listing currency"
+        },
+        "domain": {
+          "x": [
+            1789558200,
+            1789574400
+          ],
+          "y": [
+            395.27272727272725,
+            400.0
+          ]
+        }
+      }
+    },
+    {
+      "id": "stock_2_rule",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_3",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_3_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_3_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_3_symbol",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_3_name",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_3_badge",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_3_market",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_3_price",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_3_change",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "spark_3",
+      "role": "chart.line",
+      "basis": "Numeric fixture series rendered by the Stock AppCard Matplot PlotView engine through FinancePlot; no pixels traced from generated chart",
+      "confidence": 1,
+      "decision": "reviewed",
+      "data": {
+        "origin": "fixture",
+        "path": "data/spark_3.json",
+        "sha256": "900402250a82eb38dbd285dbb0f2486faba54948dbd9828082383173b0672605",
+        "x_key": "time",
+        "y_keys": [
+          "price"
+        ],
+        "units": {
+          "x": "Unix seconds UTC",
+          "y": "listing currency"
+        },
+        "domain": {
+          "x": [
+            1789558200,
+            1789574400
+          ],
+          "y": [
+            98.81818181818181,
+            100.0
+          ]
+        }
+      }
+    },
+    {
+      "id": "stock_3_rule",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_4",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_4_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_4_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_4_symbol",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_4_name",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_4_badge",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_4_market",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_4_price",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_4_change",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "spark_4",
+      "role": "chart.line",
+      "basis": "Numeric fixture series rendered by the Stock AppCard Matplot PlotView engine through FinancePlot; no pixels traced from generated chart",
+      "confidence": 1,
+      "decision": "reviewed",
+      "data": {
+        "origin": "fixture",
+        "path": "data/spark_4.json",
+        "sha256": "e5d40970b2534eb0a468a0779d9b495fd63c80c5a46e3fa0f8d763b0bd1d1597",
+        "x_key": "time",
+        "y_keys": [
+          "price"
+        ],
+        "units": {
+          "x": "Unix seconds UTC",
+          "y": "listing currency"
+        },
+        "domain": {
+          "x": [
+            1789558200,
+            1789574400
+          ],
+          "y": [
+            1383.4545454545455,
+            1400.0
+          ]
+        }
+      }
+    },
+    {
+      "id": "stock_4_rule",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_5",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_5_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_5_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_5_symbol",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_5_name",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_5_badge",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_5_market",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_5_price",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_5_change",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "spark_5",
+      "role": "chart.line",
+      "basis": "Numeric fixture series rendered by the Stock AppCard Matplot PlotView engine through FinancePlot; no pixels traced from generated chart",
+      "confidence": 1,
+      "decision": "reviewed",
+      "data": {
+        "origin": "fixture",
+        "path": "data/spark_5.json",
+        "sha256": "ffec5b0ee9e70a622c4891ed99dff7c2112110b0cc0ab8a6af2d1947c64636da",
+        "x_key": "time",
+        "y_keys": [
+          "price"
+        ],
+        "units": {
+          "x": "Unix seconds UTC",
+          "y": "listing currency"
+        },
+        "domain": {
+          "x": [
+            1789558200,
+            1789574400
+          ],
+          "y": [
+            247.04545454545453,
+            250.0
+          ]
+        }
+      }
+    },
+    {
+      "id": "stock_5_rule",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "home_news_heading",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "home_news_all",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "home_news_all_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "home_news_all_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "story_0",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "story_0_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "story_0_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "story_0_source",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "story_0_title_0",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "save_0",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "save_0_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "save_0_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "story_0_rule",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "refresh",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "refresh_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "refresh_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "refresh_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "error_0",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_surface",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_watchlist",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_watchlist_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_watchlist_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_watchlist_glyph",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_markets",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_markets_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_markets_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_markets_glyph",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_news",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_news_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_news_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_news_glyph",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_saved",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_saved_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_saved_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_saved_glyph",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "home_indicator",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    }
+  ]
+}

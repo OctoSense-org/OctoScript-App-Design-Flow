@@ -1,0 +1,7 @@
+/native/target/
+/runtime/
+/evidence/local/
+/native/resources/fonts/system_cjk.ttc
+/native/resources/fonts/system_latin.ttf
+
+__pycache__/

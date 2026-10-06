@@ -1,0 +1,22 @@
+{
+  "controls": {
+    "save_0": {
+      "event": "save",
+      "value": "preview-0"
+    },
+    "save_1": {
+      "event": "save",
+      "value": "preview-1"
+    },
+    "story_0": {
+      "event": "article",
+      "value": "preview-0"
+    },
+    "story_1": {
+      "event": "article",
+      "value": "preview-1"
+    }
+  },
+  "owner": "finance",
+  "schema_version": 1
+}

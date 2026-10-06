@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "reference_sha256": "daa61736fd24787bb8812d23cc8626242c4b7fbbf2b2e1ff4d6920a3480f63d0",
+  "tree": {
+    "bg": 4278651148,
+    "c": [
+      {
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 20.400000000000002,
+        "id": "company",
+        "line_height": 20.400000000000002,
+        "size": 15.0,
+        "t": "text",
+        "text": "Apple · NASDAQ · USD",
+        "variant": "single_line",
+        "w": 352.0,
+        "weight": 400,
+        "x": 4.0,
+        "y": 4.0
+      },
+      {
+        "color": 4294243831,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 46.24,
+        "id": "last_price",
+        "line_height": 46.24,
+        "size": 34.0,
+        "t": "text",
+        "text": "220.00",
+        "variant": "single_line",
+        "w": 280.0,
+        "weight": 400,
+        "x": 4.0,
+        "y": 35.0
+      },
+      {
+        "color": 4280862602,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 23.12,
+        "id": "day_change",
+        "line_height": 23.12,
+        "size": 17.0,
+        "t": "text",
+        "text": "+1.20% today",
+        "variant": "single_line",
+        "w": 350.0,
+        "weight": 400,
+        "x": 6.0,
+        "y": 94.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 38.0,
+            "id": "follow_control",
+            "t": "button",
+            "w": 102.0,
+            "x": 260.0,
+            "y": 45.0
+          },
+          {
+            "bg": 4279506975,
+            "c": [],
+            "h": 38.0,
+            "id": "follow_bg",
+            "radius": 7,
+            "t": "stack",
+            "variant": "surface",
+            "w": 102.0,
+            "x": 260.0,
+            "y": 45.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4278879487,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 17.68,
+            "id": "follow_label",
+            "line_height": 17.68,
+            "size": 13.0,
+            "t": "text",
+            "text": "Following",
+            "variant": "single_line",
+            "w": 94.0,
+            "weight": 400,
+            "x": 264.0,
+            "y": 55.0
+          }
+        ],
+        "h": 38.0,
+        "id": "follow",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 102.0,
+        "x": 260.0,
+        "y": 45.0
+      }
+    ],
+    "h": 129.0,
+    "id": "quote_card",
+    "radius": 12,
+    "t": "stack",
+    "variant": "surface",
+    "w": 366.0,
+    "x": 0.0,
+    "y": 0.0
+  },
+  "changes": [
+    {
+      "source": "cards/finance-05/mapped.json",
+      "source_sha256": "36efce8a8da7dae3cb8321d1e58961e96c34463d161635ce24f25056f7c21817",
+      "operation": "Extract native subtree and translate origin",
+      "source_root": "quote_card",
+      "translation": [
+        -20.0,
+        -116.0
+      ]
+    }
+  ]
+}

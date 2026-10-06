@@ -5,7 +5,9 @@ native Makepad scenes, reusable service App Cards, a click-driven service flow,
 and a WebAssembly package for the OctoSense Astro website.
 
 This extends the existing [image adapter](../image-to-appcard/README.md).
-It reuses that adapter's semantic compiler and Studio instruments. It does not
+It reuses that adapter's semantic compiler. New native testing uses
+[Makepad's built-in HTTP instrument](../core/NATIVE-INSTRUMENT.md), with a
+standalone release executable and hidden windows when needed. It does not
 generate a separate image per state or turn screenshots into clickable hotspots.
 
 ```text
@@ -15,7 +17,7 @@ service scenario + shared state/actions + bilingual copy
   → reviewed semantic map → native L0 + kit + data + source/widget mapping
   → independently owned service card subtrees
   → service reducer + app/desktop bindings + native KitAction inputs
-  → Studio inspection and separate visual review
+  → built-in native instrument inspection and separate visual review
   → single-threaded Makepad WASM + hashed artwork/font package
   → atomic Astro integration → real native clicks in EN/CN and mobile
 ```
@@ -23,7 +25,8 @@ service scenario + shared state/actions + bilingual copy
 ## Entry point
 
 Commands run from the Octoscript-AppCard repository. Install the image adapter's
-[Python environment and Studio tools](../core/REPRODUCE.md) first. Node is needed
+[Python environment](../core/REPRODUCE.md) and follow the
+[standalone native testing guide](../core/NATIVE-INSTRUMENT.md). Node is needed
 for service/browser checks; a Rust WASM target and matching `cargo-makepad` are
 needed only when rebuilding native code.
 
@@ -147,6 +150,19 @@ matching Python and browser fixtures; a slideshow index is not its service state
 
 ## 5. Native and visual evidence
 
+Use [the built-in instrument workflow](../core/NATIVE-INSTRUMENT.md) for new
+native UI tests: release build, direct `--remote` launch, optional
+`MAKEPAD_HIDE_WINDOWS=1`, `/snap` bounds, native `/click`/`/k`/`/t` input,
+app-owned `/g` captures, and `/gq` cleanup. Record the launch identity, PID,
+request nonce, source hashes and observed service state. The guide includes
+the native mail-server settings implementation and its headless checks.
+
+The commands below are **legacy Studio capture/gate replay**, not the direct
+instrument path. `native.py` still delegates capture to the Studio adapter;
+this documentation does not migrate that implementation or its evidence schema.
+When Studio is excluded, run `semantic,compile,bundle,service-test`, then the
+project's direct-instrument verifier. Report legacy capture/gate as unrun.
+
 ```sh
 bash tools/image-to-appcard-flow.sh run \
   --project "$FLOW_PROJECT" --manifest "$FLOW_PROJECT/image-to-appcard-flow.json" \
@@ -157,9 +173,9 @@ bash tools/image-to-appcard-flow.sh run \
   --stages gate
 ```
 
-Start the matching Studio/bridge/artwork servers as described in the reproduction
-guide. Use Studio's release RunItem, never a separately launched native binary for
-acceptance. Capture actual WidgetTreeDump, WidgetQuery, WidgetSnapshot, layout and
+For an explicitly requested legacy replay, start the matching Studio/bridge/artwork
+servers as described in the reproduction guide and use its release RunItem.
+That legacy adapter captures WidgetTreeDump, WidgetQuery, WidgetSnapshot, layout and
 clipping, Screenshot and Click results. Bind evidence to build ID, request nonce
 and source hashes; disabled controls must not emit activation. Serialize capture
 and service watchers. The flow capture lock coordinates flow runner jobs, but

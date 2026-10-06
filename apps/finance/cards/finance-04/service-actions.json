@@ -1,0 +1,122 @@
+{
+  "controls": {
+    "back": {
+      "event": "navigate",
+      "value": "watchlist"
+    },
+    "done": {
+      "event": "navigate",
+      "value": "watchlist"
+    },
+    "region_0": {
+      "event": "region",
+      "value": "All"
+    },
+    "region_1": {
+      "event": "region",
+      "value": "US"
+    },
+    "region_2": {
+      "event": "region",
+      "value": "HK"
+    },
+    "region_3": {
+      "event": "region",
+      "value": "CN"
+    },
+    "remove_0": {
+      "event": "follow",
+      "value": "XNAS:AAPL"
+    },
+    "remove_1": {
+      "event": "follow",
+      "value": "XNAS:MSFT"
+    },
+    "remove_2": {
+      "event": "follow",
+      "value": "XHKG:00700"
+    },
+    "remove_3": {
+      "event": "follow",
+      "value": "XHKG:09988"
+    },
+    "remove_4": {
+      "event": "follow",
+      "value": "XSHG:600519"
+    },
+    "remove_5": {
+      "event": "follow",
+      "value": "XSHE:300750"
+    },
+    "search_open": {
+      "event": "navigate",
+      "value": "search"
+    },
+    "stock_0": {
+      "event": "open",
+      "value": "XNAS:AAPL"
+    },
+    "stock_1": {
+      "event": "open",
+      "value": "XNAS:MSFT"
+    },
+    "stock_2": {
+      "event": "open",
+      "value": "XHKG:00700"
+    },
+    "stock_3": {
+      "event": "open",
+      "value": "XHKG:09988"
+    },
+    "stock_4": {
+      "event": "open",
+      "value": "XSHG:600519"
+    },
+    "stock_5": {
+      "event": "open",
+      "value": "XSHE:300750"
+    },
+    "tab_markets": {
+      "event": "navigate",
+      "value": "markets"
+    },
+    "tab_news": {
+      "event": "navigate",
+      "value": "news"
+    },
+    "tab_saved": {
+      "event": "navigate",
+      "value": "saved"
+    },
+    "tab_watchlist": {
+      "event": "navigate",
+      "value": "watchlist"
+    },
+    "up_0": {
+      "event": "move_up",
+      "value": "XNAS:AAPL"
+    },
+    "up_1": {
+      "event": "move_up",
+      "value": "XNAS:MSFT"
+    },
+    "up_2": {
+      "event": "move_up",
+      "value": "XHKG:00700"
+    },
+    "up_3": {
+      "event": "move_up",
+      "value": "XHKG:09988"
+    },
+    "up_4": {
+      "event": "move_up",
+      "value": "XSHG:600519"
+    },
+    "up_5": {
+      "event": "move_up",
+      "value": "XSHE:300750"
+    }
+  },
+  "owner": "finance",
+  "schema_version": 1
+}

@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "policy_version": "1.1.0",
+  "contract_sha256": "7248963f01ffed02a6285bbbed3ab1ed9bf17c06ef269bcca396dbbe42ccd7e0",
+  "reference_sha256": "caea3e0f83228da5dc5d75836c10e80fd0d625da8295030c3ff49bf42bcfdf0c",
+  "classification_scope": "Authored intent and explicit review candidates; no claim of automatic visual recognition.",
+  "elements": [
+    {
+      "id": "watchlist_card",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_symbol",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_name",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_badge",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_market",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_price",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_0_change",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "spark_0",
+      "role": "chart.line",
+      "basis": "Numeric fixture series rendered by the Stock AppCard Matplot PlotView engine through FinancePlot; no pixels traced from generated chart",
+      "confidence": 1,
+      "decision": "reviewed",
+      "data": {
+        "origin": "fixture",
+        "path": "data/spark_0.json",
+        "sha256": "7c6f26690a688e84dfe94694aadcf069a726c4d04c945e286ce955cab14a43fc",
+        "x_key": "time",
+        "y_keys": [
+          "price"
+        ],
+        "units": {
+          "x": "Unix seconds UTC",
+          "y": "listing currency"
+        },
+        "domain": {
+          "x": [
+            1789558200,
+            1789574400
+          ],
+          "y": [
+            217.4,
+            220.0
+          ]
+        }
+      }
+    },
+    {
+      "id": "stock_0_rule",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_symbol",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_name",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_badge",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_market",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_price",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "stock_1_change",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "spark_1",
+      "role": "chart.line",
+      "basis": "Numeric fixture series rendered by the Stock AppCard Matplot PlotView engine through FinancePlot; no pixels traced from generated chart",
+      "confidence": 1,
+      "decision": "reviewed",
+      "data": {
+        "origin": "fixture",
+        "path": "data/spark_1.json",
+        "sha256": "b7909f3d63c8471f2820e9edd75cabcf3aaced0286480ac408e9702256e04525",
+        "x_key": "time",
+        "y_keys": [
+          "price"
+        ],
+        "units": {
+          "x": "Unix seconds UTC",
+          "y": "listing currency"
+        },
+        "domain": {
+          "x": [
+            1789558200,
+            1789574400
+          ],
+          "y": [
+            415.03636363636366,
+            420.0
+          ]
+        }
+      }
+    },
+    {
+      "id": "stock_1_rule",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    }
+  ]
+}

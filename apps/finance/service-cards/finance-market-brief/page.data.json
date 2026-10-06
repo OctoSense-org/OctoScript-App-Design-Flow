@@ -1,0 +1,125 @@
+{
+  "$kit": {
+    "theme": "light",
+    "placements": {
+      "market_brief_card": {
+        "component": "Surface25cdc448447b",
+        "layout": {
+          "h": 308.0,
+          "w": 366.0,
+          "x": 0.0,
+          "y": 0.0
+        }
+      },
+      "market_0": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 92.0,
+          "w": 366.0,
+          "x": 0.0,
+          "y": 0.0
+        }
+      },
+      "market_0_name": {
+        "component": "Text1d0f172fd208",
+        "layout": {
+          "h": 27.200000000000003,
+          "w": 330.0,
+          "x": 16.0,
+          "y": 14.0
+        }
+      },
+      "market_0_sub": {
+        "component": "Textb83a0715a010",
+        "layout": {
+          "h": 16.32,
+          "w": 330.0,
+          "x": 16.0,
+          "y": 47.0
+        }
+      },
+      "market_0_session": {
+        "component": "Text419774faffd8",
+        "layout": {
+          "h": 13.600000000000001,
+          "w": 330.0,
+          "x": 16.0,
+          "y": 66.0
+        }
+      },
+      "market_1": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 92.0,
+          "w": 366.0,
+          "x": 0.0,
+          "y": 108.0
+        }
+      },
+      "market_1_name": {
+        "component": "Text1d0f172fd208",
+        "layout": {
+          "h": 27.200000000000003,
+          "w": 330.0,
+          "x": 16.0,
+          "y": 122.0
+        }
+      },
+      "market_1_sub": {
+        "component": "Textb83a0715a010",
+        "layout": {
+          "h": 16.32,
+          "w": 330.0,
+          "x": 16.0,
+          "y": 155.0
+        }
+      },
+      "market_1_session": {
+        "component": "Text419774faffd8",
+        "layout": {
+          "h": 13.600000000000001,
+          "w": 330.0,
+          "x": 16.0,
+          "y": 174.0
+        }
+      },
+      "market_2": {
+        "component": "Surfacec68d54b1b8e2",
+        "layout": {
+          "h": 92.0,
+          "w": 366.0,
+          "x": 0.0,
+          "y": 216.0
+        }
+      },
+      "market_2_name": {
+        "component": "Text1d0f172fd208",
+        "layout": {
+          "h": 27.200000000000003,
+          "w": 330.0,
+          "x": 16.0,
+          "y": 230.0
+        }
+      },
+      "market_2_sub": {
+        "component": "Textb83a0715a010",
+        "layout": {
+          "h": 16.32,
+          "w": 330.0,
+          "x": 16.0,
+          "y": 263.0
+        }
+      },
+      "market_2_session": {
+        "component": "Text419774faffd8",
+        "layout": {
+          "h": 13.600000000000001,
+          "w": 330.0,
+          "x": 16.0,
+          "y": 282.0
+        }
+      }
+    },
+    "bindings": []
+  }
+}

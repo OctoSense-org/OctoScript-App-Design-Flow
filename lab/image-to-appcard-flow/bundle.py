@@ -102,15 +102,15 @@ def validate_svg(content, name):
         require(match.group(1).strip().strip(b"'\"").startswith(b"#"), "SVG references external CSS resource: " + name)
 
 
-def validate_image_sources(value, prefix):
+def validate_image_sources(value, prefix, web_sources=frozenset()):
     if isinstance(value, dict):
         for key, item in value.items():
             if key in ("src", "image_src") and isinstance(item, str):
-                require(item.startswith(prefix), "Image source lacks declared artwork provenance: " + item)
-            validate_image_sources(item, prefix)
+                require(item.startswith(prefix) or (key == "src" and item in web_sources), "Image source lacks declared artwork provenance: " + item)
+            validate_image_sources(item, prefix, web_sources)
     elif isinstance(value, list):
         for item in value:
-            validate_image_sources(item, prefix)
+            validate_image_sources(item, prefix, web_sources)
 
 
 def export_bundle(project, manifest, output):
@@ -195,12 +195,27 @@ def export_bundle(project, manifest, output):
             reference = directory / name
             if reference.is_file():
                 forbidden_hashes.add(digest(reference.read_bytes()))
+        # Inline HTML belongs to an explicitly typed native WebView, not artwork.
+        # Do not exempt arbitrary data URLs or image placements.
+        scene_data = json.loads(read_source(directory / FILES["data"]))
+        scene_kit = json.loads(read_source(directory / FILES["kit"]))
+        web_sources = set()
+        for placement in scene_data.get("$kit", {}).get("placements", {}).values():
+            component = scene_kit.get("components", {}).get(placement.get("component"), {})
+            src = placement.get("layout", {}).get("src", "")
+            if component.get("style", {}).get("t") == "web" and src.startswith("data:text/html;charset=utf-8;base64,"):
+                import base64
+                try:
+                    base64.b64decode(src.split(",", 1)[1], validate=True).decode("utf-8")
+                except (ValueError, UnicodeError) as error:
+                    raise BundleError("Invalid inline WebView document") from error
+                web_sources.add(src)
         record, urls = {}, set()
         for key, name in FILES.items():
             text = read_source(directory / name).decode("utf-8")
             require("data:image/" not in text.lower() and "file://" not in text.lower(), "Embedded or local images are not declared artwork: " + name)
             if key != "card":
-                validate_image_sources(json.loads(text), prefix)
+                validate_image_sources(json.loads(text), prefix, web_sources)
             urls.update(asset_pattern.findall(text))
             text = text.replace(prefix, "__OCTOSENSE_ASSETS__/")
             record[key] = text if key == "card" else json.loads(text)

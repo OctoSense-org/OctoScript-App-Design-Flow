@@ -1,0 +1,765 @@
+//! Widgets and types related to displaying info about a user profile.
+
+use std::{borrow::Cow, ops::{Deref, DerefMut}};
+use makepad_widgets::*;
+use matrix_sdk::{room::{RoomMember, RoomMemberRole}, ruma::{events::room::member::MembershipState, OwnedRoomId, OwnedUserId}};
+use crate::{
+    app::AppState, avatar_cache, shared::{avatar::{AvatarState, AvatarWidgetExt}, popup_list::{PopupKind, enqueue_popup_notification}}, sliding_sync::{MatrixRequest, current_user_id, is_user_ignored, submit_async_request}, utils
+};
+use super::user_profile_cache;
+
+
+/// Information retrieved about a user: their displayable name, ID, and known avatar state.
+#[derive(Clone, Debug)]
+pub struct UserProfile {
+    pub user_id: OwnedUserId,
+    /// The user's default display name, if set.
+    /// Note that a user may have per-room display names,
+    /// so this should be considered a fallback.
+    pub username: Option<String>,
+    pub avatar_state: AvatarState,
+}
+impl UserProfile {
+    /// Returns the user's displayable name, using the user ID as a fallback.
+    pub fn displayable_name(&self) -> &str {
+        if let Some(un) = self.username.as_ref() {
+            if !un.is_empty() {
+                return un.as_str();
+            }
+        }
+        self.user_id.as_str()
+    }
+
+    /// Returns the first "letter" (Unicode grapheme) of the user's name or user ID,
+    /// skipping any leading "@" characters.
+    #[allow(unused)]
+    pub fn first_letter(&self) -> &str {
+        self.username.as_deref()
+            .and_then(|un| utils::user_name_first_letter(un))
+            .or_else(|| utils::user_name_first_letter(self.user_id.as_str()))
+            .unwrap_or_default()
+    }
+}
+
+
+/// Basic info needed to populate the contents of an avatar widget.
+#[derive(Clone, Debug)]
+pub struct UserProfileAndRoomId {
+    pub user_profile: UserProfile,
+    pub room_id: OwnedRoomId,
+}
+impl Deref for UserProfileAndRoomId {
+    type Target = UserProfile;
+    fn deref(&self) -> &Self::Target {
+        &self.user_profile
+    }
+}
+impl DerefMut for UserProfileAndRoomId {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.user_profile
+    }
+}
+
+script_mod! {
+    use mod.prelude.widgets.*
+    use mod.widgets.*
+
+
+
+    mod.widgets.ICON_DOUBLE_CHAT = crate_resource("self://resources/icons/double_chat.svg")
+
+    let UserProfileView = ScrollXYView {
+        width: Fill,
+        height: Fill,
+        align: Align{x: 0.5, y: 0},
+        padding: Inset{left: 15, right: 15, top: 15, bottom: 50}
+        spacing: 20,
+        flow: Down,
+        cursor: MouseCursor.Default,
+
+        personal_info := View {
+            width: Fill, height: Fit
+            align: Align{x: 0.5, y: 0.0}
+            padding: Inset{left: 10, right: 10}
+            spacing: 3
+            flow: Down
+
+            avatar := Avatar {
+                width: 150,
+                height: 150,
+                margin: 10.0,
+                text_view +: {
+                    text +: {
+                        draw_text +: {
+                            text_style: REGULAR_TEXT { font_size: 40.0 }
+                        }
+                    }
+                }
+            }
+
+            user_name := Label {
+                width: Fill, height: Fit
+                align: Align{x: 0.5}
+                flow: Flow.Right{wrap: true}
+                draw_text +: {
+                    color: #000,
+                    text_style: USERNAME_TEXT_STYLE { font_size: 12 },
+                }
+                text: "User Name"
+            }
+
+            user_id := Label {
+                width: Fill, height: Fit
+                align: Align{x: 0.5}
+                flow: Flow.Right{wrap: true}
+                draw_text +: {
+                    color: (MESSAGE_TEXT_COLOR),
+                    text_style: MESSAGE_TEXT_STYLE { font_size: 11 },
+                }
+                text: "User ID"
+            }
+        }
+
+        LineH { padding: 15 }
+        
+        membership := View {
+            width: Fill,
+            height: Fit,
+            flow: Down,
+            spacing: 3,
+            align: Align{x: 0.0, y: 0.0}
+            padding: Inset{left: 10, right: 10}
+
+            membership_title_label := Label {
+                width: Fill, height: Fit
+                flow: Flow.Right{wrap: true}
+                draw_text +: {
+                    text_style: USERNAME_TEXT_STYLE { font_size: 11.5 },
+                    color: #000
+                }
+                text: "Membership in this room"
+            }
+
+            membership_status_label := Label {
+                margin: Inset{ left: 7 }
+                width: Fill, height: Fit
+                flow: Flow.Right{wrap: true}
+                draw_text +: {
+                    color: (MESSAGE_TEXT_COLOR),
+                    text_style: MESSAGE_TEXT_STYLE { font_size: 11 },
+                }
+                text: "Unknown"
+            }
+
+            role_info_label := Label {
+                margin: Inset{ left: 7 }
+                width: Fill, height: Fit
+                flow: Flow.Right{wrap: true}
+                draw_text +: {
+                    color: (MESSAGE_TEXT_COLOR),
+                    text_style: MESSAGE_TEXT_STYLE { font_size: 11 },
+                }
+                text: "Unknown"
+            }
+
+            power_level_controls := View {
+                visible: false,
+                width: Fill,
+                height: Fit,
+                flow: Down,
+                spacing: 6,
+                margin: Inset{top: 8}
+
+                power_level_label := Label {
+                    margin: Inset{ left: 7 }
+                    width: Fill, height: Fit
+                    flow: Flow.Right{wrap: true}
+                    draw_text +: {
+                        color: (MESSAGE_TEXT_COLOR),
+                        text_style: MESSAGE_TEXT_STYLE { font_size: 11 },
+                    }
+                    text: "Power Level"
+                }
+
+                power_level_dropdown := DropDownFlat {
+                    width: Fill
+                    height: 40
+                    align: Align{y: 0.5}
+                    padding: Inset{left: 12, top: 11, bottom: 11, right: 30}
+                    draw_text +: {
+                        text_style: REGULAR_TEXT { font_size: 11.5 }
+                        color: #333
+                        color_hover: uniform(#222)
+                        color_focus: uniform(#222)
+                        color_down: uniform(#222)
+                    }
+                    draw_bg +: {
+                        color: uniform(#fff)
+                        color_hover: uniform(#F0F0F2)
+                        color_focus: uniform(#F0F0F2)
+                        color_down: uniform(#E8E8EA)
+                        border_color: uniform(#CCC)
+                        border_color_hover: uniform(#AAA)
+                        border_color_focus: uniform((COLOR_ACTIVE_PRIMARY))
+                        arrow_color: uniform(#888)
+                        arrow_color_hover: uniform(#555)
+                    }
+                    labels: ["Default", "Moderator", "Admin"]
+                }
+            }
+        }
+
+        LineH { padding: 15 }
+
+        action_buttons := View {
+            width: Fill, height: Fit
+            flow: Down,
+            spacing: 10,
+            padding: Inset{left: 10., right: 10, bottom: 10}
+
+            Label {
+                width: Fill, height: Fit
+                flow: Flow.Right{wrap: true}
+                draw_text +: {
+                    text_style: USERNAME_TEXT_STYLE { font_size: 11.5 },
+                    color: #000
+                }
+                text: "Actions"
+            }
+
+            direct_message_button := RobrixIconButton {
+                margin: 0,
+                padding: Inset{top: 10, bottom: 10, left: 12, right: 15}
+                draw_icon.svg: (mod.widgets.ICON_DOUBLE_CHAT)
+                icon_walk: Walk{width: 22, height: 16, margin: Inset{left: -5, right: -3, top: 1, bottom: -1} }
+                text: "Direct Message"
+            }
+
+            copy_link_to_user_button := RobrixNeutralIconButton {
+                padding: Inset{top: 10, bottom: 10, left: 12, right: 15}
+                margin: 0,
+                draw_icon.svg: (ICON_COPY)
+                icon_walk: Walk{width: 16, height: 16, margin: Inset{left: -1, right: -1} }
+                text: "Copy Link to User"
+            }
+
+            jump_to_read_receipt_button := RobrixNeutralIconButton {
+                enabled: false, // TODO: support this button
+                padding: Inset{top: 10, bottom: 10, left: 12, right: 15}
+                margin: 0,
+                draw_icon.svg: (ICON_JUMP)
+                icon_walk: Walk{width: 14, height: 16, margin: Inset{left: -1, right: 1.5}}
+                text: "Jump to Read Receipt"
+            }
+
+            ignore_user_button := RobrixNegativeIconButton {
+                padding: Inset{top: 10, bottom: 10, left: 12, right: 15}
+                margin: 0,
+                draw_icon.svg: (ICON_FORBIDDEN)
+                icon_walk: Walk{width: 16, height: 16, margin: Inset{left: -2, right: -0.5} }
+                text: "Ignore (Block) User"
+            }
+        }
+
+        // A view that allows the user to verify a new DID and associate it
+        // with a particular Matrix User ID.
+        tsp_verify_user := TspVerifyUser { }
+    }
+
+
+    mod.widgets.UserProfileSlidingPane = #(UserProfileSlidingPane::register_widget(vm)) {
+        visible: false,
+        flow: Overlay,
+        width: Fill,
+        height: Fill,
+        align: Align{x: 1.0, y: 0}
+
+        bg_view := SolidView {
+            width: Fill
+            height: Fill
+            visible: false,
+            show_bg: true
+            draw_bg.color: (RBX_SCRIM)
+        }
+
+        main_content := SolidView {
+            width: 300,
+            height: Fill
+            flow: Overlay,
+            align: Align{x: 1.0}
+
+            show_bg: true,
+            draw_bg.color: (COLOR_PRIMARY)
+
+            user_profile_view := UserProfileView { }
+
+            // The "X" close button on the top right
+            close_button := RobrixNeutralIconButton {
+                width: Fit,
+                height: Fit,
+                spacing: 0,
+                margin: 7,
+                padding: 15,
+                draw_icon.svg: (ICON_CLOSE)
+                icon_walk: Walk{width: 14, height: 14}
+            }
+        }
+
+        slide: 1.0,
+
+        animator: Animator {
+            panel: {
+                default: @hide
+                show: AnimatorState{
+                    redraw: true,
+                    from: {all: Forward {duration: 0.5}}
+                    ease: Ease.ExpDecay {d1: 0.80, d2: 0.97}
+                    apply: {
+                        slide: 0.0
+                    }
+                }
+                hide: AnimatorState{
+                    redraw: true,
+                    from: {all: Forward {duration: 0.5}}
+                    ease: Ease.ExpDecay {d1: 0.80, d2: 0.97}
+                    apply: {
+                        slide: 1.0
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+#[derive(Clone, Default, Debug)]
+pub enum ShowUserProfileAction {
+    ShowUserProfile(UserProfileAndRoomId),
+    #[default]
+    None,
+}
+
+/// Information needed to populate/display the user profile sliding pane.
+#[derive(Clone, Debug)]
+pub struct UserProfilePaneInfo {
+    pub profile_and_room_id: UserProfileAndRoomId,
+    pub room_name: String,
+    pub room_member: Option<RoomMember>,
+    pub can_change_room_power_levels: bool,
+}
+impl Deref for UserProfilePaneInfo {
+    type Target = UserProfileAndRoomId;
+    fn deref(&self) -> &Self::Target {
+        &self.profile_and_room_id
+    }
+}
+impl DerefMut for UserProfilePaneInfo {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.profile_and_room_id
+    }
+}
+impl UserProfilePaneInfo {
+    fn membership_title(&self) -> String {
+        if self.room_name.is_empty() {
+            format!("Membership in Room {}", self.room_id.as_str())
+        } else {
+            format!("Membership in {}", self.room_name)
+        }
+    }
+
+    fn membership_status(&self) -> &str {
+        self.room_member.as_ref().map_or(
+            "Not a Member",
+            |member| match member.membership() {
+                MembershipState::Join => "Status: Joined",
+                MembershipState::Leave => "Status: Left",
+                MembershipState::Ban => "Status: Banned",
+                MembershipState::Invite => "Status: Invited",
+                MembershipState::Knock => "Status: Knocking",
+                _ => "Status: Unknown",
+            }
+        )
+    }
+
+    fn role_in_room(&self) -> Cow<'_, str> {
+        self.room_member.as_ref().map_or(
+            "Role: Unknown".into(),
+            |member| match member.suggested_role_for_power_level() {
+                RoomMemberRole::Creator => "Role: Creator".into(),
+                RoomMemberRole::Administrator => "Role: Admin".into(),
+                RoomMemberRole::Moderator => "Role: Moderator".into(),
+                RoomMemberRole::User => "Role: Standard User".into(),
+            }
+        )
+    }
+}
+
+#[derive(Script, ScriptHook, Widget, Animator)]
+pub struct UserProfileSlidingPane {
+    #[source] source: ScriptObjectRef,
+    #[deref] view: View,
+    #[apply_default] animator: Animator,
+    #[live] slide: f32,
+
+    #[rust] info: Option<UserProfilePaneInfo>,
+    #[rust] is_animating_out: bool,
+}
+
+impl Widget for UserProfileSlidingPane {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, scope: &mut Scope) {
+        self.view.handle_event(cx, event, scope);
+
+        if !self.visible { return; }
+
+        let animator_action = self.animator_handle_event(cx, event);
+        if animator_action.must_redraw() {
+            self.redraw(cx);
+        }
+
+        // If we're animating the pane closed and the animation track has finished
+        // (the Animator removes ended tracks on the same frame it returns the last
+        // Animating action), hide everything and mark the pane as invisible.
+        if self.is_animating_out && !self.animator.is_track_animating(id!(panel)) {
+            self.visible = false;
+            self.is_animating_out = false;
+            cx.revert_key_focus();
+            self.view(cx, ids!(bg_view)).set_visible(cx, false);
+            self.redraw(cx);
+            return;
+        }
+
+        let area = self.view.area();
+
+        // Close the pane if:
+        // 1. The close button is clicked,
+        // 2. The back navigational gesture/action occurs (e.g., Back on Android),
+        // 3. The escape key is pressed if this pane has key focus,
+        // 4. The back mouse button is clicked within this view,
+        // 5. The user clicks/touches outside the main_content view area.
+        let close_pane = {
+            matches!(
+                event,
+                Event::Actions(actions) if self.button(cx, ids!(close_button)).clicked(actions)
+            )
+            || event.back_pressed()
+            || match event.hits_with_capture_overload(cx, area, true) {
+                Hit::KeyUp(key) => key.key_code == KeyCode::Escape,
+                Hit::FingerDown(_fde) => {
+                    cx.set_key_focus(area);
+                    false
+                }
+                Hit::FingerUp(fue) if fue.is_over => {
+                    fue.mouse_button().is_some_and(|b| b.is_back())
+                    || !self.view(cx, ids!(main_content)).area().rect(cx).contains(fue.abs)
+                }
+                _ => false,
+            }
+        };
+        if close_pane {
+            self.is_animating_out = true;
+            self.animator_play(cx, ids!(panel.hide));
+            self.redraw(cx);
+            return;
+        }
+
+        // A UI Signal indicates that this user profile's info may have been updated by a background task.
+        if let Event::Signal = event {
+            user_profile_cache::process_user_profile_updates(cx);
+            avatar_cache::process_avatar_updates(cx);
+
+            // Re-fetch the currently-displayed user profile info from the cache in case it was updated.
+            let mut redraw_this_pane = false;
+            if let Some(our_info) = self.info.as_mut() {
+                if let Some((new_profile, room_member)) = user_profile_cache::with_user_profile(
+                    cx,
+                    our_info.user_id.clone(),
+                    Some(&our_info.room_id),
+                    false,
+                    |profile, rooms| (profile.clone(), rooms.get(&our_info.room_id).cloned())
+                ) {
+                    let prev_avatar_state = our_info.avatar_state.clone();
+                    our_info.user_profile = new_profile;
+                    our_info.room_member = room_member;
+                    // Use the avatar URI from the `room_member`, as it will be the most up-to-date
+                    // and specific to the room that this user profile sliding pane is currently being shown for.
+                    if let Some(avatar_uri) = our_info.room_member.as_ref()
+                        .and_then(|rm| rm.avatar_url().map(|u| u.to_owned()))
+                    {
+                        our_info.avatar_state = AvatarState::Known(Some(avatar_uri));
+                    }
+                    // If we know the avatar URI, try to get/fetch the actual avatar image data.
+                    our_info.avatar_state.update_from_cache(cx);
+
+                    // If the new avatar state is fully `Loaded`, keep it as is.
+                    // If the new avatar state is *not* fully `Loaded`, but the previous one was, keep the previous one.
+                    match (prev_avatar_state, &mut our_info.avatar_state) {
+                        (_,                             AvatarState::Loaded(_)) => { }
+                        (prev @ AvatarState::Loaded(_), existing_avatar_state ) => {
+                            *existing_avatar_state = prev;
+                        }
+                        _ => { }
+                    }
+                    redraw_this_pane = true;
+                }
+            }
+            if redraw_this_pane {
+                self.redraw(cx);
+            }
+        }
+
+        let Some(info) = self.info.as_ref() else { return };
+
+        if let Event::Actions(actions) = event {
+            let power_level_dropdown = self.drop_down(cx, ids!(power_level_dropdown));
+            if power_level_dropdown.changed(actions).is_some()
+                && info.can_change_room_power_levels
+                && let Some(room_member) = info.room_member.as_ref()
+                && !room_member.is_account_user()
+            {
+                let selected_item = power_level_dropdown.selected_item();
+                let selected_role = match selected_item {
+                    0 => None,
+                    1 => Some(RoomMemberRole::Moderator),
+                    2 => Some(RoomMemberRole::Administrator),
+                    _ => None,
+                };
+                let current_selected_item = match room_member.suggested_role_for_power_level() {
+                    RoomMemberRole::Creator | RoomMemberRole::Administrator => 2,
+                    RoomMemberRole::Moderator => 1,
+                    RoomMemberRole::User => 0,
+                };
+                if selected_item != current_selected_item {
+                    submit_async_request(MatrixRequest::SetRoomMemberPowerLevel {
+                        room_id: info.room_id.clone(),
+                        user_id: info.user_id.clone(),
+                        room_member_role: selected_role,
+                    });
+                }
+            }
+
+            if self.button(cx, ids!(direct_message_button)).clicked(actions) {
+                let create_encrypted = scope
+                    .data
+                    .get::<AppState>()
+                    .map(|app_state| {
+                        app_state.bot_settings.should_create_encrypted_dm(
+                            info.user_profile.user_id.as_ref(),
+                            current_user_id().as_deref(),
+                        )
+                    })
+                    .unwrap_or(true);
+                submit_async_request(MatrixRequest::OpenOrCreateDirectMessage {
+                    create_encrypted,
+                    user_profile: info.user_profile.clone(),
+                    // Don't just create a new DM room; we want to first get confirmation from the user.
+                    allow_create: false,
+                });
+            }
+
+            if self.button(cx, ids!(copy_link_to_user_button)).clicked(actions) {
+                let matrix_to_uri = info.user_id.matrix_to_uri().to_string();
+                cx.copy_to_clipboard(&matrix_to_uri);
+                enqueue_popup_notification(
+                    "Copied User ID to the clipboard.",
+                    PopupKind::Success,
+                    Some(3.0),
+                );
+            }
+
+            // TODO: implement the third button: `jump_to_read_receipt_button`,
+            //       which involves calling `Timeline::latest_user_read_receipt()`
+            //       or `Room::load_user_receipt()`, which are async functions.
+
+            // The `ignore_user_button` require room membership info.
+            if let Some(room_member) = info.room_member.as_ref() {
+                if self.button(cx, ids!(ignore_user_button)).clicked(actions) {
+                    submit_async_request(MatrixRequest::IgnoreUser {
+                        ignore: !room_member.is_ignored(),
+                        room_id: info.room_id.clone(),
+                        room_member: room_member.clone(),
+                    });
+                    log!("Submitting request to {}ignore user {}.",
+                        if room_member.is_ignored() { "un" } else { "" },
+                        info.user_id,
+                    );
+                }
+            }
+        }
+    }
+
+
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, walk: Walk) -> DrawStep {
+        let Some(info) = self.info.as_ref() else {
+            self.visible = false;
+            return self.view.draw_walk(cx, scope, walk);
+        };
+
+        // Use the `slide` value to position main_content.
+        // slide=0.0 means fully shown; slide=1.0 means fully hidden (off-screen right).
+        let panel_width = 300.0;
+        let right_margin = -(self.slide * panel_width);
+        let mut main_content = self.view(cx, ids!(main_content));
+        script_apply_eval!(cx, main_content, {
+            margin.right: #(right_margin)
+        });
+        // Also derive the bg_view overlay alpha from `slide`.
+        // The animator can only interpolate struct fields, not child view properties,
+        // so we compute the bg color here from the smoothly-animated `slide` value.
+        let bg_alpha = (1.0 - self.slide) * 0.733; // 0.733 ≈ 0xBB/0xFF
+        let bg_color = vec4(0.0, 0.0, 0.0, bg_alpha);
+        let mut bg_view = self.view(cx, ids!(bg_view));
+        script_apply_eval!(cx, bg_view, {
+            draw_bg +: { color: #(bg_color) }
+        });
+
+        // Set the user name, using the user ID as a fallback.
+        self.label(cx, ids!(user_name)).set_text(cx, info.displayable_name());
+        self.label(cx, ids!(user_id)).set_text(cx, info.user_id.as_str());
+
+        // Set the avatar image, using the user name as a fallback.
+        let avatar_ref = self.avatar(cx, ids!(avatar));
+        info.avatar_state
+            .data()
+            .and_then(|data| avatar_ref.show_image(cx, None, |cx, img| utils::load_png_or_jpg(&img, cx, data)).ok())
+            .unwrap_or_else(|| avatar_ref.show_text(cx, None, None, info.displayable_name()));
+
+        // Set the membership status and role in the room.
+        self.label(cx, ids!(membership_title_label)).set_text(cx, &info.membership_title());
+        self.label(cx, ids!(membership_status_label)).set_text(cx, info.membership_status());
+        self.label(cx, ids!(role_info_label)).set_text(cx, info.role_in_room().as_ref());
+
+        // Draw and show/hide the buttons according to user and room membership info:
+        // * `direct_message_button` is hidden if the user is the same as the account user,
+        //    since you cannot direct message yourself.
+        // * `copy_link_to_user_button` is always enabled with the same text.
+        // * `jump_to_read_receipt_button` is always enabled with the same text.
+        // * `ignore_user_button` is hidden if the user is not a member of the room,
+        //    or if the user is the same as the account user, since you cannot ignore yourself.
+        //    * The button text changes to "Unignore" if the user is already ignored.
+        let is_pane_showing_current_account = info.room_member.as_ref()
+            .map(|rm| rm.is_account_user())
+            .unwrap_or_else(|| current_user_id().is_some_and(|uid| uid == info.user_id));
+
+        let show_power_level_controls = info.can_change_room_power_levels
+            && !is_pane_showing_current_account
+            && info.room_member.is_some();
+        self.view(cx, ids!(power_level_controls)).set_visible(cx, show_power_level_controls);
+        if show_power_level_controls
+            && let Some(room_member) = info.room_member.as_ref()
+        {
+            let selected_item = match room_member.suggested_role_for_power_level() {
+                RoomMemberRole::Creator | RoomMemberRole::Administrator => 2,
+                RoomMemberRole::Moderator => 1,
+                RoomMemberRole::User => 0,
+            };
+            self.drop_down(cx, ids!(power_level_dropdown)).set_selected_item(cx, selected_item);
+        }
+
+        self.button(cx, ids!(direct_message_button)).set_visible(cx, !is_pane_showing_current_account);
+
+        let ignore_user_button = self.button(cx, ids!(ignore_user_button));
+        ignore_user_button.set_visible(cx, !is_pane_showing_current_account && info.room_member.is_some());
+        // Unfortunately the Matrix SDK's RoomMember type does not properly track
+        // the `ignored` state of a user, so we have to maintain it separately.
+        let is_ignored = info.room_member.as_ref()
+            .is_some_and(|rm| is_user_ignored(rm.user_id()));
+        ignore_user_button.set_text(
+            cx,
+            if is_ignored { "Unignore (Unblock) User" } else { "Ignore (Block) User" }
+        );
+
+        self.view.draw_walk(cx, scope, walk)
+    }
+}
+
+
+impl UserProfileSlidingPane {
+    /// Returns `true` if this pane is currently being shown.
+    pub fn is_currently_shown(&self, _cx: &mut Cx) -> bool {
+        self.visible
+    }
+
+    /// Sets the info to be displayed in this user profile sliding pane.
+    ///
+    /// If the `room_member` field is `None`, this function will attempt to
+    /// retrieve the user's room membership info from the local cache,
+    /// and then submit a request to asynchronously fetch it from the server
+    /// if it's not found in the cache.
+    pub fn set_info(&mut self, cx: &mut Cx, mut info: UserProfilePaneInfo) {
+        if info.room_member.is_none() {
+            if let Some((new_profile, Some(room_member))) = user_profile_cache::with_user_profile(
+                cx,
+                info.user_id.clone(),
+                Some(&info.room_id),
+                true,
+                |profile, rooms| (profile.clone(), rooms.get(&info.room_id).cloned())
+            ) {
+                log!("Found user {} room member info in cache", info.user_id);
+                // Update avatar state, preferring that of the room member info.
+                if let Some(uri) = room_member.avatar_url() {
+                    info.avatar_state = AvatarState::Known(Some(uri.to_owned()));
+                }
+                else {
+                    match new_profile.avatar_state {
+                        s @ AvatarState::Known(Some(_)) | s @ AvatarState::Loaded(_) => {
+                            info.avatar_state = s.clone();
+                        }
+                        _ => {}
+                    }
+                }
+                // Update displayable username.
+                if info.username.is_none() {
+                    info.username = room_member.display_name()
+                        .map(|dn| dn.to_owned())
+                        .or_else(|| new_profile.username.clone());
+                }
+                info.room_member = Some(room_member);
+            }
+        }
+        info.avatar_state.update_from_cache(cx);
+
+        // If TSP is enabled, populate the TSP verification info for this user.
+        #[cfg(feature = "tsp")] {
+            use crate::tsp::verify_user::TspVerifyUserWidgetExt;
+            self.view.tsp_verify_user(cx, ids!(tsp_verify_user))
+                .show(cx, info.user_id.clone());
+        }
+
+        self.info = Some(info);
+    }
+
+    pub fn show(&mut self, cx: &mut Cx) {
+        self.visible = true;
+        self.is_animating_out = false;
+        cx.set_key_focus(self.view.area());
+        self.animator_play(cx, ids!(panel.show));
+        self.view(cx, ids!(bg_view)).set_visible(cx, true);
+
+        self.view.button(cx, ids!(close_button)).reset_hover(cx);
+        self.view.button(cx, ids!(direct_message_button)).reset_hover(cx);
+        self.view.button(cx, ids!(copy_link_to_user_button)).reset_hover(cx);
+        self.view.button(cx, ids!(jump_to_read_receipt_button)).reset_hover(cx);
+        self.view.button(cx, ids!(ignore_user_button)).reset_hover(cx);
+        self.redraw(cx);
+    }
+}
+
+impl UserProfileSlidingPaneRef {
+    /// See [`UserProfileSlidingPane::is_currently_shown()`]
+    pub fn is_currently_shown(&self, cx: &mut Cx) -> bool {
+        let Some(inner) = self.borrow() else { return false };
+        inner.is_currently_shown(cx)
+    }
+
+    /// See [`UserProfileSlidingPane::set_info()`]
+    pub fn set_info(&self, cx: &mut Cx, info: UserProfilePaneInfo) {
+        let Some(mut inner) = self.borrow_mut() else { return };
+        inner.set_info(cx, info);
+    }
+
+    /// See [`UserProfileSlidingPane::show()`]
+    pub fn show(&self, cx: &mut Cx) {
+        let Some(mut inner) = self.borrow_mut() else { return };
+        inner.show(cx);
+    }
+}

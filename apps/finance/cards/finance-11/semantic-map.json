@@ -1,0 +1,536 @@
+{
+  "schema_version": 1,
+  "policy_version": "1.1.0",
+  "contract_sha256": "5c3b5aefe99638ea87c1e6442043f5d7ec58b1f71a6db08a2616866367446824",
+  "reference_sha256": "dfbfe500ec1d84a98dd5f4ac2851544db44838734975b2b0e7ac728834b657a7",
+  "classification_scope": "Authored intent and explicit review candidates; no claim of automatic visual recognition.",
+  "elements": [
+    {
+      "id": "page",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "heading",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "data_status",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_settings",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_settings_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_settings_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "settings_glyph",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "body_scroll",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "body_content",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "preview",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "preview_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "preview_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "preview_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "preview_name",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "preview_value",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "theme",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "theme_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "theme_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "theme_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "theme_name",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "theme_value",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "language",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "language_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "language_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "language_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "language_name",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "language_value",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "colors",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "colors_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "colors_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "colors_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "colors_name",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "colors_value",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "providers_title",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "provider_note",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "alltick_title",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "alltick_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "alltick",
+      "role": "input",
+      "basis": "authored KitFormField with native TextInput binding",
+      "confidence": 1,
+      "decision": "reviewed",
+      "behavior": {
+        "event": "changed",
+        "target": "alltick_input",
+        "property": "text"
+      }
+    },
+    {
+      "id": "alltick_input",
+      "role": "input",
+      "basis": "authored input node",
+      "confidence": 1,
+      "decision": "reviewed",
+      "behavior": {
+        "event": "changed",
+        "target": "alltick_input",
+        "property": "text"
+      }
+    },
+    {
+      "id": "finnhub_title",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "finnhub_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "finnhub",
+      "role": "input",
+      "basis": "authored KitFormField with native TextInput binding",
+      "confidence": 1,
+      "decision": "reviewed",
+      "behavior": {
+        "event": "changed",
+        "target": "finnhub_input",
+        "property": "text"
+      }
+    },
+    {
+      "id": "finnhub_input",
+      "role": "input",
+      "basis": "authored input node",
+      "confidence": 1,
+      "decision": "reviewed",
+      "behavior": {
+        "event": "changed",
+        "target": "finnhub_input",
+        "property": "text"
+      }
+    },
+    {
+      "id": "tushare_title",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tushare_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tushare",
+      "role": "input",
+      "basis": "authored KitFormField with native TextInput binding",
+      "confidence": 1,
+      "decision": "reviewed",
+      "behavior": {
+        "event": "changed",
+        "target": "tushare_input",
+        "property": "text"
+      }
+    },
+    {
+      "id": "tushare_input",
+      "role": "input",
+      "basis": "authored input node",
+      "confidence": 1,
+      "decision": "reviewed",
+      "behavior": {
+        "event": "changed",
+        "target": "tushare_input",
+        "property": "text"
+      }
+    },
+    {
+      "id": "provider_refresh",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "provider_refresh_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "provider_refresh_bg",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "provider_refresh_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "coverage_note",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "sources_note",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_surface",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_watchlist",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_watchlist_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_watchlist_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_watchlist_glyph",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_markets",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_markets_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_markets_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_markets_glyph",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_news",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_news_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_news_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_news_glyph",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_saved",
+      "role": "button",
+      "basis": "authored KitButton composition",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_saved_control",
+      "role": "button",
+      "basis": "authored button node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_saved_label",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "tab_saved_glyph",
+      "role": "text",
+      "basis": "authored text node",
+      "confidence": 1,
+      "decision": "reviewed"
+    },
+    {
+      "id": "home_indicator",
+      "role": "layout",
+      "basis": "authored stack node",
+      "confidence": 1,
+      "decision": "reviewed"
+    }
+  ]
+}

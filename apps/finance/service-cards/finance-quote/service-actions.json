@@ -1,0 +1,10 @@
+{
+  "controls": {
+    "follow": {
+      "event": "follow",
+      "value": "XNAS:AAPL"
+    }
+  },
+  "owner": "finance",
+  "schema_version": 1
+}

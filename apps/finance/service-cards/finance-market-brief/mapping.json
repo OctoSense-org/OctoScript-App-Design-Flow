@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "elements": [
+    {
+      "source_id": "market_brief_card",
+      "native_id": "beauty_0",
+      "parent": null,
+      "kind": "stack",
+      "component": "Surface25cdc448447b",
+      "semantic_role": "layout",
+      "bounds": [
+        0.0,
+        0.0,
+        366.0,
+        308.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "market_0",
+      "native_id": "beauty_0_0",
+      "parent": "market_brief_card",
+      "kind": "stack",
+      "component": "Surfacec68d54b1b8e2",
+      "semantic_role": "layout",
+      "bounds": [
+        0.0,
+        0.0,
+        366.0,
+        92.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "market_0_name",
+      "native_id": "beauty_0_1",
+      "parent": "market_brief_card",
+      "kind": "text",
+      "component": "Text1d0f172fd208",
+      "semantic_role": "text",
+      "bounds": [
+        16.0,
+        14.0,
+        330.0,
+        27.200000000000003
+      ],
+      "text": "US",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 20.0
+    },
+    {
+      "source_id": "market_0_sub",
+      "native_id": "beauty_0_2",
+      "parent": "market_brief_card",
+      "kind": "text",
+      "component": "Textb83a0715a010",
+      "semantic_role": "text",
+      "bounds": [
+        16.0,
+        47.0,
+        330.0,
+        16.32
+      ],
+      "text": "NASDAQ / NYSE \u00b7 USD \u00b7 New York",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 12.0
+    },
+    {
+      "source_id": "market_0_session",
+      "native_id": "beauty_0_3",
+      "parent": "market_brief_card",
+      "kind": "text",
+      "component": "Text419774faffd8",
+      "semantic_role": "text",
+      "bounds": [
+        16.0,
+        66.0,
+        330.0,
+        13.600000000000001
+      ],
+      "text": "Session unavailable in preview",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 10.0
+    },
+    {
+      "source_id": "market_1",
+      "native_id": "beauty_0_4",
+      "parent": "market_brief_card",
+      "kind": "stack",
+      "component": "Surfacec68d54b1b8e2",
+      "semantic_role": "layout",
+      "bounds": [
+        0.0,
+        108.0,
+        366.0,
+        92.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "market_1_name",
+      "native_id": "beauty_0_5",
+      "parent": "market_brief_card",
+      "kind": "text",
+      "component": "Text1d0f172fd208",
+      "semantic_role": "text",
+      "bounds": [
+        16.0,
+        122.0,
+        330.0,
+        27.200000000000003
+      ],
+      "text": "Hong Kong",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 20.0
+    },
+    {
+      "source_id": "market_1_sub",
+      "native_id": "beauty_0_6",
+      "parent": "market_brief_card",
+      "kind": "text",
+      "component": "Textb83a0715a010",
+      "semantic_role": "text",
+      "bounds": [
+        16.0,
+        155.0,
+        330.0,
+        16.32
+      ],
+      "text": "HKEX \u00b7 HKD \u00b7 Hong Kong",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 12.0
+    },
+    {
+      "source_id": "market_1_session",
+      "native_id": "beauty_0_7",
+      "parent": "market_brief_card",
+      "kind": "text",
+      "component": "Text419774faffd8",
+      "semantic_role": "text",
+      "bounds": [
+        16.0,
+        174.0,
+        330.0,
+        13.600000000000001
+      ],
+      "text": "Session unavailable in preview",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 10.0
+    },
+    {
+      "source_id": "market_2",
+      "native_id": "beauty_0_8",
+      "parent": "market_brief_card",
+      "kind": "stack",
+      "component": "Surfacec68d54b1b8e2",
+      "semantic_role": "layout",
+      "bounds": [
+        0.0,
+        216.0,
+        366.0,
+        92.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "market_2_name",
+      "native_id": "beauty_0_9",
+      "parent": "market_brief_card",
+      "kind": "text",
+      "component": "Text1d0f172fd208",
+      "semantic_role": "text",
+      "bounds": [
+        16.0,
+        230.0,
+        330.0,
+        27.200000000000003
+      ],
+      "text": "Mainland China",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 20.0
+    },
+    {
+      "source_id": "market_2_sub",
+      "native_id": "beauty_0_10",
+      "parent": "market_brief_card",
+      "kind": "text",
+      "component": "Textb83a0715a010",
+      "semantic_role": "text",
+      "bounds": [
+        16.0,
+        263.0,
+        330.0,
+        16.32
+      ],
+      "text": "SSE / SZSE \u00b7 CNY \u00b7 Shanghai",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 12.0
+    },
+    {
+      "source_id": "market_2_session",
+      "native_id": "beauty_0_11",
+      "parent": "market_brief_card",
+      "kind": "text",
+      "component": "Text419774faffd8",
+      "semantic_role": "text",
+      "bounds": [
+        16.0,
+        282.0,
+        330.0,
+        13.600000000000001
+      ],
+      "text": "Session unavailable in preview",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 10.0
+    }
+  ],
+  "fonts": {
+    "self:resources/ux/Inter-400.ttf": "b6724fa153562e675ad77673f50bddfc5caf2fcd9e4be279f2d0aa56bb210488"
+  },
+  "contract_sha256": "a0c440290a24050670cb01c1c9654fb8c77a865545de3caf112c3323dc9dc2be",
+  "mapping_basis": "mapped.json"
+}

@@ -11,9 +11,13 @@ For a complete agentic application journey, start with
 reviewed native scenes, independently owned service cards, click-driven state,
 Makepad WASM and verified Astro integration. Run `tools/image-to-appcard-flow.sh`.
 
+New native tests use [the built-in Makepad HTTP instrument](core/NATIVE-INSTRUMENT.md)
+with a standalone release binary and optional hidden window. Studio is not required
+for this path; older capture/gate adapters remain explicitly documented as legacy.
+
 For individual beauty-card work, start with
 [the generic reproduction guide](core/REPRODUCE.md). Both Sketch and
-generated-image inputs produce native Makepad widgets and pass Studio
+generated-image inputs produce native Makepad widgets and require native
 inspection, semantic checks and explicit visual review. The entry point is
 `tools/beauty-pipeline.sh` at the workspace root.
 

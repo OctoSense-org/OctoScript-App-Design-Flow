@@ -1,0 +1,20 @@
+{
+  "provider": "built-in image_gen",
+  "model": "not exposed by tool",
+  "created_at": "2026-09-17T05:54:40.528873+00:00",
+  "actual_size": [
+    1024,
+    1536
+  ],
+  "requested_size": "highest supported, ideally 3200x4800 or larger",
+  "source_file": "source/finance-atlas.png",
+  "atlas": "source/finance-atlas.png",
+  "sha256": "1c46a19cc045b934d0c5860538d43ed6e7e04ee3518ce78f72255f94b3709e86",
+  "prompt_sha256": "4a901e866001aafac3f4e1d73cfdc41d322f43201a2d3e9c9beae70701fc6c73",
+  "image_is_fixture": true,
+  "limitations": [
+    "Actual output resolution is smaller than requested.",
+    "Chart curves in the image are design references; runtime uses explicit numerical fixtures or provider data."
+  ],
+  "privacy_note": "Original machine-local generation path omitted; original image bytes and hashes retained."
+}

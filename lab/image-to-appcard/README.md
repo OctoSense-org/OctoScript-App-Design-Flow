@@ -6,6 +6,12 @@ independent per-state images: preserve one complete atlas, measure/crop its
 screens, reuse this native mapping loop, then bind service state and package
 interactive Makepad WASM. This page remains the individual-design adapter guide.
 
+**Current native testing:** use [Makepad's built-in HTTP instrument](../core/NATIVE-INSTRUMENT.md)
+with a standalone release binary and `MAKEPAD_HIDE_WINDOWS=1` for hidden-window
+automation. Studio is not needed for that path. The `capture`/`--launch` CLI and
+saved-round gate described below remain legacy Studio adapters; they have not
+been migrated to consume direct HTTP evidence.
+
 This branch starts with an externally generated UX image and an explicit design brief.
 Use [the generic reproduction guide](../core/REPRODUCE.md) for a clean
 installation, a new input and the complete command sequence. No Astra-specific
@@ -47,18 +53,20 @@ prototypes; a fresh semantic audit can block them even when geometry passed.
    Run semantic preflight: charts must use native data-bound plot widgets;
    illustrations require a reference-derived SVG or a documented image asset.
    `classify` seeds a conversion brief and decisions; ambiguous roles need review.
-5. Launch `octos-ux-image-studio` through Studio **RunItem**, in release mode.
-   Set `BEAUTY_BRIDGE` to your local persistent bridge URL (default port 8168).
-   The configured Studio mount alias is `splashref`. The single
-   beauty host mounts every L0 card/pack through request data. A nonce verifies
-   each replacement. Use a fresh RunItem after changing native/runtime code.
-6. Capture **WidgetTreeDump, WidgetQuery for every element, WidgetSnapshot,
-   native layout/clipping evidence, screenshots and native button actions**.
+5. Build the host in release mode and launch the executable with `--remote`.
+   Hide the native window for automated checks, discover the owned endpoint from
+   its startup log, and fetch `/` for its protocol. The beauty host mounts L0
+   cards/packs through request data; a nonce identifies every replacement.
+   Rebuild/relaunch after changing native/runtime code. See the direct instrument guide.
+6. Capture **native `/d` and `/snap` inspection, measured layout/clipping,
+   app-owned `/g` frames, native input and resulting service actions**.
    The gate joins source IDs to mounted native IDs. Only the host appearing in
    inspection is a failure. Native geometry must agree within 1 logical pixel;
    reference text/annotated geometry has 3-pixel tolerances. Text, visibility,
    hierarchy, enabled state, clipping and control activation are checked.
-7. Save `gate.json` and per-element `repair.json` alongside each screenshot.
+7. Keep direct-instrument results and provenance alongside each screenshot.
+   Legacy captures additionally save `gate.json` and per-element `repair.json`;
+   do not report those gates as passed from direct evidence without an adapter.
    Semantic role, binding and asset findings join the repair report. For saved
    captures, `semantic` writes a separate audit without modifying prior rounds.
    Repair the mapped model/assets, capture again, and retain prior rounds.
@@ -70,6 +78,10 @@ prototypes; a fresh semantic audit can block them even when geometry passed.
    structure pass alone never marks image parity or visual acceptance.
 
 ## Commands
+
+The `capture`/`--launch` examples in this section reproduce the historical Studio
+loop. For current standalone/headless inspection, compile the card first and use
+[the direct instrument commands](../core/NATIVE-INSTRUMENT.md).
 
 Use a dedicated Python 3.11/3.12 environment at `lab/image-to-appcard/.venv`, installed
 from `requirements.txt`. Keep it separate from Sketch's NumPy 2.x environment;

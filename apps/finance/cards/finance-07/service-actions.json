@@ -1,0 +1,82 @@
+{
+  "controls": {
+    "back": {
+      "event": "navigate",
+      "value": "watchlist"
+    },
+    "news_refresh": {
+      "event": "refresh",
+      "value": ""
+    },
+    "region_0": {
+      "event": "region",
+      "value": "All"
+    },
+    "region_1": {
+      "event": "region",
+      "value": "US"
+    },
+    "region_2": {
+      "event": "region",
+      "value": "HK"
+    },
+    "region_3": {
+      "event": "region",
+      "value": "CN"
+    },
+    "save_0": {
+      "event": "save",
+      "value": "preview-0"
+    },
+    "save_1": {
+      "event": "save",
+      "value": "preview-1"
+    },
+    "save_2": {
+      "event": "save",
+      "value": "preview-2"
+    },
+    "save_3": {
+      "event": "save",
+      "value": "preview-3"
+    },
+    "story_0": {
+      "event": "article",
+      "value": "preview-0"
+    },
+    "story_1": {
+      "event": "article",
+      "value": "preview-1"
+    },
+    "story_2": {
+      "event": "article",
+      "value": "preview-2"
+    },
+    "story_3": {
+      "event": "article",
+      "value": "preview-3"
+    },
+    "tab_markets": {
+      "event": "navigate",
+      "value": "markets"
+    },
+    "tab_news": {
+      "event": "navigate",
+      "value": "news"
+    },
+    "tab_saved": {
+      "event": "navigate",
+      "value": "saved"
+    },
+    "tab_settings": {
+      "event": "navigate",
+      "value": "settings"
+    },
+    "tab_watchlist": {
+      "event": "navigate",
+      "value": "watchlist"
+    }
+  },
+  "owner": "finance",
+  "schema_version": 1
+}

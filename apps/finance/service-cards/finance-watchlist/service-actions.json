@@ -1,0 +1,14 @@
+{
+  "controls": {
+    "stock_0": {
+      "event": "open",
+      "value": "XNAS:AAPL"
+    },
+    "stock_1": {
+      "event": "open",
+      "value": "XNAS:MSFT"
+    }
+  },
+  "owner": "finance",
+  "schema_version": 1
+}

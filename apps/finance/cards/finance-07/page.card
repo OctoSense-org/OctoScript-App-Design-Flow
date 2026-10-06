@@ -1,0 +1,250 @@
+# ledger finance-07@1.0.0
+# level: L0
+# profile: ui/l0
+# Static design fixture, runtime native Kit composition.
+theme light
+copy heading_text { class: user-copy, en: "AAPL" }
+copy data_status_text { class: user-copy, en: "Preview · Fictional prices & news" }
+copy back_label_text { class: user-copy, en: "‹" }
+copy tab_settings_label_text { class: user-copy, en: "" }
+copy settings_glyph_text { class: user-copy, en: "" }
+copy region_0_label_text { class: user-copy, en: "All" }
+copy region_1_label_text { class: user-copy, en: "US" }
+copy region_2_label_text { class: user-copy, en: "HK" }
+copy region_3_label_text { class: user-copy, en: "CN" }
+copy story_0_label_text { class: user-copy, en: "" }
+copy story_0_source_text { class: user-copy, en: "Preview Journal · US" }
+copy story_0_title_0_text { class: user-copy, en: "Three markets, one watchlist" }
+copy save_0_label_text { class: user-copy, en: "☆" }
+copy story_1_label_text { class: user-copy, en: "" }
+copy story_1_source_text { class: user-copy, en: "Preview Journal · US" }
+copy story_1_title_0_text { class: user-copy, en: "Apple supplier outlook in focus" }
+copy save_1_label_text { class: user-copy, en: "☆" }
+copy story_2_label_text { class: user-copy, en: "" }
+copy story_2_source_text { class: user-copy, en: "Preview Journal · US" }
+copy story_2_title_0_text { class: user-copy, en: "What investors are watching this" }
+copy story_2_title_1_text { class: user-copy, en: "week" }
+copy save_2_label_text { class: user-copy, en: "☆" }
+copy story_3_label_text { class: user-copy, en: "" }
+copy story_3_source_text { class: user-copy, en: "Preview Journal · US" }
+copy story_3_title_0_text { class: user-copy, en: "A closer look at hardware demand" }
+copy save_3_label_text { class: user-copy, en: "☆" }
+copy news_refresh_label_text { class: user-copy, en: "Refresh news" }
+copy tab_watchlist_label_text { class: user-copy, en: "Stocks" }
+copy tab_watchlist_glyph_text { class: user-copy, en: "" }
+copy tab_markets_label_text { class: user-copy, en: "Markets" }
+copy tab_markets_glyph_text { class: user-copy, en: "" }
+copy tab_news_label_text { class: user-copy, en: "News" }
+copy tab_news_glyph_text { class: user-copy, en: "" }
+copy tab_saved_label_text { class: user-copy, en: "Saved" }
+copy tab_saved_glyph_text { class: user-copy, en: "" }
+state back_control_enabled { shape: bool, initial: true }
+state tab_settings_control_enabled { shape: bool, initial: true }
+state region_0_control_enabled { shape: bool, initial: true }
+state region_1_control_enabled { shape: bool, initial: true }
+state region_2_control_enabled { shape: bool, initial: true }
+state region_3_control_enabled { shape: bool, initial: true }
+state story_0_control_enabled { shape: bool, initial: true }
+state save_0_control_enabled { shape: bool, initial: true }
+state story_1_control_enabled { shape: bool, initial: true }
+state save_1_control_enabled { shape: bool, initial: true }
+state story_2_control_enabled { shape: bool, initial: true }
+state save_2_control_enabled { shape: bool, initial: true }
+state story_3_control_enabled { shape: bool, initial: true }
+state save_3_control_enabled { shape: bool, initial: true }
+state news_refresh_control_enabled { shape: bool, initial: true }
+state tab_watchlist_control_enabled { shape: bool, initial: true }
+state tab_markets_control_enabled { shape: bool, initial: true }
+state tab_news_control_enabled { shape: bool, initial: true }
+state tab_saved_control_enabled { shape: bool, initial: true }
+component Surface25cdc448447b(instance: text) {
+  view Kit(component: "Surface25cdc448447b", instance: instance) { slot }
+}
+component Texta1b340ab5096(instance: text, text: text) {
+  view Kit(component: "Texta1b340ab5096", instance: instance, text: text)
+}
+component Text419774faffd8(instance: text, text: text) {
+  view Kit(component: "Text419774faffd8", instance: instance, text: text)
+}
+component KitButton943d8a6ae6d8(instance: text) {
+  view Kit(component: "KitButton943d8a6ae6d8", instance: instance) { slot }
+}
+component NativeButton02f1d1bd99b4(instance: text, enabled: bool) {
+  view Kit(component: "NativeButton02f1d1bd99b4", instance: instance, enabled: enabled)
+}
+component Text4abc1db2683f(instance: text, text: text) {
+  view Kit(component: "Text4abc1db2683f", instance: instance, text: text)
+}
+component Text9258cc1c09d5(instance: text, text: text) {
+  view Kit(component: "Text9258cc1c09d5", instance: instance, text: text)
+}
+component Group5fb60150eb73(instance: text) {
+  view Kit(component: "Group5fb60150eb73", instance: instance) { slot }
+}
+component Group3d2637879433(instance: text) {
+  view Kit(component: "Group3d2637879433", instance: instance) { slot }
+}
+component Surface1d2f352a5c9c(instance: text) {
+  view Kit(component: "Surface1d2f352a5c9c", instance: instance) { slot }
+}
+component Text04a63d81feb3(instance: text, text: text) {
+  view Kit(component: "Text04a63d81feb3", instance: instance, text: text)
+}
+component Surface59e1a0f60533(instance: text) {
+  view Kit(component: "Surface59e1a0f60533", instance: instance) { slot }
+}
+component Texteb5864166c31(instance: text, text: text) {
+  view Kit(component: "Texteb5864166c31", instance: instance, text: text)
+}
+component Texta644e07c2dcd(instance: text, text: text) {
+  view Kit(component: "Texta644e07c2dcd", instance: instance, text: text)
+}
+component Textd59114640426(instance: text, text: text) {
+  view Kit(component: "Textd59114640426", instance: instance, text: text)
+}
+component Surfacec68d54b1b8e2(instance: text) {
+  view Kit(component: "Surfacec68d54b1b8e2", instance: instance) { slot }
+}
+component Text9fa03093b726(instance: text, text: text) {
+  view Kit(component: "Text9fa03093b726", instance: instance, text: text)
+}
+component Text43b4c1f25877(instance: text, text: text) {
+  view Kit(component: "Text43b4c1f25877", instance: instance, text: text)
+}
+component Surfaceb18d10e62d63(instance: text) {
+  view Kit(component: "Surfaceb18d10e62d63", instance: instance) { slot }
+}
+
+view root Surface25cdc448447b(instance: "page") {
+  Texta1b340ab5096(instance: "heading", text: copy.heading_text)
+  Text419774faffd8(instance: "data_status", text: copy.data_status_text)
+  KitButton943d8a6ae6d8(instance: "back") {
+    NativeButton02f1d1bd99b4(instance: "back_control", enabled: back_control_enabled)
+    Text4abc1db2683f(instance: "back_label", text: copy.back_label_text)
+  }
+  KitButton943d8a6ae6d8(instance: "tab_settings") {
+    NativeButton02f1d1bd99b4(instance: "tab_settings_control", enabled: tab_settings_control_enabled)
+    Text4abc1db2683f(instance: "tab_settings_label", text: copy.tab_settings_label_text)
+  }
+  Text9258cc1c09d5(instance: "settings_glyph", text: copy.settings_glyph_text)
+  Group5fb60150eb73(instance: "body_scroll") {
+    Group3d2637879433(instance: "body_content") {
+      KitButton943d8a6ae6d8(instance: "region_0") {
+        NativeButton02f1d1bd99b4(instance: "region_0_control", enabled: region_0_control_enabled)
+        Surface1d2f352a5c9c(instance: "region_0_bg") {
+
+        }
+        Text04a63d81feb3(instance: "region_0_label", text: copy.region_0_label_text)
+      }
+      KitButton943d8a6ae6d8(instance: "region_1") {
+        NativeButton02f1d1bd99b4(instance: "region_1_control", enabled: region_1_control_enabled)
+        Surface59e1a0f60533(instance: "region_1_bg") {
+
+        }
+        Texteb5864166c31(instance: "region_1_label", text: copy.region_1_label_text)
+      }
+      KitButton943d8a6ae6d8(instance: "region_2") {
+        NativeButton02f1d1bd99b4(instance: "region_2_control", enabled: region_2_control_enabled)
+        Surface59e1a0f60533(instance: "region_2_bg") {
+
+        }
+        Texteb5864166c31(instance: "region_2_label", text: copy.region_2_label_text)
+      }
+      KitButton943d8a6ae6d8(instance: "region_3") {
+        NativeButton02f1d1bd99b4(instance: "region_3_control", enabled: region_3_control_enabled)
+        Surface59e1a0f60533(instance: "region_3_bg") {
+
+        }
+        Texteb5864166c31(instance: "region_3_label", text: copy.region_3_label_text)
+      }
+      Surface25cdc448447b(instance: "related_news_card") {
+        KitButton943d8a6ae6d8(instance: "story_0") {
+          NativeButton02f1d1bd99b4(instance: "story_0_control", enabled: story_0_control_enabled)
+          Text4abc1db2683f(instance: "story_0_label", text: copy.story_0_label_text)
+        }
+        Texta644e07c2dcd(instance: "story_0_source", text: copy.story_0_source_text)
+        Textd59114640426(instance: "story_0_title_0", text: copy.story_0_title_0_text)
+        KitButton943d8a6ae6d8(instance: "save_0") {
+          NativeButton02f1d1bd99b4(instance: "save_0_control", enabled: save_0_control_enabled)
+          Text4abc1db2683f(instance: "save_0_label", text: copy.save_0_label_text)
+        }
+        Surfacec68d54b1b8e2(instance: "story_0_rule") {
+
+        }
+        KitButton943d8a6ae6d8(instance: "story_1") {
+          NativeButton02f1d1bd99b4(instance: "story_1_control", enabled: story_1_control_enabled)
+          Text4abc1db2683f(instance: "story_1_label", text: copy.story_1_label_text)
+        }
+        Texta644e07c2dcd(instance: "story_1_source", text: copy.story_1_source_text)
+        Textd59114640426(instance: "story_1_title_0", text: copy.story_1_title_0_text)
+        KitButton943d8a6ae6d8(instance: "save_1") {
+          NativeButton02f1d1bd99b4(instance: "save_1_control", enabled: save_1_control_enabled)
+          Text4abc1db2683f(instance: "save_1_label", text: copy.save_1_label_text)
+        }
+        Surfacec68d54b1b8e2(instance: "story_1_rule") {
+
+        }
+      }
+      KitButton943d8a6ae6d8(instance: "story_2") {
+        NativeButton02f1d1bd99b4(instance: "story_2_control", enabled: story_2_control_enabled)
+        Text4abc1db2683f(instance: "story_2_label", text: copy.story_2_label_text)
+      }
+      Texta644e07c2dcd(instance: "story_2_source", text: copy.story_2_source_text)
+      Textd59114640426(instance: "story_2_title_0", text: copy.story_2_title_0_text)
+      Textd59114640426(instance: "story_2_title_1", text: copy.story_2_title_1_text)
+      KitButton943d8a6ae6d8(instance: "save_2") {
+        NativeButton02f1d1bd99b4(instance: "save_2_control", enabled: save_2_control_enabled)
+        Text4abc1db2683f(instance: "save_2_label", text: copy.save_2_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "story_2_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "story_3") {
+        NativeButton02f1d1bd99b4(instance: "story_3_control", enabled: story_3_control_enabled)
+        Text4abc1db2683f(instance: "story_3_label", text: copy.story_3_label_text)
+      }
+      Texta644e07c2dcd(instance: "story_3_source", text: copy.story_3_source_text)
+      Textd59114640426(instance: "story_3_title_0", text: copy.story_3_title_0_text)
+      KitButton943d8a6ae6d8(instance: "save_3") {
+        NativeButton02f1d1bd99b4(instance: "save_3_control", enabled: save_3_control_enabled)
+        Text4abc1db2683f(instance: "save_3_label", text: copy.save_3_label_text)
+      }
+      Surfacec68d54b1b8e2(instance: "story_3_rule") {
+
+      }
+      KitButton943d8a6ae6d8(instance: "news_refresh") {
+        NativeButton02f1d1bd99b4(instance: "news_refresh_control", enabled: news_refresh_control_enabled)
+        Surface59e1a0f60533(instance: "news_refresh_bg") {
+
+        }
+        Text4abc1db2683f(instance: "news_refresh_label", text: copy.news_refresh_label_text)
+      }
+    }
+  }
+  Surface25cdc448447b(instance: "tab_surface") {
+
+  }
+  KitButton943d8a6ae6d8(instance: "tab_watchlist") {
+    NativeButton02f1d1bd99b4(instance: "tab_watchlist_control", enabled: tab_watchlist_control_enabled)
+    Text9fa03093b726(instance: "tab_watchlist_label", text: copy.tab_watchlist_label_text)
+  }
+  Text43b4c1f25877(instance: "tab_watchlist_glyph", text: copy.tab_watchlist_glyph_text)
+  KitButton943d8a6ae6d8(instance: "tab_markets") {
+    NativeButton02f1d1bd99b4(instance: "tab_markets_control", enabled: tab_markets_control_enabled)
+    Text9fa03093b726(instance: "tab_markets_label", text: copy.tab_markets_label_text)
+  }
+  Text43b4c1f25877(instance: "tab_markets_glyph", text: copy.tab_markets_glyph_text)
+  KitButton943d8a6ae6d8(instance: "tab_news") {
+    NativeButton02f1d1bd99b4(instance: "tab_news_control", enabled: tab_news_control_enabled)
+    Text9fa03093b726(instance: "tab_news_label", text: copy.tab_news_label_text)
+  }
+  Text43b4c1f25877(instance: "tab_news_glyph", text: copy.tab_news_glyph_text)
+  KitButton943d8a6ae6d8(instance: "tab_saved") {
+    NativeButton02f1d1bd99b4(instance: "tab_saved_control", enabled: tab_saved_control_enabled)
+    Text9fa03093b726(instance: "tab_saved_label", text: copy.tab_saved_label_text)
+  }
+  Text43b4c1f25877(instance: "tab_saved_glyph", text: copy.tab_saved_glyph_text)
+  Surfaceb18d10e62d63(instance: "home_indicator") {
+
+  }
+}

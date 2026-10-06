@@ -56,6 +56,15 @@ class BundleTests(unittest.TestCase):
     def export(self):
         return bundle.export_bundle(self.root, "flow.json", self.output)
 
+    def test_inline_html_requires_native_web_component(self):
+        src = "data:text/html;charset=utf-8;base64,PGgxPkhlbGxvPC9oMT4="
+        self.data["$kit"]["placements"]["reader"] = {"component": "Reader", "layout": {"src": src}}
+        self.put("cards/example/page.data.json", self.data)
+        with self.assertRaises(bundle.BundleError):
+            self.export()
+        self.put("cards/example/kit/native/light/kit.json", {"components": {"Reader": {"style": {"t": "web"}}}})
+        self.assertTrue(self.export()["passed"])
+
     def test_preserves_native_controls_and_exports_only_referenced_art(self):
         report = self.export()
         record = json.loads((self.output / "cards.bundle.json").read_text())["scenes"]["1"]

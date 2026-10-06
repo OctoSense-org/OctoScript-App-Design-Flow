@@ -1,0 +1,105 @@
+# ledger finance-09@1.0.0
+# level: L0
+# profile: ui/l0
+# Static design fixture, runtime native Kit composition.
+theme light
+copy heading_text { class: user-copy, en: "Article" }
+copy data_status_text { class: user-copy, en: "Preview · Fictional prices & news" }
+copy back_label_text { class: user-copy, en: "‹" }
+copy bookmark_label_text { class: user-copy, en: "Save ☆" }
+copy share_label_text { class: user-copy, en: "Copy link" }
+copy tab_watchlist_label_text { class: user-copy, en: "Stocks" }
+copy tab_watchlist_glyph_text { class: user-copy, en: "" }
+copy tab_markets_label_text { class: user-copy, en: "Markets" }
+copy tab_markets_glyph_text { class: user-copy, en: "" }
+copy tab_news_label_text { class: user-copy, en: "News" }
+copy tab_news_glyph_text { class: user-copy, en: "" }
+copy tab_saved_label_text { class: user-copy, en: "Saved" }
+copy tab_saved_glyph_text { class: user-copy, en: "" }
+state back_control_enabled { shape: bool, initial: true }
+state bookmark_control_enabled { shape: bool, initial: true }
+state share_control_enabled { shape: bool, initial: true }
+state tab_watchlist_control_enabled { shape: bool, initial: true }
+state tab_markets_control_enabled { shape: bool, initial: true }
+state tab_news_control_enabled { shape: bool, initial: true }
+state tab_saved_control_enabled { shape: bool, initial: true }
+component Surface25cdc448447b(instance: text) {
+  view Kit(component: "Surface25cdc448447b", instance: instance) { slot }
+}
+component Texta1b340ab5096(instance: text, text: text) {
+  view Kit(component: "Texta1b340ab5096", instance: instance, text: text)
+}
+component Text419774faffd8(instance: text, text: text) {
+  view Kit(component: "Text419774faffd8", instance: instance, text: text)
+}
+component KitButton943d8a6ae6d8(instance: text) {
+  view Kit(component: "KitButton943d8a6ae6d8", instance: instance) { slot }
+}
+component NativeButton02f1d1bd99b4(instance: text, enabled: bool) {
+  view Kit(component: "NativeButton02f1d1bd99b4", instance: instance, enabled: enabled)
+}
+component Text4abc1db2683f(instance: text, text: text) {
+  view Kit(component: "Text4abc1db2683f", instance: instance, text: text)
+}
+component Web823c2892e0cd(instance: text) {
+  view Kit(component: "Web823c2892e0cd", instance: instance)
+}
+component Surface59e1a0f60533(instance: text) {
+  view Kit(component: "Surface59e1a0f60533", instance: instance) { slot }
+}
+component Text9fa03093b726(instance: text, text: text) {
+  view Kit(component: "Text9fa03093b726", instance: instance, text: text)
+}
+component Text43b4c1f25877(instance: text, text: text) {
+  view Kit(component: "Text43b4c1f25877", instance: instance, text: text)
+}
+component Surfaceb18d10e62d63(instance: text) {
+  view Kit(component: "Surfaceb18d10e62d63", instance: instance) { slot }
+}
+
+view root Surface25cdc448447b(instance: "page") {
+  Texta1b340ab5096(instance: "heading", text: copy.heading_text)
+  Text419774faffd8(instance: "data_status", text: copy.data_status_text)
+  KitButton943d8a6ae6d8(instance: "back") {
+    NativeButton02f1d1bd99b4(instance: "back_control", enabled: back_control_enabled)
+    Text4abc1db2683f(instance: "back_label", text: copy.back_label_text)
+  }
+  KitButton943d8a6ae6d8(instance: "bookmark") {
+    NativeButton02f1d1bd99b4(instance: "bookmark_control", enabled: bookmark_control_enabled)
+    Text4abc1db2683f(instance: "bookmark_label", text: copy.bookmark_label_text)
+  }
+  Web823c2892e0cd(instance: "article_web")
+  KitButton943d8a6ae6d8(instance: "share") {
+    NativeButton02f1d1bd99b4(instance: "share_control", enabled: share_control_enabled)
+    Surface59e1a0f60533(instance: "share_bg") {
+
+    }
+    Text4abc1db2683f(instance: "share_label", text: copy.share_label_text)
+  }
+  Surface25cdc448447b(instance: "tab_surface") {
+
+  }
+  KitButton943d8a6ae6d8(instance: "tab_watchlist") {
+    NativeButton02f1d1bd99b4(instance: "tab_watchlist_control", enabled: tab_watchlist_control_enabled)
+    Text9fa03093b726(instance: "tab_watchlist_label", text: copy.tab_watchlist_label_text)
+  }
+  Text43b4c1f25877(instance: "tab_watchlist_glyph", text: copy.tab_watchlist_glyph_text)
+  KitButton943d8a6ae6d8(instance: "tab_markets") {
+    NativeButton02f1d1bd99b4(instance: "tab_markets_control", enabled: tab_markets_control_enabled)
+    Text9fa03093b726(instance: "tab_markets_label", text: copy.tab_markets_label_text)
+  }
+  Text43b4c1f25877(instance: "tab_markets_glyph", text: copy.tab_markets_glyph_text)
+  KitButton943d8a6ae6d8(instance: "tab_news") {
+    NativeButton02f1d1bd99b4(instance: "tab_news_control", enabled: tab_news_control_enabled)
+    Text9fa03093b726(instance: "tab_news_label", text: copy.tab_news_label_text)
+  }
+  Text43b4c1f25877(instance: "tab_news_glyph", text: copy.tab_news_glyph_text)
+  KitButton943d8a6ae6d8(instance: "tab_saved") {
+    NativeButton02f1d1bd99b4(instance: "tab_saved_control", enabled: tab_saved_control_enabled)
+    Text9fa03093b726(instance: "tab_saved_label", text: copy.tab_saved_label_text)
+  }
+  Text43b4c1f25877(instance: "tab_saved_glyph", text: copy.tab_saved_glyph_text)
+  Surfaceb18d10e62d63(instance: "home_indicator") {
+
+  }
+}

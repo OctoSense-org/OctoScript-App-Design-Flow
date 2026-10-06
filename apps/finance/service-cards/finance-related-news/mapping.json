@@ -1,0 +1,352 @@
+{
+  "schema_version": 1,
+  "elements": [
+    {
+      "source_id": "related_news_card",
+      "native_id": "beauty_0",
+      "parent": null,
+      "kind": "stack",
+      "component": "Surface25cdc448447b",
+      "semantic_role": "layout",
+      "bounds": [
+        0.0,
+        0.0,
+        366.0,
+        216.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "story_0",
+      "native_id": "beauty_0_0",
+      "parent": "related_news_card",
+      "kind": "stack",
+      "component": "KitButton943d8a6ae6d8",
+      "semantic_role": "button",
+      "bounds": [
+        0.0,
+        0.0,
+        366.0,
+        105.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "story_0_control",
+      "native_id": "beauty_0_0_0",
+      "parent": "story_0",
+      "kind": "button",
+      "component": "NativeButton02f1d1bd99b4",
+      "semantic_role": "button",
+      "bounds": [
+        0.0,
+        0.0,
+        366.0,
+        105.0
+      ],
+      "text": null,
+      "enabled": true,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "story_0_label",
+      "native_id": "beauty_0_0_1",
+      "parent": "story_0",
+      "kind": "text",
+      "component": "Text4abc1db2683f",
+      "semantic_role": "text",
+      "bounds": [
+        4.0,
+        43.5,
+        358.0,
+        17.68
+      ],
+      "text": "",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 13.0
+    },
+    {
+      "source_id": "story_0_source",
+      "native_id": "beauty_0_1",
+      "parent": "related_news_card",
+      "kind": "text",
+      "component": "Texta644e07c2dcd",
+      "semantic_role": "text",
+      "bounds": [
+        4.0,
+        8.0,
+        342.0,
+        14.96
+      ],
+      "text": "Preview Journal \u00b7 US",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 11.0
+    },
+    {
+      "source_id": "story_0_title_0",
+      "native_id": "beauty_0_2",
+      "parent": "related_news_card",
+      "kind": "text",
+      "component": "Textd59114640426",
+      "semantic_role": "text",
+      "bounds": [
+        4.0,
+        31.0,
+        300.0,
+        21.76
+      ],
+      "text": "Three markets, one watchlist",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 16.0
+    },
+    {
+      "source_id": "save_0",
+      "native_id": "beauty_0_3",
+      "parent": "related_news_card",
+      "kind": "stack",
+      "component": "KitButton943d8a6ae6d8",
+      "semantic_role": "button",
+      "bounds": [
+        318.0,
+        41.0,
+        42.0,
+        40.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "save_0_control",
+      "native_id": "beauty_0_3_0",
+      "parent": "save_0",
+      "kind": "button",
+      "component": "NativeButton02f1d1bd99b4",
+      "semantic_role": "button",
+      "bounds": [
+        318.0,
+        41.0,
+        42.0,
+        40.0
+      ],
+      "text": null,
+      "enabled": true,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "save_0_label",
+      "native_id": "beauty_0_3_1",
+      "parent": "save_0",
+      "kind": "text",
+      "component": "Text4abc1db2683f",
+      "semantic_role": "text",
+      "bounds": [
+        322.0,
+        52.0,
+        34.0,
+        17.68
+      ],
+      "text": "\u2606",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 13.0
+    },
+    {
+      "source_id": "story_0_rule",
+      "native_id": "beauty_0_4",
+      "parent": "related_news_card",
+      "kind": "stack",
+      "component": "Surfacec68d54b1b8e2",
+      "semantic_role": "layout",
+      "bounds": [
+        4.0,
+        103.0,
+        356.0,
+        0.5
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "story_1",
+      "native_id": "beauty_0_5",
+      "parent": "related_news_card",
+      "kind": "stack",
+      "component": "KitButton943d8a6ae6d8",
+      "semantic_role": "button",
+      "bounds": [
+        0.0,
+        108.0,
+        366.0,
+        105.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "story_1_control",
+      "native_id": "beauty_0_5_0",
+      "parent": "story_1",
+      "kind": "button",
+      "component": "NativeButton02f1d1bd99b4",
+      "semantic_role": "button",
+      "bounds": [
+        0.0,
+        108.0,
+        366.0,
+        105.0
+      ],
+      "text": null,
+      "enabled": true,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "story_1_label",
+      "native_id": "beauty_0_5_1",
+      "parent": "story_1",
+      "kind": "text",
+      "component": "Text4abc1db2683f",
+      "semantic_role": "text",
+      "bounds": [
+        4.0,
+        151.5,
+        358.0,
+        17.68
+      ],
+      "text": "",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 13.0
+    },
+    {
+      "source_id": "story_1_source",
+      "native_id": "beauty_0_6",
+      "parent": "related_news_card",
+      "kind": "text",
+      "component": "Texta644e07c2dcd",
+      "semantic_role": "text",
+      "bounds": [
+        4.0,
+        116.0,
+        342.0,
+        14.96
+      ],
+      "text": "Preview Journal \u00b7 US",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 11.0
+    },
+    {
+      "source_id": "story_1_title_0",
+      "native_id": "beauty_0_7",
+      "parent": "related_news_card",
+      "kind": "text",
+      "component": "Textd59114640426",
+      "semantic_role": "text",
+      "bounds": [
+        4.0,
+        139.0,
+        300.0,
+        21.76
+      ],
+      "text": "Apple supplier outlook in focus",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 16.0
+    },
+    {
+      "source_id": "save_1",
+      "native_id": "beauty_0_8",
+      "parent": "related_news_card",
+      "kind": "stack",
+      "component": "KitButton943d8a6ae6d8",
+      "semantic_role": "button",
+      "bounds": [
+        318.0,
+        149.0,
+        42.0,
+        40.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "save_1_control",
+      "native_id": "beauty_0_8_0",
+      "parent": "save_1",
+      "kind": "button",
+      "component": "NativeButton02f1d1bd99b4",
+      "semantic_role": "button",
+      "bounds": [
+        318.0,
+        149.0,
+        42.0,
+        40.0
+      ],
+      "text": null,
+      "enabled": true,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "save_1_label",
+      "native_id": "beauty_0_8_1",
+      "parent": "save_1",
+      "kind": "text",
+      "component": "Text4abc1db2683f",
+      "semantic_role": "text",
+      "bounds": [
+        322.0,
+        160.0,
+        34.0,
+        17.68
+      ],
+      "text": "\u2606",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 13.0
+    },
+    {
+      "source_id": "story_1_rule",
+      "native_id": "beauty_0_9",
+      "parent": "related_news_card",
+      "kind": "stack",
+      "component": "Surfacec68d54b1b8e2",
+      "semantic_role": "layout",
+      "bounds": [
+        4.0,
+        211.0,
+        356.0,
+        0.5
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    }
+  ],
+  "fonts": {
+    "self:resources/ux/Inter-400.ttf": "b6724fa153562e675ad77673f50bddfc5caf2fcd9e4be279f2d0aa56bb210488"
+  },
+  "contract_sha256": "de1dd966dfb87b4dd76fd71468c93bced344719accf9249ff617b6d8fdb74b7f",
+  "mapping_basis": "mapped.json"
+}

@@ -1,0 +1,1 @@
+Native Finance currently renders text, controls and numerical charts. No screenshot or generated chart image is shipped as a runtime widget. This directory is the declared artwork root for the shared bundle pipeline.

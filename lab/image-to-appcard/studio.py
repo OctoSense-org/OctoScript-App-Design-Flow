@@ -2,6 +2,7 @@
 """One persistent Studio bridge; RunItem is the only UI build/run path."""
 import argparse,hashlib,json,os,shutil,time,uuid,urllib.request
 from pathlib import Path
+from PIL import Image
 from catalogue import HERE
 from compile import ROOT,compile_page,digest,repository
 
@@ -18,6 +19,23 @@ def request(kind,body,response=None,timeout=30):
 def write(path,data):
     path=Path(path);tmp=path.with_suffix(path.suffix+'.new')
     tmp.write_text(json.dumps(data,indent=2)+'\n');tmp.replace(path)
+
+def save_viewport_screenshot(shot,target,width=406,height=776,dpi=2.0):
+    """Keep the native backing image and crop its measured viewport, never scale."""
+    target=Path(target);source=Path(shot['path'])
+    raw=target.with_name(target.stem+'-raw.png');shutil.copy2(source,raw)
+    viewport=(round(width*dpi),round(height*dpi))
+    with Image.open(raw) as pixels:
+        if pixels.size!=(shot['width'],shot['height']):raise RuntimeError('Screenshot metadata differs from actual backing pixels')
+        if pixels.width<viewport[0] or pixels.height<viewport[1]:raise RuntimeError('Native backing texture is smaller than the requested viewport')
+        pixels.crop((0,0,*viewport)).save(target)
+    receipt={'schema_version':1,'source':raw.name,'source_sha256':digest(raw.read_bytes()),
+             'target':target.name,'target_sha256':digest(target.read_bytes()),
+             'build_id':shot['build_id'],'native_backing_px':[shot['width'],shot['height']],
+             'viewport_logical':[width,height],'dpi':dpi,'crop_xywh':[0,0,*viewport],
+             'resampled':False,'basis':'Actual Studio RunViewResize viewport at origin of backing texture'}
+    write(target.with_suffix('.crop.json'),receipt)
+    return receipt
 
 def await_semantic_change(read_state,id,before,expected,paint=False):
     deadline=time.monotonic()+5
@@ -103,7 +121,7 @@ def capture(id,build):
     write(round_dir/'queries.json',queries)
     shot=request('Screenshot',{'build_id':build,'kind_id':0},'Screenshot')
     if shot.get('build_id')!=build:raise RuntimeError('Stale screenshot build')
-    path=Path(shot['path']);shutil.copy2(path,round_dir/'native.png');write(round_dir/'screenshot.json',shot)
+    path=Path(shot['path']);save_viewport_screenshot(shot,round_dir/'native.png');write(round_dir/'screenshot.json',shot)
     # The temporary screenshot belongs to this specific request only.
     if path.parent==Path('/tmp/makepad_studio_hub') and path.name.startswith('build-'):path.unlink(missing_ok=True)
     write(round_dir/'provenance.json',{'build_id':build,'run_item':RUN_ITEM,'nonce':nonce,
@@ -126,7 +144,7 @@ def click_controls(directory,build):
     def evidence(id,suffix):
         request('WidgetSnapshot',{'build_id':build},'WidgetSnapshot')
         shot=request('Screenshot',{'build_id':build,'kind_id':0},'Screenshot')
-        path=Path(shot['path']);target=directory/(id+'-'+suffix+'.png');shutil.copy2(path,target)
+        path=Path(shot['path']);target=directory/(id+'-'+suffix+'.png');save_viewport_screenshot(shot,target)
         write(directory/(id+'-'+suffix+'.json'),state())
         if path.parent==Path('/tmp/makepad_studio_hub') and path.name.startswith('build-'):path.unlink(missing_ok=True)
         return target.name
@@ -138,6 +156,26 @@ def click_controls(directory,build):
         x,y,w,h=node['bounds'];before=len(json.loads(actions.read_text()))
         semantic_before=state()['elements'].get(id,{}) if binding else None
         request('Click',{'build_id':build,'x':round(x+w/2),'y':round(y+h/2)})
+        if node.get('enabled') is not None and not bool(node['enabled']):
+            # Disabled controls are an intentional state (for example, a
+            # conflicting appointment). A real click must not activate them.
+            deadline=time.monotonic()+.6;found=[]
+            while time.monotonic()<deadline:
+                events=json.loads(actions.read_text())
+                found=[a for a in events[before:] if a.get('action',{}).get('kind')=='activated']
+                if found:break
+                time.sleep(.1)
+            query=request('WidgetQuery',{'build_id':build,'query':'id:'+node['native_id']},'WidgetQuery')
+            write(directory/(id+'-disabled-query.json'),query)
+            snapshot=request('WidgetSnapshot',{'build_id':build},'WidgetSnapshot')
+            write(directory/(id+'-disabled-snapshot.json'),snapshot)
+            widgets=[w for w in snapshot.get('widgets',[]) if w.get('id')==node['native_id']]
+            disabled=(snapshot.get('build_id')==build and len(widgets)==1 and widgets[0].get('enabled') is False)
+            results.append({'id':id,'pass':disabled and not found,'enabled':False,'events':found,
+                            'query_evidence':id+'-disabled-query.json',
+                            'snapshot_evidence':id+'-disabled-snapshot.json',
+                            'scope':'native disabled Button ignores actual Studio click'})
+            continue
         if binding:
             current=await_semantic_change(state,id,semantic_before,binding['behavior']['value'])
             passed=current!=semantic_before and current.get('event')=='click' and current.get('after')==binding['behavior']['value']

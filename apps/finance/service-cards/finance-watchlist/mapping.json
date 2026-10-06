@@ -1,0 +1,425 @@
+{
+  "schema_version": 1,
+  "elements": [
+    {
+      "source_id": "watchlist_card",
+      "native_id": "beauty_0",
+      "parent": null,
+      "kind": "stack",
+      "component": "Surface25cdc448447b",
+      "semantic_role": "layout",
+      "bounds": [
+        0.0,
+        0.0,
+        366.0,
+        124.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "stock_0",
+      "native_id": "beauty_0_0",
+      "parent": "watchlist_card",
+      "kind": "stack",
+      "component": "KitButton943d8a6ae6d8",
+      "semantic_role": "button",
+      "bounds": [
+        0.0,
+        0.0,
+        366.0,
+        58.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "stock_0_control",
+      "native_id": "beauty_0_0_0",
+      "parent": "stock_0",
+      "kind": "button",
+      "component": "NativeButton02f1d1bd99b4",
+      "semantic_role": "button",
+      "bounds": [
+        0.0,
+        0.0,
+        366.0,
+        58.0
+      ],
+      "text": null,
+      "enabled": true,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "stock_0_label",
+      "native_id": "beauty_0_0_1",
+      "parent": "stock_0",
+      "kind": "text",
+      "component": "Text4abc1db2683f",
+      "semantic_role": "text",
+      "bounds": [
+        4.0,
+        20.0,
+        358.0,
+        17.68
+      ],
+      "text": "",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 13.0
+    },
+    {
+      "source_id": "stock_0_symbol",
+      "native_id": "beauty_0_1",
+      "parent": "watchlist_card",
+      "kind": "text",
+      "component": "Text486876a697bd",
+      "semantic_role": "text",
+      "bounds": [
+        4.0,
+        7.0,
+        112.0,
+        21.76
+      ],
+      "text": "AAPL",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-600.ttf",
+      "size": 16.0
+    },
+    {
+      "source_id": "stock_0_name",
+      "native_id": "beauty_0_2",
+      "parent": "watchlist_card",
+      "kind": "text",
+      "component": "Texta644e07c2dcd",
+      "semantic_role": "text",
+      "bounds": [
+        4.0,
+        31.0,
+        132.0,
+        14.96
+      ],
+      "text": "Apple",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 11.0
+    },
+    {
+      "source_id": "stock_0_badge",
+      "native_id": "beauty_0_3",
+      "parent": "watchlist_card",
+      "kind": "stack",
+      "component": "Surfaced0355e9fd549",
+      "semantic_role": "layout",
+      "bounds": [
+        119.0,
+        18.0,
+        29.0,
+        21.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "stock_0_market",
+      "native_id": "beauty_0_4",
+      "parent": "watchlist_card",
+      "kind": "text",
+      "component": "Text6460b5af4a0d",
+      "semantic_role": "text",
+      "bounds": [
+        120.0,
+        22.0,
+        27.0,
+        10.88
+      ],
+      "text": "US",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 8.0
+    },
+    {
+      "source_id": "stock_0_price",
+      "native_id": "beauty_0_5",
+      "parent": "watchlist_card",
+      "kind": "text",
+      "component": "Textaa4fadd9d03a",
+      "semantic_role": "text",
+      "bounds": [
+        254.0,
+        7.0,
+        102.0,
+        21.76
+      ],
+      "text": "220.00",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-600.ttf",
+      "size": 16.0
+    },
+    {
+      "source_id": "stock_0_change",
+      "native_id": "beauty_0_6",
+      "parent": "watchlist_card",
+      "kind": "text",
+      "component": "Text5203447cbaf5",
+      "semantic_role": "text",
+      "bounds": [
+        264.0,
+        31.0,
+        92.0,
+        16.32
+      ],
+      "text": "+1.20%",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 12.0
+    },
+    {
+      "source_id": "spark_0",
+      "native_id": "beauty_0_7",
+      "parent": "watchlist_card",
+      "kind": "stockplot",
+      "component": "Stockplot7c91b8e0daf8",
+      "semantic_role": "chart.line",
+      "bounds": [
+        161.0,
+        17.0,
+        82.0,
+        25.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "stock_0_rule",
+      "native_id": "beauty_0_8",
+      "parent": "watchlist_card",
+      "kind": "stack",
+      "component": "Surfacec68d54b1b8e2",
+      "semantic_role": "layout",
+      "bounds": [
+        4.0,
+        58.0,
+        356.0,
+        0.5
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "stock_1",
+      "native_id": "beauty_0_9",
+      "parent": "watchlist_card",
+      "kind": "stack",
+      "component": "KitButton943d8a6ae6d8",
+      "semantic_role": "button",
+      "bounds": [
+        0.0,
+        62.0,
+        366.0,
+        58.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "stock_1_control",
+      "native_id": "beauty_0_9_0",
+      "parent": "stock_1",
+      "kind": "button",
+      "component": "NativeButton02f1d1bd99b4",
+      "semantic_role": "button",
+      "bounds": [
+        0.0,
+        62.0,
+        366.0,
+        58.0
+      ],
+      "text": null,
+      "enabled": true,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "stock_1_label",
+      "native_id": "beauty_0_9_1",
+      "parent": "stock_1",
+      "kind": "text",
+      "component": "Text4abc1db2683f",
+      "semantic_role": "text",
+      "bounds": [
+        4.0,
+        82.0,
+        358.0,
+        17.68
+      ],
+      "text": "",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 13.0
+    },
+    {
+      "source_id": "stock_1_symbol",
+      "native_id": "beauty_0_10",
+      "parent": "watchlist_card",
+      "kind": "text",
+      "component": "Text486876a697bd",
+      "semantic_role": "text",
+      "bounds": [
+        4.0,
+        69.0,
+        112.0,
+        21.76
+      ],
+      "text": "MSFT",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-600.ttf",
+      "size": 16.0
+    },
+    {
+      "source_id": "stock_1_name",
+      "native_id": "beauty_0_11",
+      "parent": "watchlist_card",
+      "kind": "text",
+      "component": "Texta644e07c2dcd",
+      "semantic_role": "text",
+      "bounds": [
+        4.0,
+        93.0,
+        132.0,
+        14.96
+      ],
+      "text": "Microsoft",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 11.0
+    },
+    {
+      "source_id": "stock_1_badge",
+      "native_id": "beauty_0_12",
+      "parent": "watchlist_card",
+      "kind": "stack",
+      "component": "Surfaced0355e9fd549",
+      "semantic_role": "layout",
+      "bounds": [
+        119.0,
+        80.0,
+        29.0,
+        21.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "stock_1_market",
+      "native_id": "beauty_0_13",
+      "parent": "watchlist_card",
+      "kind": "text",
+      "component": "Text6460b5af4a0d",
+      "semantic_role": "text",
+      "bounds": [
+        120.0,
+        84.0,
+        27.0,
+        10.88
+      ],
+      "text": "US",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 8.0
+    },
+    {
+      "source_id": "stock_1_price",
+      "native_id": "beauty_0_14",
+      "parent": "watchlist_card",
+      "kind": "text",
+      "component": "Textaa4fadd9d03a",
+      "semantic_role": "text",
+      "bounds": [
+        254.0,
+        69.0,
+        102.0,
+        21.76
+      ],
+      "text": "420.00",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-600.ttf",
+      "size": 16.0
+    },
+    {
+      "source_id": "stock_1_change",
+      "native_id": "beauty_0_15",
+      "parent": "watchlist_card",
+      "kind": "text",
+      "component": "Text43b6520b8b94",
+      "semantic_role": "text",
+      "bounds": [
+        264.0,
+        93.0,
+        92.0,
+        16.32
+      ],
+      "text": "-0.40%",
+      "enabled": null,
+      "font": "self:resources/ux/Inter-400.ttf",
+      "size": 12.0
+    },
+    {
+      "source_id": "spark_1",
+      "native_id": "beauty_0_16",
+      "parent": "watchlist_card",
+      "kind": "stockplot",
+      "component": "Stockplot7c91b8e0daf8",
+      "semantic_role": "chart.line",
+      "bounds": [
+        161.0,
+        79.0,
+        82.0,
+        25.0
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    },
+    {
+      "source_id": "stock_1_rule",
+      "native_id": "beauty_0_17",
+      "parent": "watchlist_card",
+      "kind": "stack",
+      "component": "Surfacec68d54b1b8e2",
+      "semantic_role": "layout",
+      "bounds": [
+        4.0,
+        120.0,
+        356.0,
+        0.5
+      ],
+      "text": null,
+      "enabled": null,
+      "font": null,
+      "size": null
+    }
+  ],
+  "fonts": {
+    "self:resources/ux/Inter-400.ttf": "b6724fa153562e675ad77673f50bddfc5caf2fcd9e4be279f2d0aa56bb210488",
+    "self:resources/ux/Inter-600.ttf": "c68ee119fdc75a0c3daaf3af8afb3f556a5c961c58d4690076a13a56fd8c4242"
+  },
+  "contract_sha256": "7248963f01ffed02a6285bbbed3ab1ed9bf17c06ef269bcca396dbbe42ccd7e0",
+  "mapping_basis": "mapped.json"
+}

@@ -1,0 +1,216 @@
+{
+  "app": "finance",
+  "artboard": [
+    366.0,
+    308.0
+  ],
+  "graphics": {
+    "spark_0": {
+      "kind": "line"
+    },
+    "spark_1": {
+      "kind": "line"
+    },
+    "spark_2": {
+      "kind": "line"
+    },
+    "spark_3": {
+      "kind": "line"
+    },
+    "spark_4": {
+      "kind": "line"
+    },
+    "spark_5": {
+      "kind": "line"
+    }
+  },
+  "id": "finance-market-brief",
+  "number": 2,
+  "schema_version": 1,
+  "title": "markets",
+  "tree": {
+    "bg": 4278651148,
+    "c": [
+      {
+        "bg": 4279506975,
+        "c": [],
+        "h": 92.0,
+        "id": "market_0",
+        "radius": 12,
+        "t": "stack",
+        "variant": "surface",
+        "w": 366.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "color": 4294243831,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 27.200000000000003,
+        "id": "market_0_name",
+        "line_height": 27.200000000000003,
+        "size": 20.0,
+        "t": "text",
+        "text": "US",
+        "variant": "single_line",
+        "w": 330.0,
+        "weight": 400,
+        "x": 16.0,
+        "y": 14.0
+      },
+      {
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 16.32,
+        "id": "market_0_sub",
+        "line_height": 16.32,
+        "size": 12.0,
+        "t": "text",
+        "text": "NASDAQ / NYSE · USD · New York",
+        "variant": "single_line",
+        "w": 330.0,
+        "weight": 400,
+        "x": 16.0,
+        "y": 47.0
+      },
+      {
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 13.600000000000001,
+        "id": "market_0_session",
+        "line_height": 13.600000000000001,
+        "size": 10.0,
+        "t": "text",
+        "text": "Session unavailable in preview",
+        "variant": "single_line",
+        "w": 330.0,
+        "weight": 400,
+        "x": 16.0,
+        "y": 66.0
+      },
+      {
+        "bg": 4279506975,
+        "c": [],
+        "h": 92.0,
+        "id": "market_1",
+        "radius": 12,
+        "t": "stack",
+        "variant": "surface",
+        "w": 366.0,
+        "x": 0.0,
+        "y": 108.0
+      },
+      {
+        "color": 4294243831,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 27.200000000000003,
+        "id": "market_1_name",
+        "line_height": 27.200000000000003,
+        "size": 20.0,
+        "t": "text",
+        "text": "Hong Kong",
+        "variant": "single_line",
+        "w": 330.0,
+        "weight": 400,
+        "x": 16.0,
+        "y": 122.0
+      },
+      {
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 16.32,
+        "id": "market_1_sub",
+        "line_height": 16.32,
+        "size": 12.0,
+        "t": "text",
+        "text": "HKEX · HKD · Hong Kong",
+        "variant": "single_line",
+        "w": 330.0,
+        "weight": 400,
+        "x": 16.0,
+        "y": 155.0
+      },
+      {
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 13.600000000000001,
+        "id": "market_1_session",
+        "line_height": 13.600000000000001,
+        "size": 10.0,
+        "t": "text",
+        "text": "Session unavailable in preview",
+        "variant": "single_line",
+        "w": 330.0,
+        "weight": 400,
+        "x": 16.0,
+        "y": 174.0
+      },
+      {
+        "bg": 4279506975,
+        "c": [],
+        "h": 92.0,
+        "id": "market_2",
+        "radius": 12,
+        "t": "stack",
+        "variant": "surface",
+        "w": 366.0,
+        "x": 0.0,
+        "y": 216.0
+      },
+      {
+        "color": 4294243831,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 27.200000000000003,
+        "id": "market_2_name",
+        "line_height": 27.200000000000003,
+        "size": 20.0,
+        "t": "text",
+        "text": "Mainland China",
+        "variant": "single_line",
+        "w": 330.0,
+        "weight": 400,
+        "x": 16.0,
+        "y": 230.0
+      },
+      {
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 16.32,
+        "id": "market_2_sub",
+        "line_height": 16.32,
+        "size": 12.0,
+        "t": "text",
+        "text": "SSE / SZSE · CNY · Shanghai",
+        "variant": "single_line",
+        "w": 330.0,
+        "weight": 400,
+        "x": 16.0,
+        "y": 263.0
+      },
+      {
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 13.600000000000001,
+        "id": "market_2_session",
+        "line_height": 13.600000000000001,
+        "size": 10.0,
+        "t": "text",
+        "text": "Session unavailable in preview",
+        "variant": "single_line",
+        "w": 330.0,
+        "weight": 400,
+        "x": 16.0,
+        "y": 282.0
+      }
+    ],
+    "h": 308.0,
+    "id": "market_brief_card",
+    "radius": 12,
+    "t": "stack",
+    "variant": "surface",
+    "w": 366.0,
+    "x": 0.0,
+    "y": 0.0
+  },
+  "standalone_service_card": true
+}

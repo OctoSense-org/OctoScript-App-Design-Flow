@@ -1,0 +1,911 @@
+//! A modal dialog for binding or unbinding bots to a room.
+
+use makepad_widgets::*;
+use ruma::{OwnedUserId, UserId};
+
+use crate::{
+    app::{AgentFramework, AppState, BotSettingsState, RoomBotBindingState},
+    i18n::{AppLanguage, tr_fmt, tr_key},
+    persistence,
+    shared::popup_list::{PopupKind, enqueue_popup_notification},
+    sliding_sync::{MatrixRequest, current_user_id, submit_async_request},
+    utils::RoomNameId,
+};
+
+fn push_unique_bot_user_id(bot_user_ids: &mut Vec<OwnedUserId>, bot_user_id: OwnedUserId) {
+    if !bot_user_ids
+        .iter()
+        .any(|known_bot_user_id| known_bot_user_id.as_str() == bot_user_id.as_str())
+    {
+        bot_user_ids.push(bot_user_id);
+    }
+}
+
+/// Returns the bot user ID explicitly configured in Settings, if any.
+///
+/// Deliberately returns `None` when the BotFather user ID field is empty,
+/// so that the `@bot:homeserver` placeholder fallback of
+/// [`BotSettingsState::resolved_bot_user_id`] never leaks into the picker.
+fn configured_bot_user_id(app_state: &AppState) -> Option<OwnedUserId> {
+    if !app_state.bot_settings.enabled
+        || app_state.bot_settings.botfather_user_id.trim().is_empty()
+    {
+        return None;
+    }
+    app_state
+        .bot_settings
+        .resolved_bot_user_id(current_user_id().as_deref())
+        .ok()
+        .filter(|bot_user_id| BotSettingsState::is_valid_known_bot_user_id(bot_user_id.as_ref()))
+}
+
+fn bot_binding_known_bot_user_ids(app_state: &AppState) -> Vec<OwnedUserId> {
+    let mut known_bot_user_ids = app_state.bot_settings.known_bot_user_ids();
+    if let Some(configured_bot_user_id) = configured_bot_user_id(app_state) {
+        push_unique_bot_user_id(&mut known_bot_user_ids, configured_bot_user_id);
+    }
+    for bound_bot_user_id in app_state.bot_settings.all_bound_bot_user_ids() {
+        push_unique_bot_user_id(&mut known_bot_user_ids, bound_bot_user_id);
+    }
+    for agent_user_id in app_state.agent_registry.agent_user_ids() {
+        if app_state
+            .agent_registry
+            .get(agent_user_id.as_ref())
+            .is_some_and(|entry| matches!(entry.framework, AgentFramework::Octos | AgentFramework::OctosDirect))
+        {
+            push_unique_bot_user_id(&mut known_bot_user_ids, agent_user_id);
+        }
+    }
+    known_bot_user_ids.sort_by(|lhs, rhs| lhs.as_str().cmp(rhs.as_str()));
+    known_bot_user_ids.dedup_by(|lhs, rhs| lhs.as_str() == rhs.as_str());
+    known_bot_user_ids
+}
+
+/// Picks the dropdown item to preselect: the room's bound bot first,
+/// then the bot configured in Settings, then the first known bot.
+/// Item 0 is the "Custom bot user ID" entry, so known bots are offset by 1.
+fn default_known_bot_selection(
+    room_bound_bots: &[RoomBotBindingState],
+    known_bot_user_ids: &[OwnedUserId],
+    configured_bot_user_id: Option<&UserId>,
+) -> usize {
+    let position_of = |target: &str| {
+        known_bot_user_ids
+            .iter()
+            .position(|known_bot_user_id| known_bot_user_id.as_str() == target)
+    };
+    room_bound_bots
+        .first()
+        .and_then(|binding| position_of(binding.bot_user_id.as_str()))
+        .or_else(|| configured_bot_user_id.and_then(|bot_user_id| position_of(bot_user_id.as_str())))
+        .map_or_else(
+            || if known_bot_user_ids.is_empty() { 0 } else { 1 },
+            |index| index + 1,
+        )
+}
+
+script_mod! {
+    use mod.prelude.widgets.*
+    use mod.widgets.*
+
+    mod.widgets.BotBindingModalLabel = Label {
+        width: Fill
+        height: Fit
+        draw_text +: {
+            text_style: REGULAR_TEXT { font_size: 10.5 }
+            color: #666
+        }
+        text: ""
+    }
+
+    mod.widgets.BotBindingModal = #(BotBindingModal::register_widget(vm)) {
+        width: Fill { max: 1000 }
+        // TODO: i'd like for this height to be Fit with a max of Rel { base: Full, factor: 0.90 },
+        //       but Makepad doesn't allow Fit views with a max to be scrolled.
+        height: Fill // { max: 1400 }
+        margin: 40,
+        align: Align{x: 0.5, y: 0}
+        flow: Down
+        padding: Inset{top: 20, right: 25, bottom: 20, left: 25}
+
+        RoundedView {
+            width: Fill
+            height: Fit
+            align: Align{x: 0.5}
+            flow: Down
+            padding: Inset{top: 28, right: 24, bottom: 20, left: 24}
+            spacing: 18
+
+            show_bg: true
+            draw_bg +: {
+                color: (COLOR_PRIMARY)
+                border_radius: 6.0
+            }
+
+            title := Label {
+                width: Fill
+                height: Fit
+                draw_text +: {
+                    text_style: TITLE_TEXT { font_size: 14 }
+                    color: #000
+                }
+                text: "Manage Room Bots"
+            }
+
+            body := mod.widgets.BotBindingModalLabel {
+                text: ""
+            }
+
+            form := RoundedView {
+                width: Fill
+                height: Fit
+                flow: Down
+                spacing: 12
+                padding: 16
+
+                show_bg: true
+                draw_bg +: {
+                    color: #F5F5F7
+                    border_radius: 6.0
+                }
+
+                current_room_bots_label := mod.widgets.BotBindingModalLabel {
+                    text: "Current Room Bots"
+                }
+
+                current_room_bots_dropdown := DropDownFlat {
+                    width: Fill
+                    height: 40
+                    align: Align{y: 0.5}
+                    padding: Inset{left: 12, top: 11, bottom: 11, right: 30}
+                    draw_text +: {
+                        text_style: REGULAR_TEXT { font_size: 11.5 }
+                        color: #333
+                        color_hover: uniform(#222)
+                        color_focus: uniform(#222)
+                        color_down: uniform(#222)
+                    }
+                    draw_bg +: {
+                        color: uniform(#fff)
+                        color_hover: uniform(#F0F0F2)
+                        color_focus: uniform(#F0F0F2)
+                        color_down: uniform(#E8E8EA)
+                        border_color: uniform(#CCC)
+                        border_color_hover: uniform(#AAA)
+                        border_color_focus: uniform((COLOR_ACTIVE_PRIMARY))
+                        arrow_color: uniform(#888)
+                        arrow_color_hover: uniform(#555)
+                    }
+                    labels: ["No bots currently added"]
+                }
+
+                known_bots_label := mod.widgets.BotBindingModalLabel {
+                    text: "Known Bots"
+                }
+
+                known_bots_dropdown := DropDownFlat {
+                    width: Fill
+                    height: 40
+                    align: Align{y: 0.5}
+                    padding: Inset{left: 12, top: 11, bottom: 11, right: 30}
+                    draw_text +: {
+                        text_style: REGULAR_TEXT { font_size: 11.5 }
+                        color: #333
+                        color_hover: uniform(#222)
+                        color_focus: uniform(#222)
+                        color_down: uniform(#222)
+                    }
+                    draw_bg +: {
+                        color: uniform(#fff)
+                        color_hover: uniform(#F0F0F2)
+                        color_focus: uniform(#F0F0F2)
+                        color_down: uniform(#E8E8EA)
+                        border_color: uniform(#CCC)
+                        border_color_hover: uniform(#AAA)
+                        border_color_focus: uniform((COLOR_ACTIVE_PRIMARY))
+                        arrow_color: uniform(#888)
+                        arrow_color_hover: uniform(#555)
+                    }
+                    labels: ["Custom bot user ID"]
+                }
+
+                user_id_label := mod.widgets.BotBindingModalLabel {
+                    text: "Bot Matrix User ID"
+                }
+
+                user_id_input := RobrixTextInput {
+                    width: Fill
+                    height: Fit
+                    padding: 12
+                    draw_text +: {
+                        text_style: REGULAR_TEXT { font_size: 11.5 }
+                        color: #000
+                    }
+                    empty_text: "@bot_weather:server or bot_weather"
+                }
+
+                remark_label := mod.widgets.BotBindingModalLabel {
+                    text: "Bot Remark"
+                }
+
+                remark_input := RobrixTextInput {
+                    width: Fill
+                    height: Fit
+                    padding: 12
+                    draw_text +: {
+                        text_style: REGULAR_TEXT { font_size: 11.5 }
+                        color: #000
+                    }
+                    empty_text: "What is this bot used for?"
+                }
+
+                remark_controls := View {
+                    width: Fill
+                    height: Fit
+                    flow: Right
+                    align: Align{x: 1.0, y: 0.5}
+
+                    save_remark_button := RobrixNeutralIconButton {
+                        width: 150
+                        align: Align{x: 0.5, y: 0.5}
+                        padding: 10
+                        draw_icon.svg: (ICON_CHECKMARK)
+                        icon_walk: Walk{width: 16, height: 16, margin: Inset{left: -2, right: -1}}
+                        text: "Save Remark"
+                    }
+                }
+            }
+
+            status_label := Label {
+                width: Fill
+                height: Fit
+                draw_text +: {
+                    text_style: REGULAR_TEXT { font_size: 10.5 }
+                    color: #000
+                }
+                text: ""
+            }
+
+            buttons := View {
+                width: Fill
+                height: Fit
+                flow: Right
+                align: Align{x: 1.0, y: 0.5}
+                spacing: 14
+
+                cancel_button := RobrixNeutralIconButton {
+                    width: 100
+                    align: Align{x: 0.5, y: 0.5}
+                    padding: 12
+                    draw_icon.svg: (ICON_FORBIDDEN)
+                    icon_walk: Walk{width: 16, height: 16, margin: Inset{left: -2, right: -1}}
+                    text: "Cancel"
+                }
+
+                unbind_button := RobrixNegativeIconButton {
+                    width: 120
+                    align: Align{x: 0.5, y: 0.5}
+                    padding: 12
+                    draw_icon.svg: (ICON_CLOSE)
+                    icon_walk: Walk{width: 16, height: 16, margin: Inset{left: -2, right: -1}}
+                    text: "Unbind"
+                }
+
+                bind_button := RobrixPositiveIconButton {
+                    width: 120
+                    align: Align{x: 0.5, y: 0.5}
+                    padding: 12
+                    draw_icon.svg: (ICON_ADD_USER)
+                    icon_walk: Walk{width: 16, height: 16, margin: Inset{left: -2, right: -1}}
+                    text: "Bind"
+                }
+            }
+        }
+    }
+}
+
+/// Actions emitted by other widgets to show or hide the `BotBindingModal`.
+#[derive(Clone, Debug)]
+pub enum BotBindingModalAction {
+    /// Open the modal to bind or unbind bots in the given room.
+    Open(RoomNameId),
+    /// Close the modal.
+    Close,
+}
+
+#[derive(Script, ScriptHook, Widget)]
+pub struct BotBindingModal {
+    #[deref]
+    view: View,
+    #[rust]
+    room_name_id: Option<RoomNameId>,
+    #[rust]
+    known_bot_user_ids: Vec<OwnedUserId>,
+    #[rust]
+    room_bound_bots: Vec<RoomBotBindingState>,
+    #[rust]
+    app_language: AppLanguage,
+}
+
+impl Widget for BotBindingModal {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, scope: &mut Scope) {
+        if let Some(app_state) = scope.data.get::<AppState>()
+            && self.app_language != app_state.app_language
+        {
+            self.app_language = app_state.app_language;
+            self.update_static_texts(cx);
+            if let Some(room_name_id) = self.room_name_id.clone() {
+                self.set_title_and_body(cx, &room_name_id);
+                self.update_room_bound_bots_value(cx);
+            }
+        }
+        self.view.handle_event(cx, event, scope);
+        self.widget_match_event(cx, event, scope);
+    }
+
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, walk: Walk) -> DrawStep {
+        self.view.draw_walk(cx, scope, walk)
+    }
+}
+
+impl WidgetMatchEvent for BotBindingModal {
+    fn handle_actions(&mut self, cx: &mut Cx, actions: &Actions, scope: &mut Scope) {
+        let cancel_button = self.view.button(cx, ids!(buttons.cancel_button));
+        let bind_button = self.view.button(cx, ids!(buttons.bind_button));
+        let unbind_button = self.view.button(cx, ids!(buttons.unbind_button));
+        let current_room_bots_dropdown = self.view.drop_down(cx, ids!(form.current_room_bots_dropdown));
+        let known_bots_dropdown = self.view.drop_down(cx, ids!(form.known_bots_dropdown));
+        let user_id_input = self.view.text_input(cx, ids!(form.user_id_input));
+        let remark_input = self.view.text_input(cx, ids!(form.remark_input));
+        let save_remark_button = self.view.button(cx, ids!(form.remark_controls.save_remark_button));
+        let mut status_label = self.view.label(cx, ids!(status_label));
+
+        let cancel_clicked = cancel_button.clicked(actions);
+        if cancel_clicked
+            || actions
+                .iter()
+                .any(|a| matches!(a.downcast_ref(), Some(ModalAction::Dismissed)))
+        {
+            if cancel_clicked {
+                cx.action(BotBindingModalAction::Close);
+            }
+            return;
+        }
+
+        if known_bots_dropdown.changed(actions).is_some() {
+            let selected_item = known_bots_dropdown.selected_item();
+            if selected_item == 0 {
+                user_id_input.set_text(cx, "");
+                remark_input.set_text(cx, "");
+                user_id_input.set_key_focus(cx);
+            } else if let Some(bot_user_id) = self.known_bot_user_ids.get(selected_item - 1) {
+                user_id_input.set_text(cx, bot_user_id.as_str());
+                remark_input.set_text(
+                    cx,
+                    self.room_bot_remark(bot_user_id.as_ref()).unwrap_or(""),
+                );
+            }
+            status_label.set_text(cx, "");
+            self.view.redraw(cx);
+        }
+
+        if current_room_bots_dropdown.changed(actions).is_some() {
+            let selected_item = current_room_bots_dropdown.selected_item();
+            if let Some(room_bot_binding) = selected_item
+                .checked_sub(1)
+                .and_then(|index| self.room_bound_bots.get(index))
+            {
+                user_id_input.set_text(cx, room_bot_binding.bot_user_id.as_str());
+                remark_input.set_text(cx, &room_bot_binding.remark);
+                known_bots_dropdown.set_selected_item(
+                    cx,
+                    self.known_bot_user_ids
+                        .iter()
+                        .position(|bot_user_id| bot_user_id.as_str() == room_bot_binding.bot_user_id.as_str())
+                        .map_or(0, |index| index + 1),
+                );
+            }
+            status_label.set_text(cx, "");
+            self.view.redraw(cx);
+        }
+
+        if save_remark_button.clicked(actions) || remark_input.returned(actions).is_some() {
+            let Some(room_name_id) = self.room_name_id.as_ref() else { return };
+            let raw_user_id = user_id_input.text();
+            let raw_user_id = raw_user_id.trim();
+            if raw_user_id.is_empty() {
+                script_apply_eval!(cx, status_label, {
+                    text: #(tr_key(self.app_language, "bot_binding_modal.status.enter_user_id")),
+                    draw_text +: {
+                        color: mod.widgets.COLOR_FG_DANGER_RED
+                    }
+                });
+                user_id_input.set_key_focus(cx);
+                self.view.redraw(cx);
+                return;
+            }
+
+            let full_user_id = if raw_user_id.starts_with('@') || raw_user_id.contains(':') {
+                if raw_user_id.starts_with('@') {
+                    raw_user_id.to_owned()
+                } else {
+                    format!("@{raw_user_id}")
+                }
+            } else {
+                let Some(current_user_id) = current_user_id() else {
+                    script_apply_eval!(cx, status_label, {
+                        text: #(tr_key(self.app_language, "bot_binding_modal.status.current_user_unavailable")),
+                        draw_text +: {
+                            color: mod.widgets.COLOR_FG_DANGER_RED
+                        }
+                    });
+                    self.view.redraw(cx);
+                    return;
+                };
+                format!("@{raw_user_id}:{}", current_user_id.server_name())
+            };
+            let Ok(bot_user_id) = UserId::parse(&full_user_id).map(|user_id| user_id.to_owned()) else {
+                let status = tr_fmt(
+                    self.app_language,
+                    "bot_binding_modal.status.invalid_user_id",
+                    [("full_user_id", full_user_id.as_str())].as_ref(),
+                );
+                script_apply_eval!(cx, status_label, {
+                    text: #(status),
+                    draw_text +: {
+                        color: mod.widgets.COLOR_FG_DANGER_RED
+                    }
+                });
+                user_id_input.set_key_focus(cx);
+                self.view.redraw(cx);
+                return;
+            };
+            let remark = remark_input.text().trim().to_string();
+            let Some(app_state) = scope.data.get_mut::<AppState>() else {
+                script_apply_eval!(cx, status_label, {
+                    text: #(tr_key(self.app_language, "bot_binding_modal.status.state_unavailable")),
+                    draw_text +: {
+                        color: mod.widgets.COLOR_FG_DANGER_RED
+                    }
+                });
+                self.view.redraw(cx);
+                return;
+            };
+            if app_state
+                .bot_settings
+                .set_room_bot_remark(room_name_id.room_id(), bot_user_id.as_ref(), remark)
+            {
+                self.room_bound_bots = app_state.bot_settings.room_bindings_for(room_name_id.room_id());
+                self.update_room_bound_bots_value(cx);
+                let current_room_bots_dropdown = self.view.drop_down(cx, ids!(form.current_room_bots_dropdown));
+                current_room_bots_dropdown.set_selected_item(
+                    cx,
+                    self.room_bound_bots
+                        .iter()
+                        .position(|binding| binding.bot_user_id.as_str() == bot_user_id.as_str())
+                        .map_or(0, |index| index + 1),
+                );
+                persist_bot_settings(app_state);
+                script_apply_eval!(cx, status_label, {
+                    text: #(tr_key(self.app_language, "bot_binding_modal.status.remark_saved")),
+                    draw_text +: {
+                        color: mod.widgets.COLOR_FG_ACCEPT_GREEN
+                    }
+                });
+            } else {
+                script_apply_eval!(cx, status_label, {
+                    text: #(tr_key(self.app_language, "bot_binding_modal.status.remark_requires_added_bot")),
+                    draw_text +: {
+                        color: mod.widgets.COLOR_FG_DANGER_RED
+                    }
+                });
+            }
+            self.view.redraw(cx);
+            return;
+        }
+
+        let mut handle_submit = |bound: bool| {
+            let Some(room_name_id) = self.room_name_id.as_ref() else { return };
+
+            let raw_user_id = user_id_input.text();
+            let raw_user_id = raw_user_id.trim();
+            if raw_user_id.is_empty() {
+                script_apply_eval!(cx, status_label, {
+                    text: #(tr_key(self.app_language, "bot_binding_modal.status.enter_user_id")),
+                    draw_text +: {
+                        color: mod.widgets.COLOR_FG_DANGER_RED
+                    }
+                });
+                user_id_input.set_key_focus(cx);
+                self.view.redraw(cx);
+                return;
+            }
+
+            let full_user_id = if raw_user_id.starts_with('@') || raw_user_id.contains(':') {
+                if raw_user_id.starts_with('@') {
+                    raw_user_id.to_owned()
+                } else {
+                    format!("@{raw_user_id}")
+                }
+            } else {
+                let Some(current_user_id) = current_user_id() else {
+                    script_apply_eval!(cx, status_label, {
+                        text: #(tr_key(self.app_language, "bot_binding_modal.status.current_user_unavailable")),
+                        draw_text +: {
+                            color: mod.widgets.COLOR_FG_DANGER_RED
+                        }
+                    });
+                    self.view.redraw(cx);
+                    return;
+                };
+                format!("@{raw_user_id}:{}", current_user_id.server_name())
+            };
+
+            let Ok(bot_user_id) = UserId::parse(&full_user_id).map(|user_id| user_id.to_owned()) else {
+                let status = tr_fmt(
+                    self.app_language,
+                    "bot_binding_modal.status.invalid_user_id",
+                    [("full_user_id", full_user_id.as_str())].as_ref(),
+                );
+                script_apply_eval!(cx, status_label, {
+                    text: #(status),
+                    draw_text +: {
+                        color: mod.widgets.COLOR_FG_DANGER_RED
+                    }
+                });
+                user_id_input.set_key_focus(cx);
+                self.view.redraw(cx);
+                return;
+            };
+
+            submit_async_request(MatrixRequest::SetRoomBotBinding {
+                room_id: room_name_id.room_id().clone(),
+                bound,
+                bot_user_id: bot_user_id.clone(),
+            });
+            enqueue_popup_notification(
+                if bound {
+                    tr_fmt(
+                        self.app_language,
+                        "bot_binding_modal.popup.inviting",
+                        [("bot_user_id", bot_user_id.as_str())].as_ref(),
+                    )
+                } else {
+                    tr_fmt(
+                        self.app_language,
+                        "bot_binding_modal.popup.removing",
+                        [("bot_user_id", bot_user_id.as_str())].as_ref(),
+                    )
+                },
+                PopupKind::Info,
+                Some(4.0),
+            );
+            cx.action(BotBindingModalAction::Close);
+        };
+
+        if bind_button.clicked(actions) || user_id_input.returned(actions).is_some() {
+            handle_submit(true);
+            return;
+        }
+        if unbind_button.clicked(actions) {
+            handle_submit(false);
+        }
+    }
+}
+
+impl BotBindingModal {
+    fn set_title_and_body(&mut self, cx: &mut Cx, room_name_id: &RoomNameId) {
+        self.view
+            .label(cx, ids!(title))
+            .set_text(cx, tr_key(self.app_language, "bot_binding_modal.title"));
+        self.view
+            .label(cx, ids!(body))
+            .set_text(
+                cx,
+                &tr_fmt(
+                    self.app_language,
+                    "bot_binding_modal.body",
+                    [("room_name", room_name_id.to_string().as_str())].as_ref(),
+                ),
+            );
+    }
+
+    fn known_bot_labels(&self) -> Vec<String> {
+        let mut labels = Vec::with_capacity(self.known_bot_user_ids.len() + 1);
+        labels.push(tr_key(self.app_language, "bot_binding_modal.dropdown.custom").to_string());
+        labels.extend(self.known_bot_user_ids.iter().map(ToString::to_string));
+        labels
+    }
+
+    fn room_bot_remark(&self, bot_user_id: &UserId) -> Option<&str> {
+        self.room_bound_bots
+            .iter()
+            .find(|binding| binding.bot_user_id.as_str() == bot_user_id.as_str())
+            .map(|binding| binding.remark.as_str())
+    }
+
+    fn room_bound_bot_labels(&self) -> Vec<String> {
+        if self.room_bound_bots.is_empty() {
+            return vec![
+                tr_key(self.app_language, "bot_binding_modal.hint.current_bound_none").to_string()
+            ];
+        }
+        self.room_bound_bots
+            .iter()
+            .map(|binding| {
+                let remark = binding.remark.trim();
+                if remark.is_empty() {
+                    binding.bot_user_id.as_str().to_string()
+                } else {
+                    format!("{} ({})", binding.bot_user_id.as_str(), remark)
+                }
+            })
+            .collect()
+    }
+
+    fn update_room_bound_bots_value(&mut self, cx: &mut Cx) {
+        self.view
+            .drop_down(cx, ids!(form.current_room_bots_dropdown))
+            .set_labels(cx, self.room_bound_bot_labels());
+    }
+
+    fn update_static_texts(&mut self, cx: &mut Cx) {
+        self.view
+            .label(cx, ids!(form.current_room_bots_label))
+            .set_text(cx, tr_key(self.app_language, "bot_binding_modal.label.current_room_bots"));
+        self.view
+            .label(cx, ids!(form.known_bots_label))
+            .set_text(cx, tr_key(self.app_language, "bot_binding_modal.label.known_bots"));
+        self.view
+            .label(cx, ids!(form.user_id_label))
+            .set_text(cx, tr_key(self.app_language, "bot_binding_modal.label.user_id"));
+        self.view
+            .label(cx, ids!(form.remark_label))
+            .set_text(cx, tr_key(self.app_language, "bot_binding_modal.label.remark"));
+        self.view
+            .text_input(cx, ids!(form.user_id_input))
+            .set_empty_text(
+                cx,
+                tr_key(self.app_language, "bot_binding_modal.input.placeholder").to_string(),
+            );
+        self.view
+            .text_input(cx, ids!(form.remark_input))
+            .set_empty_text(
+                cx,
+                tr_key(self.app_language, "bot_binding_modal.input.remark_placeholder").to_string(),
+            );
+        self.view
+            .button(cx, ids!(form.remark_controls.save_remark_button))
+            .set_text(cx, tr_key(self.app_language, "bot_binding_modal.button.save_remark"));
+        self.view
+            .button(cx, ids!(buttons.cancel_button))
+            .set_text(cx, tr_key(self.app_language, "bot_binding_modal.button.cancel"));
+        self.view
+            .button(cx, ids!(buttons.bind_button))
+            .set_text(cx, tr_key(self.app_language, "bot_binding_modal.button.bind"));
+        self.view
+            .button(cx, ids!(buttons.unbind_button))
+            .set_text(cx, tr_key(self.app_language, "bot_binding_modal.button.unbind"));
+        self.view
+            .drop_down(cx, ids!(form.known_bots_dropdown))
+            .set_labels(cx, self.known_bot_labels());
+    }
+
+    pub fn show(
+        &mut self,
+        cx: &mut Cx,
+        room_name_id: RoomNameId,
+        app_state: &AppState,
+        app_language: AppLanguage,
+    ) {
+        self.app_language = app_language;
+        self.room_bound_bots = app_state.bot_settings.room_bindings_for(room_name_id.room_id());
+        self.known_bot_user_ids = bot_binding_known_bot_user_ids(app_state);
+        self.room_name_id = Some(room_name_id.clone());
+
+        self.set_title_and_body(cx, &room_name_id);
+        self.update_static_texts(cx);
+        self.update_room_bound_bots_value(cx);
+
+        let current_room_bots_dropdown = self.view.drop_down(cx, ids!(form.current_room_bots_dropdown));
+        let known_bots_dropdown = self.view.drop_down(cx, ids!(form.known_bots_dropdown));
+        let user_id_input = self.view.text_input(cx, ids!(form.user_id_input));
+        let remark_input = self.view.text_input(cx, ids!(form.remark_input));
+        let selected_item = default_known_bot_selection(
+            &self.room_bound_bots,
+            &self.known_bot_user_ids,
+            configured_bot_user_id(app_state).as_deref(),
+        );
+        current_room_bots_dropdown.set_selected_item(
+            cx,
+            if self.room_bound_bots.is_empty() { 0 } else { 1 },
+        );
+        known_bots_dropdown.set_selected_item(cx, selected_item);
+        if let Some(bound_bot) = self.room_bound_bots.first() {
+            user_id_input.set_text(cx, bound_bot.bot_user_id.as_str());
+            remark_input.set_text(cx, &bound_bot.remark);
+        } else if let Some(bot_user_id) = selected_item
+            .checked_sub(1)
+            .and_then(|index| self.known_bot_user_ids.get(index))
+        {
+            user_id_input.set_text(cx, bot_user_id.as_str());
+            remark_input.set_text(cx, "");
+        } else {
+            user_id_input.set_text(cx, "");
+            remark_input.set_text(cx, "");
+        }
+        user_id_input.set_is_read_only(cx, false);
+        user_id_input.set_key_focus(cx);
+        self.view.label(cx, ids!(status_label)).set_text(cx, "");
+        self.view.button(cx, ids!(buttons.bind_button)).set_enabled(cx, true);
+        self.view.button(cx, ids!(buttons.unbind_button)).set_enabled(cx, true);
+        self.view.button(cx, ids!(buttons.cancel_button)).set_enabled(cx, true);
+        self.view.button(cx, ids!(form.remark_controls.save_remark_button)).set_enabled(cx, true);
+        self.view.button(cx, ids!(buttons.bind_button)).reset_hover(cx);
+        self.view.button(cx, ids!(buttons.unbind_button)).reset_hover(cx);
+        self.view.button(cx, ids!(buttons.cancel_button)).reset_hover(cx);
+        self.view.button(cx, ids!(form.remark_controls.save_remark_button)).reset_hover(cx);
+        self.view.redraw(cx);
+    }
+}
+
+impl BotBindingModalRef {
+    pub fn show(
+        &self,
+        cx: &mut Cx,
+        room_name_id: RoomNameId,
+        app_state: &AppState,
+        app_language: AppLanguage,
+    ) {
+        let Some(mut inner) = self.borrow_mut() else { return };
+        inner.show(cx, room_name_id, app_state, app_language);
+    }
+}
+
+fn persist_bot_settings(app_state: &AppState) {
+    if let Some(user_id) = current_user_id() {
+        if let Err(e) = persistence::save_app_state(app_state.clone(), user_id) {
+            error!("Failed to persist bot settings. Error: {e}");
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{bot_binding_known_bot_user_ids, default_known_bot_selection};
+    use crate::app::{AgentEntry, AgentFramework, AppState};
+    use matrix_sdk::ruma::OwnedUserId;
+
+    #[test]
+    fn room_bot_picker_includes_registered_octos_agents() {
+        let mut app_state = AppState::default();
+        let octos_id: OwnedUserId = "@octos_mac:matrix.palpo.im".try_into().unwrap();
+
+        app_state.agent_registry.register(
+            octos_id.clone(),
+            AgentEntry {
+                framework: AgentFramework::Octos,
+                ..Default::default()
+            },
+        );
+
+        let known_bots = bot_binding_known_bot_user_ids(&app_state);
+
+        assert!(
+            known_bots.iter().any(|user_id| user_id.as_str() == octos_id.as_str()),
+            "room bot picker should offer globally registered Octos agents without requiring manual re-entry",
+        );
+    }
+
+    #[test]
+    fn room_bot_picker_includes_registered_octos_direct_agents() {
+        let mut app_state = AppState::default();
+        let octos_direct_id: OwnedUserId = "@myagent:matrix.palpo.im".try_into().unwrap();
+
+        app_state.agent_registry.register(
+            octos_direct_id.clone(),
+            AgentEntry {
+                framework: AgentFramework::OctosDirect,
+                ..Default::default()
+            },
+        );
+
+        let known_bots = bot_binding_known_bot_user_ids(&app_state);
+
+        assert!(
+            known_bots.iter().any(|user_id| user_id.as_str() == octos_direct_id.as_str()),
+            "room bot picker should offer OctosDirect agents registered through Agent Lab",
+        );
+        assert!(
+            !app_state.bot_settings.known_bot_user_ids.contains(&octos_direct_id),
+            "OctosDirect recognition should come from AgentRegistry, not AppService known-bot persistence",
+        );
+    }
+
+    #[test]
+    fn room_bot_picker_includes_configured_botfather_user_id() {
+        let mut app_state = AppState::default();
+        let octos_id: OwnedUserId = "@octos_mac:matrix.palpo.im".try_into().unwrap();
+        app_state.bot_settings.enabled = true;
+        app_state.bot_settings.botfather_user_id = octos_id.as_str().to_string();
+
+        let known_bots = bot_binding_known_bot_user_ids(&app_state);
+
+        assert!(
+            known_bots.iter().any(|user_id| user_id.as_str() == octos_id.as_str()),
+            "room bot picker should offer the configured BotFather user ID even before a room binding exists",
+        );
+    }
+
+    #[test]
+    fn room_bot_picker_ignores_malformed_configured_botfather_user_id() {
+        let mut app_state = AppState::default();
+        app_state.bot_settings.enabled = true;
+        app_state.bot_settings.botfather_user_id = "localhost:8787".to_string();
+
+        let known_bots = bot_binding_known_bot_user_ids(&app_state);
+
+        assert!(
+            known_bots.is_empty(),
+            "service address fragments in Settings must not become Known Bot candidates",
+        );
+    }
+
+    #[test]
+    fn room_bot_picker_defaults_to_first_registered_bot() {
+        let octos_id: OwnedUserId = "@octos_mac:matrix.palpo.im".try_into().unwrap();
+        let known_bots = vec![octos_id];
+
+        assert_eq!(
+            default_known_bot_selection(&[], &known_bots, None),
+            1,
+            "when a room has no bot binding but registered bots exist, Manage Bot should preselect a bot instead of Custom bot user ID",
+        );
+    }
+
+    #[test]
+    fn room_bot_picker_skips_placeholder_bot_when_botfather_field_is_empty() {
+        let mut app_state = AppState::default();
+        app_state.bot_settings.enabled = true;
+        app_state.bot_settings.botfather_user_id = String::new();
+
+        let known_bots = bot_binding_known_bot_user_ids(&app_state);
+
+        assert!(
+            !known_bots.iter().any(|user_id| user_id.localpart() == "bot"),
+            "the @bot:homeserver placeholder fallback must not appear as a Known Bot when no BotFather ID is configured",
+        );
+    }
+
+    #[test]
+    fn room_bot_picker_prefers_configured_bot_over_alphabetical_order() {
+        let alphabetically_first: OwnedUserId = "@aardvark_bot:example.org".try_into().unwrap();
+        let configured: OwnedUserId = "@octos_mac:matrix.palpo.im".try_into().unwrap();
+        let known_bots = vec![alphabetically_first, configured.clone()];
+
+        assert_eq!(
+            default_known_bot_selection(&[], &known_bots, Some(configured.as_ref())),
+            2,
+            "when a room has no bot binding, the bot configured in Settings should be preselected over the alphabetically first bot",
+        );
+    }
+
+    #[test]
+    fn room_bot_picker_prefers_bound_bot_over_configured_bot() {
+        use crate::app::RoomBotBindingState;
+        let bound: OwnedUserId = "@aardvark_bot:example.org".try_into().unwrap();
+        let configured: OwnedUserId = "@octos_mac:matrix.palpo.im".try_into().unwrap();
+        let known_bots = vec![bound.clone(), configured.clone()];
+        let bindings = vec![RoomBotBindingState {
+            room_id: "!room:example.org".try_into().unwrap(),
+            bot_user_id: bound,
+            remark: String::new(),
+        }];
+
+        assert_eq!(
+            default_known_bot_selection(&bindings, &known_bots, Some(configured.as_ref())),
+            1,
+            "an existing room binding must win over the globally configured bot",
+        );
+    }
+}

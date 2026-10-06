@@ -1,0 +1,1305 @@
+{
+  "schema_version": 1,
+  "reference_sha256": "a502c455cf679228b57e9de67c91c563b0129804df9e052c17773cc427915a2c",
+  "tree": {
+    "bg": 4278651148,
+    "c": [
+      {
+        "color": 4294243831,
+        "font_src": "self:resources/ux/Inter-700.ttf",
+        "h": 40.800000000000004,
+        "id": "heading",
+        "line_height": 40.800000000000004,
+        "size": 30.0,
+        "t": "text",
+        "text": "Business News",
+        "variant": "single_line",
+        "w": 316.0,
+        "weight": 700,
+        "x": 20.0,
+        "y": 30.0
+      },
+      {
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 13.600000000000001,
+        "id": "data_status",
+        "line_height": 13.600000000000001,
+        "size": 10.0,
+        "t": "text",
+        "text": "Preview · Fictional prices & news",
+        "variant": "single_line",
+        "w": 354.0,
+        "weight": 400,
+        "x": 24.0,
+        "y": 75.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 36.0,
+            "id": "tab_settings_control",
+            "t": "button",
+            "w": 36.0,
+            "x": 358.0,
+            "y": 28.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4278879487,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 17.68,
+            "id": "tab_settings_label",
+            "line_height": 17.68,
+            "size": 13.0,
+            "t": "text",
+            "text": "",
+            "variant": "single_line",
+            "w": 28.0,
+            "weight": 400,
+            "x": 362.0,
+            "y": 37.0
+          }
+        ],
+        "h": 36.0,
+        "id": "tab_settings",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 36.0,
+        "x": 358.0,
+        "y": 28.0
+      },
+      {
+        "alignx": 0.5,
+        "color": 4278879487,
+        "font_src": "makepad_widgets:resources/fa-solid-900.ttf",
+        "h": 24.48,
+        "id": "settings_glyph",
+        "line_height": 24.48,
+        "size": 18.0,
+        "t": "text",
+        "text": "",
+        "variant": "single_line",
+        "w": 22.0,
+        "weight": 900,
+        "x": 365.0,
+        "y": 36.0
+      },
+      {
+        "c": [
+          {
+            "c": [
+              {
+                "c": [
+                  {
+                    "enabled": true,
+                    "h": 28.0,
+                    "id": "region_0_control",
+                    "t": "button",
+                    "w": 90.0,
+                    "x": 20.0,
+                    "y": 122.0
+                  },
+                  {
+                    "bg": 4278879487,
+                    "c": [],
+                    "h": 28.0,
+                    "id": "region_0_bg",
+                    "radius": 7,
+                    "t": "stack",
+                    "variant": "surface",
+                    "w": 90.0,
+                    "x": 20.0,
+                    "y": 122.0
+                  },
+                  {
+                    "alignx": 0.5,
+                    "color": 4294243831,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 17.68,
+                    "id": "region_0_label",
+                    "line_height": 17.68,
+                    "size": 13.0,
+                    "t": "text",
+                    "text": "All",
+                    "variant": "single_line",
+                    "w": 82.0,
+                    "weight": 400,
+                    "x": 24.0,
+                    "y": 127.0
+                  }
+                ],
+                "h": 28.0,
+                "id": "region_0",
+                "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                "t": "stack",
+                "w": 90.0,
+                "x": 20.0,
+                "y": 122.0
+              },
+              {
+                "c": [
+                  {
+                    "enabled": true,
+                    "h": 28.0,
+                    "id": "region_1_control",
+                    "t": "button",
+                    "w": 90.0,
+                    "x": 113.0,
+                    "y": 122.0
+                  },
+                  {
+                    "bg": 4279506975,
+                    "c": [],
+                    "h": 28.0,
+                    "id": "region_1_bg",
+                    "radius": 7,
+                    "t": "stack",
+                    "variant": "surface",
+                    "w": 90.0,
+                    "x": 113.0,
+                    "y": 122.0
+                  },
+                  {
+                    "alignx": 0.5,
+                    "color": 4287797928,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 17.68,
+                    "id": "region_1_label",
+                    "line_height": 17.68,
+                    "size": 13.0,
+                    "t": "text",
+                    "text": "US",
+                    "variant": "single_line",
+                    "w": 82.0,
+                    "weight": 400,
+                    "x": 117.0,
+                    "y": 127.0
+                  }
+                ],
+                "h": 28.0,
+                "id": "region_1",
+                "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                "t": "stack",
+                "w": 90.0,
+                "x": 113.0,
+                "y": 122.0
+              },
+              {
+                "c": [
+                  {
+                    "enabled": true,
+                    "h": 28.0,
+                    "id": "region_2_control",
+                    "t": "button",
+                    "w": 90.0,
+                    "x": 206.0,
+                    "y": 122.0
+                  },
+                  {
+                    "bg": 4279506975,
+                    "c": [],
+                    "h": 28.0,
+                    "id": "region_2_bg",
+                    "radius": 7,
+                    "t": "stack",
+                    "variant": "surface",
+                    "w": 90.0,
+                    "x": 206.0,
+                    "y": 122.0
+                  },
+                  {
+                    "alignx": 0.5,
+                    "color": 4287797928,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 17.68,
+                    "id": "region_2_label",
+                    "line_height": 17.68,
+                    "size": 13.0,
+                    "t": "text",
+                    "text": "HK",
+                    "variant": "single_line",
+                    "w": 82.0,
+                    "weight": 400,
+                    "x": 210.0,
+                    "y": 127.0
+                  }
+                ],
+                "h": 28.0,
+                "id": "region_2",
+                "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                "t": "stack",
+                "w": 90.0,
+                "x": 206.0,
+                "y": 122.0
+              },
+              {
+                "c": [
+                  {
+                    "enabled": true,
+                    "h": 28.0,
+                    "id": "region_3_control",
+                    "t": "button",
+                    "w": 90.0,
+                    "x": 299.0,
+                    "y": 122.0
+                  },
+                  {
+                    "bg": 4279506975,
+                    "c": [],
+                    "h": 28.0,
+                    "id": "region_3_bg",
+                    "radius": 7,
+                    "t": "stack",
+                    "variant": "surface",
+                    "w": 90.0,
+                    "x": 299.0,
+                    "y": 122.0
+                  },
+                  {
+                    "alignx": 0.5,
+                    "color": 4287797928,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 17.68,
+                    "id": "region_3_label",
+                    "line_height": 17.68,
+                    "size": 13.0,
+                    "t": "text",
+                    "text": "CN",
+                    "variant": "single_line",
+                    "w": 82.0,
+                    "weight": 400,
+                    "x": 303.0,
+                    "y": 127.0
+                  }
+                ],
+                "h": 28.0,
+                "id": "region_3",
+                "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                "t": "stack",
+                "w": 90.0,
+                "x": 299.0,
+                "y": 122.0
+              },
+              {
+                "bg": 4278651148,
+                "c": [
+                  {
+                    "c": [
+                      {
+                        "enabled": true,
+                        "h": 105.0,
+                        "id": "story_0_control",
+                        "t": "button",
+                        "w": 366.0,
+                        "x": 20.0,
+                        "y": 178.0
+                      },
+                      {
+                        "alignx": 0.5,
+                        "color": 4278879487,
+                        "font_src": "self:resources/ux/Inter-400.ttf",
+                        "h": 17.68,
+                        "id": "story_0_label",
+                        "line_height": 17.68,
+                        "size": 13.0,
+                        "t": "text",
+                        "text": "",
+                        "variant": "single_line",
+                        "w": 358.0,
+                        "weight": 400,
+                        "x": 24.0,
+                        "y": 221.5
+                      }
+                    ],
+                    "h": 105.0,
+                    "id": "story_0",
+                    "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                    "t": "stack",
+                    "w": 366.0,
+                    "x": 20.0,
+                    "y": 178.0
+                  },
+                  {
+                    "color": 4287797928,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 14.96,
+                    "id": "story_0_source",
+                    "line_height": 14.96,
+                    "size": 11.0,
+                    "t": "text",
+                    "text": "Preview Journal · US",
+                    "variant": "single_line",
+                    "w": 342.0,
+                    "weight": 400,
+                    "x": 24.0,
+                    "y": 186.0
+                  },
+                  {
+                    "color": 4294243831,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 21.76,
+                    "id": "story_0_title_0",
+                    "line_height": 21.76,
+                    "size": 16.0,
+                    "t": "text",
+                    "text": "Three markets, one watchlist",
+                    "variant": "single_line",
+                    "w": 300.0,
+                    "weight": 400,
+                    "x": 24.0,
+                    "y": 209.0
+                  },
+                  {
+                    "c": [
+                      {
+                        "enabled": true,
+                        "h": 40.0,
+                        "id": "save_0_control",
+                        "t": "button",
+                        "w": 42.0,
+                        "x": 338.0,
+                        "y": 219.0
+                      },
+                      {
+                        "alignx": 0.5,
+                        "color": 4278879487,
+                        "font_src": "self:resources/ux/Inter-400.ttf",
+                        "h": 17.68,
+                        "id": "save_0_label",
+                        "line_height": 17.68,
+                        "size": 13.0,
+                        "t": "text",
+                        "text": "☆",
+                        "variant": "single_line",
+                        "w": 34.0,
+                        "weight": 400,
+                        "x": 342.0,
+                        "y": 230.0
+                      }
+                    ],
+                    "h": 40.0,
+                    "id": "save_0",
+                    "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                    "t": "stack",
+                    "w": 42.0,
+                    "x": 338.0,
+                    "y": 219.0
+                  },
+                  {
+                    "bg": 4279506975,
+                    "c": [],
+                    "h": 0.5,
+                    "id": "story_0_rule",
+                    "radius": 12,
+                    "t": "stack",
+                    "variant": "surface",
+                    "w": 356.0,
+                    "x": 24.0,
+                    "y": 281.0
+                  },
+                  {
+                    "c": [
+                      {
+                        "enabled": true,
+                        "h": 105.0,
+                        "id": "story_1_control",
+                        "t": "button",
+                        "w": 366.0,
+                        "x": 20.0,
+                        "y": 286.0
+                      },
+                      {
+                        "alignx": 0.5,
+                        "color": 4278879487,
+                        "font_src": "self:resources/ux/Inter-400.ttf",
+                        "h": 17.68,
+                        "id": "story_1_label",
+                        "line_height": 17.68,
+                        "size": 13.0,
+                        "t": "text",
+                        "text": "",
+                        "variant": "single_line",
+                        "w": 358.0,
+                        "weight": 400,
+                        "x": 24.0,
+                        "y": 329.5
+                      }
+                    ],
+                    "h": 105.0,
+                    "id": "story_1",
+                    "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                    "t": "stack",
+                    "w": 366.0,
+                    "x": 20.0,
+                    "y": 286.0
+                  },
+                  {
+                    "color": 4287797928,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 14.96,
+                    "id": "story_1_source",
+                    "line_height": 14.96,
+                    "size": 11.0,
+                    "t": "text",
+                    "text": "Preview Journal · US",
+                    "variant": "single_line",
+                    "w": 342.0,
+                    "weight": 400,
+                    "x": 24.0,
+                    "y": 294.0
+                  },
+                  {
+                    "color": 4294243831,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 21.76,
+                    "id": "story_1_title_0",
+                    "line_height": 21.76,
+                    "size": 16.0,
+                    "t": "text",
+                    "text": "Apple supplier outlook in focus",
+                    "variant": "single_line",
+                    "w": 300.0,
+                    "weight": 400,
+                    "x": 24.0,
+                    "y": 317.0
+                  },
+                  {
+                    "c": [
+                      {
+                        "enabled": true,
+                        "h": 40.0,
+                        "id": "save_1_control",
+                        "t": "button",
+                        "w": 42.0,
+                        "x": 338.0,
+                        "y": 327.0
+                      },
+                      {
+                        "alignx": 0.5,
+                        "color": 4278879487,
+                        "font_src": "self:resources/ux/Inter-400.ttf",
+                        "h": 17.68,
+                        "id": "save_1_label",
+                        "line_height": 17.68,
+                        "size": 13.0,
+                        "t": "text",
+                        "text": "☆",
+                        "variant": "single_line",
+                        "w": 34.0,
+                        "weight": 400,
+                        "x": 342.0,
+                        "y": 338.0
+                      }
+                    ],
+                    "h": 40.0,
+                    "id": "save_1",
+                    "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                    "t": "stack",
+                    "w": 42.0,
+                    "x": 338.0,
+                    "y": 327.0
+                  },
+                  {
+                    "bg": 4279506975,
+                    "c": [],
+                    "h": 0.5,
+                    "id": "story_1_rule",
+                    "radius": 12,
+                    "t": "stack",
+                    "variant": "surface",
+                    "w": 356.0,
+                    "x": 24.0,
+                    "y": 389.0
+                  }
+                ],
+                "h": 216.0,
+                "id": "related_news_card",
+                "radius": 12,
+                "t": "stack",
+                "variant": "surface",
+                "w": 366.0,
+                "x": 20.0,
+                "y": 178.0
+              },
+              {
+                "c": [
+                  {
+                    "enabled": true,
+                    "h": 105.0,
+                    "id": "story_2_control",
+                    "t": "button",
+                    "w": 366.0,
+                    "x": 20.0,
+                    "y": 394.0
+                  },
+                  {
+                    "alignx": 0.5,
+                    "color": 4278879487,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 17.68,
+                    "id": "story_2_label",
+                    "line_height": 17.68,
+                    "size": 13.0,
+                    "t": "text",
+                    "text": "",
+                    "variant": "single_line",
+                    "w": 358.0,
+                    "weight": 400,
+                    "x": 24.0,
+                    "y": 437.5
+                  }
+                ],
+                "h": 105.0,
+                "id": "story_2",
+                "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                "t": "stack",
+                "w": 366.0,
+                "x": 20.0,
+                "y": 394.0
+              },
+              {
+                "color": 4287797928,
+                "font_src": "self:resources/ux/Inter-400.ttf",
+                "h": 14.96,
+                "id": "story_2_source",
+                "line_height": 14.96,
+                "size": 11.0,
+                "t": "text",
+                "text": "Preview Journal · US",
+                "variant": "single_line",
+                "w": 342.0,
+                "weight": 400,
+                "x": 24.0,
+                "y": 402.0
+              },
+              {
+                "color": 4294243831,
+                "font_src": "self:resources/ux/Inter-400.ttf",
+                "h": 21.76,
+                "id": "story_2_title_0",
+                "line_height": 21.76,
+                "size": 16.0,
+                "t": "text",
+                "text": "What investors are watching this",
+                "variant": "single_line",
+                "w": 300.0,
+                "weight": 400,
+                "x": 24.0,
+                "y": 425.0
+              },
+              {
+                "color": 4294243831,
+                "font_src": "self:resources/ux/Inter-400.ttf",
+                "h": 21.76,
+                "id": "story_2_title_1",
+                "line_height": 21.76,
+                "size": 16.0,
+                "t": "text",
+                "text": "week",
+                "variant": "single_line",
+                "w": 300.0,
+                "weight": 400,
+                "x": 24.0,
+                "y": 449.0
+              },
+              {
+                "c": [
+                  {
+                    "enabled": true,
+                    "h": 40.0,
+                    "id": "save_2_control",
+                    "t": "button",
+                    "w": 42.0,
+                    "x": 338.0,
+                    "y": 435.0
+                  },
+                  {
+                    "alignx": 0.5,
+                    "color": 4278879487,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 17.68,
+                    "id": "save_2_label",
+                    "line_height": 17.68,
+                    "size": 13.0,
+                    "t": "text",
+                    "text": "☆",
+                    "variant": "single_line",
+                    "w": 34.0,
+                    "weight": 400,
+                    "x": 342.0,
+                    "y": 446.0
+                  }
+                ],
+                "h": 40.0,
+                "id": "save_2",
+                "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                "t": "stack",
+                "w": 42.0,
+                "x": 338.0,
+                "y": 435.0
+              },
+              {
+                "bg": 4279506975,
+                "c": [],
+                "h": 0.5,
+                "id": "story_2_rule",
+                "radius": 12,
+                "t": "stack",
+                "variant": "surface",
+                "w": 356.0,
+                "x": 24.0,
+                "y": 497.0
+              },
+              {
+                "c": [
+                  {
+                    "enabled": true,
+                    "h": 105.0,
+                    "id": "story_3_control",
+                    "t": "button",
+                    "w": 366.0,
+                    "x": 20.0,
+                    "y": 502.0
+                  },
+                  {
+                    "alignx": 0.5,
+                    "color": 4278879487,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 17.68,
+                    "id": "story_3_label",
+                    "line_height": 17.68,
+                    "size": 13.0,
+                    "t": "text",
+                    "text": "",
+                    "variant": "single_line",
+                    "w": 358.0,
+                    "weight": 400,
+                    "x": 24.0,
+                    "y": 545.5
+                  }
+                ],
+                "h": 105.0,
+                "id": "story_3",
+                "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                "t": "stack",
+                "w": 366.0,
+                "x": 20.0,
+                "y": 502.0
+              },
+              {
+                "color": 4287797928,
+                "font_src": "self:resources/ux/Inter-400.ttf",
+                "h": 14.96,
+                "id": "story_3_source",
+                "line_height": 14.96,
+                "size": 11.0,
+                "t": "text",
+                "text": "Preview Journal · US",
+                "variant": "single_line",
+                "w": 342.0,
+                "weight": 400,
+                "x": 24.0,
+                "y": 510.0
+              },
+              {
+                "color": 4294243831,
+                "font_src": "self:resources/ux/Inter-400.ttf",
+                "h": 21.76,
+                "id": "story_3_title_0",
+                "line_height": 21.76,
+                "size": 16.0,
+                "t": "text",
+                "text": "A closer look at hardware demand",
+                "variant": "single_line",
+                "w": 300.0,
+                "weight": 400,
+                "x": 24.0,
+                "y": 533.0
+              },
+              {
+                "c": [
+                  {
+                    "enabled": true,
+                    "h": 40.0,
+                    "id": "save_3_control",
+                    "t": "button",
+                    "w": 42.0,
+                    "x": 338.0,
+                    "y": 543.0
+                  },
+                  {
+                    "alignx": 0.5,
+                    "color": 4278879487,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 17.68,
+                    "id": "save_3_label",
+                    "line_height": 17.68,
+                    "size": 13.0,
+                    "t": "text",
+                    "text": "☆",
+                    "variant": "single_line",
+                    "w": 34.0,
+                    "weight": 400,
+                    "x": 342.0,
+                    "y": 554.0
+                  }
+                ],
+                "h": 40.0,
+                "id": "save_3",
+                "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                "t": "stack",
+                "w": 42.0,
+                "x": 338.0,
+                "y": 543.0
+              },
+              {
+                "bg": 4279506975,
+                "c": [],
+                "h": 0.5,
+                "id": "story_3_rule",
+                "radius": 12,
+                "t": "stack",
+                "variant": "surface",
+                "w": 356.0,
+                "x": 24.0,
+                "y": 605.0
+              },
+              {
+                "c": [
+                  {
+                    "enabled": true,
+                    "h": 105.0,
+                    "id": "story_4_control",
+                    "t": "button",
+                    "w": 366.0,
+                    "x": 20.0,
+                    "y": 610.0
+                  },
+                  {
+                    "alignx": 0.5,
+                    "color": 4278879487,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 17.68,
+                    "id": "story_4_label",
+                    "line_height": 17.68,
+                    "size": 13.0,
+                    "t": "text",
+                    "text": "",
+                    "variant": "single_line",
+                    "w": 358.0,
+                    "weight": 400,
+                    "x": 24.0,
+                    "y": 653.5
+                  }
+                ],
+                "h": 105.0,
+                "id": "story_4",
+                "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                "t": "stack",
+                "w": 366.0,
+                "x": 20.0,
+                "y": 610.0
+              },
+              {
+                "color": 4287797928,
+                "font_src": "self:resources/ux/Inter-400.ttf",
+                "h": 14.96,
+                "id": "story_4_source",
+                "line_height": 14.96,
+                "size": 11.0,
+                "t": "text",
+                "text": "Preview Journal · HK",
+                "variant": "single_line",
+                "w": 342.0,
+                "weight": 400,
+                "x": 24.0,
+                "y": 618.0
+              },
+              {
+                "color": 4294243831,
+                "font_src": "self:resources/ux/Inter-400.ttf",
+                "h": 21.76,
+                "id": "story_4_title_0",
+                "line_height": 21.76,
+                "size": 16.0,
+                "t": "text",
+                "text": "观察港股科技板块",
+                "variant": "single_line",
+                "w": 300.0,
+                "weight": 400,
+                "x": 24.0,
+                "y": 641.0
+              },
+              {
+                "c": [
+                  {
+                    "enabled": true,
+                    "h": 40.0,
+                    "id": "save_4_control",
+                    "t": "button",
+                    "w": 42.0,
+                    "x": 338.0,
+                    "y": 651.0
+                  },
+                  {
+                    "alignx": 0.5,
+                    "color": 4278879487,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 17.68,
+                    "id": "save_4_label",
+                    "line_height": 17.68,
+                    "size": 13.0,
+                    "t": "text",
+                    "text": "☆",
+                    "variant": "single_line",
+                    "w": 34.0,
+                    "weight": 400,
+                    "x": 342.0,
+                    "y": 662.0
+                  }
+                ],
+                "h": 40.0,
+                "id": "save_4",
+                "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                "t": "stack",
+                "w": 42.0,
+                "x": 338.0,
+                "y": 651.0
+              },
+              {
+                "bg": 4279506975,
+                "c": [],
+                "h": 0.5,
+                "id": "story_4_rule",
+                "radius": 12,
+                "t": "stack",
+                "variant": "surface",
+                "w": 356.0,
+                "x": 24.0,
+                "y": 713.0
+              },
+              {
+                "c": [
+                  {
+                    "enabled": true,
+                    "h": 105.0,
+                    "id": "story_5_control",
+                    "t": "button",
+                    "w": 366.0,
+                    "x": 20.0,
+                    "y": 718.0
+                  },
+                  {
+                    "alignx": 0.5,
+                    "color": 4278879487,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 17.68,
+                    "id": "story_5_label",
+                    "line_height": 17.68,
+                    "size": 13.0,
+                    "t": "text",
+                    "text": "",
+                    "variant": "single_line",
+                    "w": 358.0,
+                    "weight": 400,
+                    "x": 24.0,
+                    "y": 761.5
+                  }
+                ],
+                "h": 105.0,
+                "id": "story_5",
+                "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                "t": "stack",
+                "w": 366.0,
+                "x": 20.0,
+                "y": 718.0
+              },
+              {
+                "color": 4287797928,
+                "font_src": "self:resources/ux/Inter-400.ttf",
+                "h": 14.96,
+                "id": "story_5_source",
+                "line_height": 14.96,
+                "size": 11.0,
+                "t": "text",
+                "text": "Preview Journal · CN",
+                "variant": "single_line",
+                "w": 342.0,
+                "weight": 400,
+                "x": 24.0,
+                "y": 726.0
+              },
+              {
+                "color": 4294243831,
+                "font_src": "self:resources/ux/Inter-400.ttf",
+                "h": 21.76,
+                "id": "story_5_title_0",
+                "line_height": 21.76,
+                "size": 16.0,
+                "t": "text",
+                "text": "A股公司动态",
+                "variant": "single_line",
+                "w": 300.0,
+                "weight": 400,
+                "x": 24.0,
+                "y": 749.0
+              },
+              {
+                "c": [
+                  {
+                    "enabled": true,
+                    "h": 40.0,
+                    "id": "save_5_control",
+                    "t": "button",
+                    "w": 42.0,
+                    "x": 338.0,
+                    "y": 759.0
+                  },
+                  {
+                    "alignx": 0.5,
+                    "color": 4278879487,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 17.68,
+                    "id": "save_5_label",
+                    "line_height": 17.68,
+                    "size": 13.0,
+                    "t": "text",
+                    "text": "☆",
+                    "variant": "single_line",
+                    "w": 34.0,
+                    "weight": 400,
+                    "x": 342.0,
+                    "y": 770.0
+                  }
+                ],
+                "h": 40.0,
+                "id": "save_5",
+                "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                "t": "stack",
+                "w": 42.0,
+                "x": 338.0,
+                "y": 759.0
+              },
+              {
+                "bg": 4279506975,
+                "c": [],
+                "h": 0.5,
+                "id": "story_5_rule",
+                "radius": 12,
+                "t": "stack",
+                "variant": "surface",
+                "w": 356.0,
+                "x": 24.0,
+                "y": 821.0
+              },
+              {
+                "c": [
+                  {
+                    "enabled": true,
+                    "h": 44.0,
+                    "id": "news_refresh_control",
+                    "t": "button",
+                    "w": 366.0,
+                    "x": 20.0,
+                    "y": 838.0
+                  },
+                  {
+                    "bg": 4279506975,
+                    "c": [],
+                    "h": 44.0,
+                    "id": "news_refresh_bg",
+                    "radius": 7,
+                    "t": "stack",
+                    "variant": "surface",
+                    "w": 366.0,
+                    "x": 20.0,
+                    "y": 838.0
+                  },
+                  {
+                    "alignx": 0.5,
+                    "color": 4278879487,
+                    "font_src": "self:resources/ux/Inter-400.ttf",
+                    "h": 17.68,
+                    "id": "news_refresh_label",
+                    "line_height": 17.68,
+                    "size": 13.0,
+                    "t": "text",
+                    "text": "Refresh news",
+                    "variant": "single_line",
+                    "w": 358.0,
+                    "weight": 400,
+                    "x": 24.0,
+                    "y": 851.0
+                  }
+                ],
+                "h": 44.0,
+                "id": "news_refresh",
+                "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+                "t": "stack",
+                "w": 366.0,
+                "x": 20.0,
+                "y": 838.0
+              }
+            ],
+            "h": 791.0,
+            "id": "body_content",
+            "t": "stack",
+            "w": 406.0,
+            "x": 0.0,
+            "y": 112.0
+          }
+        ],
+        "h": 580.0,
+        "id": "body_scroll",
+        "t": "stack",
+        "variant": "scroll_y",
+        "w": 406.0,
+        "x": 0.0,
+        "y": 112.0
+      },
+      {
+        "bg": 4278651148,
+        "c": [],
+        "h": 72.0,
+        "id": "tab_surface",
+        "radius": 12,
+        "t": "stack",
+        "variant": "surface",
+        "w": 406.0,
+        "x": 0.0,
+        "y": 704.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 54.0,
+            "id": "tab_watchlist_control",
+            "t": "button",
+            "w": 99.0,
+            "x": 2.0,
+            "y": 707.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4287797928,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 12.24,
+            "id": "tab_watchlist_label",
+            "line_height": 12.24,
+            "size": 9.0,
+            "t": "text",
+            "text": "Stocks",
+            "variant": "single_line",
+            "w": 91.0,
+            "weight": 400,
+            "x": 6.0,
+            "y": 744.0
+          }
+        ],
+        "h": 54.0,
+        "id": "tab_watchlist",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 99.0,
+        "x": 2.0,
+        "y": 707.0
+      },
+      {
+        "alignx": 0.5,
+        "color": 4287797928,
+        "font_src": "makepad_widgets:resources/fa-solid-900.ttf",
+        "h": 25.840000000000003,
+        "id": "tab_watchlist_glyph",
+        "line_height": 25.840000000000003,
+        "size": 19.0,
+        "t": "text",
+        "text": "",
+        "variant": "single_line",
+        "w": 23.0,
+        "weight": 900,
+        "x": 40.0,
+        "y": 712.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 54.0,
+            "id": "tab_markets_control",
+            "t": "button",
+            "w": 99.0,
+            "x": 103.0,
+            "y": 707.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4287797928,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 12.24,
+            "id": "tab_markets_label",
+            "line_height": 12.24,
+            "size": 9.0,
+            "t": "text",
+            "text": "Markets",
+            "variant": "single_line",
+            "w": 91.0,
+            "weight": 400,
+            "x": 107.0,
+            "y": 744.0
+          }
+        ],
+        "h": 54.0,
+        "id": "tab_markets",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 99.0,
+        "x": 103.0,
+        "y": 707.0
+      },
+      {
+        "alignx": 0.5,
+        "color": 4287797928,
+        "font_src": "makepad_widgets:resources/fa-solid-900.ttf",
+        "h": 25.840000000000003,
+        "id": "tab_markets_glyph",
+        "line_height": 25.840000000000003,
+        "size": 19.0,
+        "t": "text",
+        "text": "",
+        "variant": "single_line",
+        "w": 23.0,
+        "weight": 900,
+        "x": 141.0,
+        "y": 712.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 54.0,
+            "id": "tab_news_control",
+            "t": "button",
+            "w": 99.0,
+            "x": 204.0,
+            "y": 707.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4278879487,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 12.24,
+            "id": "tab_news_label",
+            "line_height": 12.24,
+            "size": 9.0,
+            "t": "text",
+            "text": "News",
+            "variant": "single_line",
+            "w": 91.0,
+            "weight": 400,
+            "x": 208.0,
+            "y": 744.0
+          }
+        ],
+        "h": 54.0,
+        "id": "tab_news",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 99.0,
+        "x": 204.0,
+        "y": 707.0
+      },
+      {
+        "alignx": 0.5,
+        "color": 4278879487,
+        "font_src": "makepad_widgets:resources/fa-solid-900.ttf",
+        "h": 25.840000000000003,
+        "id": "tab_news_glyph",
+        "line_height": 25.840000000000003,
+        "size": 19.0,
+        "t": "text",
+        "text": "",
+        "variant": "single_line",
+        "w": 23.0,
+        "weight": 900,
+        "x": 242.0,
+        "y": 712.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 54.0,
+            "id": "tab_saved_control",
+            "t": "button",
+            "w": 99.0,
+            "x": 305.0,
+            "y": 707.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4287797928,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 12.24,
+            "id": "tab_saved_label",
+            "line_height": 12.24,
+            "size": 9.0,
+            "t": "text",
+            "text": "Saved",
+            "variant": "single_line",
+            "w": 91.0,
+            "weight": 400,
+            "x": 309.0,
+            "y": 744.0
+          }
+        ],
+        "h": 54.0,
+        "id": "tab_saved",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 99.0,
+        "x": 305.0,
+        "y": 707.0
+      },
+      {
+        "alignx": 0.5,
+        "color": 4287797928,
+        "font_src": "makepad_widgets:resources/fa-solid-900.ttf",
+        "h": 25.840000000000003,
+        "id": "tab_saved_glyph",
+        "line_height": 25.840000000000003,
+        "size": 19.0,
+        "t": "text",
+        "text": "",
+        "variant": "single_line",
+        "w": 23.0,
+        "weight": 900,
+        "x": 343.0,
+        "y": 712.0
+      },
+      {
+        "bg": 4287797928,
+        "c": [],
+        "h": 4.0,
+        "id": "home_indicator",
+        "radius": 12,
+        "t": "stack",
+        "variant": "surface",
+        "w": 116.0,
+        "x": 145.0,
+        "y": 765.0
+      }
+    ],
+    "h": 776.0,
+    "id": "page",
+    "radius": 12,
+    "t": "stack",
+    "variant": "surface",
+    "w": 406.0,
+    "x": 0.0,
+    "y": 0.0
+  },
+  "basis": "Measured atlas panel; hierarchy reflowed onto 406×776. Shared Rust author is the runtime source. This is a layout adaptation, not a pixel-parity claim."
+}

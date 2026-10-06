@@ -1,0 +1,309 @@
+//! A `TextOrImage` view displays either a text label or an image.
+//!
+//! This is useful to display a loading message while waiting for an image to be fetched,
+//! or to display an error message if the image fails to load, etc.
+
+use makepad_widgets::{image_cache::ImageCacheImpl, *};
+use matrix_sdk::ruma::events::room::MediaSource;
+script_mod! {
+    use mod.prelude.widgets.*
+    use mod.widgets.*
+
+    mod.widgets.DEFAULT_IMAGE = crate_resource("self://resources/img/default_image.png")
+
+
+    mod.widgets.TextOrImage = #(TextOrImage::register_widget(vm)) {
+
+        width: Fill, height: Fit,
+        flow: Overlay,
+
+        text_view := SolidView {
+            visible: true,
+            width: Fill, height: Fit,
+            show_bg: true,
+            draw_bg.color: #dddddd
+
+            label := Label {
+                width: Fill, height: Fit,
+                flow: Flow.Right{wrap: true},
+                draw_text +: {
+                    text_style: MESSAGE_TEXT_STYLE { }
+                    color: (MESSAGE_TEXT_COLOR),
+                }
+            }
+        }
+        image_view := View {
+            visible: false,
+            cursor: MouseCursor.Default, // Use `Hand` once we support clicking on the image
+            width: Fill, height: Fit,
+            image := Image {
+                width: Fill, height: Fit,
+                fit: ImageFit.Smallest,
+            }
+        }
+        default_image_view := View {
+            visible: false,
+            cursor: MouseCursor.Default, // Use `Hand` once we support clicking on the image
+            width: Fill, height: Fit,
+            image := Image {
+                width: Fill, height: Fit,
+                fit: ImageFit.Smallest,
+                src: (mod.widgets.DEFAULT_IMAGE)
+            }
+        }
+        // Shown when the image could not be fetched. Separate from `text_view`
+        // because a failure is the one case the user can act on, and a bare
+        // label offers nothing to act with.
+        error_view := View {
+            visible: false,
+            width: Fill, height: Fit,
+            flow: Down,
+            spacing: (SPACE_SM),
+            padding: (SPACE_MD),
+            show_bg: true,
+            draw_bg.color: (RBX_BG_SUNKEN)
+
+            error_label := Label {
+                width: Fill, height: Fit,
+                flow: Flow.Right{wrap: true},
+                draw_text +: {
+                    text_style: MESSAGE_TEXT_STYLE { }
+                    color: (RBX_FG_SECONDARY),
+                }
+            }
+            retry_button := RobrixIconButton {
+                width: Fit, height: Fit,
+                padding: Inset{left: 10, right: 10, top: 5, bottom: 5}
+                draw_bg +: {
+                    color: (RBX_BG_SURFACE)
+                    color_hover: (RBX_BG_HOVER)
+                    color_focus: (RBX_BG_SURFACE)
+                    border_size: 1.0
+                    border_color: (RBX_STROKE_SOFT)
+                    border_color_hover: (RBX_STROKE_SOFT)
+                    border_color_down: (RBX_STROKE_SOFT)
+                }
+                draw_text +: {
+                    color: (RBX_FG_PRIMARY)
+                    color_hover: (RBX_FG_PRIMARY)
+                    color_down: (RBX_FG_PRIMARY)
+                }
+                text: "Retry"
+            }
+        }
+    }
+}
+
+
+/// A view that holds an image or text content, and can switch between the two.
+///
+/// This is useful for displaying alternate text when an image is not (yet) available
+/// or fails to load. It can also be used to display a loading message while an image
+/// is being fetched.
+#[derive(Script, Widget, ScriptHook)]
+pub struct TextOrImage {
+    #[deref] view: View,
+    #[rust] status: TextOrImageStatus,
+    // #[rust(TextOrImageStatus::Text)] status: TextOrImageStatus,
+    #[rust] size_in_pixels: (usize, usize),
+}
+
+impl Widget for TextOrImage {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, scope: &mut Scope) {
+        if let (TextOrImageStatus::Error(source), Event::Actions(actions)) = (&self.status, event) {
+            if self.view.button(cx, ids!(error_view.retry_button)).clicked(actions) {
+                let source = source.clone();
+                cx.widget_action(
+                    self.widget_uid(),
+                    TextOrImageAction::RetryRequested(source),
+                );
+            }
+        }
+
+        // We handle hit events if the status is `Image`.
+        if let TextOrImageStatus::Image(mxc_uri) = &self.status {
+            let image_area = self.view.image(cx, ids!(image_view.image)).area();
+            match event.hits(cx, image_area) {
+                Hit::FingerDown(_) => {
+                    cx.set_key_focus(image_area);
+                }
+                Hit::FingerUp(fe) if fe.is_over && fe.is_primary_hit() && fe.was_tap() => {
+                    cx.widget_action(
+                        self.widget_uid(), 
+                        TextOrImageAction::Clicked(mxc_uri.clone()),
+                    );
+                    cx.set_cursor(MouseCursor::Default);
+                }
+                Hit::FingerHoverIn(_) => {
+                    cx.set_cursor(MouseCursor::Hand);
+                }
+                Hit::FingerHoverOut(_) => {
+                    cx.set_cursor(MouseCursor::Default);
+                }
+                _ => {}
+            }
+        }
+        self.view.handle_event(cx, event, scope);
+    }
+
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, walk: Walk) -> DrawStep {
+        self.view.draw_walk(cx, scope, walk)
+    }
+}
+impl TextOrImage {
+    /// Sets the text content, which will be displayed on future draw operations.
+    ///
+    /// ## Arguments
+    /// * `text`: the text that will be displayed in this `TextOrImage`, e.g.,
+    ///   a message like "Loading..." or an error message.
+    pub fn show_text<T: AsRef<str>>(&mut self, cx: &mut Cx, text: T) {
+        self.view(cx, ids!(image_view)).set_visible(cx, false);
+        self.view(cx, ids!(default_image_view)).set_visible(cx, false);
+        self.view(cx, ids!(error_view)).set_visible(cx, false);
+        self.view(cx, ids!(text_view)).set_visible(cx, true);
+        self.view.label(cx, ids!(text_view.label)).set_text(cx, text.as_ref());
+        self.status = TextOrImageStatus::Text;
+    }
+
+    /// Shows `message` alongside a Retry button that re-requests `source`.
+    ///
+    /// ## Arguments
+    /// * `message`: what to tell the user. Keep it human — the `mxc://` URI is
+    ///   a server-internal identifier that means nothing to the reader and
+    ///   cannot be opened, copied anywhere useful, or acted on.
+    /// * `source`: the media source to re-request, carried on
+    ///   [`TextOrImageAction::RetryRequested`] when the button is clicked.
+    pub fn show_error<T: AsRef<str>>(&mut self, cx: &mut Cx, message: T, source: MediaSource) {
+        self.view(cx, ids!(image_view)).set_visible(cx, false);
+        self.view(cx, ids!(default_image_view)).set_visible(cx, false);
+        self.view(cx, ids!(text_view)).set_visible(cx, false);
+        self.view(cx, ids!(error_view)).set_visible(cx, true);
+        self.view.label(cx, ids!(error_view.error_label)).set_text(cx, message.as_ref());
+        self.view.button(cx, ids!(error_view.retry_button)).reset_hover(cx);
+        self.status = TextOrImageStatus::Error(source);
+    }
+
+    /// Sets the image content, which will be displayed on future draw operations.
+    ///
+    /// ## Arguments
+    /// * `image_set_function`: this function will be called with an [ImageRef] argument,
+    ///   which refers to the image that will be displayed within this `TextOrImage`.
+    ///   This allows the caller to set the image contents in any way they want.
+    ///   * If successful, the `image_set_function` should return the size of the image
+    ///     in pixels as a tuple, `(width, height)`.
+    ///   * If `image_set_function` returns an error, no change is made to this `TextOrImage`.
+    pub fn show_image<F, E>(&mut self, cx: &mut Cx, source_url: Option<MediaSource>, image_set_function: F) -> Result<(), E>
+        where F: FnOnce(&mut Cx, ImageRef) -> Result<(usize, usize), E>
+    {
+        let image_ref = self.view.image(cx, ids!(image_view.image));
+        match image_set_function(cx, image_ref) {
+            Ok(size_in_pixels) => {
+                self.status = TextOrImageStatus::Image(source_url);
+                self.size_in_pixels = size_in_pixels;
+                self.view(cx, ids!(image_view)).set_visible(cx, true);
+                self.view(cx, ids!(text_view)).set_visible(cx, false);
+                self.view(cx, ids!(default_image_view)).set_visible(cx, false);
+                self.view(cx, ids!(error_view)).set_visible(cx, false);
+                Ok(())
+            }
+            Err(e) => {
+                self.show_text(cx, "Failed to display image.");
+                Err(e)
+            }
+        }
+    }
+
+    /// Returns whether this `TextOrImage` is currently displaying an image or text.
+    pub fn status(&self) -> TextOrImageStatus {
+        self.status.clone()
+    }
+
+    /// Displays the default image that is used when no image is available.
+    pub fn show_default_image(&self, cx: &mut Cx) {
+        self.view(cx, ids!(default_image_view)).set_visible(cx, true);
+        self.view(cx, ids!(text_view)).set_visible(cx, false);
+        self.view(cx, ids!(image_view)).set_visible(cx, false);
+        self.view(cx, ids!(error_view)).set_visible(cx, false);
+    }
+}
+
+impl TextOrImageRef {
+    /// See [TextOrImage::show_text()].
+    pub fn show_text<T: AsRef<str>>(&self, cx: &mut Cx, text: T) {
+        if let Some(mut inner) = self.borrow_mut() {
+            inner.show_text(cx, text);
+        }
+    }
+
+    /// See [TextOrImage::show_image()].
+    pub fn show_image<F, E>(&self, cx: &mut Cx, source_url: Option<MediaSource>, image_set_function: F) -> Result<(), E>
+        where F: FnOnce(&mut Cx, ImageRef) -> Result<(usize, usize), E>
+    {
+        if let Some(mut inner) = self.borrow_mut() {
+            inner.show_image(cx, source_url, image_set_function)
+        } else {
+            Ok(())
+        }
+    }
+
+    /// See [TextOrImage::status()].
+    pub fn status(&self) -> TextOrImageStatus {
+        if let Some(inner) = self.borrow() {
+            inner.status()
+        } else {
+            TextOrImageStatus::Text
+        }
+    }
+
+    /// See [TextOrImage::show_error()].
+    pub fn show_error<T: AsRef<str>>(&self, cx: &mut Cx, message: T, source: MediaSource) {
+        if let Some(mut inner) = self.borrow_mut() {
+            inner.show_error(cx, message, source);
+        }
+    }
+
+    /// See [TextOrImage::show_default_image()].
+    pub fn show_default_image(&self, cx: &mut Cx) {
+        if let Some(inner) = self.borrow() {
+            inner.show_default_image(cx);
+        }
+    }
+
+    /// Returns the current image texture if the `TextOrImage` is currently displaying an image.
+    ///
+    /// If the `TextOrImage` is not displaying an image, this function returns `None`.
+    ///
+    /// Note that this function will return `None` if the `TextOrImage` widget is not yet laid out.
+    pub fn get_texture(&self, cx: &mut Cx) -> Option<Texture> {
+        self.borrow().and_then(|inner| {
+            inner
+                .view
+                .image(cx, ids!(image_view.image))
+                .borrow()
+                .and_then(|image_inner| image_inner.get_texture(0).clone())
+        })
+    }
+}
+
+/// Whether a `TextOrImage` instance is currently displaying text or an image.
+#[derive(Debug, Default, Clone)]
+pub enum TextOrImageStatus {
+    #[default]
+    Text,
+    /// Image source URL stored in this variant to be used
+    Image(Option<MediaSource>),
+    /// The fetch failed; the retry button is showing. Carries the source to
+    /// re-request.
+    Error(MediaSource),
+}
+
+/// Actions emitted by the `TextOrImage` based on user interaction with it.
+#[derive(Debug, Clone, Default)]
+pub enum TextOrImageAction {
+    /// The user has clicked the `TextOrImage`, with source URL stored in this variant.
+    Clicked(Option<MediaSource>),
+    /// The user asked to re-fetch a media source whose download failed.
+    RetryRequested(MediaSource),
+    #[default]
+    None
+}

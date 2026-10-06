@@ -1,0 +1,238 @@
+{
+  "controls": {
+    "add_0": {
+      "event": "follow",
+      "value": "XNAS:AAPL"
+    },
+    "add_1": {
+      "event": "follow",
+      "value": "XNAS:MSFT"
+    },
+    "add_10": {
+      "event": "follow",
+      "value": "XSHG:601318"
+    },
+    "add_11": {
+      "event": "follow",
+      "value": "XSHE:000001"
+    },
+    "add_12": {
+      "event": "follow",
+      "value": "US:GOOG"
+    },
+    "add_13": {
+      "event": "follow",
+      "value": "US:GOOGL"
+    },
+    "add_14": {
+      "event": "follow",
+      "value": "US:AMZN"
+    },
+    "add_15": {
+      "event": "follow",
+      "value": "US:META"
+    },
+    "add_16": {
+      "event": "follow",
+      "value": "US:LLY"
+    },
+    "add_17": {
+      "event": "follow",
+      "value": "US:UNH"
+    },
+    "add_18": {
+      "event": "follow",
+      "value": "US:XOM"
+    },
+    "add_19": {
+      "event": "follow",
+      "value": "US:TSM"
+    },
+    "add_2": {
+      "event": "follow",
+      "value": "XHKG:00700"
+    },
+    "add_20": {
+      "event": "follow",
+      "value": "US:V"
+    },
+    "add_21": {
+      "event": "follow",
+      "value": "US:WMT"
+    },
+    "add_22": {
+      "event": "follow",
+      "value": "US:JPM"
+    },
+    "add_23": {
+      "event": "follow",
+      "value": "US:JNJ"
+    },
+    "add_3": {
+      "event": "follow",
+      "value": "XHKG:09988"
+    },
+    "add_4": {
+      "event": "follow",
+      "value": "XSHG:600519"
+    },
+    "add_5": {
+      "event": "follow",
+      "value": "XSHE:300750"
+    },
+    "add_6": {
+      "event": "follow",
+      "value": "XNAS:TSLA"
+    },
+    "add_7": {
+      "event": "follow",
+      "value": "XNAS:NVDA"
+    },
+    "add_8": {
+      "event": "follow",
+      "value": "XNYS:BABA"
+    },
+    "add_9": {
+      "event": "follow",
+      "value": "XHKG:01810"
+    },
+    "region_0": {
+      "event": "region",
+      "value": "All"
+    },
+    "region_1": {
+      "event": "region",
+      "value": "US"
+    },
+    "region_2": {
+      "event": "region",
+      "value": "HK"
+    },
+    "region_3": {
+      "event": "region",
+      "value": "CN"
+    },
+    "search": {
+      "event": "search",
+      "value": "search"
+    },
+    "stock_0": {
+      "event": "open",
+      "value": "XNAS:AAPL"
+    },
+    "stock_1": {
+      "event": "open",
+      "value": "XNAS:MSFT"
+    },
+    "stock_10": {
+      "event": "open",
+      "value": "XSHG:601318"
+    },
+    "stock_11": {
+      "event": "open",
+      "value": "XSHE:000001"
+    },
+    "stock_12": {
+      "event": "open",
+      "value": "US:GOOG"
+    },
+    "stock_13": {
+      "event": "open",
+      "value": "US:GOOGL"
+    },
+    "stock_14": {
+      "event": "open",
+      "value": "US:AMZN"
+    },
+    "stock_15": {
+      "event": "open",
+      "value": "US:META"
+    },
+    "stock_16": {
+      "event": "open",
+      "value": "US:LLY"
+    },
+    "stock_17": {
+      "event": "open",
+      "value": "US:UNH"
+    },
+    "stock_18": {
+      "event": "open",
+      "value": "US:XOM"
+    },
+    "stock_19": {
+      "event": "open",
+      "value": "US:TSM"
+    },
+    "stock_2": {
+      "event": "open",
+      "value": "XHKG:00700"
+    },
+    "stock_20": {
+      "event": "open",
+      "value": "US:V"
+    },
+    "stock_21": {
+      "event": "open",
+      "value": "US:WMT"
+    },
+    "stock_22": {
+      "event": "open",
+      "value": "US:JPM"
+    },
+    "stock_23": {
+      "event": "open",
+      "value": "US:JNJ"
+    },
+    "stock_3": {
+      "event": "open",
+      "value": "XHKG:09988"
+    },
+    "stock_4": {
+      "event": "open",
+      "value": "XSHG:600519"
+    },
+    "stock_5": {
+      "event": "open",
+      "value": "XSHE:300750"
+    },
+    "stock_6": {
+      "event": "open",
+      "value": "XNAS:TSLA"
+    },
+    "stock_7": {
+      "event": "open",
+      "value": "XNAS:NVDA"
+    },
+    "stock_8": {
+      "event": "open",
+      "value": "XNYS:BABA"
+    },
+    "stock_9": {
+      "event": "open",
+      "value": "XHKG:01810"
+    },
+    "tab_markets": {
+      "event": "navigate",
+      "value": "markets"
+    },
+    "tab_news": {
+      "event": "navigate",
+      "value": "news"
+    },
+    "tab_saved": {
+      "event": "navigate",
+      "value": "saved"
+    },
+    "tab_settings": {
+      "event": "navigate",
+      "value": "settings"
+    },
+    "tab_watchlist": {
+      "event": "navigate",
+      "value": "watchlist"
+    }
+  },
+  "owner": "finance",
+  "schema_version": 1
+}

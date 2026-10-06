@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "card_id": "robrix.message-summary",
+  "data": {
+    "title": "OctoSense chat",
+    "summary": "This fictional card is rendered from L0 using the shared Octoscript-Makepad runtime.",
+    "status": "AppCard preview · no account or network required"
+  }
+}

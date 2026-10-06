@@ -1,0 +1,34 @@
+{
+  "controls": {
+    "back": {
+      "event": "navigate",
+      "value": "news"
+    },
+    "bookmark": {
+      "event": "save",
+      "value": "preview-0"
+    },
+    "share": {
+      "event": "share",
+      "value": ""
+    },
+    "tab_markets": {
+      "event": "navigate",
+      "value": "markets"
+    },
+    "tab_news": {
+      "event": "navigate",
+      "value": "news"
+    },
+    "tab_saved": {
+      "event": "navigate",
+      "value": "saved"
+    },
+    "tab_watchlist": {
+      "event": "navigate",
+      "value": "watchlist"
+    }
+  },
+  "owner": "finance",
+  "schema_version": 1
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "native-service-appcards",
+  "cards": [
+    {
+      "id": "finance-quote",
+      "scene": "5",
+      "root": "quote_card",
+      "owner": "finance",
+      "folder": "finance-quote",
+      "artboard": [
+        366.0,
+        129.0
+      ],
+      "nodes": 8,
+      "native_controls": 1,
+      "components": 8
+    },
+    {
+      "id": "finance-watchlist",
+      "scene": "1",
+      "root": "watchlist_card",
+      "owner": "finance",
+      "folder": "finance-watchlist",
+      "artboard": [
+        366.0,
+        124.0
+      ],
+      "nodes": 23,
+      "native_controls": 2,
+      "components": 13
+    },
+    {
+      "id": "finance-related-news",
+      "scene": "7",
+      "root": "related_news_card",
+      "owner": "finance",
+      "folder": "finance-related-news",
+      "artboard": [
+        366.0,
+        216.0
+      ],
+      "nodes": 19,
+      "native_controls": 4,
+      "components": 7
+    },
+    {
+      "id": "finance-market-brief",
+      "scene": "2",
+      "root": "market_brief_card",
+      "owner": "finance",
+      "folder": "finance-market-brief",
+      "artboard": [
+        366.0,
+        308.0
+      ],
+      "nodes": 13,
+      "native_controls": 0,
+      "components": 5
+    }
+  ],
+  "validation": "Compiled native subtrees; independent Studio input/layout and visual review remain required"
+}

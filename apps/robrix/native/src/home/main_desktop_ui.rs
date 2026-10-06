@@ -1,0 +1,776 @@
+use makepad_widgets::*;
+use ruma::{OwnedRoomId, RoomId};
+use tokio::sync::Notify;
+use std::{collections::{HashMap, HashSet}, sync::Arc};
+
+use crate::{
+    app::{AppState, AppStateAction, SavedDockState, SelectedRoom},
+    home::{navigation_tab_bar::{NavigationBarAction, SelectedTab}, rooms_list::RoomsListRef, space_lobby::SpaceLobbyScreenWidgetRefExt},
+    logout::logout_confirm_modal::LogoutAction,
+    persistence,
+    sliding_sync::{AccountSwitchAction, current_user_id, get_client},
+    utils::RoomNameId,
+};
+use super::{invite_screen::InviteScreenWidgetRefExt, room_screen::RoomScreenWidgetRefExt, rooms_list::RoomsListAction};
+
+script_mod! {
+    use mod.prelude.widgets.*
+    use mod.widgets.*
+
+
+    mod.widgets.MainDesktopUI = #(MainDesktopUI::register_widget(vm)) {
+        dock := mod.widgets.RobrixDock {
+            width: Fill,
+            height: Fill,
+            padding: 0,
+            spacing: 0,
+            // Sit flush against the dark navigation rail: no left margin, so the
+            // rooms-list panel butts directly against the rail with no grey gutter gap.
+            margin: 0
+
+            tab_bar +: {
+                CloseableTab := mod.widgets.RobrixTab { closeable: true }
+                PermanentTab := mod.widgets.RobrixTab { closeable: false }
+            }
+
+
+            root := DockSplitter {
+                axis: SplitterAxis.Horizontal
+                align: SplitterAlign.FromA(300.0)
+                a: @rooms_sidebar_tabs
+                b: @main_tabs
+            }
+
+            // This is a "fixed" tab with no header that cannot be closed.
+            rooms_sidebar_tabs := DockTabs{
+                tabs: [@rooms_sidebar_tab]
+                selected: 0
+                hide_tab_bar: true
+            }
+
+            main_tabs := DockTabs{
+                tabs: [@home_tab]
+                selected: 0
+            }
+
+            rooms_sidebar_tab := DockTab {
+                kind: @rooms_sidebar // this template is defined below.
+                template: @PermanentTab
+            }
+
+            home_tab := DockTab{
+                name: "Home"
+                kind: @welcome_screen
+                template: @PermanentTab
+            }
+
+            // Below are the templates of widgets that can be created within dock tabs.
+            rooms_sidebar := mod.widgets.RoomsSideBar {}
+            welcome_screen := mod.widgets.WelcomeScreen {}
+            room_screen := mod.widgets.RoomScreen {}
+            invite_screen := mod.widgets.InviteScreen {}
+            space_lobby_screen := mod.widgets.SpaceLobbyScreen {}
+        }
+    }
+}
+
+#[derive(Script, Widget)]
+pub struct MainDesktopUI {
+    #[deref]
+    view: View,
+
+    /// The default layout that should be loaded into the dock
+    /// when there is no previously-saved content to restore.
+    /// This is a Rust-level instance of the dock content defined in the above live DSL.
+    #[rust] default_layout: SavedDockState,
+
+    /// The rooms that are currently open, keyed by the LiveId of their tab.
+    #[rust]
+    open_rooms: HashMap<LiveId, SelectedRoom>,
+
+    /// Tabs whose widgets have acquired and initialized their backend endpoints.
+    #[rust]
+    initialized_tabs: HashSet<LiveId>,
+
+    /// The tab that should be closed in the next draw event
+    #[rust]
+    tab_to_close: Option<LiveId>,
+
+    /// The order in which the rooms were opened, in chronological order
+    /// from first opened (at the beginning) to last opened (at the end).
+    #[rust]
+    room_order: Vec<SelectedRoom>,
+
+    /// The most recently selected room, used to prevent re-selecting the same room in Dock
+    /// which would trigger redraw of whole Widget.
+    #[rust]
+    most_recently_selected_room: Option<SelectedRoom>,
+
+    /// The ID of the currently-selected space, if any.
+    ///
+    /// This determines which set of rooms this dock is currently showing.
+    /// If `None`, we're displaying the main home view of all rooms from any space.
+    #[rust] selected_space: Option<OwnedRoomId>,
+
+    /// Boolean to indicate if we've drawn the MainDesktopUi previously in the desktop view.
+    ///
+    /// When switching mobile view to desktop, we need to restore the saved app state to the UI.
+    /// * If false, this widget emits an action to load the dock from the saved dock state.
+    /// * If true, this widget proceeds to draw the desktop UI as normal.
+    #[rust]
+    drawn_previously: bool,
+}
+
+impl ScriptHook for MainDesktopUI {
+    fn on_after_new(&mut self, vm: &mut ScriptVm) {
+        vm.with_cx_mut(|cx| {
+            self.default_layout = self.save_dock_state(cx);
+        });
+    }
+}
+impl Widget for MainDesktopUI {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, scope: &mut Scope) {
+        self.widget_match_event(cx, event, scope); // invokes `WidgetMatchEvent` impl
+        self.view.handle_event(cx, event, scope);
+    }
+
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, walk: Walk) -> DrawStep {
+        if !self.drawn_previously && cx.has_global::<RoomsListRef>() {
+            // When changing from Mobile to Desktop view mode, we need to restore the state
+            // of this widget, which we get from the `AppState` passed down via `scope`.
+            // This includes the currently selected space, which we get from the RoomsList widget.
+            // We must set `selected_space` first before the load operation occurs, in order for
+            // the proper space-specific instance of the saved dock UI layout/state to be selected.
+            self.selected_space = cx.get_global::<RoomsListRef>().get_selected_space_id();
+            let app_state = scope.data.get::<AppState>().unwrap();
+            let has_saved_dock_state = if let Some(space_id) = self.selected_space.as_ref() {
+                app_state.saved_dock_state_per_space
+                    .get(space_id)
+                    .is_some_and(|saved| !saved.open_rooms.is_empty())
+            } else {
+                !app_state.saved_dock_state_home.open_rooms.is_empty()
+            };
+            if has_saved_dock_state {
+                cx.action(MainDesktopUiAction::LoadDockFromAppState);
+            }
+            self.drawn_previously = true;
+        }
+        self.view.draw_walk(cx, scope, walk)
+    }
+}
+
+impl MainDesktopUI {
+    fn prune_unavailable_rooms_from_saved_state(saved: &mut SavedDockState) -> usize {
+        let Some(client) = get_client() else { return 0; };
+        saved.remove_room_ids_where(|room_id| client.get_room(room_id).is_none())
+    }
+
+    fn sync_tab_widget(cx: &mut Cx, widget: &WidgetRef, room: &SelectedRoom) {
+        match room {
+            SelectedRoom::JoinedRoom { room_name_id } => {
+                widget.as_room_screen().set_displayed_room(
+                    cx,
+                    room_name_id,
+                    None,
+                );
+            }
+            SelectedRoom::Thread { room_name_id, thread_root_event_id } => {
+                widget.as_room_screen().set_displayed_room(
+                    cx,
+                    room_name_id,
+                    Some(thread_root_event_id.clone()),
+                );
+            }
+            SelectedRoom::InvitedRoom { room_name_id } => {
+                widget.as_invite_screen().set_displayed_invite(
+                    cx,
+                    room_name_id,
+                );
+            }
+            SelectedRoom::Space { space_name_id } => {
+                widget.as_space_lobby_screen().set_displayed_space(
+                    cx,
+                    space_name_id,
+                );
+            }
+        }
+    }
+
+    fn tab_widget(&self, cx: &mut Cx, tab_id: LiveId) -> Option<WidgetRef> {
+        let dock = self.view.dock(cx, ids!(dock));
+        let mut dock = dock.borrow_mut()?;
+        dock.items().get(&tab_id).map(|(_, widget)| widget.clone())
+    }
+
+    fn ensure_tab_initialized(&mut self, cx: &mut Cx, room: &SelectedRoom) {
+        let tab_id = room.tab_id();
+        if self.initialized_tabs.contains(&tab_id) {
+            return;
+        }
+        let Some(widget) = self.tab_widget(cx, tab_id) else {
+            return;
+        };
+        Self::sync_tab_widget(cx, &widget, room);
+        self.initialized_tabs.insert(tab_id);
+    }
+
+    /// Pauses hidden room timelines while keeping all room timelines visible in split panes active.
+    fn sync_visible_room_timelines(&mut self, cx: &mut Cx) {
+        let visible_tabs = {
+            let dock = self.view.dock(cx, ids!(dock));
+            let Some(mut dock) = dock.borrow_mut() else { return };
+            dock
+                .visible_items()
+                .map(|(tab_id, _)| tab_id)
+                .collect::<HashSet<_>>()
+        };
+
+        let newly_visible_rooms = visible_tabs
+            .iter()
+            .filter_map(|tab_id| self.open_rooms.get(tab_id))
+            .cloned()
+            .collect::<Vec<_>>();
+        for room in newly_visible_rooms {
+            self.ensure_tab_initialized(cx, &room);
+        }
+
+        let room_widgets = {
+            let dock = self.view.dock(cx, ids!(dock));
+            let Some(mut dock) = dock.borrow_mut() else { return };
+            self.open_rooms
+                .iter()
+                .filter(|(tab_id, room)|
+                    self.initialized_tabs.contains(tab_id)
+                        && matches!(
+                            room,
+                            SelectedRoom::JoinedRoom { .. } | SelectedRoom::Thread { .. }
+                        )
+                )
+                .filter_map(|(tab_id, _)|
+                    dock.items()
+                        .get(tab_id)
+                        .map(|(_, widget)| (*tab_id, widget.clone()))
+                )
+                .collect::<Vec<_>>()
+        };
+
+        for (tab_id, widget) in room_widgets {
+            widget
+                .as_room_screen()
+                .set_timeline_updates_enabled(visible_tabs.contains(&tab_id));
+        }
+    }
+
+    /// Focuses on a room if it is already open, otherwise creates a new tab for the room.
+    fn focus_or_create_tab(&mut self, cx: &mut Cx, room: SelectedRoom) {
+        self.focus_or_create_tab_inner(cx, room, true, true);
+    }
+
+    fn focus_or_create_tab_inner(
+        &mut self,
+        cx: &mut Cx,
+        room: SelectedRoom,
+        initialize: bool,
+        save: bool,
+    ) {
+        let room_tab_id = room.tab_id();
+
+        // Do nothing if the room to select is already created and focused.
+        if self.most_recently_selected_room.as_ref().is_some_and(|sr| sr == &room)
+            && self.open_rooms.contains_key(&room_tab_id)
+        {
+            if initialize {
+                self.ensure_tab_initialized(cx, &room);
+                self.sync_visible_room_timelines(cx);
+            }
+            return;
+        }
+
+        let dock = self.view.dock(cx, ids!(dock));
+
+        // If the room is already open, select (jump to) its existing tab
+        if self.open_rooms.contains_key(&room_tab_id) {
+            if initialize {
+                self.ensure_tab_initialized(cx, &room);
+            }
+            dock.select_tab(cx, room_tab_id);
+            self.most_recently_selected_room = Some(room);
+            if initialize {
+                self.sync_visible_room_timelines(cx);
+            }
+            return;
+        }
+
+        // Create a new tab for the room
+        let kind = match &room {
+            SelectedRoom::JoinedRoom { .. }
+            | SelectedRoom::Thread { .. } => id!(room_screen),
+            SelectedRoom::InvitedRoom { .. } => id!(invite_screen),
+            SelectedRoom::Space { .. } => id!(space_lobby_screen),
+        };
+
+        // Insert the tab after the currently-selected room's tab, if possible.
+        // Otherwise, insert it after the home tab, which should always exist.
+        let (tab_bar, insert_after) = self.most_recently_selected_room.as_ref()
+            .and_then(|curr_room| dock.find_tab_bar_of_tab(curr_room.tab_id()))
+            .unwrap_or_else(|| dock.find_tab_bar_of_tab(id!(home_tab)).unwrap());
+
+        let new_tab_widget = dock.create_and_select_tab(
+            cx,
+            tab_bar,
+            room_tab_id,
+            kind,
+            room.display_name(),
+            id!(CloseableTab),
+            Some(insert_after),
+        );
+
+        // If the tab was created, optionally initialize its content.
+        if let Some(new_widget) = new_tab_widget {
+            self.room_order.push(room.clone());
+            if initialize {
+                Self::sync_tab_widget(cx, &new_widget, &room);
+                self.initialized_tabs.insert(room_tab_id);
+            }
+            self.open_rooms.insert(room_tab_id, room.clone());
+            self.most_recently_selected_room = Some(room);
+            if initialize {
+                self.sync_visible_room_timelines(cx);
+            }
+            if save {
+                cx.action(MainDesktopUiAction::SaveDockIntoAppState);
+            }
+        } else {
+            error!("BUG: failed to create tab for {room:?}");
+        }
+    }
+
+    /// Closes a tab in the dock and focuses on the latest open room.
+    fn close_tab(&mut self, cx: &mut Cx, tab_id: LiveId) {
+        let dock = self.view.dock(cx, ids!(dock));
+        if let Some(room_being_closed) = self.open_rooms.get(&tab_id) {
+            self.room_order.retain(|sr| sr != room_being_closed);
+
+            if self.open_rooms.len() > 1 {
+                // If the closing tab is the active one, then focus the next room
+                let active_room = self.most_recently_selected_room.as_ref();
+                if let Some(active_room) = active_room {
+                    if active_room == room_being_closed {
+                        if let Some(new_focused_room) = self.room_order.last() {
+                            // notify the app state about the new focused room
+                            cx.action(AppStateAction::RoomFocused(new_focused_room.clone()));
+
+                            // Set the new selected room to be used in the current draw
+                            self.most_recently_selected_room = Some(new_focused_room.clone());
+                        }
+                    }
+                }
+            } else {
+                // If there is no room to focus, notify app to reset the selected room in the app state
+                cx.action(AppStateAction::FocusNone);
+                dock.select_tab(cx, id!(home_tab));
+                self.most_recently_selected_room = None;
+            }
+        }
+
+        dock.close_tab(cx, tab_id);
+        self.tab_to_close = None;
+        self.open_rooms.remove(&tab_id);
+        self.initialized_tabs.remove(&tab_id);
+        self.sync_visible_room_timelines(cx);
+    }
+
+    /// Closes every open tab belonging to the given room, including thread tabs.
+    fn close_room_tabs(&mut self, cx: &mut Cx, room_id: &RoomId) -> bool {
+        let tab_ids_to_close: Vec<LiveId> = self.open_rooms.iter()
+            .filter_map(|(tab_id, selected_room)| (selected_room.room_id() == room_id).then_some(*tab_id))
+            .collect();
+
+        if tab_ids_to_close.is_empty() {
+            return false;
+        }
+
+        for tab_id in tab_ids_to_close {
+            self.close_tab(cx, tab_id);
+        }
+        true
+    }
+
+    /// Closes all tabs
+    pub fn close_all_tabs(&mut self, cx: &mut Cx) {
+        let dock = self.view.dock(cx, ids!(dock));
+        for tab_id in self.open_rooms.keys() {        
+            dock.close_tab(cx, *tab_id);
+        }
+
+        dock.select_tab(cx, id!(home_tab));
+        cx.action(AppStateAction::FocusNone);
+
+        // Clear tab-related dock UI state.
+        self.open_rooms.clear();
+        self.initialized_tabs.clear();
+        self.tab_to_close = None;
+        self.room_order.clear();
+        self.most_recently_selected_room = None;
+    }
+
+    fn reset_to_default_layout(&mut self, cx: &mut Cx) {
+        self.open_rooms.clear();
+        self.initialized_tabs.clear();
+        self.tab_to_close = None;
+        self.room_order.clear();
+        self.most_recently_selected_room = None;
+        self.selected_space = None;
+        self.drawn_previously = false;
+
+        if let Some(mut dock) = self.view.dock(cx, ids!(dock)).borrow_mut() {
+            dock.load_state(cx, self.default_layout.dock_items.clone());
+        } else {
+            error!("BUG: failed to borrow dock widget to reset desktop UI to its default layout.");
+        }
+
+        cx.action(AppStateAction::FocusNone);
+        self.redraw(cx);
+    }
+
+    /// Replaces an invite with a joined room in the dock.
+    fn replace_invite_with_joined_room(
+        &mut self,
+        cx: &mut Cx,
+        _scope: &mut Scope,
+        room_name_id: &RoomNameId,
+    ) {
+        let dock = self.view.dock(cx, ids!(dock));
+        let Some((new_widget, true)) = dock.replace_tab(
+            cx,
+            LiveId::from_str(room_name_id.room_id().as_str()),
+            id!(room_screen),
+            Some(room_name_id.to_string()),
+            false,
+        ) else {
+            // Nothing we can really do here except log an error.
+            error!("BUG: failed to replace InviteScreen tab with RoomScreen for {room_name_id}");
+            return;
+        };
+
+        // Set the info to be displayed in the newly-replaced RoomScreen..
+        new_widget
+            .as_room_screen()
+            .set_displayed_room(cx, room_name_id, None);
+        self.initialized_tabs.insert(LiveId::from_str(room_name_id.room_id().as_str()));
+
+        // Go through all existing `SelectedRoom` instances and replace the
+        // `SelectedRoom::InvitedRoom`s with `SelectedRoom::JoinedRoom`s.
+        for selected_room in self.most_recently_selected_room.iter_mut()
+            .chain(self.room_order.iter_mut())
+            .chain(self.open_rooms.values_mut())
+        {
+            selected_room.upgrade_invite_to_joined(room_name_id.room_id());
+        }
+
+        // Finally, emit an action to update the AppState with the new room.
+        cx.action(AppStateAction::UpgradedInviteToJoinedRoom(room_name_id.room_id().clone()));
+        self.sync_visible_room_timelines(cx);
+    }
+
+    /// Replaces an accepted space invite with that space's lobby in the dock.
+    ///
+    /// This is the space counterpart of [`Self::replace_invite_with_joined_room()`]:
+    /// a joined space has no timeline, so the InviteScreen tab becomes a
+    /// `SpaceLobbyScreen` showing the space's rooms and subspaces.
+    fn replace_invite_with_space_lobby(
+        &mut self,
+        cx: &mut Cx,
+        space_name_id: &RoomNameId,
+    ) {
+        let tab_id = LiveId::from_str(space_name_id.room_id().as_str());
+        // Nothing to replace if this space's invite was never opened in a tab.
+        if !self.open_rooms.contains_key(&tab_id) {
+            return;
+        }
+
+        let upgraded = SelectedRoom::Space { space_name_id: space_name_id.clone() };
+        let dock = self.view.dock(cx, ids!(dock));
+        let Some((new_widget, true)) = dock.replace_tab(
+            cx,
+            tab_id,
+            id!(space_lobby_screen),
+            Some(upgraded.display_name()),
+            false,
+        ) else {
+            // Nothing we can really do here except log an error.
+            error!("BUG: failed to replace InviteScreen tab with SpaceLobbyScreen for {space_name_id}");
+            return;
+        };
+
+        // Set the info to be displayed in the newly-replaced SpaceLobbyScreen.
+        new_widget
+            .as_space_lobby_screen()
+            .set_displayed_space(cx, space_name_id);
+        self.initialized_tabs.insert(tab_id);
+
+        // Go through all existing `SelectedRoom` instances and replace the
+        // `SelectedRoom::InvitedRoom`s with `SelectedRoom::Space`s.
+        for selected_room in self.most_recently_selected_room.iter_mut()
+            .chain(self.room_order.iter_mut())
+            .chain(self.open_rooms.values_mut())
+        {
+            selected_room.upgrade_invite_to_space(space_name_id);
+        }
+
+        // Finally, emit an action to update the AppState with the new space.
+        cx.action(AppStateAction::UpgradedInviteToSpace(space_name_id.clone()));
+        self.sync_visible_room_timelines(cx);
+    }
+
+    /// Saves a copy of the current UI state of the dock into the given app state,
+    /// properly accounting for which space is currently selected.
+    fn save_dock_state_to(&mut self, cx: &mut Cx, app_state: &mut AppState) {
+        if self.open_rooms.is_empty() {
+            return;
+        } 
+        let saved_dock_state = self.save_dock_state(cx);
+        if let Some(space_id) = self.selected_space.as_ref() {
+            app_state.saved_dock_state_per_space.insert(
+                space_id.clone(),
+                saved_dock_state,
+            );
+        } else {
+            app_state.saved_dock_state_home = saved_dock_state;
+        }
+    }
+
+    /// An inner function that creates a `SavedDockState` from the current contents of this widget. 
+    fn save_dock_state(&self, cx: &mut Cx) -> SavedDockState {
+        let dock = self.view.dock(cx, ids!(dock));
+        SavedDockState {
+            dock_items: dock.clone_state().unwrap_or_default(),
+            open_rooms: self.open_rooms.clone(),
+            room_order: self.room_order.clone(),
+            selected_room: self.most_recently_selected_room.clone(),
+        }
+    }
+
+    /// Loads and populates the dock from the saved dock state for the currently-selected space.
+    ///
+    /// If the saved state is empty (has no open rooms), we use the default dock layout
+    /// defined in the DSL: one splitter with the RoomsList on the left and a Welcome tab on the right.
+    ///
+    /// Instead of calling `dock.load_state()` directly (which can corrupt Makepad's
+    /// internal DrawList references and cause blank rendering), we recreate each tab
+    /// programmatically. Restored tab widgets are initialized only when selected.
+    fn load_dock_state_from(&mut self, cx: &mut Cx, app_state: &mut AppState) {
+        let (to_restore_opt, removed_tabs) = if let Some(ss) = self.selected_space.as_ref() {
+            let removed = app_state.saved_dock_state_per_space
+                .get_mut(ss)
+                .map(Self::prune_unavailable_rooms_from_saved_state)
+                .unwrap_or(0);
+            (app_state.saved_dock_state_per_space.get(ss), removed)
+        } else {
+            let removed = Self::prune_unavailable_rooms_from_saved_state(&mut app_state.saved_dock_state_home);
+            (Some(&app_state.saved_dock_state_home), removed)
+        };
+
+        if removed_tabs > 0 {
+            if let Some(user_id) = current_user_id() {
+                if let Err(e) = persistence::save_app_state(app_state.clone(), user_id) {
+                    error!("Failed to persist app state after pruning unavailable room tabs. Error: {e}");
+                }
+            }
+        };
+        let to_restore = match to_restore_opt {
+            None => &self.default_layout,
+            Some(sds) if sds.open_rooms.is_empty() => &self.default_layout,
+            Some(sds) => sds,
+        };
+
+        let room_order = to_restore.room_order.clone();
+        let selected_room = to_restore.selected_room.clone();
+
+        // Close any existing tabs first, starting from the default layout.
+        self.close_all_tabs(cx);
+
+        // Recreate each room tab in the saved order.
+        for room in &room_order {
+            self.focus_or_create_tab_inner(cx, room.clone(), false, false);
+        }
+
+        // Re-select the previously-selected room (or the last one if not set).
+        let final_selected = selected_room.or_else(|| room_order.last().cloned());
+        if let Some(selected) = final_selected.clone() {
+            self.focus_or_create_tab_inner(cx, selected, true, false);
+        } else {
+            self.sync_visible_room_timelines(cx);
+        }
+        app_state.selected_room = final_selected;
+        self.redraw(cx);
+    }
+}
+
+impl WidgetMatchEvent for MainDesktopUI {
+    fn handle_actions(&mut self, cx: &mut Cx, actions: &Actions, scope: &mut Scope) {
+        let mut should_save_dock_action: bool = false;
+        for action in actions {
+            let widget_action = action.as_widget_action();
+
+            if let Some(MainDesktopUiAction::CloseAllTabs { on_close_all }) = action.downcast_ref() {
+                self.close_all_tabs(cx);
+                on_close_all.notify_one();
+                continue;
+            }
+
+            if let Some(LogoutAction::ClearAppState { .. }) = action.downcast_ref() {
+                self.reset_to_default_layout(cx);
+                continue;
+            }
+
+            // When switching accounts, close all room tabs (keeping only the home tab)
+            if let Some(AccountSwitchAction::Starting(_)) = action.downcast_ref() {
+                self.reset_to_default_layout(cx);
+                continue;
+            }
+
+            // If the currently-selected space has been changed, we must handle that
+            // by switching the dock to show the layout for another space.
+            if let Some(NavigationBarAction::TabSelected(tab)) = action.downcast_ref() {
+                let new_space = match (tab, self.selected_space.as_ref()) {
+                    (SelectedTab::Space { space_name_id }, space_id_opt)
+                        if space_id_opt.is_none_or(|id| id != space_name_id.room_id()) => 
+                    {
+                        Some(space_name_id.room_id().clone())
+                    }
+                    (SelectedTab::Home, Some(_)) => None,
+                    _ => continue,
+                };
+                let app_state = scope.data.get_mut::<AppState>().unwrap();
+                self.save_dock_state_to(cx, app_state);
+                let entered_space = new_space.is_some();
+                self.selected_space = new_space;
+                self.load_dock_state_from(cx, app_state);
+                // A space's lobby is its home page, so entering a space lands there
+                // rather than on the generic Welcome tab of the default layout.
+                // If the lobby tab already exists in this space's saved layout,
+                // this just focuses it.
+                if entered_space
+                    && let SelectedTab::Space { space_name_id } = tab
+                {
+                    self.focus_or_create_tab(cx, SelectedRoom::Space {
+                        space_name_id: space_name_id.clone(),
+                    });
+                }
+                self.redraw(cx);
+                continue;
+            }
+
+            // Handle actions emitted by the dock within the MainDesktopUI
+            match widget_action.cast() {
+                // Whenever a tab (except for the home_tab) is pressed, notify the app state.
+                DockAction::TabWasPressed(tab_id) => {
+                    if tab_id == id!(home_tab) {
+                        cx.action(AppStateAction::FocusNone);
+                        self.most_recently_selected_room = None;
+                    }
+                    else if let Some(selected_room) = self.open_rooms.get(&tab_id).cloned() {
+                        self.ensure_tab_initialized(cx, &selected_room);
+                        cx.action(AppStateAction::RoomFocused(selected_room.clone()));
+                        self.most_recently_selected_room = Some(selected_room);
+                    }
+                    self.sync_visible_room_timelines(cx);
+                    should_save_dock_action = true;
+                }
+                DockAction::TabCloseWasPressed(tab_id) => {
+                    self.tab_to_close = Some(tab_id);
+                    self.close_tab(cx, tab_id);
+                    self.redraw(cx);
+                    should_save_dock_action = true;
+                }
+                // When dragging a tab, allow it to be dragged
+                DockAction::ShouldTabStartDrag(tab_id) => {
+                    self.view.dock(cx, ids!(dock)).tab_start_drag(
+                        cx,
+                        tab_id,
+                        DragItem::FilePath {
+                            path: "".to_string(),
+                            internal_id: Some(tab_id),
+                        },
+                    );
+                }
+                // When dragging a tab, allow it to be dragged
+                DockAction::Drag(drag_event) if drag_event.items.len() == 1 => {
+                    self.view.dock(cx, ids!(dock)).accept_drag(cx, drag_event, DragResponse::Move);
+                }
+                DockAction::Drag(_) => {}
+                // When dropping a tab, move it to the new position
+                DockAction::Drop(drop_event) => {
+                    // from inside the dock, otherwise it's an external file
+                    if let DragItem::FilePath {
+                        internal_id: Some(internal_id),
+                        ..
+                    } = &drop_event.items[0] {
+                        self.view.dock(cx, ids!(dock)).drop_move(cx, drop_event.abs, *internal_id);
+                    }
+                    self.sync_visible_room_timelines(cx);
+                    should_save_dock_action = true;
+                }
+                _ => (),
+            }
+
+            // Handle RoomsList actions, which are updates from the rooms list.
+            match widget_action.cast_ref() {
+                RoomsListAction::Selected(selected_room) => {
+                    // Note that this cannot be performed within draw_walk() as the draw flow prevents from
+                    // performing actions that would trigger a redraw, and the Dock internally performs (and expects)
+                    // a redraw to be happening in order to draw the tab content.
+                    self.focus_or_create_tab(cx, selected_room.clone());
+                }
+                RoomsListAction::InviteAccepted { room_name_id } => {
+                    self.replace_invite_with_joined_room(cx, scope, room_name_id);
+                }
+                RoomsListAction::SpaceInviteAccepted { space_name_id } => {
+                    self.replace_invite_with_space_lobby(cx, space_name_id);
+                }
+                RoomsListAction::OpenRoomContextMenu { .. } => {}
+                RoomsListAction::None => { }
+            }
+
+            // Handle our own actions related to dock updates that we have previously emitted.
+            match action.downcast_ref() {
+                Some(MainDesktopUiAction::LoadDockFromAppState) => {
+                    let app_state = scope.data.get_mut::<AppState>().unwrap();
+                    self.load_dock_state_from(cx, app_state);
+                }
+                Some(MainDesktopUiAction::SaveDockIntoAppState) => {
+                    let app_state = scope.data.get_mut::<AppState>().unwrap();
+                    self.save_dock_state_to(cx, app_state);
+                }
+                Some(MainDesktopUiAction::CloseRoomTabs { room_id }) if self.close_room_tabs(cx, room_id) => {
+                    self.redraw(cx);
+                    should_save_dock_action = true;
+                }
+                Some(MainDesktopUiAction::CloseRoomTabs { .. }) => {}
+                _ => {}
+            }
+        }
+
+        if should_save_dock_action {
+            cx.action(MainDesktopUiAction::SaveDockIntoAppState);
+        }
+    }
+}
+
+/// Actions sent to the MainDesktopUI widget for saving/restoring its dock state.
+#[derive(Debug)]
+pub enum MainDesktopUiAction {
+    /// Save the state of the dock into the AppState.
+    SaveDockIntoAppState,
+    /// Load the room panel state from the AppState to the dock.
+    LoadDockFromAppState,
+    /// Close every currently-open tab belonging to the given room.
+    CloseRoomTabs {
+        room_id: OwnedRoomId,
+    },
+    /// Close all tabs; see [`MainDesktopUI::close_all_tabs()`]
+    CloseAllTabs {
+        on_close_all: Arc<Notify>,
+    },
+}

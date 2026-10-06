@@ -1,0 +1,112 @@
+diff --git a/widgets/src/matplot/stock_plot.rs b/widgets/src/matplot/stock_plot.rs
+index 0544972a3..24ac8fd65 100644
+--- a/widgets/src/matplot/stock_plot.rs
++++ b/widgets/src/matplot/stock_plot.rs
+@@ -19,6 +19,8 @@
+ // dashed baseline at the range's first close, hairline y-grid with right-edge
+ // price labels, and three time labels under the plot (HH:MM exchange-local for
+ // intraday ranges, M/D otherwise — from the same response's timestamps).
++// Hosts with their own providers can call set_series instead; it disables the
++// automatic fetch and uses the same rendering and inspection as fetched data.
+ 
+ use crate::matplot::plot_view::{nice_ticks, PlotView};
+ use crate::matplot::types::LineStyle;
+@@ -116,6 +118,10 @@ pub struct StockPlot {
+     /// triggered by a symbol/range change, which resets this).
+     #[rust]
+     failed: bool,
++    #[rust]
++    external_series: bool,
++    #[rust]
++    selected_point: Option<usize>,
+ 
+     // ---- redraw pump while the async fetch is pending ----
+     #[rust]
+@@ -197,9 +203,62 @@ fn draw_walk(&mut self, cx: &mut Cx2d, _scope: &mut Scope, walk: Walk) -> DrawSt
+ }
+ 
+ impl StockPlot {
++    /// The shared A2App request used by this widget and its quote companions.
++    pub fn chart_url(symbol: &str, range: &str) -> String {
++        yahoo_chart_url(symbol, range)
++    }
++
++    /// Supply (Unix timestamp, close price) pairs from a host-owned provider.
++    /// Even an empty series disables automatic Yahoo requests. Timestamps are
++    /// displayed with `utc_offset` seconds added; samples retain their order.
++    pub fn set_series(
++        &mut self,
++        cx: &mut Cx,
++        samples: impl IntoIterator<Item = (f64, f64)>,
++        utc_offset: f64,
++    ) {
++        self.external_series = true;
++        self.url.clear();
++        self.closes.clear();
++        self.stamps.clear();
++        for (stamp, close) in samples {
++            if stamp.is_finite() && close.is_finite() {
++                self.stamps.push(stamp);
++                self.closes.push(close);
++            }
++        }
++        self.gmtoff = if utc_offset.is_finite() { utc_offset } else { 0.0 };
++        self.has_time = true;
++        self.loaded = self.closes.len() >= 2;
++        self.failed = !self.loaded;
++        self.selected_point = None;
++        self.redraw(cx);
++    }
++
++    /// Return to the widget's automatic symbol/range data source.
++    pub fn use_symbol_data(&mut self, cx: &mut Cx) {
++        self.external_series = false;
++        self.url.clear();
++        self.closes.clear();
++        self.stamps.clear();
++        self.loaded = false;
++        self.failed = false;
++        self.selected_point = None;
++        self.redraw(cx);
++    }
++
++    /// Highlight a sample by its index in the displayed series.
++    pub fn set_selected_point(&mut self, cx: &mut Cx, index: Option<usize>) {
++        self.selected_point = index.filter(|i| *i < self.closes.len());
++        self.redraw(cx);
++    }
++
+     /// Resolve the Yahoo chart URL for the current symbol×range and (re)load
+     /// the close series through the shared script-data-fetch cache.
+     fn ensure_data(&mut self, cx: &mut Cx) {
++        if self.external_series {
++            return;
++        }
+         if sanitize_ticker(&self.symbol).is_empty() {
+             // Cleared/garbage symbol: drop any previous ticker's series so we
+             // don't keep drawing a stale chart, and let the pump lapse.
+@@ -219,6 +278,7 @@ fn ensure_data(&mut self, cx: &mut Cx) {
+             self.failed = false;
+             self.closes.clear();
+             self.stamps.clear();
++            self.selected_point = None;
+         }
+         if self.loaded || self.failed {
+             return;
+@@ -409,6 +469,16 @@ fn draw_series(&mut self, cx: &mut Cx2d) {
+             .draw_polyline_data(&xs, &self.closes, color, line_width, LineStyle::Solid);
+         let (lpx, lpy) = self.plot_view.data_to_px((n - 1) as f64, self.closes[n - 1]);
+         self.plot_view.fill_circle_px(lpx, lpy, 3.0, color);
++        if let Some(i) = self.selected_point.filter(|i| *i < n) {
++            self.plot_view.draw_vline(
++                i as f64,
++                self.baseline_color,
++                1.0,
++                LineStyle::Dashed,
++            );
++            let (px, py) = self.plot_view.data_to_px(i as f64, self.closes[i]);
++            self.plot_view.fill_circle_px(px, py, 3.5, color);
++        }
+     }
+ 
+     /// Format a Unix timestamp for an x tick: exchange-local "HH:MM" for

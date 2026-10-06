@@ -1,0 +1,15 @@
+{
+  "provider": "OpenAI built-in image_gen",
+  "model": "not recorded",
+  "derived_from": "cards/finance-01/reference.png",
+  "derived_from_sha256": "a88ac2a7c9d418b429f17f005c65a016c1331628a6f4e9ab48a3ee7f6107a5b8",
+  "source_region_pixels": [
+    40,
+    392,
+    732,
+    248
+  ],
+  "image_sha256": "caea3e0f83228da5dc5d75836c10e80fd0d625da8295030c3ff49bf42bcfdf0c",
+  "original_prompt_sha256": "4a901e866001aafac3f4e1d73cfdc41d322f43201a2d3e9c9beae70701fc6c73",
+  "new_image_generation": false
+}

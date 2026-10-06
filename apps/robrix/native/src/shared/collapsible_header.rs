@@ -1,0 +1,192 @@
+//! This module defines a collapsible header wrapper with a triangle icon
+//! that indicates whether the header is expanded or collapsed.
+//!
+//! This widget can be clicked to toggle between expanded and collapsed.
+//!
+//! The collapsible header is *just* the header, it doesn't actually contain any content.
+//! This design is necessary because the header is drawn within a PortalList,
+//! and its content is also drawn within that PortalList separately from its content.
+
+use makepad_widgets::*;
+use makepad_widgets::animator::Animate;
+
+use crate::{app::AppState, home::rooms_list::RoomsListScopeProps, i18n::tr_key};
+
+use super::expand_arrow::ExpandArrow;
+use super::unread_badge::UnreadBadgeWidgetRefExt as _;
+
+script_mod! {
+    use mod.prelude.widgets.*
+    use mod.widgets.*
+
+
+    // Calm section-group header (no longer the legacy purple pill). The label is
+    // a secondary-tone section title on a transparent background; the collapse
+    // arrow is a faint tertiary glyph. See docs/ui-visual-spec-zh.md §2/§3.
+    mod.widgets.COLOR_HEADER_FG = (mod.widgets.RBX_FG_SECONDARY);
+
+    mod.widgets.COLOR_HEADER_BG = (mod.widgets.RBX_BG_CANVAS);
+
+    mod.widgets.CollapsibleHeader = set_type_default() do #(CollapsibleHeader::register_widget(vm)) {
+        ..mod.widgets.RoundedView
+
+        width: Fill,
+        height: 34,
+        align: Align{ x: 0.0, y: 0.5 },
+        margin: Inset{top: 6, bottom: 2, left: 0, right: 0},
+        padding: Inset{left: 4, right: 4, top: 0, bottom: 0}
+        flow: Right,
+
+        cursor: MouseCursor.Hand,
+        // Transparent group header — it sits directly on the page canvas.
+        show_bg: false,
+        draw_bg +: {
+            border_radius: 0.0
+        }
+
+        collapse_icon := mod.widgets.ExpandArrow {
+            width: 18, height: 18,
+            margin: Inset{left: 2, right: 6, top: 0, bottom: 0},
+            draw_bg.color: (RBX_FG_TERTIARY)
+        }
+
+        label := Label {
+            padding: 0,
+            width: Fill,
+            height: Fit,
+            text: "",
+            draw_text +: {
+                // Lighter weight than the bold section-title token — calmer group label.
+                text_style: REGULAR_TEXT { font_size: 12.5 },
+                color: (RBX_FG_SECONDARY),
+            }
+        }
+
+        unread_badge := UnreadBadge {
+            // Bottom margin nudges the badge up so its center lines up with the
+            // group label's glyphs (the label's Fit box sits low due to descent).
+            margin: Inset{right: 5.5, bottom: 4},
+        }
+    }
+}
+
+/// The categories of collapsible headers in the rooms list.
+#[derive(Copy, Clone, Debug, Default)]
+pub enum HeaderCategory {
+    /// Rooms the user has been invited to but has not yet joined.
+    Invites,
+    /// Joined rooms that the user has marked as favorites.
+    Favorites,
+    /// Joined rooms that are direct messages with other users.
+    DirectRooms,
+    /// Joined rooms that are not direct messages or favorites.
+    RegularRooms,
+    /// Joined rooms that the user has marked as low priority.
+    LowPriority,
+    /// Rooms that the user has left.
+    LeftRooms,
+    #[default]
+    None,
+}
+impl HeaderCategory {
+    fn i18n_key(&self) -> Option<&'static str> {
+        match self {
+            HeaderCategory::Invites => Some("rooms_list.category.invites"),
+            HeaderCategory::Favorites => Some("rooms_list.category.favorites"),
+            HeaderCategory::RegularRooms => Some("rooms_list.category.rooms"),
+            HeaderCategory::DirectRooms => Some("rooms_list.category.people"),
+            HeaderCategory::LowPriority => Some("rooms_list.category.low_priority"),
+            HeaderCategory::LeftRooms => Some("rooms_list.category.left_rooms"),
+            HeaderCategory::None => None,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default)]
+pub enum CollapsibleHeaderAction {
+    /// The header was clicked to toggled its expanded/collapsed state.
+    Toggled {
+        category: HeaderCategory,
+    },
+    #[default]
+    None,
+}
+
+#[derive(Script, ScriptHook, Widget)]
+pub struct CollapsibleHeader {
+    #[deref] view: View,
+    #[rust(true)] is_expanded: bool,
+    #[rust] category: HeaderCategory,
+    #[rust] num_unread_mentions: u64,
+}
+
+impl Widget for CollapsibleHeader {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, scope: &mut Scope) {
+        // Handle hits on this view as a whole before passing the event to the inner view.
+        let rooms_list_props = scope.props.get::<RoomsListScopeProps>().unwrap();
+        match event.hits(cx, self.view.area()) {
+            Hit::FingerDown(..) => {
+                cx.set_key_focus(self.view.area());
+            }
+            Hit::FingerUp(fe) if !rooms_list_props.was_scrolling && fe.is_over && fe.is_primary_hit() && fe.was_tap() => {
+                self.toggle_collapse(cx, scope);
+            }
+            Hit::FingerUp(_) => { }
+            _ => { }
+        }
+        self.view.handle_event(cx, event, scope);
+    }
+
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, walk: Walk) -> DrawStep {
+        // Set arrow and label state during draw to ensure child widgets are available.
+        let app_language = scope.data.get::<AppState>()
+            .map(|app_state| app_state.app_language)
+            .unwrap_or_default();
+        if let Some(mut arrow) = self.view.child_by_path(ids!(collapse_icon)).borrow_mut::<ExpandArrow>() {
+            arrow.set_is_open_no_animate(self.is_expanded);
+        }
+        self.view.child_by_path(ids!(label)).set_text(
+            cx,
+            self.category
+                .i18n_key()
+                .map_or("", |key| tr_key(app_language, key)),
+        );
+        self.view.child_by_path(ids!(unread_badge))
+            .as_unread_badge()
+            .update_counts(false, self.num_unread_mentions, 0);
+        self.view.draw_walk(cx, scope, walk)
+    }
+}
+
+impl CollapsibleHeader {
+    fn toggle_collapse(&mut self, cx: &mut Cx, _scope: &mut Scope) {
+        self.is_expanded = !self.is_expanded;
+        if let Some(mut arrow) = self.view.child_by_path(ids!(collapse_icon)).borrow_mut::<ExpandArrow>() {
+            arrow.set_is_open(cx, self.is_expanded, Animate::Yes);
+        }
+        self.redraw(cx);
+        cx.widget_action(
+            self.widget_uid(), 
+            CollapsibleHeaderAction::Toggled {
+                category: self.category,
+            },
+        );
+    }
+}
+
+impl CollapsibleHeaderRef {
+    /// Sets the category and expanded state of the header.
+    pub fn set_details(
+        &self,
+        _cx: &mut Cx,
+        is_expanded: bool,
+        category: HeaderCategory,
+        num_unread_mentions: u64,
+    ) {
+        if let Some(mut inner) = self.borrow_mut() {
+            inner.is_expanded = is_expanded;
+            inner.category = category;
+            inner.num_unread_mentions = num_unread_mentions;
+        }
+    }
+}

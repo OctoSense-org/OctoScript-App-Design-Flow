@@ -1,0 +1,1080 @@
+//! A `HtmlOrPlaintext` view can display either plaintext or rich HTML content.
+
+use std::borrow::Cow;
+use std::sync::Arc;
+
+use makepad_widgets::*;
+use matrix_sdk::{ruma::{matrix_uri::MatrixId, MatrixToUri, MatrixUri, RoomOrAliasId}, OwnedServerName};
+
+use crate::{avatar_cache::{self, AvatarCacheEntry}, profile::user_profile_cache, room_preview_cache::{self, CachedRoomPreview}, sliding_sync::current_user_id, utils};
+
+use super::avatar::{AvatarState, AvatarWidgetExt};
+
+/// The color of the text used to print the spoiler reason before the hidden text.
+const COLOR_SPOILER_REASON: Vec4 = vec4(0.6, 0.6, 0.6, 1.0);
+
+script_mod! {
+    use mod.prelude.widgets.*
+    use mod.widgets.*
+
+
+    // A pill-shaped widget that displays a Matrix link,
+    // either a link to a user, a room, or a message in a room.
+    //
+    // The outer widget derefs to View (not RoundedView), so we nest a
+    // RoundedView child to get the rounded background + border_radius shader.
+    mod.widgets.MatrixLinkPill = #(MatrixLinkPill::register_widget(vm)) {
+        width: Fit, height: Fit,
+        cursor: MouseCursor.Hand,
+
+        pill_bg := RoundedView {
+            width: Fit, height: Fit,
+            flow: Right,
+            align: Align{ y: 0.5 }
+            padding: Inset{ left: 6, right: 4, bottom: -3, top: -3 }
+            margin: Inset{ right: 1 }
+            spacing: 1,
+
+            show_bg: true,
+            // Two tiers, both drawn from the accent pair: a mention of someone
+            // else is a quiet soft chip, while a mention of *you* (or @room) is
+            // filled. Set from Rust per pill; these are the quiet defaults.
+            draw_bg +: {
+                color: (RBX_ACCENT_SOFT)
+                border_radius: 6.0
+            }
+
+            avatar := Avatar {
+                height: (MESSAGE_FONT_SIZE + 5), width: (MESSAGE_FONT_SIZE + 5),
+                // Opaque bg so transparent avatar images stay legible whichever
+                // tier the pill is drawn in.
+                img_view +: {
+                    show_bg: true,
+                    draw_bg +: { color: #fff }
+                }
+                text_view +: {
+                    text +: {
+                        draw_text +: {
+                            text_style: TITLE_TEXT { font_size: (MESSAGE_FONT_SIZE - 2) }
+                        }
+                    }
+                }
+            }
+
+            title := Label {
+                flow: Right, // do not wrap
+                draw_text +: {
+                    color: (RBX_ACCENT),
+                    // line_spacing 1.0 prevents the label's row height from
+                    // inflating the pill vertically (pill is single-line).
+                    text_style: MESSAGE_TEXT_STYLE { font_size: (MESSAGE_FONT_SIZE), line_spacing: 1.0 },
+                }
+                text: "Unknown",
+            }
+        }
+    }
+
+    // A RobrixHtmlLink is either a regular Html link (default) or a Matrix link.
+    // The Matrix link is a pill-shaped widget with an avatar and a title.
+    //
+    // Drawing notes (see `RobrixHtmlLink::draw_walk` for the full story):
+    // * `html_link` is a direct child, NOT wrapped in an intermediate View.
+    //   `HtmlLink::draw_walk` draws inline text into the parent `TextFlow`'s
+    //   turtle; any surrounding View would open its own turtle and break the
+    //   inline wrap math. So `draw_walk` calls `html_link.draw_walk` directly
+    //   (bypassing `self.view.draw_walk`) for the inline-text path.
+    // * `matrix_link_view` IS a View (a pill is an atomic inline block with its
+    //   own turtle). `draw_walk` calls `matrix_link_view.draw_walk` directly
+    //   (also bypassing `self.view.draw_walk`) for the pill path.
+    // * Neither path goes through `self.view.draw_walk`, which would iterate
+    //   ALL children — and since `HtmlLink` has no `visible` field (so its
+    //   `visible()` is always `true`), it would double-draw alongside the pill.
+    mod.widgets.RobrixHtmlLink = #(RobrixHtmlLink::register_widget(vm)) {
+        width: Fit, height: Fit,
+        align: Align{ y: 0.5 },
+
+        html_link := HtmlLink {
+            hover_color: (RBX_LINK_HOVER)
+            grab_key_focus: false,
+            padding: Inset{left: 1.0, right: 1.5},
+        }
+
+        matrix_link_view := View {
+            visible: false
+            width: Fit, height: Fit,
+
+            matrix_link := mod.widgets.MatrixLinkPill { }
+        }
+    }
+
+    // This is an HTML subwidget used to handle `<font>` and `<span>` tags,
+    // specifically: foreground text color, background color, and spoilers.
+    mod.widgets.MatrixHtmlSpan = #(MatrixHtmlSpan::register_widget(vm)) {
+        width: Fit, height: Fit,
+        align: Align{x: 0., y: 0.}
+    }
+
+
+    // A centralized widget where we define styles and custom elements for HTML
+    // message content. This is a wrapper around Makepad's built-in `Html` widget.
+    mod.widgets.MessageHtml = Html {
+        padding: 0.0,
+        width: Fill, height: Fit, // see comment in `HtmlOrPlaintext`
+        // `RowAlign.Center` vertically centers each walk on its row. With the
+        // per-row FinishedWalk support in draw_walk_resumable_with, each visual
+        // row of wrapped text gets its own walk entry, so centering applies
+        // correctly even when a pill and multi-row text share the first line.
+        flow: Flow.Right{wrap: true, row_align: RowAlign.Center},
+        align: Align{ y: 0.5 }
+        font_size: (MESSAGE_FONT_SIZE),
+        font_color: (MESSAGE_TEXT_COLOR),
+        draw_text +: { color: (MESSAGE_TEXT_COLOR) }
+        text_style_normal: mod.widgets.MESSAGE_TEXT_STYLE {
+            font_size: (MESSAGE_FONT_SIZE)
+            line_spacing: (MESSAGE_TEXT_LINE_SPACING)
+        }
+        text_style_italic: theme.font_italic {
+            font_size: (MESSAGE_FONT_SIZE)
+            line_spacing: (MESSAGE_TEXT_LINE_SPACING)
+        }
+        text_style_bold: BOLD_TEXT {
+            font_size: (MESSAGE_FONT_SIZE)
+            line_spacing: (MESSAGE_TEXT_LINE_SPACING)
+        }
+        text_style_bold_italic: theme.font_bold_italic {
+            font_size: (MESSAGE_FONT_SIZE)
+            line_spacing: (MESSAGE_TEXT_LINE_SPACING)
+        }
+        text_style_fixed: theme.font_code {
+            font_size: (MESSAGE_FONT_SIZE)
+            line_spacing: (MESSAGE_TEXT_LINE_SPACING)
+            top_drop: 0.11
+        }
+        draw_block +: {
+            line_color: (MESSAGE_TEXT_COLOR)
+            sep_color: (MESSAGE_TEXT_COLOR)
+            // Inline `code` keeps the light inset surface: it sits mid-sentence
+            // in a light bubble, where a dark chip reads as a redaction bar.
+            code_color: (RBX_BG_SUNKEN)
+            quote_bg_color: (RBX_BG_SUNKEN)
+            quote_fg_color: (MESSAGE_TEXT_COLOR)
+
+            // A fenced block is its own panel, so it gets the dark code
+            // surface (spec §4.7). Upstream's shader fills both the block and
+            // the inline branch from the single `code_color` uniform, which is
+            // why the two could not be told apart before; this adds a second
+            // uniform and overrides `pixel` to use it for the block branch
+            // only. Every other branch is upstream's, unchanged.
+            //
+            // Only blocks that `colorize_code_blocks` could prove are plain
+            // text get light text to sit on this, so the fill is applied there
+            // rather than here — see that function.
+            block_code_color: instance((RBX_CODE_BG))
+
+            pixel: fn() {
+                let sdf = Sdf2d.viewport(self.pos * self.rect_size)
+                match self.block_type {
+                    FlowBlockType.Quote => {
+                        sdf.box(0. 0. self.rect_size.x self.rect_size.y 2.)
+                        sdf.fill(self.quote_bg_color)
+                        sdf.box(self.space_1 self.space_1 self.space_1 self.rect_size.y-self.space_2 1.5)
+                        sdf.fill(self.quote_fg_color)
+                        return sdf.result
+                    }
+                    FlowBlockType.Sep => {
+                        sdf.box(0. 1. self.rect_size.x-1. self.rect_size.y-2. 2.)
+                        sdf.fill(self.sep_color)
+                        return sdf.result
+                    }
+                    FlowBlockType.Code => {
+                        sdf.box(0. 0. self.rect_size.x self.rect_size.y 2.)
+                        sdf.fill(self.block_code_color)
+                        return sdf.result
+                    }
+                    FlowBlockType.InlineCode => {
+                        sdf.box(1. 1. self.rect_size.x-2. self.rect_size.y-2. 2.)
+                        sdf.fill(self.code_color)
+                        return sdf.result
+                    }
+                    FlowBlockType.Underline => {
+                        sdf.box(0. self.rect_size.y-2. self.rect_size.x 2.0 0.5)
+                        sdf.fill(self.line_color)
+                        return sdf.result
+                    }
+                    FlowBlockType.Strikethrough => {
+                        sdf.box(0. self.rect_size.y * 0.45 self.rect_size.x 2.0 0.5)
+                        sdf.fill(self.line_color)
+                        return sdf.result
+                    }
+                    FlowBlockType.Selection => {
+                        return vec4(self.selection_color.rgb * self.selection_color.a, self.selection_color.a)
+                    }
+                    FlowBlockType.TableCell => {
+                        sdf.rect(0. 0. self.rect_size.x self.rect_size.y)
+                        sdf.fill(self.table_header_bg_color)
+                        let pos = self.pos * self.rect_size
+                        if pos.x > self.rect_size.x - 1.0
+                            || pos.y > self.rect_size.y - 1.0
+                        {
+                            return self.table_border_color
+                        }
+                        return sdf.result
+                    }
+                }
+                return #f00
+            }
+        }
+
+        quote_layout: Layout{ flow: Flow.Right{wrap: true, row_align: RowAlign.Center}, spacing: 0, padding: Inset{left: 15, top: 10.0, bottom: 10.0}, }
+        quote_walk: Walk{ margin: Inset{ top: 5, bottom: 5, left: 0 } }
+
+        sep_walk: Walk{ margin: Inset{ top: 10, bottom: 10 } }
+
+        list_item_layout: Layout{ flow: Flow.Right{wrap: true, row_align: RowAlign.Center}, padding: Inset{left: 5.0, top: 1.0, bottom: 1.0}, }
+        list_item_marker_pad: 8.0
+        list_item_walk: Walk{ margin: Inset{ left: 0, right: 0, top: 1, bottom: 3 } }
+        code_layout: Layout{ padding: Inset{top: 15.0, bottom: 15.0, left: 15, right: 5 } }
+        code_walk: Walk{ margin: Inset{ top: 10, bottom: 10, left: 0, right: 0 } }
+
+        heading_margin: Inset{ top: 1.0, bottom: 0.1 }
+        paragraph_margin: Inset{ top: 0.33, bottom: 0.33 }
+
+        inline_code_padding: Inset{top: 3, bottom: 3, left: 4, right: 4 }
+        inline_code_margin: Inset{ left: 3, right: 3, bottom: 2, top: 2 }
+
+        font := mod.widgets.MatrixHtmlSpan { }
+        span := mod.widgets.MatrixHtmlSpan { }
+        a := mod.widgets.RobrixHtmlLink { }
+
+        body: "[<i>HTML message placeholder</i>]",
+    }
+
+    // A view container that displays either plaintext (a simple `Label`)
+    // or rich HTML content (an instance of `MessageHtml`).
+    //
+    // Key Usage Notes:
+    // * Labels need their width to be Fill *and* all of their parent views
+    //   also need to have their width set to Fill. Otherwise, the label
+    //   won't wrap text properly.
+    // * They also need their height to be Fit along with all of their parent views,
+    //   otherwise their total height will be zero (when a Fit is inside of a Fill),
+    //   resulting in nothing being displayed.
+    mod.widgets.HtmlOrPlaintext = #(HtmlOrPlaintext::register_widget(vm)) {
+        width: Fill, height: Fit, // see above comment
+        flow: Overlay
+
+        plaintext_view := View {
+            visible: true,
+            width: Fill, height: Fit, // see above comment
+            pt_label := Label {
+                width: Fill, height: Fit, // see above comment
+                flow: Flow.Right{wrap: true},
+                padding: 0,
+                draw_text +: {
+                    color: (MESSAGE_TEXT_COLOR),
+                    text_style: mod.widgets.MESSAGE_TEXT_STYLE { font_size: (MESSAGE_FONT_SIZE) },
+                }
+            }
+        }
+
+        html_view := View {
+            visible: false,
+            width: Fill, height: Fit, // see above comment
+            html := mod.widgets.MessageHtml {}
+        }
+    }
+}
+
+#[derive(Debug, Clone, Default)]
+pub enum RobrixHtmlLinkAction{
+    ClickedMatrixLink {
+        /// The URL of the link, which is only temporarily needed here
+        /// because we don't fully handle MatrixId links directly in-app yet.
+        url: String,
+        matrix_id: MatrixId,
+        via: Vec<OwnedServerName>,
+        key_modifiers: KeyModifiers,
+    },
+    #[default]
+    None,
+}
+
+/// A RobrixHtmlLink is either a regular `HtmlLink` (default) or a Matrix link.
+///
+/// Matrix links are displayed using the [`MatrixLinkPill`] widget.
+#[derive(Script, Widget)]
+struct RobrixHtmlLink {
+    #[deref] view: View,
+
+    /// The displayable text of the link.
+    /// This should be set automatically by the Html widget
+    /// when it parses and draws an Html `<a>` tag.
+    #[live] pub text: ArcStringMut,
+    /// The URL of the link.
+    /// This is set by the `on_after_new_scoped()` hook below.
+    #[live] pub url: String,
+}
+
+impl ScriptHook for RobrixHtmlLink {
+    fn on_after_new_scoped(&mut self, _vm: &mut ScriptVm, scope: &mut Scope) {
+        if let Some(doc) = scope.props.get::<makepad_html::HtmlDoc>() {
+            let mut walker = doc.new_walker_with_index(scope.index + 1);
+            while let Some((lc, attr)) = walker.while_attr_lc() {
+                match lc {
+                    live_id!(href) => {
+                        self.url = attr.into();
+                        break;
+                    }
+                    _ => { }
+                }
+            }
+        }
+    }
+}
+
+impl Widget for RobrixHtmlLink {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, scope: &mut Scope) {
+        self.view.handle_event(cx, event, scope)
+    }
+
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, walk: Walk) -> DrawStep {
+        // If the URL is a Matrix user/room/event link, render it as a pill.
+        // Otherwise fall back to an inline-wrapping HTML link.
+        if let Ok(matrix_to_uri) = MatrixToUri::parse(&self.url) {
+            return self.draw_matrix_pill(cx, scope, walk, matrix_to_uri.id(), matrix_to_uri.via());
+        } else if let Ok(matrix_uri) = MatrixUri::parse(&self.url) {
+            return self.draw_matrix_pill(cx, scope, walk, matrix_uri.id(), matrix_uri.via());
+        }
+        self.draw_html_link(cx, scope, walk)
+    }
+
+    fn text(&self) -> String {
+        self.text.as_ref().to_string()
+    }
+
+    fn set_text(&mut self, cx: &mut Cx, v: &str) {
+        self.text.as_mut_empty().push_str(v);
+        self.redraw(cx);
+    }
+}
+
+impl RobrixHtmlLink {
+    /// Draws the Matrix link pill as an atomic inline block.
+    ///
+    /// The pill is drawn via `matrix_link_view.draw_walk` directly (not
+    /// `self.view.draw_walk`). Its turtle allocates the pill's natural height
+    /// in the parent TextFlow. `RowAlign::Center` on the parent `MessageHtml`
+    /// handles vertical centering: at each visual-row boundary, `finish_row`
+    /// shifts shorter items (text) down so their vertical centers align with
+    /// the tallest item (the pill) on that row.
+    fn draw_matrix_pill(
+        &mut self,
+        cx: &mut Cx2d,
+        scope: &mut Scope,
+        walk: Walk,
+        matrix_id: &MatrixId,
+        via: &[OwnedServerName],
+    ) -> DrawStep {
+        if let Some(mut pill) = self.matrix_link_pill(cx, ids!(matrix_link)).borrow_mut() {
+            pill.populate_pill(cx, self.url.clone(), matrix_id, via, self.text.as_ref());
+        }
+        let matrix_link_view_ref = self.view(cx, ids!(matrix_link_view));
+        matrix_link_view_ref.set_visible(cx, true);
+        let Some(mut matrix_link_view) = matrix_link_view_ref.borrow_mut() else {
+            return DrawStep::done();
+        };
+        matrix_link_view.draw_walk(cx, scope, walk)
+    }
+
+    /// Draws the inner `HtmlLink` as inline wrapping text.
+    ///
+    /// We invoke `HtmlLink::draw_walk` directly rather than going through
+    /// `self.view.draw_walk`. Going through the outer View would open a new
+    /// turtle, which in turn would become the turtle that `tf.draw_text()`
+    /// reads inside `HtmlLink::draw_walk` — that turtle has `width: Fit` and
+    /// therefore no wrap bound, so the link text would refuse to break across
+    /// lines. By calling `draw_walk` directly on the `HtmlLink`, the current
+    /// turtle remains the parent Html widget's `TextFlow` turtle, which has
+    /// the full message width and wraps correctly.
+    fn draw_html_link(
+        &mut self,
+        cx: &mut Cx2d,
+        scope: &mut Scope,
+        walk: Walk,
+    ) -> DrawStep {
+        // Hide the pill view in case we're switching away from pill mode.
+        // (No-op if it was already hidden.) `HtmlLink` has no `visible` field
+        // so there's nothing analogous to set on it.
+        self.view(cx, ids!(matrix_link_view)).set_visible(cx, false);
+
+        let mut html_link_ref = self.html_link(cx, ids!(html_link));
+        html_link_ref.set_url(&self.url);
+        html_link_ref.set_text(cx, self.text.as_ref());
+
+        let Some(mut html_link) = html_link_ref.borrow_mut() else {
+            return DrawStep::done();
+        };
+        html_link.draw_walk(cx, scope, walk)
+    }
+}
+
+/// A pill-shaped widget that shows a Matrix link as an avatar and a title.
+///
+/// This can be a link to a user, a room, or an event in a room.
+#[derive(Script, ScriptHook, Widget)]
+struct MatrixLinkPill {
+    #[deref] view: View,
+
+    #[rust] matrix_id: Option<MatrixId>,
+    #[rust] via: Vec<OwnedServerName>,
+    #[rust] url: String,
+}
+
+impl Widget for MatrixLinkPill {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, _scope: &mut Scope) {
+        if matches!(event, Event::Signal) {
+            room_preview_cache::process_room_preview_updates(cx);
+            if self.matrix_id.is_some() {
+                self.redraw(cx);
+            }
+        }
+
+        // Handle hover (to set the cursor) and click in a single hit-test,
+        // avoiding the overhead of event-propagation to all child widgets.
+        match event.hits(cx, self.area()) {
+            Hit::FingerHoverIn(_) | Hit::FingerHoverOver(_) => {
+                if let Some(cursor) = self.cursor {
+                    cx.set_cursor(cursor);
+                }
+            }
+            Hit::FingerUp(fe) if fe.is_over && fe.is_primary_hit() && fe.was_tap() => {
+                if let Some(matrix_id) = self.matrix_id.clone() {
+                    cx.widget_action(
+                        self.widget_uid(),
+                        RobrixHtmlLinkAction::ClickedMatrixLink {
+                            matrix_id,
+                            via: self.via.clone(),
+                            key_modifiers: fe.modifiers,
+                            url: self.url.clone(),
+                        }
+                    );
+                }
+            }
+            _ => (),
+        }
+    }
+
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, walk: Walk) -> DrawStep {
+        self.view.draw_walk(cx, scope, walk)
+    }
+
+    fn set_text(&mut self, cx: &mut Cx, v: &str) {
+        self.label(cx, ids!(title)).set_text(cx, v);
+    }
+}
+
+impl MatrixLinkPill {
+    /// Populates this pill's info based on the given Matrix ID and via servers.
+    fn populate_pill(&mut self, cx: &mut Cx, url: String, matrix_id: &MatrixId, via: &[OwnedServerName], link_text: &str) {
+        self.url = url;
+        self.matrix_id = Some(matrix_id.clone());
+        self.via = via.to_vec();
+
+        let is_room_mention = link_text == "@room";
+        let is_self_mention = matches!(matrix_id, MatrixId::User(uid) if current_user_id().is_some_and(|u| &u == uid));
+
+        // A mention that targets the local user (or the whole room) is filled
+        // with the accent so it stands out mid-sentence; every other mention
+        // stays a quiet soft chip. Both branches always write both the fill and
+        // the label colour — a cached pill reused for a different link after an
+        // edit must not keep the previous pill's emphasis.
+        {
+            let mut pill_bg = self.view(cx, ids!(pill_bg));
+            let mut title = self.label(cx, ids!(pill_bg.title));
+            if is_room_mention || is_self_mention {
+                script_apply_eval!(cx, pill_bg, { draw_bg +: { color: (mod.widgets.RBX_ACCENT) } });
+                script_apply_eval!(cx, title, { draw_text +: { color: (mod.widgets.RBX_FG_ON_ACCENT) } });
+            } else {
+                script_apply_eval!(cx, pill_bg, { draw_bg +: { color: (mod.widgets.RBX_ACCENT_SOFT) } });
+                script_apply_eval!(cx, title, { draw_text +: { color: (mod.widgets.RBX_ACCENT) } });
+            }
+        }
+
+        // Handle a user ID link by querying the user profile cache.
+        if let MatrixId::User(user_id) = matrix_id {
+            let (name, avatar_state) = match user_profile_cache::with_user_profile(
+                cx,
+                user_id.clone(),
+                None,
+                true,
+                |profile, _| { (profile.displayable_name().to_owned(), profile.avatar_state.clone()) }
+            ) {
+                Some(pair) => pair,
+                None => (user_id.to_string(), AvatarState::Unknown),
+            };
+            self.set_text(cx, &name);
+            self.populate_avatar(cx, &avatar_state, &name);
+            return;
+        }
+
+        // Handle a room ID, alias, or event link by querying the room preview cache.
+        let room_or_alias_id: Option<&RoomOrAliasId> = match matrix_id {
+            MatrixId::Room(room_id) => Some((&**room_id).into()),
+            MatrixId::RoomAlias(alias) => Some((&**alias).into()),
+            MatrixId::Event(room_or_alias, _) => Some(room_or_alias),
+            _ => None,
+        };
+        if let Some(room_or_alias_id) = room_or_alias_id {
+            if let CachedRoomPreview::Loaded { room_name_id, room_avatar } =
+                room_preview_cache::get_or_fetch_room_preview(cx, room_or_alias_id, via)
+            {
+                // `RoomNameId::Display` would print "Room ID !xyz:server" for
+                // empty names; the pill should show just the bare room ID
+                // instead, matching the pre-cache behavior.
+                let resolved_name = if room_name_id.is_empty() {
+                    room_name_id.room_id().as_str().to_owned()
+                } else {
+                    room_name_id.to_string()
+                };
+                // For @room mentions, show "@room" as the title, not the room name.
+                let display_name = if is_room_mention { "@room" } else { resolved_name.as_str() };
+                self.label(cx, ids!(title)).set_text(cx, display_name);
+                self.populate_avatar(cx, &room_avatar, display_name);
+                return;
+            }
+        }
+        // While waiting for the async request to complete, show "@room" or the room ID/alias.
+        let fallback_name = if is_room_mention {
+            "@room".to_owned()
+        } else {
+            match matrix_id {
+                MatrixId::Room(room_id) => room_id.as_str().to_owned(),
+                MatrixId::RoomAlias(alias) => alias.as_str().to_owned(),
+                MatrixId::Event(room_or_alias, _) => format!("Message in {}", room_or_alias.as_str()),
+                _ => String::new(),
+            }
+        };
+        self.set_text(cx, &fallback_name);
+        self.populate_avatar(cx, &AvatarState::Unknown, &fallback_name);
+    }
+
+    /// Renders the pill avatar from the given [`AvatarState`], falling back to
+    /// a text avatar built from `display_name` when no image is available.
+    ///
+    /// Handles all paths the pill needs:
+    /// * `Loaded(bytes)` — paint bytes directly (room link cache).
+    /// * `Known(Some(uri))` — fetch bytes via [`avatar_cache`] (user link).
+    /// * `Known(None)` / `Unknown` / `Failed` — text fallback.
+    fn populate_avatar(&self, cx: &mut Cx, avatar: &AvatarState, display_name: &str) {
+        let avatar_ref = self.avatar(cx, ids!(avatar));
+        let bytes: Option<Arc<[u8]>> = match avatar {
+            AvatarState::Loaded(data) => Some(data.clone()),
+            AvatarState::Known(Some(uri)) => match avatar_cache::get_or_fetch_avatar(cx, uri) {
+                AvatarCacheEntry::Loaded(data) => Some(data),
+                _ => None,
+            },
+            _ => None,
+        };
+        if let Some(data) = bytes {
+            let res = avatar_ref.show_image(
+                cx,
+                None, // Don't make this avatar clickable
+                |cx, img_ref| utils::load_png_or_jpg(&img_ref, cx, &data),
+            );
+            if res.is_ok() {
+                return;
+            }
+        }
+        avatar_ref.show_text(cx, None, None, display_name);
+    }
+}
+
+
+/// A widget used to display a single HTML `<span>` tag or a `<font>` tag.
+#[derive(Script, Widget)]
+struct MatrixHtmlSpan {
+    #[uid] uid: WidgetUid,
+    // TODO: this is unused; just here to invalidly satisfy the area provider.
+    //       I'm not sure how to implement `fn area()` given that it has multiple area rects.
+    #[redraw] #[area] area: Area,
+
+    // TODO: remove these if they're unneeded
+    #[walk] walk: Walk,
+    #[layout] layout: Layout,
+
+    #[rust] drawn_areas: SmallVec<[Area; 2]>,
+
+    /// Whether to grab key focus when pressed.
+    #[live(true)] grab_key_focus: bool,
+
+    /// The text content within the `<span>` tag.
+    #[live] text: ArcStringMut,
+    /// The current display state of the spoiler.
+    #[rust] spoiler: SpoilerDisplay,
+    /// Foreground (text) color: the `data-mx-color` or `color` attributes.
+    #[rust] fg_color: Option<Vec4>,
+    /// Background color: the `data-mx-bg-color` attribute.
+    #[rust] bg_color: Option<Vec4>,
+}
+
+impl ScriptHook for MatrixHtmlSpan {
+    // After an MatrixHtmlSpan instance has been instantiated, we must
+    // populate its struct fields from the `<span>` or `<font>` tag's attributes.
+    fn on_after_new_scoped(&mut self, _vm: &mut ScriptVm, scope: &mut Scope) {
+        // The attributes we care about (we allow all attributes in both tags):
+        // * in `<font>` tags: `color`
+        // * in `<span>` tags: `data-mx-color`, `data-mx-bg-color`, `data-mx-spoiler`
+        if let Some(doc) = scope.props.get::<makepad_html::HtmlDoc>() {
+            let mut walker = doc.new_walker_with_index(scope.index + 1);
+            while let Some((lc, attr)) = walker.while_attr_lc() {
+                let attr = attr.trim_matches(['"', '\'']);
+                match lc {
+                    id!(color)
+                    | id!(data-mx-color) => self.fg_color = utils::vec4_from_hex_str(attr),
+                    id!(data-mx-bg-color) => self.bg_color = utils::vec4_from_hex_str(attr),
+                    id!(data-mx-spoiler) => self.spoiler = SpoilerDisplay::Hidden { reason: attr.into() },
+                    _ => ()
+                }
+            }
+        }
+    }
+}
+
+
+
+
+/// The possible states that a spoiler can be in: hidden or revealed.
+///
+/// The enclosed `reason` string is an optional reason given for why
+/// the text is hidden; if empty, then no reason was given.
+#[derive(Default, Debug)]
+enum SpoilerDisplay {
+    /// There is no spoiler at all.
+    #[default]
+    None,
+    /// The spoiler text is hidden, with an optional reason given.
+    Hidden { reason: String },
+    /// The spoiler text is revealed, with an optional reason given.
+    Revealed { reason: String },
+}
+impl SpoilerDisplay {
+    /// Toggles the spoiler's display state.
+    fn toggle(&mut self) {
+        match self {
+            SpoilerDisplay::Hidden { reason } => {
+                let s = std::mem::take(reason);
+                *self = SpoilerDisplay::Revealed { reason: s };
+            }
+            SpoilerDisplay::Revealed { reason } => {
+                let s = std::mem::take(reason);
+                *self = SpoilerDisplay::Hidden { reason: s };
+            }
+            SpoilerDisplay::None => { }
+        }
+    }
+
+    /// Returns `true` if this spoiler is not `None`, i.e., if it's `Hidden` or `Revealed`.
+    fn is_some(&self) -> bool {
+        !matches!(self, SpoilerDisplay::None)
+    }
+}
+
+impl Widget for MatrixHtmlSpan {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, _scope: &mut Scope) {
+        let mut needs_redraw = false;
+        for area in &self.drawn_areas {
+            match event.hits(cx, *area) {
+                Hit::FingerDown(..) if self.grab_key_focus => {
+                    cx.set_key_focus(self.area);
+                }
+                Hit::FingerHoverIn(..) if self.spoiler.is_some() => {
+                    cx.set_cursor(MouseCursor::Hand);
+                }
+                Hit::FingerUp(fe) if fe.is_over && fe.is_primary_hit() && fe.was_tap() => {
+                    self.spoiler.toggle();
+                    needs_redraw = true;
+                }
+                _ => (),
+            }
+        }
+        if needs_redraw {
+            for area in &self.drawn_areas {
+                cx.redraw_area(*area);
+            }
+        }
+    }
+
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, _walk: Walk) -> DrawStep {
+        let Some(tf) = scope.data.get_mut::<TextFlow>() else {
+            return DrawStep::done();
+        };
+
+        // Here: the text flow has already began drawing,
+        // so we just need to tweak the formatting and draw the text.
+        tf.areas_tracker.push_tracker();
+        let mut pushed_color = false;
+        let mut pushed_inline_code = false;
+        let mut old_code_color = None;
+
+        if let Some(fg_color) = self.fg_color {
+            tf.font_colors.push(fg_color);
+            pushed_color = true;
+        }
+
+        if let Some(bg_color) = self.bg_color {
+            // Reuse the inline code drawblock to set the background color.
+            tf.inline_code.push();
+            pushed_inline_code = true;
+            old_code_color = Some(tf.draw_block.code_color);
+            tf.draw_block.code_color = bg_color;
+        }
+
+        match &self.spoiler {
+            SpoilerDisplay::Hidden { reason }
+            | SpoilerDisplay::Revealed { reason } => {
+                // Draw the spoiler reason text in an italic gray font.
+                tf.font_colors.push(COLOR_SPOILER_REASON);
+                tf.italic.push();
+                // tf.push_size_rel_scale(0.8);
+                if reason.is_empty() {
+                    tf.draw_text(cx, " [Spoiler]  ");
+                } else {
+                    tf.draw_text(cx, &format!(" [Spoiler: {}]  ", reason));
+                }
+                // tf.font_sizes.pop();
+                tf.italic.pop();
+                tf.font_colors.pop();
+
+                // Now, draw the spoiler context text itself, either hidden or revealed.
+                if matches!(self.spoiler, SpoilerDisplay::Hidden {..}) {
+                    // Use a background color that is the same as the foreground color,
+                    // which is a hacky way to make the spoiled text non-readable.
+                    // In the future, we should use a proper blur effect.
+                    let spoiler_bg_color = self.fg_color
+                        .or_else(|| tf.font_colors.last().copied())
+                        .unwrap_or(tf.font_color);
+
+                    tf.inline_code.push();
+                    let old_bg_color = tf.draw_block.code_color;
+                    tf.draw_block.code_color = spoiler_bg_color;
+
+                    tf.draw_text(cx, self.text.as_ref());
+
+                    tf.draw_block.code_color = old_bg_color;
+                    tf.inline_code.pop();
+
+                } else {
+                    tf.draw_text(cx, self.text.as_ref());
+                }
+            }
+            SpoilerDisplay::None => {
+                tf.draw_text(cx, self.text.as_ref());
+            }
+        }
+
+        if pushed_color {
+            tf.font_colors.pop();
+        }
+        if pushed_inline_code {
+            tf.inline_code.pop();
+        }
+        if let Some(old_code_color) = old_code_color {
+            tf.draw_block.code_color = old_code_color;
+        }
+
+        let (start, end) = tf.areas_tracker.pop_tracker();
+        self.drawn_areas = SmallVec::from(
+            &tf.areas_tracker.areas[start..end]
+        );
+
+        DrawStep::done()
+    }
+
+    fn text(&self) -> String {
+        self.text.as_ref().to_string()
+    }
+
+    fn set_text(&mut self, cx: &mut Cx, v: &str) {
+        self.text.as_mut_empty().push_str(v);
+        self.area.redraw(cx);
+    }
+}
+
+
+#[derive(ScriptHook, Script, Widget)]
+pub struct HtmlOrPlaintext {
+    #[source] source: ScriptObjectRef,
+    #[deref] view: View,
+}
+
+impl Widget for HtmlOrPlaintext {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, scope: &mut Scope) {
+        self.view.handle_event(cx, event, scope)
+    }
+
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, walk: Walk) -> DrawStep {
+        self.view.draw_walk(cx, scope, walk)
+    }
+}
+
+impl HtmlOrPlaintext {
+    /// Sets the plaintext content and makes it visible, hiding the rich HTML content.
+    pub fn show_plaintext<T: AsRef<str>>(&mut self, cx: &mut Cx, text: T) {
+        self.view(cx, ids!(html_view)).set_visible(cx, false);
+        self.view(cx, ids!(plaintext_view)).set_visible(cx, true);
+        self.label(cx, ids!(plaintext_view.pt_label)).set_text(cx, text.as_ref());
+    }
+
+    /// Sets the HTML content, making the HTML visible and the plaintext invisible.
+    pub fn show_html<T: AsRef<str>>(&mut self, cx: &mut Cx, html_body: T) {
+        let body = colorize_code_blocks(html_body.as_ref());
+        self.html(cx, ids!(html_view.html)).set_text(cx, body.as_ref());
+        self.view(cx, ids!(html_view)).set_visible(cx, true);
+        self.view(cx, ids!(plaintext_view)).set_visible(cx, false);
+    }
+}
+
+/// Wraps the body of each plain-text `<pre>` block in a `<font color=…>` so
+/// the code reads against the dark panel `MessageHtml` now paints behind it.
+///
+/// ## Why markup, and not a property
+///
+/// `TextFlow` takes its text colour from exactly one place — the top of its
+/// `font_colors` stack — and `Html` never pushes anything onto that stack for
+/// `<pre>`. There is no per-block text colour to set, so the colour has to
+/// enter through the document. `<font>` is dispatched to `MatrixHtmlSpan`,
+/// which does push `font_colors`, which makes it the only lever available from
+/// outside the widget.
+///
+/// ## Why only plain-text blocks
+///
+/// `Html` treats a `<font>` as a *leaf*: `handle_custom_widget` draws
+/// `find_text()` — the first text node, nothing more — and then calls
+/// `jump_to_close()` to skip the rest of the element. Wrapping a block that
+/// contains markup (a bridge that ships pre-highlighted code, say) would
+/// therefore render its first line and silently drop everything after it. So
+/// a block is rewritten only once it is known to hold nothing but text; any
+/// other block is left exactly as it was, on the light surface it has today.
+fn colorize_code_blocks(html: &str) -> Cow<'_, str> {
+    /// `RBX_CODE_FG`, the light body colour that pairs with `RBX_CODE_BG`.
+    const CODE_FG: &str = "#D7DEE8";
+
+    if !html.contains("<pre") {
+        return Cow::Borrowed(html);
+    }
+
+    let mut out = String::with_capacity(html.len() + 64);
+    let mut rest = html;
+
+    while let Some(pre_at) = rest.find("<pre") {
+        // Everything up to and including the `<pre …>` open tag is copied
+        // verbatim; the rewrite only ever touches the block's body.
+        let after_open = match rest[pre_at..].find('>') {
+            Some(gt) => pre_at + gt + 1,
+            None => break, // Malformed: no close bracket. Leave the tail alone.
+        };
+        let Some(close_rel) = rest[after_open..].find("</pre") else {
+            break; // Unterminated block; copying the tail verbatim is the safe end.
+        };
+        let close_at = after_open + close_rel;
+
+        out.push_str(&rest[..after_open]);
+        let body = &rest[after_open..close_at];
+
+        match plain_code_body(body) {
+            Some((prefix, text, suffix)) => {
+                out.push_str(prefix);
+                out.push_str("<font color=\"");
+                out.push_str(CODE_FG);
+                out.push_str("\">");
+                out.push_str(text);
+                out.push_str("</font>");
+                out.push_str(suffix);
+            }
+            None => out.push_str(body),
+        }
+
+        rest = &rest[close_at..];
+    }
+
+    if out.is_empty() {
+        return Cow::Borrowed(html);
+    }
+    out.push_str(rest);
+    Cow::Owned(out)
+}
+
+/// Splits a `<pre>` body into `(prefix, text, suffix)` when the text is safe to
+/// wrap, or returns `None` when it is not.
+///
+/// Safe means the body is either bare text, or a single `<code …>` element
+/// holding bare text — no other tags at any depth. Anything else keeps its
+/// current rendering rather than risking the truncation described on
+/// [`colorize_code_blocks`].
+fn plain_code_body(body: &str) -> Option<(&str, &str, &str)> {
+    let trimmed = body.trim_start_matches(['\n', '\r']);
+    let leading = &body[..body.len() - trimmed.len()];
+
+    let (prefix, inner, suffix) = if trimmed.starts_with("<code") {
+        let open_end = trimmed.find('>')? + 1;
+        let close_at = trimmed.rfind("</code")?;
+        if close_at < open_end {
+            return None;
+        }
+        (&body[..leading.len() + open_end], &trimmed[open_end..close_at], &trimmed[close_at..])
+    } else {
+        (leading, trimmed, "")
+    };
+
+    // A single `<` anywhere in the body means markup we would drop.
+    if inner.contains('<') || inner.is_empty() {
+        return None;
+    }
+    Some((prefix, inner, suffix))
+}
+
+impl HtmlOrPlaintextRef {
+    /// See [`HtmlOrPlaintext::show_plaintext()`].
+    pub fn show_plaintext<T: AsRef<str>>(&self, cx: &mut Cx, text: T) {
+        if let Some(mut inner) = self.borrow_mut() {
+            inner.show_plaintext(cx, text);
+        }
+    }
+
+    /// See [`HtmlOrPlaintext::show_html()`].
+    pub fn show_html<T: AsRef<str>>(&self, cx: &mut Cx, html_body: T) {
+        if let Some(mut inner) = self.borrow_mut() {
+            inner.show_html(cx, html_body);
+        }
+    }
+
+    /// Sets the color of links in the HTML content.
+    ///
+    /// This modifies the cached `HtmlLink` widget instances inside the inner
+    /// `Html` widget's `TextFlow` items. On the very first draw (before items
+    /// are created), this is a no-op, but subsequent frames will have the
+    /// correct color.
+    pub fn set_link_color(&self, cx: &mut Cx, color: Option<Vec4>) {
+        if let Some(mut inner) = self.borrow_mut() {
+            inner.set_link_color(cx, color);
+        }
+    }
+}
+
+impl HtmlOrPlaintext {
+    /// See [`HtmlOrPlaintextRef::set_link_color()`].
+    pub fn set_link_color(&mut self, cx: &mut Cx, color: Option<Vec4>) {
+        let html_ref = self.html(cx, ids!(html_view.html));
+        let Some(mut html) = html_ref.borrow_mut() else { return };
+        // Iterate over cached TextFlow items (auto-generated IDs start at 1)
+        // until we hit a non-existent item.
+        let mut i = 1u64;
+        loop {
+            let item = html.existing_item(LiveId(i));
+            if item.is_empty() { break; }
+            // Check if this item is a RobrixHtmlLink and modify its inner HtmlLink.
+            if let Some(link) = item.borrow_mut::<RobrixHtmlLink>() {
+                let mut html_link = link.html_link(cx, ids!(html_link));
+                match color {
+                    Some(c) => {
+                        script_apply_eval!(cx, html_link, {
+                            color: #(c)
+                        });
+                    }
+                    None => {
+                        script_apply_eval!(cx, html_link, {
+                            color: nil
+                        });
+                    }
+                }
+            }
+            i += 1;
+        }
+    }
+}
+
+#[cfg(test)]
+mod code_block_tests {
+    use super::colorize_code_blocks;
+
+    const FG: &str = "#D7DEE8";
+
+    #[test]
+    fn leaves_bodies_without_a_pre_block_untouched() {
+        let html = "<p>hello <code>inline</code> world</p>";
+        assert_eq!(colorize_code_blocks(html), html);
+    }
+
+    #[test]
+    fn wraps_a_plain_pre_code_block() {
+        let out = colorize_code_blocks("<pre><code>let x = 1;</code></pre>");
+        assert_eq!(
+            out,
+            format!("<pre><code><font color=\"{FG}\">let x = 1;</font></code></pre>"),
+        );
+    }
+
+    #[test]
+    fn wraps_a_pre_block_with_no_inner_code_element() {
+        let out = colorize_code_blocks("<pre>plain</pre>");
+        assert_eq!(out, format!("<pre><font color=\"{FG}\">plain</font></pre>"));
+    }
+
+    #[test]
+    fn keeps_the_language_class_on_the_code_element() {
+        let out = colorize_code_blocks("<pre><code class=\"language-rust\">fn main() {}</code></pre>");
+        assert!(out.contains("<code class=\"language-rust\"><font"), "got: {out}");
+    }
+
+    #[test]
+    fn preserves_multiple_lines_verbatim() {
+        let out = colorize_code_blocks("<pre><code>one\ntwo\nthree</code></pre>");
+        assert!(out.contains("one\ntwo\nthree"), "got: {out}");
+    }
+
+    /// The whole reason for the plain-text restriction: `<font>` is drawn as a
+    /// leaf, so wrapping markup would render the first text node and drop the
+    /// rest. Such a block must come back byte-for-byte unchanged.
+    #[test]
+    fn refuses_to_wrap_a_block_containing_markup() {
+        let html = "<pre><code><span class=\"k\">fn</span> main() {}</code></pre>";
+        assert_eq!(colorize_code_blocks(html), html);
+    }
+
+    #[test]
+    fn rewrites_every_block_in_a_message() {
+        let out = colorize_code_blocks("<pre><code>a</code></pre><p>x</p><pre><code>b</code></pre>");
+        assert_eq!(out.matches("<font color=").count(), 2, "got: {out}");
+        assert!(out.contains("<p>x</p>"), "got: {out}");
+    }
+
+    /// A block that isn't wrappable must not stop a later one from being
+    /// wrapped, and must survive unchanged itself.
+    #[test]
+    fn a_skipped_block_does_not_affect_the_next_one() {
+        let out = colorize_code_blocks("<pre><code><b>a</b></code></pre><pre><code>b</code></pre>");
+        assert!(out.contains("<code><b>a</b></code>"), "got: {out}");
+        assert_eq!(out.matches("<font color=").count(), 1, "got: {out}");
+    }
+
+    #[test]
+    fn leaves_an_unterminated_block_alone() {
+        let html = "<pre><code>oops";
+        assert_eq!(colorize_code_blocks(html), html);
+    }
+
+    #[test]
+    fn leaves_an_empty_block_alone() {
+        let html = "<pre><code></code></pre>";
+        assert_eq!(colorize_code_blocks(html), html);
+    }
+
+    /// Entities are decoded by the parser, not by us — they must reach it
+    /// intact rather than being treated as the markup they look like.
+    #[test]
+    fn passes_escaped_markup_through_as_text() {
+        let out = colorize_code_blocks("<pre><code>if a &lt; b {}</code></pre>");
+        assert!(out.contains("if a &lt; b {}"), "got: {out}");
+        assert!(out.contains("<font color="), "got: {out}");
+    }
+}

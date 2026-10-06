@@ -78,7 +78,8 @@ def main():
                 if not result['pass']:
                     raise ValueError('Semantic mapping failed: ' + scene['design_id'])
             elif args.stage == 'compile':
-                result = compile_page(directory)
+                font_root = project / 'native' if (project / 'native').is_dir() else None
+                result = compile_page(directory, font_root=font_root)
             elif args.stage == 'capture':
                 from studio import launch, capture, click_controls
                 compile_page(directory)

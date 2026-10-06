@@ -1,0 +1,463 @@
+//! The RoomsListHeader contains the title label and loading spinner for rooms list.
+//!
+//! This widget is designed to be reused across both Desktop and Mobile variants 
+//! of the RoomsSideBar to avoid code duplication.
+
+use std::mem::discriminant;
+
+use makepad_widgets::*;
+use matrix_sdk_ui::sync_service::State;
+
+use crate::{
+    app::AppState,
+    avatar_cache,
+    home::add_menu::{AddMenuAction, ADD_MENU_WIDTH},
+    home::navigation_tab_bar::{NavigationBarAction, SelectedTab},
+    i18n::{AppLanguage, tr_key},
+    profile::user_profile_cache,
+    room_preview_cache,
+    settings::app_preferences::effective_is_desktop,
+    shared::{
+        image_viewer::{ImageViewerAction, ImageViewerError, LoadState},
+        popup_list::{PopupKind, enqueue_popup_notification},
+    },
+};
+
+script_mod! {
+    use mod.prelude.widgets.*
+    use mod.widgets.*
+
+
+    mod.widgets.RoomsListHeader = #(RoomsListHeader::register_widget(vm)) {
+        width: Fill,
+        height: Fit,
+        padding: Inset{bottom: 4}
+        flow: Right,
+        align: Align{y: 0.5}
+        spacing: 3,
+
+        // Back button — mobile only. Shown when a space is selected so the user
+        // can leave the space and return to the full "All Rooms" list (on desktop
+        // the spaces rail handles this, so it stays hidden there). Visibility is
+        // driven imperatively from `handle_event` on `TabSelected`.
+        back_button := View {
+            visible: false,
+            width: Fit,
+            height: Fit
+            margin: Inset{left: 2, right: 1}
+            flow: Overlay,
+
+            Icon {
+                draw_icon +: {
+                    svg: (ICON_ARROW_BACK)
+                    color: (RBX_FG_SECONDARY)
+                }
+                icon_walk: Walk{width: 18, height: Fit, margin: Inset{bottom: 2}}
+            }
+
+            back_click_area := Button {
+                width: (RBX_CONTROL_H_SM),
+                height: (RBX_CONTROL_H_SM)
+                padding: Inset{top: 6, bottom: 6, left: 6, right: 6}
+                spacing: 0,
+                text: ""
+                draw_bg +: {
+                    color: #0000
+                    color_hover: #0000
+                    color_down: #0000
+                    border_color: #0000
+                    border_color_hover: #0000
+                    border_color_down: #0000
+                    border_color_focus: #0000
+                    border_size: 0.0
+                    border_radius: 0.0
+                }
+                draw_text +: {
+                    color: #0000
+                    color_hover: #0000
+                    color_down: #0000
+                    color_focus: #0000
+                }
+                icon_walk: Walk{width: 0, height: 0}
+            }
+        }
+
+        header_title := Label {
+            width: Fill,
+            height: Fit,
+            padding: 0
+            margin: Inset{left: 5}
+            flow: Right, // do not wrap
+            text: "All Rooms"
+            draw_text +: {
+                color: (RBX_FG_PRIMARY)
+                // Regular weight (thinner) — reads as a title via size, not boldness.
+                text_style: REGULAR_TEXT { font_size: 14 }
+            }
+        },
+
+        // (The mobile "spaces" toggle icon was removed: switching to spaces is now
+        // the `Workspace` tab in the home screen's tab row — see `RoomsSideBar`.)
+
+        // Mobile-only "+" that opens the add menu (New room / DM / Join / Explore).
+        // Hidden by default; the mobile `RoomsSideBar` turns it on (this header is
+        // shared with the desktop sidebar, where the "+" lives in the rail instead).
+        open_add_room_button := View {
+            visible: false,
+            width: Fit,
+            height: Fit
+            margin: Inset{right: 1}
+            flow: Overlay,
+
+            Icon {
+                draw_icon +: {
+                    svg: (ICON_ADD)
+                    color: (RBX_FG_SECONDARY)
+                }
+                icon_walk: Walk{width: 20, height: Fit, margin: Inset{bottom: 2}}
+            }
+
+            add_click_area := Button {
+                width: (RBX_CONTROL_H_SM),
+                height: (RBX_CONTROL_H_SM)
+                padding: Inset{top: 6, bottom: 6, left: 6, right: 6}
+                spacing: 0,
+                text: ""
+                draw_bg +: {
+                    color: #0000
+                    color_hover: #0000
+                    color_down: #0000
+                    border_color: #0000
+                    border_color_hover: #0000
+                    border_color_down: #0000
+                    border_color_focus: #0000
+                    border_size: 0.0
+                    border_radius: 0.0
+                }
+                draw_text +: {
+                    color: #0000
+                    color_hover: #0000
+                    color_down: #0000
+                    color_focus: #0000
+                }
+                icon_walk: Walk{width: 0, height: 0}
+            }
+        }
+
+        // Sized rather than Fit so the transparent click_area below fills a
+        // real hit target instead of shrink-wrapping the 18px icon (spec §7.1
+        // touch/pointer targets).
+        open_directory_button := View {
+            width: (RBX_CONTROL_H_SM),
+            height: (RBX_CONTROL_H_SM)
+            margin: Inset{right: 1}
+            flow: Overlay,
+            align: Align{x: 0.5, y: 0.5}
+
+            Icon {
+                draw_icon +: {
+                    svg: (ICON_HIERARCHY)
+                    color: (RBX_FG_SECONDARY)
+                }
+                icon_walk: Walk{width: 18, height: Fit, margin: Inset{bottom: 2}}
+            }
+
+            directory_click_area := Button {
+                // Explicit size: the parent is Fit-shrunk by the header row, so Fill
+                // resolves smaller than the 32dp minimum target.
+                width: (RBX_CONTROL_H_SM),
+                height: (RBX_CONTROL_H_SM)
+                padding: Inset{top: 6, bottom: 6, left: 6, right: 6}
+                spacing: 0,
+                text: ""
+                draw_bg +: {
+                    color: #0000
+                    color_hover: #0000
+                    color_down: #0000
+                    border_color: #0000
+                    border_color_hover: #0000
+                    border_color_down: #0000
+                    border_color_focus: #0000
+                    border_size: 0.0
+                    border_radius: 0.0
+                }
+                draw_text +: {
+                    color: #0000
+                    color_hover: #0000
+                    color_down: #0000
+                    color_focus: #0000
+                }
+                icon_walk: Walk{width: 0, height: 0}
+            }
+        }
+
+        open_room_filter_modal_button := View {
+            width: (RBX_CONTROL_H_SM),
+            height: (RBX_CONTROL_H_SM)
+            margin: Inset{right: 1}
+            flow: Overlay,
+            align: Align{x: 0.5, y: 0.5}
+
+            Icon {
+                draw_icon +: {
+                    svg: (ICON_SEARCH)
+                    color: (RBX_FG_SECONDARY)
+                }
+                icon_walk: Walk{width: 18, height: Fit, margin: Inset{bottom: 2}}
+            }
+
+            click_area := Button {
+                width: (RBX_CONTROL_H_SM),
+                height: (RBX_CONTROL_H_SM)
+                padding: Inset{top: 6, bottom: 6, left: 6, right: 6}
+                spacing: 0,
+                text: ""
+                draw_bg +: {
+                    color: #0000
+                    color_hover: #0000
+                    color_down: #0000
+                    border_color: #0000
+                    border_color_hover: #0000
+                    border_color_down: #0000
+                    border_color_focus: #0000
+                    border_size: 0.0
+                    border_radius: 0.0
+                }
+                draw_text +: {
+                    color: #0000
+                    color_hover: #0000
+                    color_down: #0000
+                    color_focus: #0000
+                }
+                icon_walk: Walk{width: 0, height: 0}
+            }
+        }
+
+        View {
+            width: Fit, height: Fit,
+            margin: Inset{right: 3}
+            flow: Overlay,
+
+            loading_spinner := LoadingSpinner {
+                visible: false,
+                width: 20,
+                height: 20,
+                draw_bg +: {
+                    color: (RBX_ACCENT)
+                    border_size: 3.0
+                }
+            }
+
+            offline_icon := View {
+                visible: false,
+                width: Fit, height: Fit,
+                Icon {
+                    draw_icon +: {
+                        svg: (ICON_CLOUD_OFFLINE),
+                        color: (RBX_DANGER_FG),
+                    }
+                    icon_walk: Walk{width: 25, height: Fit, margin: Inset{left: 1, bottom: 1}}
+                }
+            }
+
+            synced_icon := View {
+                visible: true,
+                width: Fit, height: Fit,
+                Icon {
+                    draw_icon +: {
+                        svg: (ICON_CLOUD_CHECKMARK),
+                        color: (RBX_SUCCESS_FG),
+                    }
+                    icon_walk: Walk{width: 25, height: Fit, margin: Inset{left: 1, bottom: 2}}
+                }
+            }
+        }
+    }
+}
+
+#[derive(Script, ScriptHook, Widget)]
+pub struct RoomsListHeader {
+    #[deref] view: View,
+
+    #[rust(State::Idle)] sync_state: State,
+    #[rust] app_language: AppLanguage,
+    #[rust] showing_space_title: bool,
+}
+
+impl Widget for RoomsListHeader {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, scope: &mut Scope) {
+        let app_language = scope.data.get::<AppState>()
+            .map(|app_state| app_state.app_language)
+            .unwrap_or_default();
+        if self.app_language != app_language {
+            self.set_app_language(cx, app_language);
+        }
+        if let Event::Actions(actions) = event {
+            if self.view.button(cx, ids!(back_button.back_click_area)).clicked(actions) {
+                // Leave the currently-selected space and return to the full rooms list.
+                cx.action(NavigationBarAction::GoToHome);
+            }
+            if self.view.button(cx, ids!(open_add_room_button.add_click_area)).clicked(actions) {
+                // Anchor the add menu below the "+" button, right-aligned to it.
+                let rect = self.view.view(cx, ids!(open_add_room_button)).area().rect(cx);
+                cx.action(AddMenuAction::Open {
+                    pos: dvec2(
+                        rect.pos.x + rect.size.x - ADD_MENU_WIDTH,
+                        rect.pos.y + rect.size.y + 4.0,
+                    ),
+                });
+            }
+            if self.view.button(cx, ids!(open_directory_button.directory_click_area)).clicked(actions) {
+                cx.action(NavigationBarAction::GoToDirectory);
+            }
+            if self.view.button(cx, ids!(open_room_filter_modal_button.click_area)).clicked(actions) {
+                cx.action(RoomsListHeaderAction::OpenRoomFilterModal);
+            }
+
+            for action in actions {
+                match action.downcast_ref() {
+                    Some(RoomsListHeaderAction::SetSyncStatus(is_syncing)) => {
+                        // If we are offline, keep showing the offline_icon,
+                        // as showing the loading_spinner would be misleading if we're offline.
+                        if matches!(self.sync_state, State::Offline) {
+                            continue;
+                        }
+                        self.view.view(cx, ids!(loading_spinner)).set_visible(cx, *is_syncing);
+                        self.view.view(cx, ids!(synced_icon)).set_visible(cx, !*is_syncing);
+                        self.view.view(cx, ids!(offline_icon)).set_visible(cx, false);
+                        self.redraw(cx);
+                        continue;
+                    }
+                    Some(RoomsListHeaderAction::StateUpdate(new_state)) => {
+                        if discriminant(&self.sync_state) == discriminant(new_state) {
+                            continue;
+                        }
+                        if matches!(new_state, State::Offline) {
+                            self.view.view(cx, ids!(loading_spinner)).set_visible(cx, false);
+                            self.view.view(cx, ids!(synced_icon)).set_visible(cx, false);
+                            self.view.view(cx, ids!(offline_icon)).set_visible(cx, true);
+                            enqueue_popup_notification(
+                                tr_key(self.app_language, "rooms_list_header.popup.offline"),
+                                PopupKind::Error,
+                                Some(4.0),
+                            );
+                            // Since there is no timeout for fetching media, send an action to ImageViewer when syncing is offline.
+                            cx.action(ImageViewerAction::Show(LoadState::Error(ImageViewerError::Offline)));
+                        } else if matches!(self.sync_state, State::Offline) {
+                            // Transitioning away from Offline: reset to the default
+                            // loading state so the sync indicator can take over again.
+                            self.view.view(cx, ids!(loading_spinner)).set_visible(cx, true);
+                            self.view.view(cx, ids!(synced_icon)).set_visible(cx, false);
+                            self.view.view(cx, ids!(offline_icon)).set_visible(cx, false);
+
+                            // Clear stale `Requested`/`Failed` entries from global caches,
+                            // as any requests submitted while offline have likely failed,
+                            // leaving entries that permanently block re-fetching.
+                            // Note: per-room caches (media, link preview) are cleared
+                            // by RoomScreen in response to the StateUpdate action.
+                            user_profile_cache::clear_all_pending_requests();
+                            avatar_cache::clear_all_pending_and_failed_requests();
+                            room_preview_cache::clear_all_pending_requests();
+                            // Now that we're no longer offline, we also need to tell the
+                            // ProfileIcon to refresh itself and fetch our own user's profile again.
+                            SignalToUI::set_ui_signal();
+                        }
+                        self.sync_state = new_state.clone();
+                        self.redraw(cx);
+                        continue;
+                    }
+                    _ => {}
+                }
+
+                if let Some(NavigationBarAction::TabSelected(tab)) = action.downcast_ref() {
+                    let header_title = self.view.label(cx, ids!(header_title));
+                    let show_back = match tab {
+                        SelectedTab::Space { space_name_id } => {
+                            header_title.set_text(cx, &space_name_id.to_string());
+                            self.showing_space_title = true;
+                            // On mobile there's no spaces rail to step out of a space,
+                            // so surface a back button that returns to "All Rooms".
+                            !effective_is_desktop(cx)
+                        }
+                        _ => {
+                            header_title.set_text(cx, tr_key(self.app_language, "rooms_list_header.title.all_rooms"));
+                            self.showing_space_title = false;
+                            false
+                        }
+                    };
+                    self.view.view(cx, ids!(back_button)).set_visible(cx, show_back);
+                    self.redraw(cx);
+                    continue;
+                }
+            }
+        }
+
+        // Show tooltips for the sync status icons.
+        for (view, text, bg_color) in [
+            (self.view.view(cx, ids!(loading_spinner)), tr_key(self.app_language, "rooms_list_header.tooltip.syncing"), crate::shared::design_tokens::RBX_ACCENT),
+            (self.view.view(cx, ids!(offline_icon)), tr_key(self.app_language, "rooms_list_header.tooltip.offline"), crate::shared::design_tokens::RBX_DANGER_FG),
+            (self.view.view(cx, ids!(synced_icon)), tr_key(self.app_language, "rooms_list_header.tooltip.synced"), crate::shared::design_tokens::RBX_SUCCESS_FG),
+        ] {
+            if !view.visible() {
+                continue;
+            }
+            match event.hits(cx, view.area()) {
+                Hit::FingerLongPress(_) | Hit::FingerHoverIn(_) => {
+                    cx.widget_action(
+                        self.widget_uid(),
+                        TooltipAction::HoverIn {
+                            text: text.to_string(),
+                            widget_rect: view.area().rect(cx),
+                            options: CalloutTooltipOptions {
+                                text_color: vec4(1.0, 1.0, 1.0, 1.0), // COLOR_PRIMARY
+                                bg_color,
+                                position: TooltipPosition::Left,
+                                ..Default::default()
+                            },
+                        },
+                    );
+                }
+                Hit::FingerHoverOut(_) => {
+                    cx.widget_action(self.widget_uid(), TooltipAction::HoverOut);
+                }
+                _ => {}
+            }
+        }
+
+        self.view.handle_event(cx, event, scope);
+    }
+
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, walk: Walk) -> DrawStep {
+        let app_language = scope.data.get::<AppState>()
+            .map(|app_state| app_state.app_language)
+            .unwrap_or_default();
+        if self.app_language != app_language {
+            self.set_app_language(cx, app_language);
+        }
+        self.view.draw_walk(cx, scope, walk)
+    }
+}
+
+impl RoomsListHeader {
+    fn set_app_language(&mut self, cx: &mut Cx, app_language: AppLanguage) {
+        self.app_language = app_language;
+        if !self.showing_space_title {
+            self.view
+                .label(cx, ids!(header_title))
+                .set_text(cx, tr_key(self.app_language, "rooms_list_header.title.all_rooms"));
+        }
+        self.view.redraw(cx);
+    }
+}
+
+/// Actions that can be handled by the `RoomsListHeader`.
+#[derive(Debug)]
+pub enum RoomsListHeaderAction {
+    /// Open the rooms/spaces filter modal.
+    OpenRoomFilterModal,
+    /// An action received by the RoomsListHeader that will show or hide
+    /// its sync status indicator (and loading spinner) based on the given boolean.
+    SetSyncStatus(bool),
+    /// An action received by the RoomsListHeader indicating the sync service state has changed.
+    StateUpdate(State),
+}

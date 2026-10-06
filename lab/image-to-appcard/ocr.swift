@@ -8,7 +8,7 @@ let cg=image.cgImage(forProposedRect:&rect,context:nil,hints:nil)!
 let request=VNRecognizeTextRequest()
 request.recognitionLevel = .accurate
 request.usesLanguageCorrection = false
-request.recognitionLanguages=["en-US"]
+request.recognitionLanguages=["zh-Hans", "en-US"]
 try VNImageRequestHandler(cgImage:cg).perform([request])
 let rows=(request.results ?? []).compactMap { row -> [String:Any]? in
  guard let text=row.topCandidates(1).first else{return nil}

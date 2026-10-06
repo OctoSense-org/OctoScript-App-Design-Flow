@@ -1,0 +1,1187 @@
+//! The SpacesBar shows a scrollable strip of avatars,
+//! one per space that the user has currently joined.
+//!
+//! Like the NavigationTabBar, this widget uses AdaptiveView to show:
+//! 1. a narrow vertical strip, when in Desktop (widescreen) mode,
+//! 2. a wide, short horizontal strip, when in Mobile (narrowscreen) mode.
+
+use std::collections::HashMap;
+
+use crossbeam_queue::SegQueue;
+use makepad_widgets::*;
+use matrix_sdk::{RoomDisplayName, RoomState};
+use ruma::{OwnedRoomAliasId, OwnedRoomId, room::JoinRuleSummary};
+
+use crate::{
+    app::AppState, home::{add_room::CreateRoomAction, navigation_tab_bar::{NavigationBarAction, SelectedTab}, rooms_list::RoomsListRef}, i18n::{AppLanguage, tr_fmt, tr_key}, logout::logout_confirm_modal::LogoutAction, room::{FetchedRoomAvatar, room_display_filter::{RoomDisplayFilter, RoomDisplayFilterBuilder, RoomFilterCriteria}}, settings::app_preferences::{effective_is_desktop, AppPreferencesAction, ViewModeOverride}, shared::{avatar::AvatarWidgetRefExt, design_tokens::{RBX_FG_SECONDARY, RBX_NAV_FG}, room_filter_input_bar::MainFilterAction, unread_badge::UnreadBadgeWidgetRefExt}, sliding_sync::AccountSwitchAction, utils::{self, RoomNameId}
+};
+
+script_mod! {
+    use mod.prelude.widgets.*
+    use mod.widgets.*
+
+    // The duration of the animation when showing/hiding the SpacesBar (in Mobile view mode only).
+    mod.widgets.SPACES_BAR_ANIMATION_DURATION_SECS = 0.25
+
+    // An entry in the list of all spaces, which shown the Space's avatar and name.
+    mod.widgets.SpacesBarEntry = set_type_default() do #(SpacesBarEntry::register_widget(vm)) {
+        // ..mod.widgets.RoundedView // TODO: I don't think this is needed if we use our own draw_bg shader
+
+        width: (NAVIGATION_TAB_BAR_SIZE - 5),
+        height: (NAVIGATION_TAB_BAR_SIZE - 5),
+        // Overlay so the unread badge can sit on the avatar's top-right corner
+        // instead of taking a row in the layout.
+        flow: Overlay
+        padding: 5,
+        margin: 3,
+        align: Align{x: 0.5, y: 0.5}
+        cursor: MouseCursor.Hand
+
+        show_bg: true
+        draw_bg +: {
+            hover: instance(0.0)
+            active: instance(0.0)
+
+            color: instance(#0000)
+            // Teal selection wash, kept translucent so it reads on BOTH the dark
+            // desktop rail AND the light mobile spaces strip (this entry template is
+            // shared by both). The strong selection signal is the teal bar below.
+            color_hover: instance((RBX_ACCENT_WASH_HOVER))
+            color_active: instance((RBX_ACCENT_WASH_ACTIVE))
+            accent_color: instance((RBX_ACCENT))
+
+            border_color: instance(#0000)
+            border_size: uniform(0.0)
+            border_radius: uniform(4.0)
+            border_inset: uniform(vec4(0.0))
+
+            get_color: fn() -> vec4 {
+                return mix(
+                    mix(
+                        self.color,
+                        self.color_hover,
+                        self.hover
+                    ),
+                    self.color_active,
+                    self.active
+                )
+            }
+
+            pixel: fn() {
+                let sdf = Sdf2d.viewport(self.pos * self.rect_size)
+                sdf.box(
+                    self.border_inset.x + self.border_size,
+                    self.border_inset.y + self.border_size,
+                    self.rect_size.x - (self.border_inset.x + self.border_inset.z + self.border_size * 2.0),
+                    self.rect_size.y - (self.border_inset.y + self.border_inset.w + self.border_size * 2.0),
+                    max(1.0, self.border_radius)
+                )
+                sdf.fill_keep(self.get_color())
+                if self.border_size > 0.0 {
+                    sdf.stroke(self.border_color, self.border_size)
+                }
+                // Teal selection bar on the left edge, shown only when active.
+                let bar_inset = 16.0
+                sdf.box(
+                    0.0,
+                    bar_inset,
+                    3.0,
+                    self.rect_size.y - bar_inset * 2.0,
+                    1.5
+                )
+                sdf.fill(mix(vec4(0.0, 0.0, 0.0, 0.0), self.accent_color, self.active))
+                return sdf.result;
+            }
+        }
+
+        entry_content := View {
+            width: Fill
+            height: Fill
+            flow: Down
+            align: Align{x: 0.5, y: 0.5}
+
+            avatar := Avatar {
+                width: mod.widgets.NAVIGATION_TAB_BAR_AVATAR_SIZE
+                height: mod.widgets.NAVIGATION_TAB_BAR_AVATAR_SIZE
+                // If no avatar picture, use white text on the teal identity square
+                // (RBX_IDENTITY_TEAL) — reads well on both the dark rail and light strip.
+                text_view +: {
+                    draw_bg.color: (RBX_IDENTITY_TEAL),
+                    text +: {
+                        draw_text +: {
+                            text_style: REGULAR_TEXT { font_size: mod.widgets.NAVIGATION_TAB_BAR_AVATAR_FONT_SIZE },
+                            color: (COLOR_PRIMARY),
+                        }
+                    }
+                }
+            }
+
+            space_name := Label {
+                width: Fill,
+                // height: Fit
+                height: 0,
+                flow: Flow.Right{wrap: false}, // do not wrap
+                padding: 0,
+                align: Align{x: 0.5}
+                max_lines: 1
+                text_overflow: Ellipsis
+                draw_text +: {
+                    active: instance(0.0)
+                    hover: instance(0.0)
+                    down: instance(0.0)
+
+                    color: (RBX_NAV_FG)
+                    color_hover: uniform(RBX_NAV_FG_ACTIVE)
+                    color_active: uniform(RBX_NAV_FG_ACTIVE)
+
+                    // text_style: BOLD_TEXT {font_size: 9}
+                    text_style: REGULAR_TEXT {font_size: 9}
+
+                    get_color: fn() {
+                        return mix(
+                            mix(
+                                self.color,
+                                self.color_hover,
+                                self.hover
+                            ),
+                            self.color_active,
+                            self.active
+                        )
+                    }
+                }
+            }
+        }
+
+        // Unread badge pinned to the entry's top-right corner, above the avatar.
+        unread_badge_layer := View {
+            width: Fill
+            height: Fill
+            align: Align{x: 1.0, y: 0.0}
+
+            unread_badge := UnreadBadge {}
+        }
+
+        animator: Animator {
+            hover: {
+                default: @off
+                off: AnimatorState{
+                    from: {all: Forward {duration: 0.15}}
+                    apply: {
+                        draw_bg: {down: [{time: 0.0, value: 0.0}], hover: 0.0}
+                        entry_content: { space_name: { draw_text: {down: [{time: 0.0, value: 0.0}], hover: 0.0} } }
+                    }
+                }
+                on: AnimatorState{
+                    from: {all: Snap}
+                    apply: {
+                        draw_bg: {down: [{time: 0.0, value: 0.0}], hover: 1.0}
+                        entry_content: { space_name: { draw_text: {down: [{time: 0.0, value: 0.0}], hover: 1.0} } }
+                    }
+                }
+                down: AnimatorState{
+                    from: {all: Forward {duration: 0.2}}
+                    apply: {
+                        draw_bg: {down: [{time: 0.0, value: 1.0}], hover: 1.0,}
+                        entry_content: { space_name: { draw_text: {down: [{time: 0.0, value: 1.0}], hover: 1.0,} } }
+                    }
+                }
+            }
+            active: {
+                default: @off
+                off: AnimatorState{
+                    from: {all: Snap}
+                    apply: {
+                        draw_bg: {active: 0.0}
+                        entry_content: { space_name: { draw_text: {active: 0.0} } }
+                    }
+                }
+                on: AnimatorState{
+                    from: {all: Snap}
+                    apply: {
+                        draw_bg: {active: 1.0}
+                        entry_content: { space_name: { draw_text: {active: 1.0} } }
+                    }
+                }
+            }
+        }
+    }
+
+    // A full-width "workspace row" for the mobile Workspace tab's vertical spaces
+    // list: [avatar] [space name (Fill)] [room count] [chevron]. It is a SECOND
+    // template of the SpacesBarEntry widget, so it reuses the same tap handling
+    // (SpacesBarAction::ButtonClicked -> GoToSpace) and selection animator contract
+    // — only the layout differs from the desktop rail's avatar-box entry.
+    mod.widgets.SpacesListRow = #(SpacesBarEntry::register_widget(vm)) {
+        width: Fill,
+        height: 56,
+        flow: Right,
+        align: Align{x: 0.0, y: 0.5}
+        padding: Inset{left: 14, right: 12}
+        margin: 0,
+        cursor: MouseCursor.Hand
+
+        show_bg: true
+        draw_bg +: {
+            hover: instance(0.0)
+            active: instance(0.0)
+            down: instance(0.0)
+            // Transparent default; a faint dark wash on hover/press (reads on the
+            // white mobile surface), plus a teal accent bar on the left edge.
+            color: instance(#0000)
+            color_hover: instance((RBX_DIVIDER))
+            accent_color: instance((RBX_ACCENT))
+
+            pixel: fn() {
+                let sdf = Sdf2d.viewport(self.pos * self.rect_size)
+                sdf.rect(0.0, 0.0, self.rect_size.x, self.rect_size.y)
+                sdf.fill(mix(self.color, self.color_hover, self.hover))
+                let bar_inset = 14.0
+                sdf.box(
+                    0.0,
+                    bar_inset,
+                    3.0,
+                    self.rect_size.y - bar_inset * 2.0,
+                    1.5
+                )
+                sdf.fill(mix(vec4(0.0, 0.0, 0.0, 0.0), self.accent_color, self.active))
+                return sdf.result;
+            }
+        }
+
+        avatar := Avatar {
+            width: 36, height: 36,
+            text_view +: {
+                draw_bg.color: (RBX_IDENTITY_TEAL),
+                text +: {
+                    draw_text +: {
+                        text_style: REGULAR_TEXT { font_size: 15 },
+                        color: (COLOR_PRIMARY),
+                    }
+                }
+            }
+        }
+
+        space_name := Label {
+            width: Fill, height: Fit,
+            margin: Inset{left: 12}
+            max_lines: 1,
+            text_overflow: Ellipsis,
+            draw_text +: {
+                color: (RBX_FG_PRIMARY)
+                text_style: BOLD_TEXT { font_size: 11.5 }
+            }
+            text: ""
+        }
+
+        unread_badge := UnreadBadge {
+            margin: Inset{left: 8}
+        }
+
+        room_count := Label {
+            width: Fit, height: Fit,
+            margin: Inset{left: 8, right: 8}
+            draw_text +: {
+                color: (RBX_FG_SECONDARY)
+                text_style: REGULAR_TEXT { font_size: 9.5 }
+            }
+            text: ""
+        }
+
+        chevron := Icon {
+            width: 16, height: 16,
+            draw_icon +: { svg: (ICON_CHEVRON_RIGHT), color: (RBX_FG_TERTIARY) }
+            icon_walk: Walk{ width: 16, height: 16 }
+        }
+
+        animator: Animator {
+            hover: {
+                default: @off
+                off: AnimatorState { from: {all: Forward {duration: 0.15}} apply: { draw_bg: {down: snap(0.0), hover: 0.0} } }
+                on: AnimatorState { from: {all: Snap} apply: { draw_bg: {down: snap(0.0), hover: 1.0} } }
+                down: AnimatorState { from: {all: Forward {duration: 0.1}} apply: { draw_bg: {down: snap(1.0), hover: 1.0} } }
+            }
+            active: {
+                default: @off
+                off: AnimatorState { from: {all: Snap} apply: { draw_bg: {active: 0.0} } }
+                on: AnimatorState { from: {all: Snap} apply: { draw_bg: {active: 1.0} } }
+            }
+        }
+    }
+
+    mod.widgets.SpacesStatusLabel = View {
+        width: (NAVIGATION_TAB_BAR_SIZE),
+        height: (NAVIGATION_TAB_BAR_SIZE),
+        align: Align{ x: 0.5, y: 0.5 }
+        margin: Inset{top: 9, left: 0, bottom: 5}
+        padding: 4.0,
+
+        label := Label {
+            padding: 0
+            margin: 0
+            width: Fill,
+            height: Fill
+            flow: Flow.Right{wrap: true},
+            align: Align{ x: 0.5, y: 0.5 }
+            draw_text +: {
+                // Default to the light nav-rail foreground (desktop). The mobile
+                // strip overrides this to a darker tone at runtime in draw_walk,
+                // since this status label is shared across both view modes.
+                color: (RBX_NAV_FG),
+                text_style: REGULAR_TEXT {font_size: 9}
+            }
+        }
+    }
+
+    mod.widgets.SpacesList = PortalList {
+        height: Fill,
+        width: Fill,
+        spacing: 0.0
+
+        auto_tail: false, 
+        bounce_at_start: false, bounce_at_end: false,
+        scroll_bar: ScrollBar {  // hide the scroll bar
+            bar_size: 0.0,
+            min_handle_size: 0.0
+        }
+
+        spaces_bar_entry := mod.widgets.SpacesBarEntry {}
+        spaces_list_row := mod.widgets.SpacesListRow {}
+        StatusLabel := mod.widgets.SpacesStatusLabel {}
+        BottomFiller := View {
+            width: (NAVIGATION_TAB_BAR_SIZE)
+            height: (NAVIGATION_TAB_BAR_SIZE)
+        }
+    }
+
+    mod.widgets.SpacesBar = #(SpacesBar::register_widget(vm)) {
+        Desktop := View {
+            align: Align{x: 0.5, y: 0.5}
+            padding: 0,
+            // Fill the rail's content width (rail is NAVIGATION_TAB_BAR_SIZE wide with
+            // SPACE_XS padding); a fixed NAVIGATION_TAB_BAR_SIZE here overflows that
+            // padded area and pushes the avatars off-center vs the Home/Add buttons.
+            width: Fill,
+            height: Fill
+
+            RobrixCachedWidget {
+                spaces_list := mod.widgets.SpacesList { }
+            }
+        }
+
+        // Mobile: a full-height VERTICAL list of workspace rows (the Workspace tab
+        // body on the home screen). Was previously a short horizontal avatar strip
+        // toggled by a header icon; it is now a proper tab pane.
+        Mobile := View {
+            align: Align{x: 0.5, y: 0.0}
+            padding: 0,
+            width: Fill,
+            height: Fill
+
+            RobrixCachedWidget {
+                spaces_list := mod.widgets.SpacesList { }
+            }
+        }
+    }
+}
+
+
+/// Actions emitted by and handled by the SpacesBar widget (and its children).
+#[derive(Clone, Debug, Default)]
+pub enum SpacesBarAction {
+    /// The user primary-clicked/tapped a space entry in the SpacesBar.
+    ButtonClicked { space_name_id: RoomNameId },
+    /// The user secondary-clicked/long-pressed a space entry in the SpacesBar.
+    ButtonSecondaryClicked { space_name_id: RoomNameId },
+    #[default]
+    None,
+}
+
+
+#[derive(Script, ScriptHook, Widget, Animator)]
+pub struct SpacesBarEntry {
+    #[source] source: ScriptObjectRef,
+    #[deref] view: View,
+    #[apply_default] animator: Animator,
+
+    #[rust] space_name_id: Option<RoomNameId>,
+    #[rust] app_language: AppLanguage,
+}
+
+impl Widget for SpacesBarEntry {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, _scope: &mut Scope) {
+        if self.animator_handle_event(cx, event).must_redraw() {
+            self.redraw(cx);
+        }
+
+        let area = self.draw_bg.area();
+        let emit_hover_in_action = |this: &Self, cx: &mut Cx| {
+            let is_desktop = effective_is_desktop(cx);
+            cx.widget_action(
+                this.widget_uid(), 
+                TooltipAction::HoverIn {
+                    widget_rect: area.rect(cx),
+                    text: this.space_name_id.as_ref().map_or(
+                        String::from(tr_key(this.app_language, "spaces_bar.tooltip.unknown_space_name")),
+                        |sni| sni.to_string(),
+                    ),
+                    options: CalloutTooltipOptions {
+                        position: if is_desktop {
+                            TooltipPosition::Right
+                        } else {
+                            TooltipPosition::Top
+                        },
+                        ..Default::default()
+                    },
+                },
+            );
+        };
+
+        match event.hits(cx, area) {
+            Hit::FingerHoverIn(_) => {
+                self.animator_play(cx, ids!(hover.on));
+                emit_hover_in_action(self, cx);
+            }
+            Hit::FingerHoverOut(_) => {
+                self.animator_play(cx, ids!(hover.off));
+                cx.widget_action(
+                    self.widget_uid(), 
+                    TooltipAction::HoverOut,
+                );
+            }
+            Hit::FingerDown(fe) => {
+                self.animator_play(cx, ids!(hover.down));
+                if fe.device.mouse_button().is_some_and(|b| b.is_secondary()) {
+                    if let Some(space_name_id) = self.space_name_id.clone() {
+                        cx.widget_action(
+                            self.widget_uid(), 
+                            SpacesBarAction::ButtonSecondaryClicked { space_name_id },
+                        );
+                    }
+                }
+            }
+            Hit::FingerLongPress(_lp) => {
+                self.animator_play(cx, ids!(hover.down));
+                emit_hover_in_action(self, cx);
+                if let Some(space_name_id) = self.space_name_id.clone() {
+                    cx.widget_action(
+                        self.widget_uid(), 
+                        SpacesBarAction::ButtonSecondaryClicked { space_name_id },
+                    );
+                }
+            }
+            Hit::FingerUp(fe) if fe.is_over && fe.is_primary_hit() && fe.was_tap() => {
+                self.animator_play(cx, ids!(hover.on));
+                if let Some(space_name_id) = self.space_name_id.clone() {
+                    cx.widget_action(
+                        self.widget_uid(), 
+                        SpacesBarAction::ButtonClicked { space_name_id },
+                    );
+                }
+            }
+            Hit::FingerUp(fe) if !fe.is_over => {
+                self.animator_play(cx, ids!(hover.off));
+            }
+            _ => {}
+        }
+    }
+    
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, walk: Walk) -> DrawStep {
+        self.view.draw_walk(cx, scope, walk)
+    }
+}
+
+impl SpacesBarEntry {
+    fn set_metadata(&mut self, cx: &mut Cx, space_name_id: RoomNameId, is_selected: bool, app_language: AppLanguage) {
+        self.space_name_id = Some(space_name_id);
+        self.app_language = app_language;
+        self.animator_toggle(cx, is_selected, Animate::No, ids!(active.on), ids!(active.off));
+    }
+}
+impl SpacesBarEntryRef {
+    pub fn set_metadata(&self, cx: &mut Cx, space_name_id: RoomNameId, is_selected: bool, app_language: AppLanguage) {
+        let Some(mut inner) = self.borrow_mut() else { return };
+        inner.set_metadata(cx, space_name_id, is_selected, app_language);
+    }
+}
+
+pub struct JoinedSpaceInfo {
+    /// The display name and ID of the space.
+    pub space_name_id: RoomNameId,
+    /// Lowercased searchable text cached for fast local search.
+    pub search_text: String,
+    /// The canonical alias of the space, if any.
+    pub canonical_alias: Option<OwnedRoomAliasId>,
+    /// The topic of the space, if any.
+    pub topic: Option<String>,
+    /// The fully-fetched avatar for this space.
+    pub space_avatar: FetchedRoomAvatar,
+    /// The number of members joined to the space.
+    pub num_joined_members: u64,
+    /// The join rule of the space.
+    pub join_rule: Option<JoinRuleSummary>,
+    /// Whether the space may be viewed by users without joining.
+    pub world_readable: Option<bool>,
+    /// Whether guest users may join the space and participate in it.
+    pub guest_can_join: bool,
+    /// The number of children rooms this space has.
+    pub children_count: u64,
+}
+
+pub fn build_space_search_text(
+    space_name_id: &RoomNameId,
+    canonical_alias: &Option<OwnedRoomAliasId>,
+    topic: &Option<String>,
+) -> String {
+    let mut search_text = format!(
+        "{} {}",
+        space_name_id.to_string().to_lowercase(),
+        space_name_id.room_id().as_str().to_lowercase(),
+    );
+    if let Some(alias) = canonical_alias {
+        search_text.push(' ');
+        search_text.push_str(&alias.as_str().to_lowercase());
+    }
+    if let Some(topic) = topic {
+        search_text.push(' ');
+        search_text.push_str(&topic.to_lowercase());
+    }
+    search_text
+}
+
+
+
+/// The possible updates that should be displayed by the single list of all spaces.
+///
+/// These updates are enqueued by the `enqueue_spaces_list_update` function
+/// (which is called from background async tasks that receive updates from the matrix server),
+/// and then dequeued by the `SpacesList` widget's `handle_event` function.
+pub enum SpacesListUpdate {
+    /// Add a new space to the list of all spaces that the user has joined.
+    AddJoinedSpace(JoinedSpaceInfo),
+    /// Update the canonical alias for the given space.
+    UpdateCanonicalAlias {
+        space_id: OwnedRoomId,
+        new_canonical_alias: Option<OwnedRoomAliasId>,
+    },
+    /// Update the displayable name for the given space.
+    UpdateSpaceName {
+        space_id: OwnedRoomId,
+        new_space_name: String,
+    },
+    /// Update the topic for the given space.
+    UpdateSpaceTopic {
+        space_id: OwnedRoomId,
+        topic: Option<String>,
+    },
+    /// Update the avatar for the given space.
+    UpdateSpaceAvatar {
+        space_id: OwnedRoomId,
+        avatar: FetchedRoomAvatar,
+    },
+    /// Update the number of joined members for the given space.
+    UpdateNumJoinedMembers {
+        space_id: OwnedRoomId,
+        num_joined_members: u64,
+    },
+    /// Update the join rule for the given space.
+    UpdateJoinRule {
+        space_id: OwnedRoomId,
+        join_rule: Option<JoinRuleSummary>,
+    },
+    /// Update whether the given space is world-readable.
+    UpdateWorldReadable {
+        space_id: OwnedRoomId,
+        world_readable: Option<bool>,
+    },
+    /// Update whether guest users can join the given space.
+    UpdateGuestCanJoin {
+        space_id: OwnedRoomId,
+        guest_can_join: bool,
+    },
+    /// Update how many child rooms this space has.
+    UpdateChildrenCount {
+        space_id: OwnedRoomId,
+        children_count: u64,
+    },
+    /// Remove the given space from the spaces list.
+    RemoveSpace {
+        space_id: OwnedRoomId,
+        /// The new state of the space (which caused its removal).
+        new_state: Option<RoomState>,
+    },
+    /// Clear all spaces in the list of all spaces.
+    ClearSpaces,
+    /// Scroll to the given space.
+    ScrollToSpace(OwnedRoomId),
+}
+
+
+static PENDING_SPACE_UPDATES: SegQueue<SpacesListUpdate> = SegQueue::new();
+
+/// Enqueue a new room update for the list of all spaces
+/// and signals the UI that a new update is available to be handled.
+pub fn enqueue_spaces_list_update(update: SpacesListUpdate) {
+    PENDING_SPACE_UPDATES.push(update);
+    SignalToUI::set_ui_signal();
+}
+
+
+/// The tab bar with buttons that navigate through top-level app pages.
+///
+/// * In the "desktop" (wide) layout, this is a vertical bar on the left.
+/// * In the "mobile" (narrow) layout, this is a horizontal bar on the bottom.
+#[derive(Script, ScriptHook, Widget)]
+pub struct SpacesBar {
+    #[deref] view: AdaptiveView,
+
+    /// The set of all joined spaces, keyed by the space ID.
+    #[rust] all_joined_spaces: HashMap<OwnedRoomId, JoinedSpaceInfo>,
+
+    /// The currently-active filter function for the list of spaces.
+    ///
+    /// Note: for performance reasons, this does not get automatically applied
+    /// when its value changes. Instead, you must manually invoke it on the set of `all_joined_spaces`
+    /// in order to update the set of `displayed_spaces` accordingly.
+    #[rust] display_filter: RoomDisplayFilter,
+
+    /// The list of spaces currently displayed in the UI, in order from top to bottom.
+    /// This is a strict subset of the rooms in `all_joined_spaces`, and should be determined
+    /// by applying the `display_filter` to the set of `all_joined_spaces`.
+    #[rust] displayed_spaces: Vec<OwnedRoomId>,
+
+    /// Whether the list of `displayed_spaces` is currently filtered:
+    /// `true` if filtered, `false` if showing everything.
+    #[rust] is_filtered: bool,
+
+    /// The ID of the currently-selected space in this SpacesBar.
+    /// Only one space can be selected at once.
+    #[rust] selected_space: Option<OwnedRoomId>,
+
+    /// A top-level space the user just created, which we jump to as soon as the
+    /// space service reports it as joined (it cannot be selected before that).
+    #[rust] pending_created_space: Option<OwnedRoomId>,
+    #[rust] applied_view_mode: ViewModeOverride,
+}
+
+impl SpacesBar {
+    fn apply_view_mode(&mut self, mode: ViewModeOverride) {
+        self.view.set_variant_selector(mode.variant_selector());
+        self.applied_view_mode = mode;
+    }
+}
+
+impl Widget for SpacesBar {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, scope: &mut Scope) {
+        self.view.handle_event(cx, event, scope);
+
+        // Process all pending updates to the spaces list.
+        if matches!(event, Event::Signal) {
+            self.handle_spaces_list_updates(cx, event, scope);
+        }
+
+        if let Event::Actions(actions) = event {
+            for action in actions {
+                if let Some(LogoutAction::ClearAppState { .. }) = action.downcast_ref() {
+                    while PENDING_SPACE_UPDATES.pop().is_some() {}
+                    self.all_joined_spaces.clear();
+                    self.display_filter = RoomDisplayFilter::default();
+                    self.displayed_spaces.clear();
+                    self.is_filtered = false;
+                    self.selected_space = None;
+                    self.pending_created_space = None;
+                    self.redraw(cx);
+                    continue;
+                }
+
+                // Only handle filter changes from the home screen's filter bar,
+                // not from any other RoomFilterInputBar instance (e.g., SpaceLobbyScreen's).
+                if let Some(MainFilterAction::Changed(keywords)) = action.downcast_ref() {
+                    self.update_displayed_spaces(cx, keywords);
+                    continue;
+                }
+
+                // A newly-created top-level space isn't in this bar yet: it only shows up
+                // once the space service reports it as joined. Remember it so we can jump
+                // to it then. Subspaces are excluded — those appear in their parent's
+                // lobby tree, and switching the whole app to them would be jarring.
+                if let Some(CreateRoomAction::Created { room_name_id, parent_space_id: None, is_space: true, .. })
+                    = action.downcast_ref()
+                {
+                    self.pending_created_space = Some(room_name_id.room_id().clone());
+                    continue;
+                }
+
+                // Update which space is currently selected.
+                if let SpacesBarAction::ButtonClicked { space_name_id } = action.as_widget_action().cast() {
+                    self.selected_space = Some(space_name_id.room_id().clone());
+                    self.redraw(cx);
+                    cx.action(NavigationBarAction::GoToSpace { space_name_id });
+                    continue;
+                }
+
+                // If another widget programmatically selected a new tab,
+                // we must unselect/deselect the currently-selected space.
+                if let Some(NavigationBarAction::TabSelected(tab)) = action.downcast_ref() {
+                    match tab {
+                        SelectedTab::Space { space_name_id } => {
+                            self.selected_space = Some(space_name_id.room_id().clone());
+                            self.redraw(cx);
+                        }
+                        _ => {
+                            self.selected_space = None;
+                            self.redraw(cx);
+                        }
+                    }
+                    continue;
+                }
+
+                if let Some(AppPreferencesAction::ViewModeChanged(new_mode)) = action.downcast_ref() {
+                    if *new_mode != self.applied_view_mode {
+                        self.apply_view_mode(*new_mode);
+                        self.view.redraw(cx);
+                    }
+                    continue;
+                }
+
+                // NOTE: LoginSuccess intentionally does NOT clear the spaces here.
+                // On a restored session the space service has usually already loaded
+                // the spaces (via the diff stream) by the time the LoginSuccess action
+                // is delivered to the UI, so clearing wiped freshly-loaded spaces with
+                // no reload — the "spaces appear then vanish / show none" bug. Logout
+                // is handled by ClearAppState above; account switch is handled below.
+
+                // Handle account switch - clear and redraw spaces
+                if let Some(AccountSwitchAction::Switched(_)) = action.downcast_ref() {
+                    self.all_joined_spaces.clear();
+                    self.displayed_spaces.clear();
+                    self.selected_space = None;
+                    self.redraw(cx);
+                    continue;
+                }
+            }
+        }
+    }
+
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, walk: Walk) -> DrawStep {
+        let app_language = scope.data.get::<AppState>()
+            .map(|app_state| app_state.app_language)
+            .unwrap_or_default();
+        let is_desktop = effective_is_desktop(cx);
+
+        // Safety net for the intermittent "no joined spaces" bug. Space updates are
+        // normally drained in handle_event on Event::Signal, but if they were enqueued
+        // before this (cached) widget was ready to receive that Signal, they can sit
+        // undrained in the queue until some later update happens to fire another Signal
+        // — leaving the bar stuck on "no joined spaces". If the queue still has items
+        // at draw time, re-arm the UI signal so they get drained next frame.
+        if !PENDING_SPACE_UPDATES.is_empty() {
+            SignalToUI::set_ui_signal();
+        }
+
+        while let Some(widget_to_draw) = self.view.draw_walk(cx, scope, walk).step() {
+            // We only care about drawing the portal list.
+            let portal_list_ref = widget_to_draw.as_portal_list();
+            let Some(mut list) = portal_list_ref.borrow_mut() else { continue };
+
+            // AdaptiveView + RobrixCachedWidget does not properly handle DSL-level style overrides,
+            // so we apply it here. Both the desktop rail and the mobile Workspace tab
+            // now render the spaces VERTICALLY (the old mobile horizontal strip is gone).
+            script_apply_eval!(cx, list, {
+                flow: #(Flow::Down),
+            });
+
+            let len = self.displayed_spaces.len();
+            if len == 0 {
+                list.set_item_range(cx, 0, 1);
+                while let Some(portal_list_index) = list.next_visible_item(cx) {
+                    let item = if portal_list_index == 0 {
+                        let item = list.item(cx, portal_list_index, id!(StatusLabel));
+                        item.label(cx, ids!(label)).set_text(
+                            cx,
+                            if self.is_filtered {
+                                tr_key(app_language, "spaces_bar.status.none_matching")
+                            } else {
+                                tr_key(app_language, "spaces_bar.status.none_joined")
+                            }
+                        );
+                        // Status text is shared across view modes: light on the dark
+                        // desktop rail, darker on the light mobile strip.
+                        let mut status_label = item.label(cx, ids!(label));
+                        let status_color = if effective_is_desktop(cx) { RBX_NAV_FG } else { RBX_FG_SECONDARY };
+                        script_apply_eval!(cx, status_label, { draw_text +: { color: #(status_color) } });
+                        item
+                    } else {
+                        list.item(cx, portal_list_index, id!(BottomFiller))
+                    };
+                    // Stretch every item to fill the list width: desktop avatar boxes
+                    // center their avatar within the rail; mobile rows span full width.
+                    {
+                        let mut item_w = item.clone();
+                        script_apply_eval!(cx, item_w, { width: #(Size::fill()) });
+                    }
+                    item.draw_all(cx, scope);
+                }
+            }
+            else {
+                list.set_item_range(cx, 0, len + 1);
+                while let Some(portal_list_index) = list.next_visible_item(cx) {
+                    let item = if let Some(space) = self.displayed_spaces
+                        .get(portal_list_index)
+                        .and_then(|space_id| self.all_joined_spaces.get(space_id))
+                    {
+                        // Desktop rail uses the compact avatar-box entry; the mobile
+                        // Workspace tab uses the full-width row (avatar + name + count
+                        // + chevron). Both are SpacesBarEntry widgets, so the avatar /
+                        // space_name population and set_metadata below work for either.
+                        let item = if is_desktop {
+                            list.item(cx, portal_list_index, id!(spaces_bar_entry))
+                        } else {
+                            list.item(cx, portal_list_index, id!(spaces_list_row))
+                        };
+                        // Populate the space name (zero-height on the desktop entry,
+                        // visible on the mobile row) and, on mobile, the room count.
+                        let space_name = space.space_name_id.to_string();
+                        item.label(cx, ids!(space_name)).set_text(cx, &space_name);
+                        if !is_desktop {
+                            item.label(cx, ids!(room_count)).set_text(
+                                cx,
+                                &format!("{} rooms", space.children_count),
+                            );
+                        }
+                        let avatar_ref = item.avatar(cx, ids!(avatar));
+                        match &space.space_avatar {
+                            FetchedRoomAvatar::Text(text) => {
+                                avatar_ref.show_text(cx, None, None, text);
+                            }
+                            FetchedRoomAvatar::Image(image_data) => {
+                                let res = avatar_ref.show_image(
+                                    cx,
+                                    None,
+                                    |cx, img_ref| utils::load_png_or_jpg(&img_ref, cx, image_data),
+                                );
+                                if res.is_err() {
+                                    avatar_ref.show_text(
+                                        cx,
+                                        None,
+                                        None,
+                                        &space_name,
+                                    );
+                                }
+                            }
+                        }
+                        // Aggregate unread across every joined room in the space,
+                        // so a space badge answers "is there anything new in here?"
+                        // without having to open it.
+                        let unread = cx.has_global::<RoomsListRef>()
+                            .then(|| cx.get_global::<RoomsListRef>()
+                                .get_space_unread_counts(space.space_name_id.room_id()))
+                            .unwrap_or_default();
+                        item.unread_badge(cx, ids!(unread_badge)).update_counts(
+                            unread.has_marked_unread,
+                            unread.num_unread_mentions,
+                            unread.num_unread_messages,
+                        );
+
+                        item.as_spaces_bar_entry().set_metadata(
+                            cx,
+                            space.space_name_id.clone(),
+                            self.selected_space.as_ref().is_some_and(|id| id == space.space_name_id.room_id()),
+                            app_language,
+                        );
+                        item
+                    }
+                    else if portal_list_index == len {
+                        let item = list.item(cx, portal_list_index, id!(StatusLabel));
+                        let text = match len {
+                            0 => {
+                                if self.is_filtered {
+                                    tr_key(app_language, "spaces_bar.status.none_matching").to_string()
+                                } else {
+                                    tr_key(app_language, "spaces_bar.status.none_joined").to_string()
+                                }
+                            }
+                            1 => {
+                                if self.is_filtered {
+                                    tr_key(app_language, "spaces_bar.status.one_matching").to_string()
+                                } else {
+                                    tr_key(app_language, "spaces_bar.status.one_joined").to_string()
+                                }
+                            }
+                            2..100 => {
+                                if self.is_filtered {
+                                    tr_fmt(app_language, "spaces_bar.status.n_matching", &[("count", &len.to_string())])
+                                } else {
+                                    tr_fmt(app_language, "spaces_bar.status.n_joined", &[("count", &len.to_string())])
+                                }
+                            }
+                            100.. => {
+                                if self.is_filtered {
+                                    tr_key(app_language, "spaces_bar.status.many_matching").to_string()
+                                } else {
+                                    tr_key(app_language, "spaces_bar.status.many_joined").to_string()
+                                }
+                            }
+                        };
+                        item.label(cx, ids!(label)).set_text(cx, &text);
+                        // Status text is shared across view modes: light on the dark
+                        // desktop rail, darker on the light mobile strip.
+                        let mut status_label = item.label(cx, ids!(label));
+                        let status_color = if effective_is_desktop(cx) { RBX_NAV_FG } else { RBX_FG_SECONDARY };
+                        script_apply_eval!(cx, status_label, { draw_text +: { color: #(status_color) } });
+                        item
+                    }
+                    else {
+                        list.item(cx, portal_list_index, id!(BottomFiller))
+                    };
+                    // Stretch every item to fill the list width: desktop avatar boxes
+                    // center their avatar within the rail; mobile rows span full width.
+                    {
+                        let mut item_w = item.clone();
+                        script_apply_eval!(cx, item_w, { width: #(Size::fill()) });
+                    }
+                    item.draw_all(cx, scope);
+                }
+            }
+        }
+
+        DrawStep::done()
+    }
+}
+
+impl SpacesBar {
+     /// Handle all pending updates to the spaces list.
+    fn handle_spaces_list_updates(&mut self, cx: &mut Cx, _event: &Event, _scope: &mut Scope) {
+
+        fn adjust_displayed_spaces(
+            was_displayed: bool,
+            should_display: bool,
+            space_id: OwnedRoomId,
+            displayed_spaces: &mut Vec<OwnedRoomId>,
+        ) {
+            match (was_displayed, should_display) {
+                // No need to update anything
+                (true, true) | (false, false) => { }
+                // Space was displayed but should no longer be displayed.
+                (true, false) => {
+                    displayed_spaces.iter()
+                        .position(|s| s == &space_id)
+                        .map(|index| displayed_spaces.remove(index));
+                }
+                // Space was not displayed but should now be displayed.
+                (false, true) => {
+                    displayed_spaces.push(space_id);
+                }
+            }
+        }
+
+
+        let mut num_updates: usize = 0;
+        while let Some(update) = PENDING_SPACE_UPDATES.pop() {
+            num_updates += 1;
+            match update {
+                SpacesListUpdate::AddJoinedSpace(joined_space) => {
+                    let space_id = joined_space.space_name_id.room_id().clone();
+                    let should_display = (self.display_filter)(&joined_space);
+                    // Idempotent upsert. A space is legitimately (re-)added while it
+                    // already exists: the space service calls add_new_space() again on
+                    // state-settle Set diffs (e.g. None -> Joined) and on the SDK's
+                    // clear()+append() recomputes that can arrive without an intervening
+                    // ClearSpaces. The previous code logged a BUG and DROPPED the re-add,
+                    // which left the space in `all_joined_spaces` but missing from
+                    // `displayed_spaces` (the Vec that draw_walk iterates) — i.e. the
+                    // intermittent "spaces don't show" bug. So reconcile every time.
+                    let was_displayed = self.displayed_spaces.contains(&space_id);
+                    let space_name_id = joined_space.space_name_id.clone();
+                    self.all_joined_spaces.insert(space_id.clone(), joined_space);
+                    adjust_displayed_spaces(was_displayed, should_display, space_id.clone(), &mut self.displayed_spaces);
+
+                    // A space the user just created only reaches us once the homeserver
+                    // has synced it back, which is why the navigation waits until here
+                    // rather than happening at creation time.
+                    if self.pending_created_space.as_ref() == Some(&space_id) {
+                        self.pending_created_space = None;
+                        self.selected_space = Some(space_id.clone());
+                        enqueue_spaces_list_update(SpacesListUpdate::ScrollToSpace(space_id));
+                        cx.action(NavigationBarAction::GoToSpace { space_name_id });
+                    }
+                }
+
+                SpacesListUpdate::UpdateCanonicalAlias { space_id, new_canonical_alias } => {
+                    if let Some(space) = self.all_joined_spaces.get_mut(&space_id) {
+                        let was_displayed = (self.display_filter)(space);
+                        space.canonical_alias = new_canonical_alias;
+                        space.search_text = build_space_search_text(&space.space_name_id, &space.canonical_alias, &space.topic);
+                        let should_display = (self.display_filter)(space);
+                        adjust_displayed_spaces(was_displayed, should_display, space_id, &mut self.displayed_spaces);
+                    } else {
+                        error!("Error: couldn't find space {space_id} to update space canonical alias");
+                    }
+                }
+
+                SpacesListUpdate::UpdateSpaceName { space_id, new_space_name } => {
+                    if let Some(space) = self.all_joined_spaces.get_mut(&space_id) {
+                        let was_displayed = (self.display_filter)(space);
+                        space.space_name_id = RoomNameId::new(
+                            RoomDisplayName::Named(new_space_name),
+                            space_id.clone(),
+                        );
+                        space.search_text = build_space_search_text(&space.space_name_id, &space.canonical_alias, &space.topic);
+                        let should_display = (self.display_filter)(space);
+                        adjust_displayed_spaces(was_displayed, should_display, space_id, &mut self.displayed_spaces);
+                    } else {
+                        error!("Error: couldn't find space {space_id} to update space name");
+                    }
+                }
+
+                SpacesListUpdate::UpdateSpaceTopic { space_id, topic } => {
+                    if let Some(space) = self.all_joined_spaces.get_mut(&space_id) {
+                        // We don't currently support filtering by topic.
+                        // let was_displayed = (self.display_filter)(space);
+                        space.topic = topic;
+                        space.search_text = build_space_search_text(&space.space_name_id, &space.canonical_alias, &space.topic);
+                        // let should_display = (self.display_filter)(space);
+                        // adjust_displayed_spaces(was_displayed, should_display, space_id, &mut self.displayed_spaces);
+                    } else {
+                        error!("Error: couldn't find space {space_id} to update space topic");
+                    }
+                }
+
+                SpacesListUpdate::UpdateSpaceAvatar { space_id, avatar } => {
+                    if let Some(space) = self.all_joined_spaces.get_mut(&space_id) {
+                        space.space_avatar = avatar;
+                    } else {
+                        error!("Error: couldn't find space {space_id} to update space name");
+                    }
+                }
+
+                SpacesListUpdate::UpdateNumJoinedMembers { space_id, num_joined_members } => {
+                    if let Some(space) = self.all_joined_spaces.get_mut(&space_id) {
+                        space.num_joined_members = num_joined_members;
+                    } else {
+                        error!("Error: couldn't find space {space_id} to update space num_joined_members");
+                    }
+                }
+
+                SpacesListUpdate::UpdateJoinRule { space_id, join_rule } => {
+                    if let Some(space) = self.all_joined_spaces.get_mut(&space_id) {
+                        space.join_rule = join_rule;
+                    } else {
+                        error!("Error: couldn't find space {space_id} to update space join_rule");
+                    }
+                }
+
+                SpacesListUpdate::UpdateWorldReadable { space_id, world_readable } => {
+                    if let Some(space) = self.all_joined_spaces.get_mut(&space_id) {
+                        space.world_readable = world_readable;
+                    } else {
+                        error!("Error: couldn't find space {space_id} to update space world_readable");
+                    }
+                }
+
+                SpacesListUpdate::UpdateGuestCanJoin { space_id, guest_can_join } => {
+                    if let Some(space) = self.all_joined_spaces.get_mut(&space_id) {
+                        space.guest_can_join = guest_can_join;
+                    } else {
+                        error!("Error: couldn't find space {space_id} to update space guest_can_join");
+                    }
+                }
+
+                SpacesListUpdate::UpdateChildrenCount { space_id, children_count } => {
+                    if let Some(space) = self.all_joined_spaces.get_mut(&space_id) {
+                        space.children_count = children_count;
+                    } else {
+                        error!("Error: couldn't find space {space_id} to update space children_count");
+                    }
+                }
+
+                SpacesListUpdate::RemoveSpace { space_id, .. } => {
+                    self.all_joined_spaces.remove(&space_id);
+                    adjust_displayed_spaces(true, false, space_id, &mut self.displayed_spaces);
+                }
+
+                SpacesListUpdate::ClearSpaces => {
+                    self.all_joined_spaces.clear();
+                    self.displayed_spaces.clear();
+                }
+
+                SpacesListUpdate::ScrollToSpace(space_id) => {
+                    if let Some(index) = self.displayed_spaces.iter().position(|s| s == &space_id) {
+                        let portal_list = self.view.portal_list(cx, ids!(spaces_list));
+                        let speed = 40.0;
+                        portal_list.smooth_scroll_to(cx, index, speed, Some(10), 10.0);
+                    }
+                }
+            }
+        }
+        if num_updates > 0 {
+            self.redraw(cx);
+        }
+    }
+
+
+    /// Updates the lists of displayed spaces based on the current search filter.
+    fn update_displayed_spaces(&mut self, cx: &mut Cx, keywords: &str) {
+        let portal_list = self.view.portal_list(cx, ids!(spaces_list));
+        if keywords.is_empty() {
+            // Reset each of the displayed_* lists to show all rooms.
+            self.is_filtered = false;
+            self.display_filter = RoomDisplayFilter::default();
+            self.displayed_spaces = self.all_joined_spaces.keys().cloned().collect();
+            portal_list.set_first_id_and_scroll(0, 0.0);
+            self.redraw(cx);
+            return;
+        }
+
+        // Create a new filter function based on the given keywords
+        // and store it in this RoomsList such that we can apply it to newly-added rooms.
+        let (filter, sort_fn) = RoomDisplayFilterBuilder::new()
+            .set_keywords(keywords.to_owned())
+            .set_filter_criteria(RoomFilterCriteria::All)
+            .build();
+        self.display_filter = filter;
+        self.is_filtered = true;
+
+        let filtered_spaces_iter = self.all_joined_spaces.iter()
+            .filter(|(_, space)| (self.display_filter)(*space));
+
+        self.displayed_spaces = if let Some(sort_fn) = sort_fn {
+            let mut filtered_spaces = filtered_spaces_iter
+                .collect::<Vec<_>>();
+            filtered_spaces.sort_by(|(_, space_a), (_, space_b)| sort_fn(*space_a, *space_b));
+            filtered_spaces
+                .into_iter()
+                .map(|(space_id, _)| space_id.clone()).collect()
+        } else {
+            filtered_spaces_iter.map(|(space_id, _)| space_id.clone()).collect()
+        };
+        if self.displayed_spaces.is_empty() {
+            self.is_filtered = false;
+            self.display_filter = RoomDisplayFilter::default();
+            self.displayed_spaces = self.all_joined_spaces.keys().cloned().collect();
+        }
+
+        portal_list.set_first_id_and_scroll(0, 0.0);
+        self.redraw(cx);
+    }
+}
+
+impl SpacesBarRef {
+    /// Returns local spaces matching `keywords`, up to `max_results`.
+    pub fn get_matching_space_items(&self, keywords: &str, max_results: usize) -> Vec<(RoomNameId, FetchedRoomAvatar)> {
+        let Some(inner) = self.borrow() else { return Vec::new(); };
+        let keywords = keywords.trim().to_lowercase();
+        if keywords.is_empty() {
+            return Vec::new();
+        }
+        let mut items = Vec::new();
+        for space in inner.all_joined_spaces.values() {
+            if space.search_text.contains(&keywords) {
+                items.push((space.space_name_id.clone(), space.space_avatar.clone()));
+                if items.len() >= max_results {
+                    break;
+                }
+            }
+        }
+        items
+    }
+}

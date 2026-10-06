@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "theme": "light",
+  "tokens": {},
+  "components": {
+    "surface": {
+      "style": {
+        "t": "column",
+        "bg": 4294244347,
+        "radius": 12,
+        "pad": 16,
+        "gap": 8
+      },
+      "props": {},
+      "slot": true
+    },
+    "title": {
+      "style": {
+        "t": "text",
+        "size": 14,
+        "weight": 700,
+        "color": 4279640891,
+        "font_src": "makepad_widgets:resources/Roboto-Regular.ttf"
+      },
+      "props": {
+        "text": "text"
+      },
+      "slot": false
+    },
+    "body": {
+      "style": {
+        "t": "text",
+        "size": 12,
+        "color": 4279640891,
+        "font_src": "makepad_widgets:resources/Roboto-Regular.ttf"
+      },
+      "props": {
+        "text": "text"
+      },
+      "slot": false
+    },
+    "caption": {
+      "style": {
+        "t": "text",
+        "size": 10,
+        "color": 4284115846,
+        "font_src": "makepad_widgets:resources/Roboto-Regular.ttf"
+      },
+      "props": {
+        "text": "text"
+      },
+      "slot": false
+    }
+  }
+}

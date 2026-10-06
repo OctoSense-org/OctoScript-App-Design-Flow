@@ -1,0 +1,652 @@
+use makepad_widgets::*;
+
+use crate::{
+    app::AppState,
+    home::navigation_tab_bar::{NavigationBarAction, SelectedTab},
+    settings::app_preferences::{AppPreferencesAction, ViewModeOverride},
+    settings::settings_screen::SettingsScreenWidgetRefExt,
+    shared::room_filter_input_bar::{MainFilterAction, RoomFilterInputBarWidgetExt},
+};
+
+script_mod! {
+    use mod.prelude.widgets.*
+    use mod.widgets.*
+
+
+    // Defines the total height of the StackNavigationView's header.
+    // This has to be set in multiple places because of how StackNavigation
+    // uses an Overlay view internally.
+    mod.widgets.STACK_VIEW_HEADER_HEIGHT = 54
+
+    // A reusable base for StackNavigationView children in the mobile layout.
+    // Each specific content view (room, invite, space lobby) extends this
+    // and places its own screen widget inside the body.
+    mod.widgets.RobrixContentView = StackNavigationView {
+        width: Fill, height: Fill
+        draw_bg.color: (COLOR_PRIMARY)
+        header +: {
+            height: (mod.widgets.STACK_VIEW_HEADER_HEIGHT),
+            padding: 0
+            align: Align{y: 0.5}
+
+            // Below is a shader to draw a shadow under the bottom half of the header
+            clip_x: false,
+            clip_y: false,
+            show_bg: true,
+            draw_bg +: {
+                color: instance((COLOR_PRIMARY_DARKER))
+                color_dither: uniform(1.0)
+                gradient_border_horizontal: uniform(0.0)
+                gradient_fill_horizontal: uniform(0.0)
+                color_2: instance(vec4(-1))
+
+                border_radius: uniform(0.0)
+                border_size: uniform(0.0)
+                border_color: instance(#0000)
+                border_color_2: instance(vec4(-1))
+
+                shadow_color: instance(#0002)
+                shadow_radius: uniform(8.0)
+                shadow_offset: uniform(vec2(0.0, 0.0))
+
+                rect_size2: varying(vec2(0))
+                rect_size3: varying(vec2(0))
+                rect_pos2: varying(vec2(0))
+                rect_shift: varying(vec2(0))
+                sdf_rect_pos: varying(vec2(0))
+                sdf_rect_size: varying(vec2(0))
+
+                vertex: fn() {
+                    let min_offset = min(self.shadow_offset vec2(0))
+                    self.rect_size2 = self.rect_size + 2.0*vec2(self.shadow_radius)
+                    self.rect_size3 = self.rect_size2 + abs(self.shadow_offset)
+                    self.rect_pos2 = self.rect_pos - vec2(self.shadow_radius) + min_offset
+                    self.sdf_rect_size = self.rect_size2 - vec2(self.shadow_radius * 2.0 + self.border_size * 2.0)
+                    self.sdf_rect_pos = -min_offset + vec2(self.border_size + self.shadow_radius)
+                    self.rect_shift = -min_offset
+
+                    return self.clip_and_transform_vertex(self.rect_pos2 self.rect_size3)
+                }
+
+                pixel: fn() {
+                    let sdf = Sdf2d.viewport(self.pos * self.rect_size3)
+
+                    let mut fill_color = self.color
+                    if self.color_2.x > -0.5 {
+                        let dither = Math.random_2d(self.pos.xy) * 0.04 * self.color_dither
+                        let dir = if self.gradient_fill_horizontal > 0.5 self.pos.x else self.pos.y
+                        fill_color = mix(self.color self.color_2 dir + dither)
+                    }
+
+                    let mut stroke_color = self.border_color
+                    if self.border_color_2.x > -0.5 {
+                        let dither = Math.random_2d(self.pos.xy) * 0.04 * self.color_dither
+                        let dir = if self.gradient_border_horizontal > 0.5 self.pos.x else self.pos.y
+                        stroke_color = mix(self.border_color self.border_color_2 dir + dither)
+                    }
+
+                    sdf.box(
+                        self.sdf_rect_pos.x
+                        self.sdf_rect_pos.y
+                        self.sdf_rect_size.x
+                        self.sdf_rect_size.y
+                        max(1.0 self.border_radius)
+                    )
+                    if sdf.shape > -1.0 {
+                        let m = self.shadow_radius
+                        let o = self.shadow_offset + self.rect_shift
+                        let v = GaussShadow.rounded_box_shadow(vec2(m) + o self.rect_size2+o self.pos * (self.rect_size3+vec2(m)) self.shadow_radius*0.5 self.border_radius*2.0)
+                        // Only draw shadow on the bottom half of the view
+                        let pixel_y = self.pos.y * self.rect_size3.y
+                        let mid_y = self.sdf_rect_pos.y + self.sdf_rect_size.y * 0.5
+                        let bottom_mask = smoothstep(mid_y - m * 0.3 mid_y + m * 0.3 pixel_y)
+                        sdf.clear(self.shadow_color * v * bottom_mask)
+                    }
+
+                    sdf.fill_keep(fill_color)
+
+                    if self.border_size > 0.0 {
+                        sdf.stroke(stroke_color self.border_size)
+                    }
+                    return sdf.result
+                }
+            }
+
+            padding: Inset{top: 0, bottom: 0}
+            height: (mod.widgets.STACK_VIEW_HEADER_HEIGHT),
+
+                content +: {
+                    height: (mod.widgets.STACK_VIEW_HEADER_HEIGHT)
+                    button_container +: {
+                        width: Fill
+                        height: Fill
+                        flow: Right
+                        padding: 0,
+                        margin: 0
+                        left_button +: {
+                            width: 56, height: Fill,
+                            padding: 0,
+                            margin: 0
+                            draw_icon +: { color: (ROOM_NAME_TEXT_COLOR) }
+                            icon_walk: Walk{width: 14, height: Fit}
+                            spacing: 0
+                            text: ""
+                        }
+                        button_spacer := View {
+                            width: Fill, height: Fill
+                        }
+                        // Room encryption status: a shield with a small dot at its
+                        // bottom-right — green when encrypted, red when not. The
+                        // App toggles the dot + visibility for room views only.
+                        encryption_indicator := View {
+                            visible: false,
+                            width: Fit, height: Fit,
+                            flow: Overlay,
+                            align: Align{x: 1.0, y: 1.0},
+                            margin: Inset{left: 4, right: 4}
+                            enc_shield := Icon {
+                                width: 22, height: 22,
+                                draw_icon +: { svg: (ICON_SHIELD), color: (ROOM_NAME_TEXT_COLOR) }
+                                icon_walk: Walk{width: 20, height: 20}
+                            }
+                            enc_dot_green := RoundedView {
+                                width: 9, height: 9,
+                                show_bg: true,
+                                draw_bg +: {
+                                    color: (RBX_SUCCESS_FG),
+                                    border_radius: 4.5,
+                                    border_size: 1.5,
+                                    border_color: (COLOR_PRIMARY_DARKER),
+                                }
+                            }
+                            enc_dot_red := RoundedView {
+                                visible: false,
+                                width: 9, height: 9,
+                                show_bg: true,
+                                draw_bg +: {
+                                    color: (RBX_DANGER_FG),
+                                    border_radius: 4.5,
+                                    border_size: 1.5,
+                                    border_color: (COLOR_PRIMARY_DARKER),
+                                }
+                            }
+                        }
+                        header_search_button := ButtonFlatterIcon {
+                            visible: false
+                            width: 40, height: Fill,
+                            padding: 0,
+                            margin: 0
+                            draw_icon +: {
+                                color: (ROOM_NAME_TEXT_COLOR)
+                                svg: (ICON_SEARCH)
+                            }
+                            icon_walk: Walk{width: 18, height: Fit}
+                            spacing: 0
+                            text: ""
+                        }
+                        right_button := ButtonFlatterIcon {
+                            visible: false
+                            width: 44, height: Fill,
+                            padding: 0,
+                            margin: 0
+                            draw_icon +: {
+                                color: (ROOM_NAME_TEXT_COLOR)
+                                svg: (ICON_INFO)
+                            }
+                            icon_walk: Walk{width: 14, height: Fit}
+                            spacing: 0
+                            text: ""
+                        }
+                    }
+                    title_container +: {
+                    width: Fill
+                    height: Fill
+                    flow: Down
+                    padding: Inset{top: 0, left: 56, right: 130}
+                    align: Align{x: 0.0, y: 0.5}
+                    spacing: 0
+                    title +: {
+                        width: Fill
+                        margin: 0
+                        flow: Flow.Right{wrap: false}
+                        max_lines: 1
+                        text_overflow: Ellipsis
+                        draw_text +: {
+                            text_style: BOLD_TEXT { font_size: 13.0 }
+                            color: (ROOM_NAME_TEXT_COLOR)
+                        }
+                    }
+                    member_count_label := Label {
+                        width: Fill, height: Fit
+                        margin: 0
+                        max_lines: 1
+                        text_overflow: Ellipsis
+                        draw_text +: {
+                            text_style: REGULAR_TEXT { font_size: 9.5 }
+                            color: (RBX_FG_SECONDARY)
+                        }
+                        text: ""
+                    }
+                }
+            }
+        }
+        body +: {
+            margin: Inset{top: (mod.widgets.STACK_VIEW_HEADER_HEIGHT)}
+        }
+    }
+
+    // Room views own their header via RoomScreen's `RoomTopBar` (back + name +
+    // members + encryption + search + more, plus the Chat/Info tab row), so the
+    // generic StackNavigation header is hidden here and the body fills from the
+    // very top. Invite/Space views keep the generic header above.
+    mod.widgets.RobrixRoomContentView = mod.widgets.RobrixContentView {
+        header +: { visible: false }
+        body +: { margin: 0 }
+    }
+
+    // A wrapper view around the SpacesBar that lets us show/hide it via animation.
+    mod.widgets.SpacesBarWrapper = set_type_default() do #(SpacesBarWrapper::register_widget(vm)) {
+        ..mod.widgets.RoundedShadowView
+
+        width: Fill,
+        height: (NAVIGATION_TAB_BAR_SIZE)
+        margin: Inset{left: 4, right: 4}
+        // Clip the SpacesBar to this wrapper's animated height so its content
+        // does not bleed over the bottom tab bar while collapsed (height 0).
+        clip_y: true,
+        show_bg: true
+        draw_bg +: {
+            color: (COLOR_PRIMARY_DARKER)
+            border_radius: 4.0
+            border_size: 0.0
+            shadow_color: #0005
+            shadow_radius: 15.0
+            shadow_offset: vec2(1.0, 0.0)
+        }
+
+        RobrixCachedWidget {
+            root_spaces_bar := mod.widgets.SpacesBar {}
+        }
+
+        animator: Animator{
+            spaces_bar_animator: {
+                default: @hide
+                show: AnimatorState{
+                    redraw: true
+                    from: { all: Forward { duration: (mod.widgets.SPACES_BAR_ANIMATION_DURATION_SECS) } }
+                    apply: { height: (NAVIGATION_TAB_BAR_SIZE),  draw_bg: { shadow_color: (RBX_SHADOW_NAV) } }
+                }
+                hide: AnimatorState{
+                    redraw: true
+                    from: { all: Forward { duration: (mod.widgets.SPACES_BAR_ANIMATION_DURATION_SECS) } }
+                    apply: { height: 0,  draw_bg: { shadow_color: (COLOR_TRANSPARENT) } }
+                }
+            }
+        }
+    }
+
+    // The home screen widget contains the main content:
+    // rooms list, room screens, and the settings screen as an overlay.
+    // It adapts to both desktop and mobile layouts.
+    mod.widgets.HomeScreen = #(HomeScreen::register_widget(vm)) {
+        main_adaptive_view := AdaptiveView {
+            // NOTE: within each of these sub views, we used `RobrixCachedWidget` wrappers
+            //       to ensure that there is only a single global instance of each
+            //       of those widgets, which means they maintain their state
+            //       across transitions between the Desktop and Mobile variant.
+            Desktop := SolidView {
+                width: Fill, height: Fill
+                flow: Right
+                align: Align{x: 0.0, y: 0.0}
+                padding: 0,
+                margin: 0,
+
+                show_bg: true
+                draw_bg +: {
+                    // Neutral desktop backdrop (NOT navy — a navy backdrop showed
+                    // through as a dark ring around the content). The rail covers its
+                    // own column edge-to-edge (SolidView) and the dock sits flush
+                    // against it, so this backdrop is barely visible.
+                    color: (COLOR_SECONDARY)
+                }
+
+                // On the left, show the navigation tab bar vertically.
+                RobrixCachedWidget {
+                    navigation_tab_bar := mod.widgets.NavigationTabBar {}
+                }
+
+                // To the right of that, we use the PageFlip widget to show either
+                // the main desktop UI or the settings screen.
+                home_screen_page_flip := PageFlip {
+                    width: Fill, height: Fill
+
+                    lazy_init: true,
+                    active_page: @home_page
+
+                    home_page := View {
+                        width: Fill, height: Fill
+                        flow: Down
+
+                        mod.widgets.MainDesktopUI {}
+                    }
+
+                    settings_page := SolidView {
+                        width: Fill, height: Fill
+                        show_bg: true,
+                        draw_bg.color: (COLOR_PRIMARY)
+
+                        RobrixCachedWidget {
+                            settings_screen := mod.widgets.SettingsScreen {}
+                        }
+                    }
+
+                    add_room_page := SolidView {
+                        width: Fill, height: Fill
+                        show_bg: true,
+                        draw_bg.color: (COLOR_PRIMARY)
+
+                        RobrixCachedWidget {
+                            add_room_screen := mod.widgets.AddRoomScreen {}
+                        }
+                    }
+
+                    directory_page := SolidView {
+                        width: Fill, height: Fill
+                        show_bg: true,
+                        draw_bg.color: (COLOR_PRIMARY)
+
+                        RobrixCachedWidget {
+                            directory_screen := mod.widgets.DirectoryScreen {}
+                        }
+                    }
+                }
+            }
+
+            Mobile := SolidView {
+                width: Fill, height: Fill
+                flow: Down
+
+                show_bg: true
+                draw_bg.color: (COLOR_PRIMARY)
+
+                view_stack := StackNavigation {
+                    root_view +: {
+                        flow: Down
+                        width: Fill, height: Fill
+
+                        // At the top of the root view, we use the PageFlip widget to show either
+                        // the main list of rooms or the settings screen.
+                        home_screen_page_flip := PageFlip {
+                            width: Fill, height: Fill
+
+                            lazy_init: true,
+                            active_page: @home_page
+
+                            home_page := View {
+                                width: Fill, height: Fill
+                                // Note: while the other page views have top padding, we do NOT add that here
+                                // because it is added in the `RoomsSideBar`'s `RoundedShadowView` itself.
+                                flow: Down
+
+                                mod.widgets.RoomsSideBar {}
+                            }
+
+                            settings_page := View {
+                                width: Fill, height: Fill
+
+                                RobrixCachedWidget {
+                                    settings_screen := mod.widgets.SettingsScreen {}
+                                }
+                            }
+
+                            add_room_page := View {
+                                width: Fill, height: Fill
+
+                                RobrixCachedWidget {
+                                    add_room_screen := mod.widgets.AddRoomScreen {}
+                                }
+                            }
+
+                            directory_page := View {
+                                width: Fill, height: Fill
+
+                                RobrixCachedWidget {
+                                    directory_screen := mod.widgets.DirectoryScreen {}
+                                }
+                            }
+                        }
+
+                        // (The toggled SpacesBar strip was removed: the SpacesBar now
+                        // lives in the home screen's `Workspace` tab — see RoomsSideBar.)
+
+                        // At the bottom of the root view, show the navigation tab bar horizontally.
+                        RobrixCachedWidget {
+                            navigation_tab_bar := mod.widgets.NavigationTabBar {}
+                        }
+                    }
+
+                    // Only two room-view slots are needed: Makepad's
+                    // StackNavigation keeps a single current view (its depth()
+                    // returns 0/1) and a push transition shows at most two at
+                    // once (outgoing + incoming). Per-room UI state (scroll,
+                    // draft, timeline) is preserved across reuse via the global
+                    // TIMELINE_STATES map (keyed by room, not by widget), so
+                    // reusing these two across all rooms loses nothing. Kept in
+                    // sync with `App::ROOM_VIEW_IDS` / `ROOM_SCREEN_IDS`.
+                    room_view_0 := mod.widgets.RobrixRoomContentView { body +: { room_screen_0 := mod.widgets.RoomScreen {} } }
+                    room_view_1 := mod.widgets.RobrixRoomContentView { body +: { room_screen_1 := mod.widgets.RoomScreen {} } }
+
+                    invite_view := mod.widgets.RobrixContentView {
+                        body +: {
+                            invite_screen := mod.widgets.InviteScreen {}
+                        }
+                    }
+
+                    space_lobby_view := mod.widgets.RobrixContentView {
+                        body +: {
+                            space_lobby_screen := mod.widgets.SpaceLobbyScreen {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+/// A simple wrapper around the SpacesBar that allows us to animate showing or hiding it.
+#[derive(Script, ScriptHook, Widget, Animator)]
+pub struct SpacesBarWrapper {
+    #[source] source: ScriptObjectRef,
+    #[deref] view: View,
+    #[apply_default] animator: Animator,
+}
+
+impl Widget for SpacesBarWrapper {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, scope: &mut Scope) {
+        if self.animator_handle_event(cx, event).must_redraw() {
+            self.redraw(cx);
+        }
+        self.view.handle_event(cx, event, scope);
+    }
+
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, walk: Walk) -> DrawStep {
+        // TODO: i want to uncomment this, but adding it back in will break
+        //       the animation of showing the SpacesBarWrapper.
+        //       I'm not sure why the SpacesBar is getting redrawn constantly though.
+        // if walk.height.to_fixed().is_some_and(|h| h < 0.01) {
+        //     return DrawStep::done();
+        // }
+        self.view.draw_walk(cx, scope, walk)
+    }
+}
+
+impl SpacesBarWrapperRef {
+    /// Shows or hides the spaces bar by animating it in or out.
+    fn show_or_hide(&self, cx: &mut Cx, show: bool) {
+        let Some(mut inner) = self.borrow_mut() else { return };
+        if show {
+            inner.animator_play(cx, ids!(spaces_bar_animator.show));
+        } else {
+            inner.animator_play(cx, ids!(spaces_bar_animator.hide));
+        }
+        inner.redraw(cx);
+    }
+}
+
+
+#[derive(Script, ScriptHook, Widget)]
+pub struct HomeScreen {
+    #[deref] view: View,
+
+    /// The previously-selected navigation tab, used to determine which tab
+    /// and top-level view we return to after closing the settings screen.
+    ///
+    /// Note that the current selected tap is stored in `AppState` so that
+    /// other widgets can easily access it.
+    #[rust] previous_selection: SelectedTab,
+    #[rust] is_spaces_bar_shown: bool,
+    #[rust] applied_view_mode: ViewModeOverride,
+}
+
+impl Widget for HomeScreen {
+    fn handle_event(&mut self, cx: &mut Cx, event: &Event, scope: &mut Scope) {
+        if let Event::Actions(actions) = event {
+            // On desktop, the RoomFilterInputBar is inside this HomeScreen.
+            // Check if it changed and re-emit as a MainFilterAction so that
+            // RoomsList and SpacesBar can respond without cross-talk from
+            // other RoomFilterInputBar instances (e.g., SpaceLobbyScreen's).
+            if let Some(keywords) = self.view.room_filter_input_bar(cx, ids!(room_filter_input_bar)).changed(actions) {
+                cx.action(MainFilterAction::Changed(keywords));
+            }
+
+            let app_state = scope.data.get_mut::<AppState>().unwrap();
+            for action in actions {
+                if let Some(AppPreferencesAction::ViewModeChanged(new_mode)) = action.downcast_ref() {
+                    if *new_mode != self.applied_view_mode {
+                        self.apply_view_mode(cx, *new_mode);
+                        self.view.redraw(cx);
+                    }
+                    continue;
+                }
+
+                match action.downcast_ref() {
+                    Some(NavigationBarAction::GoToHome) => {
+                        if !matches!(app_state.selected_tab, SelectedTab::Home) {
+                            self.previous_selection = app_state.selected_tab.clone();
+                            app_state.selected_tab = SelectedTab::Home;
+                            cx.action(NavigationBarAction::TabSelected(app_state.selected_tab.clone()));
+                            self.update_active_page_from_selection(cx, app_state);
+                            self.view.redraw(cx);
+                        }
+                    }
+                    Some(NavigationBarAction::GoToAddRoom) => {
+                        if !matches!(app_state.selected_tab, SelectedTab::AddRoom) {
+                            self.previous_selection = app_state.selected_tab.clone();
+                            app_state.selected_tab = SelectedTab::AddRoom;
+                            cx.action(NavigationBarAction::TabSelected(app_state.selected_tab.clone()));
+                            self.update_active_page_from_selection(cx, app_state);
+                            self.view.redraw(cx);
+                        }
+                    }
+                    Some(NavigationBarAction::GoToDirectory) => {
+                        if !matches!(app_state.selected_tab, SelectedTab::Directory) {
+                            self.previous_selection = app_state.selected_tab.clone();
+                            app_state.selected_tab = SelectedTab::Directory;
+                            cx.action(NavigationBarAction::TabSelected(app_state.selected_tab.clone()));
+                            self.update_active_page_from_selection(cx, app_state);
+                            self.view.redraw(cx);
+                        }
+                    }
+                    Some(NavigationBarAction::GoToSpace { space_name_id }) => {
+                        let new_space_selection = SelectedTab::Space { space_name_id: space_name_id.clone() };
+                        if app_state.selected_tab != new_space_selection {
+                            self.previous_selection = app_state.selected_tab.clone();
+                            app_state.selected_tab = new_space_selection;
+                            cx.action(NavigationBarAction::TabSelected(app_state.selected_tab.clone()));
+                            self.update_active_page_from_selection(cx, app_state);
+                            self.view.redraw(cx);
+                        }
+                    }
+                    // Only open the settings screen if it is not currently open.
+                    Some(NavigationBarAction::OpenSettings) => {
+                        if !matches!(app_state.selected_tab, SelectedTab::Settings) {
+                            self.previous_selection = app_state.selected_tab.clone();
+                            app_state.selected_tab = SelectedTab::Settings;
+                            cx.action(NavigationBarAction::TabSelected(app_state.selected_tab.clone()));
+                            if let Some(settings_page) = self.update_active_page_from_selection(cx, app_state) {
+                                settings_page
+                                    .settings_screen(cx, ids!(settings_screen))
+                                    .populate(cx, None, &app_state.bot_settings, &app_state.translation, &app_state.app_prefs, app_state.app_language);
+                                self.view.redraw(cx);
+                            } else {
+                                error!("BUG: failed to set active page to show settings screen.");
+                            }
+                        }
+                    }
+                    Some(NavigationBarAction::CloseSettings) => {
+                        if matches!(app_state.selected_tab, SelectedTab::Settings) {
+                            app_state.selected_tab = self.previous_selection.clone();
+                            cx.action(NavigationBarAction::TabSelected(app_state.selected_tab.clone()));
+                            self.update_active_page_from_selection(cx, app_state);
+                            self.view.redraw(cx);
+                        }
+                    }
+                    Some(NavigationBarAction::ToggleSpacesBar) => {
+                        self.is_spaces_bar_shown = !self.is_spaces_bar_shown;
+                        self.view.spaces_bar_wrapper(cx, ids!(spaces_bar_wrapper))
+                            .show_or_hide(cx, self.is_spaces_bar_shown);
+                    }
+                    // We're the ones who emitted this action, so we don't need to handle it again.
+                    Some(NavigationBarAction::TabSelected(_))
+                    | None => { }
+                }
+            }
+        }
+
+        self.view.handle_event(cx, event, scope);
+    }
+
+    fn draw_walk(&mut self, cx: &mut Cx2d, scope: &mut Scope, walk: Walk) -> DrawStep {
+        let app_state = scope.data.get_mut::<AppState>().unwrap();
+        let mode = app_state.app_prefs.view_mode;
+        if mode != self.applied_view_mode {
+            self.apply_view_mode(cx, mode);
+        }
+        // Note: We need to update the active page before drawing,
+        // because if we switched between Desktop and Mobile views,
+        // the PageFlip widget will have been reset to its default,
+        // so we must re-set it to the correct page based on `app_state.selected_tab`.
+        self.update_active_page_from_selection(cx, app_state);
+
+        self.view.draw_walk(cx, scope, walk)
+    }
+}
+
+impl HomeScreen {
+    fn apply_view_mode(&mut self, cx: &mut Cx, mode: ViewModeOverride) {
+        self.view
+            .adaptive_view(cx, ids!(main_adaptive_view))
+            .set_variant_selector(mode.variant_selector());
+        self.applied_view_mode = mode;
+    }
+
+    fn update_active_page_from_selection(
+        &mut self,
+        cx: &mut Cx,
+        app_state: &mut AppState,
+    ) -> Option<WidgetRef> {
+        self.view
+            .page_flip(cx, ids!(home_screen_page_flip))
+            .set_active_page(
+                cx,
+                match app_state.selected_tab {
+                    SelectedTab::Space { .. }
+                    | SelectedTab::Home => id!(home_page),
+                    SelectedTab::Settings => id!(settings_page),
+                    SelectedTab::AddRoom => id!(add_room_page),
+                    SelectedTab::Directory => id!(directory_page),
+                },
+            )
+    }
+}

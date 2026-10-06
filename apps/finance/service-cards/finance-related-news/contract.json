@@ -1,0 +1,254 @@
+{
+  "app": "finance",
+  "artboard": [
+    366.0,
+    216.0
+  ],
+  "graphics": {},
+  "id": "finance-related-news",
+  "number": 7,
+  "schema_version": 1,
+  "title": "company_news",
+  "tree": {
+    "bg": 4278651148,
+    "c": [
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 105.0,
+            "id": "story_0_control",
+            "t": "button",
+            "w": 366.0,
+            "x": 0.0,
+            "y": 0.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4278879487,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 17.68,
+            "id": "story_0_label",
+            "line_height": 17.68,
+            "size": 13.0,
+            "t": "text",
+            "text": "",
+            "variant": "single_line",
+            "w": 358.0,
+            "weight": 400,
+            "x": 4.0,
+            "y": 43.5
+          }
+        ],
+        "h": 105.0,
+        "id": "story_0",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 366.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 14.96,
+        "id": "story_0_source",
+        "line_height": 14.96,
+        "size": 11.0,
+        "t": "text",
+        "text": "Preview Journal · US",
+        "variant": "single_line",
+        "w": 342.0,
+        "weight": 400,
+        "x": 4.0,
+        "y": 8.0
+      },
+      {
+        "color": 4294243831,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 21.76,
+        "id": "story_0_title_0",
+        "line_height": 21.76,
+        "size": 16.0,
+        "t": "text",
+        "text": "Three markets, one watchlist",
+        "variant": "single_line",
+        "w": 300.0,
+        "weight": 400,
+        "x": 4.0,
+        "y": 31.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 40.0,
+            "id": "save_0_control",
+            "t": "button",
+            "w": 42.0,
+            "x": 318.0,
+            "y": 41.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4278879487,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 17.68,
+            "id": "save_0_label",
+            "line_height": 17.68,
+            "size": 13.0,
+            "t": "text",
+            "text": "☆",
+            "variant": "single_line",
+            "w": 34.0,
+            "weight": 400,
+            "x": 322.0,
+            "y": 52.0
+          }
+        ],
+        "h": 40.0,
+        "id": "save_0",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 42.0,
+        "x": 318.0,
+        "y": 41.0
+      },
+      {
+        "bg": 4279506975,
+        "c": [],
+        "h": 0.5,
+        "id": "story_0_rule",
+        "radius": 12,
+        "t": "stack",
+        "variant": "surface",
+        "w": 356.0,
+        "x": 4.0,
+        "y": 103.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 105.0,
+            "id": "story_1_control",
+            "t": "button",
+            "w": 366.0,
+            "x": 0.0,
+            "y": 108.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4278879487,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 17.68,
+            "id": "story_1_label",
+            "line_height": 17.68,
+            "size": 13.0,
+            "t": "text",
+            "text": "",
+            "variant": "single_line",
+            "w": 358.0,
+            "weight": 400,
+            "x": 4.0,
+            "y": 151.5
+          }
+        ],
+        "h": 105.0,
+        "id": "story_1",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 366.0,
+        "x": 0.0,
+        "y": 108.0
+      },
+      {
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 14.96,
+        "id": "story_1_source",
+        "line_height": 14.96,
+        "size": 11.0,
+        "t": "text",
+        "text": "Preview Journal · US",
+        "variant": "single_line",
+        "w": 342.0,
+        "weight": 400,
+        "x": 4.0,
+        "y": 116.0
+      },
+      {
+        "color": 4294243831,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 21.76,
+        "id": "story_1_title_0",
+        "line_height": 21.76,
+        "size": 16.0,
+        "t": "text",
+        "text": "Apple supplier outlook in focus",
+        "variant": "single_line",
+        "w": 300.0,
+        "weight": 400,
+        "x": 4.0,
+        "y": 139.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 40.0,
+            "id": "save_1_control",
+            "t": "button",
+            "w": 42.0,
+            "x": 318.0,
+            "y": 149.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4278879487,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 17.68,
+            "id": "save_1_label",
+            "line_height": 17.68,
+            "size": 13.0,
+            "t": "text",
+            "text": "☆",
+            "variant": "single_line",
+            "w": 34.0,
+            "weight": 400,
+            "x": 322.0,
+            "y": 160.0
+          }
+        ],
+        "h": 40.0,
+        "id": "save_1",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 42.0,
+        "x": 318.0,
+        "y": 149.0
+      },
+      {
+        "bg": 4279506975,
+        "c": [],
+        "h": 0.5,
+        "id": "story_1_rule",
+        "radius": 12,
+        "t": "stack",
+        "variant": "surface",
+        "w": 356.0,
+        "x": 4.0,
+        "y": 211.0
+      }
+    ],
+    "h": 216.0,
+    "id": "related_news_card",
+    "radius": 12,
+    "t": "stack",
+    "variant": "surface",
+    "w": 366.0,
+    "x": 0.0,
+    "y": 0.0
+  },
+  "standalone_service_card": true
+}

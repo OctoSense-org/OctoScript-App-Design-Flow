@@ -1,0 +1,80 @@
+{
+  "$kit": {
+    "theme": "light",
+    "placements": {
+      "quote_card": {
+        "component": "Surface25cdc448447b",
+        "layout": {
+          "h": 129.0,
+          "w": 366.0,
+          "x": 0.0,
+          "y": 0.0
+        }
+      },
+      "company": {
+        "component": "Text32add43b429d",
+        "layout": {
+          "h": 20.400000000000002,
+          "w": 352.0,
+          "x": 4.0,
+          "y": 4.0
+        }
+      },
+      "last_price": {
+        "component": "Textd4e4e84ee499",
+        "layout": {
+          "h": 46.24,
+          "w": 280.0,
+          "x": 4.0,
+          "y": 35.0
+        }
+      },
+      "day_change": {
+        "component": "Text3485e7e43e6d",
+        "layout": {
+          "h": 23.12,
+          "w": 350.0,
+          "x": 6.0,
+          "y": 94.0
+        }
+      },
+      "follow": {
+        "component": "KitButton943d8a6ae6d8",
+        "layout": {
+          "h": 38.0,
+          "w": 102.0,
+          "x": 260.0,
+          "y": 45.0
+        }
+      },
+      "follow_control": {
+        "component": "NativeButton02f1d1bd99b4",
+        "layout": {
+          "h": 38.0,
+          "w": 102.0,
+          "x": 260.0,
+          "y": 45.0
+        }
+      },
+      "follow_bg": {
+        "component": "Surface59e1a0f60533",
+        "layout": {
+          "h": 38.0,
+          "w": 102.0,
+          "x": 260.0,
+          "y": 45.0
+        }
+      },
+      "follow_label": {
+        "component": "Text4abc1db2683f",
+        "layout": {
+          "h": 17.68,
+          "w": 94.0,
+          "x": 264.0,
+          "y": 55.0
+        }
+      }
+    },
+    "bindings": []
+  }
+}

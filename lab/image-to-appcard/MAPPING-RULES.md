@@ -44,10 +44,12 @@ has a `semantic-map.json`, an implementation `conversion-brief.md`, and a
 4. **Preflight before compilation.** The semantic manifest must cover every
    source node, match the contract/reference hashes and satisfy role constraints.
    Missing adapters, missing data, unrecorded artwork and inappropriate renderer
-   types block compilation. No Studio build begins while preflight is blocked.
-5. **Compose and inspect.** Compile L0 + kit + data; run through Studio `RunItem`.
-   Capture `WidgetTreeDump`, `WidgetQuery`, `WidgetSnapshot`, screenshots and
-   interaction evidence. Map stable source IDs to actual widget IDs.
+   types block compilation. No native build begins while preflight is blocked.
+5. **Compose and inspect.** Compile L0 + kit + data; use a standalone release
+   executable with [Makepad's built-in instrument](../core/NATIVE-INSTRUMENT.md).
+   Hidden windows support automated tests. Capture `/d`, `/snap`, measured layout,
+   app-owned `/g` frames and real input/result evidence. Map source IDs to native
+   widget IDs. Existing Studio capture/gate adapters remain a separate legacy path.
 6. **Gate and repair.** Check semantic mapping, native geometry and image geometry
    separately. Feed role-specific findings into repair, then recapture. Typography,
    colors, imagery and effects still need screenshot review. Acceptance requires

@@ -1,0 +1,416 @@
+{
+  "app": "finance",
+  "artboard": [
+    406,
+    776
+  ],
+  "graphics": {},
+  "id": "finance-09",
+  "number": 9,
+  "schema_version": 1,
+  "title": "reader",
+  "tree": {
+    "bg": 4278651148,
+    "c": [
+      {
+        "color": 4294243831,
+        "font_src": "self:resources/ux/Inter-700.ttf",
+        "h": 40.800000000000004,
+        "id": "heading",
+        "line_height": 40.800000000000004,
+        "size": 30.0,
+        "t": "text",
+        "text": "Article",
+        "variant": "single_line",
+        "w": 316.0,
+        "weight": 700,
+        "x": 20.0,
+        "y": 30.0
+      },
+      {
+        "color": 4287797928,
+        "font_src": "self:resources/ux/Inter-400.ttf",
+        "h": 13.600000000000001,
+        "id": "data_status",
+        "line_height": 13.600000000000001,
+        "size": 10.0,
+        "t": "text",
+        "text": "Preview · Fictional prices & news",
+        "variant": "single_line",
+        "w": 354.0,
+        "weight": 400,
+        "x": 24.0,
+        "y": 75.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 36.0,
+            "id": "back_control",
+            "t": "button",
+            "w": 48.0,
+            "x": 8.0,
+            "y": 3.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4278879487,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 17.68,
+            "id": "back_label",
+            "line_height": 17.68,
+            "size": 13.0,
+            "t": "text",
+            "text": "‹",
+            "variant": "single_line",
+            "w": 40.0,
+            "weight": 400,
+            "x": 12.0,
+            "y": 12.0
+          }
+        ],
+        "h": 36.0,
+        "id": "back",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 48.0,
+        "x": 8.0,
+        "y": 3.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 42.0,
+            "id": "bookmark_control",
+            "t": "button",
+            "w": 104.0,
+            "x": 280.0,
+            "y": 40.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4278879487,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 17.68,
+            "id": "bookmark_label",
+            "line_height": 17.68,
+            "size": 13.0,
+            "t": "text",
+            "text": "Save ☆",
+            "variant": "single_line",
+            "w": 96.0,
+            "weight": 400,
+            "x": 284.0,
+            "y": 52.0
+          }
+        ],
+        "h": 42.0,
+        "id": "bookmark",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 104.0,
+        "x": 280.0,
+        "y": 40.0
+      },
+      {
+        "h": 578,
+        "id": "article_web",
+        "src": "data:text/html;charset=utf-8;base64,PCFkb2N0eXBlIGh0bWw+PGh0bWw+PGhlYWQ+PG1ldGEgbmFtZT0ndmlld3BvcnQnIGNvbnRlbnQ9J3dpZHRoPWRldmljZS13aWR0aCxpbml0aWFsLXNjYWxlPTEnPjxzdHlsZT5ib2R5e2JhY2tncm91bmQ6IzA3MDkwQztjb2xvcjojRjRGNUY3O2ZvbnQ6MThweCAtYXBwbGUtc3lzdGVtLHNhbnMtc2VyaWY7cGFkZGluZzoxOHB4O2xpbmUtaGVpZ2h0OjEuNjV9aDF7Zm9udC1zaXplOjI5cHh9c21hbGx7Y29sb3I6IzkyOUFBOH1he2NvbG9yOiM0NThmZmZ9PC9zdHlsZT48L2hlYWQ+PGJvZHk+PHNtYWxsPlByZXZpZXcgSm91cm5hbDwvc21hbGw+PGgxPlRocmVlIG1hcmtldHMsIG9uZSB3YXRjaGxpc3Q8L2gxPjxwPlRocmVlIG1hcmtldHMsIG9uZSB3YXRjaGxpc3QuIFRoaXMgaXMgYSBmaWN0aW9uYWwgYXJ0aWNsZSBmb3IgcmV2aWV3aW5nIHRoZSBGaW5hbmNlIGFwcC4gUHJpY2VzIGFuZCBoZWFkbGluZXMgc2hvd24gaW4gcHJldmlldyBtb2RlIGFyZSBkZXRlcm1pbmlzdGljIGZpeHR1cmVzLjwvcD48cD5VUywgSG9uZyBLb25nIGFuZCBtYWlubGFuZCBDaGluYSBsaXN0aW5ncyBrZWVwIHNlcGFyYXRlIGN1cnJlbmNpZXMgYW5kIGV4Y2hhbmdlIGlkZW50aXRpZXMuIFRoaXMgYXJ0aWNsZSBkZW1vbnN0cmF0ZXMgY29udGludW91cyByZWFkaW5nIGFuZCBib29rbWFya2luZy48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+U2Nyb2xsIHRvIHJlYWQgdGhlIGNvbXBsZXRlIHByZXZpZXcgYXJ0aWNsZS4gVGhlIGxpdmUgcmVhZGVyIG9wZW5zIHRoZSBvcmlnaW5hbCBwdWJsaXNoZXIgcGFnZSwgcmV0YWluaW5nIGl0cyBhdHRyaWJ1dGlvbi48L3A+PHA+PC9wPjwvYm9keT48L2h0bWw+",
+        "t": "web",
+        "w": 406,
+        "x": 0,
+        "y": 116
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 38.0,
+            "id": "share_control",
+            "t": "button",
+            "w": 160.0,
+            "x": 20.0,
+            "y": 695.0
+          },
+          {
+            "bg": 4279506975,
+            "c": [],
+            "h": 38.0,
+            "id": "share_bg",
+            "radius": 7,
+            "t": "stack",
+            "variant": "surface",
+            "w": 160.0,
+            "x": 20.0,
+            "y": 695.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4278879487,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 17.68,
+            "id": "share_label",
+            "line_height": 17.68,
+            "size": 13.0,
+            "t": "text",
+            "text": "Copy link",
+            "variant": "single_line",
+            "w": 152.0,
+            "weight": 400,
+            "x": 24.0,
+            "y": 705.0
+          }
+        ],
+        "h": 38.0,
+        "id": "share",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 160.0,
+        "x": 20.0,
+        "y": 695.0
+      },
+      {
+        "bg": 4278651148,
+        "c": [],
+        "h": 72.0,
+        "id": "tab_surface",
+        "radius": 12,
+        "t": "stack",
+        "variant": "surface",
+        "w": 406.0,
+        "x": 0.0,
+        "y": 704.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 54.0,
+            "id": "tab_watchlist_control",
+            "t": "button",
+            "w": 99.0,
+            "x": 2.0,
+            "y": 707.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4287797928,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 12.24,
+            "id": "tab_watchlist_label",
+            "line_height": 12.24,
+            "size": 9.0,
+            "t": "text",
+            "text": "Stocks",
+            "variant": "single_line",
+            "w": 91.0,
+            "weight": 400,
+            "x": 6.0,
+            "y": 744.0
+          }
+        ],
+        "h": 54.0,
+        "id": "tab_watchlist",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 99.0,
+        "x": 2.0,
+        "y": 707.0
+      },
+      {
+        "alignx": 0.5,
+        "color": 4287797928,
+        "font_src": "makepad_widgets:resources/fa-solid-900.ttf",
+        "h": 25.840000000000003,
+        "id": "tab_watchlist_glyph",
+        "line_height": 25.840000000000003,
+        "size": 19.0,
+        "t": "text",
+        "text": "",
+        "variant": "single_line",
+        "w": 23.0,
+        "weight": 900,
+        "x": 40.0,
+        "y": 712.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 54.0,
+            "id": "tab_markets_control",
+            "t": "button",
+            "w": 99.0,
+            "x": 103.0,
+            "y": 707.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4287797928,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 12.24,
+            "id": "tab_markets_label",
+            "line_height": 12.24,
+            "size": 9.0,
+            "t": "text",
+            "text": "Markets",
+            "variant": "single_line",
+            "w": 91.0,
+            "weight": 400,
+            "x": 107.0,
+            "y": 744.0
+          }
+        ],
+        "h": 54.0,
+        "id": "tab_markets",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 99.0,
+        "x": 103.0,
+        "y": 707.0
+      },
+      {
+        "alignx": 0.5,
+        "color": 4287797928,
+        "font_src": "makepad_widgets:resources/fa-solid-900.ttf",
+        "h": 25.840000000000003,
+        "id": "tab_markets_glyph",
+        "line_height": 25.840000000000003,
+        "size": 19.0,
+        "t": "text",
+        "text": "",
+        "variant": "single_line",
+        "w": 23.0,
+        "weight": 900,
+        "x": 141.0,
+        "y": 712.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 54.0,
+            "id": "tab_news_control",
+            "t": "button",
+            "w": 99.0,
+            "x": 204.0,
+            "y": 707.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4287797928,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 12.24,
+            "id": "tab_news_label",
+            "line_height": 12.24,
+            "size": 9.0,
+            "t": "text",
+            "text": "News",
+            "variant": "single_line",
+            "w": 91.0,
+            "weight": 400,
+            "x": 208.0,
+            "y": 744.0
+          }
+        ],
+        "h": 54.0,
+        "id": "tab_news",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 99.0,
+        "x": 204.0,
+        "y": 707.0
+      },
+      {
+        "alignx": 0.5,
+        "color": 4287797928,
+        "font_src": "makepad_widgets:resources/fa-solid-900.ttf",
+        "h": 25.840000000000003,
+        "id": "tab_news_glyph",
+        "line_height": 25.840000000000003,
+        "size": 19.0,
+        "t": "text",
+        "text": "",
+        "variant": "single_line",
+        "w": 23.0,
+        "weight": 900,
+        "x": 242.0,
+        "y": 712.0
+      },
+      {
+        "c": [
+          {
+            "enabled": true,
+            "h": 54.0,
+            "id": "tab_saved_control",
+            "t": "button",
+            "w": 99.0,
+            "x": 305.0,
+            "y": 707.0
+          },
+          {
+            "alignx": 0.5,
+            "color": 4287797928,
+            "font_src": "self:resources/ux/Inter-400.ttf",
+            "h": 12.24,
+            "id": "tab_saved_label",
+            "line_height": 12.24,
+            "size": 9.0,
+            "t": "text",
+            "text": "Saved",
+            "variant": "single_line",
+            "w": 91.0,
+            "weight": 400,
+            "x": 309.0,
+            "y": 744.0
+          }
+        ],
+        "h": 54.0,
+        "id": "tab_saved",
+        "kit": "{\"bindings\":{\"control\":[0]},\"widget\":\"KitButton\"}",
+        "t": "stack",
+        "w": 99.0,
+        "x": 305.0,
+        "y": 707.0
+      },
+      {
+        "alignx": 0.5,
+        "color": 4287797928,
+        "font_src": "makepad_widgets:resources/fa-solid-900.ttf",
+        "h": 25.840000000000003,
+        "id": "tab_saved_glyph",
+        "line_height": 25.840000000000003,
+        "size": 19.0,
+        "t": "text",
+        "text": "",
+        "variant": "single_line",
+        "w": 23.0,
+        "weight": 900,
+        "x": 343.0,
+        "y": 712.0
+      },
+      {
+        "bg": 4287797928,
+        "c": [],
+        "h": 4.0,
+        "id": "home_indicator",
+        "radius": 12,
+        "t": "stack",
+        "variant": "surface",
+        "w": 116.0,
+        "x": 145.0,
+        "y": 765.0
+      }
+    ],
+    "h": 776.0,
+    "id": "page",
+    "radius": 12,
+    "t": "stack",
+    "variant": "surface",
+    "w": 406.0,
+    "x": 0.0,
+    "y": 0.0
+  }
+}
