@@ -1,0 +1,66 @@
+{
+  "schema": "card-studio/report@1",
+  "card": {
+    "input": "<generated>/meeting-planner/glance.card",
+    "kind": "l0",
+    "data": "<generated>/meeting-planner/glance.data.json"
+  },
+  "sizes": {
+    "glance": {
+      "kind": "glance",
+      "target": [
+        350.0,
+        160.0
+      ],
+      "viewport": [
+        350.0,
+        160.0
+      ],
+      "png": "glance.png",
+      "snapshot": "glance.snap.json",
+      "tree": "glance.tree.txt",
+      "log": "glance.log.json",
+      "realize": {
+        "lint": {
+          "diagnostics": [],
+          "diagnostics_truncated": false,
+          "level": "L0",
+          "valid": true
+        },
+        "lowering": "l0-kit",
+        "realize": {
+          "diagnostics": [],
+          "nodes": 11,
+          "truncated": false
+        },
+        "sources": [
+          {
+            "helper": "sys.dataset",
+            "name": "slot",
+            "state": "ready"
+          }
+        ]
+      },
+      "findings": [],
+      "metrics": {
+        "widgets": 11,
+        "drawn": 11,
+        "text_nodes": 7,
+        "hidden_text": 0,
+        "content_height": 130.0,
+        "content_height_is_lower_bound": false,
+        "fits": true,
+        "realize_nodes": 11,
+        "realize_truncated": false,
+        "log_errors": 0
+      },
+      "pass": true
+    }
+  },
+  "summary": {
+    "pass": true,
+    "errors": 0,
+    "warnings": 0,
+    "infos": 0
+  }
+}

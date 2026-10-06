@@ -1,0 +1,15 @@
+W3 14
+0 -1 main_window Window 0 0 350 160
+1 0 body KeyboardView 0 0 350 160
+2 1 card Splash 0 0 350 160
+3 2 beauty_0 View 0 0 350 160
+4 3 beauty_0_0 View 20 36 310 95
+5 4 beauty_0_0_0 View 20 36 310 19
+6 5 beauty_0_0_0_0 Label 20 36 16 19
+7 5 beauty_0_0_0_1 Label 44 40 250 11
+8 5 beauty_0_0_0_2 Label 302 40 28 11
+9 4 beauty_0_0_1 Label 20 63 310 26
+10 4 beauty_0_0_2 View 20 97 310 14
+11 10 beauty_0_0_2_0 Label 20 97 255 14
+12 10 beauty_0_0_2_1 Label 283 99 47 11
+13 4 beauty_0_0_3 Label 20 119 202 11

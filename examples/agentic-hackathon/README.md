@@ -2,6 +2,11 @@
 
 English | [简体中文](README.zh-CN.md)
 
+For cards **authored by DeepSeek through App Studio**, use the separate
+[DeepSeek Studio examples](deepseek-studio/README.md). They include L0 glance
+cards, interactive apps, generation records and independent validation. The
+two original apps below were authored by Codex and use DeepSeek at runtime.
+
 Start with a small, reviewable loop: **read the source → ask the app agent →
 review a proposal → confirm a local action → inspect its receipt**. These two
 contained Splash apps use fictional email/calendar data and the real

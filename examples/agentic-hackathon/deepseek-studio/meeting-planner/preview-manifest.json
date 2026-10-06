@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "id": "dev.studio.meeting-planner",
+  "name": "Meeting Planner DS",
+  "version": "0.1.0",
+  "capabilities": ["storage"],
+  "storage": {
+    "accounts": false,
+    "agent_workspace": "account"
+  }
+}

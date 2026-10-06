@@ -1,0 +1,588 @@
+{
+  "checks": [
+    {
+      "check": "deepseek-studio/email-action: Email populated sender",
+      "passed": true
+    },
+    {
+      "check": "Email starts with empty outbox",
+      "passed": true
+    },
+    {
+      "check": "deepseek-studio/email-action: Email rejects blank draft",
+      "passed": true
+    },
+    {
+      "check": "Blank draft creates no delivery",
+      "passed": true
+    },
+    {
+      "check": "Edit invalidates Email confirmation",
+      "passed": true
+    },
+    {
+      "check": "Email edits persist before navigating",
+      "passed": true
+    },
+    {
+      "check": "Email delivers exact reviewed body to correct recipient",
+      "passed": true
+    },
+    {
+      "check": "Email duplicate prevention preserves immutable receipt",
+      "passed": true
+    },
+    {
+      "check": "deepseek-studio/email-action: Email blank question visible in full view",
+      "passed": true
+    },
+    {
+      "check": "Selecting Jordan changes stable message identity",
+      "passed": true
+    },
+    {
+      "check": "deepseek-studio/email-action: Jordan action card opened",
+      "passed": true
+    },
+    {
+      "check": "Two reviewed messages have separate deliveries",
+      "passed": true
+    },
+    {
+      "check": "Undo removes only Jordan delivery",
+      "passed": true
+    },
+    {
+      "check": "Undo preserves Jordan draft",
+      "passed": true
+    },
+    {
+      "check": "deepseek-studio/email-action: Email unavailable fallback is explicit",
+      "passed": true
+    },
+    {
+      "check": "Email receipt and edited drafts survive process restart",
+      "passed": true
+    },
+    {
+      "check": "deepseek-studio/meeting-planner: Meeting populated initial view",
+      "passed": true
+    },
+    {
+      "check": "deepseek-studio/meeting-planner: Busy slot refused",
+      "passed": true
+    },
+    {
+      "check": "Busy slot creates no booking",
+      "passed": true
+    },
+    {
+      "check": "Offline suggestion chooses first free14:00",
+      "passed": true
+    },
+    {
+      "check": "deepseek-studio/meeting-planner: Changed availability prevents a new review",
+      "passed": true
+    },
+    {
+      "check": "Late conflict rejects stale reviewed slot",
+      "passed": true
+    },
+    {
+      "check": "Meeting stores one15:30 booking",
+      "passed": true
+    },
+    {
+      "check": "Meeting booking survives process restart",
+      "passed": true
+    },
+    {
+      "check": "Meeting duplicate confirmation preserves one booking",
+      "passed": true
+    },
+    {
+      "check": "Meeting Undo removes saved booking",
+      "passed": true
+    },
+    {
+      "check": "Undo preserves original and late-conflict events",
+      "passed": true
+    },
+    {
+      "check": "deepseek-studio/meeting-planner: No-free-time state visible",
+      "passed": true
+    },
+    {
+      "check": "All-busy fallback cannot book",
+      "passed": true
+    },
+    {
+      "check": "deepseek-studio/meeting-planner: Meeting blank question visible",
+      "passed": true
+    },
+    {
+      "check": "Reset clears demo booking",
+      "passed": true
+    },
+    {
+      "check": "Reset restores three fake busy events",
+      "passed": true
+    },
+    {
+      "check": "deepseek-studio/meeting-planner: Meeting provider absence explicit",
+      "passed": true
+    }
+  ],
+  "runs": [
+    {
+      "app": "email-action",
+      "source_sha256": "a462937ca76d59daad215a60aa477aeb8488dd370c0f66dc6f614988eb2d4b49",
+      "inputs": [
+        {
+          "action": "click",
+          "id": "samplebtn",
+          "text": "Insert offline sample reply",
+          "rect": [
+            16,
+            471,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "reply",
+          "text": "Hi Maya, Sam can join Friday's science museum visit. Please count Sam in for the 09:00 departure and the 15:30 return. Thanks, Alex",
+          "rect": [
+            16,
+            626,
+            380,
+            140
+          ]
+        },
+        {
+          "action": "replace_text",
+          "id": "reply",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "id": "reviewbtn",
+          "text": "Review reply",
+          "rect": [
+            16,
+            780,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "reply",
+          "text": "Type your reply here...",
+          "rect": [
+            16,
+            626,
+            380,
+            140
+          ]
+        },
+        {
+          "action": "replace_text",
+          "id": "reply",
+          "value": "First draft, Alex."
+        },
+        {
+          "action": "click",
+          "id": "reviewbtn",
+          "text": "Review reply",
+          "rect": [
+            16,
+            780,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "reply",
+          "text": "First draft, Alex.",
+          "rect": [
+            16,
+            626,
+            380,
+            140
+          ]
+        },
+        {
+          "action": "replace_text",
+          "id": "reply",
+          "value": "Final reviewed reply, Alex."
+        },
+        {
+          "action": "click",
+          "id": "reviewbtn",
+          "text": "Review reply",
+          "rect": [
+            16,
+            780,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "confirmbtn",
+          "text": "Confirm demo delivery",
+          "rect": [
+            16,
+            755,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "samplebtn",
+          "text": "Insert offline sample reply",
+          "rect": [
+            16,
+            221,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "reviewbtn",
+          "text": "Review reply",
+          "rect": [
+            16,
+            671,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "confirmbtn",
+          "text": "Confirm demo delivery",
+          "rect": [
+            16,
+            733,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "openbtn",
+          "text": "Open full view",
+          "rect": [
+            16,
+            825,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "askqbtn",
+          "text": "Ask agent",
+          "rect": [
+            16,
+            759,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "1",
+          "text": "Jordan  <jordan@example.invalid>",
+          "rect": [
+            29,
+            326,
+            354,
+            27
+          ]
+        },
+        {
+          "action": "click",
+          "id": "samplebtn",
+          "text": "Insert offline sample reply",
+          "rect": [
+            16,
+            509,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "reviewbtn",
+          "text": "Review reply",
+          "rect": [
+            16,
+            818,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "confirmbtn",
+          "text": "Confirm demo delivery",
+          "rect": [
+            16,
+            713,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "undobtn",
+          "text": "Undo this message's reply",
+          "rect": [
+            16,
+            541,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "askbtn",
+          "text": "Ask app agent for a reply",
+          "rect": [
+            16,
+            189,
+            380,
+            48
+          ]
+        }
+      ]
+    },
+    {
+      "app": "meeting-planner",
+      "source_sha256": "5f020068fbb8b56dba9e91e9f857a840f050a5838d6ef9e39b032ccba31c66c9",
+      "inputs": [
+        {
+          "action": "click",
+          "id": "cand0",
+          "text": null,
+          "rect": [
+            16,
+            389,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "reviewbtn",
+          "text": "Review this slot",
+          "rect": [
+            16,
+            632,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "suggestbtn",
+          "text": "Suggest first free slot (offline)",
+          "rect": [
+            16,
+            278,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "reviewbtn",
+          "text": "Review this slot",
+          "rect": [
+            16,
+            702,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "conflictbtn",
+          "text": "New 14:00 conflict",
+          "rect": [
+            16,
+            755,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "reviewbtn",
+          "text": "Review this slot",
+          "rect": [
+            16,
+            499,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "cand3",
+          "text": null,
+          "rect": [
+            16,
+            452,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "reviewbtn",
+          "text": "Review this slot",
+          "rect": [
+            16,
+            445,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "confirmbtn",
+          "text": "Confirm booking",
+          "rect": [
+            16,
+            798,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "reviewbtn",
+          "text": "Review this slot",
+          "rect": [
+            16,
+            632,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "confirmbtn",
+          "text": "Confirm booking",
+          "rect": [
+            16,
+            619,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "undobtn",
+          "text": "Undo this booking",
+          "rect": [
+            16,
+            759,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "allbusybtn",
+          "text": "All busy",
+          "rect": [
+            16,
+            546,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "suggestbtn",
+          "text": "Suggest first free slot (offline)",
+          "rect": [
+            16,
+            161,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "openbtn",
+          "text": "Open full view",
+          "rect": [
+            16,
+            823,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "askqbtn",
+          "text": "Ask agent",
+          "rect": [
+            16,
+            706,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "resetbtn",
+          "text": "Reset demo",
+          "rect": [
+            16,
+            759,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "click",
+          "id": "qinput",
+          "text": "Type a question...",
+          "rect": [
+            16,
+            434,
+            380,
+            48
+          ]
+        },
+        {
+          "action": "replace_text",
+          "id": "qinput",
+          "value": "Which listed free slot works for everyone?"
+        },
+        {
+          "action": "click",
+          "id": "askqbtn",
+          "text": "Ask agent",
+          "rect": [
+            16,
+            625,
+            380,
+            48
+          ]
+        }
+      ]
+    }
+  ]
+}

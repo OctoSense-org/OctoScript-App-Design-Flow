@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "subtitle": "An agent proposes. You review and confirm.",
+  "description": "DeepSeek-authored meeting planning card over fictional calendars. Availability is rechecked before a local booking. Optional real app agent; labeled offline fallback.",
+  "category": "productivity",
+  "keywords": [
+    "hackathon",
+    "agent",
+    "reference",
+    "demo"
+  ],
+  "screenshots": [
+    "screenshots/01-main.png",
+    "screenshots/04-receipt.png"
+  ],
+  "icon": "assets/icon.svg",
+  "platforms": [
+    "macos"
+  ],
+  "publisher": {
+    "name": "Replace with your publisher name",
+    "support": "https://example.com/support",
+    "privacy_policy_url": "https://example.com/privacy"
+  },
+  "release_notes": "Generated on OnePlus 6 through App Studio with independent native review. See adjacent validation evidence.",
+  "age_rating": "all",
+  "license": "Apache-2.0"
+}

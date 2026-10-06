@@ -1,0 +1,30 @@
+# ledger meeting-planner.glance@0.1.0
+# level:   L0
+# profile: ui/l0
+#
+# Meeting Planner's glance card (`meeting-planner.glance`), as
+# `demo.meeting-planner`. `slot` is a `sys.dataset` record the app fills from
+# the candidate booking: the review to schedule (title), the proposed time
+# (subtitle), its state (status) and an attendee/next-step line (summary).
+# The card states nothing else, and no invitation has been sent.
+
+source slot sys.dataset(fields: [title, subtitle, status, summary])
+
+copy app { class: vocabulary, en: "Meeting Planner" }
+copy demo { class: vocabulary, en: "Demo" }
+
+view root Surface(pad: .tight) {
+  Col(gap: 8) {
+    Row(gap: 8, align: .center) {
+      Icon(name: .calendar, size: .row)
+      TextCaption(text: copy.app, width: .fill)
+      TextCaption(text: copy.demo)
+    }
+    TextTitle(text: slot.title, width: .fill)
+    Row(gap: 8) {
+      TextRow(text: slot.subtitle, width: .fill)
+      TextCaption(text: slot.status)
+    }
+    TextCaption(value: slot.summary)
+  }
+}
