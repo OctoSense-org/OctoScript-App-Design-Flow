@@ -10,13 +10,11 @@ not create an OctoSense cloud account.
 Version 0.1.1 is published in App Hub from
 [ymote/octosense-github-notes](https://github.com/ymote/octosense-github-notes).
 It declares the app's optional agent, which 0.1.0 left out. This directory is
-the unsigned development copy. Its `manifest.json` still says version 0.1.0 and
-has no signature, but declares the same agent, with the same
+the unsigned development copy of 0.1.1, with the same agent and
 [AGENT.md](bundle/AGENT.md). Its `listing.json` has placeholder publisher
-fields and its own release notes, and its description doesn't yet disclose
-**Ask GitHub Notes**, as the published one does. The other files match the
-published 0.1.1. The [reference app guide](../README.md) explains how the app
-is built and what to change before you reuse it.
+fields, and its `manifest.json` has no signature; every other file matches the
+published release. The [reference app guide](../README.md) explains how the
+app is built and what to change before you reuse it.
 
 The editor uses the layout of Rinx, the article writer that ships with
 OctoSense: icon-only header and formatting controls, desktop

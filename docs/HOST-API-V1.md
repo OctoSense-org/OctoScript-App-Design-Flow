@@ -2,15 +2,22 @@
 
 English | [简体中文](HOST-API-V1.zh-CN.md)
 
-**Implementation guide, not a released-host promise.** These changes target the
-1.6 App Hub contract and a compatible OctoSense, runner and Makepad build.
-Contract 1.6.0 is published; compatible host artifacts and phone acceptance are pending. An older host
-must reject an app that requires these features. For the earlier release
-behavior, see [Host services](HOST-SERVICES.md).
-
 An app can call Rust services compiled into its host, plus its own declared
-Splash functions through the script-tool ABI. This work does not load custom
-Rust libraries, Wasm or JIT code, or expose every OS API.
+Splash functions through the script-tool ABI. Host API v1 does not load custom
+Rust libraries, Wasm or JIT code, and it does not expose every OS API.
+
+App Hub contract 1.6.0, published on crates.io, defines the declarations on
+this page. What each build does with an app that declares them:
+
+| Build | Host API v1 |
+| --- | --- |
+| OctoSense `main` (in no release yet) | Implements every API on this page, within the platform limits each section gives. |
+| OctoSense desktop 0.1.0-beta.2 | Refuses the app: its contract, 1.5, knows none of the markers. For what beta.2 serves, see [Host services](HOST-SERVICES.md). |
+| `card-host`, which `tools/octo run` starts | Refuses the app ([Before publishing](#before-publishing)). For an app that requests `runtime` without the markers, it answers `runtime.list` and `runtime.describe`. |
+
+**Unverified:** a physical permission approval, camera capture, the Android
+runtime, Linux and Windows device services, consent to the app's agent, and
+live-model runs.
 
 ## 1. Declare what the app needs
 
@@ -75,18 +82,31 @@ provide `status`, `request` and `revoke`, each with `{}` arguments, on Android
 and macOS. These methods require `host-api-v1` and the corresponding capability.
 
 A permission request first obtains this app's native consent, then the OS grant
-if needed. The app cannot approve its own sheet. An agent can read status, but
-cannot approve consent or turn a background request into a foreground one.
+if needed. Consent covers one app across its accounts. The app cannot approve
+its own sheet. A request from the background or from an agent fails with
+`authorization_required`: an agent can read status, revoke the app's consent
+and read an authorized location, but cannot approve consent.
 Responses distinguish `app_policy_granted`, `app_consent` and `os_permission`.
 Revoking app consent does not revoke the OS package's grant or other apps'
-consent. Opted-in apps' device widgets and GPS helpers use this gate too.
+consent.
+
+In an app that declares `host-api-v1`, the same consent gate covers
+`CameraPreview`, `sys.request_location`, `sys.gps` and the map's GPS reads.
+After a restart, the gate refuses access until the app calls a permission
+method, which loads its saved consent. Call `<family>.permission.status` when
+the app opens, before you start `CameraPreview` or read GPS.
+`sys.request_location` can prompt, so call it only in the foreground;
+background code can use `sys.gps`, which never prompts, or `location.get`
+once the app is authorized.
 
 `location.get` currently works only on Android. It returns `latitude`,
 `longitude`, `accuracy_m`, `source: "last_known"`, `timestamp: null` and
 `freshness: "unknown"`. It does not guarantee a fresh fix or background location.
 A permission API is not a new capture, picker or calendar API; use only methods
 actually registered by the host. The adapter does not advertise these device
-methods for Windows, Linux or iOS.
+methods for Windows, Linux or iOS: there `status` reports
+`os_permission: "unsupported"`, and the other methods fail with
+`unsupported_platform`.
 
 ## 4. Connect the app's backend
 
@@ -148,7 +168,8 @@ Installation, update and removal notifications revoke existing backend handles;
 even an update that keeps the same declaration requires reconnecting.
 Embedded backend login is implemented for macOS/Android, with device acceptance
 still pending. Windows/Linux retain a separate external-browser authentication
-path; embedded `WebReader` is unsupported and must fail visibly. Google Android
+path; embedded `WebReader` is unsupported there, and its `open` returns `false`
+([CAPABILITIES § Network](CAPABILITIES.md#network)). Google Android
 sign-in remains unsupported. Google/GitHub also need provider registrations in
 the host; ordinary app users do not register a developer client themselves.
 
@@ -216,12 +237,30 @@ using their registered Rust service.
 
 ## Before publishing
 
-Check the final signed bundle with compatible App Hub tooling. Then test on the
-actual supported OctoSense release: discovery and missing-service fallback,
-account changes, permission denial/revocation, closed-app tool calls and native
-write review. `card-host` does not acquire OctoSense's services merely because
-it can render the app. Publish only platforms you exercised. Source checks and
-VM unit tests do not establish a OnePlus 6 or live-model pass.
+`card-host` implements none of these APIs, so `tools/octo run` cannot run an
+app whose `requires` lists `host-api-v1`, `backend-api-v1` or
+`script-tools-v1`. `run` still prints `admitted` and
+`ready: first frame drawn`, but the window shows a refusal instead of the
+app, and `/snap` lists its text:
+
+```text
+card-host refused this bundle
+app dev.example.notebook needs a host implementing app_tools.dispatch@1
+```
+
+The reason names the API the host lacks; for `host-api-v1` it is
+`app_policy.device_consent@1`. Test such an app this way instead:
+
+1. Check the final signed bundle with `hub` built from App Hub `main`.
+2. Install it from a local mirror in an OctoSense desktop shell built from
+   `main`, as [PUBLISHING §4](PUBLISHING.md#4-rehearse-the-store-path-locally)
+   shows.
+3. Exercise discovery and the fallback for a missing API, account changes,
+   permission denial and revocation, a tool call while the app is closed, and
+   the native review of a backend write.
+4. Publish only the platforms you exercised.
+
+Source checks and VM unit tests are not a device or live-model pass.
 
 See [ADR 0012](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0012-app-host-api-discovery.md),
 [the script tool implementation](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/crates/appstore/src/script_tools.rs),

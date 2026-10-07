@@ -133,7 +133,8 @@ wait "$APP_NATIVE_PID"
 - A packaged OctoSense app runs in App Hub's `card-host`, which exposes the
   same instrument: launch it with `--remote`, inspect with `/snap` and `/d`,
   drive it with `/click`, `/k` and `/t`, capture with `/g` and close with `/gq`.
-  `card-host` serves no host services; a call to one fails with
+  `card-host` serves no host services except `runtime` discovery; a call to
+  any other fails with
   `no service answers "…" on this device`. [QUICKSTART.md](../../docs/QUICKSTART.md)
   shows how to run and capture an app.
 

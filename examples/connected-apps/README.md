@@ -26,16 +26,18 @@ Each version was published from the matching tag of its repository (`v0.1.0`,
 `v0.1.1`). Version 0.1.1 addresses three problems in 0.1.0 that this guide
 teaches from ([Don't copy these patterns](#dont-copy-these-patterns)).
 
-The directories here are unsigned development copies synchronized with the published
-`v0.1.1` app source. Calendar now includes the agenda date-range status; Notes
-includes the assistant disclosure; Inbox keeps template-only agent notifications.
-The manifests say `0.1.1`, declare the same capabilities, storage and agents,
-and carry freshly computed development digests without release signatures.
-Listing text matches that release, with placeholder publisher, support and
-privacy fields retained for developers to replace. Signing may also serialize
-omitted default manifest fields. No publisher key or release identity was copied.
-Historical evidence below still describes its original source and test date;
-this source synchronization does not create new provider or device acceptance.
+The directories here are unsigned development copies of the published 0.1.1.
+Every file matches the release byte for byte except two:
+
+- `listing.json`: the publisher name, support URL and privacy-policy URL are
+  placeholders for you to replace. The rest of the listing matches the
+  release.
+- `manifest.json`: it has no signature, and its digest differs because the
+  listing does. The published manifests also spell out the defaults that
+  `hub sign-manifest` writes, such as `"network": {"hosts": []}` and
+  `"tier": "standard"`, while GitHub Notes' copy writes out the default
+  `"background": false`, which its published manifest omits. Each copy
+  declares the same version, capabilities, storage and agent as the release.
 
 ## Run the apps
 
@@ -516,7 +518,7 @@ agenda covered.
   `past 30 days / next 366 days` when the host reports its sync window, and
   `date range unavailable` when it doesn't. When the selected event drops out
   of a sync, the app says it may be outside the displayed date range, not that
-  it left the calendar. This repository's copy doesn't have this change yet.
+  it left the calendar. This repository's copy has it too.
 - **OctoSense `main`:** the host syncs a fixed window, from 30 days before
   today to 366 days after on UTC day boundaries, with recurring events expanded
   into single occurrences. The same limits apply.
@@ -548,9 +550,9 @@ checked with the `hub` you built in [QUICKSTART](../../docs/QUICKSTART.md):
 
 ```console
 $ hub check bundle --allow-unsigned --catalog <App Hub checkout>/catalog.json
-org.octosense.samples.githubnotes 0.1.0 — REFUSED
+org.octosense.samples.githubnotes 0.1.1 — REFUSED
   [warning] publisher-signature: unsigned: accountability rests on the hub alone
-  [refused] version: version 0.1.0 of org.octosense.samples.githubnotes is already published; publish a new version
+  [refused] version: version 0.1.1 of org.octosense.samples.githubnotes is already published; publish a new version
   [refused] continuity: org.octosense.samples.githubnotes is already published by "ymote"; an update must carry that key
   grants: capabilities {"auth", "github", "storage"}, hosts {}, storage 4194304 bytes, agent read-only
 hub: the bundle was refused
@@ -597,7 +599,7 @@ Give the copy its own ID.
    unsigned warning:
 
    ```text
-   com.example.mynotes 0.1.0 — PASSED
+   com.example.mynotes 0.1.1 — PASSED
      [warning] publisher-signature: unsigned: accountability rests on the hub alone
      grants: capabilities {"auth", "github", "storage"}, hosts {}, storage 4194304 bytes, agent read-only
    ```

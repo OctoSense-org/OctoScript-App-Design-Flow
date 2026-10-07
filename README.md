@@ -53,7 +53,7 @@ organizers. What a contestant needs from here:
 | **Start** | The [Quick path](#quick-path) below: every step is a shell command. |
 | **Machine** | macOS on Apple silicon is the verified platform. On Windows and Linux, CI runs only the `tools/test_*.py` tests; the rest is unverified, and on Linux, frame capture is reported to time out under software rendering. For prerequisites and Windows setup, see the [Quick path](#quick-path). |
 | **What an app can do** | Keep its own storage; make HTTPS requests to hosts it declares; show pictures and web pages; use the camera and the device's location; read and send mail through the host's `mail` service; publish Glance cards; call `model.complete`; and, in `desktop-v0.1.0-beta.2`, use a person's GitHub, Gmail or Google Calendar account through the host. [docs/CAPABILITIES.md](docs/CAPABILITIES.md) lists the capabilities; [docs/SCRIPT-API.md](docs/SCRIPT-API.md) covers the language and every API. |
-| **What it cannot do** | Hold a password, API key or token, even in its own storage. Sign people in to its own backend on a released build: OctoSense `main` adds a host-run backend sign-in, but no release has it yet, and the host's operator must register each app's backend ([CAPABILITIES](docs/CAPABILITIES.md#sign-in-to-your-own-backend), [App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)). Generate images, audio or video, or compute embeddings: `model.image`, `model.audio`, `model.video` and `model.embeddings` do not exist ([App Hub#85](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/85)–[#88](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/88)). Add a capability or host service (an App Hub and shell change), use the system-app-only `llm`, `news` and `calendar` capabilities or an `os.*` id, or ship native code. |
+| **What it cannot do** | Hold a password, API key or token, even in its own storage. Sign people in to its own backend on a released build: only OctoSense `main` has the host-run backend sign-in, with the backend declared in the app's manifest or registered by the host's operator ([CAPABILITIES](docs/CAPABILITIES.md#sign-in-to-your-own-backend), [App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)). Generate images, audio or video, or compute embeddings: `model.image`, `model.audio`, `model.video` and `model.embeddings` do not exist ([App Hub#85](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/85)–[#88](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/88)). Add a capability or host service (an App Hub and shell change), use the system-app-only `llm`, `news` and `calendar` capabilities or an `os.*` id, or ship native code. |
 | **AI in the app** | Building an app needs no AI service, and `card-host` serves none, so make the app complete without one. See [AI in your app](#ai-in-your-app). |
 | **Reference apps** | The three published [connected apps](#connected-apps-github-gmail-and-google-calendar). |
 | **Demo** | The app in `card-host` (`tools/octo run`, driven over the remote bridge) and real screenshots from `tools/octo shot`. To show it inside OctoSense, with its host services, run the OctoSense desktop shell against a local catalog ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)). |
@@ -155,8 +155,8 @@ Use `main` of each repository.
 
 | Piece | State |
 | --- | --- |
-| The gate (`hub`) | App Hub `main`, app contract 1.5 (the manifest rules `hub` enforces), which admits the connected-account capabilities `auth`, `github`, `gmail` and `gcalendar`. |
-| `card-host` | App Hub `main`. It runs one bundle and serves no host services. Build it as the [Quick path](#quick-path) shows. |
+| The gate (`hub`) | App Hub `main`, app contract 1.6 (the manifest rules `hub` enforces), which admits the connected-account capabilities `auth`, `github`, `gmail` and `gcalendar`, and the [Host API v1](docs/HOST-API-V1.md) declarations. |
+| `card-host` | App Hub `main`. It runs one bundle and serves no host services except `runtime` discovery. Build it as the [Quick path](#quick-path) shows. |
 | The shells | OctoSense `main`; its latest desktop release is `desktop-v0.1.0-beta.2`. The desktop shell and the phone's Home run system and store apps; the desktop also serves connected accounts and app agents' host-service tools. |
 | Submission | An issue on OctoSense-App-Hub, as App Hub's [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md) describes. |
 | Installing your own bundle on a phone | Not supported. See [Running an app](#running-an-app). |
@@ -295,7 +295,7 @@ submitted; everything else in the app's repository stays out of it.
 my-app/                     the app's own Git repository
   AGENTS.md  CLAUDE.md      copied by tools/octo new; not submitted
   GEMINI.md  .gitignore     copied by tools/octo new; not submitted
-  .gitattributes            you add it: bundle/** -text, so Git never rewrites the bundle
+  .gitattributes            copied by tools/octo new: bundle/** -text, so Git never rewrites the bundle
   BRIEF.md  build/          your brief, hub scan's review packet; not submitted
   .local-state/             card-host's jail and log; not submitted
   bundle/                   THE SUBMISSION
@@ -319,7 +319,7 @@ my-app/                     the app's own Git repository
 For every field, see App Hub's
 [The manifest](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-manifest).
 
-**Capabilities** form a closed list defined by App Hub: 25 families, such as
+**Capabilities** form a closed list defined by App Hub: 26 families, such as
 `storage`, `net`, `images`, `web`, `camera`, `location`, `mail`, `glance`,
 `model` and the connected-account `auth`, `github`, `gmail` and `gcalendar`,
 plus 78 exact host-service names: 4 `octos.*` for the device's assistant, 45
@@ -401,13 +401,15 @@ the system chat) and one **app agent** for each app that has one. On
 | --- | --- | --- |
 | Make a one-shot, schema-checked model call | `model` capability, `host.request("model.complete", …)`, within a daily budget that `model.budget` reports | `no service answers "model"` |
 | Talk to the assistant from its own screens | the 4 `octos.*` capabilities, once the person allows the app's agent on a first-use sheet | `no service answers "octos"` |
-| Have its own agent, which the person talks to directly (the shell's `Ask <app>` panel, an in-card chat, the app's own screens) and the system agent can hand work to | an `agent` block and `tools.json`: a tool marked `implemented_by: "host-service"` runs through a `host_method` from App Hub's reviewed list, on `github`, `gcalendar`, `gmail` or `glance`; `AGENT.md` and skills are loaded as per-turn guidance | checked by `hub check` only |
+| Have its own agent, which the person talks to directly (the shell's `Ask <app>` panel, an in-card chat, the app's own screens) and the system agent can hand work to | an `agent` block and `tools.json`: a tool marked `implemented_by: "host-service"` runs through a `host_method` from App Hub's reviewed list, on `github`, `gcalendar`, `gmail` or `glance`; on OctoSense `main` only, a tool marked `implemented_by: "app"` runs the app's own Splash handler while the app is open ([HOST-API-V1 §5](docs/HOST-API-V1.md#5-implement-a-declared-app-tool)); `AGENT.md` and skills are loaded as per-turn guidance | checked by `hub check` only |
 | Publish cards to the Glance screen, with an in-card chat its agent answers and model-written text marked AI-written | `glance` capability, `glance.publish` (L0 `sys.chat`, `model-copy`) | `no service answers "glance"` |
 | Run its agent in the background when new mail arrives | `agent.background: true` and `agent.triggers.events: ["<namespace>.new_message"]`, plus `auth` and `gmail`, as Inbox Assistant does | not available |
 
 Not yet: image, audio and video generation and embeddings (`model.image`,
-`model.audio`, `model.video`, `model.embeddings`), and agent tools that run
-the app's own code. The shells refuse `implemented_by: "app"`, and a
+`model.audio`, `model.video`, `model.embeddings`). Agent tools that run the
+app's own code work only on OctoSense `main`, in no release yet: the manifest
+declares `requires: ["script-tools-v1"]`, and a tool runs only while the app
+is open. Desktop 0.1.0-beta.2 refuses `implemented_by: "app"`, and there a
 host-service tool can only call an existing host service method. `llm`
 manages AI providers for system apps only. A bundle that ships `tools.json`
 gets an app agent even without an `agent` block, so say so in the listing.

@@ -18,7 +18,7 @@ service.
 ```
 
 - **The list is closed.** `KNOWN_CAPABILITIES` in App Hub
-  `crates/app-contract/src/manifest.rs` holds 103 names: 25 broad
+  `crates/app-contract/src/manifest.rs` holds 104 names: 26 broad
   capabilities, such as `storage` and `glance`, and 78 exact service names,
   such as `octos.turn.start`. The gate refuses any other name, such as
   `contacts`, and any bare prefix, such as `octos.`:
@@ -58,7 +58,7 @@ the gate warns about each script that calls `fs.*` and about a `camera` grant:
 | --- | --- | --- |
 | `net` | `net.http_request` and `net.web_socket`, to exactly the hosts in `network.hosts`. A host is a bare, exact, lowercase name: no scheme, path, port or wildcard. | No `net` in the script at all: `variable net not found in scope`. The same holds for `net` with an empty host list. |
 | `images` | Pictures (`Image{src: http_resource(url)}`) from any public `https://` host, beyond `network.hosts`: a feed reader's thumbnails. It does not widen `net.http_request`. | Pictures load only from listed hosts. |
-| `web` | `WebReader` opens any public `https://` page in the system web view. The page has no way back into the app. The view opens only on macOS, iOS and Android. Windows, Linux and OpenHarmony builds have no handler for it: `open` returns `true`, no page appears, and the log says `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`. | `WebReader.open` works only for listed hosts and refuses others: ``refused <url>: not on this app's host list, and no `web` grant``. |
+| `web` | `WebReader` opens any public `https://` page in the system web view. The page has no way back into the app. The view opens only on macOS, iOS and Android. On Windows, Linux and OpenHarmony, a shell built from OctoSense `main` returns `false` from `open`, and `error()` answers `Embedded web pages are unavailable on this platform; this host has no native WebReader adapter`. `card-host` there returns `true`, shows no page and logs `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`. | `WebReader.open` works only for listed hosts and refuses others: ``refused <url>: not on this app's host list, and no `web` grant``. |
 
 The runtime and the gate refuse these:
 
@@ -95,10 +95,11 @@ this app was not granted "mail", which "mail.accounts" needs
 | `gmail` | Gmail reads, versioned reply drafts, sending after the person approves it in the host's send review, and new-mail events for the app's agent. Needs `auth`. |
 | `glance` | `glance.publish`, `glance.withdraw` and `glance.list`: cards on the Glance screen that open only this app. See [AI-SERVICES § Publishing to the Glance screen](AI-SERVICES.md#publishing-to-the-glance-screen). |
 | `model` | `model.complete` and `model.budget`: one-shot model calls on the person's own AI providers, checked against the app's JSON Schema, within a daily budget. See [AI-SERVICES § One-shot model calls](AI-SERVICES.md#one-shot-model-calls-model). |
+| `runtime` | `runtime.list` and `runtime.describe`: the host APIs this host implements, with no account data. Builds from OctoSense `main` and `card-host` answer them; desktop-v0.1.0-beta.2 refuses the capability. See [HOST-API-V1 §2](HOST-API-V1.md#2-discover-before-offering-an-optional-feature). |
 
-None of these services runs in `card-host`. There every call answers
-`no service answers "<family>" on this device`. Test them in an OctoSense
-shell.
+Apart from `runtime`, none of these services runs in `card-host`. There
+every call answers `no service answers "<family>" on this device`. Test them
+in an OctoSense shell.
 
 ## Capabilities a store app gains nothing from
 
@@ -172,7 +173,7 @@ shell holds the provider credentials; the app holds only a connection handle.
 
    | Service | Methods |
    | --- | --- |
-   | `auth` | `connect`, `accounts`, `active`, `select`, `disconnect`; on OctoSense `main` also `backend.me` ([below](#sign-in-to-your-own-backend)) |
+   | `auth` | `connect`, `accounts`, `active`, `select`, `disconnect`; on OctoSense `main` also `backend.me` and `backend.request` ([below](#sign-in-to-your-own-backend)) |
    | `github` | `repositories`, `files`, `read`, `review_save` |
    | `gcalendar` | `calendars`, `cached`, `refresh`, `get`, `prepare`, `review_save`; `sync` on desktop-v0.1.0-beta.2 only ([Limits](#limits)) |
    | `gmail` | `labels`, `messages`, `message`, `draft.open`, `draft.get`, `draft.edit`, `draft.review`, `events.status`, `event.status`, `event.decide` |
@@ -197,9 +198,17 @@ summarizes them.
 ### Sign in to your own backend
 
 On OctoSense `main`, the host can sign the person in to the app's own
-backend. No release has this yet: `desktop-v0.1.0-beta.2` predates it.
+backend and call the backend's declared operations. No release has this yet:
+`desktop-v0.1.0-beta.2` predates it.
 
-1. Declare `auth` and `storage.accounts: true`.
+1. Declare `auth` and `storage.accounts: true`, and register the backend in
+   one of two ways:
+   - Declare it in the manifest's `backend` block, with `backend-api-v1`
+     in `requires`, as [HOST-API-V1 §4](HOST-API-V1.md#4-connect-the-apps-backend)
+     shows. The host reads it from the admitted signed bundle.
+   - Have the host's operator register it in
+     `<apps root>/.host/oauth/backends.json`. The host reads this file only
+     for a bundle that declares no `backend`.
 2. Connect with the `backend` provider and its one scope:
 
    ```splash
@@ -216,15 +225,11 @@ backend. No release has this yet: `desktop-v0.1.0-beta.2` predates it.
 3. Call `auth.backend.me` with `{connection: <handle>}`. It answers
    `{connection, backend_id, identity: {sub, label}}`, the identity the
    backend verified.
+4. Call a declared operation with `auth.backend.request`
+   ([HOST-API-V1 §4](HOST-API-V1.md#4-connect-the-apps-backend)). A write
+   runs only after the person approves it on a host sheet with a physical
+   press.
 
-Earlier source builds obtain each app's backend registration from the
-operator-managed `<apps root>/.host/oauth/backends.json`. Compatible Host API v1
-source builds also accept public registration metadata and named business
-operations in an admitted signed bundle's `backend` block; see the
-[backend guide](HOST-API-V1.md#4-connect-the-apps-backend) for the required
-manifest markers, account storage and request contract. Operator configuration
-remains available when the bundle has no declaration. Contract 1.6.0 is published;
-a compatible host binary release is pending. Beta.2 supports neither backend path.
 Without a registration, `auth.connect` answers
 `This app's backend sign-in is unavailable. Contact the app's distributor.`
 The backend must offer an OAuth authorization-code flow with S256 PKCE and a
@@ -263,15 +268,13 @@ unverified.
   ([current delivery boundary](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.md#current-delivery-boundary)).
 - **Not yet:** Google sign-in on Android. `auth.connect` answers
   `Google authorization needs the Android host adapter; desktop login is not supported on this device`.
-- **Not yet in a release:** sign-in to an app's own backend
-  ([above](#sign-in-to-your-own-backend)). Signed bundles can declare their
-  backend in compatible Host API v1 source builds
-  ([backend guide](HOST-API-V1.md#4-connect-the-apps-backend)); the compatible
-  host release is pending.
+- **Not yet in a release:** sign-in to an app's own backend and calls to
+  its operations ([above](#sign-in-to-your-own-backend)). Only builds from
+  OctoSense `main` have them.
 
 ## Exact service names
 
-Besides the 25 broad capabilities, `KNOWN_CAPABILITIES` holds 78 exact service names.
+Besides the 26 broad capabilities, `KNOWN_CAPABILITIES` holds 78 exact service names.
 Each is its own consent; a prefix grants nothing.
 
 | Names | What they grant | Who serves them |

@@ -8,13 +8,11 @@
 
 分发器属于 App Hub（[OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 中的 `crates/appstore/src/services.rs`）。服务属于 OctoSense：[OctoSense](https://github.com/OctoSense-org/OctoSense) 中的 `crates/shell`、`crates/ai-host`、`crates/oauth-service` 和 `apps/*/host-service`。下文未加标注的路径都在 OctoSense 中。
 
-正在实现的宿主 API 方案见 [Host API v1](HOST-API-V1.zh-CN.md)：版本要求、发现、
-签名后端操作、设备授权和脚本工具。该指南需要配套发布版本；不改变下文记录的
-此前发布版本限制。
+OctoSense `main`（尚未进入任何发布版本）还实现了 Host API v1：版本要求、API 发现、签名的后端操作、设备授权和脚本工具。用法见 [Host API v1](HOST-API-V1.zh-CN.md)。桌面版 0.1.0-beta.2 没有这些功能。
 
 ## 哪个 Shell 提供哪项服务
 
-OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home（`phone/`）。两者的标准构建都注册了下表中的全部服务。`crates/shell/src/apps.rs` 中的 `register_host_services` 注册面向应用的服务；`crates/ai-host/src/lib.rs` 注册 `llm`、`model` 和 `octos`。App Hub 的 `card-host` 不注册任何服务。
+OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home（`phone/`）。两者的标准构建都注册了下表中的全部服务。`crates/shell/src/apps.rs` 中的 `register_host_services` 注册面向应用的服务；`crates/ai-host/src/lib.rs` 注册 `llm`、`model` 和 `octos`。App Hub 的 `card-host` 不注册任何服务，只响应用于发现宿主 API 的 `runtime`，这个能力族由 App Hub 的分发器自己处理。
 
 | 能力族 | 谁可以调用 | 服务代码 |
 | --- | --- | --- |
@@ -39,7 +37,7 @@ OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home�
 | 服务 | 前提 | 可用的构建 |
 | --- | --- | --- |
 | `auth`、`github`、`gcalendar`、`gmail` | GitHub 和 Google 的提供商注册信息。beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取注册信息，这个文件由宿主的运维人员提供；用 OctoSense `main` 构建时，可以把注册信息编译进去（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。 | 用 OctoSense `main` 构建的版本，以及 desktop-v0.1.0-beta.2 发布版（macOS，Apple 芯片）。尚不支持：在 Android 上登录 Google。 |
-| 使用 `backend` 提供商的 `auth` | 较早的源码构建使用运维人员配置的 `<apps root>/.host/oauth/backends.json`；兼容 Host API v1 的源码构建还会从已准入签名包的 `backend` 块解析公开注册信息（[后端指南](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）。 | 仅限源码构建；beta.2 没有后端登录，兼容 Host API v1 的宿主尚待发布。登录适配器在 macOS/Android 9+ 使用宿主 WebView，Windows/Linux 保留独立的桌面浏览器路径（未验证）。iOS 不支持。 |
+| 使用 `backend` 提供商的 `auth` | 应用后端的注册信息：来自已准入签名应用包的 `backend` 块（[后端指南](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）；应用包没有声明时，来自运维人员配置的 `<apps root>/.host/oauth/backends.json`。 | 仅限用 OctoSense `main` 构建的版本；beta.2 没有后端登录。macOS 和 Android 9 及以上版本使用宿主的 WebView 登录，Windows 和 Linux 使用系统浏览器（未验证）。iOS 不支持。 |
 | `octos`、`model` | 用户在 AI providers 应用中添加的 AI 提供商。 | 所有标准构建；`octos` 仅限托管内核的 Shell。 |
 | `mail` | 用户在 Mail 的面板上登录的账户。 | 所有标准构建。 |
 
@@ -94,7 +92,7 @@ Mail 在 macOS 和 iOS 上把密码存进钥匙串。在 Android 和其他平台
 
 应用的 Agent 同样接触不到这些密钥：它在应用的账户文件夹中工作（[AI-SERVICES](AI-SERVICES.zh-CN.md#agent-在哪里工作storage)）。
 
-如果应用需要某个服务上的账户，它需要的是对接该服务的宿主服务，而不是登录表单。GitHub 和 Google 已有现成的宿主服务（[CAPABILITIES § 使用已连接账户](CAPABILITIES.zh-CN.md#使用已连接账户)）。有自己账户体系的应用可以使用宿主的后端登录，但仅限 OctoSense `main`，并且要由宿主的运维人员注册该后端（[CAPABILITIES § 登录应用自己的后端](CAPABILITIES.zh-CN.md#登录应用自己的后端)）。应用包目前还不能自行注册后端（[App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)）。
+如果应用需要某个服务上的账户，它需要的是对接该服务的宿主服务，而不是登录表单。GitHub 和 Google 已有现成的宿主服务（[CAPABILITIES § 使用已连接账户](CAPABILITIES.zh-CN.md#使用已连接账户)）。有自己账户体系的应用可以使用宿主的后端登录，但仅限 OctoSense `main`。应用包在清单的 `backend` 块中声明自己的后端，也可以由宿主的运维人员注册（[CAPABILITIES § 登录应用自己的后端](CAPABILITIES.zh-CN.md#登录应用自己的后端)）。目前还没有发布版本包含这项功能（[App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)）。
 
 ## 完整示例：Mail
 

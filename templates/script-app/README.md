@@ -16,6 +16,7 @@ script-app/
   CLAUDE.md        imports AGENTS.md for Claude Code (copied)
   GEMINI.md        imports AGENTS.md for Gemini CLI (copied)
   .gitignore       keeps keys, build output and .local-state out of Git (copied)
+  .gitattributes   keeps Git from rewriting the bundle's bytes (copied)
   bundle/          the app; the only thing ever submitted (copied)
     manifest.json  id my-notes, version 0.1.0, capability storage
     listing.json   store text: publisher values and part of the description are placeholders

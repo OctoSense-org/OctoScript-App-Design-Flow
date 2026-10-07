@@ -29,7 +29,7 @@ tools, keys, logs, `.local-state/`, `build/review.json`) stays outside it.
 ```text
 my-app/
   AGENTS.md  README.md  .gitignore        not submitted
-  .gitattributes                         you add it: bundle/** -text, so Git never rewrites the bundle
+  .gitattributes                         copied by tools/octo new: bundle/** -text, so Git never rewrites the bundle
   build/review.json                      not submitted (hub scan output)
   .local-state/                          not submitted (card-host jail)
   bundle/                                THE SUBMISSION

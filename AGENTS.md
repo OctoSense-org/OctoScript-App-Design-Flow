@@ -73,12 +73,10 @@ needs no AI service or API key.
   gate refuses only password and one-time-code fields; a key kept anywhere
   else is still a secret the app holds. Accounts go through a host service's
   sheet ([docs/HOST-SERVICES.md](docs/HOST-SERVICES.md)). Beta.2 has no backend
-  sign-in. Earlier OctoSense source builds use operator-managed backend
-  registrations; compatible Host API v1 source builds also accept public
-  registration metadata from an admitted signed bundle's `backend` block.
-  Contract 1.6.0 is published, but a compatible host release is pending.
-  Follow [the backend guide](docs/HOST-API-V1.md#4-connect-the-apps-backend);
-  operator configuration remains available when the bundle has no declaration.
+  sign-in. OctoSense `main` (in no release yet) signs the person in to the
+  app's own backend: the bundle declares it in a signed `backend` block, or
+  the host's operator registers it
+  ([the backend guide](docs/HOST-API-V1.md#4-connect-the-apps-backend)).
 - **Declare every host.** List in `network.hosts` every `https://` host that
   `main.splash` contacts, and request `net`. `images` and `web` add pictures
   and pages from any public `https://` host; they do not widen `net`. Never
@@ -110,6 +108,14 @@ needs no AI service or API key.
     capability, risk, private-data and account checks still apply;
   - admitted `AGENT.md` and skill text is per-turn guidance, not an
     executable kernel skill.
+
+  OctoSense `main` (in no release yet) also runs `implemented_by: "app"`
+  tools. The manifest declares `requires: ["script-tools-v1"]`, and the shell
+  calls the app's `app_tool` handler while the full app is open; a closed app
+  answers `app_not_running`
+  ([docs/HOST-API-V1.md](docs/HOST-API-V1.md#5-implement-a-declared-app-tool)).
+  `card-host` refuses an app that requires `host-api-v1`, `backend-api-v1` or
+  `script-tools-v1`; test such an app in a shell built from OctoSense `main`.
 
   `card-host`, beta.1 builds and older shells provide none of this, and a
   gate pass does not prove a provider connection. The three published
@@ -159,22 +165,24 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   without an extension: `[refused] contents: .DS_Store has extension "",
   which a bundle may not hold`. Delete it, then stamp. It also refuses a URL
   inside a bundled `.txt` or `.md` file, such as a font license.
-- **CJK text in a card uses the plain L0 role kit.** Write it with
-  `Surface`, `TextTitle`, `TextBody` and the other role components, and set
-  no `font_src`; the built-in LXGW WenKai draws Chinese. A kit's `font_src`
-  may name only one built-in font, `makepad_widgets:resources/Inter.ttf`,
-  which has no CJK glyphs. A bundled font file in `font_src` passes the gate but does not load
-  in `card-host` today, so never ship one for a card
+- **Name a card's own font with a bundle-relative path.** Put the `.ttf` or
+  `.otf` file in the bundle and set `font_src` to its path, such as
+  `"font_src": "assets/Body.ttf"`; `card-host` loads it from the bundle's
+  asset server. Text the font lacks, such as Chinese, falls back to the
+  renderer's built-in Chinese face, LXGW WenKai, which also draws Chinese in
+  the plain L0 role kit with no `font_src`. The only built-in font a kit may
+  name is `makepad_widgets:resources/Inter.ttf`; the gate refuses any other
   ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
   A script app may bundle a font and load it with
   `FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`. Check text with
   `MAKEPAD_SYSTEM_FONTS=0`, so a system font cannot hide a missing glyph.
   Font behavior in the OctoSense shells is unverified.
 - **Keep the bytes exact.** The digest covers every byte of every file, so a
-  line-ending conversion breaks it. Commit a `.gitattributes` that unsets
-  `text` for the bundle (`bundle/** -text` when `bundle/` is at the
-  repository root), so that a Windows checkout with `core.autocrlf=true`
-  leaves the bundle alone. Confirm it with
+  line-ending conversion breaks it. Commit the `.gitattributes` that
+  `tools/octo new` writes (`bundle/** -text`), so that a Windows checkout
+  with `core.autocrlf=true` leaves the bundle alone. In a repository that
+  `tools/octo new` did not create, add one that unsets `text` for the bundle.
+  Confirm it with
   `git check-attr text -- <path to bundle>/manifest.json`, which prints a
   line ending in `text: unset` ([QUICKSTART §3](docs/QUICKSTART.md#3-create-an-app)).
 - **Sign last, and never edit after signing.** Capture screenshots and run
@@ -211,6 +219,8 @@ Hand off only when all of these hold:
    `listing.json` and inspected.
 3. You have driven every interaction in the brief natively in `card-host`
    (click, type and tap through the remote bridge) and observed its effect.
+   For an app that `card-host` refuses, use a shell built from OctoSense
+   `main` ([docs/HOST-API-V1.md](docs/HOST-API-V1.md#before-publishing)).
 4. You have exercised the empty, error and restart states.
 5. The `hub scan` packet is written outside the bundle and its questions are
    answered: seven, or eight when the bundle ships `tools.json`, `AGENT.md`

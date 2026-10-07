@@ -23,7 +23,7 @@
 ```text
 my-app/
   AGENTS.md  README.md  .gitignore        不提交
-  .gitattributes                         自行添加：bundle/** -text，让 Git 永不改写应用包
+  .gitattributes                         由 tools/octo new 复制：bundle/** -text，让 Git 永不改写应用包
   build/review.json                      不提交（hub scan 的输出）
   .local-state/                          不提交（card-host 的 jail）
   bundle/                                提交的内容

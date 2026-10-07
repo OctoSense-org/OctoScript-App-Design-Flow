@@ -13,10 +13,10 @@ OctoSense owns the services: `crates/shell`, `crates/ai-host`,
 [OctoSense](https://github.com/OctoSense-org/OctoSense). Paths below are
 OctoSense's unless marked.
 
-For the host API program now being implemented, see [Host API v1](HOST-API-V1.md):
-version requirements, discovery, signed backend operations, device consent and
-script tools. That guide requires compatible releases; it does not change the
-earlier release limits recorded below.
+OctoSense `main` (in no release yet) also implements Host API v1: version
+requirements, discovery, signed backend operations, device consent and script
+tools. [Host API v1](HOST-API-V1.md) shows how to use them. Desktop
+0.1.0-beta.2 has none of them.
 
 ## Which shell serves which service
 
@@ -24,7 +24,8 @@ Both OctoSense shells register every service below in their standard builds:
 the desktop (`desktop/`) and Home, the phone shell (`phone/`).
 `register_host_services` in `crates/shell/src/apps.rs` registers the
 app-facing services; `crates/ai-host/src/lib.rs` registers `llm`, `model` and
-`octos`. App Hub's `card-host` registers none.
+`octos`. App Hub's `card-host` registers none; it answers only `runtime`
+discovery, which App Hub's dispatcher handles itself.
 
 | Family | Who may call it | Service code |
 | --- | --- | --- |
@@ -58,7 +59,7 @@ Some services work only after setup, and not every build has them:
 | Service | Needs | Builds |
 | --- | --- | --- |
 | `auth`, `github`, `gcalendar`, `gmail` | GitHub and Google registrations. Beta.2 reads them only from `<apps root>/.host/oauth/clients.json`, which its operator supplies; a build from OctoSense `main` can compile them in ([CAPABILITIES § Limits](CAPABILITIES.md#limits)). | Builds from OctoSense `main`, and the desktop-v0.1.0-beta.2 release (macOS, Apple silicon). Not yet: Google sign-in on Android. |
-| `auth` with the `backend` provider | Earlier source builds use operator registration in `<apps root>/.host/oauth/backends.json`. Compatible Host API v1 source builds also resolve public registration metadata from an admitted signed bundle's `backend` block ([backend guide](HOST-API-V1.md#4-connect-the-apps-backend)). | Source builds only; beta.2 has no backend sign-in and a compatible Host API v1 release is pending. The login adapter uses a host WebView on macOS/Android 9+, or the separate desktop browser path on Windows/Linux (unverified). Not on iOS. |
+| `auth` with the `backend` provider | The app's backend registration: the `backend` block of the admitted signed bundle ([backend guide](HOST-API-V1.md#4-connect-the-apps-backend)), or, when the bundle declares none, the operator's `<apps root>/.host/oauth/backends.json`. | Builds from OctoSense `main` only; beta.2 has no backend sign-in. The login uses a host WebView on macOS and on Android 9 or later, and the system browser on Windows and Linux (unverified). Not on iOS. |
 | `octos`, `model` | An AI provider the person adds in the AI providers app. | Every standard build; `octos` only where the shell hosts the kernel. |
 | `mail` | An account the person signs in to on Mail's sheet. | Every standard build. |
 
@@ -166,9 +167,10 @@ If your app needs an account on some service, it needs a host service for
 that service, not a login form. GitHub and Google already have one
 ([CAPABILITIES § Use a connected account](CAPABILITIES.md#use-a-connected-account)).
 An app with an account system of its own can use the host's backend sign-in,
-on OctoSense `main` only and with a registration from the host's operator
+on OctoSense `main` only. The bundle declares its backend in the manifest's
+`backend` block, or the host's operator registers it
 ([CAPABILITIES § Sign in to your own backend](CAPABILITIES.md#sign-in-to-your-own-backend)).
-A bundle cannot register its own backend yet
+No release has this yet
 ([App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)).
 
 ## Mail, the worked example

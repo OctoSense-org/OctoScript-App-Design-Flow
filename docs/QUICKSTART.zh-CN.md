@@ -52,7 +52,7 @@ python3 tools/setup-native.py --check   # 通过时以退出码 0 退出，并�
 
 `setup-native.py` 需要运行 20 到 30 秒。如果之后 `--check` 失败，运行 `python3 tools/setup-native.py --update`，把没有本地改动的同级仓库切换到锁定的版本。
 
-App Hub 和本仓库都请使用 `main`。运行时为 OctoScript-Makepad `aa80f72c`，它锁定了 Makepad `68d1f4ec` 和 OctoScript `2e37d9e6`。
+App Hub 和本仓库都请使用 `main`。运行时为 OctoScript-Makepad `704a3ad7`，它锁定了 Makepad `68d1f4ec` 和 OctoScript `2e37d9e6`。
 
 ## 2. 构建 `hub` 和 `card-host`
 
@@ -94,7 +94,7 @@ python tools/octo doctor
 tools/octo new ~/apps/my-app --platform macos --id my-notes --name "My Notes"
 ```
 
-`new` 复制 [templates/script-app](../templates/script-app/README.zh-CN.md)（`bundle/`、`AGENTS.md` 及导入它的 `CLAUDE.md` 和 `GEMINI.md`、`.gitignore`），设置清单中的 `id` 和 `name` 以及 `main.splash` 中的标题标签，把 `--platform` 的值写入商店信息，并为应用包写入摘要：
+`new` 复制 [templates/script-app](../templates/script-app/README.zh-CN.md)（`bundle/`、`AGENTS.md` 及导入它的 `CLAUDE.md` 和 `GEMINI.md`、`.gitignore` 和 `.gitattributes`），设置清单中的 `id` 和 `name` 以及 `main.splash` 中的标题标签，把 `--platform` 的值写入商店信息，并为应用包写入摘要：
 
 ```text
 created …/my-app
@@ -110,18 +110,17 @@ created …/my-app
 - 不能以 `os.` 开头，这个前缀保留给系统应用。除非传入 `--system`，否则 `new` 会拒绝这样的 id。
 - id 本身及其最后一段都不能是宿主保留的名字，例如 `notes`、`weather`、`calculator`、`browser`、`terminal` 或 `system`。`new` 在创建任何文件之前就会拒绝这样的 id：`octo: id 'com.example.notes' uses reserved native/host namespace 'notes'; choose an app-specific name`。如果之后把 id 改成这样的名字，准入检查会拒绝它（§8）。全部保留名见 App Hub 的 [准入检查的规则](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#准入检查的规则)。
 
-把 `~/apps/my-app` 建成独立的 Git 仓库，并禁止 Git 改写应用包的字节。应用包的摘要覆盖每一个字节，如果检出时转换了换行符（Windows 上设置了 `core.autocrlf=true` 的 Git 就会这样），摘要就会失效：
+把 `~/apps/my-app` 建成独立的 Git 仓库。应用包的摘要覆盖每一个字节，如果检出时转换了换行符（Windows 上设置了 `core.autocrlf=true` 的 Git 就会这样），摘要就会失效。`new` 写入的 `.gitattributes` 含有 `bundle/** -text`，可以禁止 Git 改写应用包。检查这条规则是否生效：
 
 ```sh
 cd ~/apps/my-app
 git init
-printf 'bundle/** -text\n' >> .gitattributes
 git check-attr text -- bundle/manifest.json
 ```
 
-成功时输出 `bundle/manifest.json: text: unset`。`>>` 是追加写入，已有的 `.gitattributes` 会保留原来的规则。
+成功时输出 `bundle/manifest.json: text: unset`。如果输出的是 `text: unspecified`，说明缺少这条规则，不是由 `new` 创建的仓库就会这样。请用 `printf 'bundle/** -text\n' >> .gitattributes` 加上它；`>>` 是追加写入，已有的 `.gitattributes` 会保留原来的规则。
 
-如果应用放在一个更大的仓库里，根目录 `.gitattributes` 中的 `bundle/**` 覆盖不到它的应用包。请写出从根目录算起的应用包路径，例如 `apps/my-app/bundle/** -text`；或者写 `**/bundle/** -text`，匹配任意层级的 `bundle/` 文件夹。然后在根目录下，用清单的真实路径检查：`git check-attr text -- apps/my-app/bundle/manifest.json`。在那里检查 `bundle/manifest.json` 说明不了任何问题：只要路径与模式匹配，`git check-attr` 就输出 `unset`，即使这个文件并不存在。
+如果把应用移到一个更大的仓库里，根目录 `.gitattributes` 中的 `bundle/**` 覆盖不到它的应用包。请把应用自己的 `.gitattributes` 留在它的 `bundle/` 旁边：其中的模式从它所在的目录算起。也可以在根目录的文件中写出应用包的路径，例如 `apps/my-app/bundle/** -text`，或者写 `**/bundle/** -text`，匹配任意层级的 `bundle/` 文件夹。然后在根目录下，用清单的真实路径检查：`git check-attr text -- apps/my-app/bundle/manifest.json`。在那里检查 `bundle/manifest.json` 说明不了任何问题：只要路径与模式匹配，`git check-attr` 就输出 `unset`，即使这个文件并不存在。
 
 ## 4. 在桌面上运行
 
@@ -258,6 +257,8 @@ fn tip_20_percent() {
 
 **AI。** 在 OctoSense 的 Shell 中，隔离运行的应用可以调用 `model.complete`；用户允许该应用的 Agent 之后，还可以调用 4 个 `octos.*` 方法。在 `card-host` 中，这类调用一律返回 `no service answers "…" on this device`。请让应用在没有这些服务时也完整可用。[AI-SERVICES](AI-SERVICES.zh-CN.md) 列出了已有和计划中的功能，并给出一个经过验证、能处理“不可用”状态的调用。
 
+**Host API v1。** OctoSense `main`（尚未进入任何发布版本）允许应用发现宿主 API、申请设备权限、调用自己的后端，以及用 Splash 实现 Agent 工具（[HOST-API-V1](HOST-API-V1.zh-CN.md)）。这类应用会在 `requires` 中列出 `host-api-v1`、`backend-api-v1` 或 `script-tools-v1`。`card-host` 一项都没有实现，会拒绝这类应用，所以 `tools/octo run` 无法运行它们：`run` 会输出 `admitted`，但窗口显示 `card-host refused this bundle` 和宿主缺少的 API。请在用 `main` 构建的 OctoSense Shell 中测试这类应用（[HOST-API-V1 § 发布前](HOST-API-V1.zh-CN.md#发布前)）。桌面版 0.1.0-beta.2 同样会拒绝它们。
+
 ## 7. 最费时间的坑
 
 ### `main.splash` 方面
@@ -275,8 +276,8 @@ fn tip_20_percent() {
 
 - **保留 id。** `tools/octo new` 只检查它创建时用的 id。如果之后把 id 改成 `com.example.notes`，准入检查会拒绝它，因为最后一段 `notes` 是保留名（§3）。
 - **`.DS_Store`。** Finder 会把它写进你打开过的文件夹，而准入检查会拒绝任何扩展名未知的文件。检查之前先删除它：`find ~/apps/my-app/bundle -name .DS_Store -delete`。
-- **换行符。** 如果 Git 检出时转换了换行符，字节就会改变，摘要随之失效。请 commit §3 中的 `.gitattributes`。
-- **卡片中的字体。** 卡片中的中日韩文字请用纯 L0 角色套件（`Surface`、`TextTitle`、`TextBody` 等）编写，不设 `font_src`：它用内置的霞鹜文楷（LXGW WenKai）显示中文，准入检查也能通过。套件的 `font_src` 只能引用一种内置字体 `makepad_widgets:resources/Inter.ttf`，而它没有中日韩字形。在 `font_src` 中引用应用包内的字体文件同样能通过准入检查，但目前 `card-host` 加载不了它，所以不要为卡片附带字体文件（[App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)）。
+- **换行符。** 如果 Git 检出时转换了换行符，字节就会改变，摘要随之失效。请 commit `new` 写入的 `.gitattributes`（§3）。
+- **卡片中的字体。** 要使用自己的字体，把 `.ttf` 或 `.otf` 文件放进应用包，并在 `font_src` 中用相对于应用包的路径引用它，例如 `"font_src": "assets/Body.ttf"`。`card-host` 从应用包自己的素材服务加载它，不需要网络权限；字体文件计入 8 MiB 上限。字体中没有的字形（例如中文）会改用渲染器内置的中文字体霞鹜文楷（LXGW WenKai）；不设 `font_src` 的纯 L0 角色套件（`Surface`、`TextTitle`、`TextBody` 等）也用它显示中文。套件只能引用一种内置字体 `makepad_widgets:resources/Inter.ttf`；准入检查会拒绝其他内置字体，例如内置的中日韩字体（[App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)）。
 - **脚本应用中的字体。** 把字体文件放进应用包，例如 `bundle/fonts/X.ttf`，然后在 `main.splash` 中把它作为 `TextStyle` 的 `FontFamily` 成员加载：`FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`。字体的许可证要放在 `bundle/` 之外：准入检查会拒绝含有 URL 的应用包内 `.txt` 或 `.md` 文件。
 - **缺失的字形。** 用 `MAKEPAD_SYSTEM_FONTS=0` 测试应用（`MAKEPAD_SYSTEM_FONTS=0 tools/octo run …`）。不设这个变量时，macOS 的系统字体会补上你的字体缺少的字形，把问题掩盖起来。**未验证**：在没有中日韩系统字体的 Linux 上，同样的文字是否会显示为方框，以及字体在 OctoSense Shell 中的表现。
 - **大小。** 应用包不能超过 8 MiB（8,388,608 字节）。
@@ -349,20 +350,21 @@ Android 版 `card-host` 不编译远程控制桥。在手机上，请用 OctoSen
 | `shot` 提示 `still changing after 2s` | 应用在持续播放动画；PNG 是最后一帧。查看这张图，或传入更长的 `--settle`。 |
 | 在 Linux 上 `shot` 或 `/g?raw=1` 超时 | 有报告称，在软件渲染（llvmpipe、WSL）下截帧会超时。请在 macOS 上截图，这是经过验证的做法。仅限 Linux，此处**未验证**：启动应用时设置 `MAKEPAD_WRITE_FRAMEBUFFER_PNG=<file>`（`MAKEPAD_WRITE_FRAMEBUFFER_PNG=<file> tools/octo run …`），Makepad 的 Linux OpenGL 后端就会把绘制到窗口的每一帧写入 `<file>`，覆盖上一帧。绝不要根据 `/snap` 重画截图。 |
 | 在 WSL 下，通过输入法输入的中文到不了 `card-host` | 有人报告过，**未验证**。请在 macOS 上测试文字输入。 |
-| 卡片中的中日韩文字显示为方框或 `NO GLYPH` | 套件的 `font_src` 引用了没有中日韩字形的 `Inter.ttf`，或者引用了加载不了的应用包内字体。请改用不设 `font_src` 的纯 L0 角色套件（§7）。 |
+| 卡片中的中日韩文字显示为方框或 `NO GLYPH` | 运行时早于 OctoScript-Makepad `704a3ad7`，卡片文字从这个版本起才有中文后备字体。运行 `python3 tools/setup-native.py --update`，然后重新构建 `card-host`（§2）。 |
 | 按钮上不显示文字 | `ButtonFlat` 的默认文字是为深色主题准备的白色；请设置 `draw_text +: {color: …}`（[SCRIPT-API § Gotchas](SCRIPT-API.md#gotchas)）。 |
 | 数字显示为 `NaN` | `"".to_f64()` 和非数字文本得到的是 NaN，而不是 nil；请用 `if v >= 0` 判断（[SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings)）。 |
 | 输入文字后出现 `widget has no uid` / `widget '<id>' not found in tree` | 运行时早于 Makepad `d0a9def5`：在这些版本中，`TextInput` 的 `on_change` 无法通过 `ui` 读取同一个输入框。运行 `python3 tools/setup-native.py --update`，然后重新构建 `card-host`。 |
 | `variable net not found in scope` | 清单缺少 `net`，或没有 `network.hosts`（§6）。 |
 | `this app may not reach <url>` | 该主机不在 `network.hosts` 中（须完全一致，且为小写）。 |
-| `no service answers "…" on this device` | `card-host` 没有宿主服务，出现这条消息是正常的；请在 OctoSense Shell 中试用应用（[HOST-SERVICES](HOST-SERVICES.zh-CN.md)）。 |
+| `no service answers "…" on this device` | 除了用于发现宿主 API 的 `runtime`，`card-host` 不提供任何宿主服务，出现这条消息是正常的；请在 OctoSense Shell 中试用应用（[HOST-SERVICES](HOST-SERVICES.zh-CN.md)）。 |
+| `run` 输出 `admitted`，但窗口显示 `card-host refused this bundle` 和 `app <id> needs a host implementing …@1` | 清单的 `requires` 中列有 `host-api-v1`、`backend-api-v1` 或 `script-tools-v1`，而 `card-host` 没有实现它们。请在用 `main` 构建的 OctoSense Shell 中测试应用（[HOST-API-V1 § 发布前](HOST-API-V1.zh-CN.md#发布前)）。 |
 | `check`：`screenshots/01-main.png is named by the listing but is not in the bundle` | 截取真实截图（§8）；绝不要用占位图片。 |
 | `check`：`[refused] listing: listing names no platforms` | 商店信息的 `platforms` 为空，原始模板就是这样。在 `listing.json` 中列出你测试过的平台，或用 `tools/octo new … --platform …` 创建应用（§3）。 |
 | `check`：`[refused] identity: app id "…" ends in "…", which is reserved: …` | 修改 id 的最后一段（§3）。同样的检查结果还会在 `policy` 下再出现一次。 |
 | `check`：`[refused] contents: .DS_Store has extension "", which a bundle may not hold` | 删除这个文件：`find <bundle> -name .DS_Store -delete`。其他扩展名未知的文件也必须移出 `bundle/`。 |
-| `check`：`[refused] digest: the bundle hashes to …, the manifest claims …` | 上次写入摘要之后，字节发生了变化。未签名的应用包：再运行一次 `tools/octo check`。已签名的应用包：由人工重新写入摘要并签名。只在全新克隆上出现时：检出时转换了换行符（commit §3 中的 `.gitattributes`），或者 commit 中的摘要已过期（§8）。 |
+| `check`：`[refused] digest: the bundle hashes to …, the manifest claims …` | 上次写入摘要之后，字节发生了变化。未签名的应用包：再运行一次 `tools/octo check`。已签名的应用包：由人工重新写入摘要并签名。只在全新克隆上出现时：检出时转换了换行符（commit `new` 写入的 `.gitattributes`，见 §3），或者 commit 中的摘要已过期（§8）。 |
 | `check`：`[refused] assets: … contains https://…`（`.txt` 或 `.md` 文件） | 应用包中的文本文件不能包含 URL；删掉这些 URL，或把文件放在 `bundle/` 之外。 |
-| `check`：`[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | 套件的 `font_src` 只能引用内置的 `Inter.ttf`。中日韩文字请用不设 `font_src` 的纯 L0 角色套件；应用包内的字体文件能通过准入检查，但在卡片中加载不了（§7）。 |
+| `check`：`[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | 套件的 `font_src` 只能引用一种内置字体 `Inter.ttf`。要用其他字体，请把字体文件放进应用包，并用相对于应用包的路径引用，例如 `assets/Body.ttf`；中文会改用内置的中文字体显示（§7）。 |
 | `hub: the bundle exceeds the size limit`，没有报告 | 应用包超过了 8 MiB。压缩或删除图片和字体。 |
 | 对已签名的应用包运行 `check` 或 `hub scan`：`publisher key "…" is not registered with this hub` | 传入发布者公钥：`tools/octo check <bundle> --publisher-key <publisher-id>=<hex public key>`（`hub scan` 也可以用同一个参数）。 |
 | `card-host: refused: no signature verifier is installed` | `card-host` 不运行已签名的应用包；请用未签名的副本测试，最后再签名。 |

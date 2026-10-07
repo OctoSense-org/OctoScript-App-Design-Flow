@@ -18,12 +18,13 @@ gate refuses it even after `hub stamp`, with `entry` and `listing` refusals. Add
 flow's `page.card` and `kit/` and a real capture, and replace its placeholder
 `platforms` with the platforms you tested.
 
-For CJK text, use the plain L0 role kit (`Surface`, `TextTitle`, `TextBody`,
-…) and set no `font_src`: it draws Chinese with the built-in LXGW WenKai. A
-kit's `font_src` may name only one built-in font,
-`makepad_widgets:resources/Inter.ttf`, which has no CJK glyphs. A `.ttf` or
-`.otf` file in the bundle, named by `font_src`, passes the gate but does not
-load in `card-host` today, so do not ship one
+To use a font of your own, put the `.ttf` or `.otf` file in the bundle and
+name it in `font_src` with a bundle-relative path, such as
+`"font_src": "assets/Body.ttf"`. Text the font lacks, such as Chinese, falls
+back to the renderer's built-in Chinese face, LXGW WenKai, which also draws
+Chinese in the plain L0 role kit (`Surface`, `TextTitle`, `TextBody`, …) with
+no `font_src`. The only built-in font a kit may name is
+`makepad_widgets:resources/Inter.ttf`
 ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
 Check the text with `MAKEPAD_SYSTEM_FONTS=0`, so that a system font cannot
 hide a missing glyph.

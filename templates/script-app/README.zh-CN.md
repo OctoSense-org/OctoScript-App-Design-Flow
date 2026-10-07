@@ -14,6 +14,7 @@ script-app/
   CLAUDE.md        为 Claude Code 导入 AGENTS.md（复制）
   GEMINI.md        为 Gemini CLI 导入 AGENTS.md（复制）
   .gitignore       不让密钥、构建产物和 .local-state 进入 Git（复制）
+  .gitattributes   不让 Git 改写应用包的字节（复制）
   bundle/          应用本身，唯一提交的内容（复制）
     manifest.json  id my-notes，版本 0.1.0，能力 storage
     listing.json   商店信息：发布者字段和部分描述是占位内容
