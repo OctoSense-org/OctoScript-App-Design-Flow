@@ -44,13 +44,14 @@ class Onboarding(unittest.TestCase):
     def test_check_exposes_and_forwards_catalog_and_publisher_keys(self):
         with tempfile.TemporaryDirectory() as temp:
             bundle=Path(temp)
+            hub=bundle/'fixture-tools'/'hub'
             (bundle/'manifest.json').write_text(json.dumps({'integrity':{'signature':'signed fixture'}}))
             argv=['octo','check',str(bundle),'--catalog','catalog.json','--publisher-key','one=key','--publisher-key','two=key','--offline']
-            with patch('sys.argv',argv), patch.object(octo,'need',return_value=Path('/fixture/hub')), patch.object(octo.subprocess,'run') as run, contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as done:
+            with patch('sys.argv',argv), patch.object(octo,'need',return_value=hub), patch.object(octo.subprocess,'run') as run, contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as done:
                 run.return_value.returncode=0
                 octo.main()
             self.assertEqual(done.exception.code,0)
-            self.assertEqual(run.call_args.args[0],['/fixture/hub','check',str(bundle.resolve()),'--catalog','catalog.json','--publisher-key','one=key','--publisher-key','two=key','--offline'])
+            self.assertEqual(run.call_args.args[0],[str(hub),'check',str(bundle.resolve()),'--catalog','catalog.json','--publisher-key','one=key','--publisher-key','two=key','--offline'])
 
     def test_reserved_ids_and_namespaces_leave_no_partial_project(self):
         names = ('agents apphub appcard browser calculator card clock dev notes octos octoscode os '
