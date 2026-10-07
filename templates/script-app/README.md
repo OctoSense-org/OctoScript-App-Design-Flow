@@ -2,41 +2,65 @@
 
 English | [简体中文](README.zh-CN.md)
 
-A runnable OctoSense script app: **My Notes** (type a note, keep it in the
-app's storage, tap it to remove it). `tools/octo new <dir> --platform macos` copies it and
-sets the id and name; run it with `tools/octo run <dir>/bundle`.
+This template is a runnable OctoSense script app, **My Notes**. You type a
+note, the app keeps it in its own storage, and a tap removes it.
+`tools/octo new <dir> --platform macos` copies this template, sets the id and
+name, and writes the platforms into the listing;
+`tools/octo run <dir>/bundle` runs it.
 
 ```text
 script-app/
   README.md        this file (not copied)
-  AGENTS.md        instructions for an agent working in the new app's repository (copied)
-  .gitignore       keeps keys, build output and .local-state out of git (copied)
+  README.zh-CN.md  the Chinese version of this file (not copied)
+  AGENTS.md        instructions for a coding agent in the new app's repository (copied)
+  CLAUDE.md        imports AGENTS.md for Claude Code (copied)
+  GEMINI.md        imports AGENTS.md for Gemini CLI (copied)
+  .gitignore       keeps keys, build output and .local-state out of Git (copied)
   bundle/          the app; the only thing ever submitted (copied)
     manifest.json  id my-notes, version 0.1.0, capability storage
-    listing.json   store text: EVERY publisher value is a placeholder
+    listing.json   store text: publisher values and part of the description are placeholders
     main.splash    the program
     assets/icon.svg
 ```
 
-What it demonstrates, all verified in `card-host`: state in top-level `let`s,
-a loader started with `start_timeout(0.05, …)`, `fs.exists/read/write` in the
-app's jail, `parse_json`/`to_json`, `ui.<id>.text()/set_text()/render()`, an
-`on_render` list with an empty state, `ButtonFlat{on_click}`, and
-`GestureView{on_tap}` rows.
+## What it demonstrates
 
-Deliberately incomplete, so a copy cannot be published by accident:
+All of these work in `card-host`:
+
+- state in top-level `let`s, loaded by a function scheduled with
+  `start_timeout(0.05, …)`;
+- `fs.exists`, `fs.read` and `fs.write` in the app's jail (its private data
+  directory), with `parse_json` and `to_json`;
+- `ui.<id>.text()`, `set_text()` and `render()`;
+- an `on_render` list with an empty state, a `ButtonFlat{on_click}` button and
+  `GestureView{on_tap}` rows.
+
+The empty state is a separate `if` before the `for`. Do not write
+`if … else for …` inside `on_render`: in testing, the empty branch drew
+nothing and stale rows stayed on screen.
+
+## What you finish before you publish
+
+The template is incomplete on purpose, so that a copy cannot be published by
+accident:
 
 - `listing.json` names `screenshots/01-main.png`, which does not exist. The
-  gate refuses the bundle until you capture a real screenshot
-  (`tools/octo shot`). Do not add a dummy image.
-- The publisher name, support URL and privacy-policy URL are placeholders
-  (`tools/octo check` notes them). A person replaces them.
-- The raw template's `platforms` is empty. `octo new` requires `--platform`
-  and writes only the selected targets (repeat the option for multiple targets).
-  This selection is not test evidence. Before publishing, retain only platforms
-  actually exercised; a `card-host` run on a Mac covers `macos`, not Android.
+  gate refuses the bundle until you capture a real screenshot with
+  `tools/octo shot`. Never add a placeholder image.
+- The publisher name, support URL and privacy-policy URL are placeholders,
+  and so is the description's last sentence ("Replace this with …").
+  `tools/octo check` reports them. A person replaces the publisher fields.
+- `assets/icon.svg` is the template's icon. Replace it with your own (App
+  Hub's [ICONS.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/ICONS.md)).
+- `platforms` is empty, and the gate refuses an empty list
+  (`listing names no platforms`). `tools/octo new` requires `--platform` and
+  writes the platforms you pass; repeat the option for each one. Passing a
+  platform is a claim, not a test: before you publish, keep only the
+  platforms you ran the app on, and have a person confirm the claim. A
+  `card-host` run on a Mac tests `macos`, not Android.
+- If you change the id, keep its last segment off App Hub's reserved names
+  (`notes`, `weather`, `terminal` and others). `tools/octo new` refuses them
+  when it creates the app, and the gate refuses them in an id you change
+  later.
 
-Origin: a draft script-app template made alongside OctoSense-App-Hub (never
-committed there; App Hub's `templates/app/` is the card-app starter), with one fix: the list's empty state is a separate `if`
-before the `for`, because `if … else for …` in `on_render` drew nothing for
-the empty branch and left stale rows. Next steps: [docs/QUICKSTART.md](../../docs/QUICKSTART.md).
+Next: [docs/QUICKSTART.md](../../docs/QUICKSTART.md).
