@@ -86,7 +86,7 @@ ready: tools/octo new <dir> --platform <target> && tools/octo run <dir>/bundle
 python tools/octo doctor
 ```
 
-如果程序在别的位置，把 `$env:OCTO_HUB` 和 `$env:OCTO_CARD_HOST` 设为它们的完整路径。CI 会在 Windows 上测试这套查找逻辑；命令本身在 Windows 上未验证。
+如果程序在别的位置，把 `$env:OCTO_HUB` 和 `$env:OCTO_CARD_HOST` 设为它们的完整路径。CI 会在 Windows 上测试这套查找逻辑；命令本身在 Windows 上未验证。社区用户在尚未关闭的 [App Hub#41](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/41) 中报告，曾在较早的版本上验证过 Windows 11 原生构建（Rust 和 MSVC，不用 WSL）：`hub` 和 `card-host` 能构建，`hub stamp` 和 `hub check` 能运行，`card-host --remote` 能响应 `/g` 截帧；维护者尚未在当前 `main` 上验证。
 
 ## 3. 创建应用
 
@@ -347,7 +347,8 @@ Android 版 `card-host` 不编译远程控制桥。在手机上，请用 OctoSen
 | `run`：`port 8141 is already taken by card-host pid …` | 之前的实例仍占用着该端口。运行消息中给出的 `curl -s 127.0.0.1:8141/quit`，或换一个 `--port`。 |
 | 点击、输入或修改似乎都不起作用 | 某个处理函数失败了（搜索日志，见 §4）；或者你没有用 `tools/octo run` 启动应用，操作的是该端口上一个较旧的实例（`curl -s 127.0.0.1:8141/s` 会显示它的进程号）。 |
 | `shot` 提示 `still changing after 2s` | 应用在持续播放动画；PNG 是最后一帧。查看这张图，或传入更长的 `--settle`。 |
-| 在 Linux 上 `shot` 或 `/g?raw=1` 超时 | 有报告称，在软件渲染（llvmpipe、WSL）下截帧会超时。Linux 未验证；请在 macOS 上截图。绝不要根据 `/snap` 重画截图。 |
+| 在 Linux 上 `shot` 或 `/g?raw=1` 超时 | 有报告称，在软件渲染（llvmpipe、WSL）下截帧会超时。请在 macOS 上截图，这是经过验证的做法。仅限 Linux，此处**未验证**：启动应用时设置 `MAKEPAD_WRITE_FRAMEBUFFER_PNG=<file>`（`MAKEPAD_WRITE_FRAMEBUFFER_PNG=<file> tools/octo run …`），Makepad 的 Linux OpenGL 后端就会把绘制到窗口的每一帧写入 `<file>`，覆盖上一帧。绝不要根据 `/snap` 重画截图。 |
+| 在 WSL 下，通过输入法输入的中文到不了 `card-host` | 有人报告过，**未验证**。请在 macOS 上测试文字输入。 |
 | 卡片中的中日韩文字显示为方框或 `NO GLYPH` | 套件的 `font_src` 引用了没有中日韩字形的 `Inter.ttf`，或者引用了加载不了的应用包内字体。请改用不设 `font_src` 的纯 L0 角色套件（§7）。 |
 | 按钮上不显示文字 | `ButtonFlat` 的默认文字是为深色主题准备的白色；请设置 `draw_text +: {color: …}`（[SCRIPT-API § Gotchas](SCRIPT-API.md#gotchas)）。 |
 | 数字显示为 `NaN` | `"".to_f64()` 和非数字文本得到的是 NaN，而不是 nil；请用 `if v >= 0` 判断（[SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings)）。 |

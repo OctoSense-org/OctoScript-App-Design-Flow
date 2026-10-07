@@ -116,7 +116,12 @@ python tools/octo doctor
 
 If the binaries live elsewhere, set `$env:OCTO_HUB` and
 `$env:OCTO_CARD_HOST` to their full paths. CI tests this search on Windows;
-the commands themselves are unverified there.
+the commands themselves are unverified there. A community report in the open
+[App Hub#41](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/41)
+verified a native Windows 11 build (Rust and MSVC, no WSL) at an earlier
+revision: `hub` and `card-host` built, `hub stamp` and `hub check` ran, and
+`card-host --remote` served `/g` captures; the maintainers have not verified
+it on current `main`.
 
 ## 3. Create an app
 
@@ -555,7 +560,8 @@ tags and submits it, following App Hub's
 | `run`: `port 8141 is already taken by card-host pid …` | An earlier instance still holds the port. Run the `curl -s 127.0.0.1:8141/quit` the message prints, or pick another `--port`. |
 | Clicks, typing or edits seem to have no effect | A handler failed (grep the log, §4), or you started the app some other way than `tools/octo run` and are driving an older instance on that port (`curl -s 127.0.0.1:8141/s` shows its pid). |
 | `shot` says `still changing after 2s` | The app animates continuously; the PNG is the last frame. Look at it, or pass a longer `--settle`. |
-| `shot` or `/g?raw=1` times out on Linux | Frame capture is reported to time out under software rendering (llvmpipe, WSL). Linux is unverified; capture on macOS. Never redraw a screenshot from `/snap`. |
+| `shot` or `/g?raw=1` times out on Linux | Frame capture is reported to time out under software rendering (llvmpipe, WSL). Capture on macOS, the verified path. Linux only, **unverified** here: start the app with `MAKEPAD_WRITE_FRAMEBUFFER_PNG=<file>` set (`MAKEPAD_WRITE_FRAMEBUFFER_PNG=<file> tools/octo run …`); Makepad's Linux OpenGL backend then writes every frame it draws to the window into `<file>`, replacing the previous one. Never redraw a screenshot from `/snap`. |
+| Under WSL, Chinese typed through an input method never reaches `card-host` | Reported, **unverified**. Test text input on macOS. |
 | CJK text in a card shows boxes, or `NO GLYPH` | The kit's `font_src` names `Inter.ttf`, which has no CJK glyphs, or a bundled font, which does not load. Use the plain L0 role kit with no `font_src` (§7). |
 | A button shows no label | `ButtonFlat`'s default text is white for a dark theme; set `draw_text +: {color: …}` ([SCRIPT-API § Gotchas](SCRIPT-API.md#gotchas)). |
 | A number shows `NaN` | `"".to_f64()` and non-numeric text give NaN, not nil; guard with `if v >= 0` ([SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings)). |
