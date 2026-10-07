@@ -31,12 +31,12 @@
   ],
   "id": "org.octosense.samples.inbox",
   "integrity": {
-    "bundle_blake3": "d7f4bdbb049be182db25f183dd86d717a46b266b6f74f5d636b1d0e169beac75"
+    "bundle_blake3": "4f673fbbb8e380952b0e622dc32d1fd5191a0ee56e4ff024c5cd803ff599a3de"
   },
   "name": "Inbox Assistant",
   "schema": 1,
   "storage": {
     "accounts": true
   },
-  "version": "0.1.0"
+  "version": "0.1.1"
 }

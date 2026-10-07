@@ -217,8 +217,14 @@ backend. No release has this yet: `desktop-v0.1.0-beta.2` predates it.
    `{connection, backend_id, identity: {sub, label}}`, the identity the
    backend verified.
 
-The host's operator registers each app's backend in
-`<apps root>/.host/oauth/backends.json`; a bundle cannot register one.
+Earlier source builds obtain each app's backend registration from the
+operator-managed `<apps root>/.host/oauth/backends.json`. Compatible Host API v1
+source builds also accept public registration metadata and named business
+operations in an admitted signed bundle's `backend` block; see the
+[backend guide](HOST-API-V1.md#4-connect-the-apps-backend) for the required
+manifest markers, account storage and request contract. Operator configuration
+remains available when the bundle has no declaration. Contract 1.6.0 is published;
+a compatible host binary release is pending. Beta.2 supports neither backend path.
 Without a registration, `auth.connect` answers
 `This app's backend sign-in is unavailable. Contact the app's distributor.`
 The backend must offer an OAuth authorization-code flow with S256 PKCE and a
@@ -258,8 +264,10 @@ unverified.
 - **Not yet:** Google sign-in on Android. `auth.connect` answers
   `Google authorization needs the Android host adapter; desktop login is not supported on this device`.
 - **Not yet in a release:** sign-in to an app's own backend
-  ([above](#sign-in-to-your-own-backend)). A bundle cannot register its own
-  backend yet ([App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)).
+  ([above](#sign-in-to-your-own-backend)). Signed bundles can declare their
+  backend in compatible Host API v1 source builds
+  ([backend guide](HOST-API-V1.md#4-connect-the-apps-backend)); the compatible
+  host release is pending.
 
 ## Exact service names
 

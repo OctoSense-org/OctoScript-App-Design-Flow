@@ -5,6 +5,7 @@ let calendar_name = "Choose a calendar"
 let accounts = []
 let calendars = []
 let events = []
+let agenda_range = "date range unavailable"
 let visible_events = 100
 let selected = nil
 let screen = "agenda"
@@ -25,6 +26,14 @@ fn blank_draft(){
     {kind: "calendar-draft-v1" connection: connection calendar: calendar event_id: "" etag: "" summary: "" description: "" location: "" start_date: "" start_time: "09:00" end_date: "" end_time: "10:00" timezone: "Etc/UTC" all_day: false}.to_json().parse_json()
 }
 fn status(text){ ui.status.set_text(text) }
+fn range_label(data){
+    let bounds = try {data.window} catch {nil}
+    if bounds == nil { return "date range unavailable" }
+    let first = try {bounds.time_min} catch {nil}
+    let last = try {bounds.time_max} catch {nil}
+    if first == nil || last == nil || first == "" || last == "" { return "date range unavailable" }
+    return "past 30 days / next 366 days"
+}
 fn reset_chat(){ chat_generation = chat_generation + 1; chat_busy = false; chat_rows = [] }
 fn pane(name){
     screen = name
@@ -141,28 +150,29 @@ fn choose_calendar(item){
     keep_selection(); ui.calendar_title.set_text(calendar_name); pane("agenda"); load_cache()
 }
 fn load_cache(){
+    agenda_range = "date range unavailable"
     let request_generation = generation
     host.request("gcalendar.cached", {connection: connection calendar: calendar}, fn(r){
         if request_generation != generation { return }
-        if r.is_ok { events = r.data.events; ui.event_rows.render(); focus_pending(); if r.data.synced_at > 0 { status("Showing the last successful sync. Checking Google…") } }
+        if r.is_ok { agenda_range = range_label(r.data); events = r.data.events; ui.event_rows.render(); focus_pending(); if r.data.synced_at > 0 { status("Cached · " + agenda_range + ". Checking Google…") } }
         refresh()
     })
 }
 fn refresh(){
     if busy { return }
     if connection == "" || calendar == "" { status("Connect Google and choose a calendar first."); return }
-    busy = true; status("Syncing with Google… Your current agenda stays visible.")
+    busy = true; status("Syncing with Google… Current agenda: " + agenda_range)
     let request_generation = generation
     host.request("gcalendar.refresh", {connection: connection calendar: calendar}, fn(r){
         busy = false
         if request_generation != generation { return }
-        if !r.is_ok { status("Sync failed; previous agenda kept. " + r.error); return }
-        events = r.data.events; ui.event_rows.render(); focus_pending(); update_publications(); status("Synced with Google · " + events.len() + " events")
+        if !r.is_ok { status("Sync failed; cached agenda kept · " + agenda_range + ". " + r.error); return }
+        agenda_range = range_label(r.data); events = r.data.events; ui.event_rows.render(); focus_pending(); update_publications(); status("Synced · " + events.len() + " events · " + agenda_range)
         if selected != nil {
             let found = false
             for event in events { if event.id == selected.id { selected = event; found = true } }
             if found { render_detail() }
-            else { selected = nil; if screen == "detail" { pane("agenda") }; status("The selected event is no longer in this calendar.") }
+            else { selected = nil; if screen == "detail" { pane("agenda") }; status("Not in the current agenda; it may be outside the displayed date range.") }
         }
     })
 }

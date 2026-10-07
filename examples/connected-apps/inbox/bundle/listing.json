@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "subtitle": "Read, edit and review one saved reply",
-  "description": "A connected-app sample for Gmail. Read messages, edit one saved reply with your app agent, and request native exact-message review. Includes fictional offline fixtures and a quiet incoming-email peer workflow. Local tests cover UI and connector safety; live OAuth, model processing and phone sending remain unverified.",
+  "subtitle": "Gmail reply and selective-notification preview",
+  "description": "Developer preview for compatible OctoSense hosts. Read Gmail through host-managed Google login; keep one editable reply shared by Email, Reply, Chat and native review. An optional account-bound agent can triage new mail into quiet decisions or actionable Glance cards. Includes clearly fictional offline fixtures. Requires the connected-services integration in OctoSense PR #347 and App Hub PR #119; older hosts do not supply these services. macOS testing used real DeepSeek with synthetic Gmail: 33 functional soak cycles and cold restoration passed, with two unresolved instrument frame-submission errors. Live Google login, real Gmail sends and physical send approval remain unverified. Android Google authorization is not implemented. No sending tool is exposed to the agent.",
   "category": "productivity",
   "keywords": [
     "email",
@@ -22,7 +22,7 @@
     "support": "https://example.com/support",
     "privacy_policy_url": "https://example.com/privacy"
   },
-  "release_notes": "Development sample. Local editing and connector safety tests; no live-service release claim.",
+  "release_notes": "0.1.1: require the admitted Glance workspace template and initial message data for agent notifications; remove executable source alternatives. Email/Reply/Chat UI, original screenshots and physical send approval are unchanged. Preview and live-provider limits still apply.",
   "age_rating": "all",
   "license": "Apache-2.0"
 }

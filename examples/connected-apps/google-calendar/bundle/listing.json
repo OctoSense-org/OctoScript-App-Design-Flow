@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "subtitle": "Prepare events and connect Google Calendar",
-  "description": "An experimental App Hub sample for shared Google sign-in and Calendar services. View cached events, sync a selected calendar, retain a local draft, and review new or edited events on the host before saving. Includes optional event chat and Glance publication. The bundled screenshots show synthetic local drafts, the embedded Glance template and the real service-unavailable state in standalone card-host. Live Google sign-in, sync, writes and phone behavior require the integrated OctoSense host and remain unverified for this sample. Recurring series can be viewed but not edited.",
+  "subtitle": "Calendar drafts, review and event advice",
+  "description": "A macOS development preview using OctoSense shared Google sign-in and Calendar services. Select an account/calendar, view a bounded cached agenda (past 30 days / next 366 days on the updated host), keep local drafts, and review new or edited events on the host before saving. Explicitly publish an event to Glance with Open Calendar, or ask the read-only assistant about it. Requires the compatible OctoSense connected-services runtime; bounded-agenda status depends on host window metadata. Native macOS journeys used a synthetic Calendar provider; real DeepSeek advisory chat used synthetic events. Live Google sign-in, reads and writes and physical approval remain unverified. Android Google authorization is not implemented for this sample. Recurring series can be viewed but not edited. Screenshots are original captures of synthetic drafts, a standalone missing-service state and the embedded Glance template.",
   "category": "productivity",
   "keywords": [
     "calendar",
@@ -24,7 +24,7 @@
     "support": "https://example.com/support",
     "privacy_policy_url": "https://example.com/privacy"
   },
-  "release_notes": "Development sample: host-owned credentials, atomic sync cache, timezone-aware drafts and native local-UI checks. Not yet a live-provider release.",
+  "release_notes": "0.1.1: disclose the finite agenda window in cache and refresh status; events missing from that window are not described as deleted. Legacy responses without window metadata say date range unavailable. Layout, tools, exact host review and original screenshots are unchanged. macOS developer-preview limitations remain.",
   "age_rating": "all",
   "license": "Apache-2.0"
 }

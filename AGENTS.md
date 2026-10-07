@@ -72,11 +72,13 @@ needs no AI service or API key.
   form, and no API key or token in the bundle or in the app's storage. The
   gate refuses only password and one-time-code fields; a key kept anywhere
   else is still a secret the app holds. Accounts go through a host service's
-  sheet ([docs/HOST-SERVICES.md](docs/HOST-SERVICES.md)). An app with its own
-  backend accounts has no route in any release yet: OctoSense `main` adds a
-  host-run backend sign-in, but the host's operator must register each app's
-  backend ([docs/CAPABILITIES.md](docs/CAPABILITIES.md#sign-in-to-your-own-backend),
-  [App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)).
+  sheet ([docs/HOST-SERVICES.md](docs/HOST-SERVICES.md)). Beta.2 has no backend
+  sign-in. Earlier OctoSense source builds use operator-managed backend
+  registrations; compatible Host API v1 source builds also accept public
+  registration metadata from an admitted signed bundle's `backend` block.
+  Contract 1.6.0 is published, but a compatible host release is pending.
+  Follow [the backend guide](docs/HOST-API-V1.md#4-connect-the-apps-backend);
+  operator configuration remains available when the bundle has no declaration.
 - **Declare every host.** List in `network.hosts` every `https://` host that
   `main.splash` contacts, and request `net`. `images` and `web` add pictures
   and pages from any public `https://` host; they do not widen `net`. Never

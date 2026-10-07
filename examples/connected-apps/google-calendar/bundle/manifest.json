@@ -19,7 +19,7 @@
   ],
   "id": "org.octosense.samples.googlecalendar",
   "integrity": {
-    "bundle_blake3": "6b8a9397960a684545b283e4f65f8c082405cfe7df945a5c0c8435169a691671"
+    "bundle_blake3": "525bb6e6b13ac246c4254a2da85d486039cc72162abdf95b9dfe06aeff24afe7"
   },
   "name": "Google Calendar",
   "schema": 1,
@@ -28,5 +28,5 @@
     "agent_workspace": "none",
     "max_bytes": 1048576
   },
-  "version": "0.1.0"
+  "version": "0.1.1"
 }

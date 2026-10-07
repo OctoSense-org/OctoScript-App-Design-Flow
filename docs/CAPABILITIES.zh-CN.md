@@ -173,7 +173,7 @@ this app was not granted "mail", which "mail.accounts" needs
    在 macOS 和 Android 9 及更高版本上，宿主在自己的 WebView 中打开后端的登录页，用户在那里注册或登录；应用无法打开或读取这个页面。在 macOS 上，`presentation: "browser"` 会改用系统浏览器；在 Windows 和 Linux 上，只支持浏览器方式。
 3. 用 `{connection: <handle>}` 调用 `auth.backend.me`。它返回 `{connection, backend_id, identity: {sub, label}}`，即后端验证过的身份。
 
-宿主的运维人员在 `<apps root>/.host/oauth/backends.json` 中为每个应用注册后端；应用包无法自行注册。没有注册时，`auth.connect` 会返回 `This app's backend sign-in is unavailable. Contact the app's distributor.` 这句话。后端必须在同一个 HTTPS 源上提供使用 S256 PKCE 的 OAuth 授权码流程和 `/me` 端点。详情见 OctoSense 的[开发者后端契约](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#开发者后端接口约定)。iOS 不支持后端登录；Windows 和 Linux 上未验证。
+较早的源码构建从运维人员配置的 `<apps root>/.host/oauth/backends.json` 读取各应用的后端注册。兼容 Host API v1 的源码构建还接受已准入签名包 `backend` 块中的公开注册信息和具名业务操作；所需清单标记、账户存储和调用约定见[后端指南](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)。没有应用包声明时仍支持运维配置。合约 1.6.0 已发布，兼容宿主安装包尚待发布；beta.2 不支持这两种后端方式。没有注册时，`auth.connect` 会返回 `This app's backend sign-in is unavailable. Contact the app's distributor.` 这句话。后端必须在同一个 HTTPS 源上提供使用 S256 PKCE 的 OAuth 授权码流程和 `/me` 端点。详情见 OctoSense 的[开发者后端契约](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#开发者后端接口约定)。iOS 不支持后端登录；Windows 和 Linux 上未验证。
 
 ### 限制
 
@@ -182,7 +182,7 @@ this app was not granted "mail", which "mail.accounts" needs
 - **日历同步。** 在 desktop-v0.1.0-beta.2 上，`gcalendar.refresh` 同步整个日历，并从最早的日程开始返回；`gcalendar.sync` 返回 Google 的原始日程分页。OctoSense `main`（尚未进入任何发布版本）只同步从今天之前 30 天到之后 366 天的日程，并展开重复日程，还会以 `window: {time_min, time_max}` 返回这个范围。它会拒绝 `gcalendar.sync`，并返回 `Use gcalendar.refresh for the bounded agenda; raw history synchronization is not exposed`。
 - **未验证**：真实 GitHub 和 Google 服务上的大部分实际使用，包括写入仓库和发送 Gmail。OctoSense `main` 记录了两次 macOS 上的检查：一是通过原生宿主、仅验证身份的 GitHub 和 Google 登录（Google 用的是测试账户）；二是一次手动的 Google Calendar 会话，列出了日历并保存了一个日程（[当前交付边界](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#当前交付边界)）。
 - **尚不支持**：在 Android 上登录 Google。`auth.connect` 返回 `Google authorization needs the Android host adapter; desktop login is not supported on this device`。
-- **尚未进入发布版本**：登录应用自己的后端（[见上文](#登录应用自己的后端)）。应用包目前还不能自行注册后端（[App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)）。
+- **尚未进入发布版本**：登录应用自己的后端（[见上文](#登录应用自己的后端)）。签名应用包可在兼容 Host API v1 的源码构建中声明自己的后端（[后端指南](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）；兼容宿主尚待发布。
 
 ## 精确服务名
 

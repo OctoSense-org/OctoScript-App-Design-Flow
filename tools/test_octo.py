@@ -38,7 +38,20 @@ class Onboarding(unittest.TestCase):
             listing = json.loads((dest / 'bundle/listing.json').read_text())
             self.assertEqual(listing['platforms'], ['windows', 'linux'])
             self.assertNotIn('android', listing['platforms'])
+            self.assertEqual((dest/'.gitattributes').read_text(),'bundle/** -text\n')
             self.assertEqual(json.loads((dest / 'bundle/manifest.json').read_text())['id'], 'com.example.quicknotes')
+
+    def test_check_exposes_and_forwards_catalog_and_publisher_keys(self):
+        with tempfile.TemporaryDirectory() as temp:
+            bundle=Path(temp)
+            hub=bundle/'fixture-tools'/'hub'
+            (bundle/'manifest.json').write_text(json.dumps({'integrity':{'signature':'signed fixture'}}))
+            argv=['octo','check',str(bundle),'--catalog','catalog.json','--publisher-key','one=key','--publisher-key','two=key','--offline']
+            with patch('sys.argv',argv), patch.object(octo,'need',return_value=hub), patch.object(octo.subprocess,'run') as run, contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as done:
+                run.return_value.returncode=0
+                octo.main()
+            self.assertEqual(done.exception.code,0)
+            self.assertEqual(run.call_args.args[0],[str(hub),'check',str(bundle.resolve()),'--catalog','catalog.json','--publisher-key','one=key','--publisher-key','two=key','--offline'])
 
     def test_reserved_ids_and_namespaces_leave_no_partial_project(self):
         names = ('agents apphub appcard browser calculator card clock dev notes octos octoscode os '

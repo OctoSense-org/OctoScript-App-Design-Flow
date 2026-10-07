@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "subtitle": "Markdown drafts with reviewed GitHub saves",
-  "description": "Write Markdown with the Rinx article writer layout, icon controls and preview in a compatible OctoSense host. Keep recoverable drafts locally; connect GitHub through host OAuth, select a repository and file, and review exact Markdown before committing. Requires the connected-services host build. Live OAuth and remote commits remain unverified; screenshots show fictional native UI fixtures.",
+  "description": "Write Markdown with the Rinx article writer layout, icon controls and preview in a compatible OctoSense host. Keep recoverable drafts locally; connect GitHub through host OAuth, select a repository and file, and review exact Markdown before committing. Requires the connected-services host build. Live OAuth and remote commits remain unverified; screenshots show fictional native UI fixtures. Optional Ask GitHub Notes requires separate agent consent and can send questions, conversation context and permitted repository/file read results to your configured model. No agent write or approval tools are exposed; manual editing works without a model.",
   "category": "productivity",
   "keywords": [
     "markdown",
@@ -22,7 +22,7 @@
     "support": "https://example.com/support",
     "privacy_policy_url": "https://example.com/privacy"
   },
-  "release_notes": "Development sample: Rinx writer layout, local draft recovery and synthetic GitHub review validated on macOS; local Android editing verified in a separate test app. Not published; live provider acceptance remains pending.",
+  "release_notes": "0.1.1: explicitly declare the optional foreground read-only assistant and its account/data instructions. Preserve the three private, non-shareable read tools. Editor, reviewed GitHub save path and original screenshots are unchanged; no new live-provider claim.",
   "age_rating": "all",
   "license": "Apache-2.0"
 }
