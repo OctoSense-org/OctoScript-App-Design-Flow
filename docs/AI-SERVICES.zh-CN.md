@@ -95,7 +95,7 @@
 
 ## 助手相关能力
 
-共有四个精确名称，每个都需要单独授权（App Hub `crates/app-contract/src/manifest.rs` 中的 `KNOWN_CAPABILITIES`）。前缀不授予任何能力：准入检查会拒绝 `octos.`、`octos.admin` 这类前缀。商店为每个名称显示的文字见 App Hub [PUBLISHING § 清单](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#清单)。
+共有四个精确名称，每个都需要单独授权（App Hub `crates/app-contract/src/manifest.rs` 中的 `KNOWN_CAPABILITIES`）。前缀不授予任何能力：准入检查会拒绝 `octos.` 和 `octos.admin`。商店为每个名称显示的文字见 App Hub [PUBLISHING § 清单](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#清单)。
 
 | 能力与调用 | 参数 | 返回（`r.data`） |
 | --- | --- | --- |
@@ -244,7 +244,7 @@ host.request("model.complete", {
 
 ## 应用自己的 Agent
 
-在 App Hub 准入检查和 Shell 中都**可用**。对于声明了 Agent（或 `octos.*`，或附带 `tools.json`）的应用，Shell 会在用户允许后为它分配自己的 peer，把应用包中的工具注册到这个 peer，把它的 `AGENT.md` 和技能作为每个回合的指导加载，并让用户在“Ask &lt;app&gt;”对话栏中与它对话；系统 Agent 也可以把任务交给它（见[系统 Agent 与应用 Agent](#系统-agent-与应用-agent)）。Shell 向商店应用的 Agent 投递一种事件（见[下文](#清单中的-agent)）。尚未支持：其他事件、定时触发，以及根据清单中的需求挑选模型。
+在 App Hub 准入检查和 Shell 中都**可用**。对于声明了 Agent（或 `octos.*`，或附带 `tools.json`）的应用，Shell 会在用户允许后为它分配自己的 peer，把应用包中的工具注册到这个 peer，把它的 `AGENT.md` 和技能作为每个回合的指导加载，并让用户在“Ask &lt;app&gt;”对话栏中与它对话；系统 Agent 也可以把任务交给它（见[系统 Agent 与应用 Agent](#系统-agent-与应用-agent)）。Shell 向商店应用的 Agent 投递一种事件（见[下文](#清单中的-agent)）。尚未支持：其他事件、定时触发，以及根据清单中的 `needs` 挑选模型。
 
 附带 `tools.json` 时，请声明 `agent` 块，并在商店信息和隐私说明中写明。不想要助手，就不要附带 `tools.json`。
 
@@ -462,7 +462,7 @@ Shell 通过 octos 的 peer 工具协议把这些工具注册到应用的 peer�
 
 ### `glance.publish`、`glance.withdraw`、`glance.list`
 
-速览栏指桌面端的速览栏和手机的速览信息流。它的服务在 OctoSense `main` 上**可用**（`crates/shell/src/glance.rs`）：
+速览栏在手机上显示为速览信息流。它的服务在 OctoSense `main` 上**可用**（`crates/shell/src/glance.rs`）：
 
 | 方法 | 参数 | 返回 |
 | --- | --- | --- |
@@ -479,7 +479,7 @@ Shell 通过 octos 的 peer 工具协议把这些工具注册到应用的 peer�
 - `notify: true` 还会发出一条通知（手机的通知栏、桌面端的 toast）；`summary`（最多 200 个字符）是通知的第二行。在桌面端点击 toast 会在卡片窗口中打开这张卡片；新卡片还会打开速览栏。
 - **限制：** `card_id` 为 1–64 个 `[A-Za-z0-9._-]` 字符；`title` 最多 80 个字符；`source`（或 `script`）最多 16 KiB；`data` 按 JSON 计最多 32 KiB；`priority` 0–100（默认 50）；`expires` 60 秒到 7 天（默认 24 小时）；每个应用每分钟最多发布 6 次（替换和 L0 检查拒绝的卡片都计数）。卡片按字节预算保存：每个应用 8 MiB，总共 32 MiB；空间不够时，宿主先移除较旧、优先级较低的卡片。速览栏和手机的速览信息流会滚动显示所有保留下来的卡片。
 - **身份：** 发布者就是调用者，永远不是参数；用相同的 `card_id` 发布会替换原卡片；`open.app` 必须是调用者自己的应用。点击卡片会在卡片窗口中打开它（手机上是一个展开的工作区）。桌面速览栏上的打开按钮，或卡片中的 `sys.link`，会打开应用；应用再用 `glance.take_open` 读取卡片的 `open.route`。
-- 信息流中的每张卡片在自己的隔离环境中运行，遵循发布它的应用的策略（原生模块的卡片不受应用策略约束）。它是后台界面：它调用的宿主服务不能在那里弹出面板（`may_prompt: false`），卡片消失时，宿主会取消它还在等待的请求。在前台打开的卡片可以弹出宿主面板，与应用本身一样。
+- 信息流中的每张卡片在自己的隔离环境中运行，遵循发布它的应用的策略（原生应用的卡片不受应用策略约束）。它是后台界面：它调用的宿主服务不能在那里弹出面板（`may_prompt: false`），卡片消失时，宿主会取消它还在等待的请求。在前台打开的卡片可以弹出宿主面板，与应用本身一样。
 
 ### 谁可以发布
 
