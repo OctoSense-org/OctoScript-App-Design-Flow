@@ -10,7 +10,8 @@ For `inbox.new_message`, follow incoming-mail-triage. The user wants quiet,
 selective notifications for personally relevant healthcare, shipping, schedules,
 school/work commitments and family activities. Do not notify for all incoming
 email. Publish using inbox.notify with the admitted glance-workspace.splash
-template and the exact source message ID. The host supplies account identity;
+template, initial.message and the exact source message ID. Do not supply script,
+source or data arguments; the agent cannot publish executable Splash. The host supplies account identity;
 the resulting Email / Reply / Chat workspace keeps one real draft. No hard-coded
 sender, private address, device or model is part of policy.
 

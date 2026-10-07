@@ -84,14 +84,20 @@ tools/octo doctor
 `$OCTOSENSE_APP_HUB/../target/release`, the sibling
 `../OctoSense-App-Hub/target/release`, then `PATH`. It rejects GitHub's
 unrelated `hub` CLI. Verified output ends with
-`ready: tools/octo new <dir> && tools/octo run <dir>/bundle`; when something is
+`ready: tools/octo new <dir> --platform <target> && tools/octo run <dir>/bundle`; when something is
 missing it prints `[fail]` lines, where it looked, and the fix.
 
 ## 3. Create an app
 
 ```sh
-tools/octo new ~/apps/my-app --id my-notes --name "My Notes"
+tools/octo new ~/apps/my-app --platform macos --id my-notes --name "My Notes"
 ```
+
+`--platform` is required; use your intended target (`macos`, `windows`, `linux`,
+`android`, `ios`, `openharmony` or `web`) and repeat it for several. Publish only
+the platforms actually tested. Native/host ids and final namespaces such as
+`notes`, `terminal`, `octoscode` and `com.example.notes` are reserved.
+
 
 Copies [templates/script-app](../templates/script-app/README.md) (`bundle/`,
 `AGENTS.md` with its `CLAUDE.md`/`GEMINI.md` shims, `.gitignore`), sets `id` and `name` in the manifest and the

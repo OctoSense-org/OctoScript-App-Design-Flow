@@ -31,7 +31,7 @@
   ],
   "id": "org.octosense.samples.inbox",
   "integrity": {
-    "bundle_blake3": "2ca58e32e871a5336c878691a0d6b257409a4208428f3731ee82fcae2e097caa"
+    "bundle_blake3": "d7f4bdbb049be182db25f183dd86d717a46b266b6f74f5d636b1d0e169beac75"
   },
   "name": "Inbox Assistant",
   "schema": 1,

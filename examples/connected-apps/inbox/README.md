@@ -131,3 +131,9 @@ check private app data, OAuth configuration, real email captures or tokens into
 this repository. All supplied screenshots/fixtures must remain fictional.
 
 The [macOS soak report](evidence/soak/README.md) adds 33 native cycles over 610 seconds and cold restoration. It separates two remaining instrument frame-submission errors from passing draft/state checks and records the finite RSS trend.
+
+The `inbox.notify` tool requires the admitted template and `initial.message`
+plus title/summary/notify fields. Its closed schema accepts no executable
+`script`, `source` or `data` alternative. The signed workspace supplies the
+existing interaction; the agent decides relevance and content. This declaration
+correction does not extend historical native/model evidence to a new digest.

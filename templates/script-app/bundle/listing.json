@@ -1,12 +1,17 @@
 {
   "schema": 1,
-  "subtitle": "Quick notes that stay on your phone",
+  "subtitle": "Quick notes kept on your device",
   "description": "A minimal OctoSense script app: type a note, keep it, tap it to remove it. Replace this with what your app does and who it helps.",
   "category": "productivity",
-  "keywords": ["notes", "example"],
-  "screenshots": ["screenshots/01-main.png"],
+  "keywords": [
+    "notes",
+    "example"
+  ],
+  "screenshots": [
+    "screenshots/01-main.png"
+  ],
   "icon": "assets/icon.svg",
-  "platforms": ["android"],
+  "platforms": [],
   "publisher": {
     "name": "Replace with your publisher name",
     "support": "https://example.com/support",

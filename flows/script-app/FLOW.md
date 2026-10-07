@@ -48,7 +48,7 @@ OctoSense App Studio on Android and separately authorized Android platform captu
 | # | Do (exact command or action) | Pass when | Human? |
 | --- | --- | --- | --- |
 | 1 | Write the brief into `$A/BRIEF.md` (outside `bundle/`): screens, actions, data, states, hosts, capabilities you think it needs and why. | Every screen and action has a line; every capability has a reason. | Confirm the brief with the requester if it was ambiguous. |
-| 2 | `tools/octo new $A --id <id> --name "<Name>"` | Prints `created …` and `bundle stamped`. | no |
+| 2 | `tools/octo new $A --platform <target> --id <id> --name "<Name>"` | Prints `created …` and `bundle stamped`. | no |
 | 3 | Edit `$B/manifest.json`: capabilities and `network.hosts` from the brief, nothing more ([CAPABILITIES](../../docs/CAPABILITIES.md)). | Every capability maps to a line of the brief. | no |
 | 4 | Write `$B/main.splash` using only APIs in [SCRIPT-API](../../docs/SCRIPT-API.md) or found in the runtime source; start from the template's structure (state `let`s, `fn`s, `start_timeout(0.05, …)` loader, one root view). | File saved; no API used that you could not cite. | no |
 | 5 | `tools/octo run $B --port $P --hidden --detach` (exits 1 if `$P` is taken: quit the old instance with the `curl … /quit` it prints) | Prints the `admitted` and `ready: first frame drawn` lines; `grep -nE '\[E\]\|splash:[0-9]+:\|refused\|on_render closure failed\|callback error' $A/.local-state/card-host.log` prints nothing after `[SPLASH] eval:` (do not grep for "error": healthy runs log Metal's `MTLCompilerError` in `[ui-hang]` lines). | no |
