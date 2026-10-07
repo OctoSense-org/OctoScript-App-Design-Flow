@@ -40,8 +40,10 @@ app without a service of its own, such as Maps and Camera.
 
 No OctoSense shell serves `prompt`, `ledger.read`, `clipboard`, `matrix.*`
 or `palpo.*` to an installed app. Rinx, a Matrix client that OctoSense ships
-as a native app, serves `matrix.*` and `octos.*` only to bundles a person
-imports into it as mini-apps, which is not the App Hub install path.
+as a native app, serves `octos.*` to bundles a person imports into it as
+mini-apps, which is not the App Hub install path. **Unverified:** it serves
+`matrix.*` to those mini-apps too. Request `matrix.*` only for a Rinx
+mini-app.
 `research` and `crawl` grant toolbox tools to an app's agent; they are not a
 `host.request` family
 ([AI-SERVICES § The system toolbox](AI-SERVICES.md#the-system-toolbox)).
@@ -247,6 +249,10 @@ Make all four changes together:
    `ServiceCall` from that app, with `may_prompt` false, so one method serves
    the app's screen and its agent
    ([AI-SERVICES § The app's tools](AI-SERVICES.md#the-apps-tools-and-peer-tools)).
+   A system app's tool reaches the service of its own namespace directly. A
+   store app's tool reaches a method through a `host_method`, and App Hub
+   admits only the methods on its reviewed list, so a new method needs an App
+   Hub change as well.
 3. **Register it in the shells.** Call
    `octosense_appstore::services::register_host_service(Box::new(Weather))` from
    `register_host_services` in `crates/shell/src/apps.rs`. The Card runner

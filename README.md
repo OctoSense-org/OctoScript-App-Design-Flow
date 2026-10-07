@@ -52,7 +52,7 @@ organizers. What a contestant needs from here:
 | --- | --- |
 | **Start** | The [Quick path](#quick-path) below: every step is a shell command. |
 | **Machine** | macOS on Apple silicon is the verified platform. On Windows and Linux, CI runs only the `tools/test_*.py` tests; the rest is unverified, and on Linux, frame capture is reported to time out under software rendering. For prerequisites and Windows setup, see the [Quick path](#quick-path). |
-| **What an app can do** | Keep its own storage; make HTTPS requests to hosts it declares; show pictures and web pages; use the camera, location and Mail through host services; publish Glance cards; call `model.complete`; and, in `desktop-v0.1.0-beta.2`, use a person's GitHub, Gmail or Google Calendar account through the host. [docs/CAPABILITIES.md](docs/CAPABILITIES.md) lists the capabilities; [docs/SCRIPT-API.md](docs/SCRIPT-API.md) covers the language and every API. |
+| **What an app can do** | Keep its own storage; make HTTPS requests to hosts it declares; show pictures and web pages; use the camera and the device's location; read and send mail through the host's `mail` service; publish Glance cards; call `model.complete`; and, in `desktop-v0.1.0-beta.2`, use a person's GitHub, Gmail or Google Calendar account through the host. [docs/CAPABILITIES.md](docs/CAPABILITIES.md) lists the capabilities; [docs/SCRIPT-API.md](docs/SCRIPT-API.md) covers the language and every API. |
 | **What it cannot do** | Hold a password, API key or token, even in its own storage. Sign people in to its own backend on a released build: OctoSense `main` adds a host-run backend sign-in, but no release has it yet, and the host's operator must register each app's backend ([CAPABILITIES](docs/CAPABILITIES.md#sign-in-to-your-own-backend), [App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)). Generate images, audio or video, or compute embeddings: `model.image`, `model.audio`, `model.video` and `model.embeddings` do not exist ([App Hub#85](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/85)–[#88](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/88)). Add a capability or host service (an App Hub and shell change), use the system-app-only `llm`, `news` and `calendar` capabilities or an `os.*` id, or ship native code. |
 | **AI in the app** | Building an app needs no AI service, and `card-host` serves none, so make the app complete without one. See [AI in your app](#ai-in-your-app). |
 | **Reference apps** | The three published [connected apps](#connected-apps-github-gmail-and-google-calendar). |
@@ -401,17 +401,18 @@ the system chat) and one **app agent** for each app that has one. On
 | --- | --- | --- |
 | Make a one-shot, schema-checked model call | `model` capability, `host.request("model.complete", …)`, within a daily budget that `model.budget` reports | `no service answers "model"` |
 | Talk to the assistant from its own screens | the 4 `octos.*` capabilities, once the person allows the app's agent on a first-use sheet | `no service answers "octos"` |
-| Have its own agent, which the person talks to directly (the shell's `Ask <app>` panel, an in-card chat, the app's own screens) and the system agent can hand work to | an `agent` block and `tools.json`: tools marked `implemented_by: "host-service"` run on the host service of their family; `AGENT.md` and skills are loaded as per-turn guidance | checked by `hub check` only |
+| Have its own agent, which the person talks to directly (the shell's `Ask <app>` panel, an in-card chat, the app's own screens) and the system agent can hand work to | an `agent` block and `tools.json`: a tool marked `implemented_by: "host-service"` runs through a `host_method` from App Hub's reviewed list, on `github`, `gcalendar`, `gmail` or `glance`; `AGENT.md` and skills are loaded as per-turn guidance | checked by `hub check` only |
 | Publish cards to the Glance screen, with an in-card chat its agent answers and model-written text marked AI-written | `glance` capability, `glance.publish` (L0 `sys.chat`, `model-copy`) | `no service answers "glance"` |
 | Run its agent in the background when new mail arrives | `agent.background: true` and `agent.triggers.events: ["<namespace>.new_message"]`, plus `auth` and `gmail`, as Inbox Assistant does | not available |
 
 Not yet: image, audio and video generation and embeddings (`model.image`,
-`model.audio`, `model.video`, `model.embeddings`), and tools marked
-`implemented_by: "app"`, which the shells refuse. `llm` manages AI providers
-for system apps only. A bundle that ships `tools.json` gets an app agent even
-without an `agent` block, so say so in the listing. Read
-[docs/AI-SERVICES.md](docs/AI-SERVICES.md) before you add an AI feature: it
-has a verified call that handles "unavailable".
+`model.audio`, `model.video`, `model.embeddings`), and agent tools that run
+the app's own code. The shells refuse `implemented_by: "app"`, and a
+host-service tool can only call an existing host service method. `llm`
+manages AI providers for system apps only. A bundle that ships `tools.json`
+gets an app agent even without an `agent` block, so say so in the listing.
+Read [docs/AI-SERVICES.md](docs/AI-SERVICES.md) before you add an AI feature:
+it has a verified call that handles "unavailable".
 
 ## Running an app
 

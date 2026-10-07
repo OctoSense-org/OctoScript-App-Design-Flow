@@ -97,10 +97,15 @@ needs no AI service or API key.
   - the host runs the OAuth sign-in and gives the app a connection handle,
     never a token. Beta.2 has no built-in provider registrations, so the
     host's operator supplies them in `oauth/clients.json`;
-  - `tools.json` tools run only with `implemented_by: "host-service"`,
-    directly or through an allowlisted `host_method`. The capability, risk,
-    private-data and account checks still apply, and the shell refuses
-    `implemented_by: "app"`;
+  - a store app's `tools.json` tools run only with
+    `implemented_by: "host-service"` and a `host_method` from App Hub's
+    reviewed list: reads of `github`, `gcalendar` and `gmail`, Gmail drafts
+    and events, and `glance`. A tool without `host_method` calls the service
+    named after the app's namespace (`summary` for `dev.example.summary`); no
+    capability grants that service, so the call answers `not_granted`. The
+    shell refuses
+    `implemented_by: "app"`, so no tool runs the app's own code. The
+    capability, risk, private-data and account checks still apply;
   - admitted `AGENT.md` and skill text is per-turn guidance, not an
     executable kernel skill.
 
@@ -152,13 +157,24 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   without an extension: `[refused] contents: .DS_Store has extension "",
   which a bundle may not hold`. Delete it, then stamp. It also refuses a URL
   inside a bundled `.txt` or `.md` file, such as a font license.
-- **Only one built-in font.** A card kit's `font_src` may name only
-  `makepad_widgets:resources/Inter.ttf`. Ship any other font as a file in the
-  bundle ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
+- **CJK text in a card uses the plain L0 role kit.** Write it with
+  `Surface`, `TextTitle`, `TextBody` and the other role components, and set
+  no `font_src`; the built-in LXGW WenKai draws Chinese. A kit's `font_src`
+  may name only one built-in font, `makepad_widgets:resources/Inter.ttf`,
+  which has no CJK glyphs. A bundled font file in `font_src` passes the gate but does not load
+  in `card-host` today, so never ship one for a card
+  ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
+  A script app may bundle a font and load it with
+  `FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`. Check text with
+  `MAKEPAD_SYSTEM_FONTS=0`, so a system font cannot hide a missing glyph.
+  Font behavior in the OctoSense shells is unverified.
 - **Keep the bytes exact.** The digest covers every byte of every file, so a
-  line-ending conversion breaks it. Commit a `.gitattributes` holding
-  `bundle/** -text`, so that a Windows checkout with `core.autocrlf=true`
-  leaves the bundle alone.
+  line-ending conversion breaks it. Commit a `.gitattributes` that unsets
+  `text` for the bundle (`bundle/** -text` when `bundle/` is at the
+  repository root), so that a Windows checkout with `core.autocrlf=true`
+  leaves the bundle alone. Confirm it with
+  `git check-attr text -- <path to bundle>/manifest.json`, which prints a
+  line ending in `text: unset` ([QUICKSTART §3](docs/QUICKSTART.md#3-create-an-app)).
 - **Sign last, and never edit after signing.** Capture screenshots and run
   `card-host` on the unsigned bundle; `card-host` refuses a signed one. Only
   a person signs. Any edit after signing needs a new stamp and a new
