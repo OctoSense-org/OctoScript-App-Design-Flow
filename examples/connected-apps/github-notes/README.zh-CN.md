@@ -1,54 +1,62 @@
 # GitHub Notes 示例
 
-[English](README.md)
+[English](README.md) | 简体中文
 
-普通 App Hub 应用 `org.octosense.samples.githubnotes` 提供本地 Markdown 草稿
-和经宿主审核的 GitHub 提交。它只申请 `storage`、`auth`、`github`，不接收
-访问令牌，也不直接联网。连接 GitHub 不需要另建 OctoSense 云账号。
+普通 App Hub 应用包 `org.octosense.samples.githubnotes` 提供本地 Markdown 草稿和经宿主确认的 GitHub 提交。它只申请 `storage`、`auth` 和 `github`，从不接收提供商令牌，也不直接联网。连接 GitHub 不会创建 OctoSense 云账户。
 
-编辑器采用 Rinx 文章编辑器布局：顶部图标操作、桌面端原文/分栏/预览，
-手机端底部格式工具栏。样式面板保留富文本块编辑入口。继续复用 Rinx v1.1.0
-通用文章组件，支持原始 Markdown、原生富文本选择、撤销/重做、代码/表格/公式
-渲染与本地恢复。
-不包含 Rinx 的 Matrix 发布流程和图片文件选择/上传；图片 URL 保留为
-Markdown，不会自动下载图片。
+0.1.1 版已从 [ymote/octosense-github-notes](https://github.com/ymote/octosense-github-notes) 发布到 App Hub，它声明了 0.1.0 中缺少的可选 Agent。本目录是未签名的开发副本。它的 `manifest.json` 中版本仍是 0.1.0，也没有签名，但声明了同一个 Agent，附带同样的 [AGENT.md](bundle/AGENT.md)。`listing.json` 的发布者字段是占位内容，版本说明也不同，描述中还没有像发布版那样说明 **Ask GitHub Notes**。其余文件与已发布的 0.1.1 一致。[参考应用指南](../README.zh-CN.md)说明了应用的构成，以及复用前需要修改什么。
 
-[Rinx 编辑器验收](VALIDATION.md#rinx-writer-layout)提供原生参考对比、更新后的安装
-流程与 OnePlus 6 截图。此前的截图和浸泡测试记录对应旧版编辑器布局。
+编辑器采用 Rinx 的布局。Rinx 是 OctoSense 自带的文章编辑器：顶部是纯图标的标题栏和格式按钮，桌面端提供原文/分栏/预览，手机端在底部显示格式工具栏。样式面板还能打开富文本块编辑。编辑器基于 Rinx v1.1.0 组件，保留精确的 Markdown、富文本选择、撤销/重做、代码、表格和公式渲染，以及本地恢复。它不包含 Rinx 的 Matrix 发布功能，也不包含图片选择和上传。远程图片 URL 保留为 Markdown，本示例不下载图片。
 
-在包含共享 OAuth 和编辑器组件的 OctoSense 中构建 `app-hub`，为宿主配置
-启用设备授权流程的 GitHub OAuth 客户端，然后通过测试目录或本地安装此
-bundle。不要把客户端密钥或访问令牌放进应用包或应用数据。
+[Rinx 编辑器验收](VALIDATION.md#rinx-writer-layout)提供原始参考对比、更新后的安装流程和 OnePlus 6 截图。此前的截图和持续测试记录对应旧版编辑器布局。
 
-先编辑本地笔记，再通过左上角返回/文件图标打开 **Repository & file**。选择公开仓库或更广泛的私有仓库
-权限，在宿主审核界面和外部浏览器完成 GitHub 授权。选账号、仓库、分支、文件；
-新笔记可以填写新 Markdown 路径并选择 **Use as new path**。设置提交说明，
-返回笔记并点纸飞机图标，在宿主页面核对确切内容和目标。只有收到 commit SHA
-才会显示提交成功；旧文件 SHA 不匹配时不会自动覆盖。
+## 运行
 
-草稿在应用私有目录交替保存并读回校验，切换文件时可保留恢复副本。失败或取消
-不会删除草稿；超时结果不明时应先查看 GitHub，再决定是否重试。断开授权仍保留
-本地笔记。
-应用声明 `storage.accounts: true`，启动通过 `auth.active` 读取宿主当前账号，
-选择账号调用 `auth.select`。浏览使用当前账号，已打开的草稿保留原账号和仓库
-绑定；切换账号不会悄悄更改提交目标。保存前需要选回原账号或明确选择新目标。
+1. 使用 OctoSense desktop-v0.1.0-beta.2 或更新版本，其中包含连接账户服务和 `MarkdownEditor` 控件。
+2. 为宿主提供 GitHub 注册信息。beta.2 的下载包里没有：请按[宿主配置指南](https://github.com/OctoSense-org/OctoSense/blob/desktop-v0.1.0-beta.2/crates/oauth-service/README.zh-CN.md)，在宿主的 `<apps root>/.host/oauth/clients.json` 中添加启用设备授权流程的 GitHub OAuth 客户端 ID。缺少它时，连接会失败并提示 `OAuth is not configured`。如果宿主构建时已编入分发者的注册信息，就不需要这个文件。不要把客户端密钥或令牌放进应用包或应用数据。
+3. 从 App Hub 安装已发布的 GitHub Notes，或通过本地测试目录安装本副本（[PUBLISHING 第 4 节](../../../docs/PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。授予界面列出的能力。
+4. 先写笔记，再点击左上角的返回/文件图标打开 **Repository & file**。选择公开或私有仓库权限，然后在宿主面板和浏览器中完成 GitHub 授权。私有权限会授予 GitHub 范围更广的 `repo` 权限。
+5. 选择账户、仓库、分支和文件。新笔记可以填写新的 Markdown 路径，再选择 **Use as new path**。已有文件会连同 blob SHA 一起加载；如果远端文件已经改变，GitHub 会拒绝提交，应用保留你的草稿。
+6. 设置提交说明，回到笔记，点击纸飞机图标。在宿主面板中核对确切内容和目标位置，然后选择 **Approve & Save**。只有 GitHub 返回提交 SHA 后，应用才报告提交成功。
 
-应用声明三个只读工具：`githubnotes.repositories`、`githubnotes.files` 和
-`githubnotes.read`。宿主根据本应用的连接和 `github` 权限调用对应 API。工具
-标记为私有数据、仅前台、不可共享；不导出写入、审批或凭据工具。保存仍需审核
-确切内容。代理调用及跨应用访问继续受宿主授权约束，独立编辑器测试未验证此路径。
+## 草稿与账户
 
-目前独立 `card-host` 可以准入这些能力，但没有注册 `MarkdownEditor`，因此
-不能单独运行此示例。OctoSense 的 `editor-host` 可以在没有真实账号的情况下
-对真实组件和源码进行原生 UI 测试。集成 `connected-app-host` 还验证普通应用
-准入、真实宿主授权页、缺少 OAuth 配置时的错误、取消及本地草稿完整保留。
-记录见 [VALIDATION.md](VALIDATION.md)。
-安装后的原生流程也已通过：使用真实 Store、`prepare_launch`、编辑器、宿主 API
-和审核页，仅通过非默认编译功能替换 GitHub 传输和内存凭据库。覆盖仓库分页、空仓库、
-第二个文件、脏草稿保护、确切内容审核/取消、已有及新文件提交、SHA 冲突、响应丢失时
-不自动重试、离线重启恢复。原始原生截图和绑定源码的记录见
-[VALIDATION.md](VALIDATION.md#signed-installed-provider-acceptance)，失败的本地记录单独保留。
-在 OctoSense 工作目录执行：
+未发送的编辑以交替保存、读回校验的快照形式存放在应用的私有存储中。主动打开另一个文件时，当前草稿会保留为恢复副本。远程保存失败或取消时，本地草稿保留不变。网络超时会让远端结果不明；重试前请先到 GitHub 查看。**Disconnect selected account** 会移除本应用的 OAuth 连接，但保留本地笔记。
+
+清单声明了 `storage.accounts: true`。启动时读取 `auth.active`，选择账户时调用 `auth.select`，让宿主和应用对当前账户保持一致。浏览使用当前选中的账户。已打开的草稿保留原来的账户和仓库；切换账户不会悄悄改变它下一次提交的目标。要提交这样的草稿，请选回原账户，或选择新的目标。
+
+Rinx 解析的文章上限为 512 KiB。无法加载的已保存草稿会留在恢复/仓库界面中受到保护，在空白编辑器里输入也无法覆盖它。主动用有效文件替换它时，会保留原文的完整恢复副本。
+
+## 应用 Agent 与只读工具
+
+本副本的清单声明了一个可选的应用 Agent，在前台为用户读取笔记：
+
+```json
+"agent": {
+  "background": false,
+  "instructions": "AGENT.md",
+  "model": {
+    "local_only": false,
+    "needs": [
+      "tool_calling"
+    ]
+  },
+  "profile": "read-only",
+  "tools": []
+}
+```
+
+用户通过 **Ask GitHub Notes** 使用它。安装应用或连接 GitHub 都不等于允许这个 Agent，宿主会另行询问。用户允许之后，提问、对话内容以及允许读取的结果都可能发送给宿主配置的模型。[AGENT.md](bundle/AGENT.md) 把 Agent 限定为只读：它没有编辑、提交、删除或批准工具，把仓库内容当作不可信的数据，提出的修改也只是对话中的建议。它读到的是远端已保存的文件，不是编辑器中未保存的草稿。编写和保存笔记都不需要模型。
+
+应用包声明了 `githubnotes.repositories`、`githubnotes.files` 和 `githubnotes.read`。宿主用本应用自己的连接和 `github` 权限，把它们映射到对应的 GitHub 读取 API。每个工具都设为 `private_data: true`、`background: false` 和 `shareable: false`。应用包没有导出任何写入、批准或凭据工具；保存仍要在宿主确认面板上核对确切内容。准入检查接受这个 Agent（`hub check` 的授权为 `agent read-only`），但还没有真实模型运行过它，独立编辑器测试也不检查应用 Agent 的工具调用。
+
+0.1.0 版附带同样的工具，却没有 `agent` 块，OctoSense 仍然为它提供了 **Ask GitHub Notes**。不要照搬这种做法，见[没有 agent 块的工具](../README.zh-CN.md#没有-agent-块的工具)。
+
+## 当前验证范围
+
+独立的 App Hub `card-host` 会准入所声明的能力，但没有 `MarkdownEditor`，因此无法单独运行本示例。不要把它显示的“first frame drawn”当作编辑器可用。OctoSense 的 `editor-host` 测试宿主由测试启动和关闭，无需账户即可运行真实控件和本应用包的确切源码。集成的 `connected-app-host` 还验证普通应用包准入、真实的宿主授权、缺少注册信息时的错误、取消操作，以及本地草稿的精确保留。
+
+0.1.0 发布前，安装后的验收流程也已通过：使用真实的 Store、`prepare_launch`、编辑器、宿主 API 和确认面板，只把 GitHub 传输和凭据库换成仅在编译期启用的模拟实现和内存实现。覆盖范围包括仓库分页、空仓库、第二个文件、未保存草稿的保护、确切内容的确认与取消、已有文件和新文件的提交、SHA 冲突、响应丢失时不自动重试，以及离线重启。原始原生截图及记录了源码哈希的回执见 [VALIDATION.md](VALIDATION.md#signed-installed-provider-acceptance)。[最终宿主回归](VALIDATION.md#final-modal-and-cancellation-regression)在修复模态输入和取消问题后，重新跑完了两条流程。要复现，请在本仓库旁边的 OctoSense 检出目录中运行：
 
 ```sh
 cargo build --locked --release -p octosense-shell \
@@ -58,31 +66,8 @@ python3 tools/connected-e2e/notes.py \
   --bundle ../OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle
 ```
 
-[最终宿主回归](VALIDATION.md#final-modal-and-cancellation-regression)已在模态输入与取消生命周期修复后
-重新通过完整安装和授权界面流程；新增回执保留确切源码、二进制摘要及逐张检查的原始截图。
+驱动脚本最后输出 `PASS: installed Notes flow with synthetic provider; native pixel review pending`。`acceptance-fixtures` 特性在普通构建中关闭，并拒绝未标记的配置目录和真实的提供商注册信息。测试只使用虚构数据。示例应用本身只使用普通宿主 API，没有测试开关。
 
-普通构建不启用该测试功能；测试拒绝未标记的用户目录或真实 OAuth 客户端配置。
-测试目录只存放虚构数据，示例应用本身只使用正常宿主 API，没有测试切换开关。
+[macOS 持续测试记录](https://github.com/OctoSense-org/OctoSense/blob/desktop-v0.1.0-beta.2/tools/connected-e2e/evidence/notes-soak-20261006/README.zh-CN.md)包含 156 轮，其中有一次 10 分钟的连续运行，验证了精确的草稿恢复和取消确认。运行期间内存有所增长，长期内存稳定性未经验证。独立的 OnePlus 6 `OctoSenseNotesTest` APK 在修复 Android 输入法组合末词丢失的问题后，通过了本地编辑、软键盘和硬件 Enter，以及精确的冷启动恢复。[手机配置](https://github.com/OctoSense-org/OctoSense/blob/desktop-v0.1.0-beta.2/tools/connected-e2e/android-notes.zh-CN.md)使用签名私有目录，不使用提供商凭据。手机上没有配置 GitHub 连接，因此这不是真实仓库验收。
 
-[Mac 浸泡记录](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/tools/connected-e2e/evidence/notes-soak-20261006/README.zh-CN.md)
-包含 156 轮，其中一次持续十分钟，验证精确草稿恢复及审核取消。内存有所增长，
-长期稳定性仍待分析。独立的 OnePlus 6 **OctoSenseNotesTest** APK 在修复 Android
-组合末词丢失后，通过本地编辑、软键盘／硬件 Enter 和精确冷启动恢复。
-[手机配置及边界](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/tools/connected-e2e/android-notes.zh-CN.md)
-使用签名私有目录，不复制提供商凭据；手机尚未配置 GitHub 连接，不能据此声称真实仓库验收通过。
-
-真实 GitHub OAuth/读取/提交/冲突、人工物理审批、Android 后台生命周期、Windows/Linux
-界面仍未验证。真实验收需要在宿主 `<apps root>/.host/oauth/clients.json` 配置启用
-设备流程的 GitHub OAuth 客户端 ID，由用户完成 GitHub 授权，并明确指定可删除的
-测试仓库、分支和文件路径；不复用 GitHub CLI 凭据。该小型宿主不验证代理工具调用或
-Glance。发布者身份和隐私政策仍保留显式占位符，等待人工审核；这不是已发布应用，
-也不声称已实现 Rinx 的全部功能。
-
-Rinx 文章解析上限为 512 KiB。无法加载的已保存草稿会停留在仓库/恢复界面，
-不会出现可覆盖原文的空编辑器。明确选择有效文件替换时，会保留原文的完整恢复副本。
-
-清单显式声明可选的 **Ask GitHub Notes** 前台只读代理及 [AGENT.md](bundle/AGENT.md)。
-安装或连接 GitHub 不等于代理授权。启用后，问题、对话上下文及允许读取的仓库／文件
-结果可能发送给宿主配置的模型。三个现有工具仍为私有、不可共享、仅前台读取，
-没有代理写入或审批工具。远端读取不等于读取编辑器未保存草稿；手动编辑无需模型。
-声明修正与 gate 检查不是新的真实模型执行证据。
+**未验证：** 真实 GitHub OAuth、读取、提交和冲突；Android 后台生命周期；Windows 和 Linux 界面；应用 Agent 的工具调用；亲手点按批准保存。在 desktop-v0.1.0-beta.2 上，宿主的 GitHub 确认面板不检查是否为亲手点按；OctoSense `main` 则要求在原生审阅界面上亲手点按（尚未进入任何发布版本）。真实验收需要启用设备授权流程的客户端 ID、用户亲自授权，以及一个可丢弃的仓库、分支和路径；不复用 GitHub CLI 凭据。本副本和已发布应用都没有实现 Rinx 的全部功能。任务约定见 [BRIEF.md](BRIEF.md)。

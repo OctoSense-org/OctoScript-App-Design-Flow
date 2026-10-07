@@ -6,7 +6,7 @@
 
 入口：在仓库根目录运行 `tools/beauty-pipeline.sh`。对于购买的设计套件，推荐的首选渲染器是**通过 release 版 Makepad Studio 运行的 splash-makepad**。较早的 theme/LLM L0 与桌面/设备通道仍保留在 `run_kit.py` 中，供已有的套件配置使用；本文不再记录或维护它们，桌面通道的客户端现已迁至 [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard)。
 
-全新安装请使用[通用复现指南](../../core/REPRODUCE.md)和[套件配置示例](../../core/examples/sketch-kit.json)。它们用本地输入替代了个人归档路径和设备设置。默认的原生循环会记录明确的外部视觉评审；它不需要模型服务商账号，也不会调用模型 CLI。参见[评审者契约](../../core/MODEL-REVIEW.md)。
+全新安装请使用[通用复现指南](../../core/REPRODUCE.md)和[套件配置示例](../../core/examples/sketch-kit.json)。它们用本地输入替代了个人归档路径和设备设置。默认的原生循环会记录明确的外部视觉评审；它不需要模型服务商账户，也不会调用模型 CLI。参见[评审者契约](../../core/MODEL-REVIEW.md)。
 
 对于 AI 生成的 UX 图像，请使用[图像到控件分支](../../image-lib/README.md)：`tools/beauty-pipeline.sh --ux-image --design weather-01`。它会保存明确的字体与布局提示词，测量实际生成的图像，挂载原生 L0 套件，并把 Studio 检查结果与截图差异合并进每一轮修复。首批评审集包含 10 个 Weather、10 个 News 和 10 个 Stocks 布局。图像分支的[明确映射规则](../../image-lib/MAPPING-RULES.md)要求在编译前使用原生的数据绑定图表和有文档记录的美术素材。它的语义审计独立于旧的 Sketch 矢量几何路线。
 

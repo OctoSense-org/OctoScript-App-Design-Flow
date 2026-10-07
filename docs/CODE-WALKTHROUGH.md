@@ -12,20 +12,21 @@ selected framework's `runtime.json`.
 | --- | --- |
 | Native Rust app | A compiled `AppModule` hosted standalone or inside the OctoSense shell |
 | `main.splash` | A script program evaluated by Makepad Script in a Splash isolate; the template here uses it |
-| `page.card` / L0 | Declarative card source parsed/realized by Octoscript and lowered by Octoscript-Makepad into Makepad UI |
+| `page.card` / L0 | Declarative card source parsed/realized by OctoScript and lowered by OctoScript-Makepad into Makepad UI |
 | `tools/octo` | This repository's Python command wrapping App Hub's `hub` and `card-host` |
 | octos | Rust agent kernel managed by OctoSense; separate from `tools/octo` |
 | Coding agent | An optional development assistant following this repository's `AGENTS.md` |
 | App agent | A model conversation with app-scoped tools; the shell gives it a peer identity for routing |
 
-Splash script and Octoscript L0 reach the same UI host by different parsing
+Splash script and OctoScript L0 reach the same UI host by different parsing
 paths. A native Rust app may embed script UI while keeping its operations
 in compiled Rust. The shell supplies the model provider, permissions, peer
 and conversation routes for an app agent.
 
-Repository `AGENTS.md` is for development. A bundle's singular `AGENT.md`
-is declared runtime agent material. App Hub validates the latter, but the
-current shell does not install its instructions or skills into the peer.
+Repository `AGENTS.md` is for development. A bundle's `AGENT.md` holds the
+app agent's instructions; the manifest declares it. App Hub validates it, and
+the OctoSense shells load it and the bundle's skills as guidance for each turn
+of the app's agent.
 
 ## 2. Read these files in order
 
@@ -51,16 +52,22 @@ and the complete shell/peer path in
 ## 3. Trace `tools/octo new`, `run`, `shot`, `check`
 
 `hub_repo` selects `OCTOSENSE_APP_HUB`, or the sibling App Hub checkout.
-`find_binary` checks explicit `OCTO_HUB`/`OCTO_CARD_HOST`, candidate release
-directories (including `.exe` names on Windows) and `PATH`. It checks the `hub help` banner when searching so
-GitHub's unrelated `hub` executable is not mistaken for App Hub. Explicit
-binary overrides are the caller's responsibility.
+`find_binary` checks explicit `OCTO_HUB`/`OCTO_CARD_HOST`, then the candidate
+release directories, then `PATH`. On Windows it tries `hub.exe` and
+`card-host.exe` before the bare names in each directory. It checks the
+`hub help` banner when searching so GitHub's unrelated `hub` executable is
+not mistaken for App Hub. Explicit binary overrides are the caller's
+responsibility.
 
-`cmd_new` validates the app id, rejects native/host ids and final namespaces,
-and rejects `os.*` without `--system`. It requires explicit `--platform` targets,
-copies the template/instructions and edits the manifest and listing. It stamps
-when `hub` is available. A target selection is not platform test evidence. Complete the listing,
-artwork and screenshots before submitting the generated app.
+`cmd_new` validates the app id before it creates anything. It refuses an id
+that is, or ends in, a name in `RESERVED_NAMES` (kept in step with App Hub's
+contract, which stays the authority), and an `os.*` id without `--system`.
+Its argument parser requires at least one `--platform`. `cmd_new` then
+copies the template and contributor instructions, writes the id, name and
+version into the manifest and the deduplicated platforms into the listing,
+and stamps when `hub` is available. The platforms are a claim to test, not
+evidence. Complete the listing, artwork and screenshots before submitting
+the generated app.
 
 `cmd_run` requires a manifest and a free remote port. It constructs:
 
@@ -95,12 +102,16 @@ gate's exit status. A signed manifest skips stamping. The command also
 prints progress lines and listing-placeholder notes. App Hub owns admission
 policy; this Python command handles the development sequence.
 
+Because `check` restamps first, a pass does not prove that the digest
+committed in your repository is current. Before you submit, run `hub check`
+on a fresh clone of the tag.
+
 ## 4. Run a contained script app
 
-Follow [QUICKSTART](QUICKSTART.md) for cloning/prerequisites. Use a prepared
-workspace with this repository, App Hub, `makepad`, `octoscript-makepad`
-and `octoscript` as siblings. **Validation status: build, GUI and device
-execution unverified.** From Design Flow:
+Follow [QUICKSTART](QUICKSTART.md) for cloning and prerequisites. Use a
+prepared workspace with this repository, App Hub, `makepad`,
+`octoscript-makepad` and `octoscript` as siblings. The setup and build steps
+are QUICKSTART's (not run). From Design Flow:
 
 ```sh
 python3 tools/setup-native.py
@@ -113,30 +124,47 @@ From the App Hub sibling:
 cargo build --release -p octosense-card-host -p octosense-app-hub
 ```
 
+If the build fails with `no variant … TextInputStateQuery`, see [The `card-host` build fails on `TextInputStateQuery`](QUICKSTART.md#the-card-host-build-fails-on-textinputstatequery).
+
 Back in Design Flow:
 
 ```sh
 tools/octo doctor
-tools/octo new /tmp/octosense-walkthrough-notes --platform macos --id walkthrough.quicknotes --name "Walkthrough Notes"
-tools/octo run /tmp/octosense-walkthrough-notes/bundle --hidden --detach --port 8141
+tools/octo new ~/apps/walkthrough --platform macos --id dev.example.walkthrough --name "Walkthrough Notes"
+tools/octo run ~/apps/walkthrough/bundle --hidden --detach --port 8141
 curl -s http://127.0.0.1:8141/snap
-tools/octo shot 8141 /tmp/octosense-walkthrough-notes/first-frame.png
+tools/octo shot 8141 ~/apps/walkthrough/first-frame.png
 curl -s http://127.0.0.1:8141/quit
 ```
 
-Use a new destination if that directory already exists, and a different
-port if occupied. This captures evidence outside the submission bundle.
+`run` prints the admission line, then `ready: first frame drawn`:
+
+```text
+card-host: dev.example.walkthrough 0.1.0 admitted — capabilities {"storage"}, hosts {}, storage 16777216 bytes, agent none
+ready: first frame drawn
+```
+
+`shot` prints `wrote …/first-frame.png (824x1784, … bytes)`; the PNG is
+evidence, kept outside the submission bundle. If `~/apps/walkthrough`
+exists, give `tools/octo new` another path; if port 8141 is busy, pass
+another `--port`.
+
+Keep the app id's last segment off the reserved list. `tools/octo new`
+refuses `walkthrough.notes` before it creates any file:
+`octo: id 'walkthrough.notes' uses reserved native/host namespace 'notes'; choose an app-specific name`.
+If you change the id in the manifest later, `card-host` refuses the bundle:
+`app id "walkthrough.notes" ends in "notes", which is reserved`.
+
 For publication, first complete the listing and capture its named
 screenshots, then run:
 
 ```sh
-tools/octo check /tmp/octosense-walkthrough-notes/bundle
+tools/octo check ~/apps/walkthrough/bundle
 ```
 
-The untouched template names a screenshot that you still need to capture;
-finish its listing and screenshot files before the full gate can pass.
-`run` stamps the manifest by default. Use an unsigned development copy for
-`card-host` and the store path for signing/install tests.
+`run` stamps the manifest by default. Test with `card-host` on an unsigned
+copy; test signing and installation through
+[the store rehearsal](PUBLISHING.md#4-rehearse-the-store-path-locally).
 
 The same host accepts an L0 `page.card` bundle with its data and kit. The
 runtime first looks for the script entry; otherwise it prepares/lowers the
@@ -151,8 +179,10 @@ build and flash workflow.
 `card-host` applies the manifest policy before evaluating the UI. That
 checks the contained app path: script/card parsing, rendering, jail storage,
 network allowlist and declared capabilities. It has the host-request
-transport but **registers no services**. `mail.*`, `model.complete`,
-`octos.*` and `glance.*` therefore cannot be tested end to end there.
+transport but **registers no services**, so no host service (`mail.*`,
+`auth.*`, `gmail.*`, `model.complete`, `octos.*`, `glance.*`) can be tested
+end to end there. Every call answers
+`no service answers "<family>" on this device`.
 
 The shell uses App Hub's `CardModule`, plus its own registered Rust services.
 A script call follows this route:
@@ -188,10 +218,8 @@ clients. Phone catalog configuration belongs to the Home build; see
 A runtime app agent is a model conversation restricted to one app/account.
 The shell asks the person to allow it, prepares its peer, installs available
 tool declarations and opens conversation contexts. On desktop, `Ask <app>`
-is a host-owned human chat surface. App-owned `octos.*` screens are another
-entry point. L0 `sys.chat` cards also provide chat when the runtime supports
-them; see [§9](#9-pins-checks-and-useful-failure-boundaries) for the current
-authoring-pin limitation. The
+is a host-owned chat surface for the person. App-owned `octos.*` screens are another
+entry point. L0 `sys.chat` cards on the Glance screen also provide chat. The
 [shell walkthrough](https://github.com/OctoSense-org/OctoSense/blob/61c668279a7c38a0f8056134d8d29e42ed715806/docs/architecture-walkthrough.md#6-where-a-person-talks-and-where-the-answer-goes)
 explains their routing.
 
@@ -204,10 +232,10 @@ run in §4 cannot exercise it.
 1. **Choose the recipient.** A **peer** is an agent identity used for routing.
    Its **peer slug** is the name the kernel assigns that identity. The shell
    routes a person's `Ask <app>` request to that app's prepared peer. The
-   system assistant discovers allowed peers and uses the actual slug when
+   system agent discovers allowed peers and uses the actual slug when
    delegating the same request; an app id is not a substitute for that slug.
 2. **Choose the conversation.** A **session** owns a conversation transcript
-   and its model turns. Human requests use a separate **sharing-context
+   and its model turns. The person's requests use a separate **sharing-context
    session**: a conversation attached to the peer that can receive bounded
    recent history from its other conversation. The system request uses the
    app peer's own session. The two keep their own transcripts, while the
@@ -216,10 +244,10 @@ run in §4 cannot exercise it.
    shell limits it to the exposed account workspace described below. The
    tool's result becomes input for the model's summary. Notes elsewhere
    require a supported tool that can read them.
-4. **Return the answer.** The human session sends events and completion to
-   its **event sink**, the receiver that forwards updates to that human
+4. **Return the answer.** The person's session sends events and completion
+   to its **event sink**, the receiver that forwards updates to the person's
    conversation. A system-delegated answer reaches the **peer blackboard**,
-   the kernel's record of peer results that the system assistant gathers.
+   the kernel's record of peer results that the system agent gathers.
    Sharing a peer identity does not send both answers to the same receiver.
 
 An app-owned chat uses the `octos.*` route in §5 to start work and retrieve
@@ -229,8 +257,9 @@ exchange.
 
 ### Data and executable tools
 
-On Unix, the shell gives an app agent bounded `files.list/read/search`
-tools when the person has consented and an account workspace is available.
+On Unix, the shell gives an app agent bounded `files.list`, `files.read`
+and `files.search` tools when the person has consented and an account
+workspace is available.
 They read `accounts/device/` for a single-account app, or the active account
 folder. `storage.agent_workspace` controls whether that workspace is exposed.
 Put records the agent should read in that account folder, or expose a
@@ -238,32 +267,34 @@ supported tool that interprets them. A record saved at the jail root stays
 outside the account workspace. Host-service credentials and
 `.host` state remain outside the app's jail.
 
-An app's `tools.json` describes APIs for model callers. First-party
-host-service handlers execute their declared tools; a store app's
-`implemented_by: "app"` tool still needs a script dispatcher in the shell.
-`AGENT.md`, skills, background triggers and model `needs` are validated
-metadata awaiting runtime wiring. Use implemented services for essential
-app behavior.
+An app's `tools.json` describes APIs for model callers. The shell runs a
+granted tool with `implemented_by: "host-service"` on the host service of
+its namespace or of its `host_method`, for store and system apps alike. A tool
+with `implemented_by: "app"` has no executor, and the shell refuses it.
+`AGENT.md` and skills are loaded as guidance for each turn. `background` and
+`triggers.events` are honored for two events: Mail's `mail.messages.new` and
+the Gmail service's `<namespace>.new_message`. Not yet: schedules, and model
+choice from `needs`. Use implemented services for essential app behavior.
 
 The system bundles demonstrate this split: News has read and notification
-tools; Mail has `mail.notify`; Calendar has event and card tools. Photos,
-Maps, Camera and YouTube declare their own `<namespace>.notify`, executed
-by the shell's shared
+tools; Mail has read, draft and card tools; Calendar has event and card
+tools. Photos, Maps, Camera and YouTube declare their own
+`<namespace>.notify`, executed by the shell's shared
 [`glance_notice` service](https://github.com/OctoSense-org/OctoSense/blob/main/crates/shell/src/glance_notice.rs).
 These declarations add an agent and a notice route, not general access to
-camera controls or photo records. AI providers remains excluded from that
-set: its `ai-providers` namespace fails the tool-name rule. The shell's
+camera controls or photo records. AI providers declares no agent. The shell's
 [`script_apps` tests](https://github.com/OctoSense-org/OctoSense/blob/main/crates/shell/src/host_tools/script_apps.rs)
 record these exact tool rosters.
 
 Cross-app tool use needs an owner's shareable declaration, the caller's
-grant, host admission and an executable route. Destructive/outward calls
-also have supervision policy. App Hub admission checks the request against
+grant, host admission and an executable route. Destructive and outward
+calls also wait for the person's approval. App Hub admission checks the request against
 `HostLimits::offered_tools`; its default list excludes arbitrary other-app
 names such as `mail.send`. The only plain kernel tool allowed in a contained agent's
 `agent.tools` is `ask_user_question`; peer and unrestricted file/shell tools
-are not inherited from the system assistant. System-to-app delegation is
-implemented; arbitrary app-to-system delegation is not an implied grant.
+are not inherited from the system agent. System-to-app delegation is
+implemented; an app's agent has no implicit right to delegate to the system
+agent.
 
 ## 7. Where Tokio fits
 
@@ -381,14 +412,13 @@ and resulting evidence through these decisions.
 ## 9. Pins, checks and useful failure boundaries
 
 [`native-runtime.lock.json`](../native-runtime.lock.json) selects an
-Octoscript-Makepad release. That release's `runtime.json` owns the underlying
-Makepad and Octoscript revisions.
+OctoScript-Makepad release. That release's `runtime.json` owns the underlying
+Makepad and OctoScript revisions.
 `setup-native.py` delegates to the runtime preparation/verification code;
-`--check` inspects rather than updates the prepared set. The current
-authoring pin lacks L0 `sys.chat` and `ChatEntry` support, while the
-OctoSense shell's runtime supports that in-card chat path. Such cards require
-a newer authoring runtime; see
-[AI-written text and in-card chat](AI-SERVICES.md#ai-written-text-and-in-card-chat-model-copy-syschat).
+`--check` inspects rather than updates the prepared set. The authoring pin
+and the OctoSense shells use the same OctoScript revision, so an L0 card with
+`sys.chat`, `ChatEntry`, `model-copy` or `sys.digest` checks the same way in
+both ([AI-written text and in-card chat](AI-SERVICES.md#ai-written-text-and-in-card-chat-model-copy-syschat)).
 Compare both consumers' pins before updating their shared sibling checkouts.
 
 Check the documentation links and CLI behavior with:
@@ -398,7 +428,14 @@ python3 tools/check-links.py
 python3 tools/octo --help
 python3 tools/octo run --help
 python3 -m unittest discover -s flows/tests -p 'test_octo_run.py'
+python3 -m unittest discover -s tools -p 'test_*.py'
 ```
+
+The last command tests `new` and the binary search, including Windows `.exe`
+discovery, and checks the connected examples' agent and tool contracts; CI
+runs it on Windows, Linux and macOS. Its check that `RESERVED_NAMES` matches
+App Hub's contract needs an App Hub checkout (`OCTOSENSE_APP_HUB` or the
+sibling) and skips without one.
 
 The link checker checks tracked Markdown and skips historical evidence;
 it does not fetch external URLs or verify anchors. Check newly added files

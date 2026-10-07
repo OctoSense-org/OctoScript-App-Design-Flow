@@ -3,7 +3,7 @@
 # profile: ui/l0
 # model:   glm-5.2
 #
-# Reference card for Splash/docs/ui-profile-l0.md. Expresses everything
+# Reference card for Octoscript/docs/ui-profile-l0.md. Expresses everything
 # app/app/src/app/plan/stock.rs lowers: MoversList, QuoteHeader, PriceChart,
 # StatGrid. The hardest of the three: it is the only one with a genuine
 # list↔detail switch, and the only one whose chart depends on a second piece
