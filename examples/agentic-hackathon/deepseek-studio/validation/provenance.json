@@ -6,11 +6,9 @@
   "package": "dev.makepad.octosense.hackathon",
   "runtime_commit": "ccf8013f2bd7adbb6c20d5f52f47bcfbcbb55313",
   "operator_hub_commit": "927f2fe0c06b620f47f2f25befd0b2cb0bafe244",
-  "record_scope": "Counts from retained sanitized authoring ledger; earlier failed streaming turns are not a complete transcript. Reasoning, provider credentials and unrelated context excluded.",
+  "record_scope": "Counts from the 197 assistant tool calls in the retained sanitized model-tools.json ledger only. Earlier failed streaming turns and omitted calls are not a complete transcript. Reasoning, provider credentials and unrelated context excluded.",
   "tool_counts": {
-    "list_dir": 14,
-    "glob": 5,
-    "read_file": 44,
+    "read_file": 12,
     "studio_render": 4,
     "view_image": 22,
     "edit_file": 31,
@@ -19,8 +17,7 @@
     "studio_open": 10,
     "studio_inspect": 45,
     "studio_input": 41,
-    "studio_close": 6,
-    "grep": 3
+    "studio_close": 6
   },
   "artifacts": {
     "email-action": {
