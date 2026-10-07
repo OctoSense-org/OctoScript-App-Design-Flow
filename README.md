@@ -111,6 +111,24 @@ submission) are listed in [AGENTS.md](AGENTS.md) and
 [flows/README.md](flows/README.md#every-flow-follows-the-same-contract). An
 agent never fabricates an approval, a review result or a submission.
 
+### App card UX skill
+
+Use [octoscript-app-card-ux](skills/octoscript-app-card-ux/SKILL.md) when designing
+or accepting a Glance app card. It adds a complete summary → expanded card →
+full-workspace journey, shared Chat/Edit/Review state, keyboard and scrolling
+checks, and a repair loop that preserves the designated model's authorship.
+Its acceptance matrix distinguishes local behavior, actual agent execution,
+external effects and visual approval; historical scores cannot pass a new card.
+
+Any coding agent can read the skill directly alongside the selected flow.
+For Codex discovery, copy the whole `skills/octoscript-app-card-ux` directory into
+your Codex skills directory, then use it in a session that loads that catalog:
+`Use $octoscript-app-card-ux to design and validate this app card.` Refresh the
+installed copy when adopting later revisions. The skill does not provision a
+phone's system/app agent or replace App Hub publishing gates. It adapts to the
+chosen runtime, author and device; DeepSeek, MiniMax and OnePlus 6 are dated
+examples, not requirements for every app.
+
 ## Status
 
 The work script apps depend on merged on 2026-09-26; use `main` of each
