@@ -10,44 +10,20 @@ and is ready for a person to sign and submit.
 
 It holds the rules for agents ([AGENTS.md](AGENTS.md)), step-by-step design
 flows ([flows/](flows/README.md)), the developer docs ([docs/](docs/)), a
-runnable app template ([templates/script-app](templates/script-app/README.md)),
-worked examples ([examples/](examples/README.md)) and `tools/octo`, a small CLI
-over the App Hub's real `card-host` and `hub` binaries. It never decides
-admission itself: `tools/octo check` stamps unsigned bundles, then forwards
-`hub check` output and exit status, with progress and listing-placeholder
-notes. A failed stamp returns its status immediately and skips the gate.
+runnable app template ([templates/script-app](templates/script-app/README.md))
+and worked examples ([examples/](examples/README.md)). Its CLI, `tools/octo`,
+wraps App Hub's `card-host` and `hub` and never decides admission:
+`tools/octo check` stamps an unsigned bundle, then passes on `hub check`'s
+output and exit status.
 
-Who it is for: hackathon contestants and other developers building an
-OctoSense app, and the coding agents they work with.
-
-Formerly *Octoscript-AppCard*. The AppCard assistant runtime and
-the first-party apps moved to OctoSense-System-Apps and, since 2026-09-27,
-live in [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
-(OctoSense-System-Apps is archived and no longer public).
-
-## Connected apps: GitHub, Gmail and Google Calendar
-
-[Three development samples](examples/connected-apps/README.md) use shared
-provider login without creating an OctoSense account: Rinx-backed GitHub Notes,
-Inbox Assistant and Google Calendar. Their guide gives exact app IDs, matching
-host/tool revisions and native evidence. Provider services require the new
-connected-services OctoSense build; standalone `card-host` is insufficient for
-live login, and it lacks the native Markdown editor. Live provider/model and
-phone acceptance remain pending; Android Google login needs its native adapter.
-
-## Code walkthrough
-
-[docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md) follows the Python CLI
-from a script template to a running app, then into App Hub and the OctoSense
-shell. A saved-notes request explains peers, conversations, data access and
-reply routing; an atlas-to-card example explains the image pipeline's default
-stages. It also covers native Rust versus Splash/L0 apps, cross-app tool
-limits, runtime pins and Tokio. `tools/octo` is the development CLI; octos
-is the separate agent kernel.
+It is for hackathon contestants and other developers building an OctoSense
+app, and for the coding agents they work with. This repository was formerly
+named *OctoScript-AppCard*.
 
 ## Contents
 
 - [Hackathon: start here](#hackathon-start-here)
+- [Connected apps: GitHub, Gmail and Google Calendar](#connected-apps-github-gmail-and-google-calendar)
 - [Agents start here](#agents-start-here)
 - [Status](#status)
 - [Quick path](#quick-path)
@@ -63,36 +39,78 @@ is the separate agent kernel.
 - [Examples](#examples)
 - [Contributing](#contributing)
 - [Related repositories](#related-repositories)
+- [License](#license)
 
 ## Hackathon: start here
 
 This repository covers the technical path only. For the event itself
 (rules, schedule, judging, how entries are handed in), see the
 [Agentic App Hackathon](https://create.gosim.org/agenticapp26/) page and its
-organizers; none of that is decided here. What a contestant needs from here:
+organizers. What a contestant needs from here:
 
-| | |
+| Topic | What to know |
 | --- | --- |
-| **Start** | The [Quick path](#quick-path) below: on 2026-09-26 a new app went from an empty directory to `— PASSED` in about 10 minutes (clones 1.5 min, setup 20 s, first build 1 min on an Apple silicon Mac), most of it writing the app. Every step is a shell command, so any coding agent (or none) can run it. |
-| **Machine** | macOS on Apple silicon is the verified platform. Windows and Linux are unverified. Rust stable (rustup), Python 3.9+ (macOS's own `/usr/bin/python3` works), git, a graphical session, about 3 GB free (the clones take about 1.9 GB, 1.3 GB of it this repository, where `--depth 1` is fine; the build about 1 GB), and network access for the first build. |
-| **What an app can do** | Its own storage, HTTPS requests to hosts it declares, pictures and web pages, camera, location, and Mail through a host service: [CAPABILITIES](docs/CAPABILITIES.md). The language and every API: [SCRIPT-API](docs/SCRIPT-API.md). Complete examples: the [System Apps](https://github.com/OctoSense-org/OctoSense/tree/main/apps) (News, Photos, Maps, Camera, Mail) and the [template](templates/script-app/README.md). |
-| **What it cannot do** | Hold a password, key or token; invent a capability or a host service (those are App Hub and shell changes); use `llm` or an `os.*` id (system apps only); treat a developer preview/install as store publication. Newer OctoSense App Studio tools on Android have a separate [tested scope](docs/MODEL-VALIDATION.md#choose-the-test-surface). `card-host` provides no host services, so a Mail-style app shows `no service answers` there. |
-| **AI in the app** | Building needs none, with any coding agent or none. On the device, a store app can make one-shot model calls (`model`) and, once the person allows its agent, talk to the assistant (`octos.*`); `card-host` serves neither (`no service answers "octos"`), so build the app to be complete without them. What works, what is planned, and a verified example that handles "unavailable": [docs/AI-SERVICES.md](docs/AI-SERVICES.md). |
-| **Demo** | The app in `card-host` (`tools/octo run`, driven over the remote bridge) and real screenshots from `tools/octo shot`. To show it inside OctoSense, run the OctoSense desktop shell against a local catalog ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)). |
-| **Submit to the App Hub** | [Publishing](#publishing): `tools/octo check` passes, `hub scan` answered, then a person signs and opens a `Submit <app id> <version>` issue on [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues). A contest entry is not automatically an App Hub submission; ask the organizers what they need. |
-| **Test headless** | `tools/octo run … --hidden`: the window never appears, so an agent can test your app (and several apps at once, one `--port` each) without taking over your screen. [Headless testing](#headless-testing-many-apps-no-screen). |
-| **Validate model output** | [Development and validation loop](docs/MODEL-VALIDATION.md): Makepad input/capture, OctoSense App Studio and cross-APK capture boundaries, concrete recovery from model failures, and evidence tied to final source. |
+| **Start** | The [Quick path](#quick-path) below: every step is a shell command. |
+| **Machine** | macOS on Apple silicon is the verified platform. On Windows and Linux, CI runs only the `tools/test_*.py` tests; the rest is unverified, and on Linux, frame capture is reported to time out under software rendering. For prerequisites and Windows setup, see the [Quick path](#quick-path). |
+| **What an app can do** | Keep its own storage; make HTTPS requests to hosts it declares; show pictures and web pages; use the camera, location and Mail through host services; publish Glance cards; call `model.complete`; and, in `desktop-v0.1.0-beta.2`, use a person's GitHub, Gmail or Google Calendar account through the host. [docs/CAPABILITIES.md](docs/CAPABILITIES.md) lists the capabilities; [docs/SCRIPT-API.md](docs/SCRIPT-API.md) covers the language and every API. |
+| **What it cannot do** | Hold a password, API key or token, even in its own storage. Sign people in to its own backend on a released build: OctoSense `main` adds a host-run backend sign-in, but no release has it yet, and the host's operator must register each app's backend ([CAPABILITIES](docs/CAPABILITIES.md#sign-in-to-your-own-backend), [App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)). Generate images, audio or video, or compute embeddings: `model.image`, `model.audio`, `model.video` and `model.embeddings` do not exist ([App Hub#85](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/85)–[#88](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/88)). Add a capability or host service (an App Hub and shell change), use the system-app-only `llm`, `news` and `calendar` capabilities or an `os.*` id, or ship native code. |
+| **AI in the app** | Building an app needs no AI service, and `card-host` serves none, so make the app complete without one. See [AI in your app](#ai-in-your-app). |
+| **Reference apps** | The three published [connected apps](#connected-apps-github-gmail-and-google-calendar). |
+| **Demo** | The app in `card-host` (`tools/octo run`, driven over the remote bridge) and real screenshots from `tools/octo shot`. To show it inside OctoSense, with its host services, run the OctoSense desktop shell against a local catalog ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)). |
+| **Submit to the App Hub** | Prepare the bundle with [docs/PUBLISHING.md](docs/PUBLISHING.md); then a person signs, tags and opens the issue as App Hub's [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md) describes. A contest entry is not automatically an App Hub submission; the hackathon page says what the event needs. |
+| **Test headless** | `tools/octo run … --hidden`: the window never appears, so an agent can test your app (and several apps at once, one `--port` each) without taking over your screen. See [Headless testing](#headless-testing-many-apps-no-screen). |
+| **Check what your agent built** | [docs/MODEL-VALIDATION.md](docs/MODEL-VALIDATION.md): drive and capture the app natively, repair failures, and tie the evidence to the final source. |
 | **Agentic app references** | [Email Action and Meeting Planner](examples/agentic-hackathon/README.md): fake email/calendar data, real app-agent entry points, a labeled offline fallback, review-before-action and native interaction tests. |
-| **Stuck** | [QUICKSTART § Troubleshooting](docs/QUICKSTART.md#troubleshooting), then [SCRIPT-API § Gotchas](docs/SCRIPT-API.md#gotchas). |
+| **Stuck** | [QUICKSTART § Troubleshooting](docs/QUICKSTART.md#troubleshooting), [SCRIPT-API § Gotchas](docs/SCRIPT-API.md#gotchas), then App Hub's [Common refusals and how to fix them](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#common-refusals-and-how-to-fix-them). |
+
+## Connected apps: GitHub, Gmail and Google Calendar
+
+Three apps in the App Hub catalog work with a person's GitHub or Google
+account through the host, without an OctoSense account. They are the
+reference apps for a submission: each passed the gate and review, and the
+catalog offers version 0.1.1 of each.
+
+| App | App id | Source |
+| --- | --- | --- |
+| GitHub Notes | `org.octosense.samples.githubnotes` | [ymote/octosense-github-notes](https://github.com/ymote/octosense-github-notes) |
+| Inbox Assistant | `org.octosense.samples.inbox` | [ymote/octosense-inbox-assistant](https://github.com/ymote/octosense-inbox-assistant) |
+| Google Calendar | `org.octosense.samples.googlecalendar` | [ymote/octosense-google-calendar](https://github.com/ymote/octosense-google-calendar) |
+
+Their anatomy (capabilities, tools, agent, Glance cards, protected writes) is
+in [examples/connected-apps](examples/connected-apps/README.md); how they were
+submitted is in App Hub's
+[The three reference apps](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#the-three-reference-apps).
+
+- They run in the OctoSense desktop shell, `desktop-v0.1.0-beta.2` or later
+  (OctoSense `main`).
+- Signing in needs provider registrations. On `desktop-v0.1.0-beta.2`, the
+  host reads them only from `oauth/clients.json`, which its downloads do not
+  include, so the host's operator supplies that file. A build from OctoSense
+  `main` can compile a distributor's registrations in instead. Live use with
+  the real providers is largely unverified
+  ([CAPABILITIES § Limits](docs/CAPABILITIES.md#limits)).
+- The person confirms every send and save in the host. A Gmail send needs a
+  physical press on the host's review screen. On `desktop-v0.1.0-beta.2`, a
+  GitHub or Calendar save needs approval on a host **sheet** (a panel the host
+  draws over the app), and that sheet does not check for a physical press.
+  OctoSense `main` requires a physical press for these saves too, but no
+  release has it yet.
+- Not yet: Google sign-in on Android, and installing any of them on a phone.
+  The `desktop-v0.1.0-beta.1` store and every released phone build refuse the
+  `auth` capability.
+- `card-host` serves no connected accounts and lacks the native Markdown
+  editor that GitHub Notes uses.
 
 ## Agents start here
 
-> **Any coding agent, or none.** These instructions work the same for Codex, Claude Code, Cursor, Gemini CLI, GitHub Copilot or a person at a terminal: every step is a shell command or a file edit, and nothing here needs a particular agent, model or vendor. `AGENTS.md` is the one source of truth; `CLAUDE.md` and `GEMINI.md` only import it for agents that look for those names.
+Every step is a shell command or a file edit, so any coding agent, or a
+person at a terminal, can follow it. `AGENTS.md` is the one source of truth;
+`CLAUDE.md` and `GEMINI.md` only import it for agents that look for those
+names.
 
-`tools/octo` is this repository's own Python CLI around App Hub's `hub` and `card-host`. It is unrelated to octos (the agent kernel inside OctoSense) and needs no AI service or API key.
+`tools/octo` is unrelated to octos (the agent kernel inside OctoSense) and needs no AI service or API key.
 
-Read these in order (the same order the
-[OctoSense org profile](https://github.com/OctoSense-org) gives):
+Read these in order:
 
 1. [AGENTS.md](AGENTS.md): the rules, the definition of done, and every point
    where you stop and ask a person.
@@ -101,16 +119,17 @@ Read these in order (the same order the
 3. [docs/QUICKSTART.md](docs/QUICKSTART.md) and
    [docs/SCRIPT-API.md](docs/SCRIPT-API.md): build and run the app with
    `tools/octo`; use only documented APIs (or ones you can cite from the
-   runtime source or a System App).
-4. [docs/PUBLISHING.md](docs/PUBLISHING.md), with the App Hub's
-   [publishing contract](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md):
-   stamp, screenshot, check, sign and submit.
+   runtime source or a system app).
+4. [docs/PUBLISHING.md](docs/PUBLISHING.md): finalize the bundle, capture
+   screenshots and pass the gate. A person then signs and submits it with
+   App Hub's [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md).
 
 The human checkpoints (publisher keys and signing, publisher identity and
-privacy text, platform claims, paid image generation, visual approval,
-submission) are listed in [AGENTS.md](AGENTS.md) and
-[flows/README.md](flows/README.md#every-flow-follows-the-same-contract). An
-agent never fabricates an approval, a review result or a submission.
+privacy text, platform claims, paid image generation, visual approval, the
+release tag, submission) are listed in [AGENTS.md](AGENTS.md#how-to-work);
+[flows/README.md](flows/README.md#every-flow-follows-the-same-contract)
+explains the ones every flow shares. An agent never fabricates an approval,
+a review result or a submission.
 
 ### App card UX skill
 
@@ -132,18 +151,17 @@ examples, not requirements for every app.
 
 ## Status
 
-The work script apps depend on merged on 2026-09-26; use `main` of each
-repository.
+Use `main` of each repository.
 
 | Piece | State |
 | --- | --- |
-| Script-app gate, scan and `os.` id check in `hub` | On App Hub `main` ([OctoSense-App-Hub#4](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/4), merged as `0d36f50b`). The docs here were verified against its pre-merge commit `79a2c4f` and re-run end to end on `main` on 2026-09-26. |
-| Contained script apps and host services in the runtime | On makepad `main` ([OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30), merged as `cd812acd`; now at `68d1f4ec`), selected by Octoscript-Makepad `aa80f72c`, the release `native-runtime.lock.json` pins. Verified before the merge at `d94e5e6`. |
-| System and store apps in the shells | On `main` of [OctoSense](https://github.com/OctoSense-org/OctoSense), in the desktop shell and the phone's Home (landed as OctoSense-Desktop [#36](https://github.com/OctoSense-org/OctoSense/pull/36) and OctoSense-ROM #18, before the repositories merged). |
-| Submission route | An issue on OctoSense-App-Hub (below), as App Hub's [PUBLISHING § Submitting](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#submitting) describes. The index repository and release action it mentions do not exist yet. |
+| The gate (`hub`) | App Hub `main`, app contract 1.5 (the manifest rules `hub` enforces), which admits the connected-account capabilities `auth`, `github`, `gmail` and `gcalendar`. |
+| `card-host` | App Hub `main`. It runs one bundle and serves no host services. Build it as the [Quick path](#quick-path) shows. |
+| The shells | OctoSense `main`; its latest desktop release is `desktop-v0.1.0-beta.2`. The desktop shell and the phone's Home run system and store apps; the desktop also serves connected accounts and app agents' host-service tools. |
+| Submission | An issue on OctoSense-App-Hub, as App Hub's [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md) describes. |
 | Installing your own bundle on a phone | Not supported. See [Running an app](#running-an-app). |
 
-[docs/QUICKSTART.md §1](docs/QUICKSTART.md#1-prerequisites) lists the exact
+[QUICKSTART §1](docs/QUICKSTART.md#1-prerequisites) lists the exact
 revisions and the commands that set up the workspace.
 
 ## Quick path
@@ -151,12 +169,12 @@ revisions and the commands that set up the workspace.
 Prerequisites ([QUICKSTART §1](docs/QUICKSTART.md#1-prerequisites)):
 
 - Rust (stable, via rustup), with `~/.cargo/bin` on `PATH`.
-- Python 3.9 or newer (no packages needed for `tools/octo`; macOS's own
-  `/usr/bin/python3` 3.9 works).
-- A graphical session: `card-host` opens a real 412x892-point window, even
-  when an agent drives it.
+- Python 3.9 or newer (no third-party packages needed for `tools/octo`;
+  macOS's own `/usr/bin/python3` works).
+- A graphical session: `card-host` renders a real 412x892-point window, even
+  when `--hidden` keeps it off screen.
 - One workspace directory holding this repository and its siblings, because
-  the App Hub's `Cargo.toml` patches Makepad and Octoscript to those paths:
+  App Hub's `Cargo.toml` patches Makepad and OctoScript to those paths:
 
   ```text
   <workspace>/
@@ -199,46 +217,55 @@ tools/octo shot 8141 ~/apps/my-app/bundle/screenshots/01-main.png
 curl -s 127.0.0.1:8141/quit
 tools/octo check ~/apps/my-app/bundle                    # hub stamp + hub check
 
-# 6. Publish: print the checklist and follow docs/PUBLISHING.md
+# 6. Publish: print the checklist, then follow docs/PUBLISHING.md
 tools/octo package-help
 ```
 
+If the build fails with `no variant … TextInputStateQuery`, see [QUICKSTART § The `card-host` build fails on `TextInputStateQuery`](docs/QUICKSTART.md#the-card-host-build-fails-on-textinputstatequery).
+
+On Windows, run each `tools/octo` command as `python tools/octo …`. It finds
+`hub.exe` and `card-host.exe` in the same places as on macOS
+([QUICKSTART §2](docs/QUICKSTART.md#2-build-hub-and-card-host)). The rest of
+this path is unverified on Windows.
+
 What to expect:
 
-- `new` prints `created …` and `bundle stamped`.
+- `new` prints `created …`, `bundle stamped` and
+  `target platforms: macos; verify each before publishing`. List only the
+  platforms you will test on; the listing claims them in the store.
 - `run --detach` returns once `card-host` logs
   `card-host: my-notes 0.1.0 admitted — capabilities {"storage"}, …`, its
   remote bridge listens on your `--port`, and the first full frame is drawn
   (`ready: first frame drawn`); you can click or `shot` right away. If the
-  port is already taken it exits 1 and names the app holding it, with the
-  `curl -s 127.0.0.1:<port>/quit` to stop it. Script
-  errors appear in `<app>/.local-state/card-host.log` after `[SPLASH] eval:`.
+  port is already taken, it exits 1 and names the app holding it, with the
+  `curl -s 127.0.0.1:<port>/quit` that stops it. Script errors appear in
+  `<app>/.local-state/card-host.log` after `[SPLASH] eval:`.
 - `check` on a fresh copy of the template is **refused** on purpose:
   `[refused] listing: screenshots/01-main.png is named by the listing but is not in the bundle`.
   It passes (`my-notes 0.1.0 — PASSED` plus the unsigned warning) once a real
-  capture exists. Never add a dummy image. `check` also notes the template's
-  placeholder publisher text in `listing.json`, which a person must replace.
+  capture exists. Never add a placeholder image. `check` also notes the
+  template's placeholder publisher text in `listing.json`, which a person must
+  replace.
 
-The full walk-through, with verified output for every step, is
+The full walk-through, with real output for every step, is
 [docs/QUICKSTART.md](docs/QUICKSTART.md).
 
 ## `tools/octo`
 
-Python 3.9+, no third-party packages. Run `tools/octo <command> -h` for flags.
+Run `tools/octo <command> -h` for flags.
 
 | Command | Does |
 | --- | --- |
-| `doctor` | Checks Python, finds `hub` and `card-host` (rejecting GitHub's unrelated `hub` CLI), checks the template, and prints how to fix what is missing. |
-| `new <dir> --platform PLATFORM [--id ID] [--name NAME] [--system]` | Copies `templates/script-app` (`bundle/`, `AGENTS.md`, `.gitignore`), sets id, name and version `0.1.0`, and stamps the bundle. Ids are `[a-z0-9.-]{1,64}`; native/host ids and their final namespaces are refused. `os.*` needs `--system`. Repeat `--platform` for multiple targets; test each before publishing. |
-| `run <bundle> [--port N] [--hidden] [--detach] [--system] [--no-stamp] [--app-data DIR] [--static PREFIX=DIR]` | Runs `card-host --bundle … --app-data … --allow-unsigned --stamp` with `MAKEPAD_REMOTE=<port>` (default 8141). Refuses a port that is already taken. `--detach` returns once the app is admitted, its bridge listens and the first frame is drawn. The app's jail is `<app>/.local-state/<id>/`. |
-| `shot <port> <out.png> [--settle S]` | Saves a PNG of the running window (`GET /g?raw=1`) once the app's widgets exist and two frames in a row match (at most `--settle`, 2 s). |
-| `check <bundle> [hub check flags]` | `hub stamp`, then `hub check --allow-unsigned`; exits nonzero on a refusal. Does not restamp a signed manifest. |
+| `doctor` | Checks Python, looks for the App Hub checkout and cargo, finds `hub` and `card-host` (rejecting GitHub's unrelated `hub` CLI), checks the template, and prints how to fix what is missing. |
+| `new <dir> --platform PLATFORM [--id ID] [--name NAME] [--system]` | Copies `templates/script-app` (`bundle/`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.gitignore`), sets id, name and version `0.1.0`, writes the `--platform` values into the listing, and stamps the bundle. `--platform` is required; repeat it for each platform you will test on. Ids are `[a-z0-9.-]{1,64}`; `os.*` needs `--system`. It refuses a reserved id, or one whose last segment is reserved, before it creates any file ([What an app is](#what-an-app-is)). |
+| `run <bundle> [--port N] [--hidden] [--detach] [--system] [--no-stamp] [--app-data DIR] [--static PREFIX=DIR]` | Runs `card-host --bundle … --app-data … --allow-unsigned --stamp` with `MAKEPAD_REMOTE=<port>` (default 8141). Refuses a port that is already taken. `--detach` returns once the app is admitted, its bridge listens and the first frame is drawn. The app's jail (its private data directory) is `<app>/.local-state/<id>/`. |
+| `shot <port> <out.png> [--settle S]` | Saves a PNG of the running window (`GET /g?raw=1`) once the app's widgets exist and two frames in a row match (at most `--settle`, 2 s by default). |
+| `check <bundle> [hub check flags]` | `hub stamp`, then `hub check --allow-unsigned`; exits nonzero on a refusal. Passes other flags, such as `--catalog` or `--publisher-key`, to `hub check`. Does not restamp a signed manifest. A failed stamp returns its status at once and skips the gate. |
 | `package-help` | Prints the publish checklist. |
 
-Binaries are found in `$OCTO_HUB` / `$OCTO_CARD_HOST`, then
-`$OCTOSENSE_APP_HUB/target/release`, `$CARGO_TARGET_DIR/release`,
-`$OCTOSENSE_APP_HUB/../target/release`, `../OctoSense-App-Hub/target/release`,
-`../target/release`, then `PATH`.
+`doctor` prints every place it looks for `hub` and `card-host`;
+[QUICKSTART §2](docs/QUICKSTART.md#2-build-hub-and-card-host) lists the
+order, including the `.exe` names on Windows.
 
 ## Design flows
 
@@ -254,19 +281,21 @@ and a pass condition, and marks the human checkpoints.
 
 For a text brief, use script-app: it is the one path `tools/octo` automates
 end to end. The image and Sketch flows need macOS, Python 3.12, their own
-virtual environments and, for native capture, Makepad Studio; each FLOW.md
+virtual environments and, for native capture, Makepad Studio; each `FLOW.md`
 lists its prerequisites. Every app flow ends in the same hand-off (stamp,
 check, run in `card-host`, screenshot, sign, submit), described in
 [flows/README.md](flows/README.md#every-flow-follows-the-same-contract).
 
 ## What an app is
 
-An OctoSense app is a small, contained bundle. Only `bundle/` is submitted;
-everything else in the app's repository stays out of it.
+An OctoSense app is a contained bundle of at most 8 MiB. Only `bundle/` is
+submitted; everything else in the app's repository stays out of it.
 
 ```text
-my-app/                     the app's own git repository
-  AGENTS.md  .gitignore     copied by tools/octo new; not submitted
+my-app/                     the app's own Git repository
+  AGENTS.md  CLAUDE.md      copied by tools/octo new; not submitted
+  GEMINI.md  .gitignore     copied by tools/octo new; not submitted
+  .gitattributes            you add it: bundle/** -text, so Git never rewrites the bundle
   BRIEF.md  build/          your brief, hub scan's review packet; not submitted
   .local-state/             card-host's jail and log; not submitted
   bundle/                   THE SUBMISSION
@@ -277,61 +306,71 @@ my-app/                     the app's own git repository
     screenshots/01-main.png real captures, 1 to 8, named by the listing
 ```
 
-**`manifest.json`**: `schema`, `id`, `name`, `version` (new for every
-release), `capabilities` (the permissions it asks for), `network.hosts`
-(bare host names, with `net`), and `integrity.bundle_blake3`, written by
-`hub stamp` (plus a signature after `hub sign-manifest`). Optional requests
-(`storage.max_bytes`, `compute.*`, `agent`) are clamped to the host's
-ceilings; `hub check` prints the resulting `grants:` line. `storage` may
-also say whether the app keeps accounts and what its agent may read
-(`storage.accounts`, `storage.agent_workspace`). The id may not be, or end
-in, a name the host reserves (`terminal`, `rinx`, `system`, `toolbox`, …).
+**`manifest.json`** holds:
 
-**Capabilities** form a closed list defined by the App Hub: `storage`, `net`,
-`images`, `web`, `camera`, `microphone`, `library`, `location`, `mail`,
-`llm`, `news`, `glance`, `model`, `research`, `crawl`, `prompt`, `ledger.read`, `clipboard`, plus 49 exact
-host-service names (four `octos.*` for the device's assistant, 45 `matrix.*`
-for Rinx). Not requested means not granted,
-and the store shows the person one plain-language line per capability before
-install. Ask for the least the app needs. What each unlocks, which have no
-working path yet (`prompt`, `ledger.read`, `clipboard`) and which only a
-system app can use (`llm`, `news`, and for now `research` and `crawl`):
-[docs/CAPABILITIES.md](docs/CAPABILITIES.md). What the assistant
-capabilities and an app's own agent do today in OctoSense:
-[docs/AI-SERVICES.md](docs/AI-SERVICES.md).
+| Field | Holds |
+| --- | --- |
+| `schema`, `id`, `name`, `version` | Identity, with a new `version` for each release. The id's last segment, after its final `.`, must not be a name the host reserves (`notes`, `weather`, `terminal`, `rinx`, `system`, …): `com.example.notes` is refused, `my-notes` passes. `tools/octo new` refuses such an id before it creates any file, and the gate refuses it if you change the id later. |
+| `capabilities` | The permissions the app asks for. |
+| `network.hosts` | Bare host names; needs `net`. |
+| `storage`, `compute`, `agent` | Optional requests, clamped to the host's ceilings; `hub check` prints the result as its `grants:` line. `storage.accounts: true` gives each account its own data folder and agent, instead of one shared `device` folder; `storage.agent_workspace` sets what the agent may read: its account's folder (the default) or nothing. |
+| `integrity.bundle_blake3` | Written by `hub stamp`; `hub sign-manifest` adds the signature. |
 
-**`listing.json`**: subtitle, description, category, keywords, icon,
-screenshots, the platforms you actually tested, age rating and the publisher
-(name, support, https privacy-policy URL). Valid values:
-[docs/PUBLISHING.md §3.2](docs/PUBLISHING.md#32-finalize-the-listing).
+For every field, see App Hub's
+[The manifest](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-manifest).
 
-**`main.splash`**: the program, evaluated by Makepad Script in a Splash
-isolate with no Rust compile step. This is a different parsing path from
-Octoscript L0 (`page.card`). Top-level `let` state and `fn`s, then one root
-widget; start
-work with `start_timeout(0.05, || boot())`, since `ui` is injected after the
-body runs. `{{assets}}` in the source is replaced by the loopback origin that
-serves the bundle (`http_resource("{{assets}}/thumbs/a.jpg")`). Everything an
-app may call, and the gotchas that cost the most time:
-[docs/SCRIPT-API.md](docs/SCRIPT-API.md).
+**Capabilities** form a closed list defined by App Hub: 25 families, such as
+`storage`, `net`, `images`, `web`, `camera`, `location`, `mail`, `glance`,
+`model` and the connected-account `auth`, `github`, `gmail` and `gcalendar`,
+plus 78 exact host-service names: 4 `octos.*` for the device's assistant, 45
+`matrix.*` for Rinx, and 29 `palpo.*`, which no OctoSense shell serves yet.
+Not requested means not granted, and the store shows the person one
+plain-language line per capability before install. Ask for the least the app
+needs. [docs/CAPABILITIES.md](docs/CAPABILITIES.md) says what each one
+unlocks, which have no working path yet (`prompt`, `ledger.read`,
+`clipboard`) and which only a system app can use;
+[docs/AI-SERVICES.md](docs/AI-SERVICES.md) covers what the assistant
+capabilities and an app's own agent do in OctoSense.
+
+**`listing.json`** holds what the store shows: subtitle, description,
+category, keywords, icon, screenshots, the platforms you actually tested, age
+rating and the publisher (name, support, HTTPS privacy-policy URL). For valid
+values, see App Hub's
+[The listing](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-listing).
+
+**`main.splash`** holds the program. Makepad Script evaluates it in a Splash
+isolate, with no Rust compile step. It is a different language from
+OctoScript L0 (`page.card`). A program declares top-level `let` state and
+`fn`s, then one root widget. Start work with `start_timeout(0.05, || boot())`,
+since `ui` is injected after the body runs. `{{assets}}` in the source is
+replaced by the loopback origin that serves the bundle
+(`http_resource("{{assets}}/thumbs/a.jpg")`).
+[docs/SCRIPT-API.md](docs/SCRIPT-API.md) lists everything an app may call and
+the gotchas that cost the most time.
 
 ## Containment rules
 
 Each app runs in its own isolate under exactly the grants its manifest asks
-for. The gate (`hub check`, the same code the hub runs) enforces most of this;
-[docs/PUBLISHING.md §2](docs/PUBLISHING.md#2-the-rules-the-gate-enforces)
+for. The gate (`hub check`, the same code App Hub runs on submissions)
+enforces most of this; App Hub's
+[rules the gate enforces](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#rules-the-gate-enforces)
 lists every check.
 
 - **No secrets in apps.** No password, PIN or one-time-code field, no login
-  form, no API key or token in the bundle. The gate refuses
-  `is_password: true` and password or one-time-code content types, and the
-  runtime makes such a field inert. Sign-in happens on a host-owned **sheet**.
-- **Declare every host.** A `.splash` file may reach only `https://` hosts
-  listed in `network.hosts` (unless the app is granted `images` or `web`).
+  form, and no API key or token in the bundle or the app's storage. The gate
+  refuses `is_password: true` and password or one-time-code content types,
+  and the runtime makes such a field inert. Sign-in happens on a host-owned
+  **sheet**: a surface the host service draws over the app for what only the
+  person may type.
+- **Declare every host.** A `.splash` file may call only `https://` hosts
+  listed in `network.hosts`; `images` and `web` add pictures and pages from
+  any public `https://` host, but `net` still reaches only listed hosts.
   `http://`, `file://` and `../` are refused.
 - **Only bundle files.** Allowed extensions are
   `.card .json .l0 .octoscript .splash .svg .png .jpg .jpeg .webp .ttf .otf .txt .md`;
-  no scripts, archives, binaries or symlinks; 8 MB at most.
+  any other file is refused, including macOS `.DS_Store`. The gate also
+  refuses other scripts, archives, binaries, symlinks, and URLs inside
+  bundled `.txt` or `.md` files.
 - **Host services for anything privileged.** An app calls
   `host.request("<family>.<method>", args, fn(r){…})`, and the family must be
   a granted capability. Mail is the worked example (`mail.accounts`,
@@ -346,158 +385,145 @@ lists every check.
   [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps))
   have the same bundle shape, ship with the shells and get higher ceilings
   (for example 64 MiB storage instead of 16 MiB). `tools/octo new --system`
-  and `tools/octo run --system` exist for developing them. Everything else is
-  a store app, distributed only through the signed App Hub catalog.
+  and `tools/octo run --system` exist for developing them; App Hub has no
+  submission route for them. Everything else is a store app, distributed only
+  through the signed App Hub catalog.
 
 ## AI in your app
 
 OctoSense runs one octos agent kernel per shell, configured by the person in
-the AI providers system app; keys never reach an app. On it run the
+the AI providers system app; an app never sees a key. The kernel runs the
 **system agent** (the shell's own assistant, which the person talks to in
-the system chat) and one **app agent** per app that declares one, each on
-its own host-owned peer. As of 2026-10-01, on OctoSense `main`
-([docs/AI-SERVICES.md](docs/AI-SERVICES.md) has the details and sources):
+the system chat) and one **app agent** for each app that has one. On
+`desktop-v0.1.0-beta.2` and OctoSense `main`, an app can do the following:
 
 | An app can | How | In `card-host` |
 | --- | --- | --- |
-| Make a one-shot, schema-checked model call | `model` capability, `host.request("model.complete", …)`, within a daily budget | `no service answers "model"` |
-| Talk to the assistant from its own screens | the four `octos.*` capabilities, once the person allows the app's agent on a first-use sheet | `no service answers "octos"` |
-| Have its own agent, which the person talks to directly (the shell's "Ask <app>" panel, drawn for every app with an agent; an in-card chat; the app's own screens) and the system agent can hand work to | an `agent` block (`"tools": ["ask_user_question"]`), optional `tools.json`; the agent reads the app's account folder (`accounts/device/`) | checked by `hub check` only |
-| Publish cards to the glance screen, with an in-card chat its agent answers and model-written text marked AI-written | `glance` capability, `glance.publish` (L0 `sys.chat`, `model-copy`) | `no service answers "glance"`; this repository's authoring pin lacks `sys.chat` and `ChatEntry` |
+| Make a one-shot, schema-checked model call | `model` capability, `host.request("model.complete", …)`, within a daily budget that `model.budget` reports | `no service answers "model"` |
+| Talk to the assistant from its own screens | the 4 `octos.*` capabilities, once the person allows the app's agent on a first-use sheet | `no service answers "octos"` |
+| Have its own agent, which the person talks to directly (the shell's `Ask <app>` panel, an in-card chat, the app's own screens) and the system agent can hand work to | an `agent` block and `tools.json`: tools marked `implemented_by: "host-service"` run on the host service of their family; `AGENT.md` and skills are loaded as per-turn guidance | checked by `hub check` only |
+| Publish cards to the Glance screen, with an in-card chat its agent answers and model-written text marked AI-written | `glance` capability, `glance.publish` (L0 `sys.chat`, `model-copy`) | `no service answers "glance"` |
+| Run its agent in the background when new mail arrives | `agent.background: true` and `agent.triggers.events: ["<namespace>.new_message"]`, plus `auth` and `gmail`, as Inbox Assistant does | not available |
 
-Still **coming**: a store app's own `tools.json` tools running (today only
-system apps' host-service tools run), the host choosing the agent's model
-from `needs`, triggers and background runs, installing `AGENT.md` and
-skills, and the system toolbox for store apps. `llm` is provider management
-for system apps only. Build apps that are complete without AI, and read
-[docs/AI-SERVICES.md](docs/AI-SERVICES.md) before adding an AI feature: the
-exact names, a verified call that handles "unavailable", what the person
-sees, the errors, and what is planned.
+Not yet: image, audio and video generation and embeddings (`model.image`,
+`model.audio`, `model.video`, `model.embeddings`), and tools marked
+`implemented_by: "app"`, which the shells refuse. `llm` manages AI providers
+for system apps only. A bundle that ships `tools.json` gets an app agent even
+without an `agent` block, so say so in the listing. Read
+[docs/AI-SERVICES.md](docs/AI-SERVICES.md) before you add an AI feature: it
+has a verified call that handles "unavailable".
 
 ## Running an app
 
 **Standalone, in `card-host`** (the development loop). `card-host` is App
 Hub's reference contained host for one bundle. `tools/octo run` starts it with
 Makepad's remote-control bridge on a local port, so a person or an agent can
-drive the real window over HTTP (all GET, window points, y down):
+drive the real window over HTTP (every route is a GET; coordinates are window
+points, with y pointing down):
 
 | Route | Does |
 | --- | --- |
-| `/snap` (`?q=` filters) | Widgets with rects and text |
-| `/d` | The whole widget tree as text |
-| `/click?x=&y=&wait=1` | A real click |
+| `/snap` (`?q=` filters) | Lists widgets with their rects and text |
+| `/d` | Prints the whole widget tree as text |
+| `/click?x=&y=&wait=1` | Sends a real click |
 | `/t?t=TEXT&wait=1` | Types into the focused input |
-| `/k?k=down&c=ReturnKey` | A key event |
-| `/log?n=50` | The last log lines |
-| `/g?raw=1` | A PNG of the window (what `tools/octo shot` saves) |
-| `/quit` (or `/gq`) | Quits; always end with this |
+| `/k?k=down&c=ReturnKey` | Sends a key event |
+| `/log?n=50` | Returns the last log lines |
+| `/g?raw=1` | Returns a PNG of the window (what `tools/octo shot` saves) |
+| `/quit` (or `/gq`, which captures every window, then quits) | Quits; always end with this |
 
-Widgets built by `on_render` are listed in `/snap` and `/d` like any other
-(since makepad `d0a9def5`); content an app adds later, from a timer or a
-reply, appears once it is drawn, so poll `/snap?q=` for it. `card-host`
-registers **no** host services, so a Mail-style app gets `no service answers "mail" on this device` there. The
-current `card-host` also refuses signed manifests: take screenshots before
+Widgets built by `on_render` are listed in `/snap` and `/d` like any other;
+content an app adds later, from a timer or a reply, appears once it is
+drawn, so poll `/snap?q=` for it. `card-host` registers **no** host
+services, so a Mail-style app gets `no service answers "mail" on this device`
+there. `card-host` also refuses signed manifests: take screenshots before
 signing.
 
-**In the shells.** The OctoSense desktop shell and the phone's Home run apps with
-App Hub's Card runner (the `card` module in App Hub's `crates/appstore`), not
-with `card-host` itself; it applies the same manifest policy. System apps are
-packed into the shell build from OctoSense's `apps/`; store apps are
-installed from the App Hub store out of the signed catalog. To try your own
-app in the desktop shell before it is published, publish it into a local
-catalog with a throwaway anchor and point the desktop shell's
-`OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` at it; its App Hub installs and
-opens the app (verified on macOS,
-[PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
+**In the shells.** The OctoSense desktop shell and the phone's Home run apps
+with App Hub's Card runner (the `card` module in App Hub's
+`crates/appstore`), not with `card-host`; the Card runner applies the same
+manifest policy. System apps are packed into the shell build from
+OctoSense's `apps/`; store apps are installed from the App Hub store out of
+the signed catalog. To try your own app in the desktop shell before it is
+published, publish it into a local catalog with a throwaway trust anchor (a
+test root key) and point the desktop shell's `OCTOSENSE_HUB` /
+`OCTOSENSE_HUB_ANCHOR` at it; the shell's store installs and opens the app
+([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
 
 **On a phone, today** ([QUICKSTART §9](docs/QUICKSTART.md#9-run-it-on-an-octosense-phone)):
 
 - An arbitrary bundle cannot be side-loaded onto a stock OctoSense phone. The
-  phone's store reads the built-in hub and trusts only the anchor compiled
-  into the build; the `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` overrides are
-  environment variables the Android launcher does not set. Installing from a
-  local catalog on a device is unsupported and unverified.
-- The closest verified path is on the desktop: publish into a local catalog
-  with a throwaway anchor and install it with App Hub's standalone `appstore`
-  ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
-  The standalone store does not open apps; the desktop shell pointed at the
-  same catalog installs and opens it.
-- `card-host`'s remote bridge is compiled out on Android; phone testing goes
-  through the shell's own instrument, not `tools/octo`.
+  phone's store reads the catalog at App Hub's built-in address and trusts
+  only the anchor compiled into the build; the `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR`
+  overrides are environment variables the Android launcher does not set.
+  Installing from a local catalog on a device is unsupported and unverified.
+- The closest verified path is the desktop rehearsal above.
+- `card-host`'s remote bridge is compiled out on Android, so phone testing
+  does not use `tools/octo`.
 - After publication, the app appears in every phone's store from the signed
-  catalog.
+  catalog, unless it declares `auth`: no released phone build accepts that
+  capability.
 
 ## Headless testing: many apps, no screen
 
-Makepad has a headless mode: an app runs with its window **never shown or
-focused**, while the remote-control bridge (`/snap`, `/click`, `/t`, `/g`
-screenshots) keeps working. Use it whenever an agent or a script drives an
+Makepad has a hidden-window mode, called headless here: the app still needs
+the graphical session from the [Quick path](#quick-path), but its window is
+**never shown or focused**, while the remote-control bridge (`/snap`,
+`/click`, `/t`, `/g` screenshots) keeps working. Use it whenever an agent or a script drives an
 app: it never takes over your screen or keyboard, and you can test several
 apps, or several copies of one app, at the same time without them competing
 for the display.
 
 ```sh
-tools/octo run apps/tip-split/bundle      --port 8161 --hidden --detach
-tools/octo run apps/unit-converter/bundle --port 8162 --hidden --detach
+tools/octo run ~/apps/my-app/bundle     --port 8161 --hidden --detach
+tools/octo run ~/apps/second-app/bundle --port 8162 --hidden --detach
 curl -s "127.0.0.1:8161/snap?q=Button"        # each app answers on its own port
-tools/octo shot 8161 tip.png && tools/octo shot 8162 conv.png
+tools/octo shot 8161 first.png && tools/octo shot 8162 second.png
 curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 ```
 
-- `--hidden` sets `MAKEPAD_HIDE_WINDOWS=1`; any Makepad app honours it,
+- `--hidden` sets `MAKEPAD_HIDE_WINDOWS=1`; any Makepad app honors it,
   including the OctoSense shells.
-- One `--port` per app (`run` refuses a port that is already taken); one `--app-data` per copy when you run the same
-  bundle twice.
+- One `--port` per app (`run` refuses a port that is already taken); one
+  `--app-data` per copy when you run the same bundle twice.
 - Screenshots are rendered by the app itself, so they are complete even with
   nothing on screen.
-- **Scripted UI tests:** makepad's [`makepad_test`](https://github.com/OctoSense-org/makepad/tree/main/libs/makepad_test)
+- **Scripted UI tests:** Makepad's [`makepad_test`](https://github.com/OctoSense-org/makepad/tree/main/libs/makepad_test)
   harness launches the app hidden, drives it through the same bridge, and
   saves a screenshot, the widget tree and the log when a test fails;
   `MAKEPAD_TEST_PARALLEL=1` runs tests (one hidden app each) concurrently.
-  Setup and a `card-host` example: [QUICKSTART §4a](docs/QUICKSTART.md#4a-headless-test-without-the-screen-several-apps-at-once).
+  [QUICKSTART §4b](docs/QUICKSTART.md#4b-scripted-ui-tests-with-makepad_test)
+  has the setup and a `card-host` example.
 
-Verified 2026-09-27 on macOS (Apple silicon): two apps ran hidden side by
-side, clicks sent to both at once changed each app's own state, and both
-screenshots were correct; the `makepad_test` example passed.
+Verified on macOS (Apple silicon) with two hidden apps clicked at once. The
+`makepad_test` example is **unverified** on the current pins; it passed with
+an earlier App Hub and Makepad.
 
 ## Publishing
 
-[docs/PUBLISHING.md](docs/PUBLISHING.md) is the step-by-step path;
-`tools/octo package-help` prints its checklist. The contract itself belongs to
-the App Hub ([its PUBLISHING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md)).
-In short:
+Publishing has two halves, owned by two repositories:
 
-1. Finalize `manifest.json` (new version, minimal capabilities, every host)
-   and `listing.json` (no placeholders; the publisher fields are the
-   publisher's to write).
-2. Capture real screenshots with `tools/octo shot` and look at each one.
-3. `tools/octo check <bundle>` until it prints `— PASSED` with only the
-   unsigned warning. Optionally add `--catalog <App Hub catalog.json>` to catch
-   a reused version or a publisher-key change.
-4. `hub scan <bundle> --packet build/review.json` and answer its seven
-   reviewer questions in writing.
-5. **HUMAN:** `hub keygen` (once, outside every repository),
-   `hub sign-manifest <bundle> --key … --key-id <publisher-id>`, then
-   `hub check <bundle> --publisher-key <id>=<hex>`. Any edit after signing
-   needs stamp and sign again.
-6. **HUMAN:** tag the commit in the app's public repository and open an issue
-   titled `Submit <app id> <version>` on
-   [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues)
-   with the repository, tag, commit, bundle path, publisher key, `hub check`
-   output and the scan answers.
+1. **Here.** [docs/PUBLISHING.md](docs/PUBLISHING.md) takes a working app to
+   a bundle that is ready to sign: the final manifest and listing (no
+   placeholders; the publisher fields are the publisher's to write), real
+   screenshots from `tools/octo shot`, `tools/octo check` passing with only
+   the unsigned warning, and the `hub scan` questions answered in writing.
+   There are seven questions, or eight when the bundle ships `tools.json`,
+   `AGENT.md` or skills. `tools/octo package-help` prints the checklist.
+2. **App Hub.** [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md)
+   is the step-by-step submission a person follows: sign last, commit and
+   tag, run `hub check` on a fresh clone of the tag without restamping, and
+   open a `Submit <app id> <version>` issue.
+   [PUBLISHING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md)
+   is the reference for every gate rule and field.
 
-A maintainer re-runs the gate and the scan on the exact bytes and runs
-`hub publish`, which copies the bundle into the hub and signs a new catalog.
+A maintainer re-runs the gate and the scan on the exact bytes of your tag
+and runs `hub publish`, which copies the bundle into App Hub and signs a new
+catalog.
 
-Limits, stated plainly:
-
-- The issue route is the one App Hub's `main` documents (see [Status](#status));
-  the index repository and the `octosense-org/publish-app` action it mentions
-  do not exist yet. Re-read App Hub's "Submitting" section before you submit.
-- Never open a pull request that edits the App Hub's `catalog.json`, `index/`
-  or `artifacts/`: only `hub publish` with the hub's key writes them.
-- A first submission always waits for a person. Automatic merging for
-  returning publishers is planned, not built.
+- Never open a pull request that edits App Hub's `catalog.json`, `index/` or
+  `artifacts/`: only `hub publish` with App Hub's catalog key writes them.
+- Never move a release tag. To change a published app, release a new version.
 - The gate does not judge screenshots, listing text or the privacy policy; a
   reviewer does.
 
@@ -511,23 +537,26 @@ Limits, stated plainly:
 | [docs/SCRIPT-API.md](docs/SCRIPT-API.md) | The Splash language and every API a contained app may call |
 | [docs/CAPABILITIES.md](docs/CAPABILITIES.md) | Each capability: what it unlocks, what the person sees, the rules |
 | [docs/HOST-SERVICES.md](docs/HOST-SERVICES.md) | `host.request`, sheets, "secrets are the host's", adding a service |
-| [docs/AI-SERVICES.md](docs/AI-SERVICES.md) ([简体中文](docs/AI-SERVICES.zh-CN.md)) | OctoSense's assistant (octos): the system agent and app agents, what an app can use today, a verified example, an app's own agent and its tools, the system toolbox, glance cards, `sys.digest`, AI-written text and in-card chat (`sys.chat`), with a dated status table |
-| [docs/PUBLISHING.md](docs/PUBLISHING.md) | Publishing to the App Hub, with verified outputs and the checklist |
+| [docs/AI-SERVICES.md](docs/AI-SERVICES.md) ([简体中文](docs/AI-SERVICES.zh-CN.md)) | OctoSense's assistant (octos): what an app can use today, app agents and their tools, Glance cards and in-card chat (`sys.chat`) |
+| [docs/MODEL-VALIDATION.md](docs/MODEL-VALIDATION.md) ([简体中文](docs/MODEL-VALIDATION.zh-CN.md)) | Checking what a coding agent built: native input and capture, review loops, repair |
+| [docs/PUBLISHING.md](docs/PUBLISHING.md) | From a working app to a bundle ready to sign: final manifest and listing, screenshots, the gate, the local store rehearsal and the human checkpoints |
+| [docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md) | How `tools/octo`, App Hub and the OctoSense shell connect, traced through one request |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | One meaning per term |
 | [docs/NATIVE-WORKSPACE.md](docs/NATIVE-WORKSPACE.md), [docs/l0/](docs/l0/) | Sibling-source setup for the native runtime; L0 card examples |
 | [templates/script-app/](templates/script-app/README.md) | The runnable template `tools/octo new` copies ("My Notes") |
 | [templates/card-app/](templates/card-app/README.md) | Pointer to the card-app path |
-| [examples/](examples/README.md) | Worked image-to-card projects |
+| [examples/](examples/README.md) | Worked image-to-card projects, and the three connected reference apps in [examples/connected-apps](examples/connected-apps/README.md) |
 | [tools/octo](tools/octo) | The CLI above |
-| `tools/setup-native.py` | Prepares the pinned Octoscript-Makepad runtime ([native-runtime.lock.json](native-runtime.lock.json)) beside this repository |
+| `tools/setup-native.py` | Prepares the pinned OctoScript-Makepad runtime ([native-runtime.lock.json](native-runtime.lock.json)) beside this repository |
 | `tools/image-to-appcard-flow.sh`, `tools/beauty-pipeline.sh`, `tools/beauty-studio.sh` | Entry points for the image-to-card and kit pipelines |
 | `tools/check-links.py` | Checks that relative Markdown links resolve (run in CI) |
 
 ## Examples
 
-Reference journeys built with the image-to-card flow, contained apps built
-with the script-app flow, and Android-authored prototype archives. Each keeps
-its source, validation evidence and current limits alongside it.
+These examples are reference journeys built with the image-to-card flow,
+contained apps built with the script-app flow, and Android-authored prototype
+archives. Each keeps its source, validation evidence and current limits
+alongside it.
 
 | Example | Surfaces | What it is |
 | --- | --- | --- |
@@ -539,15 +568,19 @@ its source, validation evidence and current limits alongside it.
 | [Calendar](examples/calendar/README.md) | Native cards / browser preview + sync server | One calendar on two devices, with a SQLite-backed sync server |
 | [Android-authored card prototypes](examples/android-a2app-card-templates/README.md) | AppStudio on Android; glance / expanded / full app | Two model-authored six-family collections: each 4.5/5 overall offline prototype, 4.4/5 visual; exact source replay and native evidence. |
 
-For a script app, the complete examples are the first-party bundles in
+For a script app, the complete examples are the
+[connected apps](#connected-apps-github-gmail-and-google-calendar), the
+first-party bundles in
 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
-(`apps/<name>/bundle/`), plus [templates/script-app](templates/script-app/README.md).
+(`apps/<name>/bundle/`), and [templates/script-app](templates/script-app/README.md).
 
 ## Contributing
 
 - Branch from `main` and open a pull request; CI must pass.
 - CI runs `python tools/check-links.py` (relative links in tracked Markdown
-  must resolve) and, on macOS, prepares the native runtime with
+  must resolve), and runs the `tools/test_*.py` tests (the `tools/octo`
+  starter, its binary search and the example contracts) on Windows, Linux and
+  macOS. On macOS it also prepares the native runtime with
   `tools/setup-native.py` and runs the flow, core, Sketch and maintenance
   unit tests (see [.github/workflows/ci.yml](.github/workflows/ci.yml)).
 - Keep the docs honest: every command in them was run, and anything not run
@@ -561,11 +594,11 @@ For a script app, the complete examples are the first-party bundles in
 
 | Repository | Role |
 | --- | --- |
-| [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) | The signed catalog, the gate, `hub`, `card-host`, the store and the Card runner |
-| [OctoSense](https://github.com/OctoSense-org/OctoSense) | The shell and what ships in it: the desktop shell (`desktop/`), the phone shell Home (`phone/`, as a Home app or in the ROM image built by `rom/`), and the first-party apps with their host services (`apps/`). Formerly OctoSense-Desktop, OctoSense-ROM and OctoSense-System-Apps. |
+| [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) | The signed catalog, the gate, `hub`, `card-host`, the store, the Card runner and the submission route |
+| [OctoSense](https://github.com/OctoSense-org/OctoSense) | The shell and what ships in it: the desktop shell (`desktop/`), the phone shell, Home (`phone/`, as a Home app or in the ROM image built by `rom/`), and the first-party apps with their host services (`apps/`). Formerly OctoSense-Desktop, OctoSense-ROM and OctoSense-System-Apps. |
 | [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) | First-party apps (News, Photos, Maps, Camera, Mail, AI providers) and their host services (`mail`, `llm`) |
-| [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard) | The AppCard assistant (`octos-app`, opt-in in the shells with `--features app-appcard`); the L0 parser/checker is in Octoscript and its Makepad lowering/renderer in Octoscript-Makepad; Splash isolates and widgets are in makepad |
-| [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad), [Octoscript](https://github.com/OctoSense-org/OctoScript), [Octoscript-Makepad](https://github.com/OctoSense-org/OctoScript-Makepad) | The framework and language the apps run on |
+| [OctoSense `apps/appcard`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/appcard) | The AppCard assistant (`octos-app`, opt-in in the shells with `--features app-appcard`) |
+| [OctoSense-org/makepad](https://github.com/OctoSense-org/makepad), [OctoScript](https://github.com/OctoSense-org/Octoscript), [OctoScript-Makepad](https://github.com/OctoSense-org/Octoscript-Makepad) | Makepad: Splash isolates and widgets. OctoScript: the L0 parser and checker. OctoScript-Makepad: the L0 renderer. |
 
 ## License
 

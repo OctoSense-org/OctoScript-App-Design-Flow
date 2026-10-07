@@ -1,57 +1,73 @@
 # Host services
 
-A contained app cannot open a socket to a mail server, hold a password or talk
-to a device. When it needs that, it asks the shell: a **host service** does
-the work in Rust, with what it holds, and hands back data, never the means.
+English | [简体中文](HOST-SERVICES.zh-CN.md)
 
-Sources: `crates/appstore/src/services.rs` in
-[OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub),
-`widgets/src/splash_host.rs` and `splash_policy.rs` in OctoSense-org/makepad,
-and the Mail service in
-[OctoSense `apps/mail/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/mail/host-service).
+An app cannot open a socket to a mail server, hold a password or talk to a
+device. It calls a **host service** instead: Rust code in the shell that does
+the work with what the shell holds and returns only the result.
 
-## Shared provider services: connected-samples branch
+App Hub owns the dispatcher (`crates/appstore/src/services.rs` in
+[OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub)).
+OctoSense owns the services: `crates/shell`, `crates/ai-host`,
+`crates/oauth-service` and `apps/*/host-service` in
+[OctoSense](https://github.com/OctoSense-org/OctoSense). Paths below are
+OctoSense's unless marked.
 
-The ordinary [connected app samples](../examples/connected-apps/README.md) use
-`auth`, `github`, `gcalendar` and `gmail`. These require OctoSense
-`feat/app-hub-connected-samples` and the matching App Hub policy
-`eaaffffd695caf7ebf6205c455377c1f8567b906`; they are not a claim about older
-installed shells. [The shared-service guide](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/crates/oauth-service/README.md) contains client
-registration, supported methods, account lifecycle and platform limits.
+## Which shell serves which service
 
-| Family | Purpose |
-| --- | --- |
-| `auth` | Provider consent, account handles, active selection and disconnect; no OctoSense cloud account |
-| `github` | Repository/file reads and host-reviewed saves using the remote blob SHA |
-| `gcalendar` | Calendar/event reads, complete incremental sync and host-reviewed writes using ETags |
-| `gmail` | Mail reads, revisioned drafts, native exact-message send review and durable incoming-event status/decisions |
+Both OctoSense shells register every service below in their standard builds:
+the desktop (`desktop/`) and Home, the phone shell (`phone/`).
+`register_host_services` in `crates/shell/src/apps.rs` registers the
+app-facing services; `crates/ai-host/src/lib.rs` registers `llm`, `model` and
+`octos`. App Hub's `card-host` registers none.
 
-Each business service needs its own capability as well as an authorized
-provider connection. A bundle receives handles and results, never provider
-tokens or client secrets. Configure clients outside app data. Android Google
-login is unsupported until the native authorization adapter exists; desktop
-loopback is not an Android fallback. Live provider operations and these samples
-on the OnePlus 6 remain unverified. Standalone `card-host` registers none of the
-new services. App-defined peer aliases use only reviewed `host_method` values;
-they cannot expose sign-in mutation, approval or remote send methods.
+| Family | Who may call it | Service code |
+| --- | --- | --- |
+| `mail` | Any app granted `mail` | `apps/mail/host-service` |
+| `auth` | Any app granted `auth`. A data scope also needs its family (`github`, `gcalendar` or `gmail`); identity scopes and, on OctoSense `main`, backend sign-in need only `auth`. | `crates/oauth-service/src/host.rs`, `host_backend.rs` |
+| `github`, `gcalendar` | Apps granted the family, through a connection made with `auth`. On OctoSense `main`, the save review is the shell's, as for `gmail`. | `crates/oauth-service/src/host_api.rs`; on `main`, also `crates/shell/src/connected_review.rs` |
+| `gmail` | Apps granted `gmail`, through a connection made with `auth`. The send review is the shell's. | `crates/oauth-service/src/host_inbox.rs`, `crates/shell/src/connected_review.rs` |
+| `glance` | Any app granted `glance` | `crates/shell/src/glance.rs` |
+| `model` | Any app granted `model`, within a per-app daily budget | `apps/ai-providers/host-service/src/complete/` |
+| `octos` | Apps granted the exact `octos.*` name, once the person allows the app's agent, where the shell hosts the octos kernel | `crates/ai-host/src/contained.rs` |
+| `llm` | System apps only | `apps/ai-providers/host-service` |
+| `news` | System apps only | `apps/news/host-service` |
+| `calendar` | Calendar (`os.calendar`) only | `apps/calendar/host-service` |
+| `photos`, `youtube` | Only the matching system app's `notify` | `crates/shell/src/glance_notice.rs` |
 
-## The services that exist
+`glance_notice.rs` also answers `<namespace>.notify` for every other system
+app without a service of its own, such as Maps and Camera.
 
-| Family | Service (source) | Who may call it | Shells that register it |
-| --- | --- | --- | --- |
-| `mail` | Mail ([`apps/mail/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/mail/host-service)) | Any app granted `mail` | OctoSense desktop (`desktop/`) and Home (`phone/`) |
-| `llm` | AI providers ([`apps/ai-providers/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/ai-providers/host-service)) | Only `os.*` system apps (the AI providers app); it refuses store apps even when granted `llm` (`llm is for OctoSense's own apps.`). It manages the assistant's providers; it has no prompt method | OctoSense desktop (`desktop/`) and Home (`phone/`) |
-| `news` | News's data service ([`apps/news/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/news/host-service)) | Only `os.*` system apps (`The news service serves system apps only.`) | OctoSense desktop and Home |
-| `glance` | The glance screen ([`crates/shell/src/glance.rs`](https://github.com/OctoSense-org/OctoSense/blob/main/crates/shell/src/glance.rs)) | Any contained app granted `glance` (OctoSense [#86](https://github.com/OctoSense-org/OctoSense/pull/86)), and native modules ([AI-SERVICES](AI-SERVICES.md#publishing-to-the-glance-screen)) | OctoSense desktop and Home |
-| `model` | One-shot model calls, `model.complete` ([`apps/ai-providers/host-service/src/complete`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/ai-providers/host-service/src/complete), OctoSense [#95](https://github.com/OctoSense-org/OctoSense/pull/95)) | Any app granted `model`, within a per-app budget ([AI-SERVICES](AI-SERVICES.md#one-shot-model-calls-model)) | OctoSense desktop and Home |
-| `calendar` | Calendar's events and its glance cards ([`apps/calendar/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/calendar/host-service), OctoSense [#267](https://github.com/OctoSense-org/OctoSense/pull/267)) | Only Calendar (`os.calendar`), and in practice only its agent's tools: App Hub has no `calendar` capability, so no app can be granted it, and the shell runs a system app's own namespace without a grant ([AI-SERVICES](AI-SERVICES.md#what-an-apps-agent-gets-today)) | OctoSense desktop (Calendar is not packed on the phone) |
-| `octos` | The assistant for contained apps ([`crates/ai-host/src/contained.rs`](https://github.com/OctoSense-org/OctoSense/blob/main/crates/ai-host/src/contained.rs), OctoSense [#106](https://github.com/OctoSense-org/OctoSense/pull/106), [#184](https://github.com/OctoSense-org/OctoSense/pull/184)) | Any app granted the `octos.*` name it calls, once the person allows its agent (asked at first use). Rinx's mini-app host also serves them, to bundles imported into Rinx | OctoSense desktop and Home, where the shell hosts a kernel (not iOS) |
+No OctoSense shell serves `prompt`, `ledger.read`, `clipboard`, `matrix.*`
+or `palpo.*` to an installed app. Rinx, a Matrix client that OctoSense ships
+as a native app, serves `matrix.*` and `octos.*` only to bundles a person
+imports into it as mini-apps, which is not the App Hub install path.
+`research` and `crawl` grant toolbox tools to an app's agent; they are not a
+`host.request` family
+([AI-SERVICES § The system toolbox](AI-SERVICES.md#the-system-toolbox)).
 
-`card-host` registers none of these. The device's assistant and what an app
-can and cannot do with it: [AI-SERVICES](AI-SERVICES.md). A store app that needs something else needs a
-new service in the shells (below), not a workaround in the bundle.
+Some services work only after setup, and not every build has them:
 
-## Calling a service from an app
+| Service | Needs | Builds |
+| --- | --- | --- |
+| `auth`, `github`, `gcalendar`, `gmail` | GitHub and Google registrations. Beta.2 reads them only from `<apps root>/.host/oauth/clients.json`, which its operator supplies; a build from OctoSense `main` can compile them in ([CAPABILITIES § Limits](CAPABILITIES.md#limits)). | Builds from OctoSense `main`, and the desktop-v0.1.0-beta.2 release (macOS, Apple silicon). Not yet: Google sign-in on Android. |
+| `auth` with the `backend` provider | The app's backend, registered by the host's operator in `<apps root>/.host/oauth/backends.json` ([CAPABILITIES](CAPABILITIES.md#sign-in-to-your-own-backend)). | Builds from OctoSense `main` only: a host WebView on macOS and on Android 9 or later, the system browser on Windows and Linux. Not on iOS. |
+| `octos`, `model` | An AI provider the person adds in the AI providers app. | Every standard build; `octos` only where the shell hosts the kernel. |
+| `mail` | An account the person signs in to on Mail's sheet. | Every standard build. |
+
+Unverified: most use of the connected-account services against the real
+GitHub and Google, and GitHub sign-in on a phone.
+[CAPABILITIES § Limits](CAPABILITIES.md#limits) lists what has run, and
+OctoSense's
+[`crates/oauth-service/README.md`](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.md#current-delivery-boundary)
+gives each platform's status, including how it stores credentials.
+
+If no service does what your app needs, [add a host service](#add-a-host-service)
+to the shells; do not work around it in the bundle. For what a store app gets
+when it requests a capability nobody serves for it, see
+[CAPABILITIES](CAPABILITIES.md#capabilities-a-store-app-gains-nothing-from).
+
+## Call a service from an app
 
 ```splash
 host.request("mail.accounts", {}, fn(r){
@@ -63,103 +79,144 @@ host.request("mail.accounts", {}, fn(r){
 })
 ```
 
-- The service name is `<family>.<method>`. The family is a capability: the
-  app's manifest must grant it (`"capabilities": ["mail"]`), or the isolate
-  refuses the call before anything is queued: the callback runs at once with
-  `r.is_ok` false and `r.error` = `this app was not granted "mail", which "mail.accounts" needs`
-  (verified in `card-host`; the log shows `splash host: refused "mail.accounts": …`).
-- `args` is any JSON-able value; it reaches the service as JSON.
+- The service name is `<family>.<method>`. The family is a capability, and
+  the manifest must grant it (`"capabilities": ["mail"]`). Otherwise the
+  isolate refuses the call before anything is queued: the callback runs at
+  once with `r.is_ok` false and `r.error` set to
+  `this app was not granted "mail", which "mail.accounts" needs`.
+- `args` is any value that serializes to JSON; the service receives it as
+  JSON.
 - The callback runs later, on the UI thread, with `r.is_ok`, `r.data` (the
-  service's JSON answer) and `r.error` (a string, when not ok). Exact shapes
-  and refusal texts: [SCRIPT-API](SCRIPT-API.md#host-services-hostrequest).
-- No service registered for the family on this shell: the callback gets
-  `r.error` = `no service answers "<family>" on this device` rather than
-  waiting forever.
-- `card-host` registers **no** services (it has no dependency on Mail). A
-  Mail-style app run in `card-host` gets that "no service answers" error
-  (verified: `no service answers "mail" on this device`); the service is
-  linked by the shell (OctoSense `desktop/` and `phone/`).
+  service's JSON answer) and `r.error` (a string, when not ok).
+- If no service answers the family on this shell, the callback gets
+  `no service answers "<family>" on this device` at once. In `card-host`,
+  every call answers this.
+
+For argument shapes, time limits and refusals, see
+[SCRIPT-API § Host services](SCRIPT-API.md#host-services-hostrequest). For
+what each capability gives a script, see
+[CAPABILITIES](CAPABILITIES.md#host-services).
 
 ## The sheet
 
-Some input only the person may give: a password, an account approval. A
-service raises a **sheet** for it: a Splash program the shell draws over the
+Only the person may give some input: a password, an account approval, a send.
+A service raises a **sheet** for it: a Splash program the shell draws over the
 app, in an isolate of its own, under no app's policy. The app cannot open a
 sheet; only a service can (`ServiceHost::open_sheet`).
 
 The sheet calls the same `host.request`, and its calls arrive marked
-`from_sheet`. The rule, enforced in `services::dispatch` before any service
-sees the call:
+`from_sheet`. The dispatcher refuses any `<family>.sheet.*` call from an app
+before a service sees it. In `card-host` (**✓ run**):
 
-> A method under `<family>.sheet.` is accepted **only from the sheet**. From
-> an app it is refused with `<family>.sheet.<method> is for the host's sheet, not an app`
-> (verified in `card-host`: `mail.sheet.submit is for the host's sheet, not an app`).
+```text
+mail.sheet.submit is for the host's sheet, not an app
+```
 
 So a service takes a password only from its own sheet. Each opening starts a
-fresh program (a password typed into a cancelled sign-in does not survive).
+fresh program, so a password typed into a cancelled sign-in does not survive.
+
+A sheet appears only over an app in the foreground. A call from a Glance card
+in the feed or from an agent's tool cannot raise one, so a service refuses it
+with a sentence that tells the person to open the app, such as Mail's
+`Signing in needs Mail open: open Mail to add an account.`
+
+A call marked `from_sheet` proves only that the sheet's program made it, not
+that the person pressed anything. So a send or save that must come from the
+person goes through a native control that checks Makepad's
+`trusted_user_input()` on both the press and the click. Gmail's send review
+works this way on every build. GitHub and Calendar saves do on OctoSense
+`main` (not in any release yet), where a `sheet.save` call gets
+`Saving requires a physical activation of the native host review. Script and agent requests cannot approve it.`
+On desktop-v0.1.0-beta.2, the GitHub and Calendar services still accept
+`sheet.save` from their sheet without that check.
 
 ## Secrets are the host's
 
 An app never collects a password, a PIN or a one-time code, not even to pass
-it on:
+it on. Three rules keep it that way:
 
-- the runtime makes a password field inert in a policed isolate (see
-  [SCRIPT-API](SCRIPT-API.md#gotchas));
-- the gate refuses a bundle that declares one (`secrets` check in
-  [PUBLISHING](PUBLISHING.md#2-the-rules-the-gate-enforces));
-- the service that needs a credential asks for it on its sheet and keeps it
-  in the platform's secret store (Mail: the keychain on Apple platforms, an
-  Android Keystore key on Android), under the host's own directory, outside
-  every app's jail (in the OctoSense shells, the owner-only
-  `secrets/os.mail/` folder since
-  [OctoSense#223](https://github.com/OctoSense-org/OctoSense/pull/223), not under `apps/`).
-  An app's agent never reaches it either: the agent works in the app's
-  account folder ([AI-SERVICES](AI-SERVICES.md#where-the-agent-works-storage)).
+- The runtime makes a password field inert in a policed isolate
+  ([SCRIPT-API § Gotchas](SCRIPT-API.md#gotchas)).
+- The gate refuses a bundle that declares a password or one-time-code field
+  (the `secrets` check in
+  [PUBLISHING](PUBLISHING.md#2-the-rules-the-gate-enforces)).
+- The service that needs a credential asks for it on its own sheet and keeps
+  it in the platform's secret store, outside every app's jail.
 
-If your app needs an account on some service, it needs a host service for it.
-It does not get a login form.
+Mail keeps passwords in the keychain on macOS and iOS. On Android and
+elsewhere it keeps one file per account in the host's secrets folder,
+`<home>/secrets/os.mail/`, encrypted with an Android Keystore key on Android
+and owner-only everywhere (`apps/mail/host-service/src/vault.rs`). The
+connected-account services keep provider tokens in Mail's stores on macOS,
+iOS and Android, under a namespace of their own. On Windows and Linux they
+use the system's credential service (Windows Credential Manager, Secret
+Service) and never fall back to a file (`crates/oauth-service/src/host.rs`).
+
+An app's agent never reaches these either: it works in the app's account
+folder ([AI-SERVICES](AI-SERVICES.md#where-the-agent-works-storage)).
+
+If your app needs an account on some service, it needs a host service for
+that service, not a login form. GitHub and Google already have one
+([CAPABILITIES § Use a connected account](CAPABILITIES.md#use-a-connected-account)).
+An app with an account system of its own can use the host's backend sign-in,
+on OctoSense `main` only and with a registration from the host's operator
+([CAPABILITIES § Sign in to your own backend](CAPABILITIES.md#sign-in-to-your-own-backend)).
+A bundle cannot register its own backend yet
+([App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)).
 
 ## Mail, the worked example
 
-The `mail` family (capability `mail`) as the Mail system app uses it
-(`apps/mail/bundle/main.splash`):
+The Mail system app (`apps/mail/bundle/main.splash`) uses the `mail` family,
+which the `mail` capability grants:
 
 | Method | Args | Answer (`r.data`) |
 | --- | --- | --- |
-| `mail.accounts` | – | `[{id, address}]` this app may use |
-| `mail.add_account` | – | `{id, address}` once the person signs in on the host's sheet |
+| `mail.accounts` | – | `[{id, address}]`, the accounts this app may use |
+| `mail.add_account` | – | `{id, address}` once the person signs in on Mail's sheet. From a Glance card or a tool, it fails with `Signing in needs Mail open: open Mail to add an account.` |
 | `mail.remove_account` | `{account}` | `{}` |
 | `mail.folders` | `{account}` | `[{id, name, role}]`, the inbox first |
 | `mail.sync` | `{account, folder?}` | `{new, total}` |
 | `mail.list` | `{account, folder?, offset?, limit?}` | `{folder, total, messages: [{id, sender, address, subject, preview, time, unread}]}` |
 | `mail.message` | `{account, folder?, message}` | `{id, sender, address, subject, body, html, attachments, date, time}` |
 | `mail.mark_read` | `{account, folder?, message}` | `{}` |
-| `mail.send` | `{account, to, subject, body}` | `{accepted}` |
-| `mail.notify` | `{title, body, card_id?, priority?}` (title ≤ 80, body ≤ 600 characters) | `{card_id, replaced, expires_at}` once Mail's fixed notice card is on the glance screen, with a notification. Mail's agent's tool ([OctoSense#267](https://github.com/OctoSense-org/OctoSense/pull/267)); answers `This device shows no glance cards.` where no shell publishes them |
+| `mail.review_send` | `{account, to, subject, body, compose_id?, expected_revision?, folder?, message?}` | `{review_required: true, compose_id, draft_id, revision}`. The host opens its review; nothing is sent until the person approves there. Needs Mail in the foreground. |
+| `mail.send` | – | Always refused: `approval_required: use mail.review_send with Mail open, or open the reply card, then use the host's Approve & Send control. mail.send cannot authorize delivery.` |
+| `mail.notify` | `{title, body, card_id?, priority?}` (title 1–80, body 1–600 characters) | `{card_id, replaced, expires_at}` once Mail's notice card is on the Glance screen, with a notification. Mail's agent calls it as a tool. |
 | `mail.sheet.submit` | sign-in fields | sheet only |
 | `mail.sheet.cancel` | – | sheet only |
 
-The flow of `mail.add_account`: the app calls it and waits; the service
-raises its sign-in sheet; the person types into the sheet; the sheet calls
-`mail.sheet.submit`; the service tests the account, stores the password in
-the vault and the account (without password) in `<host_dir>/mail/accounts.json`,
-closes the sheet (`close_sheet_later`) and answers the app's original request
-with `{id, address}`. Each account is granted to the apps that added it.
+Mail's agent has tools of its own on the same service (`peek`, `draft`,
+`propose_reply`, `skip_event`, `publish_card` and others);
+`apps/mail/bundle/tools.json` lists them all.
 
-## Adding a new host service
+How `mail.add_account` works:
 
-A new service is a change to a shell, not to an app bundle. It needs, together:
+1. The app calls `mail.add_account` and waits.
+2. The service raises its sign-in sheet.
+3. The person types into the sheet, which calls `mail.sheet.submit`.
+4. The service tests the account, puts the password in the platform's
+   secret store and the account, without the password, in
+   `<host_dir>/mail/accounts.json`.
+5. The service closes the sheet (`close_sheet_later`) and answers the app's
+   original request with `{id, address}`.
 
-1. **A capability** for its family in `KNOWN_CAPABILITIES`
-   (`crates/app-contract/src/manifest.rs`, a reviewed change to the app
-   contract), with its privacy line in
-   `app-policy/src/listing.rs::privacy_summary` and its permission line in
-   `app-hub/src/index.rs::permissions_summary` (a test there fails when a
-   capability has no plain-words line). The list is closed on purpose; adding a
-   name is a reviewed App Hub change.
-2. **The service**, a Rust crate implementing `HostService`
-   (`octosense_appstore::services`). A sketch (not compiled here; Mail's
-   `lib.rs` is the complete, tested reference):
+An account is available only to the apps that signed in to it.
+
+## Add a host service
+
+A new service is a change to the shells and to App Hub, not to an app bundle.
+Make all four changes together:
+
+1. **Add a capability** for its family in `KNOWN_CAPABILITIES` (App Hub
+   `crates/app-contract/src/manifest.rs`, the app contract), with its privacy
+   line in `crates/app-policy/src/listing.rs` (`privacy_summary`) and its
+   permission line in `crates/app-hub/src/index.rs` (`permissions_summary`).
+   A test in `crates/app-hub/src/index.rs` fails when a capability has no
+   plain-words line. The list is closed on purpose; adding a name is a
+   reviewed App Hub change.
+2. **Write the service**, a Rust crate implementing `HostService`
+   (`octosense_appstore::services`). This sketch is not compiled; Mail's
+   `lib.rs` is the complete, tested reference:
 
    ```rust
    use octosense_appstore::services::{HostService, Replier, ServiceCall, ServiceHost};
@@ -176,34 +233,30 @@ A new service is a change to a shell, not to an app bundle. It needs, together:
    }
    ```
 
-   `call.app_id` is the calling app's manifest id (scope any state per app);
-   `call.host_dir` is a directory only the host can reach (`<app data>/.host`
-   in `card-host`, outside every jail); `reply` may be
-   moved to a worker thread and `send` later; `host.open_sheet(splash_source)`
-   / `host.close_sheet()` raise and drop the sheet (`close_sheet_later(app_id)`
-   from a worker). Put anything that takes a secret under `sheet.`.
-   `call.may_prompt` is false where no sheet may appear (a home-screen tile,
-   an assistant's tool call): answer with a sentence that tells the person to
-   open the app, because App Hub refuses the sheet there anyway. A request
-   that waits longer than `HostService::timeout` (60 s by default; override it
-   for a slow service, and the clock stops while the sheet is up) answers
-   `the host service timed out`, and a late `send` is dropped ([App Hub#38](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/38), in
-   the OctoSense shells since [OctoSense#243](https://github.com/OctoSense-org/OctoSense/pull/243)). The shells set `call.may_prompt`
-   false for glance tiles and for an agent's tool calls since
-   [OctoSense#204](https://github.com/OctoSense-org/OctoSense/pull/204) (merged 2026-10-01): Mail's `add_account` and AI providers'
-   sheets refuse there, and a cancelled tool call stops waiting. The `model`
-   service waits out every attempt on a provider (2 × 120 s + 30 s); the
-   other services keep the 60 s default.
-   **A service's method can also be an app agent's tool.** A system app's
-   `tools.json` tool with `implemented_by: "host-service"` reaches the
-   service as a normal `ServiceCall` from that app (`may_prompt: false`), so
-   one method serves the app's screen and its agent: Mail's `mail.notify`
-   and Calendar's `calendar.*` are written that way
-   ([AI-SERVICES](AI-SERVICES.md#the-apps-tools-and-peer-tools)).
-3. **Registration in the shell**: `register_host_service(Box::new(Weather))`
-   at startup, where the shell's Card runner pumps `services::pump`. Mail's
-   crate exposes `octosense_mail_service::register()`.
-4. **Tests** in the service crate (Mail's run from a shell workspace that links
-   it: in the ROM, `cd home && cargo test -p octosense-mail-service`).
+   | Item | What it does |
+   | --- | --- |
+   | `call.app_id` | The calling app's manifest id. Scope any state per app. |
+   | `call.host_dir` | A directory only the host can reach, outside every jail: `<apps root>/.host` in the shells, `<app data>/.host` in `card-host`. |
+   | `call.may_prompt` | `false` where no sheet may appear: a Glance card in the feed, an agent's tool call. Answer with a sentence that tells the person to open the app; App Hub refuses the sheet there anyway. |
+   | `reply` | May move to a worker thread and `send` later. A `send` after the timeout is dropped. |
+   | `host.open_sheet(source)`, `host.close_sheet()` | Raise and drop the sheet. From a worker thread, use `close_sheet_later(app_id)`. Put any method that takes a secret under `sheet.`. |
+   | `HostService::timeout` | 60 s by default; the clock stops while the sheet is up. Override it for a slow service: `model` allows 2 × 120 s + 30 s. |
+
+   A service method can also be an app agent's tool. A `tools.json` tool with
+   `implemented_by: "host-service"` reaches the service as a normal
+   `ServiceCall` from that app, with `may_prompt` false, so one method serves
+   the app's screen and its agent
+   ([AI-SERVICES § The app's tools](AI-SERVICES.md#the-apps-tools-and-peer-tools)).
+3. **Register it in the shells.** Call
+   `octosense_appstore::services::register_host_service(Box::new(Weather))` from
+   `register_host_services` in `crates/shell/src/apps.rs`. The Card runner
+   then pumps the service (`services::pump`). Mail's crate wraps this call
+   in `octosense_mail_service::register()`, which `apps.rs` calls.
+4. **Test it** in the service crate. Mail's tests run from an OctoSense
+   checkout (not run):
+
+   ```sh
+   cargo test -p octosense-mail-service
+   ```
 
 Apps then declare the capability and call `host.request("weather.today", …)`.

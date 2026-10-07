@@ -1,127 +1,323 @@
 # Capabilities
 
-A capability is a permission an app asks for in `manifest.json`:
+English | [简体中文](CAPABILITIES.zh-CN.md)
+
+A capability is a permission an app requests in `manifest.json`. A script gets
+only what its manifest requests and the gate admits.
+
+App Hub's [PUBLISHING § The manifest](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-manifest)
+is the reference for the gate's rules and for the words the store shows the
+person. [HOST-SERVICES](HOST-SERVICES.md) says which shell answers each host
+service.
+
+## Request capabilities
 
 ```json
 "capabilities": ["storage", "net"],
 "network": { "hosts": ["api.open-meteo.com"] }
 ```
 
-The list is closed (`KNOWN_CAPABILITIES` in OctoSense-App-Hub
-`crates/app-contract/src/manifest.rs`, the app contract every host and app
-links since App Hub #46; `crates/app-policy` re-exports it). A name not on it is refused by the gate
-(`policy: app <id> requests unknown capability "<name>"`). Not requested means
-not granted. Before install the store shows two things derived from the
-manifest, never from the listing: one **permission** line per capability
-(`permissions_summary`, `crates/app-hub/src/index.rs`; an app with none shows
-"Draw its screens, and nothing else") and the **privacy** summary
-(`privacy_summary`, `crates/app-policy/src/listing.rs`). Both are quoted
-below as of App Hub `79a2c4f`; the `research`, `crawl`, `prompt` and `agent` rows were rechecked at `41bc959` (2026-10-01).
+- **The list is closed.** `KNOWN_CAPABILITIES` in App Hub
+  `crates/app-contract/src/manifest.rs` holds 103 names: 25 broad
+  capabilities, such as `storage` and `glance`, and 78 exact service names,
+  such as `octos.turn.start`. The gate refuses any other name, such as
+  `contacts`, and any bare prefix, such as `octos.`:
 
-Ask for the least the app needs; the scan asks the reviewer to "name any grant
-nothing on screen needs".
+  ```text
+  [refused] policy: app dev.example.myapp requests unknown capability "contacts"
+  ```
 
-## Connected-provider additions
+- **Nothing is implied.** An app gets no capability it does not request, and
+  no capability grants another.
+- **Request the least the app needs.** Reviewers flag any grant that nothing
+  on screen uses.
+- **The store shows the manifest, not the listing.** Before install, the
+  person sees one permission line per capability and a privacy summary, both
+  derived from `manifest.json`. Listing text cannot soften them.
 
-App Hub `eaaffffd695caf7ebf6205c455377c1f8567b906` adds `auth`, `github`,
-`gcalendar` and `gmail`. They are for ordinary store apps, with matching
-OctoSense `feat/app-hub-connected-samples` host implementations. `auth` manages
-provider consent and opaque app-bound accounts; the other capabilities grant
-GitHub, Google Calendar or Gmail business operations. `auth` alone grants no
-mail, calendar or repository data. No OctoSense cloud account is required.
+## Device and data
 
-Use `storage.accounts: true` for these account-bound peers. Google scope aliases
-such as `mail.read`, `mail.send`, `calendar.list` and `calendar.events` belong in
-`auth.connect`; they are separate from manifest capabilities. Do not add
-provider API hosts to `network.hosts` when all requests go through these native
-services. Declare only what the app calls. See the [sample bundles](../examples/connected-apps/README.md)
-and [host setup guide](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/crates/oauth-service/README.md).
-
-A tool's `host_method` mapping needs the target service capability, a reviewed
-method, sufficient risk and its required `private_data` declaration. It is not
-a wildcard for arbitrary service calls. The shell loads admitted `AGENT.md`
-and skill text as trusted turn guidance. The connected Gmail collector supports
-its declared `<app namespace>.new_message` event with account/agent consent;
-this does not establish generic scheduling or trigger support on older shells.
-Standalone `card-host` provides neither OAuth nor the peer runtime. Live
-provider/phone tests remain pending; Android Google authorization is unsupported
-until its native adapter is implemented.
-
-The table below retains its earlier dated capability descriptions; use this
-section and the linked guide for the four provider additions.
-
-## The list
-
-| Capability | Unlocks | The person sees (store) | Rules and runtime behavior |
-| --- | --- | --- | --- |
-| `storage` | The app's own jail: `fs.*`, camera captures, and the local files a widget reads, such as a map archive (quota: `storage.max_bytes`, ceiling 16 MiB; system apps 64 MiB). | Permission: "Keep its own data on this device". Privacy: "Keeps its own data on this device, in a space only it can read." Without it: "Stores nothing." | The jail is one directory per app id. Without `storage` the app has no jail: every `fs.*` call errors (`storage not available in this context`), a capture saves nothing, and a widget reads no local file. `hub check` warns when a script calls `fs` or the app requests `camera` without `storage`, and its `grants:` line says `storage none`. `card-host` enforces this from App Hub `6a639e3a`; the OctoSense shells do once they pin that App Hub or later. |
-| `net` | `net.http_request` (and `net.*`) to exactly the hosts in `network.hosts`. | Permission: "Reach only: *hosts*". Privacy: "Contacts only: *hosts*." Without it (or with no hosts): "Never contacts the network." | Hosts are bare, exact, lowercase names: no scheme, path, port, wildcard (`policy: host "https://x" must be a bare host name…`). Hosts without `net` are refused (`lists hosts but does not request the net capability`). `net` with an empty list reaches nothing and `net` is not even defined in the script. Requests to other hosts: `this app may not reach <url>`. The gate refuses a `.splash` naming an undeclared `https://` host, and any `http://`. |
-| `images` | Pictures (`Image{src: http_resource(url)}`) from **any public `https://` host**, beyond `network.hosts`. For a feed reader's thumbnails. | Permission: "Show pictures from any website". Privacy: "Shows pictures from any website its content links to." | Only public https hosts; private and internal addresses are refused (`host not permitted (private/internal): <h>`). Does not widen `net.http_request`. With `images` the gate stops checking `https://` hosts in the source. |
-| `web` | Opening **any public `https://` page** in `WebReader` (the system web view), which has no way back into the app. | Permission: "Open web pages in a browser view". Privacy: "Opens web pages, which cannot reach back into the app." | Without `web`, `WebReader.open` works only for listed hosts and refuses others: `refused <url>: not on this app's host list, and no \`web\` grant`. With `web` the gate stops checking `https://` hosts in the source. |
-| `camera` | `CameraPreview`: preview, photo and video capture into the jail (`DCIM/IMG_<ms>.jpg`, `DCIM/VID_<ms>.mp4`). | Permission: "Use the camera". Privacy: "Uses the camera." | Without it `CameraPreview` refuses: `this app was not granted the camera`. The OS permission prompt still applies. A capture is saved in the jail, so it needs `storage` too; without it the preview shows and a capture saves nothing. |
-| `microphone` | Sound in camera videos. | Permission: "Use the microphone". Privacy: "Records sound with videos." | Only meaningful with `camera`. |
-| `library` | Copying captures to the system photo library, where other apps can see them. | Permission: "Save to your photo library, where other apps can see it". Privacy: "Saves photos and videos to your photo library." | Without it captures stay in the app's jail. |
-| `location` | The device position: `sys.gps(...)`, MapView's follow camera. | Permission: "Use your location". Privacy: "Uses your location." | Without it `sys.gps("ok")` reads 0 (no fix). OS permission still applies. |
-| `mail` | The `mail` host service: `host.request("mail.<method>", …)` for accounts the person adds on the host's sheet. | Permission: "Read and send mail from accounts you sign in to on the device". Privacy: "Reads and sends mail from accounts you add; it never sees your password." | See [HOST-SERVICES](HOST-SERVICES.md). Needs a shell that registers the Mail service (card-host does not). |
-| `llm` | The `llm` host service of the AI providers system app: its model providers with masked key status, and host sheets for typing, showing and scanning a provider key. | Permission: "Manage the assistant's AI providers, whose keys stay with the device". Privacy: "Manages the assistant's AI providers; it never sees your API keys." | Added in App Hub `c5cdb17` (#11). The service answers only `os.*` apps (`apps/ai-providers/host-service/src/lib.rs` in OctoSense), so a store app gains nothing from it: do not request it. |
-| `news` | The `news` host service: stories the device collects on a schedule from its feeds and topic feeds (`news.list`, `news.read`, …). | Permission: "Read news the device collects from its feeds and topics". Privacy: "Reads news the device collects from its feeds and topics." | On App Hub `main` (#18) and in the shells' App Hub pin. The service in OctoSense (`apps/news/host-service`) answers only `os.*` apps, so a store app gains nothing from it: do not request it. |
-| `glance` | The `glance` host service: publishing L0 cards to the glance screen (`glance.publish`, `glance.withdraw`, `glance.list`). | Permission: "Show cards on your glance screen". Privacy: "Shows short cards on your glance screen; each opens only this app." | On App Hub `main` (#22) and in the shells' App Hub pin. The OctoSense service (`crates/shell/src/glance.rs`) serves any contained app granted `glance` ([OctoSense#86](https://github.com/OctoSense-org/OctoSense/pull/86)); `card-host` does not. See [AI-SERVICES](AI-SERVICES.md#publishing-to-the-glance-screen). |
-| `model` | The `model` host service: one-shot model calls (`model.complete` with `{task, input, schema, class}`, `class` `fast` or `strong`); the host picks the model from the person's providers, checks the reply against the schema and keeps a daily budget. | Permission: "Send what you give it to the AI provider you configured, within a daily budget". Privacy: "Sends what you give it to the AI provider you configured, for one-off answers within a daily budget; it never sees your API keys." | On App Hub `main` (#24). The OctoSense shells serve it ([OctoSense#95](https://github.com/OctoSense-org/OctoSense/pull/95)); in `card-host` a call answers `no service answers "model" on this device`. See [AI-SERVICES](AI-SERVICES.md#one-shot-model-calls-model). |
-| `prompt` | The app asking the person questions of its own. A service's sheet (Mail's sign-in, AI providers' key sheet) does not need it. | Permission: "Ask you questions". Privacy: "May ask you questions." | Resolves to `AppPolicy::may_prompt`, which no host reads, and there is no app-side prompt API (`host.prompt` does not exist), so **no current service uses it**; do not request it. An app's **agent** asks the person questions through the kernel's `ask_user_question` instead, declared in `agent.tools`, not here (the store shows the same words, "Ask you questions"; [AI-SERVICES](AI-SERVICES.md#what-an-apps-agent-gets-today)). Whether a service may raise its sheet is the surface's call, not this capability's: the app in the foreground may, a home-screen tile or an assistant's tool call may not (each request's `may_prompt`, [App Hub#38](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/38); the OctoSense shells set it false for glance tiles and tool calls since [OctoSense#204](https://github.com/OctoSense-org/OctoSense/pull/204), merged 2026-10-01). |
-| `research` | Searching through the system toolbox for the app's **agent** (`toolbox.search`, `toolbox.web_read`, `workflow.run`, `workflow.fork`), within the manifest's top-level `research` scope (languages, regions, domains, recency, results per search). The host runs every search; the app never fetches the sites. | Permission: "Search …" with the scope in words. Privacy: "Searches …; the device runs each search, within these limits." | Added in App Hub #26. Needs the `research` object (`{}` means no limits) or the gate refuses: `requests research but declares no research scope` (**✓ run 2026-10-01**). The OctoSense shells grant it to system apps (`os.*`) only for now, where built with `toolbox-peers` ([AI-SERVICES](AI-SERVICES.md#the-system-toolbox)); a store app gains nothing yet. |
-| `crawl` | Crawling a site through the system toolbox (`toolbox.deep_crawl`), up to the scope's `max_depth` and `max_pages`, inside its domain lists. More reach than `research`; neither implies the other. | Permission: "Crawl websites, …, which reaches more than searching". Privacy: "Crawls websites, …: this reaches more of the web than searching." | Same scope object and the same system-apps-only rule as `research`. |
-| `ledger.read` | Reading the shared ledger through a `ledger` host service. | Permission: "Read your shared data". Privacy: "Reads your shared data." | Grants `ledger.read` only; `ledger.write` is a different name. **No shell registering a `ledger` service was found**; unverified. |
-| `clipboard` | Clipboard access. | Permission: "Use the clipboard". Privacy: "Uses the clipboard." | **No script API gated by `clipboard` was found** in this runtime revision; unverified. |
-
-Every `host.request("<family>.<method>")` needs the capability `<family>` (or
-the exact service name). Refused calls answer at once with `r.is_ok` false and
-`r.error` = `this app was not granted "<family>", which "<service>" needs`.
-
-## Host services by exact name: `octos.*` and `matrix.*`
-
-Besides the families above, `KNOWN_CAPABILITIES` holds 49 exact service names
-(`crates/app-policy/src/services.rs`, since App Hub #14): four for the
-device's assistant and 45 for the person's Matrix account. Each is its own
-consent; a prefix (`octos.`, `matrix.`) or any other name is refused.
-
-| Names | The person sees (store) | Who serves them today |
+| Capability | What the script gets | Without it |
 | --- | --- | --- |
-| `octos.session.open`, `octos.session.history`, `octos.turn.start`, `octos.turn.interrupt` | "Open its own conversation with the assistant", "Read its own conversations with the assistant", "Ask the assistant to work for it, using the device's AI settings", "Stop assistant work it started"; privacy: "Asks the device's assistant to work for it; the assistant's keys stay with the device." | An OctoSense shell that hosts a kernel (not iOS) serves them once the person allows the app's agent at first use ([OctoSense#106](https://github.com/OctoSense-org/OctoSense/pull/106), [#184](https://github.com/OctoSense-org/OctoSense/pull/184)); until then a call answers `Waiting for the person to allow this app's agent (OctoSense asks the first time)`. `card-host` does not: a call answers `no service answers "octos" on this device`. Rinx's mini-app host serves them too. Details and a verified example: [AI-SERVICES](AI-SERVICES.md). |
-| `matrix.*` (45 names, e.g. `matrix.profile`, `matrix.read_messages`, `matrix.send_message`) | One plain line per name, e.g. "Read messages in rooms you allow" | Only Rinx's mini-app host. |
+| `storage` | The app's own storage jail, one directory per app id: [`fs.*`](SCRIPT-API.md#storage-fs), camera captures, and local files a widget reads, such as a map archive. | No jail. Every `fs.*` call errors with `storage not available in this context`, a capture saves nothing, and a widget reads no local file. |
+| `camera` | `CameraPreview`: preview, photo and video. Captures land in the jail as `DCIM/IMG_<ms>.jpg` and `DCIM/VID_<ms>.mp4`, so request `storage` too. | `CameraPreview` refuses: `this app was not granted the camera`. The operating system's own camera prompt applies either way. |
+| `microphone` | Sound in camera videos. Useful only with `camera`. | Videos record without sound. |
+| `library` | Each capture is also offered to the system photo library, where other apps can see it. | Captures stay in the app's jail. |
+| `location` | The device position: `sys.gps(...)` and the follow camera of `MapView`. The operating system's location prompt still applies. | `sys.gps("ok")` reads 0, meaning no fix. |
 
-## Other manifest requests
+Without `storage`, the `grants:` line of `hub check` says `storage none`, and
+the gate warns about each script that calls `fs.*` and about a `camera` grant:
 
-| Field | Meaning | Ceiling (installed / system) |
+```text
+[warning] storage: main.splash calls fs.read, fs.write, fs.exists, which fail without the storage capability
+```
+
+## Network
+
+| Capability | What the script gets | Without it |
 | --- | --- | --- |
-| `storage.max_bytes` | Whole-jail quota | 16 MiB / 64 MiB |
-| `compute.instruction_budget` | Script instructions per session, cumulative | 20 000 000 / 4 000 000 000 |
-| `compute.memory_bytes` | Isolate heap | 64 MiB / 128 MiB |
-| `agent` | The app's own agent: `profile` one of `read-only`, `workspace-write`, `workspace-write-never-ask`; `tools` from `ledger.read ledger.write net.fetch storage.read storage.write card.render` and the kernel's `ask_user_question` (no other kernel tool); iterations ≤ 8, tokens ≤ 200 000; `model` needs and tier, `background`, `triggers`, `instructions` (`AGENT.md`) and `skills`. The person sees "Runs an assistant limited to this app's own data…" (or "Runs no assistant."). The OctoSense shells give a declared agent its own peer once the person allows it, with `ask_user_question` and read tools over its account folder; the dated baseline here does not provide all requested features. The connected-services branch loads admitted guidance and supports the bounded Gmail event route described above; generic host tools/scheduling are not implied. See [AI-SERVICES](AI-SERVICES.md#an-apps-own-agent). | – |
-| `storage.accounts` | `true`: data and one agent per account; default one `device` folder | – |
-| `storage.agent_workspace` | `"account"` (default): the agent reads its account's folder; `"none"`: no files | – |
-| `storage.cache_max_bytes` | Ceiling for the jail's `cache/` | – |
-| `research` (top-level object) | The scope of `research` and `crawl`; required with either, refused without both | – |
+| `net` | `net.http_request` and `net.web_socket`, to exactly the hosts in `network.hosts`. A host is a bare, exact, lowercase name: no scheme, path, port or wildcard. | No `net` in the script at all: `variable net not found in scope`. The same holds for `net` with an empty host list. |
+| `images` | Pictures (`Image{src: http_resource(url)}`) from any public `https://` host, beyond `network.hosts`: a feed reader's thumbnails. It does not widen `net.http_request`. | Pictures load only from listed hosts. |
+| `web` | `WebReader` opens any public `https://` page. The page has no way back into the app. | `WebReader.open` works only for listed hosts and refuses others: ``refused <url>: not on this app's host list, and no `web` grant``. |
 
-Values above the ceiling are clamped, not refused; an absent value gets the
-ceiling. The `grants:` line of `hub check` shows the result.
+The runtime and the gate refuse these:
 
-## Reserved and absent names
+| Request | Answer |
+| --- | --- |
+| A `net` request to an unlisted host | `this app may not reach <url>` |
+| A private or internal address, with any capability | `host not permitted (private/internal): <host>` |
+| Hosts listed without `net` | The gate refuses: `lists hosts but does not request the net capability` |
+| A host with a scheme or path, such as `https://x` | The gate refuses: `host "https://x" must be a bare host name, with no scheme or path` |
+| `main.splash` naming an `https://` host that is not listed | The gate refuses under `assets` (`main.splash reaches <host>, which the manifest does not declare in network.hosts`), unless the app requests `images` or `web` |
+| Any `http://` URL in the source | The gate refuses under `assets`, with or without `web` |
 
-- **Reserved names** (`RESERVED_NAMES` in `crates/app-contract/src/manifest.rs`):
-  no app id may be, or end in, `agents apphub appcard card dev octos os
-  reference rinx sheets shell system terminal toolbox workflow`, because a
-  host keys an app's folders, tools and consent by its id and its tools by
-  the id's last segment. **✓ run 2026-10-01**: `[refused] identity: app id
-  "dev.example.terminal" ends in "terminal", which is reserved: its tools
-  would be terminal.*, a native app's or the host's`.
-- **`os.*` ids** (not a capability, an id prefix) are reserved for system apps.
-  The gate refuses them (`[refused] identity: <id> is under os., which is
-  reserved for system apps that ship with the device`), no store installs one
-  (`<id> names a system app, which no store may install`), and
-  `card-host --system` runs one under system ceilings for development.
-- **`profile`** and **`agent`** appear as runtime gates for profile-backed
-  `sys.*` helpers and `agent.notify`, but are **not** in `KNOWN_CAPABILITIES`:
-  no store app can hold them.
-- **Adding a capability** is an App Hub change (the list, the privacy line,
-  and the service or runtime path that enforces it, together). An app cannot
-  invent one.
+The script-side rules are in [SCRIPT-API § Network](SCRIPT-API.md#network).
+
+## Host services
+
+A host service does work in the shell that the app must never do itself, such
+as holding a password or a token. The script calls it with
+`host.request("<family>.<method>", args, fn(r){…})`
+([SCRIPT-API](SCRIPT-API.md#host-services-hostrequest)). Each call needs the
+capability `<family>`. Without it, the callback runs at once with `r.is_ok`
+false and this error:
+
+```text
+this app was not granted "mail", which "mail.accounts" needs
+```
+
+| Capability | What the script gets |
+| --- | --- |
+| `mail` | Mail accounts the person signs in to on a host sheet: folders, messages and sync. Sending goes through the host's send review. The methods are in [HOST-SERVICES § Mail](HOST-SERVICES.md#mail-the-worked-example). |
+| `auth` | Connections to GitHub and Google that the person approves on a host sheet, and, on OctoSense `main`, sign-in to the app's own backend. The app receives handles, never tokens. `auth` alone identifies the person but reads none of their data. See [Use a connected account](#use-a-connected-account). |
+| `github` | Repository reads, and saves the person approves on a host sheet. Needs `auth`. |
+| `gcalendar` | Google Calendar reads and sync, and writes the person approves on a host sheet. Needs `auth`. |
+| `gmail` | Gmail reads, versioned reply drafts, sending after the person approves it in the host's send review, and new-mail events for the app's agent. Needs `auth`. |
+| `glance` | `glance.publish`, `glance.withdraw` and `glance.list`: cards on the Glance screen that open only this app. See [AI-SERVICES § Publishing to the Glance screen](AI-SERVICES.md#publishing-to-the-glance-screen). |
+| `model` | `model.complete` and `model.budget`: one-shot model calls on the person's own AI providers, checked against the app's JSON Schema, within a daily budget. See [AI-SERVICES § One-shot model calls](AI-SERVICES.md#one-shot-model-calls-model). |
+
+None of these services runs in `card-host`. There every call answers
+`no service answers "<family>" on this device`. Test them in an OctoSense
+shell.
+
+## Capabilities a store app gains nothing from
+
+The gate admits these names, but no shell serves them to a store app. Do not
+request them.
+
+| Capability | What happens |
+| --- | --- |
+| `calendar` | The `calendar` service answers only the Calendar system app: `calendar is Calendar's own service`. For a person's Google Calendar, use `gcalendar`. |
+| `photos`, `youtube` | The only service for each answers the matching system app's `notify` call: `photos.notify serves os.photos only`. |
+| `llm` | The service manages the device's AI providers and answers only system apps: `llm is for OctoSense's own apps.` For model calls, use `model`. |
+| `news` | The service answers only system apps: `The news service serves system apps only.` |
+| `research`, `crawl` | The system toolbox for an app's agent. The shells grant it only to system apps, and only in builds with the `toolbox-peers` feature. The gate still requires a top-level `research` scope: `requests research but declares no research scope`. Not yet for store apps: [OctoSense#64](https://github.com/OctoSense-org/OctoSense/issues/64). |
+| `prompt` | Not yet: no host reads it, and `host.prompt` does not exist. An app's agent asks the person questions with `ask_user_question`, declared in `agent.tools`. |
+| `ledger.read`, `clipboard` | Not yet: no host serves them. |
+
+## Use a connected account
+
+An app reaches a person's GitHub or Google data through host services. The
+shell holds the provider credentials; the app holds only a connection handle.
+
+1. Declare `auth`, the provider family and per-account storage. Leave the
+   provider's API hosts out of `network.hosts`: the host service makes the
+   requests.
+
+   ```json
+   "capabilities": ["storage", "auth", "github"],
+   "network": { "hosts": [] },
+   "storage": { "accounts": true }
+   ```
+
+   `hub check` then shows:
+
+   ```text
+   grants: capabilities {"auth", "github", "storage"}, hosts {}, storage 16777216 bytes, agent none
+   ```
+
+2. Ask the person to connect, from one of the app's own screens:
+
+   ```splash
+   host.request("auth.connect", {provider: "github" scopes: ["public_repo"]}, fn(r){
+       if !r.is_ok { ui.status.set_text(r.error) }
+   })
+   ```
+
+   The host raises its own sign-in sheet. On success, `r.data` is the new
+   connection: `handle` names it, and `subject` and `label` identify the
+   account. Each scope needs a capability. The identity scopes need only
+   `auth`, so an app can identify the person without reading their data:
+
+   | Provider | Scopes | Needs |
+   | --- | --- | --- |
+   | `github` | `read:user` | `auth` |
+   | `github` | `public_repo`, `repo` | `auth` and `github` |
+   | `google` | `openid`, `email`, `profile` | `auth` |
+   | `google` | `calendar.list`, `calendar.events` | `auth` and `gcalendar` |
+   | `google` | `mail.read`, `mail.send` | `auth` and `gmail` |
+
+   If the call fails, `r.error` says why:
+
+   | Error | Cause |
+   | --- | --- |
+   | `Requested scopes exceed this app's granted services` | A scope's family is missing from `capabilities`. |
+   | `Open the app to connect an account` | The call came from a Glance card or an agent's tool. |
+   | `OAuth is not configured. Add provider registrations in the host's oauth/clients.json` | A beta.2 host has no `clients.json` ([Limits](#limits)). |
+   | `This provider is not configured in OctoSense` | A beta.2 host's `clients.json` has no registration for the provider. |
+   | `GitHub sign-in is unavailable in this build. Check for an OctoSense update or contact its distributor.` (or `Google sign-in …`) | A build from OctoSense `main` has no registration for the provider ([Limits](#limits)). |
+
+3. Call the provider family. Pass the connection's `handle` as `connection`,
+   such as `{connection: <handle> page: 1}` for `github.repositories`.
+
+   | Service | Methods |
+   | --- | --- |
+   | `auth` | `connect`, `accounts`, `active`, `select`, `disconnect`; on OctoSense `main` also `backend.me` ([below](#sign-in-to-your-own-backend)) |
+   | `github` | `repositories`, `files`, `read`, `review_save` |
+   | `gcalendar` | `calendars`, `cached`, `refresh`, `get`, `prepare`, `review_save`; `sync` on desktop-v0.1.0-beta.2 only ([Limits](#limits)) |
+   | `gmail` | `labels`, `messages`, `message`, `draft.open`, `draft.get`, `draft.edit`, `draft.review`, `events.status`, `event.status`, `event.decide` |
+
+   OctoSense's
+   [`crates/oauth-service/README.md`](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.md#app-facing-contract)
+   gives each method's arguments and answers.
+
+4. Have the person approve every write. `github.review_save` and
+   `gcalendar.review_save` freeze the change and show it on a host sheet,
+   where the person approves it. On desktop-v0.1.0-beta.2, that sheet does not
+   check for a physical press. OctoSense `main` requires a physical press on
+   its native **Approve & Save** control, but no release has it yet.
+   `gmail.draft.review` opens the host's send review, which needs a physical
+   press on every build: no script, agent or remote click can send mail.
+
+The three [connected reference apps](../examples/connected-apps/README.md),
+published in the App Hub catalog, use exactly this. App Hub's
+[SUBMITTING](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#the-three-reference-apps)
+summarizes them.
+
+### Sign in to your own backend
+
+On OctoSense `main`, the host can sign the person in to the app's own
+backend. No release has this yet: `desktop-v0.1.0-beta.2` predates it.
+
+1. Declare `auth` and `storage.accounts: true`.
+2. Connect with the `backend` provider and its one scope:
+
+   ```splash
+   host.request("auth.connect", {provider: "backend" scopes: ["app.session"]}, fn(r){
+       if !r.is_ok { ui.status.set_text(r.error) }
+   })
+   ```
+
+   On macOS and Android 9 or later, the host opens the backend's login page
+   in a WebView it owns, and the person registers or signs in there; the app
+   cannot open or read that page. On macOS, `presentation: "browser"` uses
+   the system browser instead; on Windows and Linux, the browser is the only
+   mode.
+3. Call `auth.backend.me` with `{connection: <handle>}`. It answers
+   `{connection, backend_id, identity: {sub, label}}`, the identity the
+   backend verified.
+
+The host's operator registers each app's backend in
+`<apps root>/.host/oauth/backends.json`; a bundle cannot register one.
+Without a registration, `auth.connect` answers
+`This app's backend sign-in is unavailable. Contact the app's distributor.`
+The backend must offer an OAuth authorization-code flow with S256 PKCE and a
+`/me` endpoint, all on one HTTPS origin. OctoSense's
+[developer backend contract](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.md#developer-backend-contract)
+gives the details. iOS has no backend sign-in, and Windows and Linux are
+unverified.
+
+### Limits
+
+- **Builds.** OctoSense desktop-v0.1.0-beta.2 (macOS, Apple silicon) serves
+  `auth`, `github`, `gcalendar` and `gmail`. The beta.1 stores
+  (desktop-v0.1.0-beta.1 and home-v0.1.0-beta.1) list such apps but refuse to
+  install them, because their contract does not know `auth`. No released phone
+  build installs them.
+- **Provider registrations.** Beta.2 reads the GitHub and Google
+  registrations only from `<apps root>/.host/oauth/clients.json`, and its
+  downloads contain none, so whoever runs beta.2 supplies that file. A build
+  from OctoSense `main` can compile a distributor's registrations in instead;
+  there, `clients.json` is an optional operator override that replaces the
+  whole compiled-in set
+  ([OctoSense: configure a release](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.md#configure-a-release-maintainers),
+  [advanced operator override](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.md#advanced-operator-override)).
+- **Calendar sync.** On desktop-v0.1.0-beta.2, `gcalendar.refresh` syncs the
+  whole calendar and returns it oldest first, and `gcalendar.sync` returns
+  Google's raw event pages. OctoSense `main` (not in any release yet) syncs
+  only from 30 days before today to 366 days after, with recurring events
+  expanded, and returns that range as `window: {time_min, time_max}`. It
+  refuses `gcalendar.sync` with
+  `Use gcalendar.refresh for the bounded agenda; raw history synchronization is not exposed`.
+- **Unverified:** most live use of the real GitHub and Google services,
+  including repository writes and Gmail sends. OctoSense `main` records two
+  macOS checks: identity-only GitHub and Google sign-in through the native
+  host (Google with a test account), and one manual Google Calendar session
+  that listed calendars and saved an event
+  ([current delivery boundary](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.md#current-delivery-boundary)).
+- **Not yet:** Google sign-in on Android. `auth.connect` answers
+  `Google authorization needs the Android host adapter; desktop login is not supported on this device`.
+- **Not yet in a release:** sign-in to an app's own backend
+  ([above](#sign-in-to-your-own-backend)). A bundle cannot register its own
+  backend yet ([App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)).
+
+## Exact service names
+
+Besides the 25 broad capabilities, `KNOWN_CAPABILITIES` holds 78 exact service names.
+Each is its own consent; a prefix grants nothing.
+
+| Names | What they grant | Who serves them |
+| --- | --- | --- |
+| `octos.session.open`, `octos.session.history`, `octos.turn.start`, `octos.turn.interrupt` | The app's own conversation with the device's assistant. See [AI-SERVICES](AI-SERVICES.md#the-assistant-capabilities). | An OctoSense shell that hosts the octos kernel, once the person allows the app's agent. Until then a call answers `Waiting for the person to allow this app's agent (OctoSense asks the first time)`. Rinx, a Matrix client, also serves them to bundles imported into it as mini-apps. |
+| `matrix.*` (45 names, such as `matrix.read_messages`) | One operation each on the person's Matrix account. | Only Rinx, for its own mini-apps. Do not request them. |
+| `palpo.*` (29 names, such as `palpo.inbox.list`) | One operation each on Palpo, a Matrix server, for the person's account. | No OctoSense shell. Do not request them. |
+
+## Storage, compute and agent limits
+
+| Field | Meaning | Ceiling: store app / system app |
+| --- | --- | --- |
+| `storage.max_bytes` | The whole jail's quota | 16 MiB / 64 MiB |
+| `storage.accounts` | `true`: data and one agent per account. Default: one `device` folder | – |
+| `storage.agent_workspace` | `"account"` (default): the agent reads its account's folder. `"none"`: no files | – |
+| `storage.cache_max_bytes` | The ceiling for the jail's `cache/` | – |
+| `compute.instruction_budget` | Script instructions per session, cumulative | 20,000,000 / 4,000,000,000 |
+| `compute.memory_bytes` | The isolate's heap | 64 MiB / 128 MiB |
+| `agent.max_iterations`, `agent.token_budget` | Model turns and tokens the app's agent may spend per request | 8 turns and 200,000 tokens / the same |
+| `research` (top level) | The scope of `research` and `crawl`; required with either | – |
+
+The gate clamps a value above its ceiling instead of refusing it, and gives
+an absent value the ceiling. The `grants:` line of `hub check` shows the
+result. A manifest asking for 100 MiB of storage gets:
+
+```text
+grants: capabilities {"storage"}, hosts {}, storage 16777216 bytes, agent none
+```
+
+The rest of the `agent` block (profile, tools, model needs, triggers,
+`AGENT.md` and skills) is in
+[AI-SERVICES § The manifest's agent](AI-SERVICES.md#the-manifests-agent).
+
+## Names an app cannot use
+
+- **Reserved last segments.** The last segment of an app id becomes its tool
+  namespace, so 23 names are reserved (`RESERVED_NAMES` in App Hub
+  `crates/app-contract/src/manifest.rs`), among them `notes`, `weather` and
+  `terminal`:
+
+  ```text
+  [refused] identity: app id "dev.example.notes" ends in "notes", which is reserved: its tools would be notes.*, a native app's or the host's
+  ```
+
+- **`os.*` ids** belong to system apps that ship with the device. The gate
+  refuses them (`[refused] identity: os.mything is under os., which is reserved for system apps that ship with the device`),
+  and no store installs one. `card-host --system` runs one for development.
+- **`profile` and `agent`** are runtime checks, not capabilities. Profile-backed
+  `sys.*` helpers read empty without `profile`, and the runtime refuses
+  `agent.notify` without `agent`. Neither name is in the list, so no store app holds them.
+
+## Add a capability
+
+A new capability is an App Hub change: the name in `KNOWN_CAPABILITIES`, its
+permission and privacy lines, and the service or runtime code that enforces
+it, reviewed together. An app cannot invent one. For a new host service, see
+[HOST-SERVICES § Add a host service](HOST-SERVICES.md#add-a-host-service).

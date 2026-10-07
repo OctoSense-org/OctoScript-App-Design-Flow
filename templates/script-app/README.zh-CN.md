@@ -2,39 +2,44 @@
 
 [English](README.md) | 简体中文
 
-一个可运行的 OctoSense 脚本应用：**My Notes**（输入一条笔记，保存在应用自己的存储中，
-点击即可删除）。`tools/octo new <dir> --platform macos` 会复制它并设置 id 和名称；用
-`tools/octo run <dir>/bundle` 运行。
+未注明中文版的链接指向英文文档。
+
+这个模板是一个可运行的 OctoSense 脚本应用：**My Notes**。输入一条笔记，应用把它存进自己的存储，点一下即可删除。`tools/octo new <dir> --platform macos` 会复制这个模板，设置 id 和名称，并把平台写入商店信息；`tools/octo run <dir>/bundle` 会运行它。
 
 ```text
 script-app/
-  README.md        this file (not copied)
-  AGENTS.md        instructions for an agent working in the new app's repository (copied)
-  .gitignore       keeps keys, build output and .local-state out of git (copied)
-  bundle/          the app; the only thing ever submitted (copied)
-    manifest.json  id my-notes, version 0.1.0, capability storage
-    listing.json   store text: EVERY publisher value is a placeholder
-    main.splash    the program
+  README.md        英文说明（不复制）
+  README.zh-CN.md  本文件（不复制）
+  AGENTS.md        给新应用仓库中编码 Agent 的说明（复制）
+  CLAUDE.md        为 Claude Code 导入 AGENTS.md（复制）
+  GEMINI.md        为 Gemini CLI 导入 AGENTS.md（复制）
+  .gitignore       不让密钥、构建产物和 .local-state 进入 Git（复制）
+  bundle/          应用本身，唯一提交的内容（复制）
+    manifest.json  id my-notes，版本 0.1.0，能力 storage
+    listing.json   商店信息：发布者字段和部分描述是占位内容
+    main.splash    程序
     assets/icon.svg
 ```
 
-它演示的内容（均已在 `card-host` 中验证）：用顶层 `let` 保存状态，用
-`start_timeout(0.05, …)` 启动加载函数，在应用的隔离目录中使用 `fs.exists/read/write`，
-`parse_json`/`to_json`，`ui.<id>.text()/set_text()/render()`，带空状态的
-`on_render` 列表，`ButtonFlat{on_click}`，以及 `GestureView{on_tap}` 行。
+## 演示内容
 
-它有意不完整，以免复制出来的应用被意外发布：
+以下内容都能在 `card-host` 中运行：
 
-- `listing.json` 引用了 `screenshots/01-main.png`，但这个文件并不存在。在你截取一张真实截图
-  （`tools/octo shot`）之前，检查门会拒绝这个 bundle。不要添加假图片。
-- 发布者名称、支持 URL 和隐私政策 URL 都是占位符（`tools/octo check` 会提示）。
-  由人来替换它们。
-- 原始模板的 `platforms` 为空。`octo new` 必须指定 `--platform`，只写入所选目标；
-  多目标可重复该选项。选择不等于测试证据，发布前只保留实际运行过的平台。
-  在 Mac 上运行 `card-host` 只验证 `macos`，不代表 Android 已验证。
+- 用顶层 `let` 保存状态，由 `start_timeout(0.05, …)` 调度的函数加载；
+- 在应用的 jail（私有数据目录）中使用 `fs.exists`、`fs.read` 和 `fs.write`，配合 `parse_json` 与 `to_json`；
+- `ui.<id>.text()`、`set_text()` 和 `render()`；
+- 带空状态的 `on_render` 列表、一个 `ButtonFlat{on_click}` 按钮，以及 `GestureView{on_tap}` 行。
 
-来源：与 OctoSense-App-Hub 同期制作的脚本应用模板草稿（从未提交到那里；App Hub 的
-`templates/app/` 是卡片应用起步模板），
-只做了一处修正：列表的空状态改为 `for` 之前单独的一个 `if`，因为在 `on_render` 中使用
-`if … else for …` 时，空分支什么都不画，还会留下过期的行。下一步：
-[docs/QUICKSTART.md](../../docs/QUICKSTART.md)。
+空状态是 `for` 之前单独的一个 `if`。不要在 `on_render` 中写 `if … else for …`：测试中空分支什么都没画，屏幕上还残留着旧的行。
+
+## 发布之前要补完的内容
+
+模板有意留着不完整，以免有人误把复制出来的应用发布出去：
+
+- `listing.json` 引用了 `screenshots/01-main.png`，但这个文件并不存在。在你用 `tools/octo shot` 截取真实截图之前，准入检查会拒绝这个应用包。不要放占位图片。
+- 发布者名称、支持 URL 和隐私政策 URL 都是占位内容，描述的最后一句（“Replace this with …”）也是。`tools/octo check` 会提示它们；发布者字段由人来替换。
+- `assets/icon.svg` 是模板自带的图标，请换成你自己的（见 App Hub 的 [ICONS.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/ICONS.zh-CN.md)）。
+- `platforms` 是空列表，准入检查会拒绝空列表（`listing names no platforms`）。`tools/octo new` 必须指定 `--platform`，并写入你传入的平台；每个平台写一次。传入平台只是声明，不是测试：发布之前，只保留你实际运行过的平台，并由人确认这一声明。在 Mac 上运行 `card-host` 测试的是 `macos`，不是 Android。
+- 如果修改 id，它的最后一段不能是 App Hub 的保留名（`notes`、`weather`、`terminal` 等）。`tools/octo new` 创建应用时会拒绝保留名；之后改过的 id 若用了保留名，准入检查会拒绝。
+
+下一步：[docs/QUICKSTART.zh-CN.md](../../docs/QUICKSTART.zh-CN.md)。
