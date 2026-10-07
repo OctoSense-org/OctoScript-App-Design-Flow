@@ -9,6 +9,12 @@
 应用可调用宿主已编译的 Rust 服务，也可通过脚本工具 ABI 调用自己声明的 Splash
 函数。此工作不加载自定义 Rust 动态库、Wasm 或 JIT 代码，也不暴露所有系统 API。
 
+可运行源码示例见 OctoSense 的
+[原生 Host API Lab](https://github.com/OctoSense-org/OctoSense/tree/feat/host-api-contract/tools/fixtures/host-api-lab)。
+它已在 macOS 验证签名安装、应用自己的 Splash 工具、真实 Rust/系统权限状态
+调用、界面状态更新和权限拒绝。它是开发验收示例，不是公共 App Hub 发布，
+也不验证真实模型或 peer 同意流程；README 提供了完整构建与运行命令。
+
 ## 1. 声明应用的要求
 
 下面是**清单片段**，不是完整的可发布应用包：
