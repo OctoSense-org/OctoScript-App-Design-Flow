@@ -48,10 +48,14 @@ Usage:
 Exit codes: 0 when the card will lower (warnings allowed), 1 when it will not,
 2 for a usage error or a missing bundle file.
 Read-only, standard library only, and everything outside JSON is scanned as
-plain text — no L0 parser is required. The card scan is string-aware and
-comment-aware; it does not build a parse tree, so a construct a lexical scan
-cannot see exactly (a name produced by an expression, say) may be missed. It
-errs toward WARN there, never toward a false ERR.
+plain text — no L0 parser is required. The card scan is string-aware (string
+CONTENT is blanked, so prose inside a string is never read as syntax) and
+comment-aware, and it skips the service namespace of a `source` query; it does
+not build a parse tree, so a construct a lexical scan cannot see exactly (a name
+produced by an expression, say) may be missed. It errs toward WARN there, never
+toward a false ERR: a name the frame resolves — a `source`, a seeded state, a
+`for` binder, a component param — is never reported as unresolvable, and only
+real syntax, not the text of a string, is read as a read.
 """
 import json
 import os
@@ -79,9 +83,10 @@ KEYWORDS = frozenset(
     "shape initial true false".split())
 # A dotted read: head captured, so `X.data` and `X.data.text` are ONE read of `X`
 # (`X.data[0].text`, `read . data . x` for spacing). `read`/`copy`/`rows[0]` are
-# heads.
+# heads. A numeric segment is a real segment too — `lead.0.title` is valid L0
+# (`docs/l0/news.card`), and without it `lead` gets no rule 0-2 check at all.
 PATH_RE = re.compile(
-    r"(?<![.\w])(" + IDENT + r")\s*(?:\[[^\]]*\])?\s*\.\s*(" + IDENT + r")")
+    r"(?<![.\w])(" + IDENT + r")\s*(?:\[[^\]]*\])?\s*\.\s*(?:\d+|" + IDENT + r")")
 # A guard on a result name: `when X.is_ok { … }` and the source form
 # `when X.$state == .ready { … }`. The name must be a `state`/`source`/target.
 GUARD_OK_RE = re.compile(r"(?<![.\w])when\s+(" + IDENT + r")\s*\.\s*is_ok\b")
@@ -94,7 +99,11 @@ COPY_RE = re.compile(r"(?<![.\w])copy\s+(" + IDENT + r")\s*\{")
 # The two other shapes that declare a readable name: a `for` binder and a
 # component parameter. Both go into `Scope::roots` beside sources, states and
 # `copy`, so a read of either is a declared name and does not need a seed.
-FOR_BINDER_RE = re.compile(r"(?<![.\w])for\s+(" + IDENT + r")\s+in\b")
+# The grammar is `for item[, index] in path key path` (`lib.rs`), and the
+# two-binder form is used in the repo's own cards (`for s, i in feed key s.id`),
+# so both names are binders — a one-binder regex counted `s`/`i` as undeclared.
+FOR_BINDER_RE = re.compile(
+    r"(?<![.\w])for\s+(" + IDENT + r")\s*(?:,\s*(" + IDENT + r")\s*)?\s+in\b")
 COMPONENT_PARAM_RE = re.compile(r"(?<![.\w])component\s+" + IDENT + r"\s*\(([^)]*)\)")
 PARAM_NAME_RE = re.compile(r"(" + IDENT + r")\s*:")
 # Any `Kit(` call — argument order is free (`kit_pack` reads Kit args by name),
@@ -107,10 +116,16 @@ KIT_ANY_RE = re.compile(r"(?<![.\w])Kit\s*\(")
 # constructor is resolved through the card's own components before the path is
 # chosen — the way `complete_root()` does. The constructor is the identifier
 # right before the `(`; the view name, when present, is optional.
+# The body is optional: `view root Page` names a card-declared component and
+# stops at the end of the line, and a regex that requires `(` or `{` never sees
+# that root at all.
 ROOT_RE = re.compile(
-    r"(?<![.\w])view\s+(?:(" + IDENT + r")\s+)?(" + IDENT + r")\s*[({]")
+    r"(?<![.\w])view\s+(?:(" + IDENT + r")\s+)?(" + IDENT + r")\s*(?=[({]|\n|$)", re.M)
+# The parameter list is optional (`component Side { … }` declares a component
+# with no params), and a component with no paren was not recognized at all, so
+# its body was scanned as if it were the card's top level.
 COMPONENT_DEF_RE = re.compile(
-    r"(?<![.\w])component\s+(" + IDENT + r")\s*\([^)]*\)\s*\{")
+    r"(?<![.\w])component\s+(" + IDENT + r")\s*(?:\([^)]*\))?\s*\{")
 # `component Kit(…) { … }` — a card-declared component named `Kit` shadows the
 # built-in constructor, so the realized tree is whatever that component lowers to.
 SHADOW_RE = re.compile(r"(?<![.\w])component\s+Kit\s*\(")
@@ -120,10 +135,45 @@ class BundleError(Exception):
     """A bundle file that is missing, unreadable, or not valid JSON."""
 
 
+def blank_strings(text):
+    """Blank the CONTENT of every string literal, keeping the quotes and every
+    offset — a string is one token to the L0 lexer, so its bytes are data, not
+    syntax. `TextBody(text: "wrap it in Kit(component: …)")` must not read as a
+    `Kit(` node, and `text: "…profile.data.text"` must not read as a read of
+    `profile`."""
+    out = []
+    i, n = 0, len(text)
+    while i < n:
+        c = text[i]
+        if c == '"':
+            out.append(c)
+            i += 1
+            while i < n:
+                if text[i] == "\\" and i + 1 < n:
+                    out.append("  ")
+                    i += 2
+                    continue
+                if text[i] == '"':
+                    out.append(text[i])
+                    i += 1
+                    break
+                if text[i] == "\n":
+                    out.append("\n")
+                    i += 1
+                    break
+                out.append(" ")
+                i += 1
+            continue
+        out.append(c)
+        i += 1
+    return "".join(out)
+
+
 def strip_comments(card):
-    """Drop `#` and `//` comments, keeping every other byte — and every byte of
-    a string literal, where `#` and `//` are content (the L0 lexer scans a
-    string as one token). Comment bytes become spaces so offsets are preserved."""
+    """Drop `#` and `//` comments, keeping every other byte — and blanking every
+    byte of a string literal, where `#`, `//` and any construct are content (the
+    L0 lexer scans a string as one token). Comment bytes and string bytes become
+    spaces so offsets are preserved and only real syntax is left to the scans."""
     out = []
     i, n = 0, len(card)
     while i < n:
@@ -133,17 +183,18 @@ def strip_comments(card):
             i += 1
             while i < n:
                 if card[i] == "\\" and i + 1 < n:
-                    out.append(card[i])
-                    out.append(card[i + 1])
+                    out.append("  ")
                     i += 2
                     continue
-                out.append(card[i])
                 if card[i] == '"':
+                    out.append(card[i])
                     i += 1
                     break
                 if card[i] == "\n":
+                    out.append("\n")
                     i += 1
                     break
+                out.append(" ")
                 i += 1
             continue
         if c == "#" or (c == "/" and i + 1 < n and card[i + 1] == "/"):
@@ -154,6 +205,18 @@ def strip_comments(card):
         out.append(c)
         i += 1
     return "".join(out)
+
+
+# `source <name> <svc>.<method>(…)` — the query namespace is NOT a card read
+# (`source lead sys.news(count: 1, …)`, the repo's own `docs/l0/news.card`): a
+# service namespace is resolved by the query, never by the frame, so reporting
+# `add state sys { shape: record }` for it is advice that cannot be followed.
+SOURCE_QUERY_RE = re.compile(r"(?<![.\w])source\s+" + IDENT + r"\s+[^\s(]+")
+
+# A bare (undotted) name passed where a card reads one — `TextBody(text: reply)`.
+# Only used to keep the "neither referenced nor seeded" line honest; rule 0 stays
+# a dotted-path check, because a bare word is not always a read.
+BARE_READ_RE = re.compile(r":\s*(" + IDENT + r")\s*(?=[,)}\s])")
 
 
 def block_end(code, start):
@@ -185,6 +248,40 @@ def block_end(code, start):
                 return i + 1
         i += 1
     return -1
+
+
+def component_spans(code):
+    """`(start, end)` of each `component … { … }` body, so the card's top-level
+    `view` can be told apart from a `view` inside a component."""
+    spans = []
+    for m in COMPONENT_DEF_RE.finditer(code):
+        start = code.find("{", m.end() - 1)
+        end = block_end(code, start)
+        if start < 0 or end < 0:
+            continue
+        spans.append((start, end))
+    return spans
+
+
+def for_binders(code):
+    """Every name a `for` declares — one binder or two (`for s, i in …`)."""
+    names = set()
+    for pair in FOR_BINDER_RE.findall(code):
+        names.update(name for name in pair if name)
+    return names
+
+
+def source_query_spans(code):
+    """Spans of the `source` query argument list, whose dotted names are service
+    namespaces, not card reads."""
+    spans = []
+    for m in SOURCE_QUERY_RE.finditer(code):
+        paren = code.find("(", m.start(), m.end() + 2)
+        if paren < 0:
+            continue
+        end = block_end(code, paren)
+        spans.append((m.start(), end if end > 0 else len(code)))
+    return spans
 
 
 def guarded_spans(code):
@@ -278,17 +375,21 @@ def check_args(where, target, args, data, declared_states, errors):
                     % (where, key, name, target))
 
 
-def path_reads(code):
+def path_reads(code, skip_spans=()):
     """Every `(head, position)` of a dotted read, once per head occurrence.
 
     `X.data` and `X.data.text` are ONE read of `X`, not two: the scan keeps the
     head and skips a match whose head is itself a continuation of a longer path
     (`data.text` inside `read.data.text`, or `<spaced> data . x`). `copy.<name>`
-    is a copy lookup, not a host-service read, and is left to `check_ui_l0`."""
+    is a copy lookup, not a host-service read, and is left to `check_ui_l0`.
+    Names inside a `source … <svc>.<method>(…)` span are query namespaces and
+    are not reads at all."""
     out, seen = [], set()
     for m in PATH_RE.finditer(code):
         name, pos = m.group(1), m.start()
         if name == "copy" or name in KEYWORDS:
+            continue
+        if any(start <= pos < end for start, end in skip_spans):
             continue
         before = code[:pos].rstrip()
         if before.endswith(".") or before.endswith("["):
@@ -357,11 +458,21 @@ def main(argv):
         oks.append("no page.data.json — optional, and a card with no seeded read needs none")
 
     try:
-        manifest, _ = read_json(manifest_path)
+        manifest, manifest_dups = read_json(manifest_path)
     except BundleError as exc:
         errors.append(str(exc))
         report(oks, warns, errors)
         return 1
+
+    # The manifest gets the same JSON checks every other bundle file gets: a
+    # duplicate key is silently collapsed by Python and refused by serde, and a
+    # non-object manifest is not a manifest.
+    if not isinstance(manifest, dict):
+        errors.append("manifest.json must be a JSON object")
+        manifest = {}
+    for key in sorted(set(manifest_dups)):
+        errors.append("manifest.json: duplicate key %r — Python keeps the last, serde "
+                      "refuses the field" % key)
 
     if not isinstance(data, dict):
         errors.append("page.data.json must be a JSON object")
@@ -370,8 +481,20 @@ def main(argv):
         errors.append("page.data.json: duplicate key %r — Python keeps the last, serde "
                       "refuses the field" % key)
 
-    capabilities = manifest.get("capabilities", []) if isinstance(manifest, dict) else []
-    capabilities = capabilities or []
+    # `capabilities` is a LIST of service names. A string has to be refused, not
+    # matched against: `"capabilities": "svc.one.svc.two"` would grant `svc.two`
+    # by substring membership, which is not what a capability grant means.
+    capabilities = manifest.get("capabilities", [])
+    if capabilities is None:
+        capabilities = []
+    if not isinstance(capabilities, list):
+        errors.append("manifest.json: capabilities must be an array of service names — "
+                      "%r is not one, and a string would grant every service named "
+                      "inside it by substring" % (capabilities,))
+        capabilities = []
+    elif any(not isinstance(cap, str) for cap in capabilities):
+        errors.append("manifest.json: capabilities must be strings")
+        capabilities = [cap for cap in capabilities if isinstance(cap, str)]
 
     # Scan real syntax only: comments are stripped (string-aware), so prose
     # mentioning "page.data.json" in a banner is not read as a read of it.
@@ -501,7 +624,16 @@ def main(argv):
     # view through the card's own components, so `view root Page(...)` where
     # `component Page` lowers to `Kit(...)` IS a Kit root — resolve one hop at a
     # time, the same way, before deciding.
-    root_m = ROOT_RE.search(code)
+    # The root is the TOP-LEVEL `view`, not the first `view` token in the file: a
+    # `view` inside a component body is that component's root (`component Side {
+    # view Col { … } }` must not make `Col` the card's root).
+    comp_spans = component_spans(code)
+    root_m = None
+    for candidate in ROOT_RE.finditer(code):
+        if any(start <= candidate.start() < end for start, end in comp_spans):
+            continue
+        root_m = candidate
+        break
     root_ctor = root_m.group(2) if root_m else ""
     bodies = component_bodies(code)
     for _ in range(4):
@@ -545,7 +677,9 @@ def main(argv):
     for m in STATE_RE.finditer(code):
         end = block_end(code, m.end() - 1)
         body = code[m.end() - 1:end if end > 0 else len(code)]
-        if re.search(r"(?<![.\w])initial\s*:", body):
+        # Only a real `initial:` seeds the name: one inside a string value
+        # (`state x { shape: record, note: "initial: yes" }`) is not an initial.
+        if re.search(r"(?<![.\w])initial\s*:", blank_strings(body)):
             states_with_initial.add(m.group(1))
     sources = set(SOURCE_RE.findall(code))
     copies = set(COPY_RE.findall(code))
@@ -553,19 +687,20 @@ def main(argv):
     # copies, `for` binders and component params. A binding target is NOT among
     # them, so a card that reads one must declare it separately — the doc's
     # matrix-octos declares `state answer`/`state profile` for exactly this.
-    declared = (
-        declared_states | sources | copies
-        | set(FOR_BINDER_RE.findall(code))
-        | {p for group in COMPONENT_PARAM_RE.findall(code)
-           for p in PARAM_NAME_RE.findall(group)}
-    )
+    # A `for` binder and a component parameter are declared names the frame
+    # resolves — the binder is a scope root while the loop realizes (`lib.rs`),
+    # so "nothing resolves it on the first frame" is never true of either.
+    binders = for_binders(code)
+    params = {p for group in COMPONENT_PARAM_RE.findall(code)
+              for p in PARAM_NAME_RE.findall(group)}
+    declared = declared_states | sources | copies | binders | params
     # Names a read can land on and still lower: a declaration with no seed draws
     # an em dash (semantic path) or fails the whole card (kit path).
-    resolvable = set(data) | sources | states_with_initial
+    resolvable = set(data) | sources | states_with_initial | binders | params
 
     spans = guarded_spans(code)
     target_names = {target for _, target in targets}
-    reads = path_reads(code)
+    reads = path_reads(code, source_query_spans(code))
 
     def guarded(name, pos):
         return any(n == name and s <= pos < e for s, e, n in spans)
@@ -615,8 +750,13 @@ def main(argv):
     # binding targets: a target the card never reads is the case the "neither
     # referenced nor seeded" warning below is for, and folding targets in here
     # made that branch unreachable.
+    # A bare (undotted) name passed where a card reads one — `TextBody(text:
+    # reply)` — is a read too, so "target 'reply' is neither referenced by
+    # page.card" is not said about a card that does read it. Rule 0 itself stays
+    # a dotted-path check; a bare word is not always a read.
     referenced = ({name for name, _pos in reads}
-                  | {name for _s, _e, name in spans})
+                  | {name for _s, _e, name in spans}
+                  | {n for n in BARE_READ_RE.findall(code) if n not in KEYWORDS})
 
     for name in sorted(referenced):
         # A name already reported as undeclared gets no "is seeded, guarded" line:

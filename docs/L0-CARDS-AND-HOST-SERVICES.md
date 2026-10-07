@@ -59,8 +59,11 @@ for the two targets its `events` write.
 All three were found by running real bundles against the host. Rules 1 and 2
 fail the **whole card**, but only on the native-Kit path; on the semantic path
 the same fault draws an em dash and the card keeps drawing. Rule 3 fails the
-**whole app**. None of them is visible to `hub check`, because none of them is
-in the manifest.
+**whole app**. None of them is visible to `hub check` — not because they are
+missing from the manifest (rule 3's undeclared service is exactly a
+manifest-vs-`bindings.json` mismatch), but because **`hub check` never reads
+`bindings.json`**: it checks the manifest and the card, and the wiring lives in a
+third file it does not open.
 
 ### Which lowering path a card takes
 
@@ -145,8 +148,10 @@ Every `service` in `bindings.json` must also be in the manifest's
 undeclared service does not merely skip the call, it aborts the whole import
 (`load_inner`: "… is not declared in capabilities"), so the app never opens. A
 failure in any `on_open` call keeps the app **not opening** the same way, and the
-reason is **shown**: every `run()` caller lands it in the panel's notice line
-(`src/miniapps/ui.rs`, the `self.notice(cx, &e)` on the run path). Since
+reason is **shown** — every `run()` caller lands it in the panel's notice line
+(`src/miniapps/ui.rs`, the `self.notice(cx, &e)` on the run path), **except the
+`open_board` path, which resets silently instead** (`action_room.rs:92-95` drops
+the reason). Since
 `on_open` runs on the way in, a binding that can fail — anything reaching an
 assistant, a model or the network — belongs in `events`, or behind a line the
 card can still draw without it.
@@ -227,7 +232,9 @@ view root Kit(component: "panel", instance: "panel") {
 
 The `kit/native/light/kit.json` pack owns the components and tokens, and
 `page.data.json` carries the `$kit.placements` the pack needs (`kit_pack::tree`
-reads `$kit.placements[id]` and `$kit.instances[id]`, and every `prop` the
+reads `$kit.placements[id]`, and `$kit.instances[id]` **only for `part:`
+compounds** — `kit_pack.rs:92-103`; a plain component is placed without an
+instance entry. Every `prop` the
 component declares must be passed or the card fails with "… requires …").
 `examples/miniapps/theme-reference` is this shape: the same `panel`/`title`/
 `hint` components, a light kit pack, and the placements in its own `data.json`.
@@ -263,3 +270,28 @@ Exit 0 when the card will lower, 1 when it will not, 2 for a usage error or a
 missing bundle file. It is not a gate and does not replace `hub check`: it
 catches what `hub check` admits, which is exactly the class of fault this page
 is about.
+
+### What the scan deliberately does not read
+
+The scan is lexical, so four things are out of its reach on purpose — each one
+is a name or a token that only a parse can place, and reading any of them as
+syntax produced findings that were wrong:
+
+* **The text of a string literal.** A string is one token to the L0 lexer, so
+  `TextBody(text: "wrap it in Kit(component: …)")` is not a Kit card and
+  `text: "…profile.data.text"` is not a read of `profile`. String *content* is
+  blanked before any pattern runs (quotes kept, offsets preserved).
+* **The service namespace of a `source` query.** `source lead sys.news(count: 1)`
+  names a service, not a card read: the query resolves it, the frame never does,
+  so "add `state sys { … }`" is advice that cannot be followed.
+* **A `for` binder or a component parameter as "unresolvable".** Both are scope
+  roots while the loop realizes (`lib.rs`), so a read of either resolves on the
+  first frame even with no seed. The two-binder form (`for s, i in feed key
+  s.id`) is a binder pair, not two undeclared names.
+* **A `view` inside a component body as the card's root.** The root is the
+  **top-level** `view`; `component Side { view Col { … } }` above `view root
+  Page` does not make `Col` the card's root.
+
+A bare (undotted) name is not treated as a read — rule 0 stays a dotted-path
+check — but it *is* counted as referenced, so the "target is neither referenced
+nor seeded" line is not printed about a name the card does pass somewhere.
