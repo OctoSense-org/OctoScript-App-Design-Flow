@@ -1,0 +1,12 @@
+{
+  "binary_sha256": "7b7f022f32b5777fbfbbbc7afccdd2b5e2a35ca9150bedc9040dfd98a8dac431",
+  "restored_same_card": true,
+  "restored_draft_revision": 3,
+  "modal_text_and_pointer_blocked": true,
+  "remote_approval_refused": true,
+  "cancel_returns_to_original_workspace": true,
+  "collapse_revokes_pending_review": true,
+  "resume_retains_draft": true,
+  "provider_send_attempts": 0,
+  "physical_approval": false
+}

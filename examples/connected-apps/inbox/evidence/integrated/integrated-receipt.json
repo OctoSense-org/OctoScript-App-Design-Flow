@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-06T19:38:57.906892+00:00",
+  "driver": "Codex using Makepad native instrument; model performs triage and draft tools",
+  "platform": "macOS hidden full OctoSense shell",
+  "data": "synthetic Gmail dependency; no live OAuth or email",
+  "model": "DeepSeek deepseek-v4-flash (real network inference)",
+  "signed_bundle_digest": "70809aa9a77f7f60885b46d9bcfd367d843fa1d4b3b5a7e0e3438353db339644",
+  "source_sha256": {
+    "src/workspace.splash": "ebd36766a7142e426db769dbcffec2ec667040d91b71303a7d465471243b1d87",
+    "bundle/main.splash": "69443181b72b52bf859cde36388a0f239d823c43310001b33c9c36401058c6ff",
+    "bundle/glance-workspace.splash": "5d30c155080c6f78bd5687fcdcc533c366ff6f04cd77db77d834d0d9e2cf6162",
+    "bundle/manifest.json": "58d312c5d029820d89ad8c800774865e23de07789808a4db628c8020759b7a74",
+    "bundle/tools.json": "49c74641c862730a39275423f9f9a4e0a18c03e33abcbb36505e2cd92b641136",
+    "bundle/AGENT.md": "71980af7c9da5cbcb8e3b93b43b9a890ab2100206c8ed0b2a6c2d4a4a1f31ac9",
+    "bundle/skills/incoming-mail-triage/SKILL.md": "6a0c9be41271adcfc84c7b6617b5d5dea1f8f5fec9f9ae3c24423cb66e1f2329",
+    "launch_integrated.py": "68b3c4d56eaeee4643f93bd88c740b84275c4fba03e75cfed43f07a748cdfed0",
+    "collect_integrated.py": "2f00a5d1a07611feb23e6edb9e5bad2166e841a66ef5dac1642293e542f0cfd2"
+  },
+  "visual_run_binary_sha256": "7b7f022f32b5777fbfbbbc7afccdd2b5e2a35ca9150bedc9040dfd98a8dac431",
+  "model_run_binary_sha256": "e2ac14b40d26abf1db451019b0a6ff0106f145fcfe9b0ad50b0fe9666049ebbb",
+  "turns": [
+    {
+      "kind": "human_draft_change",
+      "elapsed_seconds": 8.835,
+      "tools": [
+        "inbox_message",
+        "inbox_draft_get",
+        "inbox_draft_edit",
+        "inbox_draft_get"
+      ],
+      "decisions": [],
+      "tool_errors": []
+    },
+    {
+      "kind": "important_mail",
+      "elapsed_seconds": 9.006,
+      "tools": [
+        "inbox_event_status",
+        "inbox_message",
+        "inbox_notify",
+        "inbox_notify",
+        "inbox_event_decide"
+      ],
+      "decisions": [
+        "published"
+      ],
+      "tool_errors": [
+        "inbox.notify failed (host:invalid_args): inbox.notify: $.summary: longer than 200"
+      ]
+    },
+    {
+      "kind": "quiet_mail",
+      "elapsed_seconds": 4.628,
+      "tools": [
+        "inbox_event_status",
+        "inbox_message",
+        "inbox_event_decide"
+      ],
+      "decisions": [
+        "quiet"
+      ],
+      "tool_errors": []
+    }
+  ],
+  "durable_events": {
+    "pending": 0,
+    "completed": [
+      "fixtureclinic20261006",
+      "fixturenewsletter20261006"
+    ]
+  },
+  "publication": {
+    "count": 1,
+    "clinic_only": true,
+    "title": "Clinic needs confirmation: follow-up Tue Oct 13, 9:00 AM PT",
+    "summary": "Lakeview Clinic asks you to confirm your follow-up on Tue Oct 13, 2026 at 9:00 AM PT, or propose another time that morning. Bring your medication list."
+  },
+  "draft": {
+    "revision": 3,
+    "status": "draft",
+    "body": "Thank you. Could we change my appointment to Tuesday, October 13 at 10:30 AM Pacific instead of 9:00 AM?\nI will bring my medication list.",
+    "recipient": "appointments@example.test",
+    "submission_attempts": 0
+  },
+  "provider_requests": {
+    "history": 9,
+    "message": 11,
+    "messages": 2,
+    "profile": 1
+  },
+  "provider_send_attempts": 0,
+  "captures_sha256": {
+    "cold-summary.png": "ccb97b3cdb04d8a63b7c99a9fe3b6582f40e9209350b3751f792579358a5a475",
+    "06-chat-result.png": "7abb8910e20ba3b88eed4d186ee77fc3dca86eb5d46e402c6513bb92a0a01f29",
+    "cold-reply.png": "b5e3513e76067b81cf67e9ab9d1fc12329040768735c1f2cbf0d73c6f1449112",
+    "cold-refused.png": "a74270027d3333eea711ba9ebc4a4c2c3a22dc739daea30331034e1134359491",
+    "cold-resume.png": "911a97b1a88fd13bee14d735a4e36ae86c8d1cf8ba60be093de96ac3bf6b3d1b"
+  },
+  "capture_binary_sha256": {
+    "cold-summary.png": "7b7f022f32b5777fbfbbbc7afccdd2b5e2a35ca9150bedc9040dfd98a8dac431",
+    "06-chat-result.png": "e2ac14b40d26abf1db451019b0a6ff0106f145fcfe9b0ad50b0fe9666049ebbb",
+    "cold-reply.png": "7b7f022f32b5777fbfbbbc7afccdd2b5e2a35ca9150bedc9040dfd98a8dac431",
+    "cold-refused.png": "7b7f022f32b5777fbfbbbc7afccdd2b5e2a35ca9150bedc9040dfd98a8dac431",
+    "cold-resume.png": "7b7f022f32b5777fbfbbbc7afccdd2b5e2a35ca9150bedc9040dfd98a8dac431"
+  },
+  "visual_verdict": "separate original-pixel review required",
+  "unverified": [
+    "live Google OAuth",
+    "live Gmail reads or delivery",
+    "physical native send approval",
+    "Android keyboard and lifecycle",
+    "OnePlus 6",
+    "MiniMax"
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "status": "failed",
+  "visual_status": "requires_original_pixel_review",
+  "scope": "macOS full Shell; real DeepSeek, synthetic Gmail; no real OAuth or send",
+  "monitoring_status_refreshed_without_manual_refresh": true,
+  "error": "Native instrument HTTP error: {\"route\": \"click\", \"parameters\": {\"x\": 1243, \"y\": 16, \"wait\": 1}, \"status\": 404, \"body\": \"{\\\"err\\\":\\\"requested input frame could not be submitted; retry\\\"}\", \"milliseconds\": 19.136}",
+  "completed_cycles": 6,
+  "native_frame_wait_rtt_ms": {
+    "count": 251,
+    "p50": 8.716,
+    "p95": 21.199,
+    "max": 36.713,
+    "meaning": "HTTP native input with wait=1; not FPS or display latency"
+  },
+  "rss_kib": {
+    "start": 533360,
+    "end": 564560,
+    "min": 552944,
+    "max": 564560,
+    "meaning": "process RSS, includes full Shell, renderer and capture caches; finite-run trend is not a leak verdict"
+  },
+  "instrument_errors": [
+    {
+      "route": "click",
+      "parameters": {
+        "x": 1243,
+        "y": 16,
+        "wait": 1
+      },
+      "status": 404,
+      "body": "{\"err\":\"requested input frame could not be submitted; retry\"}",
+      "milliseconds": 19.136
+    }
+  ],
+  "zero_instrument_timeouts": false,
+  "performance_context": "Concurrent other native soaks and Android compilation; not an idle benchmark",
+  "responsiveness_status": "failed: observed native instrument errors",
+  "recorded_at": "2026-10-06T22:35:13.333986+00:00",
+  "driver_sha256": "cbcb7793965e98054d7548b689696db1354442e46b9e2b178b6329348389ba8c",
+  "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69",
+  "model_run_binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69",
+  "glance_card_source_sha256": "791757d29403011e48542139d70f9b2e285238c9a2de4db5527babfbf7a1297c",
+  "app_source_sha256": "42b2827a168cd74b1c945f1e567ced6380e934a9b68fbcd125c219fcb015d6b1",
+  "bundle_digest": "2ca58e32e871a5336c878691a0d6b257409a4208428f3731ee82fcae2e097caa",
+  "captures": {
+    "01-summary.png": {
+      "sha256": "a696ed77946a3d33d3e1e102f5a9deff96ccb1779574c817242590f2c4970d90",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "02-model-chat.png": {
+      "sha256": "690eb9d65e73ba97b3be117126891d816da53ead0136ec5cb62d3bc010c84834",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "cycle-01-review.png": {
+      "sha256": "fe2a32e4cefc83e85e0d6dfc0d9b9f154e0d4df6509d2efca2a475126b0b7481",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "cycle-01-reply.png": {
+      "sha256": "1dae28a14a171b043da5d03817e9aa861b961cdd6eadf313cfb0c1d78d42a823",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "FIRST-FAILURE.png": {
+      "sha256": "261f5e6cc08054daa2103bb70689db79262e26969ade0768918b45e5b3bd7656",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    }
+  },
+  "live_google_oauth": false,
+  "physical_approval": false,
+  "real_delivery": false,
+  "android": false
+}

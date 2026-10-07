@@ -2,13 +2,16 @@
 
 [English](README.md) | 简体中文
 
-这里包括 [image-to-card 流程](../flows/image-to-card/FLOW.md) 的参考旅程，
-以及在手机上生成和评审的 Android 原型。image-to-card 示例各自拥有服务代码、
-已评审的卡片场景、设计源文件、启动器、测试和 fixture 证据。
-运行时状态和个人数据均被忽略，不入库。重构之前它们位于 `apps/<name>/`。
+用 [image-to-card 流程](../flows/image-to-card/FLOW.md) 构建的参考旅程、用
+[script-app 流程](../flows/script-app/FLOW.md) 构建的受控应用，
+以及保留历史手机评审证据的 Android 模型原型档案。
+每个示例把源码、操作说明和验证证据放在一起；卡片旅程还包含服务代码、已评审场景、
+设计源文件、启动器、测试和 fixture 证据。
+运行时状态和个人数据均被忽略，不入库。旧的旅程示例在重构之前位于 `apps/<name>/`。
 
 | 示例 | 呈现方式 | 说明 |
 | --- | --- | --- |
+| [黑客松 Agent 应用](agentic-hackathon/README.zh-CN.md) | 原生 Splash 应用 / 应用 Agent 集成 | Email Action 和 Meeting Planner：虚构数据、真实 Agent 入口、明确标注的离线路径、确认、回执及原生回归测试。 |
 | [Aircon](aircon/README.zh-CN.md) | 原生卡片 / WASM | 一条从购买到安装的旅程，含 12 个画面状态和 14 个提取出的服务卡片变体。 |
 | [School](school/README.zh-CN.md) | 原生卡片 / WASM | 学校通知、日历与缴费旅程。 |
 | [Health](health/README.zh-CN.md) | 原生卡片 / WASM | 虚构的体检预约旅程。 |

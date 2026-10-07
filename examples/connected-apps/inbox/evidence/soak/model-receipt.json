@@ -1,0 +1,47 @@
+{
+  "model": "DeepSeek deepseek-v4-flash",
+  "data": "Synthetic Gmail; real model inference; native operator inputs",
+  "turns": [
+    {
+      "kind": "quiet_mail",
+      "elapsed_seconds": 9.652,
+      "tools": [
+        "inbox_event_status",
+        "inbox_message",
+        "inbox_event_decide"
+      ],
+      "decisions": [
+        "quiet"
+      ],
+      "tool_error_count": 0
+    },
+    {
+      "kind": "important_mail",
+      "elapsed_seconds": 19.325,
+      "tools": [
+        "inbox_event_status",
+        "inbox_message",
+        "inbox_notify",
+        "inbox_event_decide"
+      ],
+      "decisions": [
+        "published"
+      ],
+      "tool_error_count": 0
+    },
+    {
+      "kind": "human_draft_change",
+      "elapsed_seconds": 9.153,
+      "tools": [
+        "inbox_message",
+        "inbox_draft_get",
+        "inbox_draft_edit",
+        "inbox_draft_get"
+      ],
+      "decisions": [],
+      "tool_error_count": 0
+    }
+  ],
+  "model_run_binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69",
+  "bundle_digest": "2ca58e32e871a5336c878691a0d6b257409a4208428f3731ee82fcae2e097caa"
+}

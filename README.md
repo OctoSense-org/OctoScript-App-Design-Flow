@@ -25,6 +25,16 @@ the first-party apps moved to OctoSense-System-Apps and, since 2026-09-27,
 live in [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
 (OctoSense-System-Apps is archived and no longer public).
 
+## Connected apps: GitHub, Gmail and Google Calendar
+
+[Three development samples](examples/connected-apps/README.md) use shared
+provider login without creating an OctoSense account: Rinx-backed GitHub Notes,
+Inbox Assistant and Google Calendar. Their guide gives exact app IDs, matching
+host/tool revisions and native evidence. Provider services require the new
+connected-services OctoSense build; standalone `card-host` is insufficient for
+live login, and it lacks the native Markdown editor. Live provider/model and
+phone acceptance remain pending; Android Google login needs its native adapter.
+
 ## Code walkthrough
 
 [docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md) follows the Python CLI
@@ -66,11 +76,13 @@ organizers; none of that is decided here. What a contestant needs from here:
 | **Start** | The [Quick path](#quick-path) below: on 2026-09-26 a new app went from an empty directory to `— PASSED` in about 10 minutes (clones 1.5 min, setup 20 s, first build 1 min on an Apple silicon Mac), most of it writing the app. Every step is a shell command, so any coding agent (or none) can run it. |
 | **Machine** | macOS on Apple silicon is the verified platform. Windows and Linux are unverified. Rust stable (rustup), Python 3.9+ (macOS's own `/usr/bin/python3` works), git, a graphical session, about 3 GB free (the clones take about 1.9 GB, 1.3 GB of it this repository, where `--depth 1` is fine; the build about 1 GB), and network access for the first build. |
 | **What an app can do** | Its own storage, HTTPS requests to hosts it declares, pictures and web pages, camera, location, and Mail through a host service: [CAPABILITIES](docs/CAPABILITIES.md). The language and every API: [SCRIPT-API](docs/SCRIPT-API.md). Complete examples: the [System Apps](https://github.com/OctoSense-org/OctoSense/tree/main/apps) (News, Photos, Maps, Camera, Mail) and the [template](templates/script-app/README.md). |
-| **What it cannot do** | Hold a password, key or token; invent a capability or a host service (those are App Hub and shell changes); use `llm` or an `os.*` id (system apps only); be side-loaded onto a phone. `card-host` provides no host services, so a Mail-style app shows `no service answers` there. |
+| **What it cannot do** | Hold a password, key or token; invent a capability or a host service (those are App Hub and shell changes); use `llm` or an `os.*` id (system apps only); treat a developer preview/install as store publication. Newer OctoSense App Studio tools on Android have a separate [tested scope](docs/MODEL-VALIDATION.md#choose-the-test-surface). `card-host` provides no host services, so a Mail-style app shows `no service answers` there. |
 | **AI in the app** | Building needs none, with any coding agent or none. On the device, a store app can make one-shot model calls (`model`) and, once the person allows its agent, talk to the assistant (`octos.*`); `card-host` serves neither (`no service answers "octos"`), so build the app to be complete without them. What works, what is planned, and a verified example that handles "unavailable": [docs/AI-SERVICES.md](docs/AI-SERVICES.md). |
 | **Demo** | The app in `card-host` (`tools/octo run`, driven over the remote bridge) and real screenshots from `tools/octo shot`. To show it inside OctoSense, run the OctoSense desktop shell against a local catalog ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)). |
 | **Submit to the App Hub** | [Publishing](#publishing): `tools/octo check` passes, `hub scan` answered, then a person signs and opens a `Submit <app id> <version>` issue on [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues). A contest entry is not automatically an App Hub submission; ask the organizers what they need. |
 | **Test headless** | `tools/octo run … --hidden`: the window never appears, so an agent can test your app (and several apps at once, one `--port` each) without taking over your screen. [Headless testing](#headless-testing-many-apps-no-screen). |
+| **Validate model output** | [Development and validation loop](docs/MODEL-VALIDATION.md): Makepad input/capture, OctoSense App Studio and cross-APK capture boundaries, concrete recovery from model failures, and evidence tied to final source. |
+| **Agentic app references** | [Email Action and Meeting Planner](examples/agentic-hackathon/README.md): fake email/calendar data, real app-agent entry points, a labeled offline fallback, review-before-action and native interaction tests. |
 | **Stuck** | [QUICKSTART § Troubleshooting](docs/QUICKSTART.md#troubleshooting), then [SCRIPT-API § Gotchas](docs/SCRIPT-API.md#gotchas). |
 
 ## Agents start here
@@ -100,6 +112,24 @@ submission) are listed in [AGENTS.md](AGENTS.md) and
 [flows/README.md](flows/README.md#every-flow-follows-the-same-contract). An
 agent never fabricates an approval, a review result or a submission.
 
+### App card UX skill
+
+Use [octoscript-app-card-ux](skills/octoscript-app-card-ux/SKILL.md) when designing
+or accepting a Glance app card. It adds a complete summary → expanded card →
+full-workspace journey, shared Chat/Edit/Review state, keyboard and scrolling
+checks, and a repair loop that preserves the designated model's authorship.
+Its acceptance matrix distinguishes local behavior, actual agent execution,
+external effects and visual approval; historical scores cannot pass a new card.
+
+Any coding agent can read the skill directly alongside the selected flow.
+For Codex discovery, copy the whole `skills/octoscript-app-card-ux` directory into
+your Codex skills directory, then use it in a session that loads that catalog:
+`Use $octoscript-app-card-ux to design and validate this app card.` Refresh the
+installed copy when adopting later revisions. The skill does not provision a
+phone's system/app agent or replace App Hub publishing gates. It adapts to the
+chosen runtime, author and device; DeepSeek, MiniMax and OnePlus 6 are dated
+examples, not requirements for every app.
+
 ## Status
 
 The work script apps depend on merged on 2026-09-26; use `main` of each
@@ -108,7 +138,7 @@ repository.
 | Piece | State |
 | --- | --- |
 | Script-app gate, scan and `os.` id check in `hub` | On App Hub `main` ([OctoSense-App-Hub#4](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/4), merged as `0d36f50b`). The docs here were verified against its pre-merge commit `79a2c4f` and re-run end to end on `main` on 2026-09-26. |
-| Contained script apps and host services in the runtime | On makepad `main` ([OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30), merged as `cd812acd`; now at `c155f61d`), selected by Octoscript-Makepad `2cc5ef37`, the release `native-runtime.lock.json` pins. Verified before the merge at `d94e5e6`. |
+| Contained script apps and host services in the runtime | On makepad `main` ([OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30), merged as `cd812acd`; now at `68d1f4ec`), selected by Octoscript-Makepad `aa80f72c`, the release `native-runtime.lock.json` pins. Verified before the merge at `d94e5e6`. |
 | System and store apps in the shells | On `main` of [OctoSense](https://github.com/OctoSense-org/OctoSense), in the desktop shell and the phone's Home (landed as OctoSense-Desktop [#36](https://github.com/OctoSense-org/OctoSense/pull/36) and OctoSense-ROM #18, before the repositories merged). |
 | Submission route | An issue on OctoSense-App-Hub (below), as App Hub's [PUBLISHING § Submitting](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#submitting) describes. The index repository and release action it mentions do not exist yet. |
 | Installing your own bundle on a phone | Not supported. See [Running an app](#running-an-app). |
@@ -152,7 +182,7 @@ cd OctoScript-App-Design-Flow && python3 tools/setup-native.py
 tools/octo doctor                                        # finds hub and card-host; prints fixes if not
 
 # 2. Create an app from the template
-tools/octo new ~/apps/my-app --id my-notes --name "My Notes"
+tools/octo new ~/apps/my-app --platform macos --id my-notes --name "My Notes"
 
 # 3. Run it in a real window with the remote-control bridge
 tools/octo run ~/apps/my-app/bundle --port 8141 --detach
@@ -199,7 +229,7 @@ Python 3.9+, no third-party packages. Run `tools/octo <command> -h` for flags.
 | Command | Does |
 | --- | --- |
 | `doctor` | Checks Python, finds `hub` and `card-host` (rejecting GitHub's unrelated `hub` CLI), checks the template, and prints how to fix what is missing. |
-| `new <dir> [--id ID] [--name NAME] [--system]` | Copies `templates/script-app` (`bundle/`, `AGENTS.md`, `.gitignore`), sets id, name and version `0.1.0`, and stamps the bundle. Ids are `[a-z0-9.-]{1,64}`; `os.*` needs `--system`. |
+| `new <dir> --platform PLATFORM [--id ID] [--name NAME] [--system]` | Copies `templates/script-app` (`bundle/`, `AGENTS.md`, `.gitignore`), sets id, name and version `0.1.0`, and stamps the bundle. Ids are `[a-z0-9.-]{1,64}`; native/host ids and their final namespaces are refused. `os.*` needs `--system`. Repeat `--platform` for multiple targets; test each before publishing. |
 | `run <bundle> [--port N] [--hidden] [--detach] [--system] [--no-stamp] [--app-data DIR] [--static PREFIX=DIR]` | Runs `card-host --bundle … --app-data … --allow-unsigned --stamp` with `MAKEPAD_REMOTE=<port>` (default 8141). Refuses a port that is already taken. `--detach` returns once the app is admitted, its bridge listens and the first frame is drawn. The app's jail is `<app>/.local-state/<id>/`. |
 | `shot <port> <out.png> [--settle S]` | Saves a PNG of the running window (`GET /g?raw=1`) once the app's widgets exist and two frames in a row match (at most `--settle`, 2 s). |
 | `check <bundle> [hub check flags]` | `hub stamp`, then `hub check --allow-unsigned`; exits nonzero on a refusal. Does not restamp a signed manifest. |
@@ -495,11 +525,13 @@ Limits, stated plainly:
 
 ## Examples
 
-Image-to-card journeys and Android-authored prototypes. Each project records
-its source, review evidence and current limits.
+Reference journeys built with the image-to-card flow, contained apps built
+with the script-app flow, and Android-authored prototype archives. Each keeps
+its source, validation evidence and current limits alongside it.
 
 | Example | Surfaces | What it is |
 | --- | --- | --- |
+| [Agentic hackathon apps](examples/agentic-hackathon/README.md) | Native Splash / app agents | Email Action and Meeting Planner with fictional data, reviewed local actions and native tests |
 | [Aircon](examples/aircon/README.md) | Native cards / WASM | A purchase-to-installation journey: 12 screen states, 14 service-card variants |
 | [School](examples/school/README.md) | Native cards / WASM | School notice, calendar and payment |
 | [Health](examples/health/README.md) | Native cards / WASM | A fictional health-check booking |

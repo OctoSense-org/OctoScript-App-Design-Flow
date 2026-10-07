@@ -43,6 +43,15 @@ patch around it here.
    `widgets/src/splash*.rs`, `platform/script/src/`) or a working System App
    (`apps/*/bundle/main.splash`) and can cite. If neither has it, the app
    cannot use it: say so.
+6. **Validate model output against the final source.** Follow
+   [docs/MODEL-VALIDATION.md](docs/MODEL-VALIDATION.md) for native input, visual
+   review and focused repair. Check populated startup state, not just admission
+   or open success. Keep behavior, geometry and visual judgments separate;
+   preserve failures and distinguish operator-run checks from model-run checks.
+   For new Glance cards or card UX acceptance, also use
+   [the app-card UX skill](skills/octoscript-app-card-ux/SKILL.md): summary-to-workspace
+   transitions, shared editing state, keyboard/scrolling checks and source-bound
+   acceptance. This is a development workflow, not runtime app-agent provisioning.
 
 ## Rules for every app
 
@@ -58,15 +67,19 @@ patch around it here.
   answers `no service answers "…" on this device`. `llm` is for system apps
   only. Never put a model key in an app. Read
   [docs/AI-SERVICES.md](docs/AI-SERVICES.md) before adding one, and report
-  such a feature as not verified on a device. An app's own agent
-  (`"agent": {…, "tools": ["ask_user_question"]}`) is checked here only by
-  `hub check`. In the shells the person talks to it directly in the
-  "Ask <app>" panel the shell draws for every app with an agent, so the app
-  need not draw a chat of its own (desktop; the phone has no entry to the
-  panel yet). A store app's `tools.json` tools do not run in any shell yet,
-  so no screen may depend on its agent calling them. L0 cards that use
-  `sys.chat`, `sys.digest` or `model-copy` text need a newer runtime than
-  this repository pins: report them as not verified here.
+  each AI feature as unverified until exercised on its actual host. On the
+  connected-services OctoSense branch, an ordinary app can map its own
+  `tools.json` names to the reviewed shared-service `host_method` allowlist;
+  the target capability, risk, private-data rules and account checks still
+  apply. `implemented_by: "app"` does not gain an executable handler from
+  this mapping. The shell loads admitted `AGENT.md` and skill text as trusted
+  turn guidance, not as arbitrary executable kernel skills. Older shells and
+  standalone `card-host` do not gain these integrations from a gate pass.
+  Match OctoSense `feat/app-hub-connected-samples` with App Hub
+  `eaaffffd695caf7ebf6205c455377c1f8567b906` (or its compatible pinned successor).
+  See [connected samples](examples/connected-apps/README.md); retain manual
+  workflows and explicit missing-service states. Match L0 features to the
+  actual consumer runtime and record what was run.
 - **Only needed capabilities.** Each capability maps to something a screen
   does ([docs/CAPABILITIES.md](docs/CAPABILITIES.md)). Remove what is unused.
 - **No dummy screenshots.** Screenshots are captures of the real app in a real
@@ -76,12 +89,11 @@ patch around it here.
   for you; after signing, any edit needs stamp and sign again (human).
 - **Keep the bundle clean.** Only `manifest.json`, `listing.json`, the entry,
   artwork and screenshots go in `bundle/` (plus `tools.json`, `AGENT.md` and
-  `skills/` for an app that declares its own agent; the shells give it a peer,
-  `ask_user_question` and read access to its account folder, and register
-  its tools (which run only for system apps today), but do not install
-  `AGENT.md` or skills yet:
-  [docs/AI-SERVICES.md](docs/AI-SERVICES.md#an-apps-own-agent)). Notes, keys, logs, review packets
-  and `.local-state/` stay out.
+  `skills/` for an app that declares its own agent, and admitted UI template
+  assets). Guidance and mapped host tools require the matching shell described
+  above; declarations never create a service implementation by themselves.
+  [AI service details](docs/AI-SERVICES.md#an-apps-own-agent).
+  Notes, keys, logs, review packets and `.local-state/` stay out.
 - **Run headless.** Start apps with `tools/octo run … --hidden` (Makepad's
   headless mode: the window is never shown or focused, the remote bridge and
   screenshots work as usual), so you never take over the person's screen.
@@ -145,6 +157,8 @@ End with a report a person can check without rerunning anything:
 
 ## Syntax reminders for `main.splash`
 
+Splash comments use `//` or `/* … */`, never `.card`-style `#` prose. Keep a
+container open until after its children; indentation does not reopen it.
 `#x` for hex colors containing `e` (`#x1e1e2e`); `for i in n`, no `range()`;
 `name := Widget{}` to address a widget as `ui.name`; `draw_bg +: {…}` merges;
 separate `if` and `for` in `on_render` (no `else for`). The full list is in

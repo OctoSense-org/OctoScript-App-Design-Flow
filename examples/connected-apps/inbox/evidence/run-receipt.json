@@ -1,0 +1,22 @@
+{
+  "recorded_at": "2026-10-06T18:16:46.222496+00:00",
+  "binary_sha256": "9d4da9b59caf199696d29c27bf45f756cf91bdd09cc44a1fb647818a610d4a68",
+  "driver_sha256": "80b30f77f63d2579b31e60b55097c8b343a4c4ab105a983c2ff30528f15e8637",
+  "template_sha256": "5d30c155080c6f78bd5687fcdcc533c366ff6f04cd77db77d834d0d9e2cf6162",
+  "screenshots_sha256": {
+    "01-inbox.png": "7c13f4665a474a3418256149b6b0e0c10367765783881d560804534dab8d1338",
+    "02-reply.png": "dc39a876e8a78b2ca4c52f0d886721dfcc748499f6769afceb6f793600633704",
+    "03-chat-unavailable.png": "74197c88c508f26af43fbcdbfc289063178b00f87a6b9c613e4b99a0c9ad84d2"
+  },
+  "source_sha256": "69443181b72b52bf859cde36388a0f239d823c43310001b33c9c36401058c6ff",
+  "manifest_sha256": "14f9c12234ac424fd96c4ca97b181f86602ec790e4c87b06376a3e75512f8e93",
+  "driver": "Codex via Makepad native instrument",
+  "fixture": "fictional sample data only",
+  "platform": "macOS hidden card-host 412x892 logical",
+  "restart_check": false,
+  "checks": "passed; pixel review reported separately",
+  "live_oauth": false,
+  "live_model": false,
+  "gmail_delivery": false,
+  "android": false
+}

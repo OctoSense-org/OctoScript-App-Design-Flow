@@ -6,7 +6,7 @@ from OctoSense-App-Hub. It never decides admission itself: `octo check` prints
 exactly what `hub check` prints and exits with its status.
 
     tools/octo doctor
-    tools/octo new <dir> [--id ID] [--name NAME]
+    tools/octo new <dir> --platform PLATFORM [--id ID] [--name NAME]
     tools/octo run <bundle> [--port N] [--hidden] [--system] [--detach] [--no-stamp] [--app-data DIR]
     tools/octo shot <port> <out.png>
     tools/octo check <bundle> [hub check flags ...]
@@ -35,6 +35,15 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 TEMPLATE = REPO / "templates" / "script-app"
 ID_RE = re.compile(r"^[a-z0-9.-]{1,64}$")
+# Kept in step with App Hub app-contract/src/manifest.rs. The Hub remains the
+# admission authority; this early check avoids creating an unusable starter.
+RESERVED_NAMES = frozenset({
+    "agents", "apphub", "appcard", "browser", "calculator", "card", "clock",
+    "dev", "notes", "octos", "octoscode", "os", "reference", "reminders",
+    "rinx", "sheets", "shell", "system", "task", "terminal", "toolbox",
+    "weather", "workflow",
+})
+PLATFORMS = ("android", "ios", "macos", "windows", "linux", "openharmony", "web")
 PNG_MAGIC = b"\x89PNG\r\n\x1a\n"
 
 
@@ -86,13 +95,15 @@ def find_binary(name, env_var):
         searched.append(f"${env_var}={p}")
         if p.is_file() and os.access(p, os.X_OK):
             return p, f"${env_var}", searched
+    filenames = (name + ".exe", name) if sys.platform == "win32" else (name,)
     for d in candidate_dirs():
-        p = d / name
-        searched.append(str(p))
-        if p.is_file() and os.access(p, os.X_OK):
-            if name == "hub" and not is_octosense_hub(p):
-                continue
-            return p, str(d), searched
+        for filename in filenames:
+            p = d / filename
+            searched.append(str(p))
+            if p.is_file() and os.access(p, os.X_OK):
+                if name == "hub" and not is_octosense_hub(p):
+                    continue
+                return p, str(d), searched
     on_path = shutil.which(name)
     searched.append(f"PATH ({name})")
     if on_path:
@@ -144,7 +155,9 @@ def cmd_doctor(args):
             for s in searched:
                 print(f"           {s}")
 
-    cargo = shutil.which("cargo") or (str(Path.home() / ".cargo/bin/cargo") if (Path.home() / ".cargo/bin/cargo").exists() else None)
+    cargo_file = "cargo.exe" if sys.platform == "win32" else "cargo"
+    cargo_fallback = Path.home() / ".cargo" / "bin" / cargo_file
+    cargo = shutil.which("cargo") or (str(cargo_fallback) if cargo_fallback.is_file() else None)
     print(f"  [{'ok' if cargo else 'info'}]   cargo: {cargo or 'not on PATH (needed only to build hub and card-host)'}"
           + ("" if shutil.which("cargo") or not cargo else "  -- add ~/.cargo/bin to PATH"))
 
@@ -165,7 +178,7 @@ def cmd_doctor(args):
         print("       export OCTOSENSE_APP_HUB=<workspace>/OctoSense-App-Hub")
         print("       # or: export OCTO_HUB=/path/to/hub OCTO_CARD_HOST=/path/to/card-host")
         return 1
-    print("\nready: tools/octo new <dir> && tools/octo run <dir>/bundle")
+    print("\nready: tools/octo new <dir> --platform <target> && tools/octo run <dir>/bundle")
     return 0
 
 
@@ -180,6 +193,9 @@ def cmd_new(args):
     if app_id.startswith("os.") and not args.system:
         die("ids under 'os.' are reserved for system apps (OctoSense apps/); no store installs one. "
             "Pass --system only if you are developing a system app.")
+    namespace = app_id.rsplit(".", 1)[-1]
+    if app_id in RESERVED_NAMES or namespace in RESERVED_NAMES:
+        die(f"id {app_id!r} uses reserved native/host namespace {namespace!r}; choose an app-specific name")
     name = args.name or "My Notes"
 
     dest.mkdir(parents=True, exist_ok=True)
@@ -197,6 +213,11 @@ def cmd_new(args):
     manifest["integrity"] = {"bundle_blake3": ""}
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
 
+    listing_path = dest / "bundle" / "listing.json"
+    listing = json.loads(listing_path.read_text())
+    listing["platforms"] = list(dict.fromkeys(args.platform))
+    listing_path.write_text(json.dumps(listing, indent=2) + "\n")
+
     main = dest / "bundle" / "main.splash"
     if args.name:
         main.write_text(main.read_text().replace('text: "My Notes"', "text: " + json.dumps(name), 1))
@@ -209,6 +230,7 @@ def cmd_new(args):
         stamped = "NOT stamped (hub not found; `tools/octo run` stamps through card-host)"
     print(f"created {dest}")
     print(f"  id {app_id}, name {name!r}, version 0.1.0, bundle {stamped}")
+    print("  target platforms: " + ", ".join(listing["platforms"]) + "; verify each before publishing")
     print("next:")
     print(f"  tools/octo run {dest / 'bundle'} --port 8141")
     print("  edit bundle/main.splash, bundle/listing.json (every placeholder), bundle/assets/icon.svg")
@@ -525,7 +547,9 @@ def main():
     n.add_argument("dir")
     n.add_argument("--id", help="manifest id, [a-z0-9.-]{1,64} (default: from the directory name)")
     n.add_argument("--name", help="display name (also the app's title label)")
-    n.add_argument("--system", action="store_true", help="allow an os.* id (system apps only)")
+    n.add_argument("--platform", action="append", choices=PLATFORMS, required=True,
+                   help="target listing platform; repeat for more than one and verify each before publishing")
+    n.add_argument("--system", action="store_true", help="allow an os.* id (system apps only; native/host namespaces remain reserved)")
 
     r = sub.add_parser("run", help="run a bundle in card-host with the remote-control bridge")
     r.add_argument("bundle")

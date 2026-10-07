@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "tools": [
+    {
+      "name": "googlecalendar.calendars",
+      "description": "List calendars for the connected Google account.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "description": "The opaque Google connection bound to this app; never a token."
+          },
+          "page_token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "connection"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "risk": "read",
+      "background": false,
+      "shareable": false,
+      "private_data": true,
+      "implemented_by": "host-service",
+      "host_method": "gcalendar.calendars"
+    },
+    {
+      "name": "googlecalendar.cached",
+      "description": "Read the last completely synchronized agenda for the selected calendar.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "description": "The opaque Google connection bound to this app; never a token."
+          },
+          "calendar": {
+            "type": "string",
+            "description": "The selected Google Calendar ID."
+          }
+        },
+        "required": [
+          "connection",
+          "calendar"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "risk": "read",
+      "background": false,
+      "shareable": false,
+      "private_data": true,
+      "implemented_by": "host-service",
+      "host_method": "gcalendar.cached"
+    },
+    {
+      "name": "googlecalendar.refresh",
+      "description": "Synchronize Google Calendar and return a complete event snapshot; failed pages preserve the previous cache.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "description": "The opaque Google connection bound to this app; never a token."
+          },
+          "calendar": {
+            "type": "string",
+            "description": "The selected Google Calendar ID."
+          }
+        },
+        "required": [
+          "connection",
+          "calendar"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "risk": "read",
+      "background": false,
+      "shareable": false,
+      "private_data": true,
+      "implemented_by": "host-service",
+      "host_method": "gcalendar.refresh"
+    },
+    {
+      "name": "googlecalendar.event",
+      "description": "Read one Google event with its current ETag.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "description": "The opaque Google connection bound to this app; never a token."
+          },
+          "calendar": {
+            "type": "string",
+            "description": "The selected Google Calendar ID."
+          },
+          "event_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "connection",
+          "calendar",
+          "event_id"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "risk": "read",
+      "background": false,
+      "shareable": false,
+      "private_data": true,
+      "implemented_by": "host-service",
+      "host_method": "gcalendar.get"
+    }
+  ]
+}

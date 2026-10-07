@@ -1,0 +1,71 @@
+{
+  "status": "failed",
+  "scope": "macOS full Shell; real DeepSeek, synthetic Gmail; no real OAuth or send",
+  "error": "HTTP Error 404: Not Found",
+  "completed_cycles": 4,
+  "native_frame_wait_rtt_ms": {
+    "count": 152,
+    "p50": 13.273,
+    "p95": 31.37,
+    "max": 49.328,
+    "meaning": "HTTP native input with wait=1; not FPS or display latency"
+  },
+  "rss_kib": {
+    "start": 541312,
+    "end": 569328,
+    "min": 560528,
+    "max": 569328,
+    "meaning": "process RSS, includes full Shell, renderer and capture caches; finite-run trend is not a leak verdict"
+  },
+  "recorded_at": "2026-10-06T22:16:59.690722+00:00",
+  "driver_sha256": "83b2160c877523064c2935b294c631270696953258d6390debba9fa2d5524722",
+  "binary_sha256": "7b7f022f32b5777fbfbbbc7afccdd2b5e2a35ca9150bedc9040dfd98a8dac431",
+  "bundle_digest": "70809aa9a77f7f60885b46d9bcfd367d843fa1d4b3b5a7e0e3438353db339644",
+  "captures": {
+    "01-summary.png": {
+      "sha256": "3ff675162e085c6d68a99df26b866956a4c2dbedbbc84f7d7b9ad8140bc382b1",
+      "native_pixels": [
+        2800,
+        1798
+      ],
+      "binary_sha256": "7b7f022f32b5777fbfbbbc7afccdd2b5e2a35ca9150bedc9040dfd98a8dac431"
+    },
+    "02-model-chat.png": {
+      "sha256": "f28d40cce32d940ead2d5d3cefbf25dc26b400d1282141803ccb1ef4f562d0d1",
+      "native_pixels": [
+        2800,
+        1798
+      ],
+      "binary_sha256": "7b7f022f32b5777fbfbbbc7afccdd2b5e2a35ca9150bedc9040dfd98a8dac431"
+    },
+    "cycle-01-review.png": {
+      "sha256": "26276d1b24e07a32c136500426ab186c5514852dc6f12e9cad269f7255d400d1",
+      "native_pixels": [
+        2800,
+        1798
+      ],
+      "binary_sha256": "7b7f022f32b5777fbfbbbc7afccdd2b5e2a35ca9150bedc9040dfd98a8dac431"
+    },
+    "cycle-01-reply.png": {
+      "sha256": "ffb78c78baefbf09791415751c4743af7946e0e86ff3691fe5f26fc0a6ba14e1",
+      "native_pixels": [
+        2800,
+        1798
+      ],
+      "binary_sha256": "7b7f022f32b5777fbfbbbc7afccdd2b5e2a35ca9150bedc9040dfd98a8dac431"
+    },
+    "FIRST-FAILURE.png": {
+      "sha256": "469ec999a998f862101ffa0cd88c13e920ee0b5a94b9923eccb4d13801045fca",
+      "native_pixels": [
+        2800,
+        1798
+      ],
+      "binary_sha256": "7b7f022f32b5777fbfbbbc7afccdd2b5e2a35ca9150bedc9040dfd98a8dac431"
+    }
+  },
+  "live_google_oauth": false,
+  "physical_approval": false,
+  "real_delivery": false,
+  "android": false,
+  "note": "Earlier attempt stopped at native HTTP404. The original driver did not retain response body; cause remains unknown. Updated driver records errors without replaying input."
+}

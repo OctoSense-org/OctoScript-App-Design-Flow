@@ -4,7 +4,7 @@ What a script app's `main.splash` can use when it runs in a policed isolate
 (App Hub `card-host` and the shells' Card runner). Everything here was read in
 the runtime source (OctoSense-org/makepad `sandbox/contained-tier-gates` at
 `d94e5e6`, merged to `main` as #30, `cd812acd`; the file:line references
-were checked at `cd812acd`, the pinned runtime is now `c155f61d`) and, where
+were checked at `cd812acd`, the pinned runtime is now `68d1f4ec`) and, where
 marked **✓ run**, executed in
 `card-host` (App Hub `79a2c4f`) on macOS. Idioms are taken from the System
 Apps (OctoSense `apps/<name>/bundle/main.splash`), which are
@@ -123,6 +123,9 @@ Math is bare too: `floor ceil round abs min max clamp pow sqrt sin cos …`
 The app's jail (`<app-data>/<id>/`; in `card-host` `<app>/.local-state/<id>/`).
 Paths are relative to it; a leading `/` means the jail root; `..` above the
 root is an error; symlinks are refused (`MP/widgets/src/splash_storage.rs`).
+Only an app granted `storage` has a jail. Without it every call below errors
+with `storage not available in this context` (see
+[CAPABILITIES](CAPABILITIES.md)).
 
 | Call | Returns | |
 | --- | --- | --- |
@@ -291,6 +294,16 @@ Sources: `MP/widgets/src/widget_async.rs:15, 456-465`, `MP/platform/script/src/v
 
 ## Gotchas
 
+- **Comments depend on the language:** native Splash uses `//` and `/* … */`.
+  `#` starts color tokenization; it is not a prose-comment prefix. Copying
+  `.card`-style `#` comments into a Splash function can interrupt initialization
+  after some fields have already been filled. See the
+  [archived tokenizer/VM diagnostic](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/minimax/turn-14/history/diagnostics/round12-intermediate-hash-comment-diagnostic.json).
+- **Container boundaries:** `View{width: Fill height: Fit}` is already closed.
+  Indented widgets on following lines do not become its children. Keep the
+  container open through its intended children, and check for an extra closing
+  brace left after a layout edit. Open success alone does not prove a complete
+  root or startup callback; follow the [validation loop](MODEL-VALIDATION.md#run-a-complete-review-loop).
 - **Hex colors:** write `#x` before any hex color with an `e` next to a digit
   (`#x1e1e2e`, `#x2ecc71`); `#x` is always safe. Otherwise the tokenizer reads
   an exponent.

@@ -3,13 +3,16 @@
 English | [简体中文](README.zh-CN.md)
 
 Reference journeys built with the [image-to-card flow](../flows/image-to-card/FLOW.md),
-plus Android-authored prototypes reviewed on the phone. The image-to-card
-examples own their service code, reviewed card scenes, design source,
-launcher, tests and fixture evidence. Runtime state and personal data stay
-ignored. They were `apps/<name>/` before the restructure.
+contained apps built with the [script-app flow](../flows/script-app/FLOW.md),
+and Android-authored prototype archives with historical phone review evidence.
+Each example keeps its source, walkthrough and validation evidence together;
+the card journeys also include service code, reviewed scenes, design source,
+launchers, tests and fixture evidence. Runtime state and personal data stay
+ignored. The older journeys were `apps/<name>/` before the restructure.
 
 | Example | Surfaces | Description |
 | --- | --- | --- |
+| [Agentic hackathon apps](agentic-hackathon/README.md) | Native Splash apps / app-agent integration | Email Action and Meeting Planner: fictional data, real-agent entry points, labeled offline fallbacks, confirmation, receipts and native regression tests. |
 | [Aircon](aircon/README.md) | Native cards / WASM | One purchase-to-installation journey with 12 screen states and 14 extracted service-card variants. |
 | [School](school/README.md) | Native cards / WASM | School notice, calendar and payment journey. |
 | [Health](health/README.md) | Native cards / WASM | Fictional health-check booking journey. |

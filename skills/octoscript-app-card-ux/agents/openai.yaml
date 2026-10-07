@@ -1,0 +1,4 @@
+interface:
+  display_name: "OctoScript App Card UX"
+  short_description: "Design and validate Glance card workspaces"
+  default_prompt: "Use $octoscript-app-card-ux to design or review this app card and verify its key interactions on the target runtime."

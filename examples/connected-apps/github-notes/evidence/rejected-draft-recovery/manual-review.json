@@ -1,0 +1,13 @@
+{
+  "reviewer": "Codex",
+  "method": "Opened both original PNGs individually",
+  "result": "pass",
+  "findings": [
+    "Rejected saved draft shows repository/recovery surface and a visible explanation, with no editable blank source.",
+    "Explicit replacement restores normal icon editor; exact oversized recovery verified from private fixture state."
+  ],
+  "captures": {
+    "01-rejected-draft-retained.png": "bf551bcc7d276c8b6cb56a114ecbf90098eb2f51524d5192980d7d4af9251df7",
+    "02-explicit-replacement-retains-recovery.png": "bf71d642e3d12588cb6ec240b9ee0ad99b232ec5257f0157ab6b7b7ef1d7e398"
+  }
+}

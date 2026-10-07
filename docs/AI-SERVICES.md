@@ -20,6 +20,51 @@ on the glance screen through their own tools (Mail, Calendar). OctoSense's
 and [ADR 0004](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0004-native-apps-hosting-and-peers.md)
 describe the shell side.
 
+## Connected sample support — 2026-10-06
+
+The [connected samples](../examples/connected-apps/README.md) target OctoSense
+`feat/app-hub-connected-samples` with App Hub
+`eaaffffd695caf7ebf6205c455377c1f8567b906`. This is a newer, scoped implementation;
+**the dated baseline tables below do not describe these additions, and older
+installed shells do not acquire them from a bundle gate pass.** See the
+[shared OAuth/service guide](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/crates/oauth-service/README.md) for setup and platform status.
+
+- An ordinary app keeps its own namespace: `inbox.message` can declare
+  `implemented_by: "host-service"` and `host_method: "gmail.message"`.
+  App Hub admits only reviewed method mappings, with the target capability,
+  minimum risk and private-data rules. The shell routes the call under the
+  owner's active account and rejects foreign or stale connection arguments.
+  Generic `implemented_by: "app"` tools still need a script executor; this
+  change does not create one or authorize arbitrary remote writes.
+- The shell loads the admitted, digest-checked `AGENT.md` and skill text into
+  account-bound turn guidance. That is not executable kernel skill installation.
+  The consented peer uses its real host tools; a one-shot `model.complete` call
+  is not an app-agent event or a durable conversation.
+- The connected Gmail collector supports `<app namespace>.new_message`, such
+  as `inbox.new_message`, for an active account with admitted Gmail/auth grants,
+  background permission and agent consent. It establishes a forward baseline,
+  then routes new message IDs to the app peer. The peer decides importance;
+  only a durable quiet decision or host-verified persisted Glance card, together
+  with a successful turn, acknowledges the event. Failed work remains retryable.
+- `glance.publish` can resolve an admitted Splash `template` and JSON `initial`
+  data from the app's own installed bundle. The host binds its connection and
+  supplies the original UI; the Inbox agent supplies relevance and summary.
+  Editing, Chat and native review share one revisioned reply. No tool mapping,
+  model text or instrument click can approve Gmail sending.
+
+Provider consent creates an app-bound GitHub/Google connection, not an
+OctoSense cloud account. Account access and app-agent/model consent remain
+separate. The three samples keep private read tools non-shareable. Do not infer
+cross-app calendar booking, system-memory promotion, generic cron delivery or
+support on an older shell. Native local fixtures and connector tests have run;
+real OAuth/model/provider effects, integrated Glance journeys and the OnePlus 6
+remain unverified. Android Google login is unsupported until its native adapter
+is implemented.
+
+The remaining historical sections retain their dated evidence. Where they say
+store tools or guidance were unavailable, use the scoped update above for this
+new branch rather than treating those statements as a current global limit.
+
 The later sections cover what is being built on top: an app's own agent
 declared in its bundle, the tools it exposes, the system toolbox, publishing
 to the glance screen, `sys.digest` cards, AI-written text and in-card chat,
@@ -46,6 +91,7 @@ The deep version, for shell and native-module developers:
 
 ## Contents
 
+- [Connected sample support](#connected-sample-support--2026-10-06)
 - [The short answer](#the-short-answer)
 - [How the assistant is built](#how-the-assistant-is-built)
 - [The system agent and app agents](#the-system-agent-and-app-agents)
@@ -502,7 +548,7 @@ What an app author can do today:
   so do not use a field the shells' pin does not know.
 - This repository's `card-host` and `card-studio` are built against the
   runtime its [`native-runtime.lock.json`](../native-runtime.lock.json)
-  pins: Octoscript-Makepad `2cc5ef37`, which pins Octoscript `5991dfae`,
+  pins: Octoscript-Makepad `aa80f72c`, which pins Octoscript `2e37d9e6`,
   the shells' pin. It has `sys.digest`, `model-copy` in text slots,
   `sys.chat` and `ChatEntry` (OctoScript #40, #53).
 
@@ -519,9 +565,10 @@ from App Hub's News example
 agent (or `octos.*`, or ships `tools.json`) its own peer once the person
 allows it, registers the bundle's tools with it, and lets the person talk to
 it in the "Ask <app>" panel; the system agent can hand it work
-([The system agent and app agents](#the-system-agent-and-app-agents)). No
-shell installs `AGENT.md` or skills into the peer, selects a model or fires a
-trigger yet (ADR 0002, Implementation step 2).
+([The system agent and app agents](#the-system-agent-and-app-agents)). That 2026-10-01 baseline did not load guidance or fire triggers. The
+[connected-services update](#connected-sample-support--2026-10-06) loads admitted
+guidance and implements the bounded Gmail event route; it does not establish
+generic trigger delivery or automatic model selection from every manifest need.
 
 The contract is App Hub's
 [PUBLISHING § The app's agent and tools](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-apps-agent-and-tools);
@@ -544,9 +591,10 @@ OctoSense `crates/shell/src/host_tools/` at `f52620c` (read, not run):
 | System toolbox tools | the `research` / `crawl` capabilities | **coming** | with `toolbox-peers` ([below](#the-system-toolbox)); no system app declares `research` yet |
 | `dev.run` (a shell command) | developer mode, for the apps it covers | development builds only | the same |
 
-So a store app's agent can talk with the person and the system agent, ask
-the person questions, and read what the app keeps in its account folder; it
-cannot act through tools of its own yet. The relay also caps every agent at
+In the recorded baseline a store app’s agent could chat, ask questions and
+read its account workspace. The connected-services branch additionally runs
+reviewed `host_method` aliases under the owner’s active connection; arbitrary
+script tools remain unavailable. The relay also caps every agent at
 32 tool calls a turn and 1000 a day by default
 (`crates/shell/src/host_tools/relay.rs`).
 
@@ -802,8 +850,11 @@ by the App Hub gate (`crates/app-policy/src/agent.rs`):
   (`os.calendar` → `calendar`); otherwise it answers `<app> was not granted
   the <family> service`. It refuses an `app` tool for now (`<tool> runs in
   the app's own script; open the app to use it`; OctoSense
-  `crates/shell/src/host_tools/script_apps.rs`). A store app has no host
-  service of its own, so neither kind runs for it yet.
+  `crates/shell/src/host_tools/script_apps.rs`). On the connected-services
+  branch, an optional `host_method` maps an ordinary app’s namespaced tool to
+  a reviewed shared-service operation. The target capability, risk and private
+  data checks still apply; auth mutation, review approval and remote sends are
+  excluded. Omitting the mapping retains the namespace-based behavior above.
 - `background`, `shareable`, `private_data`, `confirm`, `outward`,
   `auto_approvable`: see
   [An app's own agent](#approvals-risk-and-confirm).
@@ -981,8 +1032,10 @@ The service is **available** on OctoSense `main`
   (`apps/mail/host-service/resources/notice.card`,
   `apps/calendar/host-service/resources/event.card`, `agenda.card`) and
   publish it as the app ([OctoSense#267](https://github.com/OctoSense-org/OctoSense/pull/267)).
-  A store app's agent has no such tool yet: its app publishes from its own
-  script.
+  In the recorded baseline a store app published from its script. The
+  connected-services branch admits its own tool alias to `glance.publish`
+  with the `glance` grant and can resolve an admitted template; see the
+  [scoped update](#connected-sample-support--2026-10-06).
 - The shell's demo publishes sample cards: `OCTOSENSE_GLANCE_DEMO=mail` two
   Mail cards (fake data), any other value but `0` a News digest.
 
@@ -1009,7 +1062,7 @@ on your glance screen".
 The L0 source is **available**: merged as
 [OctoScript#40](https://github.com/OctoSense-org/OctoScript/pull/40),
 repinned by [OctoScript-Makepad#50](https://github.com/OctoSense-org/OctoScript-Makepad/pull/50),
-and in the shells' runtime pin (Octoscript `5991dfae`). The shell filling it
+and in the shells' runtime pin (Octoscript `2e37d9e6`). The shell filling it
 is **coming**: [OctoSense#87](https://github.com/OctoSense-org/OctoSense/pull/87)
 (open; `crates/shell/src/glance_digest.rs`). A digest's `summary` and its
 points' `text` and `label` are model text, shown marked AI-written
@@ -1088,7 +1141,7 @@ view root  Surface(pad: .page) {
 (Its header comment is shortened here.) The shells' L0 checker admits
 `sys.digest`; until #87 lands no shell fills it from the toolbox's runs
 (what such a card then shows was not run for this page). This repository's
-pinned runtime (Octoscript `5991dfae`) includes OctoScript#40, so its
+pinned runtime (Octoscript `2e37d9e6`) includes OctoScript#40, so its
 checker knows the source as well (not run for this page).
 
 ## AI-written text and in-card chat: `model-copy`, `sys.chat`

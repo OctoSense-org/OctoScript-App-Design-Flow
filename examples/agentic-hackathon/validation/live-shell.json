@@ -1,0 +1,340 @@
+{
+  "recorded_date": "2026-10-03",
+  "operator": "Codex drove desktop Makepad input and Android adb taps/swipes; DeepSeek answered the app-agent turns and called scoped file tools. DeepSeek did not operate the screen.",
+  "source_commit": "9e8c7eee4a073ed207bee05b402454a08776e720",
+  "provider": {
+    "family": "deepseek",
+    "model": "deepseek-v4-flash",
+    "fallbacks": [],
+    "credentials": "host private profile only; excluded from this record"
+  },
+  "runtime": {
+    "OctoSense": "ccf8013f2bd7adbb6c20d5f52f47bcfbcbb55313",
+    "OctoSense-App-Hub": "0d5b47a2ae9eb98020feca26b7c895a3cf797dc1",
+    "makepad_base": "c155f61d0e1600d2ec474209374444a38a09a470",
+    "makepad_patch_lock": {
+      "schema_version": 1,
+      "makepad": {
+        "base_revision": "c155f61d0e1600d2ec474209374444a38a09a470",
+        "patch": "tools/runtime-patches/makepad-settings.patch",
+        "sha256": "b17352ebf59e50ab3db6ff1cb825c4e006bcdff47d83522e372b8fe585e57570",
+        "tree": "3eadf628ee75eb4c9b672446bf14c7b95d9f0f5b",
+        "product_fixes": [
+          "Settings integration: Android IME synchronization, accessibility and reduced motion, GLES program-cache validation, obscured-gesture cancellation and scroll-position observation.",
+          "Contained-app isolation and secret-input restrictions come from the pinned upstream runtime; the Settings overlay preserves those gates.",
+          "System Back callback owners suppress compatibility Back keys to avoid duplicate navigation on Android 13+.",
+          "A cancelled search's keyboard hides once: an editor session going inactive retires its input connection without restarting input, which brought the keyboard back empty while it was hiding (Android 11).",
+          "Windows remote grabs send raw RGBA pixels to the bounded PNG worker before presenting, keeping full-size encoding off the UI thread and scaling before encoding.",
+          "Windows frame completion: backport Makepad work c508ab0c8 GPU completion polls around native and hosted repaint so upload buffers can retire."
+        ],
+        "stacked": [
+          {
+            "patch": "tools/runtime-patches/makepad-system-back.patch",
+            "sha256": "3268cb486bbd05db7bb6920c26007e437017b6234a4d9f045a99a7d1954b7427"
+          },
+          {
+            "patch": "tools/runtime-patches/makepad-ime-inactive-no-restart.patch",
+            "sha256": "8ae6a6aceb93a013234c724ffdc6efc614cc8b9dddd7cae6ed8b1c569b94fdf1"
+          },
+          {
+            "patch": "tools/runtime-patches/makepad-windows-remote-capture.patch",
+            "sha256": "2c0fabb6f5c0733d9d3356cde4cc7c8d40aabebf9a4752740c94f332b7e1317a"
+          },
+          {
+            "patch": "tools/runtime-patches/makepad-windows-frame-completion.patch",
+            "sha256": "8d58e16bc12aae5f4313fdc5c9d3f6944b96ee20e609fe5ff069fe2403954595"
+          }
+        ]
+      }
+    },
+    "runtime_setup_check": "python3 tools/setup.py --check passed",
+    "octos": "056173e85b150e387805fc307fe231064ac1ed35"
+  },
+  "android": {
+    "device": "OnePlus 6 / ONEPLUS_A6003",
+    "os": "Android 15",
+    "screen_pixels": [
+      1080,
+      2280
+    ],
+    "package": "dev.makepad.octosense.hackathon",
+    "label": "Hackathon Demos",
+    "apk": {
+      "package": "dev.makepad.octosense.hackathon",
+      "apk_sha256": "daad3cd0a6af52118e47ea32d32efd5a2d8b9a46482b9e88039dbdfea5337651",
+      "source": "ccf8013f2bd7adbb6c20d5f52f47bcfbcbb55313",
+      "debuggable": true
+    },
+    "install": "adb streamed installation succeeded; original Home and Bridge packages retained",
+    "entry": "Private App Hub -> Open; signed bundles copied from the desktop Store installation; normal Android capability admission and separate agent consent retained",
+    "screenshots": "adb exec-out screencap -p; unmodified; visually reviewed",
+    "email": {
+      "state_after_confirmation": {
+        "version": 1,
+        "done": [
+          true,
+          false,
+          false
+        ],
+        "drafts": [
+          "Hi Maya, Sam can join Friday's science museum visit. Thanks for the 09:00 departure and 15:30 return times — I'll note them. Alex",
+          "",
+          ""
+        ],
+        "origins": [
+          "AI-written / app agent / review before use",
+          "Your draft",
+          "Your draft"
+        ],
+        "outbox": [
+          {
+            "message_id": "school-101",
+            "to": "maya@example.invalid",
+            "subject": "Re: Permission slip for Friday",
+            "body": "Hi Maya, Sam can join Friday's science museum visit. Thanks for the 09:00 departure and 15:30 return times — I'll note them. Alex"
+          }
+        ],
+        "activity": [
+          "Agent drafted a proposal for school-101",
+          "Approved local reply to maya@example.invalid"
+        ]
+      },
+      "restart": "Full package restart, app reopened, AI draft and delivery receipt visible; one outbox entry persisted"
+    },
+    "meeting": {
+      "model_answer": "Two candidate slots have no conflicts for any of the three attendees, so a 30-minute design review on **Monday 5 October 2026 (UTC)** fits in either:\n\n- **14:00–14:30 UTC** ✅ (earliest free slot that works for all three)\n- 15:30–16:00 UTC ✅ (later alternative)\n\n**Recommended: 14:00–14:30 UTC** — it's the earliest window with zero conflicts. It clears Maya's 10:00–10:30 research interview, Alex's 11:00–11:30 stand-up, and Jordan's 13:00–13:30 customer notes, and it leaves the rest of the afternoon open.\n\nThe other two candidates are ruled out: 10:00–10:30 clashes with Maya's interview, and 11:00–11:30 clashes with Alex's stand-up.\n\nThis is a recommendation only — no booking or invitation has been made. Please confirm in the UI, which will re-check for conflicts before anything is reserved.",
+      "state_after_stale_confirmation": {
+        "version": 1,
+        "extra_conflict": true,
+        "all_busy": false,
+        "booking": null,
+        "activity": [
+          "Changed Jordan's fictional 14:00 availability"
+        ]
+      },
+      "state_after_alternative_confirmation": {
+        "version": 1,
+        "extra_conflict": true,
+        "all_busy": false,
+        "booking": {
+          "id": "demo-design-review",
+          "slot_id": "slot-1530",
+          "title": "Design review",
+          "date": "2026-10-05",
+          "timezone": "UTC",
+          "start": 930,
+          "end": 960,
+          "when": "15:30–16:00 UTC",
+          "attendees": [
+            "alex@example.invalid",
+            "maya@example.invalid",
+            "jordan@example.invalid"
+          ]
+        },
+        "activity": [
+          "Changed Jordan's fictional 14:00 availability",
+          "Confirmed demo-design-review / 15:30–16:00 UTC"
+        ]
+      },
+      "restart": "Full package restart, app reopened, 15:30 receipt visible",
+      "stop": "Busy state captured; Stop tapped; Stopped locally still visible after more than 30 seconds; booking unchanged. Forced late delivery and upstream provider cancellation not verified."
+    },
+    "workspace_reads": {
+      "meeting-planner": [
+        {
+          "tool": "files.read",
+          "arguments": {
+            "path": "calendar.json"
+          }
+        },
+        {
+          "tool": "files.read",
+          "arguments": {
+            "path": "state.json"
+          }
+        }
+      ],
+      "email-action": [
+        {
+          "tool": "files.read",
+          "arguments": {
+            "path": "inbox.json"
+          }
+        },
+        {
+          "tool": "files.read",
+          "arguments": {
+            "path": "state.json"
+          }
+        }
+      ]
+    },
+    "first_successful_turn_tool_audit": {
+      "email-action": [
+        {
+          "ts": "2026-10-03T22:39:07.707638918+00:00",
+          "tool": "files.list",
+          "app": "demo.email-action",
+          "risk": "read",
+          "decision": "allowed",
+          "outcome": "ok",
+          "duration_ms": 7
+        },
+        {
+          "ts": "2026-10-03T22:39:07.708346261+00:00",
+          "tool": "files.search",
+          "app": "demo.email-action",
+          "risk": "read",
+          "decision": "allowed",
+          "outcome": "ok",
+          "duration_ms": 7
+        },
+        {
+          "ts": "2026-10-03T22:39:09.055247563+00:00",
+          "tool": "files.read",
+          "app": "demo.email-action",
+          "risk": "read",
+          "decision": "allowed",
+          "outcome": "ok",
+          "duration_ms": 7
+        },
+        {
+          "ts": "2026-10-03T22:39:09.057133657+00:00",
+          "tool": "files.read",
+          "app": "demo.email-action",
+          "risk": "read",
+          "decision": "allowed",
+          "outcome": "ok",
+          "duration_ms": 9
+        }
+      ],
+      "meeting-planner": [
+        {
+          "ts": "2026-10-03T22:40:59.273069813+00:00",
+          "tool": "files.list",
+          "app": "demo.meeting-planner",
+          "risk": "read",
+          "decision": "allowed",
+          "outcome": "ok",
+          "duration_ms": 10
+        },
+        {
+          "ts": "2026-10-03T22:41:00.403031062+00:00",
+          "tool": "files.read",
+          "app": "demo.meeting-planner",
+          "risk": "read",
+          "decision": "allowed",
+          "outcome": "ok",
+          "duration_ms": 9
+        },
+        {
+          "ts": "2026-10-03T22:41:00.406389812+00:00",
+          "tool": "files.read",
+          "app": "demo.meeting-planner",
+          "risk": "read",
+          "decision": "allowed",
+          "outcome": "ok",
+          "duration_ms": 11
+        }
+      ]
+    }
+  },
+  "desktop": {
+    "email": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "draft": "Hi Maya, Sam can join Friday's science museum visit. Thank you for sharing the 09:00 departure and 15:30 return times. I will confirm with you by Wednesday as requested. Alex",
+      "recipient": "maya@example.invalid",
+      "outbox_count": 1,
+      "origin": "AI-written / app agent / review before use"
+    },
+    "meeting_state": {
+      "version": 1,
+      "extra_conflict": true,
+      "all_busy": false,
+      "booking": {
+        "id": "demo-design-review",
+        "slot_id": "slot-1530",
+        "title": "Design review",
+        "date": "2026-10-05",
+        "timezone": "UTC",
+        "start": 930,
+        "end": 960,
+        "when": "15:30–16:00 UTC",
+        "attendees": [
+          "alex@example.invalid",
+          "maya@example.invalid",
+          "jordan@example.invalid"
+        ]
+      },
+      "activity": [
+        "Changed Jordan's fictional 14:00 availability",
+        "Confirmed demo-design-review / 15:30–16:00 UTC"
+      ]
+    },
+    "meeting": "DeepSeek recommended 14:00; UI rejected it after an added conflict, then confirmed 15:30",
+    "consent": "Allowed each app through the normal host consent sheet"
+  },
+  "known_limits": [
+    "Initial automated direct cold launch of Email Action exceeded the 64 ms Splash budget and rendered no view; later App Hub -> Open worked, including after package restarts. No runtime budget change was made.",
+    "Calendar answers display Markdown markers as ordinary text.",
+    "Plan selection redraws its scroller at the top; scroll down again for review.",
+    "Fresh Android Store download/install, forced late-response races, provider-side cancellation, Android duplicate/undo/offline matrix, other Android devices and public publication are not covered by this follow-up."
+  ],
+  "bundle_source_sha256": {
+    "email-action/bundle/AGENT.md": "e19b5909b2e17bfa69c1cf6b605452d0f56f2838e1ccd98a817520aadf4015ec",
+    "email-action/bundle/assets/icon.svg": "a5c623ebe1db3953f9180d3077f70ff6ac6f76850e34d6dc83e3b7f563b1b922",
+    "email-action/bundle/listing.json": "931a70215455f527a76dc3f863f1ad8ee222ea6949834a056646208d2a3ce4a2",
+    "email-action/bundle/main.splash": "ddb17913f3965185d44df6b263469323a94e2daefc65dd7dbd935ec4d5e1f118",
+    "email-action/bundle/manifest.json": "628a8dc07426c44d0b708dd5452868eaf9a4452d355d1b794fb92def445b4618",
+    "email-action/bundle/screenshots/01-main.png": "ce946b6ffa01b5e42e45a2fb38bb12238914280f5b6fcb969066afbcbc3c9b94",
+    "email-action/bundle/screenshots/02-review.png": "89043dfb5aca8476889a44cecf8db9c0af154a989ce5029fbb57c844b5156cd4",
+    "email-action/bundle/screenshots/03-receipt.png": "ce1f6e59df5d536d41f21316123ccc3906a6794192e5b13b11e902da8694d21a",
+    "email-action/bundle/screenshots/04-agent-unavailable.png": "580974878de71fb769b009c408beac417c65c61eaf449332e38a06095c490be7",
+    "meeting-planner/bundle/AGENT.md": "389a4508a8baa6765ead2b472cbcf4c42417225cd13d082875d371bc0d7b0b9d",
+    "meeting-planner/bundle/assets/icon.svg": "fc176502210c846a31339938a5043d6c82dc687229266d93a8dbfa95a8ddadb6",
+    "meeting-planner/bundle/listing.json": "006826095f6aba0e6d67bb8edb05ea876288efd3f4cd312926ead982126fbef4",
+    "meeting-planner/bundle/main.splash": "0e3338bc9f9543dd2a247680d2286355104333e2fb4725badd82baca53c92259",
+    "meeting-planner/bundle/manifest.json": "02e8c03f3ebbad10accb68679dd46eac1b6433740c58bbd9a6b34175153feaef",
+    "meeting-planner/bundle/screenshots/01-main.png": "133b1d2ac66ce4158036f5e409013a189a97db8334b13a2c88a2f3adc5549e10",
+    "meeting-planner/bundle/screenshots/02-review.png": "83b38808400479b5a4744c34072320429a2f48b4c21abb2b603136339696fa9c",
+    "meeting-planner/bundle/screenshots/03-receipt.png": "27489201565f90c57cb07346b25353b3b7168a0c298b9728e4ea1b31f27e5843",
+    "meeting-planner/bundle/screenshots/04-agent-unavailable.png": "212fcdf9343aff8157b038ed28dc89c086d6c71e394cc41ddec46593f4aecbfc"
+  },
+  "android_installed_bundle_sha256": {
+    "email-action": {
+      "assets/icon.svg": "a5c623ebe1db3953f9180d3077f70ff6ac6f76850e34d6dc83e3b7f563b1b922",
+      "AGENT.md": "e19b5909b2e17bfa69c1cf6b605452d0f56f2838e1ccd98a817520aadf4015ec",
+      "listing.json": "931a70215455f527a76dc3f863f1ad8ee222ea6949834a056646208d2a3ce4a2",
+      "main.splash": "ddb17913f3965185d44df6b263469323a94e2daefc65dd7dbd935ec4d5e1f118",
+      "screenshots/03-receipt.png": "ce1f6e59df5d536d41f21316123ccc3906a6794192e5b13b11e902da8694d21a",
+      "screenshots/01-main.png": "ce946b6ffa01b5e42e45a2fb38bb12238914280f5b6fcb969066afbcbc3c9b94",
+      "screenshots/04-agent-unavailable.png": "580974878de71fb769b009c408beac417c65c61eaf449332e38a06095c490be7",
+      "screenshots/02-review.png": "89043dfb5aca8476889a44cecf8db9c0af154a989ce5029fbb57c844b5156cd4",
+      "manifest.json": "a0bd448a724f45e887e7479df6e312d637c6b7fa4385a5ecf34160f5dc789731"
+    },
+    "meeting-planner": {
+      "main.splash": "0e3338bc9f9543dd2a247680d2286355104333e2fb4725badd82baca53c92259",
+      "assets/icon.svg": "fc176502210c846a31339938a5043d6c82dc687229266d93a8dbfa95a8ddadb6",
+      "manifest.json": "5ee80b85f181a92a9531f202deb5b5cb5723c5f0ed076ff2e4f28e8c87f3924b",
+      "AGENT.md": "389a4508a8baa6765ead2b472cbcf4c42417225cd13d082875d371bc0d7b0b9d",
+      "listing.json": "006826095f6aba0e6d67bb8edb05ea876288efd3f4cd312926ead982126fbef4",
+      "screenshots/01-main.png": "133b1d2ac66ce4158036f5e409013a189a97db8334b13a2c88a2f3adc5549e10",
+      "screenshots/02-review.png": "83b38808400479b5a4744c34072320429a2f48b4c21abb2b603136339696fa9c",
+      "screenshots/03-receipt.png": "27489201565f90c57cb07346b25353b3b7168a0c298b9728e4ea1b31f27e5843",
+      "screenshots/04-agent-unavailable.png": "212fcdf9343aff8157b038ed28dc89c086d6c71e394cc41ddec46593f4aecbfc"
+    }
+  },
+  "bundle_comparison": "Every non-manifest phone file matched the repository byte-for-byte. hub sign-manifest canonicalized defaults and added the private test signature; bundle_blake3 remained identical.",
+  "capture_sha256": {
+    "phone/email-answer.png": "61b89773b602392ad5e8f714f97008ed2014e8f415d4714ae23cf7033909179b",
+    "phone/email-consent.png": "6f59ac2bd664a2e0f90b091546a4aadea7a473f0841a213ce1bd6177a6c171a8",
+    "phone/email-restarted-receipt.png": "7336c2652aae7c06011e5f5f42bf3d03b38cba93158e59300e8e7a1d7cbe5573",
+    "phone/email-review.png": "87f07b93027b4de5a24152346827eb87814a4cb8927dbe8e674b60c11256cb41",
+    "phone/meeting-answer.png": "82d8a3d6ed0bc5ba6673c91c5be29469c2f13183f8e197962b015ac87ab770e9",
+    "phone/meeting-conflict.png": "773b3332d4a9c64d58ace6654fabc92b495df7d949741bfd60a030756a8cc476",
+    "phone/meeting-restarted.png": "14814c9eb42f3d6b57f9ad29048dc74387651dffdb79f9d825aae076035d081e",
+    "phone/meeting-review1530.png": "a350d1eb467af63096991e9ffa43ba362a4be8e86141af200979e8d160890aa1",
+    "phone/meeting-stopped-later.png": "1515afb3f5dfb27be18225425ad996c08aa57ad9d1da9533573c91808f0a8371"
+  }
+}
