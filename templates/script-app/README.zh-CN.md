@@ -4,9 +4,7 @@
 
 未注明中文版的链接指向英文文档。
 
-这个模板是一个可运行的 OctoSense 脚本应用：**My Notes**。输入一条笔记，应用把它存进自己的
-存储，点一下即可删除。`tools/octo new <dir> --platform macos` 会复制这个模板，设置 id 和
-名称，并把平台写入商店信息；`tools/octo run <dir>/bundle` 会运行它。
+这个模板是一个可运行的 OctoSense 脚本应用：**My Notes**。输入一条笔记，应用把它存进自己的存储，点一下即可删除。`tools/octo new <dir> --platform macos` 会复制这个模板，设置 id 和名称，并把平台写入商店信息；`tools/octo run <dir>/bundle` 会运行它。
 
 ```text
 script-app/
@@ -28,30 +26,20 @@ script-app/
 以下内容都能在 `card-host` 中运行：
 
 - 用顶层 `let` 保存状态，由 `start_timeout(0.05, …)` 调度的函数加载；
-- 在应用的 jail（私有数据目录）中使用 `fs.exists`、`fs.read` 和 `fs.write`，配合
-  `parse_json` 与 `to_json`；
+- 在应用的 jail（私有数据目录）中使用 `fs.exists`、`fs.read` 和 `fs.write`，配合 `parse_json` 与 `to_json`；
 - `ui.<id>.text()`、`set_text()` 和 `render()`；
-- 带空状态的 `on_render` 列表、一个 `ButtonFlat{on_click}` 按钮，以及
-  `GestureView{on_tap}` 行。
+- 带空状态的 `on_render` 列表、一个 `ButtonFlat{on_click}` 按钮，以及 `GestureView{on_tap}` 行。
 
-空状态是 `for` 之前单独的一个 `if`。不要在 `on_render` 中写 `if … else for …`：
-测试中空分支什么都没画，屏幕上还残留着旧的行。
+空状态是 `for` 之前单独的一个 `if`。不要在 `on_render` 中写 `if … else for …`：测试中空分支什么都没画，屏幕上还残留着旧的行。
 
 ## 发布之前要补完的内容
 
 模板有意留着不完整，以免有人误把复制出来的应用发布出去：
 
-- `listing.json` 引用了 `screenshots/01-main.png`，但这个文件并不存在。在你用
-  `tools/octo shot` 截取真实截图之前，准入检查会拒绝这个应用包。不要放占位图片。
-- 发布者名称、支持 URL 和隐私政策 URL 都是占位内容，描述的最后一句（“Replace this with …”）
-  也是。`tools/octo check` 会提示它们；发布者字段由人来替换。
-- `assets/icon.svg` 是模板自带的图标，请换成你自己的（见 App Hub 的
-  [ICONS.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/ICONS.zh-CN.md)）。
-- `platforms` 是空列表，准入检查会拒绝空列表（`listing names no platforms`）。
-  `tools/octo new` 必须指定 `--platform`，并写入你传入的平台；每个平台写一次。传入平台只是
-  声明，不是测试：发布之前，只保留你实际运行过的平台，并由人确认这一声明。在 Mac 上运行
-  `card-host` 测试的是 `macos`，不是 Android。
-- 如果修改 id，它的最后一段不能是 App Hub 的保留名（`notes`、`weather`、`terminal`
-  等）。`tools/octo new` 创建应用时会拒绝保留名；之后改过的 id 若用了保留名，准入检查会拒绝。
+- `listing.json` 引用了 `screenshots/01-main.png`，但这个文件并不存在。在你用 `tools/octo shot` 截取真实截图之前，准入检查会拒绝这个应用包。不要放占位图片。
+- 发布者名称、支持 URL 和隐私政策 URL 都是占位内容，描述的最后一句（“Replace this with …”）也是。`tools/octo check` 会提示它们；发布者字段由人来替换。
+- `assets/icon.svg` 是模板自带的图标，请换成你自己的（见 App Hub 的 [ICONS.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/ICONS.zh-CN.md)）。
+- `platforms` 是空列表，准入检查会拒绝空列表（`listing names no platforms`）。`tools/octo new` 必须指定 `--platform`，并写入你传入的平台；每个平台写一次。传入平台只是声明，不是测试：发布之前，只保留你实际运行过的平台，并由人确认这一声明。在 Mac 上运行 `card-host` 测试的是 `macos`，不是 Android。
+- 如果修改 id，它的最后一段不能是 App Hub 的保留名（`notes`、`weather`、`terminal` 等）。`tools/octo new` 创建应用时会拒绝保留名；之后改过的 id 若用了保留名，准入检查会拒绝。
 
 下一步：[docs/QUICKSTART.zh-CN.md](../../docs/QUICKSTART.zh-CN.md)。

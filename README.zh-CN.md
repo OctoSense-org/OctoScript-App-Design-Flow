@@ -4,20 +4,11 @@
 
 未注明中文版的链接指向英文文档。
 
-[OctoSense](https://github.com/OctoSense-org) 应用的开发工具集。它带着你（或编码
-Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到一个隔离运行的应用包：通过
-[OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 的准入检查，
-只待人工签名并提交。
+[OctoSense](https://github.com/OctoSense-org) 应用的开发工具集。它带着你（或编码 Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到一个隔离运行的应用包：通过 [OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 的准入检查，只待人工签名并提交。
 
-仓库包含：给 Agent 的规则（[AGENTS.md](AGENTS.md)）、分步骤的设计流程
-（[flows/](flows/README.zh-CN.md)）、开发者文档（[docs/](docs/)）、可直接运行的应用模板
-（[templates/script-app](templates/script-app/README.zh-CN.md)）、完整示例
-（[examples/](examples/README.zh-CN.md)），以及 `tools/octo`：一个小型命令行工具，封装
-App Hub 的 `card-host` 和 `hub` 程序。`tools/octo` 从不决定准入：`check` 先为未签名的
-应用包写入摘要（stamp），再原样转交 `hub check` 的输出和退出码。
+仓库包含：给 Agent 的规则（[AGENTS.md](AGENTS.md)）、分步骤的设计流程（[flows/](flows/README.zh-CN.md)）、开发者文档（[docs/](docs/)）、可直接运行的应用模板（[templates/script-app](templates/script-app/README.zh-CN.md)）、完整示例（[examples/](examples/README.zh-CN.md)），以及 `tools/octo`：一个小型命令行工具，封装 App Hub 的 `card-host` 和 `hub` 程序。`tools/octo` 从不决定准入：`check` 先为未签名的应用包写入摘要（stamp），再原样转交 `hub check` 的输出和退出码。
 
-本仓库面向黑客松选手、其他 OctoSense 应用开发者，以及与他们协作的编码 Agent。
-本仓库原名 *OctoScript-AppCard*。
+本仓库面向黑客松选手、其他 OctoSense 应用开发者，以及与他们协作的编码 Agent。本仓库原名 *OctoScript-AppCard*。
 
 ## 目录
 
@@ -42,9 +33,7 @@ App Hub 的 `card-host` 和 `hub` 程序。`tools/octo` 从不决定准入：`ch
 
 ## 黑客松：从这里开始
 
-本仓库只负责技术路径。比赛本身（规则、日程、评审、作品如何提交）请见
-[Agentic App Hackathon](https://create.gosim.org/agenticapp26/) 页面并咨询主办方。
-选手需要从这里获得的内容：
+本仓库只负责技术路径。比赛本身（规则、日程、评审、作品如何提交）请见 [Agentic App Hackathon](https://create.gosim.org/agenticapp26/) 页面并咨询主办方。选手需要从这里获得的内容：
 
 | 主题 | 要点 |
 | --- | --- |
@@ -71,41 +60,28 @@ App Hub 签名目录中有三个应用通过宿主使用用户的 GitHub 或 Goo
 | Inbox Assistant | `org.octosense.samples.inbox` | [ymote/octosense-inbox-assistant](https://github.com/ymote/octosense-inbox-assistant) |
 | Google Calendar | `org.octosense.samples.googlecalendar` | [ymote/octosense-google-calendar](https://github.com/ymote/octosense-google-calendar) |
 
-它们的结构（能力、工具、Agent、速览卡片、受保护的写操作）见
-[examples/connected-apps](examples/connected-apps/README.zh-CN.md)；它们如何提交，见 App Hub 的
-[三个参考应用](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#三个参考应用)。
+它们的结构（能力、工具、Agent、速览卡片、受保护的写操作）见 [examples/connected-apps](examples/connected-apps/README.zh-CN.md)；它们如何提交，见 App Hub 的 [三个参考应用](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#三个参考应用)。
 
-- 它们运行在 OctoSense 桌面端 Shell 中，需要 `desktop-v0.1.0-beta.2` 或更新版本
-  （OctoSense `main`）。
+- 它们运行在 OctoSense 桌面端 Shell 中，需要 `desktop-v0.1.0-beta.2` 或更新版本（OctoSense `main`）。
 - 登录需要提供商注册信息。在 `desktop-v0.1.0-beta.2` 上，宿主只从 `oauth/clients.json` 读取注册信息，而下载包里没有这个文件，所以要由宿主的运维人员提供。用 OctoSense `main` 构建时，可以改为把分发者的注册信息编译进去。在真实提供商上的实际使用大多尚未验证（[CAPABILITIES § 限制](docs/CAPABILITIES.zh-CN.md#限制)）。
 - 发送和保存都要用户在宿主中确认。用 Gmail 发信需要在宿主的审阅界面上亲手点按。在 `desktop-v0.1.0-beta.2` 上，保存到 GitHub 或 Calendar 需要在宿主**面板**上确认（面板是宿主覆盖在应用之上的界面），面板不检查是否为亲手点按。OctoSense `main` 对这类保存同样要求亲手点按，但还没有发布版本包含这项改动。
-- 尚不支持：在 Android 上登录 Google，以及在手机上安装其中任何一个。
-  `desktop-v0.1.0-beta.1` 的商店和所有已发布的手机版本都拒绝 `auth` 能力。
+- 尚不支持：在 Android 上登录 Google，以及在手机上安装其中任何一个。`desktop-v0.1.0-beta.1` 的商店和所有已发布的手机版本都拒绝 `auth` 能力。
 - `card-host` 不支持已连接账户，也没有 GitHub Notes 使用的原生 Markdown 编辑器。
 
 ## Agent 从这里开始
 
-每一步都是一条 shell 命令或一次文件修改，任何编码 Agent 或在终端操作的人都能照做。规则以
-`AGENTS.md` 为准；`CLAUDE.md` 和 `GEMINI.md` 只是为按这些文件名查找的 Agent 导入它。
+每一步都是一条 shell 命令或一次文件修改，任何编码 Agent 或在终端操作的人都能照做。规则以 `AGENTS.md` 为准；`CLAUDE.md` 和 `GEMINI.md` 只是为按这些文件名查找的 Agent 导入它。
 
 `tools/octo` 与 OctoSense 内部的 Agent 内核 octos 无关，也不需要任何 AI 服务或 API key。
 
 按顺序阅读：
 
 1. [AGENTS.md](AGENTS.md)：规则、完成标准，以及每个必须停下来交给人决定的节点。
-2. [flows/README.zh-CN.md](flows/README.zh-CN.md)：按起点选择设计流程，然后逐步执行该流程的
-   `FLOW.md`。
-3. [docs/QUICKSTART.zh-CN.md](docs/QUICKSTART.zh-CN.md) 与 [docs/SCRIPT-API.md](docs/SCRIPT-API.md)：
-   用 `tools/octo` 构建并运行应用；只使用有文档的 API（或能在运行时源码、某个系统应用中
-   找到出处的 API）。
-4. [docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md)：定稿应用包、截图、通过准入检查。之后由人工按
-   App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md)
-   签名并提交。
+2. [flows/README.zh-CN.md](flows/README.zh-CN.md)：按起点选择设计流程，然后逐步执行该流程的 `FLOW.md`。
+3. [docs/QUICKSTART.zh-CN.md](docs/QUICKSTART.zh-CN.md) 与 [docs/SCRIPT-API.md](docs/SCRIPT-API.md)：用 `tools/octo` 构建并运行应用；只使用有文档的 API（或能在运行时源码、某个系统应用中找到出处的 API）。
+4. [docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md)：定稿应用包、截图、通过准入检查。之后由人工按 App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md) 签名并提交。
 
-需要人来把关的节点（发布者密钥与签名、发布者身份与隐私文本、平台声明、付费图像生成、
-视觉确认、发布 tag、提交）都列在 [AGENTS.md](AGENTS.md#how-to-work) 中；
-[flows/README.zh-CN.md](flows/README.zh-CN.md#每个流程都遵循同一份约定) 说明所有流程共有的那些节点。
-Agent 绝不伪造人的确认、评审结果或提交记录。
+需要人来把关的节点（发布者密钥与签名、发布者身份与隐私文本、平台声明、付费图像生成、视觉确认、发布 tag、提交）都列在 [AGENTS.md](AGENTS.md#how-to-work) 中；[flows/README.zh-CN.md](flows/README.zh-CN.md#每个流程都遵循同一份约定) 说明所有流程共有的那些节点。Agent 绝不伪造人的确认、评审结果或提交记录。
 
 ### AppCard UX 技能
 
@@ -132,11 +108,9 @@ Agent 绝不伪造人的确认、评审结果或提交记录。
 前置条件（[QUICKSTART §1](docs/QUICKSTART.zh-CN.md#1-前置条件)）：
 
 - Rust（stable，通过 rustup 安装），并把 `~/.cargo/bin` 加入 `PATH`。
-- Python 3.9 或更新版本（`tools/octo` 不需要第三方包；macOS 自带的 `/usr/bin/python3`
-  即可）。
+- Python 3.9 或更新版本（`tools/octo` 不需要第三方包；macOS 自带的 `/usr/bin/python3` 即可）。
 - 图形会话：`card-host` 会渲染一个真实的 412x892 点窗口，即使 `--hidden` 让它不显示在屏幕上。
-- 一个工作区目录，同时放置本仓库和几个同级仓库，因为 App Hub 的 `Cargo.toml` 把 Makepad
-  和 OctoScript 指向这些路径：
+- 一个工作区目录，同时放置本仓库和几个同级仓库，因为 App Hub 的 `Cargo.toml` 把 Makepad 和 OctoScript 指向这些路径：
 
   ```text
   <workspace>/
@@ -185,25 +159,13 @@ tools/octo package-help
 
 如果构建失败并提示 `no variant … TextInputStateQuery`，请看 QUICKSTART 的排错条目 [构建 `card-host` 时报 `TextInputStateQuery` 错误](docs/QUICKSTART.zh-CN.md#构建-card-host-时报-textinputstatequery-错误)。
 
-在 Windows 上，每条 `tools/octo` 命令都写成 `python tools/octo …`。它在与 macOS 相同的
-位置查找 `hub.exe` 和 `card-host.exe`（[QUICKSTART §2](docs/QUICKSTART.zh-CN.md#2-构建-hub-和-card-host)）。
-这条路径的其余步骤在 Windows 上未验证。
+在 Windows 上，每条 `tools/octo` 命令都写成 `python tools/octo …`。它在与 macOS 相同的位置查找 `hub.exe` 和 `card-host.exe`（[QUICKSTART §2](docs/QUICKSTART.zh-CN.md#2-构建-hub-和-card-host)）。这条路径的其余步骤在 Windows 上未验证。
 
 预期结果：
 
-- `new` 输出 `created …`、`bundle stamped` 和
-  `target platforms: macos; verify each before publishing`。只列出你会实际测试的平台：
-  商店信息会在商店中声明这些平台。
-- `run --detach` 等三件事都完成才返回：`card-host` 输出
-  `card-host: my-notes 0.1.0 admitted — capabilities {"storage"}, …`；远程控制桥在你的
-  `--port` 上开始监听；第一帧完整画出（`ready: first frame drawn`）。返回后即可点击或
-  `shot`。如果端口已有程序占用，它以退出码 1 退出，指出占用端口的应用，并给出停止它的
-  `curl -s 127.0.0.1:<port>/quit`。脚本错误会出现在 `<app>/.local-state/card-host.log`
-  中 `[SPLASH] eval:` 之后。
-- 对刚复制出来的模板执行 `check`，准入检查会**有意拒绝**它：
-  `[refused] listing: screenshots/01-main.png is named by the listing but is not in the bundle`。
-  有了真实截图后才会通过（`my-notes 0.1.0 — PASSED`，外加未签名警告）。不要放占位图片。
-  `check` 还会提示 `listing.json` 中模板留下的发布者占位文本，需要人工替换。
+- `new` 输出 `created …`、`bundle stamped` 和 `target platforms: macos; verify each before publishing`。只列出你会实际测试的平台：商店信息会在商店中声明这些平台。
+- `run --detach` 等三件事都完成才返回：`card-host` 输出 `card-host: my-notes 0.1.0 admitted — capabilities {"storage"}, …`；远程控制桥在你的 `--port` 上开始监听；第一帧完整画出（`ready: first frame drawn`）。返回后即可点击或 `shot`。如果端口已有程序占用，它以退出码 1 退出，指出占用端口的应用，并给出停止它的 `curl -s 127.0.0.1:<port>/quit`。脚本错误会出现在 `<app>/.local-state/card-host.log` 中 `[SPLASH] eval:` 之后。
+- 对刚复制出来的模板执行 `check`，准入检查会**有意拒绝**它：`[refused] listing: screenshots/01-main.png is named by the listing but is not in the bundle`。有了真实截图后才会通过（`my-notes 0.1.0 — PASSED`，外加未签名警告）。不要放占位图片。`check` 还会提示 `listing.json` 中模板留下的发布者占位文本，需要人工替换。
 
 完整流程及每一步的真实输出见 [docs/QUICKSTART.zh-CN.md](docs/QUICKSTART.zh-CN.md)。
 
@@ -220,13 +182,11 @@ tools/octo package-help
 | `check <bundle> [hub check flags]` | 先 `hub stamp`，再 `hub check --allow-unsigned`；检查不通过时以非零退出码退出。其他参数（如 `--catalog`、`--publisher-key`）原样传给 `hub check`。不会为已签名的清单重新写入摘要。写入摘要失败时，立即返回其退出码，不运行准入检查。 |
 | `package-help` | 输出发布检查表。 |
 
-`doctor` 会列出它查找 `hub` 和 `card-host` 的每个位置；查找顺序（包括 Windows 上的
-`.exe` 文件名）见 [QUICKSTART §2](docs/QUICKSTART.zh-CN.md#2-构建-hub-和-card-host)。
+`doctor` 会列出它查找 `hub` 和 `card-host` 的每个位置；查找顺序（包括 Windows 上的 `.exe` 文件名）见 [QUICKSTART §2](docs/QUICKSTART.zh-CN.md#2-构建-hub-和-card-host)。
 
 ## 设计流程
 
-一个设计流程把一种输入变成 OctoSense 能运行的产物。每个 `FLOW.md` 先给出前置检查，然后是
-编号步骤，每一步都有命令和通过条件，并标明需要人把关的节点。
+一个设计流程把一种输入变成 OctoSense 能运行的产物。每个 `FLOW.md` 先给出前置检查，然后是编号步骤，每一步都有命令和通过条件，并标明需要人把关的节点。
 
 | 流程 | 起点 | 产出 | 步骤列表 |
 | --- | --- | --- | --- |
@@ -234,15 +194,11 @@ tools/octo package-help
 | image-to-card | 一张生成的 UX 图：一个服务流程 8–12 个界面的画面图集，或单个界面 | 原生 L0 卡片（`page.card`、`page.data.json`、`kit/`）、拆分出的服务卡片、一个卡片应用包，可选 WASM | [flows/image-to-card/FLOW.md](flows/image-to-card/FLOW.md) |
 | kits/sketch | 一套有授权的 Sketch 设计套件 | 一个**主题套件**（原生 L0 组件与主题），不是应用；供其他流程使用 | [flows/kits/sketch/FLOW.md](flows/kits/sketch/FLOW.md) |
 
-文字需求请用 script-app：这是 `tools/octo` 从头到尾自动化的唯一路径。图像和 Sketch 流程
-需要 macOS、Python 3.12、各自的虚拟环境，原生截图还需要 Makepad Studio；各自的 `FLOW.md`
-列出了前置条件。所有应用类流程的交接环节相同（写入摘要、检查、在 `card-host` 中运行、截图、
-签名、提交），详见 [flows/README.zh-CN.md](flows/README.zh-CN.md#每个流程都遵循同一份约定)。
+文字需求请用 script-app：这是 `tools/octo` 从头到尾自动化的唯一路径。图像和 Sketch 流程需要 macOS、Python 3.12、各自的虚拟环境，原生截图还需要 Makepad Studio；各自的 `FLOW.md` 列出了前置条件。所有应用类流程的交接环节相同（写入摘要、检查、在 `card-host` 中运行、截图、签名、提交），详见 [flows/README.zh-CN.md](flows/README.zh-CN.md#每个流程都遵循同一份约定)。
 
 ## 应用是什么
 
-OctoSense 应用是一个隔离运行、不超过 8 MiB 的应用包。提交的只有 `bundle/`；应用仓库里的
-其他内容都不放进去。
+OctoSense 应用是一个隔离运行、不超过 8 MiB 的应用包。提交的只有 `bundle/`；应用仓库里的其他内容都不放进去。
 
 ```text
 my-app/                     应用自己的 Git 仓库
@@ -269,58 +225,23 @@ my-app/                     应用自己的 Git 仓库
 | `storage`、`compute`、`agent` | 可选的申请项，宿主会把它们限制在上限以内；`hub check` 把结果输出为 `grants:` 行。`storage.accounts: true` 为每个账户分别提供数据文件夹和 Agent，而不是共用一个 `device` 文件夹；`storage.agent_workspace` 决定 Agent 能读什么：它所属账户的文件夹（默认）或者什么都不读。 |
 | `integrity.bundle_blake3` | 由 `hub stamp` 写入；`hub sign-manifest` 再加上签名。 |
 
-全部字段见 App Hub 的
-[清单](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#清单)。
+全部字段见 App Hub 的 [清单](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#清单)。
 
-**能力**是 App Hub 定义的封闭列表：25 个能力族，例如 `storage`、`net`、`images`、`web`、
-`camera`、`location`、`mail`、`glance`、`model`，以及连接账户用的 `auth`、`github`、`gmail`
-和 `gcalendar`；另有 78 个精确的宿主服务名：设备助手的 4 个 `octos.*`、Rinx 的 45 个
-`matrix.*`，以及目前没有任何 OctoSense Shell 提供的 29 个 `palpo.*`。未申请即不授予；
-安装前商店会为每项能力向用户显示一行通俗说明。只申请应用真正需要的。
-[docs/CAPABILITIES.zh-CN.md](docs/CAPABILITIES.zh-CN.md) 说明每项能力解锁什么、哪些目前还没有可用路径
-（`prompt`、`ledger.read`、`clipboard`）、哪些只有系统应用能用；
-[docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md) 说明助手相关能力和应用自己的 Agent
-在 OctoSense 中能做什么。
+**能力**是 App Hub 定义的封闭列表：25 个能力族，例如 `storage`、`net`、`images`、`web`、`camera`、`location`、`mail`、`glance`、`model`，以及连接账户用的 `auth`、`github`、`gmail` 和 `gcalendar`；另有 78 个精确的宿主服务名：设备助手的 4 个 `octos.*`、Rinx 的 45 个 `matrix.*`，以及目前没有任何 OctoSense Shell 提供的 29 个 `palpo.*`。未申请即不授予；安装前商店会为每项能力向用户显示一行通俗说明。只申请应用真正需要的。[docs/CAPABILITIES.zh-CN.md](docs/CAPABILITIES.zh-CN.md) 说明每项能力解锁什么、哪些目前还没有可用路径（`prompt`、`ledger.read`、`clipboard`）、哪些只有系统应用能用；[docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md) 说明助手相关能力和应用自己的 Agent 在 OctoSense 中能做什么。
 
-**`listing.json`**（商店信息）包含商店展示的内容：副标题、描述、类别、关键词、图标、截图、实际测试过的平台、
-年龄分级，以及发布者信息（名称、支持方式、HTTPS 隐私政策 URL）。合法取值见 App Hub 的
-[商店信息](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#商店信息)。
+**`listing.json`**（商店信息）包含商店展示的内容：副标题、描述、类别、关键词、图标、截图、实际测试过的平台、年龄分级，以及发布者信息（名称、支持方式、HTTPS 隐私政策 URL）。合法取值见 App Hub 的 [商店信息](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#商店信息)。
 
-**`main.splash`** 是程序本身。Makepad Script 在 Splash 隔离环境中对它求值，无需 Rust
-编译；它与 OctoScript L0（`page.card`）是不同的语言。程序在顶层声明
-`let` 状态和 `fn`，然后是一个根控件。由于 `ui` 在主体执行后才注入，请用
-`start_timeout(0.05, || boot())` 启动逻辑。源码中的 `{{assets}}` 会替换为提供应用包内容
-的本地回环地址（`http_resource("{{assets}}/thumbs/a.jpg")`）。
-[docs/SCRIPT-API.md](docs/SCRIPT-API.md) 列出应用可以调用的全部内容，以及最费时间的坑。
+**`main.splash`** 是程序本身。Makepad Script 在 Splash 隔离环境中对它求值，无需 Rust 编译；它与 OctoScript L0（`page.card`）是不同的语言。程序在顶层声明 `let` 状态和 `fn`，然后是一个根控件。由于 `ui` 在主体执行后才注入，请用 `start_timeout(0.05, || boot())` 启动逻辑。源码中的 `{{assets}}` 会替换为提供应用包内容的本地回环地址（`http_resource("{{assets}}/thumbs/a.jpg")`）。[docs/SCRIPT-API.md](docs/SCRIPT-API.md) 列出应用可以调用的全部内容，以及最费时间的坑。
 
 ## 隔离规则
 
-每个应用运行在自己的隔离环境中，只拥有清单申请的授权。大部分规则由准入检查
-（`hub check`，与 App Hub 处理提交时运行的是同一份代码）强制执行；全部检查项见 App Hub 的
-[准入检查的规则](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#准入检查的规则)。
+每个应用运行在自己的隔离环境中，只拥有清单申请的授权。大部分规则由准入检查（`hub check`，与 App Hub 处理提交时运行的是同一份代码）强制执行；全部检查项见 App Hub 的 [准入检查的规则](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#准入检查的规则)。
 
-- **应用中不得有密钥或密码。** 不得有密码、PIN 或一次性验证码输入框，不得有登录表单，
-  应用包和应用的存储中都不得有 API key 或令牌。准入检查会拒绝 `is_password: true` 以及
-  密码、验证码类型的输入，运行时也会让这类输入框失效。登录在宿主自有的**面板**上完成：
-  面板是宿主服务覆盖在应用之上的界面，专门用来输入只有用户本人才能填写的内容。
-- **声明每一个主机。** `.splash` 文件只能调用 `network.hosts` 中列出的 `https://` 主机；
-  `images` 和 `web` 让应用可以显示任何公开 `https://` 主机上的图片和网页，但 `net` 仍然只能
-  访问列出的主机。`http://`、`file://` 和 `../` 一律拒绝。
-- **只放应用包文件。** 允许的扩展名为
-  `.card .json .l0 .octoscript .splash .svg .png .jpg .jpeg .webp .ttf .otf .txt .md`；
-  其他文件一律拒绝，包括 macOS 的 `.DS_Store`。准入检查还会拒绝其他脚本、压缩包、
-  二进制文件、符号链接，以及打包的 `.txt`、`.md` 文件中的 URL。
-- **特权操作交给宿主服务。** 应用调用 `host.request("<family>.<method>", args, fn(r){…})`，
-  其中的能力族（family）必须已获授予。Mail 是完整示例（`mail.accounts`、`mail.add_account`、
-  `mail.list`、`mail.send` 等）：服务弹出自己的面板收集密码，并把密码存进平台的密钥存储，
-  位于任何应用的 jail 之外。`<family>.sheet.*` 方法只接受来自面板的调用。新增宿主服务要修改
-  Shell，而不是应用包，详见 [docs/HOST-SERVICES.zh-CN.md](docs/HOST-SERVICES.zh-CN.md)。
-- **商店应用与系统应用。** `os.` 开头的 id 保留给系统应用：准入检查会拒绝，任何商店也不会
-  安装。系统应用（[OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
-  中的 News、Photos、Maps、Camera、Mail、AI providers）的应用包结构与商店应用相同，但随 Shell 一起发布，上限也更高
-  （例如存储为 64 MiB 而不是 16 MiB）。`tools/octo new --system` 和
-  `tools/octo run --system` 用于开发系统应用；App Hub 没有接收它们的提交途径。其余都是
-  商店应用，只通过 App Hub 签名目录分发。
+- **应用中不得有密钥或密码。** 不得有密码、PIN 或一次性验证码输入框，不得有登录表单，应用包和应用的存储中都不得有 API key 或令牌。准入检查会拒绝 `is_password: true` 以及密码、验证码类型的输入，运行时也会让这类输入框失效。登录在宿主自有的**面板**上完成：面板是宿主服务覆盖在应用之上的界面，专门用来输入只有用户本人才能填写的内容。
+- **声明每一个主机。** `.splash` 文件只能调用 `network.hosts` 中列出的 `https://` 主机；`images` 和 `web` 让应用可以显示任何公开 `https://` 主机上的图片和网页，但 `net` 仍然只能访问列出的主机。`http://`、`file://` 和 `../` 一律拒绝。
+- **只放应用包文件。** 允许的扩展名为 `.card .json .l0 .octoscript .splash .svg .png .jpg .jpeg .webp .ttf .otf .txt .md`；其他文件一律拒绝，包括 macOS 的 `.DS_Store`。准入检查还会拒绝其他脚本、压缩包、二进制文件、符号链接，以及打包的 `.txt`、`.md` 文件中的 URL。
+- **特权操作交给宿主服务。** 应用调用 `host.request("<family>.<method>", args, fn(r){…})`，其中的能力族（family）必须已获授予。Mail 是完整示例（`mail.accounts`、`mail.add_account`、`mail.list`、`mail.send` 等）：服务弹出自己的面板收集密码，并把密码存进平台的密钥存储，位于任何应用的 jail 之外。`<family>.sheet.*` 方法只接受来自面板的调用。新增宿主服务要修改 Shell，而不是应用包，详见 [docs/HOST-SERVICES.zh-CN.md](docs/HOST-SERVICES.zh-CN.md)。
+- **商店应用与系统应用。** `os.` 开头的 id 保留给系统应用：准入检查会拒绝，任何商店也不会安装。系统应用（[OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) 中的 News、Photos、Maps、Camera、Mail、AI providers）的应用包结构与商店应用相同，但随 Shell 一起发布，上限也更高（例如存储为 64 MiB 而不是 16 MiB）。`tools/octo new --system` 和 `tools/octo run --system` 用于开发系统应用；App Hub 没有接收它们的提交途径。其余都是商店应用，只通过 App Hub 签名目录分发。
 
 ## 应用中的 AI
 
@@ -334,17 +255,11 @@ OctoSense 每个 Shell 运行一个 octos Agent 内核，由用户在系统应�
 | 向速览栏发布卡片，卡片内可与应用 Agent 对话，模型写的文字标为 AI 撰写 | `glance` 能力，`glance.publish`（L0 `sys.chat`、`model-copy`） | `no service answers "glance"` |
 | 收到新邮件时让 Agent 在后台运行 | `agent.background: true` 和 `agent.triggers.events: ["<namespace>.new_message"]`，再加 `auth` 和 `gmail`，Inbox Assistant 就是这样做的 | 不支持 |
 
-尚不支持：生成图片、音频、视频和计算嵌入向量（`model.image`、`model.audio`、`model.video`、
-`model.embeddings`）；标为 `implemented_by: "app"` 的工具也不支持，Shell 会拒绝。`llm` 只为
-系统应用管理 AI 提供商。附带 `tools.json` 的应用包即使没有 `agent` 块也会有应用 Agent，
-请在商店信息中写明。添加 AI 功能之前，请先读
-[docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)：其中有一个经过验证、能处理“不可用”状态的调用。
+尚不支持：生成图片、音频、视频和计算嵌入向量（`model.image`、`model.audio`、`model.video`、`model.embeddings`）；标为 `implemented_by: "app"` 的工具也不支持，Shell 会拒绝。`llm` 只为系统应用管理 AI 提供商。附带 `tools.json` 的应用包即使没有 `agent` 块也会有应用 Agent，请在商店信息中写明。添加 AI 功能之前，请先读 [docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)：其中有一个经过验证、能处理“不可用”状态的调用。
 
 ## 运行应用
 
-**独立运行：在 `card-host` 中**（开发循环）。`card-host` 是 App Hub 为单个应用包提供的参考
-隔离宿主。`tools/octo run` 启动它时会在本地端口开启 Makepad 的远程控制桥，人或 Agent 可以
-通过 HTTP 操作真实窗口（所有路由都是 GET；坐标为窗口点，y 轴向下）：
+**独立运行：在 `card-host` 中**（开发循环）。`card-host` 是 App Hub 为单个应用包提供的参考隔离宿主。`tools/octo run` 启动它时会在本地端口开启 Makepad 的远程控制桥，人或 Agent 可以通过 HTTP 操作真实窗口（所有路由都是 GET；坐标为窗口点，y 轴向下）：
 
 | 路由 | 作用 |
 | --- | --- |
@@ -357,34 +272,20 @@ OctoSense 每个 Shell 运行一个 octos Agent 内核，由用户在系统应�
 | `/g?raw=1` | 返回窗口的 PNG（即 `tools/octo shot` 保存的内容） |
 | `/quit`（或 `/gq`：截下所有窗口后退出） | 退出；最后一定要调用 |
 
-`on_render` 生成的控件与其他控件一样出现在 `/snap` 和 `/d` 中；应用稍后才添加的内容（来自
-定时器或响应）在绘制后才出现，请轮询 `/snap?q=` 等待它。`card-host` **不**注册任何宿主
-服务，所以类似 Mail 的应用在其中会得到 `no service answers "mail" on this device`。
-`card-host` 还会拒绝已签名的清单：请在签名之前截图。
+`on_render` 生成的控件与其他控件一样出现在 `/snap` 和 `/d` 中；应用稍后才添加的内容（来自定时器或响应）在绘制后才出现，请轮询 `/snap?q=` 等待它。`card-host` **不**注册任何宿主服务，所以类似 Mail 的应用在其中会得到 `no service answers "mail" on this device`。`card-host` 还会拒绝已签名的清单：请在签名之前截图。
 
-**在 Shell 中。** OctoSense 桌面端 Shell 和手机 Home 通过 App Hub 的 Card runner
-（App Hub `crates/appstore` 中的 `card` 模块）运行应用，而不是 `card-host`；Card runner
-执行同一套清单策略。系统应用从 OctoSense 的 `apps/` 打包进 Shell 构建；商店应用从 App Hub
-商店根据签名目录安装。想在发布前在桌面端 Shell 中试用自己的应用：用一次性信任锚（一把测试用
-根密钥）把它发布到本地签名目录，再把桌面端 Shell 的 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR`
-指向该目录；Shell 的商店即可安装并打开该应用（[PUBLISHING §4](docs/PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。
+**在 Shell 中。** OctoSense 桌面端 Shell 和手机 Home 通过 App Hub 的 Card runner（App Hub `crates/appstore` 中的 `card` 模块）运行应用，而不是 `card-host`；Card runner 执行同一套清单策略。系统应用从 OctoSense 的 `apps/` 打包进 Shell 构建；商店应用从 App Hub 商店根据签名目录安装。想在发布前在桌面端 Shell 中试用自己的应用：用一次性信任锚（一把测试用根密钥）把它发布到本地签名目录，再把桌面端 Shell 的 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 指向该目录；Shell 的商店即可安装并打开该应用（[PUBLISHING §4](docs/PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。
 
 **目前在手机上**（[QUICKSTART §9](docs/QUICKSTART.zh-CN.md#9-在-octosense-手机上运行)）：
 
-- 无法把任意应用包侧载到普通 OctoSense 手机上。手机商店读取 App Hub 内置地址上的签名目录，
-  只信任编译进构建的信任锚；`OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 是环境变量，Android
-  启动器不会设置。在设备上从本地签名目录安装不受支持，也未验证。
+- 无法把任意应用包侧载到普通 OctoSense 手机上。手机商店读取 App Hub 内置地址上的签名目录，只信任编译进构建的信任锚；`OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 是环境变量，Android 启动器不会设置。在设备上从本地签名目录安装不受支持，也未验证。
 - 最接近的已验证路径是上面的桌面端演练。
 - Android 版 `card-host` 不编译远程控制桥，所以手机测试不使用 `tools/octo`。
-- 发布之后，应用会通过签名目录出现在每台手机的商店中；声明了 `auth` 的应用除外，因为
-  目前没有任何已发布的手机版本接受这个能力。
+- 发布之后，应用会通过签名目录出现在每台手机的商店中；声明了 `auth` 的应用除外，因为目前没有任何已发布的手机版本接受这个能力。
 
 ## 无头测试：同时测多个应用，不占屏幕
 
-Makepad 有隐藏窗口模式，这里称为无头（headless）模式：应用仍然需要[快速上手](#快速上手)中的
-图形会话，但窗口**从不显示、也不抢焦点**，而远程控制桥（`/snap`、`/click`、`/t`、`/g` 截图）
-照常工作。凡是由 Agent 或脚本操作应用，都应使用它：
-不会占用你的屏幕和键盘，还能同时测试多个应用，或同一应用的多个副本，彼此不争抢显示器。
+Makepad 有隐藏窗口模式，这里称为无头（headless）模式：应用仍然需要[快速上手](#快速上手)中的图形会话，但窗口**从不显示、也不抢焦点**，而远程控制桥（`/snap`、`/click`、`/t`、`/g` 截图）照常工作。凡是由 Agent 或脚本操作应用，都应使用它：不会占用你的屏幕和键盘，还能同时测试多个应用，或同一应用的多个副本，彼此不争抢显示器。
 
 ```sh
 tools/octo run ~/apps/my-app/bundle     --port 8161 --hidden --detach
@@ -395,37 +296,22 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 ```
 
 - `--hidden` 会设置 `MAKEPAD_HIDE_WINDOWS=1`；所有 Makepad 应用都支持它，包括 OctoSense 的 Shell。
-- 每个应用用自己的 `--port`（端口已有程序占用时 `run` 会拒绝运行）；同一个应用包运行两份时，
-  每份用自己的 `--app-data`。
+- 每个应用用自己的 `--port`（端口已有程序占用时 `run` 会拒绝运行）；同一个应用包运行两份时，每份用自己的 `--app-data`。
 - 截图由应用自身渲染，即使屏幕上什么都没有，截图也是完整的。
-- **脚本化 UI 测试：** Makepad 的 [`makepad_test`](https://github.com/OctoSense-org/makepad/tree/main/libs/makepad_test)
-  测试框架会以隐藏窗口启动应用、通过同一个远程控制桥操作它，并在测试失败时保存截图、控件树和日志；
-  设置 `MAKEPAD_TEST_PARALLEL=1` 可并发运行多个测试（每个测试一个隐藏应用）。
-  配置方法和 `card-host` 示例见 [QUICKSTART §4b](docs/QUICKSTART.zh-CN.md#4b-用-makepad_test-编写脚本化-ui-测试)。
+- **脚本化 UI 测试：** Makepad 的 [`makepad_test`](https://github.com/OctoSense-org/makepad/tree/main/libs/makepad_test) 测试框架会以隐藏窗口启动应用、通过同一个远程控制桥操作它，并在测试失败时保存截图、控件树和日志；设置 `MAKEPAD_TEST_PARALLEL=1` 可并发运行多个测试（每个测试一个隐藏应用）。配置方法和 `card-host` 示例见 [QUICKSTART §4b](docs/QUICKSTART.zh-CN.md#4b-用-makepad_test-编写脚本化-ui-测试)。
 
-已在 macOS（Apple 芯片）上验证：两个隐藏窗口的应用同时接受点击。`makepad_test` 示例在当前锁定的
-版本上**未验证**；它在较早的 App Hub 和 Makepad 上通过过。
+已在 macOS（Apple 芯片）上验证：两个隐藏窗口的应用同时接受点击。`makepad_test` 示例在当前锁定的版本上**未验证**；它在较早的 App Hub 和 Makepad 上通过过。
 
 ## 发布
 
 发布分两个阶段，分别由两个仓库负责：
 
-1. **本仓库。** [docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md) 把能运行的应用变成待签名的应用包：
-   定稿清单和商店信息（没有占位文本；发布者字段由发布者本人填写），用 `tools/octo shot`
-   截取真实截图，`tools/octo check` 通过且只剩未签名警告，并书面回答 `hub scan` 的问题。
-   问题有七个；应用包附带 `tools.json`、`AGENT.md` 或 skills 时有八个。
-   `tools/octo package-help` 会输出检查表。
-2. **App Hub。** [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md)
-   是由人工执行的分步提交流程：所有改动完成后再签名，然后 commit 并打 tag，在 tag 的全新克隆上运行
-   `hub check`（不重新写入摘要），最后开 `Submit <app id> <version>` issue。
-   [PUBLISHING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md)
-   是每条准入规则和每个字段的参考。
+1. **本仓库。** [docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md) 把能运行的应用变成待签名的应用包：定稿清单和商店信息（没有占位文本；发布者字段由发布者本人填写），用 `tools/octo shot` 截取真实截图，`tools/octo check` 通过且只剩未签名警告，并书面回答 `hub scan` 的问题。问题有七个；应用包附带 `tools.json`、`AGENT.md` 或 skills 时有八个。`tools/octo package-help` 会输出检查表。
+2. **App Hub。** [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md) 是由人工执行的分步提交流程：所有改动完成后再签名，然后 commit 并打 tag，在 tag 的全新克隆上运行 `hub check`（不重新写入摘要），最后开 `Submit <app id> <version>` issue。[PUBLISHING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md) 是每条准入规则和每个字段的参考。
 
-维护者会对你的 tag 中的确切字节重新运行准入检查和扫描，再执行 `hub publish`：把应用包
-复制进 App Hub 并签署新的签名目录。
+维护者会对你的 tag 中的确切字节重新运行准入检查和扫描，再执行 `hub publish`：把应用包复制进 App Hub 并签署新的签名目录。
 
-- 绝不要开 pull request 修改 App Hub 的 `catalog.json`、`index/` 或 `artifacts/`：只有用
-  App Hub 签名目录密钥运行的 `hub publish` 才能写入它们。
+- 绝不要开 pull request 修改 App Hub 的 `catalog.json`、`index/` 或 `artifacts/`：只有用 App Hub 签名目录密钥运行的 `hub publish` 才能写入它们。
 - 绝不要移动发布 tag。要修改已发布的应用，请发布新版本。
 - 准入检查不评判截图、商店信息文本或隐私政策；这些由审核人负责。
 
@@ -467,19 +353,13 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 | [Calendar](examples/calendar/README.zh-CN.md) | 原生卡片 / 浏览器预览 + 同步服务器 | 两台设备共用一份日历，附基于 SQLite 的同步服务器 |
 | [Android 模型编写的卡片原型](examples/android-a2app-card-templates/README.zh-CN.md) | Android 上的 AppStudio；概览/展开/完整应用 | 两份模型编写的六类集合：各自离线原型整体 4.5/5、视觉 4.4/5；源码精确重放及原生证据。 |
 
-脚本应用的完整示例是[连接账户的应用](#连接账户的应用githubgmail-和-google-calendar)、
-[OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
-中的第一方应用包（`apps/<name>/bundle/`），以及 [templates/script-app](templates/script-app/README.zh-CN.md)。
+脚本应用的完整示例是[连接账户的应用](#连接账户的应用githubgmail-和-google-calendar)、[OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) 中的第一方应用包（`apps/<name>/bundle/`），以及 [templates/script-app](templates/script-app/README.zh-CN.md)。
 
 ## 参与贡献
 
 - 从 `main` 建分支并提 pull request；CI 必须通过。
-- CI 运行 `python tools/check-links.py`（受版本管理的 Markdown 中的相对链接必须能解析），
-  并在 Windows、Linux 和 macOS 上运行 `tools/test_*.py` 中的测试（`tools/octo` 的起步模板、
-  二进制查找和示例约定）。在 macOS 上，CI 还会用 `tools/setup-native.py` 准备原生运行时，
-  运行 flow、core、Sketch 和维护相关的单元测试（见 [.github/workflows/ci.yml](.github/workflows/ci.yml)）。
-- 保持文档真实：文档中的每条命令都实际运行过，没运行过的标注**未验证**。运行时或 `hub`
-  与文档不一致时，修正文档，或附上复现步骤报告问题。
+- CI 运行 `python tools/check-links.py`（受版本管理的 Markdown 中的相对链接必须能解析），并在 Windows、Linux 和 macOS 上运行 `tools/test_*.py` 中的测试（`tools/octo` 的起步模板、二进制查找和示例约定）。在 macOS 上，CI 还会用 `tools/setup-native.py` 准备原生运行时，运行 flow、core、Sketch 和维护相关的单元测试（见 [.github/workflows/ci.yml](.github/workflows/ci.yml)）。
+- 保持文档真实：文档中的每条命令都实际运行过，没运行过的标注**未验证**。运行时或 `hub` 与文档不一致时，修正文档，或附上复现步骤报告问题。
 - 对运行时、准入检查、Shell 或系统应用的修改属于各自的仓库（见下），不在这里。
 - 不要把购买的设计素材、密钥、`.local-state/` 或本地日志纳入版本库。
 
