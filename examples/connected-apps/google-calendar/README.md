@@ -8,12 +8,11 @@ built-in Mail or Calendar interface.
 
 Version 0.1.1 is published in App Hub from
 [ymote/octosense-google-calendar](https://github.com/ymote/octosense-google-calendar).
-This directory is the unsigned development copy, and it still holds the 0.1.0
-code. Its `main.splash` lacks 0.1.1's date-range status, `manifest.json` says
-version 0.1.0 and lacks the signature, and `listing.json` has placeholder
-publisher fields and its own subtitle, description and release notes. The
-other files match the published 0.1.1. The [reference app guide](../README.md)
-explains how the app is built and what to change before you reuse it.
+This directory is the unsigned development copy synchronized with `v0.1.1`,
+including its date-range status. Its manifest says `0.1.1` with a development
+digest and no signature; listing publisher fields remain placeholders.
+The [reference app guide](../README.md) explains the retained differences and
+what to change before reuse. Existing evidence remains tied to its recorded source.
 
 The app has account and calendar selection, a synced agenda, event details,
 timed and all-day editing, retained drafts and a host review before saving. Its

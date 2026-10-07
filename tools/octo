@@ -200,7 +200,7 @@ def cmd_new(args):
 
     dest.mkdir(parents=True, exist_ok=True)
     shutil.copytree(TEMPLATE / "bundle", dest / "bundle")
-    for extra in ("AGENTS.md", "CLAUDE.md", "GEMINI.md", ".gitignore"):
+    for extra in ("AGENTS.md", "CLAUDE.md", "GEMINI.md", ".gitignore", ".gitattributes"):
         src = TEMPLATE / extra
         if src.is_file():
             shutil.copy2(src, dest / extra)
@@ -483,6 +483,10 @@ def cmd_check(args, extra):
     cmd = [str(hub), "check", str(bundle)]
     if not signed and "--allow-unsigned" not in extra:
         cmd.append("--allow-unsigned")
+    if args.catalog:
+        cmd += ["--catalog", args.catalog]
+    for key in args.publisher_key:
+        cmd += ["--publisher-key", key]
     cmd += extra
     print("octo: " + " ".join(cmd), flush=True)
     r = subprocess.run(cmd)
@@ -571,6 +575,8 @@ def main():
 
     c = sub.add_parser("check", help="hub stamp, then hub check --allow-unsigned; nonzero on refusal")
     c.add_argument("bundle")
+    c.add_argument("--catalog", metavar="PATH", help="forward the catalog path to hub check")
+    c.add_argument("--publisher-key", action="append", default=[], metavar="KEY", help="forward a trusted publisher key to hub check (repeatable)")
 
     sub.add_parser("package-help", help="print the publish checklist")
 

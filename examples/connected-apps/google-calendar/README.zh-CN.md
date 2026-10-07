@@ -4,7 +4,7 @@
 
 这是一个普通 App Hub 应用（`org.octosense.samples.googlecalendar`），使用 OctoSense 的共享 OAuth 与 Google Calendar 服务，不依赖内置的邮件或日历界面。
 
-0.1.1 版已从 [ymote/octosense-google-calendar](https://github.com/ymote/octosense-google-calendar) 发布到 App Hub。本目录是未签名的开发副本，仍是 0.1.0 的代码：`main.splash` 没有 0.1.1 新增的日期范围状态；`manifest.json` 中的版本仍是 0.1.0，也没有签名；`listing.json` 的发布者字段是占位内容，副标题、描述和版本说明也不同。其余文件与已发布的 0.1.1 一致。[参考应用指南](../README.zh-CN.md)说明了应用的构成，以及复用前需要修改什么。
+0.1.1 版已从 [ymote/octosense-google-calendar](https://github.com/ymote/octosense-google-calendar) 发布到 App Hub。本目录是与 `v0.1.1` 同步的未签名开发副本，已包含日期范围状态。清单版本为 `0.1.1`，仅有开发摘要、没有签名；商店发布者字段仍是占位内容。[参考应用指南](../README.zh-CN.md)说明了保留的差异和复用步骤。现有验收证据仍对应记录时的源码。
 
 应用提供账户与日历选择、同步日程、日程详情、定时和全天日程编辑、草稿保留，以及保存前的宿主确认。应用界面为英文。可选的聊天用于讨论当前日程，**不会**修改日程，也不会声称已保存建议的修改。**Glance** 操作把日程发布为速览卡片，卡内有 **Open Calendar** 操作和独立会话。之后同步成功时，应用会更新已变化的卡片，并撤下日程已不在同步结果中的卡片。
 

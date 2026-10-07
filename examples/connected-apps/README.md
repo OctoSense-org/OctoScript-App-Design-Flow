@@ -26,29 +26,16 @@ Each version was published from the matching tag of its repository (`v0.1.0`,
 `v0.1.1`). Version 0.1.1 addresses three problems in 0.1.0 that this guide
 teaches from ([Don't copy these patterns](#dont-copy-these-patterns)).
 
-The directories here are the unsigned development copies. Compared with the
-published 0.1.1:
-
-- `manifest.json` differs in every app. The copies still say version `0.1.0`
-  and carry no signature. Their digests differ too: the digest covers every
-  file except `manifest.json`, and `listing.json` (and Google Calendar's
-  `main.splash`) differs, as listed below. The published copies
-  also hold the defaults that `hub sign-manifest` writes out, such as
-  `"network": {"hosts": []}` and `"tier": "standard"`, and GitHub Notes'
-  published manifest omits `"background": false`, which is the default.
-  Otherwise each copy declares the same capabilities, storage and agent.
-- `listing.json` differs in every app. The published copies name the real
-  publisher, support URL and privacy policy, and have their own description
-  and release notes; Inbox Assistant and Google Calendar have their own
-  subtitles too. Here the publisher fields are placeholders, and GitHub Notes'
-  description doesn't yet disclose **Ask GitHub Notes**, as the published
-  0.1.1 does.
-- Google Calendar's `main.splash` is still the 0.1.0 code. It lacks 0.1.1's
-  date-range status ([Whole-calendar sync](#whole-calendar-sync)).
-
-Every other app file is byte-identical to the published 0.1.1, including
-GitHub Notes' `AGENT.md` and `tools.json` and Inbox Assistant's `tools.json`,
-`AGENT.md` and triage skill.
+The directories here are unsigned development copies synchronized with the published
+`v0.1.1` app source. Calendar now includes the agenda date-range status; Notes
+includes the assistant disclosure; Inbox keeps template-only agent notifications.
+The manifests say `0.1.1`, declare the same capabilities, storage and agents,
+and carry freshly computed development digests without release signatures.
+Listing text matches that release, with placeholder publisher, support and
+privacy fields retained for developers to replace. Signing may also serialize
+omitted default manifest fields. No publisher key or release identity was copied.
+Historical evidence below still describes its original source and test date;
+this source synchronization does not create new provider or device acceptance.
 
 ## Run the apps
 
