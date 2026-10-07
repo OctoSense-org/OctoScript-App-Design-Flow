@@ -131,7 +131,8 @@ host.request("auth.backend.request", {
 发送请求；批准后已经进行的网络操作不能靠关闭界面撤销。
 
 宿主重新检查已准入声明。声明变更/移除或应用撤回会使访问失效；回滚不会恢复
-已撤销的连接。macOS/Android 实现嵌入式后端登录，设备验收仍待完成。
+已撤销的连接。安装、更新与卸载通知会撤销现有后端句柄；即使更新保留相同
+声明，也需要重新连接。macOS/Android 实现嵌入式后端登录，设备验收仍待完成。
 Windows/Linux 保留独立的外部浏览器认证路径；嵌入式 `WebReader` 不受支持，
 必须明确报错。Google Android 登录仍不受支持。Google/GitHub 还需要宿主的提供商
 注册信息；普通应用用户不需要自行注册开发者客户端。
@@ -139,13 +140,15 @@ Windows/Linux 保留独立的外部浏览器认证路径；嵌入式 `WebReader`
 ## 5. 实现声明的应用工具
 
 使用 `script-tools-v1`。在签名 `tools.json` 中声明工具，包括 JSON 输入/结果
-schema。以下最小声明返回当前应用 UI VM 中的状态：
+schema。以下最小声明返回当前应用 UI VM 中的状态。假设清单 ID 是
+`dev.example.notebook`，工具前缀必须是其最后一段 `notebook`。
+`notes` 是原生应用的保留名称，不能用作商店应用的工具命名空间：
 
 ```json
 {
   "schema": 1,
   "tools": [{
-    "name": "notes.current",
+    "name": "notebook.current",
     "description": "Read the text currently open in Notes",
     "implemented_by": "app",
     "risk": "read",
@@ -166,7 +169,7 @@ schema。以下最小声明返回当前应用 UI VM 中的状态：
 let current_text = "Draft note"
 fn app_tool(name, call_id) {
     let request = mod.app_tools.request(call_id)
-    if name == "notes.current" {
+    if name == "notebook.current" {
         mod.app_tools.complete(call_id, {text: current_text})
     } else {
         mod.app_tools.fail(call_id, "Unknown tool")

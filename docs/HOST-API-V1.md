@@ -144,6 +144,8 @@ cannot be undone by cancelling the UI.
 
 The host rechecks the admitted declaration. Changing/removing it or withdrawing
 the app invalidates access; a rollback does not revive revoked connections.
+Installation, update and removal notifications revoke existing backend handles;
+even an update that keeps the same declaration requires reconnecting.
 Embedded backend login is implemented for macOS/Android, with device acceptance
 still pending. Windows/Linux retain a separate external-browser authentication
 path; embedded `WebReader` is unsupported and must fail visibly. Google Android
@@ -154,13 +156,15 @@ the host; ordinary app users do not register a developer client themselves.
 
 Use `script-tools-v1`. Declare the tool in signed `tools.json`, including JSON
 input/result schemas. This minimal declaration returns state from the app's
-existing UI VM:
+existing UI VM. For an app with manifest ID `dev.example.notebook`, the tool
+prefix is `notebook`, its final ID segment. `notes` is reserved for a native app
+and cannot be an installed app's tool namespace:
 
 ```json
 {
   "schema": 1,
   "tools": [{
-    "name": "notes.current",
+    "name": "notebook.current",
     "description": "Read the text currently open in Notes",
     "implemented_by": "app",
     "risk": "read",
@@ -181,7 +185,7 @@ In the app's signed Splash source:
 let current_text = "Draft note"
 fn app_tool(name, call_id) {
     let request = mod.app_tools.request(call_id)
-    if name == "notes.current" {
+    if name == "notebook.current" {
         mod.app_tools.complete(call_id, {text: current_text})
     } else {
         mod.app_tools.fail(call_id, "Unknown tool")

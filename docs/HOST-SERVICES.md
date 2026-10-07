@@ -56,7 +56,7 @@ Some services work only after setup, and not every build has them:
 | Service | Needs | Builds |
 | --- | --- | --- |
 | `auth`, `github`, `gcalendar`, `gmail` | GitHub and Google registrations. Beta.2 reads them only from `<apps root>/.host/oauth/clients.json`, which its operator supplies; a build from OctoSense `main` can compile them in ([CAPABILITIES § Limits](CAPABILITIES.md#limits)). | Builds from OctoSense `main`, and the desktop-v0.1.0-beta.2 release (macOS, Apple silicon). Not yet: Google sign-in on Android. |
-| `auth` with the `backend` provider | The app's backend, registered by the host's operator in `<apps root>/.host/oauth/backends.json` ([CAPABILITIES](CAPABILITIES.md#sign-in-to-your-own-backend)). | Builds from OctoSense `main` only: a host WebView on macOS and on Android 9 or later, the system browser on Windows and Linux. Not on iOS. |
+| `auth` with the `backend` provider | Earlier source builds use operator registration in `<apps root>/.host/oauth/backends.json`. Compatible Host API v1 source builds also resolve public registration metadata from an admitted signed bundle's `backend` block ([backend guide](HOST-API-V1.md#4-connect-the-apps-backend)). | Source builds only; beta.2 has no backend sign-in and a compatible Host API v1 release is pending. The login adapter uses a host WebView on macOS/Android 9+, or the separate desktop browser path on Windows/Linux (unverified). Not on iOS. |
 | `octos`, `model` | An AI provider the person adds in the AI providers app. | Every standard build; `octos` only where the shell hosts the kernel. |
 | `mail` | An account the person signs in to on Mail's sheet. | Every standard build. |
 
