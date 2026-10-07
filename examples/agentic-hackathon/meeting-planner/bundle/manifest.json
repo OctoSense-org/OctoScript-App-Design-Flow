@@ -1,0 +1,30 @@
+{
+  "agent": {
+    "instructions": "AGENT.md",
+    "model": {
+      "needs": [
+        "tool_calling"
+      ]
+    },
+    "profile": "read-only",
+    "tools": [
+      "ask_user_question"
+    ]
+  },
+  "capabilities": [
+    "storage",
+    "octos.turn.start",
+    "octos.turn.interrupt"
+  ],
+  "id": "demo.meeting-planner",
+  "integrity": {
+    "bundle_blake3": "3cf252bfdc542342e3a58ab5a77a6255963ca9f5263854534181f97241556127"
+  },
+  "name": "Meeting Planner",
+  "schema": 1,
+  "storage": {
+    "accounts": false,
+    "agent_workspace": "account"
+  },
+  "version": "0.1.0"
+}

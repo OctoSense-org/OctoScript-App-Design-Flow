@@ -74,6 +74,7 @@ Rust、Splash 与 L0 应用的差别、跨应用工具限制、运行时版本�
 | **提交到 App Hub** | [发布](#发布)：`tools/octo check` 通过、回答 `hub scan` 的问题，然后由人签名，并在 [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues) 开一个 `Submit <app id> <version>` issue。参赛作品不等于自动提交到 App Hub；请向主办方确认他们需要什么。 |
 | **无头测试** | `tools/octo run … --hidden`：窗口不会出现，Agent 可以在不占用你屏幕的情况下测试应用（也可同时测多个应用，每个用自己的 `--port`）。见[无头测试](#无头测试同时测多个应用不占屏幕)。 |
 | **验证模型输出** | [开发与验证循环](docs/MODEL-VALIDATION.zh-CN.md)：Makepad 输入/截图、OctoSense App Studio 与跨 APK 截图边界、模型失败的具体修复方法，以及与最终源码绑定的证据。 |
+| **Agent 应用参考** | [Email Action 与 Meeting Planner](examples/agentic-hackathon/README.zh-CN.md)：虚构邮件/日历、真实应用 Agent 入口、明确标注的离线路径、操作前审核及原生交互测试。 |
 | **卡住了** | [QUICKSTART § Troubleshooting](docs/QUICKSTART.md#troubleshooting)，然后看 [SCRIPT-API § Gotchas](docs/SCRIPT-API.md#gotchas)。 |
 
 ## Agent 从这里开始
@@ -449,10 +450,11 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 
 ## 示例
 
-用 image-to-card 流程构建的参考流程。每个示例自带设计源文件、审核过的卡片场景、服务代码和测试。
+用 image-to-card 流程构建的参考旅程，以及用 script-app 流程构建的受控应用。源码和验证记录与示例放在一起。
 
 | 示例 | 形态 | 内容 |
 | --- | --- | --- |
+| [黑客松 Agent 应用](examples/agentic-hackathon/README.zh-CN.md) | 原生 Splash / 应用 Agent | 使用虚构数据的 Email Action 与 Meeting Planner，含本地操作审核及原生测试 |
 | [Aircon](examples/aircon/README.zh-CN.md) | 原生卡片 / WASM | 从购买到安装的完整流程：12 个界面状态，14 个服务卡片变体 |
 | [School](examples/school/README.zh-CN.md) | 原生卡片 / WASM | 学校通知、日历与缴费 |
 | [Health](examples/health/README.zh-CN.md) | 原生卡片 / WASM | 虚构的体检预约 |

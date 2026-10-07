@@ -82,6 +82,7 @@ organizers; none of that is decided here. What a contestant needs from here:
 | **Submit to the App Hub** | [Publishing](#publishing): `tools/octo check` passes, `hub scan` answered, then a person signs and opens a `Submit <app id> <version>` issue on [OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/issues). A contest entry is not automatically an App Hub submission; ask the organizers what they need. |
 | **Test headless** | `tools/octo run … --hidden`: the window never appears, so an agent can test your app (and several apps at once, one `--port` each) without taking over your screen. [Headless testing](#headless-testing-many-apps-no-screen). |
 | **Validate model output** | [Development and validation loop](docs/MODEL-VALIDATION.md): Makepad input/capture, OctoSense App Studio and cross-APK capture boundaries, concrete recovery from model failures, and evidence tied to final source. |
+| **Agentic app references** | [Email Action and Meeting Planner](examples/agentic-hackathon/README.md): fake email/calendar data, real app-agent entry points, a labeled offline fallback, review-before-action and native interaction tests. |
 | **Stuck** | [QUICKSTART § Troubleshooting](docs/QUICKSTART.md#troubleshooting), then [SCRIPT-API § Gotchas](docs/SCRIPT-API.md#gotchas). |
 
 ## Agents start here
@@ -524,11 +525,12 @@ Limits, stated plainly:
 
 ## Examples
 
-Reference journeys built with the image-to-card flow. Each owns its design
-source, reviewed card scenes, service code and tests.
+Reference journeys built with the image-to-card flow, and contained apps built
+with the script-app flow. Each keeps its source and validation alongside it.
 
 | Example | Surfaces | What it is |
 | --- | --- | --- |
+| [Agentic hackathon apps](examples/agentic-hackathon/README.md) | Native Splash / app agents | Email Action and Meeting Planner with fictional data, reviewed local actions and native tests |
 | [Aircon](examples/aircon/README.md) | Native cards / WASM | A purchase-to-installation journey: 12 screen states, 14 service-card variants |
 | [School](examples/school/README.md) | Native cards / WASM | School notice, calendar and payment |
 | [Health](examples/health/README.md) | Native cards / WASM | A fictional health-check booking |
