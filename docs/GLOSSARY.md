@@ -34,7 +34,7 @@ Each term below has one meaning across these docs.
 | **OctoSense app** | Anything a person installs or opens on an OctoSense device as an app. Two kinds ship through App Hub: a script app and a card app. |
 | **Palpo** | A Matrix server. Its operations are the 29 `palpo.*` capabilities; no OctoSense shell serves them. |
 | **Publisher key** | The Ed25519 key a publisher signs manifests with (`hub keygen`, `hub sign-manifest`). Keep it outside every repository. Once the key is on record, every later version must be signed with it. |
-| **Rinx** | A Matrix client that OctoSense links as a native app. Its mini-app host serves `matrix.*` and `octos.*` to bundles a person imports into it. |
+| **Rinx** | A Matrix client that OctoSense links as a native app. Its mini-app host serves `matrix.*` and `octos.*` to bundles a person imports into it (**unverified** in these docs). No OctoSense shell serves `matrix.*` to an installed app. |
 | **Scan** | `hub scan`: the review packet a human or model reviewer answers after the gate passes. It holds the app's source, listing and grants, and seven questions (eight when the bundle ships agent files), but no screenshots. |
 | **Script app** | An app whose bundle holds `main.splash`, a Splash program with its own state, handlers, storage and requests. The host runs it unchanged in a policed isolate. It is the default kind, and the one this repository's [QUICKSTART](QUICKSTART.md) builds. |
 | **Sheet** | A host-owned surface a host service draws over an app, in its own isolate under no app's policy, for things only the person may type (a password). Only the sheet may call `<family>.sheet.*` methods. |
