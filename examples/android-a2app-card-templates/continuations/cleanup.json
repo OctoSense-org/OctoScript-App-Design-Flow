@@ -1,0 +1,25 @@
+{
+  "timestamp_utc": "2026-10-03T19:21:24.183722+00:00",
+  "scope": "Only temporary provider profiles/developer grant files in the two dedicated Studio test packages. App sources and evidence retained.",
+  "packages": {
+    "dev.makepad.octosense.studio": {
+      "temporary_paths_absent": {
+        "files/octos-home/.octos/profiles/_main.json": true,
+        "files/.octosense/developer-profile": true,
+        "files/.octosense/dev-mode.json": true
+      },
+      "force_stopped": true
+    },
+    "dev.makepad.octosense.studio.minimax": {
+      "temporary_paths_absent": {
+        "files/octos-home/.octos/profiles/_main.json": true,
+        "files/.octosense/developer-profile": true,
+        "files/.octosense/dev-mode.json": true
+      },
+      "force_stopped": true
+    }
+  },
+  "screen_timeout": "60000",
+  "adb_shell_uid": 2000,
+  "adb_unprivileged": true
+}

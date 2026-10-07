@@ -1,0 +1,88 @@
+# ledger mail.glance@0.1.0
+# level:   L0
+# profile: ui/l0
+# model:   dev.studio.cards.mail
+#
+# MAIL family's L0 glance. The reusable declarative half of the Mail template;
+# the L1 expanded and L2 full views live in the native bundle
+# (card-templates/mail/bundle/main.splash, views `l1_expanded` / `l2_full`).
+#
+# L0/L1/L2 here are PRESENTATION depths, not parser levels — this file is L0
+# because it is a glance card, and the language level stays L0 at every depth.
+#
+# Fixture: glance.data.json. Every record there is synthetic demo data; no
+# mailbox is read, no account is used, nothing is sent. The card therefore says
+# DEMO in its own eyebrow rather than implying a live mailbox.
+
+# TWO sources, not one sliced two ways (news.card's rule). The glance shows the
+# lead message; the count row is its own source, so refetching one never has to
+# discard the other.
+source lead  sys.dataset(id: "m1", fields: [title, subtitle, summary, as_of, status, metric1_label, metric1_value, metric2_label, metric2_value])
+source inbox sys.dataset(id: "m1", fields: [title, subtitle, as_of, status])
+
+# Presentation depth, kept as card state so one source serves all three views.
+state depth      { shape: enum[glance, expanded, full], initial: .glance }
+state sel        { shape: text, initial: "m1" }
+state archived   { shape: text, initial: "" }
+state view_unread { shape: bool, initial: true }
+
+event open_msg     { sel: set($value), depth: set(.expanded) }
+event open_full    { depth: set(.full) }
+event back_glance  { depth: set(.glance) }
+event toggle_read  { view_unread: set($value) }
+event archive      { archived: set($value) }
+event undo_archive { archived: clear }
+
+# Vocabulary — the card's own fixed words.
+copy app       { class: vocabulary, en: "Mail",          zh: "邮件" }
+copy eyebrow   { class: vocabulary, en: "MAIL · GLANCE · DEMO", zh: "邮件 · 概览 · 演示" }
+copy unread    { class: vocabulary, en: "Unread",        zh: "未读" }
+copy open      { class: vocabulary, en: "Open (demo)",   zh: "打开（演示）" }
+copy full      { class: vocabulary, en: "Full app",      zh: "完整应用" }
+copy mark_r    { class: vocabulary, en: "Mark read",     zh: "标为已读" }
+copy archive   { class: vocabulary, en: "Archive (demo)", zh: "归档（演示）" }
+copy undo      { class: vocabulary, en: "Undo",          zh: "撤销" }
+copy subject   { class: vocabulary, en: "Inbox" }
+
+# States are declared copy, never inline strings (framework-l0 §1).
+copy loading   { class: vocabulary, en: "Loading demo messages…", zh: "正在加载演示邮件…" }
+copy offline   { class: vocabulary, en: "Can't load demo messages", zh: "无法加载演示邮件" }
+copy empty     { class: vocabulary, en: "No demo messages", zh: "没有演示邮件" }
+copy empty_h   { class: vocabulary, en: "Everything is archived (demo).", zh: "所有邮件已归档（演示）。" }
+copy demo_note { class: vocabulary, en: "Demo data. No mailbox, no account, no send.", zh: "演示数据。无邮箱、无账号、不会发送。" }
+copy as_of_note { class: vocabulary, en: "Inbox" }
+
+view root Surface(pad: .tight) {
+  Col(gap: 10) {
+    Row(gap: 8, align: .center) {
+      Icon(name: .mail, size: .row)
+      TextCaption(text: copy.app, width: .fill)
+      TextCaption(value: lead.as_of)
+    }
+    TextEyebrow(text: copy.eyebrow)
+    when lead.$state == .pending { TextBody(text: copy.loading) }
+    when lead.$state == .failed  { TextBody(text: copy.offline) }
+    when lead.$state == .ready   {
+      TextTitle(text: lead.title, width: .fill)
+      TextRow(text: lead.subtitle, width: .fill)
+      Rule
+      Row(gap: 8, align: .center) {
+        Chip(text: copy.mark_r, on_tap: toggle_read, value: .read)
+        Chip(text: copy.open, on_tap: open_msg, value: "m1", tone: .primary)
+        Chip(text: copy.full, on_tap: open_full, tone: .primary)
+      }
+      Row(gap: 8, align: .center) {
+        Chip(text: copy.archive, on_tap: archive, value: "m1", tone: .danger)
+        Chip(text: copy.undo, on_tap: undo_archive, tone: .primary)
+      }
+      TextCaption(text: copy.demo_note, width: .fill)
+    }
+    when inbox.$state == .ready {
+      Rule
+      Row(gap: 8, align: .center) {
+        TextCaption(text: inbox.subtitle, width: .fill)
+        TextCaption(value: inbox.as_of)
+      }
+    }
+  }
+}

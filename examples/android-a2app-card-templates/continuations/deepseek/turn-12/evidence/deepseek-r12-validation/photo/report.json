@@ -1,0 +1,598 @@
+{
+  "family": "photo",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "Harbor sunset",
+          "UNAVAILABLE"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor sunset",
+          "pass": true
+        },
+        {
+          "contains": "UNAVAILABLE",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-first",
+      "input": {
+        "label": "save-first",
+        "action": "tap",
+        "target": "Favorite",
+        "contains": [
+          "Favorited \u2713"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        26,
+        404,
+        80,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "01-save-first.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Favorited \u2713",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-first",
+      "input": {
+        "label": "remove-first",
+        "action": "tap",
+        "target": "Favorited \u2713",
+        "contains": [
+          "Favorite"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        26,
+        404,
+        108,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "02-remove-first.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Favorite",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "action": "tap",
+        "target": "d_ex",
+        "contains": [
+          "Harbor sunset",
+          "UNAVAILABLE"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        99,
+        107,
+        73,
+        44
+      ],
+      "target_selector": "d_ex@0",
+      "png": "03-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor sunset",
+          "pass": true
+        },
+        {
+          "contains": "UNAVAILABLE",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-app",
+      "input": {
+        "label": "full-app",
+        "action": "tap",
+        "target": "Open app",
+        "occurrence": 0,
+        "contains": [
+          "Harbor sunset",
+          "Studio still life"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        180,
+        107,
+        89,
+        44
+      ],
+      "target_selector": "d_ap@0",
+      "png": "04-full-app.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor sunset",
+          "pass": true
+        },
+        {
+          "contains": "Studio still life",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-item",
+      "input": {
+        "label": "second-item",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": 1,
+        "contains": [
+          "Studio still life"
+        ],
+        "excludes": [
+          "Harbor sunset",
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        122,
+        480,
+        108,
+        44
+      ],
+      "target_selector": "1@7",
+      "png": "05-second-item.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Studio still life",
+          "pass": true
+        },
+        {
+          "excludes": "Harbor sunset",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-second",
+      "input": {
+        "label": "save-second",
+        "action": "tap",
+        "target": "Favorite",
+        "occurrence": -1,
+        "contains": [
+          "Favorited \u2713"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        26,
+        406,
+        80,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "06-save-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Favorited \u2713",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back",
+      "input": {
+        "label": "back",
+        "action": "tap",
+        "target": "\u2039 Back",
+        "contains": [
+          "Harbor sunset",
+          "Studio still life"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        142,
+        406,
+        64,
+        44
+      ],
+      "target_selector": "1@5",
+      "png": "07-back.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor sunset",
+          "pass": true
+        },
+        {
+          "contains": "Studio still life",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "saved-collection",
+      "input": {
+        "label": "saved-collection",
+        "action": "tap",
+        "target": "Favorites",
+        "occurrence": 0,
+        "contains": [
+          "Studio still life"
+        ],
+        "excludes": [
+          "Harbor sunset",
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        150,
+        156,
+        126,
+        44
+      ],
+      "target_selector": "1@2",
+      "png": "08-saved-collection.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Studio still life",
+          "pass": true
+        },
+        {
+          "excludes": "Harbor sunset",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-second",
+      "input": {
+        "label": "remove-second",
+        "action": "tap",
+        "target": "Favorited \u2713",
+        "contains": [
+          "No favorites yet"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        38,
+        357,
+        104,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "09-remove-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "No favorites yet",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "return",
+      "input": {
+        "label": "return",
+        "action": "tap",
+        "target": "d_gl",
+        "contains": [
+          "Harbor sunset"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        12,
+        84,
+        69,
+        44
+      ],
+      "target_selector": "d_gl@0",
+      "png": "10-return.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor sunset",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "empty",
+      "input": {
+        "label": "empty",
+        "action": "tap",
+        "target": "Empty",
+        "contains": [
+          "No photos"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "pass": false,
+      "error": "Target 'Empty' matches 0 enabled nodes"
+    },
+    {
+      "label": "error",
+      "input": {
+        "label": "error",
+        "action": "tap",
+        "target": "Error",
+        "contains": [
+          "Couldn't load"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "pass": false,
+      "error": "Target 'Error' matches 0 enabled nodes"
+    },
+    {
+      "label": "ready",
+      "input": {
+        "label": "ready",
+        "action": "tap",
+        "target": "Ready",
+        "contains": [
+          "Harbor sunset"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "pass": false,
+      "error": "Target 'Ready' matches 0 enabled nodes"
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.photo",
+    "capabilities": [],
+    "digest": "a3c9d4301df224f43bb64b02f0520e2f323663522b1174d1a95cbca8c0110b98",
+    "name": "Photo Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

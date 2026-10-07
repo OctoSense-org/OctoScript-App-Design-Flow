@@ -100,3 +100,12 @@ jobs:
           python-version: '3.12'
       - name: Relative Markdown links resolve
         run: python tools/check-links.py
+      - name: Android model archive replay
+        run: |
+          python examples/android-a2app-card-templates/test-import-snapshot.py
+          python examples/android-a2app-card-templates/validate-model-authorship.py \
+            --case-dir attempts/deepseek-r3 --case-dir attempts/minimax-r3 \
+            --case-dir collection --case-dir continuations/deepseek/turn-12 \
+            --case-dir continuations/minimax/turn-14
+          python examples/android-a2app-card-templates/continuations/deepseek/workspace-ux-20261005/verify.py
+          python examples/android-a2app-card-templates/continuations/minimax/workspace-ux-20261005/verify.py

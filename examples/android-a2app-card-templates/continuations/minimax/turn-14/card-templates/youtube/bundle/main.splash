@@ -1,0 +1,387 @@
+// Video card template — dev.studio.cards.youtube
+// All records are SYNTHETIC DEMO DATA in this app's local list. This offline
+// Studio loads no thumbnails and opens no player url, so nothing is previewed
+// or played here: each row states that plainly and no control pretends to play.
+//
+// Depths are PRESENTATION depths (UI), not parser levels:
+//   L0  lead video at a glance
+//   L1  expanded record with a reversible Watch later
+//   L2  list (All / Watch later) -> record detail
+
+let vids = [
+    {id: "v1" title: "Slow harbour morning, timelapse" channel: "Riverside Field Notes"
+        length: "08:24" ago: "2 days ago" views: "41.2K"
+        note: "A demo record written to exercise this card. Nothing is streamed or played here."}
+    {id: "v2" title: "Restoring a harbour crane, part 2" channel: "Docklands Workshop"
+        length: "21:07" ago: "5 days ago" views: "128K"
+        note: "A demo record written to exercise this card. No player is opened from this build."}
+    {id: "v3" title: "Weeknight cycling: four rivers route" channel: "Alex Outdoors"
+        length: "14:51" ago: "1 week ago" views: "17.9K"
+        note: "A demo record written to exercise this card. Video is not loaded offline."}
+]
+
+let ground = #xf2f2f7
+let surface = #xffffff
+let ink = #x1c1c1e
+let ink2 = #x3c3c43
+let muted = #x8e8e93
+let accent = #x007aff
+let line = #xe5e5ea
+let demo_bg = #xfff3cd
+let demo_ink = #x8a0b00
+
+let later = []
+let status = "Demo queue."
+let depth = 0
+let sel = "v1"
+let route = "list"
+let tab = "all"
+
+// ---------- state helpers ----------
+
+fn pick(cond, on, off){ if cond { on } else { off } }
+
+fn vd_of(id){
+    for v in vids { if v.id == id { return v } }
+    nil
+}
+
+fn is_later(id){
+    for l in later { if l == id { return true } }
+    false
+}
+
+fn n_later(){ later.len() }
+
+fn lead(){
+    for v in vids { return v }
+    nil
+}
+
+// L0 always shows the first record, so its action must target that record
+// rather than whatever a previous route left selected.
+fn lead_id(){
+    let m = lead()
+    if m == nil { return "" }
+    m.id
+}
+
+fn say(s){ status = s; ui.status.set_text(s) }
+
+fn depth_name(){
+    if depth == 0 { return "L0 Glance" }
+    if depth == 1 { return "L1 Video" }
+    if route == "detail" { return "L2 Video" }
+    return "L2 List"
+}
+
+fn set_depth(d){
+    depth = d
+    route = "list"
+    say("Showing " + depth_name())
+    sync()
+}
+
+fn do_open(id){
+    sel = id
+    route = "detail"
+    set_depth(2)
+    route = "detail"
+    say("Showing " + depth_name())
+    sync()
+}
+
+fn do_back(){
+    route = "list"
+    say("Showing " + depth_name())
+    sync()
+}
+
+fn do_later(id){
+    if is_later(id) { return }
+    later.push(id)
+    let v = vd_of(id)
+    if v == nil { return }
+    say("Added to Watch later")
+    sync()
+}
+
+fn do_drop(id){
+    if !is_later(id) { return }
+    later.retain(|x| x != id)
+    let v = vd_of(id)
+    if v == nil { return }
+    say("Removed from Watch later")
+    sync()
+}
+
+// The dynamically labelled button must do what its label currently says, so one
+// action serves both directions and is reversible wherever it appears.
+fn do_toggle_later(id){
+    if is_later(id) { do_drop(id) } else { do_later(id) }
+}
+
+fn set_tab(t){
+    tab = t
+    say("Showing " + pick(t == "all", "All videos", "Watch later"))
+    sync()
+}
+
+// ---------- chrome sync ----------
+
+fn sync(){
+    ui.glance.set_visible(depth == 0)
+    ui.expanded.set_visible(depth == 1)
+    ui.full.set_visible(depth == 2)
+
+    ui.count.set_text("" + vids.len() + " videos · " + "" + n_later() + " in Watch later")
+    ui.status.set_text(status)
+    ui.b0.set_text(pick(depth == 0, "● L0", "L0"))
+    ui.b1.set_text(pick(depth == 1, "● L1", "L1"))
+    ui.b2.set_text(pick(depth == 2, "● L2", "L2"))
+
+    let m = lead()
+    ui.g_title.set_text(m.title)
+    ui.g_channel.set_text(m.channel)
+    ui.g_meta.set_text(m.length + " · " + m.ago)
+
+    let s = vd_of(sel)
+    ui.x_title.set_text(s.title)
+    ui.x_channel.set_text(s.channel)
+    ui.x_meta.set_text(s.length + " · " + s.ago + " · " + s.views + " views")
+    ui.x_note.set_text(s.note)
+    ui.x_action.set_text(pick(is_later(s.id), "Remove from Watch later", "Watch later"))
+
+    ui.rd_title.set_text(s.title)
+    ui.rd_channel.set_text(s.channel)
+    ui.rd_meta.set_text(s.length + " · " + s.ago + " · " + s.views + " views")
+    ui.rd_note.set_text(s.note)
+    ui.rd_action.set_text(pick(is_later(s.id), "Remove from Watch later", "Watch later"))
+
+    ui.l2_list.set_visible(route == "list")
+    ui.l2_detail.set_visible(route == "detail")
+
+    ui.r1.set_visible(tab == "all")
+    ui.r2.set_visible(tab == "all")
+    ui.r3.set_visible(tab == "all")
+    ui.r1_l.set_visible(tab == "later" && is_later("v1"))
+    ui.r2_l.set_visible(tab == "later" && is_later("v2"))
+    ui.r3_l.set_visible(tab == "later" && is_later("v3"))
+    ui.later_empty.set_visible(tab == "later" && n_later() == 0)
+
+    ui.r1_b.set_text(pick(is_later("v1"), "Remove", "Watch later"))
+    ui.r2_b.set_text(pick(is_later("v2"), "Remove", "Watch later"))
+    ui.r3_b.set_text(pick(is_later("v3"), "Remove", "Watch later"))
+    ui.r1_lb.set_text(pick(is_later("v1"), "Remove", "Watch later"))
+    ui.r2_lb.set_text(pick(is_later("v2"), "Remove", "Watch later"))
+    ui.r3_lb.set_text(pick(is_later("v3"), "Remove", "Watch later"))
+
+    ui.tab_all.set_text(pick(tab == "all", "● All", "All"))
+    ui.tab_later.set_text(pick(tab == "later", "● Watch later", "Watch later"))
+}
+
+// ---------- shared button styles ----------
+
+let Flat = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}
+    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}
+    draw_text +: {color: accent color_hover: accent color_down: accent text_style +: {font_size: 15}}}
+
+let Quiet = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}
+    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}
+    draw_text +: {color: ink2 color_hover: ink2 color_down: ink2 text_style +: {font_size: 15}}}
+
+let Seg = ButtonFlat{height: 44 width: Fill align: Align{x: 0.5 y: 0.5}
+    draw_bg +: {color: #x00000000 color_hover: #x0000000f color_down: #x0000001a border_size: 0.0}
+    draw_text +: {color: ink color_hover: ink color_down: ink text_style +: {font_size: 14}}}
+
+// ---------- root ----------
+
+SolidView{width: Fill height: Fill flow: Down draw_bg.color: ground
+
+    View{width: Fill height: Fit flow: Down spacing: 2
+        padding: Inset{left: 16 right: 16 top: 12 bottom: 8}
+        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8
+            Label{text: "Videos" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 19}}
+            View{width: Fill height: 1}
+            RoundedView{width: Fit height: Fit
+                padding: Inset{left: 8 right: 8 top: 3 bottom: 3}
+                draw_bg.color: demo_bg draw_bg.border_radius: 6.0
+                Label{text: "DEMO" draw_text.color: demo_ink draw_text.text_style: theme.font_bold{font_size: 11}}
+            }
+        }
+        count := Label{width: Fill text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+    }
+
+    View{width: Fill height: Fill flow: Down
+
+        // ===== L0 =====
+        glance := View{width: Fill height: Fill flow: Down spacing: 8
+            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}
+            g_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3
+                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                draw_bg.color: surface draw_bg.border_radius: 14.0
+                Label{text: "THUMBNAIL NOT LOADED OFFLINE" draw_text.color: muted draw_text.text_style.font_size: 11}
+                g_title := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}
+                g_channel := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 12}
+                g_meta := Label{width: Fill text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+            }
+            View{width: Fill height: Fit flow: Right spacing: 8
+                Flat{text: "Open" on_click: || do_open(lead_id())}
+                Flat{text: "List" on_click: || set_depth(2)}
+            }
+        }
+
+        // ===== L1 =====
+        expanded := View{visible: false width: Fill height: Fill flow: Down spacing: 8
+            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}
+            x_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3
+                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                draw_bg.color: surface draw_bg.border_radius: 14.0
+                Label{text: "PLAYBACK UNAVAILABLE OFFLINE" draw_text.color: muted draw_text.text_style.font_size: 11}
+                x_title := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}
+                x_channel := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 12}
+                x_meta := Label{width: Fill text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+                SolidView{width: Fill height: 1 draw_bg.color: line}
+                x_note := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 13}
+            }
+            View{width: Fill height: Fit flow: Right spacing: 8
+                x_action := Flat{text: "Watch later" on_click: || do_toggle_later(sel)}
+                Flat{text: "List" on_click: || set_depth(2)}
+            }
+            View{width: Fill height: Fit flow: Right spacing: 8
+                Quiet{text: "‹ Glance" on_click: || set_depth(0)}
+            }
+        }
+
+        // ===== L2 =====
+        full := View{visible: false width: Fill height: Fill
+            l2 := ScrollYView{width: Fill height: Fill flow: Down spacing: 8
+                padding: Inset{left: 16 right: 16 top: 4 bottom: 8}
+
+                l2_list := View{width: Fill height: Fit flow: Down spacing: 6
+                    RoundedView{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 6
+                        padding: Inset{left: 12 right: 12 top: 4 bottom: 4}
+                        draw_bg.color: surface draw_bg.border_radius: 12.0
+                        tab_all := Flat{text: "All" on_click: || set_tab("all")}
+                        tab_later := Flat{text: "Watch later" on_click: || set_tab("later")}
+                    }
+                    r1 := View{width: Fill height: Fit
+                        RoundedView{width: Fill height: Fit flow: Down spacing: 2
+                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}
+                            draw_bg.color: surface draw_bg.border_radius: 10.0
+                            Label{width: Fill text: "Slow harbour morning, timelapse" draw_text.color: ink draw_text.text_style.font_size: 13}
+                            Label{width: Fill text: "Riverside Field Notes · 08:24" draw_text.color: muted draw_text.text_style.font_size: 11}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                            r1_b := Flat{text: "Watch later" on_click: || do_toggle_later("v1")}
+                            Flat{text: "Open" on_click: || do_open("v1")}
+                            }
+                        }
+                    }
+                    r2 := View{width: Fill height: Fit
+                        RoundedView{width: Fill height: Fit flow: Down spacing: 2
+                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}
+                            draw_bg.color: surface draw_bg.border_radius: 10.0
+                            Label{width: Fill text: "Restoring a harbour crane, part 2" draw_text.color: ink draw_text.text_style.font_size: 13}
+                            Label{width: Fill text: "Docklands Workshop · 21:07" draw_text.color: muted draw_text.text_style.font_size: 11}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                            r2_b := Flat{text: "Watch later" on_click: || do_toggle_later("v2")}
+                            Flat{text: "Open" on_click: || do_open("v2")}
+                            }
+                        }
+                    }
+                    r3 := View{width: Fill height: Fit
+                        RoundedView{width: Fill height: Fit flow: Down spacing: 2
+                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}
+                            draw_bg.color: surface draw_bg.border_radius: 10.0
+                            Label{width: Fill text: "Weeknight cycling: four rivers route" draw_text.color: ink draw_text.text_style.font_size: 13}
+                            Label{width: Fill text: "Alex Outdoors · 14:51" draw_text.color: muted draw_text.text_style.font_size: 11}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                            r3_b := Flat{text: "Watch later" on_click: || do_toggle_later("v3")}
+                            Flat{text: "Open" on_click: || do_open("v3")}
+                            }
+                        }
+                    }
+                    r1_l := View{width: Fill height: Fit
+                        RoundedView{width: Fill height: Fit flow: Down spacing: 2
+                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}
+                            draw_bg.color: surface draw_bg.border_radius: 10.0
+                            Label{width: Fill text: "Slow harbour morning, timelapse" draw_text.color: ink draw_text.text_style.font_size: 13}
+                            Label{width: Fill text: "Riverside Field Notes · 08:24" draw_text.color: muted draw_text.text_style.font_size: 11}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                            r1_lb := Flat{text: "Remove" on_click: || do_toggle_later("v1")}
+                            Flat{text: "Open" on_click: || do_open("v1")}
+                            }
+                        }
+                    }
+                    r2_l := View{width: Fill height: Fit
+                        RoundedView{width: Fill height: Fit flow: Down spacing: 2
+                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}
+                            draw_bg.color: surface draw_bg.border_radius: 10.0
+                            Label{width: Fill text: "Restoring a harbour crane, part 2" draw_text.color: ink draw_text.text_style.font_size: 13}
+                            Label{width: Fill text: "Docklands Workshop · 21:07" draw_text.color: muted draw_text.text_style.font_size: 11}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                            r2_lb := Flat{text: "Remove" on_click: || do_toggle_later("v2")}
+                            Flat{text: "Open" on_click: || do_open("v2")}
+                            }
+                        }
+                    }
+                    r3_l := View{width: Fill height: Fit
+                        RoundedView{width: Fill height: Fit flow: Down spacing: 2
+                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}
+                            draw_bg.color: surface draw_bg.border_radius: 10.0
+                            Label{width: Fill text: "Weeknight cycling: four rivers route" draw_text.color: ink draw_text.text_style.font_size: 13}
+                            Label{width: Fill text: "Alex Outdoors · 14:51" draw_text.color: muted draw_text.text_style.font_size: 11}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                            r3_lb := Flat{text: "Remove" on_click: || do_toggle_later("v3")}
+                            Flat{text: "Open" on_click: || do_open("v3")}
+                            }
+                        }
+                    }
+                    later_empty := RoundedView{visible: false width: Fill height: Fit flow: Down spacing: 3
+                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                        draw_bg.color: surface draw_bg.border_radius: 14.0
+                        Label{width: Fill text: "Watch later is empty" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 14}}
+                        Label{width: Fill text: "Add a video from All to see it here." draw_text.color: ink2 draw_text.text_style.font_size: 12}
+                    }
+                }
+
+                l2_detail := View{visible: false width: Fill height: Fit flow: Down spacing: 6
+                    RoundedView{width: Fill height: Fit flow: Down spacing: 3
+                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}
+                        draw_bg.color: surface draw_bg.border_radius: 14.0
+                        Label{text: "PLAYBACK UNAVAILABLE OFFLINE" draw_text.color: muted draw_text.text_style.font_size: 11}
+                        rd_title := Label{width: Fill text: "" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}
+                        rd_channel := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 12}
+                        rd_meta := Label{width: Fill text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+                        SolidView{width: Fill height: 1 draw_bg.color: line}
+                        rd_note := Label{width: Fill text: "" draw_text.color: ink2 draw_text.text_style.font_size: 13}
+                    }
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        rd_action := Flat{text: "Watch later" on_click: || do_toggle_later(sel)}
+                        Quiet{text: "‹ List" on_click: || do_back()}
+                    }
+                }
+            }
+        }
+    }
+
+    View{width: Fill height: Fit flow: Down spacing: 4
+        padding: Inset{left: 16 right: 16 top: 6 bottom: 8}
+        SolidView{width: Fill height: 1 draw_bg.color: line}
+        RoundedView{width: Fill height: Fit flow: Right spacing: 4
+            padding: Inset{left: 4 right: 4 top: 4 bottom: 4}
+            draw_bg.color: #xe5e5ea draw_bg.border_radius: 12.0
+            b0 := Seg{text: "L0" on_click: || set_depth(0)}
+            b1 := Seg{text: "L1" on_click: || set_depth(1)}
+            b2 := Seg{text: "L2" on_click: || set_depth(2)}
+        }
+        status := Label{width: Fill text: "" draw_text.color: muted draw_text.text_style.font_size: 12}
+    }
+}
+
+fn boot(){
+    say("Demo list")
+    sync()
+}
+
+start_timeout(0.05, || boot())

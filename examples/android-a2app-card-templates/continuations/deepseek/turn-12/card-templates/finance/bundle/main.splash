@@ -1,0 +1,285 @@
+// Finance Cards — native interactive preview of the FINANCE card template.
+// Presentation depths: L0 compact glance / L1 expanded actionable / L2 full app.
+// Synthetic demo content only. No live quote, no trade, no account, no network.
+//
+// Layout: navigation + status pinned at TOP so they stay reachable when the
+// Android keyboard shrinks the viewport; the card scrolls below.
+// All prices, currency, as-of and the trend bars come from synthetic fixtures.
+
+let depth = "glance"
+let view_state = "ready"
+let show_states = false
+let tab = "all"
+let detail_open = false
+let open_id = ""
+let w_demo = false
+let w_north = false
+let w_grid = false
+
+let NavBtn = ButtonFlat{height: 44 padding: 10 draw_bg +: {color: #xe8edf3 color_hover: #xdde5ef color_down: #xd0dae7} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+let AccentBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #x1f9d55 color_hover: #x2aad63 color_down: #x178a49} draw_text +: {color: #xffffff color_hover: #xffffff color_down: #xffffff}}
+let GhostBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xffffff color_hover: #xf0f4f8 color_down: #xe6ecf3} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+let OpenBtn = ButtonFlat{height: 44 width: 108 padding: 8 draw_bg +: {color: #xe8edf3 color_hover: #xdde5ef color_down: #xd0dae7} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+
+fn depth_name(){
+    if depth == "glance" { return "L0 glance" }
+    if depth == "expand" { return "L1 expanded" }
+    return "L2 app"
+}
+fn name_of(id){
+    if id == "north" { return "Northwind Energy · NWND" }
+    if id == "grid" { return "GridWorks · GRDW" }
+    return "Demo Corp · DEMO"
+}
+fn price_of(id){
+    if id == "north" { return "86.15 USD" }
+    if id == "grid" { return "54.30 USD" }
+    return "142.60 USD"
+}
+fn change_of(id){
+    if id == "north" { return "−0.42 (−0.49%)" }
+    if id == "grid" { return "+0.30 (+0.56%)" }
+    return "+1.85 (+1.31%)"
+}
+fn up_of(id){
+    if id == "north" { return false }
+    return true
+}
+fn range_of(id){
+    if id == "north" { return "84.00 – 87.10" }
+    if id == "grid" { return "53.20 – 54.80" }
+    return "140.10 – 143.40"
+}
+fn is_watched(id){
+    if id == "north" { return w_north }
+    if id == "grid" { return w_grid }
+    return w_demo
+}
+fn watch_label(id){
+    if is_watched(id) { return "Watching ✓" }
+    return "Watch"
+}
+fn watched_count(){
+    let n = 0
+    if w_demo { n = n + 1 }
+    if w_north { n = n + 1 }
+    if w_grid { n = n + 1 }
+    return n
+}
+
+fn refresh_nav(){
+    let s = "Finance Cards   ·   " + depth_name() + "   ·   " + view_state + "   ·   watching: " + watched_count()
+    ui.depth_status.set_text(s)
+    if depth == "glance" { ui.d_gl.set_text("• Glance") } else { ui.d_gl.set_text("Glance") }
+    if depth == "expand" { ui.d_ex.set_text("• Expand") } else { ui.d_ex.set_text("Expand") }
+    if depth == "app" { ui.d_ap.set_text("• Open app") } else { ui.d_ap.set_text("Open app") }
+}
+fn toggle_states(){
+    if show_states { show_states = false } else { show_states = true }
+    if show_states { ui.states_btn.set_text("States ▾") } else { ui.states_btn.set_text("States ▸") }
+    ui.states_row.set_visible(show_states)
+}
+
+fn set_depth(d){ depth = d detail_open = false refresh_nav() ui.stage.render() }
+fn set_state(s){ view_state = s refresh_nav() ui.stage.render() }
+fn set_tab(t){ tab = t detail_open = false refresh_nav() ui.stage.render() }
+fn open_detail(id){ open_id = id detail_open = true ui.stage.render() }
+fn close_detail(){ detail_open = false ui.stage.render() }
+fn toggle_watch(id){
+    if id == "north" { if w_north { w_north = false } else { w_north = true } }
+    elif id == "grid" { if w_grid { w_grid = false } else { w_grid = true } }
+    else { if w_demo { w_demo = false } else { w_demo = true } }
+    refresh_nav() ui.stage.render()
+}
+
+fn boot(){ refresh_nav() ui.states_row.set_visible(false) ui.stage.render() }
+
+start_timeout(0.05, || boot())
+
+SolidView{width: Fill height: Fill flow: Down padding: 12 spacing: 8 draw_bg.color: #xf3f6f4
+    // Title folded into the consolidated status line below (density).
+    depth_status := Label{width: Fill height: Fit text: "Depth: L0 glance   ·   state: ready   ·   watching: 0" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}
+    View{width: Fill height: Fit flow: Right spacing: 8
+        d_gl := NavBtn{text: "• Glance" on_click: || set_depth("glance")}
+        d_ex := NavBtn{text: "Expand" on_click: || set_depth("expand")}
+        d_ap := NavBtn{text: "Open app" on_click: || set_depth("app")}
+        View{width: Fill height: Fit}
+        states_btn := NavBtn{text: "States ▸" on_click: || toggle_states()}
+    }
+    states_row := View{width: Fill height: Fit flow: Right spacing: 8
+        NavBtn{text: "Ready" on_click: || set_state("ready")}
+        NavBtn{text: "Loading" on_click: || set_state("loading")}
+        NavBtn{text: "Empty" on_click: || set_state("empty")}
+        NavBtn{text: "Error" on_click: || set_state("error")}
+    }
+
+    ScrollYView{width: Fill height: Fill flow: Down spacing: 8
+        stage := RoundedView{width: Fill height: Fit flow: Down padding: 14 spacing: 8 draw_bg.color: #xffffff draw_bg.radius: 16 on_render: || {
+
+            // ---------- L0 · compact glance ----------
+            if depth == "glance" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    Label{text: "FINANCE" draw_text.color: #x1f9d55 draw_text.text_style.font_size: 12}
+                    View{width: Fill height: Fit}
+                    Label{text: "15:59" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}
+                }
+                if view_state == "loading" { Label{text: "Loading…" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }
+                if view_state == "empty" { Label{text: "No quotes" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }
+                if view_state == "error" { Label{width: Fill height: Fit text: "Couldn't load quotes — demo error state" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }
+                if view_state == "ready" {
+                    Label{text: "Demo Corp · DEMO" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}
+                    Label{width: Fill height: Fit text: "142.60 USD" draw_text.color: #x1c2430 draw_text.text_style.font_size: 30 draw_text.wrap: true}
+                    Label{text: "+1.85 (+1.31%)" draw_text.color: #x1f9d55 draw_text.text_style.font_size: 14}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        AccentBtn{text: watch_label("demo") on_click: || toggle_watch("demo")}
+                    }
+                }
+            }
+
+            // ---------- L1 · expanded actionable ----------
+            if depth == "expand" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    Label{text: "FINANCE" draw_text.color: #x1f9d55 draw_text.text_style.font_size: 11}
+                    View{width: Fill height: Fit}
+                    Label{text: "15:59" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}
+                }
+                if view_state == "loading" { Label{text: "Loading…" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }
+                if view_state == "empty" { Label{text: "No quotes" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }
+                if view_state == "error" { Label{width: Fill height: Fit text: "Couldn't load quotes — demo error state" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }
+                if view_state == "ready" {
+                    Label{width: Fill height: Fit text: "Demo Corp · DEMO" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{width: Fill height: Fit text: "142.60 USD" draw_text.color: #x1c2430 draw_text.text_style.font_size: 26 draw_text.wrap: true}
+                    Label{text: "+1.85 (+1.31%)" draw_text.color: #x1f9d55 draw_text.text_style.font_size: 14}
+                    SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        Label{text: "DAY RANGE" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11}
+                        View{width: Fill height: Fit}
+                        Label{text: "140.10 – 143.40" draw_text.color: #x1c2430 draw_text.text_style.font_size: 13}
+                    }
+                    Label{text: "30d trend (demo)" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11}
+                    View{width: Fill height: Fit flow: Right spacing: 6 align: Align{y: 1.0}
+                        SolidView{width: 18 height: 22 draw_bg.color: #xa9d8bd draw_bg.radius: 3}
+                        SolidView{width: 18 height: 30 draw_bg.color: #xa9d8bd draw_bg.radius: 3}
+                        SolidView{width: 18 height: 26 draw_bg.color: #xa9d8bd draw_bg.radius: 3}
+                        SolidView{width: 18 height: 34 draw_bg.color: #xa9d8bd draw_bg.radius: 3}
+                        SolidView{width: 18 height: 28 draw_bg.color: #xa9d8bd draw_bg.radius: 3}
+                        SolidView{width: 18 height: 36 draw_bg.color: #x7cc79e draw_bg.radius: 3}
+                        SolidView{width: 18 height: 40 draw_bg.color: #x1f9d55 draw_bg.radius: 3}
+                    }
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        AccentBtn{text: watch_label("demo") on_click: || toggle_watch("demo")}
+                        NavBtn{text: "Open app" on_click: || set_depth("app")}
+                    }
+                    Label{width: Fill height: Fit text: "Demo quote only — not a live price, not investment advice." draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}
+                }
+            }
+
+            // ---------- L2 · full app (watchlist) ----------
+            if depth == "app" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    if tab == "all" {
+                        AccentBtn{text: "All" width: 116 on_click: || set_tab("all")}
+                        NavBtn{text: "Watching" width: 126 on_click: || set_tab("watching")}
+                    }
+                    if tab == "watching" {
+                        NavBtn{text: "All" width: 116 on_click: || set_tab("all")}
+                        AccentBtn{text: "Watching" width: 126 on_click: || set_tab("watching")}
+                    }
+                }
+                SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}
+                if detail_open {
+                    Label{width: Fill height: Fit text: name_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{width: Fill height: Fit text: price_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 24 draw_text.wrap: true}
+                    if up_of(open_id) { Label{text: change_of(open_id) draw_text.color: #x1f9d55 draw_text.text_style.font_size: 14} }
+                    if up_of(open_id) == false { Label{text: change_of(open_id) draw_text.color: #xd6342b draw_text.text_style.font_size: 14} }
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        Label{text: "DAY RANGE" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11}
+                        View{width: Fill height: Fit}
+                        Label{text: range_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 13}
+                    }
+                    Label{text: "30d trend (demo)" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11}
+                    View{width: Fill height: Fit flow: Right spacing: 6 align: Align{y: 1.0}
+                        SolidView{width: 16 height: 20 draw_bg.color: #xa9d8bd draw_bg.radius: 3}
+                        SolidView{width: 16 height: 28 draw_bg.color: #xa9d8bd draw_bg.radius: 3}
+                        SolidView{width: 16 height: 24 draw_bg.color: #xa9d8bd draw_bg.radius: 3}
+                        SolidView{width: 16 height: 32 draw_bg.color: #x7cc79e draw_bg.radius: 3}
+                        SolidView{width: 16 height: 36 draw_bg.color: #x1f9d55 draw_bg.radius: 3}
+                    }
+                    Label{text: "Demo quote only · no live feed, no trading." draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        AccentBtn{text: watch_label(open_id) on_click: || toggle_watch(open_id)}
+                        NavBtn{text: "‹ Back" on_click: || close_detail()}
+                    }
+                }
+                if detail_open == false {
+                    if tab == "all" {
+                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                            Label{width: Fill height: Fit text: "Demo Corp · DEMO" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            Label{width: Fill height: Fit text: "142.60 USD" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            Label{text: "+1.85 (+1.31%)" draw_text.color: #x1f9d55 draw_text.text_style.font_size: 13}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                NavBtn{text: watch_label("demo") on_click: || toggle_watch("demo")}
+                                OpenBtn{text: "Open ›" on_click: || open_detail("demo")}
+                            }
+                        }
+                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                            Label{width: Fill height: Fit text: "Northwind Energy · NWND" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            Label{width: Fill height: Fit text: "86.15 USD" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            Label{text: "−0.42 (−0.49%)" draw_text.color: #xd6342b draw_text.text_style.font_size: 13}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                NavBtn{text: watch_label("north") on_click: || toggle_watch("north")}
+                                OpenBtn{text: "Open ›" on_click: || open_detail("north")}
+                            }
+                        }
+                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                            Label{width: Fill height: Fit text: "GridWorks · GRDW" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            Label{width: Fill height: Fit text: "54.30 USD" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            Label{text: "+0.30 (+0.56%)" draw_text.color: #x1f9d55 draw_text.text_style.font_size: 13}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                NavBtn{text: watch_label("grid") on_click: || toggle_watch("grid")}
+                                OpenBtn{text: "Open ›" on_click: || open_detail("grid")}
+                            }
+                        }
+                    }
+                    if tab == "watching" {
+                        Label{width: Fill height: Fit text: "Watching · " + watched_count() draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                        if watched_count() == 0 {
+                            Label{text: "No instruments watched" draw_text.color: #x8a8a8e draw_text.text_style.font_size: 15}
+                        }
+                        if w_demo {
+                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                                Label{text: "Demo Corp · DEMO" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16}
+                                Label{text: "142.60 USD · +1.85 (+1.31%)" draw_text.color: #x1f9d55 draw_text.text_style.font_size: 13}
+                                View{width: Fill height: Fit flow: Right spacing: 8
+                                    NavBtn{text: "Watching ✓" on_click: || toggle_watch("demo")}
+                                    OpenBtn{text: "Open ›" on_click: || open_detail("demo")}
+                                }
+                            }
+                        }
+                        if w_north {
+                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                                Label{text: "Northwind Energy · NWND" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16}
+                                Label{text: "86.15 USD · −0.42 (−0.49%)" draw_text.color: #xd6342b draw_text.text_style.font_size: 13}
+                                View{width: Fill height: Fit flow: Right spacing: 8
+                                    NavBtn{text: "Watching ✓" on_click: || toggle_watch("north")}
+                                    OpenBtn{text: "Open ›" on_click: || open_detail("north")}
+                                }
+                            }
+                        }
+                        if w_grid {
+                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                                Label{text: "GridWorks · GRDW" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16}
+                                Label{text: "54.30 USD · +0.30 (+0.56%)" draw_text.color: #x1f9d55 draw_text.text_style.font_size: 13}
+                                View{width: Fill height: Fit flow: Right spacing: 8
+                                    NavBtn{text: "Watching ✓" on_click: || toggle_watch("grid")}
+                                    OpenBtn{text: "Open ›" on_click: || open_detail("grid")}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }}
+    }
+}

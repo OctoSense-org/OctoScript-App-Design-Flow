@@ -1,0 +1,2509 @@
+{
+  "height": 2132,
+  "instance_id": "cf8e25d1-14bb-4224-9c8e-2120b6221885",
+  "path": ".studio-481d125c-3530-42f2-9976-bc90e0f3bf96.png",
+  "settled": false,
+  "snapshot": {
+    "checks": {
+      "findings": [],
+      "instrument": "makepad_widget_tree",
+      "pass": true
+    },
+    "geometry": {
+      "widgets": [
+        {
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 0,
+          "id": "-",
+          "kind": "Splash",
+          "parent": -1,
+          "text": "// Finance card template \u2014 dev.studio.cards.finance\n// All instruments are SYNTHETIC DEMO DATA in this app's local list. No market\n// data is fetched, no quote is live, and no trade can be placed. Price and\n// change are fixed demo values and never update while the app is open.\n//\n// Depths are PRESENTATION depths (UI), not parser levels:\n//   L0  watchlist lead at a glance\n//   L1  expanded instrument with a reversible Watch\n//   L2  list (All / Watching) -> instrument detail\n\nlet items = [\n    {id: \"f1\" sym: \"HRB\" name: \"Harbour Rail\" price: \"42.18\" change: \"+1.24\" dir: \"up\" as_of: \"08:45\"\n        brief: \"Regional rail operator, demo record.\"\n        body: \"Harbour Rail operates the coastal regional line. This demo record shows a fictional instrument used to exercise the card layouts: the price, the change and the as-of time are fixed sample values, not a live quote. No trade can be placed from this card.\"}\n    {id: \"f2\" sym: \"DLK\" name: \"Delta Logistics\" price: \"17.62\" change: \"-0.38\" dir: \"down\" as_of: \"08:45\"\n        brief: \"Freight and warehousing group, demo record.\"\n        body: \"Delta Logistics handles port freight and warehousing. This demo record shows a fictional instrument: price, change and as-of time are fixed sample values, never a live quote, and there is no way to buy or sell from here.\"}\n    {id: \"f3\" sym: \"SGE\" name: \"Sage Energy\" price: \"9.94\" change: \"+0.07\" dir: \"up\" as_of: \"08:45\"\n        brief: \"Utility with a solar trial, demo record.\"\n        body: \"Sage Energy is a regional utility trialling shared rooftop solar. This demo record shows a fictional instrument: the price, change and as-of time are fixed sample values rather than a live quote, and nothing here can be traded.\"}\n]\n\nlet ground = #xf2f2f7\nlet surface = #xffffff\nlet ink = #x1c1c1e\nlet ink2 = #x3c3c43\nlet muted = #x8e8e93\nlet accent = #x007aff\nlet up = #x248a3d\nlet down = #xd70015\nlet line = #xe5e5ea\nlet demo_bg = #xfff3cd\nlet demo_ink = #x8a0b00\n\nlet watching = []\nlet status = \"Demo watchlist.\"\nlet depth = 0\nlet sel = \"f1\"\nlet route = \"list\"\nlet tab = \"all\"\n\n// ---------- state helpers ----------\n\nfn pick(cond, on, off){ if cond { on } else { off } }\n\nfn it_of(id){\n    for i in items { if i.id == id { return i } }\n    nil\n}\n\nfn is_watched(id){\n    for w in watching { if w == id { return true } }\n    false\n}\n\nfn n_watching(){ watching.len() }\n\nfn say(s){ status = s; ui.status.set_text(s) }\n\nfn depth_name(){\n    if depth == 0 { return \"L0 Glance\" }\n    if depth == 1 { return \"L1 Card\" }\n    if route == \"detail\" { return \"L2 Card\" }\n    return \"L2 List\"\n}\n\nfn set_depth(d){\n    depth = d\n    route = \"list\"\n    say(\"\")\n    sync()\n}\n\nfn do_open(id){\n    sel = id\n    route = \"detail\"\n    set_depth(2)\n    route = \"detail\"\n    sync()\n}\n\nfn do_back(){\n    route = \"list\"\n    say(\"\")\n    sync()\n}\n\nfn do_watch(id){\n    if is_watched(id) { return }\n    watching.push(id)\n    let i = it_of(id)\n    if i == nil { return }\n    say(\"Watching \" + i.sym)\n    sync()\n}\n\nfn do_unwatch(id){\n    if !is_watched(id) { return }\n    watching.retain(|x| x != id)\n    let i = it_of(id)\n    if i == nil { return }\n    say(\"Removed from Watching\")\n    sync()\n}\n\n// The dynamically labelled button must do what its current label says, so one\n// action serves both directions and stays reversible in L1 and in detail.\nfn do_toggle_watch(id){\n    if is_watched(id) { do_unwatch(id) } else { do_watch(id) }\n}\n\n// L0 always shows items[0], so its Open must target that item rather than\n// whatever a previous visit left selected.\nfn lead_id(){ return \"f1\" }\n\nfn set_tab(t){\n    tab = t\n    say(\"\")\n    sync()\n}\n\n// ---------- chrome sync ----------\n\nfn sync(){\n    ui.glance.set_visible(depth == 0)\n    ui.expanded.set_visible(depth == 1)\n    ui.full.set_visible(depth == 2)\n\n    ui.count.set_text(\"\" + items.len() + \" instruments \u00b7 \" + \"\" + n_watching() + \" watched\")\n    ui.status.set_text(status)\n    ui.b0.set_text(pick(depth == 0, \"\u25cf L0\", \"L0\"))\n    ui.b1.set_text(pick(depth == 1, \"\u25cf L1\", \"L1\"))\n    ui.b2.set_text(pick(depth == 2, \"\u25cf L2\", \"L2\"))\n\n    let m = items[0]\n    ui.g_sym.set_text(m.sym)\n    ui.g_price.set_text(m.price)\n    ui.g_change.set_text(m.change)\n    // sign and colour agree: a down change never wears the positive colour.\n    // Only set_text / set_visible are used \u2014 no colour setter exists.\n    ui.g_dir.set_text(pick(m.dir == \"up\", \"\u25b2\", \"\u25bc\"))\n    ui.g_change.set_text(m.change)\n    ui.g_change_dn.set_text(m.change)\n    ui.g_change.set_visible(m.dir == \"up\")\n    ui.g_change_dn.set_visible(m.dir != \"up\")\n    ui.g_name.set_text(m.name)\n    ui.g_brief.set_text(m.brief)\n    ui.g_asof.set_text(\"as of \" + m.as_of + \" \u00b7 demo\")\n\n    let s = it_of(sel)\n    ui.x_sym.set_text(s.sym + \" \u00b7 \" + s.name)\n    ui.x_price.set_text(s.price)\n    ui.x_change.set_text(s.change)\n    ui.x_change_dn.set_text(s.change)\n    ui.x_change.set_visible(s.dir == \"up\")\n    ui.x_change_dn.set_visible(s.dir != \"up\")\n    ui.x_brief.set_text(s.brief)\n    ui.x_asof.set_text(\"as of \" + s.as_of + \" \u00b7 demo, not a live quote\")\n    ui.x_action.set_text(pick(is_watched(s.id), \"Remove\", \"Watch\"))\n\n    ui.rd_sym.set_text(s.sym + \" \u00b7 \" + s.name)\n    ui.rd_price.set_text(s.price)\n    ui.rd_change.set_text(s.change)\n    ui.rd_change_dn.set_text(s.change)\n    ui.rd_change.set_visible(s.dir == \"up\")\n    ui.rd_change_dn.set_visible(s.dir != \"up\")\n    ui.rd_asof.set_text(\"as of \" + s.as_of + \" \u00b7 demo, not a live quote\")\n    ui.rd_body.set_text(s.body)\n    ui.rd_action.set_text(pick(is_watched(s.id), \"Remove from Watching\", \"Watch\"))\n\n    ui.l2_list.set_visible(route == \"list\")\n    ui.l2_detail.set_visible(route == \"detail\")\n\n    ui.r1.set_visible(tab == \"all\")\n    ui.r2.set_visible(tab == \"all\")\n    ui.r3.set_visible(tab == \"all\")\n    ui.r1_w.set_visible(tab == \"watch\" && is_watched(\"f1\"))\n    ui.r2_w.set_visible(tab == \"watch\" && is_watched(\"f2\"))\n    ui.r3_w.set_visible(tab == \"watch\" && is_watched(\"f3\"))\n    ui.watch_empty.set_visible(tab == \"watch\" && n_watching() == 0)\n\n    ui.r1_b.set_text(pick(is_watched(\"f1\"), \"Watching\", \"Watch\"))\n    ui.r2_b.set_text(pick(is_watched(\"f2\"), \"Watching\", \"Watch\"))\n    ui.r3_b.set_text(pick(is_watched(\"f3\"), \"Watching\", \"Watch\"))\n    ui.r1_wb.set_text(pick(is_watched(\"f1\"), \"Remove\", \"Watch\"))\n    ui.r2_wb.set_text(pick(is_watched(\"f2\"), \"Remove\", \"Watch\"))\n    ui.r3_wb.set_text(pick(is_watched(\"f3\"), \"Remove\", \"Watch\"))\n\n    ui.tab_all.set_text(pick(tab == \"all\", \"\u25cf All\", \"All\"))\n    ui.tab_watch.set_text(pick(tab == \"watch\", \"\u25cf Watching\", \"Watching\"))\n}\n\n// ---------- shared button styles ----------\n\nlet Flat = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}\n    draw_text +: {color: accent color_hover: accent color_down: accent text_style +: {font_size: 15}}}\n\nlet Quiet = ButtonFlat{height: 44 padding: Inset{left: 12 right: 12} align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000a color_down: #x00000014 border_size: 0.0}\n    draw_text +: {color: ink2 color_hover: ink2 color_down: ink2 text_style +: {font_size: 15}}}\n\nlet Seg = ButtonFlat{height: 44 width: Fill align: Align{x: 0.5 y: 0.5}\n    draw_bg +: {color: #x00000000 color_hover: #x0000000f color_down: #x0000001a border_size: 0.0}\n    draw_text +: {color: ink color_hover: ink color_down: ink text_style +: {font_size: 14}}}\n\n// ---------- root ----------\n\nSolidView{width: Fill height: Fill flow: Down draw_bg.color: ground\n\n    View{width: Fill height: Fit flow: Down spacing: 2\n        padding: Inset{left: 16 right: 16 top: 12 bottom: 8}\n        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n            Label{text: \"Finance\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 19}}\n            View{width: Fill height: 1}\n            RoundedView{width: Fit height: Fit\n                padding: Inset{left: 8 right: 8 top: 3 bottom: 3}\n                draw_bg.color: demo_bg draw_bg.border_radius: 6.0\n                Label{text: \"DEMO\" draw_text.color: demo_ink draw_text.text_style: theme.font_bold{font_size: 11}}\n            }\n        }\n        count := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n    }\n\n    View{width: Fill height: Fill flow: Down\n\n        // ===== L0 =====\n        glance := View{width: Fill height: Fill flow: Down spacing: 8\n            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n            g_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                g_sym := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                    g_price := Label{text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                    g_dir := Label{text: \"\u25b2\" draw_text.color: up draw_text.text_style.font_size: 12}\n                    g_change := Label{text: \"\" draw_text.color: up draw_text.text_style: theme.font_bold{font_size: 13}}\n                    g_change_dn := Label{text: \"\" draw_text.color: down draw_text.text_style: theme.font_bold{font_size: 13}}\n                }\n                g_name := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n                g_brief := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 12}\n                g_asof := Label{text: \"\" draw_text.color: muted draw_text.text_style.font_size: 11}\n            }\n            View{width: Fill height: 1}\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Flat{text: \"Open\" on_click: || do_open(lead_id())}\n                Flat{text: \"List\" on_click: || set_depth(2)}\n            }\n        }\n\n        // ===== L1 =====\n        expanded := View{visible: false width: Fill height: Fill flow: Down spacing: 8\n            padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n            x_card := RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                draw_bg.color: surface draw_bg.border_radius: 14.0\n                x_sym := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                    x_price := Label{text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                    x_change := Label{text: \"\" draw_text.color: up draw_text.text_style: theme.font_bold{font_size: 13}}\n                    x_change_dn := Label{text: \"\" draw_text.color: down draw_text.text_style: theme.font_bold{font_size: 13}}\n                }\n                x_brief := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n                x_asof := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 11}\n            }\n            View{width: Fill height: Fit flow: Right spacing: 8\n                x_action := Flat{text: \"Watch\" on_click: || do_toggle_watch(sel)}\n                Quiet{text: \"Open\" on_click: || do_open(sel)}\n            }\n            View{width: Fill height: 1}\n            View{width: Fill height: Fit flow: Right spacing: 8\n                Flat{text: \"List\" on_click: || set_depth(2)}\n                Quiet{text: \"\u2039 Glance\" on_click: || set_depth(0)}\n            }\n        }\n\n        // ===== L2 =====\n        full := View{visible: false width: Fill height: Fill\n            l2 := ScrollYView{width: Fill height: Fill flow: Down spacing: 8\n                padding: Inset{left: 16 right: 16 top: 4 bottom: 8}\n\n                RoundedView{width: Fill height: Fit flow: Right spacing: 4\n                    padding: Inset{left: 4 right: 4 top: 4 bottom: 4}\n                    draw_bg.color: #xe5e5ea draw_bg.border_radius: 12.0\n                    tab_all := Seg{text: \"All\" on_click: || set_tab(\"all\")}\n                    tab_watch := Seg{text: \"Watching\" on_click: || set_tab(\"watch\")}\n                }\n\n                l2_list := View{width: Fill height: Fit flow: Down spacing: 6\n                    r1 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"HRB \u00b7 Harbour Rail\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"42.18  +1.24\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r1_b := Flat{text: \"Watch\" on_click: || do_toggle_watch(\"f1\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"f1\")}\n                            }\n                        }\n                    }\n                    r1_w := View{visible: false width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"HRB \u00b7 Harbour Rail\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"42.18  +1.24\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r1_wb := Flat{text: \"Remove\" on_click: || do_toggle_watch(\"f1\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"f1\")}\n                            }\n                        }\n                    }\n                    r2 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"DLK \u00b7 Delta Logistics\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"17.62  -0.38\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r2_b := Flat{text: \"Watch\" on_click: || do_toggle_watch(\"f2\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"f2\")}\n                            }\n                        }\n                    }\n                    r2_w := View{visible: false width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"DLK \u00b7 Delta Logistics\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"17.62  -0.38\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r2_wb := Flat{text: \"Remove\" on_click: || do_toggle_watch(\"f2\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"f2\")}\n                            }\n                        }\n                    }\n                    r3 := View{width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"SGE \u00b7 Sage Energy\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"9.94  +0.07\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r3_b := Flat{text: \"Watch\" on_click: || do_toggle_watch(\"f3\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"f3\")}\n                            }\n                        }\n                    }\n                    r3_w := View{visible: false width: Fill height: Fit\n                        RoundedView{width: Fill height: Fit flow: Down spacing: 2\n                            padding: Inset{left: 14 right: 8 top: 2 bottom: 2}\n                            draw_bg.color: surface draw_bg.border_radius: 10.0\n                            Label{width: Fill text: \"SGE \u00b7 Sage Energy\" draw_text.color: ink draw_text.text_style.font_size: 13}\n                            Label{width: Fill text: \"9.94  +0.07\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                            r3_wb := Flat{text: \"Remove\" on_click: || do_toggle_watch(\"f3\")}\n                            Flat{text: \"Open\" on_click: || do_open(\"f3\")}\n                            }\n                        }\n                    }\n                    watch_empty := RoundedView{visible: false width: Fill height: Fit flow: Down spacing: 3\n                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                        draw_bg.color: surface draw_bg.border_radius: 14.0\n                        Label{width: Fill text: \"Not watching anything\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 14}}\n                        Label{width: Fill text: \"Watch an instrument from All to see it here.\" draw_text.color: ink2 draw_text.text_style.font_size: 12}\n                    }\n                }\n\n                l2_detail := View{visible: false width: Fill height: Fit flow: Down spacing: 6\n                    RoundedView{width: Fill height: Fit flow: Down spacing: 3\n                        padding: Inset{left: 14 right: 14 top: 10 bottom: 10}\n                        draw_bg.color: surface draw_bg.border_radius: 14.0\n                        rd_sym := Label{width: Fill text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n                            rd_price := Label{text: \"\" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 15}}\n                            rd_change := Label{text: \"\" draw_text.color: up draw_text.text_style: theme.font_bold{font_size: 13}}\n                            rd_change_dn := Label{text: \"\" draw_text.color: down draw_text.text_style: theme.font_bold{font_size: 13}}\n                        }\n                        rd_asof := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 11}\n                        SolidView{width: Fill height: 1 draw_bg.color: line}\n                        rd_body := Label{width: Fill text: \"\" draw_text.color: ink2 draw_text.text_style.font_size: 13}\n                    }\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        rd_action := Flat{text: \"Watch\" on_click: || do_toggle_watch(sel)}\n                        Quiet{text: \"\u2039 List\" on_click: || do_back()}\n                    }\n                }\n            }\n        }\n    }\n\n    View{width: Fill height: Fit flow: Down spacing: 4\n        padding: Inset{left: 16 right: 16 top: 6 bottom: 8}\n        SolidView{width: Fill height: 1 draw_bg.color: line}\n        RoundedView{width: Fill height: Fit flow: Right spacing: 4\n            padding: Inset{left: 4 right: 4 top: 4 bottom: 4}\n            draw_bg.color: #xe5e5ea draw_bg.border_radius: 12.0\n            b0 := Seg{text: \"L0\" on_click: || set_depth(0)}\n            b1 := Seg{text: \"L1\" on_click: || set_depth(1)}\n            b2 := Seg{text: \"L2\" on_click: || set_depth(2)}\n        }\n        View{width: Fill height: Fit flow: Right align: Align{y: 0.5} spacing: 8\n            status := Label{text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}\n            View{width: Fill height: 1}\n        }\n    }\n}\n\nfn boot(){\n    say(\"Showing L0 Glance\")\n    sync()\n}\n\nstart_timeout(0.05, || boot())",
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "bg": "#fff2f2f7",
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 1,
+          "id": "f",
+          "kind": "View",
+          "parent": 0,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 98,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 98,
+          "i": 2,
+          "id": "-",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 44,
+          "cw": 352,
+          "cx": 16,
+          "cy": 40,
+          "h": 44,
+          "i": 3,
+          "id": "-",
+          "kind": "View",
+          "parent": 2,
+          "w": 352,
+          "x": 16,
+          "y": 40
+        },
+        {
+          "ch": 37,
+          "cw": 100,
+          "cx": 20,
+          "cy": 44,
+          "fg": "#ff1c1c1e",
+          "h": 37,
+          "i": 4,
+          "id": "-",
+          "kind": "Label",
+          "parent": 3,
+          "text": "Finance",
+          "w": 100,
+          "x": 20,
+          "y": 44
+        },
+        {
+          "ch": 1,
+          "cw": 157,
+          "cx": 131,
+          "cy": 62,
+          "h": 1,
+          "i": 5,
+          "id": "1",
+          "kind": "View",
+          "parent": 3,
+          "w": 157,
+          "x": 131,
+          "y": 62
+        },
+        {
+          "bg": "#fffff3cd",
+          "ch": 37,
+          "cw": 73,
+          "cx": 295,
+          "cy": 44,
+          "h": 37,
+          "i": 6,
+          "id": "2",
+          "kind": "View",
+          "parent": 3,
+          "w": 73,
+          "x": 295,
+          "y": 44
+        },
+        {
+          "ch": 24,
+          "cw": 50,
+          "cx": 307,
+          "cy": 50,
+          "fg": "#ff8a0b00",
+          "h": 24,
+          "i": 7,
+          "id": "-",
+          "kind": "Label",
+          "parent": 6,
+          "text": "DEMO",
+          "w": 50,
+          "x": 307,
+          "y": 50
+        },
+        {
+          "ch": 26,
+          "cw": 345,
+          "cx": 20,
+          "cy": 90,
+          "fg": "#ff8e8e93",
+          "h": 26,
+          "i": 8,
+          "id": "count",
+          "kind": "Label",
+          "parent": 2,
+          "text": "3 instruments \u00b7 0 watched",
+          "w": 345,
+          "x": 20,
+          "y": 90
+        },
+        {
+          "ch": 546,
+          "cw": 384,
+          "cx": 0,
+          "cy": 127,
+          "h": 546,
+          "i": 9,
+          "id": "1",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 127
+        },
+        {
+          "ch": 546,
+          "cw": 384,
+          "cx": 0,
+          "cy": 127,
+          "h": 546,
+          "i": 41,
+          "id": "full",
+          "kind": "View",
+          "parent": 9,
+          "w": 384,
+          "x": 0,
+          "y": 127
+        },
+        {
+          "ch": 546,
+          "cw": 384,
+          "cx": 0,
+          "cy": 127,
+          "h": 546,
+          "i": 42,
+          "id": "l2",
+          "kind": "View",
+          "parent": 41,
+          "scroll_y": true,
+          "w": 384,
+          "x": 0,
+          "y": 127
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 58,
+          "cw": 352,
+          "cx": 16,
+          "cy": 131,
+          "h": 58,
+          "i": 43,
+          "id": "-",
+          "kind": "View",
+          "parent": 42,
+          "w": 352,
+          "x": 16,
+          "y": 131
+        },
+        {
+          "ch": 44,
+          "cw": 170,
+          "cx": 20,
+          "cy": 138,
+          "glyphs": 1,
+          "h": 44,
+          "i": 44,
+          "id": "tab_all",
+          "kind": "Button",
+          "parent": 43,
+          "tappable": true,
+          "text": "\u25cf All",
+          "w": 170,
+          "x": 20,
+          "y": 138
+        },
+        {
+          "ch": 44,
+          "cw": 170,
+          "cx": 194,
+          "cy": 138,
+          "glyphs": 1,
+          "h": 44,
+          "i": 45,
+          "id": "tab_watch",
+          "kind": "Button",
+          "parent": 43,
+          "tappable": true,
+          "text": "Watching",
+          "w": 170,
+          "x": 194,
+          "y": 138
+        },
+        {
+          "ch": 351,
+          "cw": 352,
+          "cx": 16,
+          "cy": 197,
+          "h": 351,
+          "i": 92,
+          "id": "l2_detail",
+          "kind": "View",
+          "parent": 42,
+          "w": 352,
+          "x": 16,
+          "y": 197
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 295,
+          "cw": 352,
+          "cx": 16,
+          "cy": 197,
+          "h": 295,
+          "i": 93,
+          "id": "-",
+          "kind": "View",
+          "parent": 92,
+          "w": 352,
+          "x": 16,
+          "y": 197
+        },
+        {
+          "ch": 30,
+          "cw": 317,
+          "cx": 34,
+          "cy": 210,
+          "fg": "#ff1c1c1e",
+          "h": 30,
+          "i": 94,
+          "id": "rd_sym",
+          "kind": "Label",
+          "parent": 93,
+          "text": "SGE \u00b7 Sage Energy",
+          "w": 317,
+          "x": 34,
+          "y": 210
+        },
+        {
+          "ch": 37,
+          "cw": 324,
+          "cx": 30,
+          "cy": 247,
+          "h": 37,
+          "i": 95,
+          "id": "-",
+          "kind": "View",
+          "parent": 93,
+          "w": 324,
+          "x": 30,
+          "y": 247
+        },
+        {
+          "ch": 30,
+          "cw": 47,
+          "cx": 34,
+          "cy": 251,
+          "fg": "#ff1c1c1e",
+          "h": 30,
+          "i": 96,
+          "id": "rd_price",
+          "kind": "Label",
+          "parent": 95,
+          "text": "9.94",
+          "w": 47,
+          "x": 34,
+          "y": 251
+        },
+        {
+          "ch": 27,
+          "cw": 51,
+          "cx": 96,
+          "cy": 252,
+          "fg": "#ff248a3d",
+          "h": 27,
+          "i": 97,
+          "id": "rd_change",
+          "kind": "Label",
+          "parent": 95,
+          "text": "+0.07",
+          "w": 51,
+          "x": 96,
+          "y": 252
+        },
+        {
+          "ch": 24,
+          "cw": 317,
+          "cx": 34,
+          "cy": 291,
+          "fg": "#ff8e8e93",
+          "h": 24,
+          "i": 99,
+          "id": "rd_asof",
+          "kind": "Label",
+          "parent": 93,
+          "text": "as of 08:45 \u00b7 demo, not a live quote",
+          "w": 317,
+          "x": 34,
+          "y": 291
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 1,
+          "cw": 324,
+          "cx": 30,
+          "cy": 322,
+          "h": 1,
+          "i": 100,
+          "id": "1",
+          "kind": "View",
+          "parent": 93,
+          "w": 324,
+          "x": 30,
+          "y": 322
+        },
+        {
+          "ch": 149,
+          "cw": 317,
+          "cx": 34,
+          "cy": 329,
+          "fg": "#ff3c3c43",
+          "h": 149,
+          "i": 101,
+          "id": "rd_body",
+          "kind": "Label",
+          "parent": 93,
+          "text": "Sage Energy is a regional utility trialling shared rooftop solar. This demo record shows a fictional instrument: the price, change and as-of time are fixed sample values rather than a live quote, and nothing here can be traded.",
+          "w": 317,
+          "x": 34,
+          "y": 329
+        },
+        {
+          "ch": 50,
+          "cw": 352,
+          "cx": 16,
+          "cy": 498,
+          "h": 50,
+          "i": 102,
+          "id": "1",
+          "kind": "View",
+          "parent": 92,
+          "w": 352,
+          "x": 16,
+          "y": 498
+        },
+        {
+          "ch": 44,
+          "cw": 80,
+          "cx": 16,
+          "cy": 501,
+          "glyphs": 1,
+          "h": 44,
+          "i": 103,
+          "id": "rd_action",
+          "kind": "Button",
+          "parent": 102,
+          "tappable": true,
+          "text": "Watch",
+          "w": 80,
+          "x": 16,
+          "y": 501
+        },
+        {
+          "ch": 44,
+          "cw": 67,
+          "cx": 104,
+          "cy": 501,
+          "glyphs": 1,
+          "h": 44,
+          "i": 104,
+          "id": "-",
+          "kind": "Button",
+          "parent": 102,
+          "tappable": true,
+          "text": "\u2039 List",
+          "w": 67,
+          "x": 104,
+          "y": 501
+        },
+        {
+          "ch": 114,
+          "cw": 384,
+          "cx": 0,
+          "cy": 673,
+          "h": 114,
+          "i": 105,
+          "id": "2",
+          "kind": "View",
+          "parent": 1,
+          "w": 384,
+          "x": 0,
+          "y": 673
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 1,
+          "cw": 352,
+          "cx": 16,
+          "cy": 679,
+          "h": 1,
+          "i": 106,
+          "id": "-",
+          "kind": "View",
+          "parent": 105,
+          "w": 352,
+          "x": 16,
+          "y": 679
+        },
+        {
+          "bg": "#ffe5e5ea",
+          "ch": 58,
+          "cw": 352,
+          "cx": 16,
+          "cy": 684,
+          "h": 58,
+          "i": 107,
+          "id": "1",
+          "kind": "View",
+          "parent": 105,
+          "w": 352,
+          "x": 16,
+          "y": 684
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 20,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 108,
+          "id": "b0",
+          "kind": "Button",
+          "parent": 107,
+          "tappable": true,
+          "text": "L0",
+          "w": 112,
+          "x": 20,
+          "y": 691
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 136,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 109,
+          "id": "b1",
+          "kind": "Button",
+          "parent": 107,
+          "tappable": true,
+          "text": "L1",
+          "w": 112,
+          "x": 136,
+          "y": 691
+        },
+        {
+          "ch": 44,
+          "cw": 112,
+          "cx": 252,
+          "cy": 691,
+          "glyphs": 1,
+          "h": 44,
+          "i": 110,
+          "id": "b2",
+          "kind": "Button",
+          "parent": 107,
+          "tappable": true,
+          "text": "\u25cf L2",
+          "w": 112,
+          "x": 252,
+          "y": 691
+        },
+        {
+          "ch": 33,
+          "cw": 352,
+          "cx": 16,
+          "cy": 746,
+          "h": 33,
+          "i": 111,
+          "id": "2",
+          "kind": "View",
+          "parent": 105,
+          "w": 352,
+          "x": 16,
+          "y": 746
+        },
+        {
+          "ch": 26,
+          "cw": 11,
+          "cx": 20,
+          "cy": 749,
+          "h": 26,
+          "i": 112,
+          "id": "status",
+          "kind": "Label",
+          "parent": 111,
+          "w": 11,
+          "x": 20,
+          "y": 749
+        },
+        {
+          "ch": 1,
+          "cw": 326,
+          "cx": 42,
+          "cy": 762,
+          "h": 1,
+          "i": 113,
+          "id": "-",
+          "kind": "View",
+          "parent": 111,
+          "w": 326,
+          "x": 42,
+          "y": 762
+        }
+      ]
+    },
+    "tree": "W3 36\n0 -1 - Splash 0 28 384 758\n1 0 f View 0 28 384 758\n2 1 - View 0 28 384 98\n3 2 - View 16 40 352 44\n4 3 - Label 20 44 100 37\n5 3 1 View 131 62 157 1\n6 3 2 View 295 44 73 37\n7 6 - Label 307 50 50 24\n8 2 count Label 20 90 345 26\n9 1 1 View 0 127 384 546\n10 9 full View 0 127 384 546\n11 10 l2 View 0 127 384 546\n12 11 - View 16 131 352 58\n13 12 tab_all Button 20 138 170 44\n14 12 tab_watch Button 194 138 170 44\n15 11 l2_detail View 16 197 352 351\n16 15 - View 16 197 352 295\n17 16 rd_sym Label 34 210 317 30\n18 16 - View 30 247 324 37\n19 18 rd_price Label 34 251 47 30\n20 18 rd_change Label 96 252 51 27\n21 16 rd_asof Label 34 291 317 24\n22 16 1 View 30 322 324 1\n23 16 rd_body Label 34 329 317 149\n24 15 1 View 16 498 352 50\n25 24 rd_action Button 16 501 80 44\n26 24 - Button 104 501 67 44\n27 1 2 View 0 673 384 114\n28 27 - View 16 679 352 1\n29 27 1 View 16 684 352 58\n30 29 b0 Button 20 691 112 44\n31 29 b1 Button 136 691 112 44\n32 29 b2 Button 252 691 112 44\n33 27 2 View 16 746 352 33\n34 33 status Label 20 749 11 26\n35 33 - View 42 762 326 1\n",
+    "widgets": [
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "-@0",
+        "text": null,
+        "type": "Splash",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "f",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "f@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          98
+        ],
+        "selected": null,
+        "selector": "-@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          40,
+          352,
+          44
+        ],
+        "selected": null,
+        "selector": "-@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          20,
+          44,
+          100,
+          37
+        ],
+        "selected": null,
+        "selector": "-@3",
+        "text": "Finance",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          131,
+          62,
+          157,
+          1
+        ],
+        "selected": null,
+        "selector": "1@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          295,
+          44,
+          73,
+          37
+        ],
+        "selected": null,
+        "selector": "2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          307,
+          50,
+          50,
+          24
+        ],
+        "selected": null,
+        "selector": "-@4",
+        "text": "DEMO",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "count",
+        "rect": [
+          20,
+          90,
+          345,
+          26
+        ],
+        "selected": null,
+        "selector": "count@0",
+        "text": "3 instruments \u00b7 0 watched",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          127,
+          384,
+          546
+        ],
+        "selected": null,
+        "selector": "1@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "glance",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "glance@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_card",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_card@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_sym",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_sym@0",
+        "text": "HRB",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@5",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_price",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_price@0",
+        "text": "42.18",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_dir",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_dir@0",
+        "text": "\u25b2",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_change",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_change@0",
+        "text": "+1.24",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_change_dn",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_change_dn@0",
+        "text": "+1.24",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_name",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_name@0",
+        "text": "Harbour Rail",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_brief",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_brief@0",
+        "text": "Regional rail operator, demo record.",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "g_asof",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "g_asof@0",
+        "text": "as of 08:45 \u00b7 demo",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@6",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@7",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@3",
+        "text": "List",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "expanded",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "expanded@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_card",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_card@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_sym",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_sym@0",
+        "text": "SGE \u00b7 Sage Energy",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@8",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_price",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_price@0",
+        "text": "9.94",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_change",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_change@0",
+        "text": "+0.07",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_change_dn",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_change_dn@0",
+        "text": "+0.07",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_brief",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_brief@0",
+        "text": "Utility with a solar trial, demo record.",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_asof",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_asof@0",
+        "text": "as of 08:45 \u00b7 demo, not a live quote",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@9",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "x_action",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "x_action@0",
+        "text": "Watch",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@10",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@11",
+        "text": "List",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@5",
+        "text": "\u2039 Glance",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "full",
+        "rect": [
+          0,
+          127,
+          384,
+          546
+        ],
+        "selected": null,
+        "selector": "full@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2",
+        "rect": [
+          0,
+          127,
+          384,
+          546
+        ],
+        "selected": null,
+        "selector": "l2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          131,
+          352,
+          58
+        ],
+        "selected": null,
+        "selector": "-@12",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "tab_all",
+        "rect": [
+          20,
+          138,
+          170,
+          44
+        ],
+        "selected": null,
+        "selector": "tab_all@0",
+        "text": "\u25cf All",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "tab_watch",
+        "rect": [
+          194,
+          138,
+          170,
+          44
+        ],
+        "selected": null,
+        "selector": "tab_watch@0",
+        "text": "Watching",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2_list",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "l2_list@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@13",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@14",
+        "text": "HRB \u00b7 Harbour Rail",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@6",
+        "text": "42.18  +1.24",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1_b",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1_b@0",
+        "text": "Watch",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@15",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1_w",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1_w@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@16",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@17",
+        "text": "HRB \u00b7 Harbour Rail",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@7",
+        "text": "42.18  +1.24",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@3",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r1_wb",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r1_wb@0",
+        "text": "Watch",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@18",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@19",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@20",
+        "text": "DLK \u00b7 Delta Logistics",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@8",
+        "text": "17.62  -0.38",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2_b",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2_b@0",
+        "text": "Watch",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@21",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2_w",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2_w@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@22",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@23",
+        "text": "DLK \u00b7 Delta Logistics",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@9",
+        "text": "17.62  -0.38",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@5",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r2_wb",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r2_wb@0",
+        "text": "Watch",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@24",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@25",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@26",
+        "text": "SGE \u00b7 Sage Energy",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@10",
+        "text": "9.94  +0.07",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@6",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3_b",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3_b@0",
+        "text": "Watch",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@27",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3_w",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3_w@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@28",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@29",
+        "text": "SGE \u00b7 Sage Energy",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@11",
+        "text": "9.94  +0.07",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@7",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "r3_wb",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "r3_wb@0",
+        "text": "Watch",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@30",
+        "text": "Open",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "watch_empty",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "watch_empty@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@31",
+        "text": "Not watching anything",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@12",
+        "text": "Watch an instrument from All to see it here.",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "l2_detail",
+        "rect": [
+          16,
+          197,
+          352,
+          351
+        ],
+        "selected": null,
+        "selector": "l2_detail@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          197,
+          352,
+          295
+        ],
+        "selected": null,
+        "selector": "-@32",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_sym",
+        "rect": [
+          34,
+          210,
+          317,
+          30
+        ],
+        "selected": null,
+        "selector": "rd_sym@0",
+        "text": "SGE \u00b7 Sage Energy",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          30,
+          247,
+          324,
+          37
+        ],
+        "selected": null,
+        "selector": "-@33",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_price",
+        "rect": [
+          34,
+          251,
+          47,
+          30
+        ],
+        "selected": null,
+        "selector": "rd_price@0",
+        "text": "9.94",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_change",
+        "rect": [
+          96,
+          252,
+          51,
+          27
+        ],
+        "selected": null,
+        "selector": "rd_change@0",
+        "text": "+0.07",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_change_dn",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "rd_change_dn@0",
+        "text": "+0.07",
+        "type": "Label",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_asof",
+        "rect": [
+          34,
+          291,
+          317,
+          24
+        ],
+        "selected": null,
+        "selector": "rd_asof@0",
+        "text": "as of 08:45 \u00b7 demo, not a live quote",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          30,
+          322,
+          324,
+          1
+        ],
+        "selected": null,
+        "selector": "1@13",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_body",
+        "rect": [
+          34,
+          329,
+          317,
+          149
+        ],
+        "selected": null,
+        "selector": "rd_body@0",
+        "text": "Sage Energy is a regional utility trialling shared rooftop solar. This demo record shows a fictional instrument: the price, change and as-of time are fixed sample values rather than a live quote, and nothing here can be traded.",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          16,
+          498,
+          352,
+          50
+        ],
+        "selected": null,
+        "selector": "1@14",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "rd_action",
+        "rect": [
+          16,
+          501,
+          80,
+          44
+        ],
+        "selected": null,
+        "selector": "rd_action@0",
+        "text": "Watch",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          104,
+          501,
+          67,
+          44
+        ],
+        "selected": null,
+        "selector": "-@34",
+        "text": "\u2039 List",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          673,
+          384,
+          114
+        ],
+        "selected": null,
+        "selector": "2@8",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          16,
+          679,
+          352,
+          1
+        ],
+        "selected": null,
+        "selector": "-@35",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          16,
+          684,
+          352,
+          58
+        ],
+        "selected": null,
+        "selector": "1@15",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b0",
+        "rect": [
+          20,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b0@0",
+        "text": "L0",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b1",
+        "rect": [
+          136,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b1@0",
+        "text": "L1",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "b2",
+        "rect": [
+          252,
+          691,
+          112,
+          44
+        ],
+        "selected": null,
+        "selector": "b2@0",
+        "text": "\u25cf L2",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          16,
+          746,
+          352,
+          33
+        ],
+        "selected": null,
+        "selector": "2@9",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "status",
+        "rect": [
+          20,
+          749,
+          11,
+          26
+        ],
+        "selected": null,
+        "selector": "status@0",
+        "text": " ",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          42,
+          762,
+          326,
+          1
+        ],
+        "selected": null,
+        "selector": "-@36",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      }
+    ]
+  },
+  "width": 1080
+}

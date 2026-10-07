@@ -1,0 +1,402 @@
+{
+  "family": "youtube",
+  "draft": false,
+  "source_file": "minimax-round14-final/card-templates/youtube/bundle/main.splash",
+  "source_sha256": "1bc00cc92f7dfe0b125e74bb3a87385c5fdfe88a870f4af660b1de6d323f0f61",
+  "status": "Operator confirmed native source byte-identical from reconciled round13 to final round14; input suite ready, actual runtime outcomes pending.",
+  "assumptions": [
+    "Fresh disposable preview starts with no favorites/watch-later entries.",
+    "Widget ids are taken directly from source. Anonymous Open uses list occurrence1 for second and2 for last; confirm actual snapshot selector ordering.",
+    "Positive wheel delta scrolls down in named l2 ScrollYView. A compact list may not overflow; a no-op cannot prove reset after a genuine scroll.",
+    "No invented preview-state controls. Exported glance.card validation/rendering is separate from native L0 presentation.",
+    "No-enabled-Play assertions cover common textual labels and symbol, not every conceivable icon or dead action. Manually inspect all visible controls.",
+    "Round13 native source is reconciled; only final round14 byte equality remains. This is not native test evidence."
+  ],
+  "manual_checks": [
+    "Inspect second-item and last-item detail PNG/JSON: complete title, identity metadata and offline cue must be visibly inside the viewport at top, not merely present in snapshot text.",
+    "Check full and filtered list titles/metadata for horizontal cuts, especially with long Favorite/Watch later action labels.",
+    "Verify no photo/thumbnail/player is falsely shown as loaded and no enabled control promises unavailable playback.",
+    "Keep expected vertical scroll-edge clipping distinct from horizontal truncation or unreachable action targets.",
+    "All encountered action targets must remain44logical points; retain raw geometry failures even when behavior passes."
+  ],
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "● L0",
+        "Slow harbour morning, timelapse",
+        "3 videos · 0 in Watch later",
+        "THUMBNAIL NOT LOADED OFFLINE",
+        "DEMO"
+      ],
+      "delay_ms": 150,
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "expanded",
+      "contains": [
+        "● L1",
+        "Slow harbour morning, timelapse",
+        "Watch later",
+        "PLAYBACK UNAVAILABLE OFFLINE"
+      ],
+      "action": "tap",
+      "target": "b1",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "full-list",
+      "contains": [
+        "● L2",
+        "Restoring a harbour crane, part 2",
+        "3 videos · 0 in Watch later"
+      ],
+      "action": "tap",
+      "target": "b2",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "second-item-detail",
+      "contains": [
+        "● L2",
+        "Restoring a harbour crane, part 2",
+        "Docklands Workshop",
+        "21:07",
+        "128K views",
+        "PLAYBACK UNAVAILABLE OFFLINE"
+      ],
+      "action": "tap",
+      "target": "Open",
+      "occurrence": 1,
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "save-second",
+      "contains": [
+        "3 videos · 1 in Watch later",
+        "Remove from Watch later",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "rd_action",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "back-to-list",
+      "contains": [
+        "● L2",
+        "Restoring a harbour crane, part 2"
+      ],
+      "action": "tap",
+      "target": "‹ List",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "filtered-second",
+      "contains": [
+        "Restoring a harbour crane, part 2",
+        "3 videos · 1 in Watch later",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "tab_later",
+      "excludes": [
+        "Slow harbour morning, timelapse",
+        "Weeknight cycling: four rivers route"
+      ],
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "remove-second",
+      "contains": [
+        "Watch later is empty",
+        "3 videos · 0 in Watch later",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "r2_lb",
+      "no_enabled_button_text": [
+        "Open",
+        "Remove",
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "return-all",
+      "contains": [
+        "Restoring a harbour crane, part 2",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "tab_all",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "scroll-list",
+      "contains": [
+        "Weeknight cycling: four rivers route",
+        "● L2"
+      ],
+      "action": "scroll",
+      "target": "l2",
+      "delta_y": 360,
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "last-item-detail",
+      "contains": [
+        "● L2",
+        "Weeknight cycling: four rivers route",
+        "Alex Outdoors",
+        "14:51",
+        "17.9K views",
+        "PLAYBACK UNAVAILABLE OFFLINE"
+      ],
+      "action": "tap",
+      "target": "Open",
+      "occurrence": 2,
+      "capture_android": true,
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "save-last",
+      "contains": [
+        "3 videos · 1 in Watch later",
+        "Remove from Watch later",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "rd_action",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "back-after-last",
+      "contains": [
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "‹ List",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "filtered-last",
+      "contains": [
+        "Weeknight cycling: four rivers route",
+        "3 videos · 1 in Watch later",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "tab_later",
+      "excludes": [
+        "Slow harbour morning, timelapse",
+        "Restoring a harbour crane, part 2"
+      ],
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "remove-last",
+      "contains": [
+        "Watch later is empty",
+        "3 videos · 0 in Watch later",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "r3_lb",
+      "no_enabled_button_text": [
+        "Open",
+        "Remove",
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ List"
+      ]
+    },
+    {
+      "label": "expanded-selected-last",
+      "contains": [
+        "● L1",
+        "Weeknight cycling: four rivers route",
+        "Watch later",
+        "PLAYBACK UNAVAILABLE OFFLINE"
+      ],
+      "action": "tap",
+      "target": "b1",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "expanded-save",
+      "contains": [
+        "3 videos · 1 in Watch later",
+        "Remove from Watch later",
+        "● L1"
+      ],
+      "action": "tap",
+      "target": "x_action",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "expanded-remove",
+      "contains": [
+        "3 videos · 0 in Watch later",
+        "Watch later",
+        "● L1"
+      ],
+      "action": "tap",
+      "target": "x_action",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "return-lead-glance",
+      "contains": [
+        "● L0",
+        "Slow harbour morning, timelapse",
+        "THUMBNAIL NOT LOADED OFFLINE"
+      ],
+      "action": "tap",
+      "target": "b0",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "glance-opens-displayed-lead",
+      "contains": [
+        "● L2",
+        "Slow harbour morning, timelapse",
+        "PLAYBACK UNAVAILABLE OFFLINE"
+      ],
+      "action": "tap",
+      "target": "Open",
+      "excludes": [
+        "Weeknight cycling: four rivers route"
+      ],
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    }
+  ],
+  "reconciliation": "Read native diffs round12→13: Mail/Photo/YouTube unchanged; News removes extra closing brace; Finance reflows six list rows with same IDs/copy/actions; Calendar adds persistent depth markers and moves status. All115 steps retained; marker assertions reflect actual controls. Round14 native hash confirmation still pending.",
+  "native_source_reconciled": true,
+  "awaiting_round14_hash_confirmation": true,
+  "final_round14_binding": {
+    "main_and_manifest_byte_identical_to_round13": true,
+    "execution_status_at_preparation": "pending"
+  }
+}

@@ -1,0 +1,246 @@
+// Photo Cards — native interactive preview of the PHOTO card template.
+// Presentation depths: L0 compact glance / L1 expanded actionable / L2 full app.
+//
+// HONEST MEDIA: this offline Studio slice has no local-image route, so media is
+// drawn as a concise unavailable placeholder — never a fake photo. Metadata and
+// the favorite choice are the local, functional content.
+// Layout: nav + status pinned at TOP; the card scrolls below. Targets >= 44 px.
+
+let depth = "glance"
+let view_state = "ready"
+let show_states = false
+let tab = "all"
+let detail_open = false
+let open_id = ""
+let fav_a = false
+let fav_b = false
+let fav_c = false
+
+let NavBtn = ButtonFlat{height: 44 padding: 10 draw_bg +: {color: #xedeaf3 color_hover: #xe4dff0 color_down: #xd8d1e8} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+let AccentBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #x8a4fff color_hover: #x9966ff color_down: #x7a3fe6} draw_text +: {color: #xffffff color_hover: #xffffff color_down: #xffffff}}
+let GhostBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xffffff color_hover: #xf0f4f8 color_down: #xe6ecf3} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+let OpenBtn = ButtonFlat{height: 44 width: 108 padding: 8 draw_bg +: {color: #xedeaf3 color_hover: #xe4dff0 color_down: #xd8d1e8} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+
+fn depth_name(){
+    if depth == "glance" { return "L0 glance" }
+    if depth == "expand" { return "L1 expanded" }
+    return "L2 app"
+}
+fn name_of(id){
+    if id == "still" { return "Studio still life" }
+    if id == "ridge" { return "Trail ridge, mist" }
+    return "Harbor sunset"
+}
+fn meta_of(id){
+    if id == "still" { return "Studio · 3 Mar · 5184×3456" }
+    if id == "ridge" { return "North Ridge · 21 Apr · 4032×3024" }
+    return "San Remo Pier · 12 May · 4032×3024"
+}
+fn is_fav(id){
+    if id == "still" { return fav_b }
+    if id == "ridge" { return fav_c }
+    return fav_a
+}
+fn fav_label(id){
+    if is_fav(id) { return "Favorited ✓" }
+    return "Favorite"
+}
+fn fav_count(){
+    let n = 0
+    if fav_a { n = n + 1 }
+    if fav_b { n = n + 1 }
+    if fav_c { n = n + 1 }
+    return n
+}
+
+fn refresh_nav(){
+    let s = "Photo Cards   ·   " + depth_name() + "   ·   " + view_state + "   ·   favorites: " + fav_count()
+    ui.depth_status.set_text(s)
+    if depth == "glance" { ui.d_gl.set_text("• Glance") } else { ui.d_gl.set_text("Glance") }
+    if depth == "expand" { ui.d_ex.set_text("• Expand") } else { ui.d_ex.set_text("Expand") }
+    if depth == "app" { ui.d_ap.set_text("• Open app") } else { ui.d_ap.set_text("Open app") }
+}
+fn toggle_states(){
+    if show_states { show_states = false } else { show_states = true }
+    if show_states { ui.states_btn.set_text("States ▾") } else { ui.states_btn.set_text("States ▸") }
+    ui.states_row.set_visible(show_states)
+}
+
+fn set_depth(d){ depth = d detail_open = false refresh_nav() ui.stage.render() }
+fn set_state(s){ view_state = s refresh_nav() ui.stage.render() }
+fn set_tab(t){ tab = t detail_open = false refresh_nav() ui.stage.render() }
+fn open_detail(id){ open_id = id detail_open = true ui.stage.render() }
+fn close_detail(){ detail_open = false ui.stage.render() }
+fn toggle_fav(id){
+    if id == "still" { if fav_b { fav_b = false } else { fav_b = true } }
+    elif id == "ridge" { if fav_c { fav_c = false } else { fav_c = true } }
+    else { if fav_a { fav_a = false } else { fav_a = true } }
+    refresh_nav() ui.stage.render()
+}
+
+fn boot(){ refresh_nav() ui.states_row.set_visible(false) ui.stage.render() }
+
+start_timeout(0.05, || boot())
+
+SolidView{width: Fill height: Fill flow: Down padding: 12 spacing: 8 draw_bg.color: #xf5f3f8
+    // Title folded into the consolidated status line below (density).
+    depth_status := Label{width: Fill height: Fit text: "Depth: L0 glance   ·   state: ready   ·   favorites: 0" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}
+    View{width: Fill height: Fit flow: Right spacing: 8
+        d_gl := NavBtn{text: "• Glance" on_click: || set_depth("glance")}
+        d_ex := NavBtn{text: "Expand" on_click: || set_depth("expand")}
+        d_ap := NavBtn{text: "Open app" on_click: || set_depth("app")}
+        View{width: Fill height: Fit}
+        states_btn := NavBtn{text: "States ▸" on_click: || toggle_states()}
+    }
+    states_row := View{width: Fill height: Fit flow: Right spacing: 8
+        NavBtn{text: "Ready" on_click: || set_state("ready")}
+        NavBtn{text: "Loading" on_click: || set_state("loading")}
+        NavBtn{text: "Empty" on_click: || set_state("empty")}
+        NavBtn{text: "Error" on_click: || set_state("error")}
+    }
+
+    ScrollYView{width: Fill height: Fill flow: Down spacing: 8
+        stage := RoundedView{width: Fill height: Fit flow: Down padding: 14 spacing: 8 draw_bg.color: #xffffff draw_bg.radius: 16 on_render: || {
+
+            // ---------- L0 · compact glance ----------
+            if depth == "glance" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    Label{text: "PHOTOS" draw_text.color: #x8a4fff draw_text.text_style.font_size: 12}
+                    View{width: Fill height: Fit}
+                    Label{text: "Today" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}
+                }
+                if view_state == "loading" { Label{text: "Loading…" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }
+                if view_state == "empty" { Label{text: "No photos" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }
+                if view_state == "error" { Label{width: Fill height: Fit text: "Couldn't load library — demo error state" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }
+                if view_state == "ready" {
+                    RoundedView{width: Fill height: 84 flow: Down padding: 12 spacing: 4 draw_bg.color: #xeef1f4 draw_bg.radius: 12
+                        Label{text: "IMAGE UNAVAILABLE" draw_text.color: #x6b7280 draw_text.text_style.font_size: 12}
+                        Label{width: Fill height: Fit text: "Can't show in this demo" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}
+                    }
+                    Label{width: Fill height: Fit text: "Harbor sunset" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{text: "San Remo Pier · 12 May" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        AccentBtn{text: fav_label("harbor") on_click: || toggle_fav("harbor")}
+                    }
+                }
+            }
+
+            // ---------- L1 · expanded actionable ----------
+            if depth == "expand" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    Label{text: "PHOTOS" draw_text.color: #x8a4fff draw_text.text_style.font_size: 11}
+                    View{width: Fill height: Fit}
+                    Label{text: "Today" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}
+                }
+                if view_state == "loading" { Label{text: "Loading…" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }
+                if view_state == "empty" { Label{text: "No photos" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }
+                if view_state == "error" { Label{width: Fill height: Fit text: "Couldn't load library — demo error state" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }
+                if view_state == "ready" {
+                    RoundedView{width: Fill height: 84 flow: Down padding: 12 spacing: 4 draw_bg.color: #xeef1f4 draw_bg.radius: 12
+                        Label{text: "IMAGE UNAVAILABLE" draw_text.color: #x6b7280 draw_text.text_style.font_size: 13}
+                        Label{width: Fill height: Fit text: "Media can't be shown in this offline demo." draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}
+                    }
+                    Label{width: Fill height: Fit text: "Harbor sunset" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{text: "San Remo Pier · 12 May · 4032×3024" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                    Label{text: "Tags: harbor, sunset, pier (demo)" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        AccentBtn{text: fav_label("harbor") on_click: || toggle_fav("harbor")}
+                        NavBtn{text: "Open app" on_click: || set_depth("app")}
+                    }
+                }
+            }
+
+            // ---------- L2 · full app (library) ----------
+            if depth == "app" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    if tab == "all" {
+                        AccentBtn{text: "All" width: 116 on_click: || set_tab("all")}
+                        NavBtn{text: "Favorites" width: 126 on_click: || set_tab("fav")}
+                    }
+                    if tab == "fav" {
+                        NavBtn{text: "All" width: 116 on_click: || set_tab("all")}
+                        AccentBtn{text: "Favorites" width: 126 on_click: || set_tab("fav")}
+                    }
+                }
+                SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}
+                if detail_open {
+                    RoundedView{width: Fill height: 84 flow: Down padding: 12 spacing: 4 draw_bg.color: #xeef1f4 draw_bg.radius: 12
+                        Label{text: "IMAGE UNAVAILABLE" draw_text.color: #x6b7280 draw_text.text_style.font_size: 13}
+                        Label{width: Fill height: Fit text: "Media can't be shown in this offline demo." draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}
+                    }
+                    Label{width: Fill height: Fit text: name_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{width: Fill height: Fit text: meta_of(open_id) draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        AccentBtn{text: fav_label(open_id) on_click: || toggle_fav(open_id)}
+                        NavBtn{text: "‹ Back" on_click: || close_detail()}
+                    }
+                }
+                if detail_open == false {
+                    if tab == "all" {
+                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                            Label{width: Fill height: Fit text: "Harbor sunset" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            Label{width: Fill height: Fit text: "San Remo Pier · 12 May" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                NavBtn{text: fav_label("harbor") on_click: || toggle_fav("harbor")}
+                                OpenBtn{text: "Open ›" on_click: || open_detail("harbor")}
+                            }
+                        }
+                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                            Label{width: Fill height: Fit text: "Studio still life" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            Label{width: Fill height: Fit text: "Studio · 3 Mar" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                NavBtn{text: fav_label("still") on_click: || toggle_fav("still")}
+                                OpenBtn{text: "Open ›" on_click: || open_detail("still")}
+                            }
+                        }
+                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                            Label{width: Fill height: Fit text: "Trail ridge, mist" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            Label{width: Fill height: Fit text: "North Ridge · 21 Apr" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                            View{width: Fill height: Fit flow: Right spacing: 8
+                                NavBtn{text: fav_label("ridge") on_click: || toggle_fav("ridge")}
+                                OpenBtn{text: "Open ›" on_click: || open_detail("ridge")}
+                            }
+                        }
+                    }
+                    if tab == "fav" {
+                        Label{width: Fill height: Fit text: "Favorites · " + fav_count() draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                        if fav_count() == 0 {
+                            Label{text: "No favorites yet" draw_text.color: #x8a8a8e draw_text.text_style.font_size: 15}
+                        }
+                        if fav_a {
+                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                                Label{width: Fill height: Fit text: "Harbor sunset" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                                Label{width: Fill height: Fit text: "San Remo Pier · 12 May" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                                View{width: Fill height: Fit flow: Right spacing: 8
+                                    NavBtn{text: "Favorited ✓" on_click: || toggle_fav("harbor")}
+                                    OpenBtn{text: "Open ›" on_click: || open_detail("harbor")}
+                                }
+                            }
+                        }
+                        if fav_b {
+                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                                Label{width: Fill height: Fit text: "Studio still life" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                                Label{width: Fill height: Fit text: "Studio · 3 Mar" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                                View{width: Fill height: Fit flow: Right spacing: 8
+                                    NavBtn{text: "Favorited ✓" on_click: || toggle_fav("still")}
+                                    OpenBtn{text: "Open ›" on_click: || open_detail("still")}
+                                }
+                            }
+                        }
+                        if fav_c {
+                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                                Label{width: Fill height: Fit text: "Trail ridge, mist" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                                Label{width: Fill height: Fit text: "North Ridge · 21 Apr" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                                View{width: Fill height: Fit flow: Right spacing: 8
+                                    NavBtn{text: "Favorited ✓" on_click: || toggle_fav("ridge")}
+                                    OpenBtn{text: "Open ›" on_click: || open_detail("ridge")}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }}
+    }
+}

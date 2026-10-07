@@ -1,0 +1,440 @@
+{
+  "scope": "In-progress round12 diagnostic-01 frozen snapshots only; model remained active. No repaired source, app source edits, runtime edits or phone operations.",
+  "runtime": {
+    "octosense": "ccf8013f2bd7adbb6c20d5f52f47bcfbcbb55313",
+    "makepad_base_with_reviewed_overlay": "c155f61d0e1600d2ec474209374444a38a09a470",
+    "framework": "2cc5ef37d7d6a3d2992673389ce74488f7bb2d87"
+  },
+  "method": "Original source bytes evaluated by real native Splash using existing pinned compiled libraries, 5M instruction allowance/16MiB heap cap. No GPU or phone.",
+  "results": [
+    {
+      "family": "news",
+      "snapshot": "minimax-round12-diagnostic-01/card-templates/news/bundle/main.splash",
+      "sha256": "32a9bc7cdc13a3d19b6f1c5719869cab3cc5b6d4aac9fabe3ff3b83b20600655",
+      "bytes": 19481,
+      "lines": 395,
+      "raw_brace_balance": -6,
+      "native_exit_code": 0,
+      "native_startup_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"splash: script body evaluated to nothing (no root view)\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":344,\"line_end\":344,\"column_start\":20,\"column_end\":24,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\n{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 19481 bytes preserve=false view=false animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 0\nRUNNING Some(true)\n",
+      "reported_premature_container_closes": [
+        {
+          "line": 274,
+          "excerpt_start_line": 273,
+          "excerpt": [
+            "                            Label{width: Fill text: \"Harbour Times · 08:20\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r1_b := Flat{text: \"Save\" on_click: || do_toggle_saved(\"n1\")}",
+            "                            Flat{text: \"Read\" on_click: || do_open(\"n1\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 286,
+          "excerpt_start_line": 285,
+          "excerpt": [
+            "                            Label{width: Fill text: \"Harbour Times · 07:55\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r2_b := Flat{text: \"Save\" on_click: || do_toggle_saved(\"n2\")}",
+            "                            Flat{text: \"Read\" on_click: || do_open(\"n2\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 298,
+          "excerpt_start_line": 297,
+          "excerpt": [
+            "                            Label{width: Fill text: \"Field Notes · Yesterday\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r3_b := Flat{text: \"Save\" on_click: || do_toggle_saved(\"n3\")}",
+            "                            Flat{text: \"Read\" on_click: || do_open(\"n3\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 310,
+          "excerpt_start_line": 309,
+          "excerpt": [
+            "                            Label{width: Fill text: \"Harbour Times · 08:20\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r1_sb := Flat{text: \"Remove\" on_click: || do_toggle_saved(\"n1\")}",
+            "                            Flat{text: \"Read\" on_click: || do_open(\"n1\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 322,
+          "excerpt_start_line": 321,
+          "excerpt": [
+            "                            Label{width: Fill text: \"Harbour Times · 07:55\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r2_sb := Flat{text: \"Remove\" on_click: || do_toggle_saved(\"n2\")}",
+            "                            Flat{text: \"Read\" on_click: || do_open(\"n2\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 334,
+          "excerpt_start_line": 333,
+          "excerpt": [
+            "                            Label{width: Fill text: \"Field Notes · Yesterday\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r3_sb := Flat{text: \"Remove\" on_click: || do_toggle_saved(\"n3\")}",
+            "                            Flat{text: \"Read\" on_click: || do_open(\"n3\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        }
+      ],
+      "startup_conclusion": "Original source yields no root children while policy remains runnable; not evidence of instruction-budget exhaustion.",
+      "balance_accounting": "The six reported action-row closing tokens account for net -6."
+    },
+    {
+      "family": "photo",
+      "snapshot": "minimax-round12-diagnostic-01/card-templates/photo/bundle/main.splash",
+      "sha256": "d09d14637bd9c3952c74d8de78bf6c03581aa19d0d70aac19477ebce9faa0fb7",
+      "bytes": 19399,
+      "lines": 404,
+      "raw_brace_balance": -7,
+      "native_exit_code": 0,
+      "native_startup_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"splash: script body evaluated to nothing (no root view)\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":344,\"line_end\":344,\"column_start\":20,\"column_end\":24,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\n{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 19399 bytes preserve=false view=false animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 0\nRUNNING Some(true)\n",
+      "reported_premature_container_closes": [
+        {
+          "line": 283,
+          "excerpt_start_line": 282,
+          "excerpt": [
+            "                            Label{width: Fill text: \"17 Sep · Riverside\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r1_b := Flat{text: \"Favorite\" on_click: || do_toggle_fav(\"p1\")}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"p1\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 295,
+          "excerpt_start_line": 294,
+          "excerpt": [
+            "                            Label{width: Fill text: \"15 Sep · Central Library\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r2_b := Flat{text: \"Favorite\" on_click: || do_toggle_fav(\"p2\")}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"p2\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 307,
+          "excerpt_start_line": 306,
+          "excerpt": [
+            "                            Label{width: Fill text: \"12 Sep · Docklands\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r3_b := Flat{text: \"Favorite\" on_click: || do_toggle_fav(\"p3\")}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"p3\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 319,
+          "excerpt_start_line": 318,
+          "excerpt": [
+            "                            Label{width: Fill text: \"17 Sep · Riverside\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r1_fb := Flat{text: \"Remove\" on_click: || do_toggle_fav(\"p1\")}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"p1\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 331,
+          "excerpt_start_line": 330,
+          "excerpt": [
+            "                            Label{width: Fill text: \"15 Sep · Central Library\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r2_fb := Flat{text: \"Remove\" on_click: || do_toggle_fav(\"p2\")}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"p2\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 343,
+          "excerpt_start_line": 342,
+          "excerpt": [
+            "                            Label{width: Fill text: \"12 Sep · Docklands\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r3_fb := Flat{text: \"Remove\" on_click: || do_toggle_fav(\"p3\")}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"p3\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        }
+      ],
+      "startup_conclusion": "Original source yields no root children while policy remains runnable; not evidence of instruction-budget exhaustion.",
+      "additional_tail_close": {
+        "line_range": [
+          395,
+          397
+        ],
+        "footer_open_line": 380,
+        "excerpt_start_line": 393,
+        "excerpt": [
+          "        # so it wraps instead of overflowing after a Favorite.",
+          "        status := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}",
+          "    }",
+          "    }",
+          "}",
+          ""
+        ],
+        "finding": "After accounting for the six identified premature action-row closing tokens, only footer View and root SolidView need closure here, but the tail has three consecutive closing braces. One excess closing token remains in this tail. No corrected source produced or evaluated."
+      }
+    },
+    {
+      "family": "youtube",
+      "snapshot": "minimax-round12-diagnostic-01/card-templates/youtube/bundle/main.splash",
+      "sha256": "f75709993027aa64649d309a67196a557cedddace41854491954c71fc703a922",
+      "bytes": 18918,
+      "lines": 391,
+      "raw_brace_balance": -7,
+      "native_exit_code": 0,
+      "native_startup_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"splash: script body evaluated to nothing (no root view)\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":344,\"line_end\":344,\"column_start\":20,\"column_end\":24,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\n{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 18918 bytes preserve=false view=false animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 0\nRUNNING Some(true)\n",
+      "reported_premature_container_closes": [
+        {
+          "line": 277,
+          "excerpt_start_line": 276,
+          "excerpt": [
+            "                            Label{width: Fill text: \"Riverside Field Notes · 08:24\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r1_b := Flat{text: \"Watch later\" on_click: || do_toggle_later(\"v1\")}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"v1\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 289,
+          "excerpt_start_line": 288,
+          "excerpt": [
+            "                            Label{width: Fill text: \"Docklands Workshop · 21:07\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r2_b := Flat{text: \"Watch later\" on_click: || do_toggle_later(\"v2\")}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"v2\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 301,
+          "excerpt_start_line": 300,
+          "excerpt": [
+            "                            Label{width: Fill text: \"Alex Outdoors · 14:51\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r3_b := Flat{text: \"Watch later\" on_click: || do_toggle_later(\"v3\")}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"v3\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 313,
+          "excerpt_start_line": 312,
+          "excerpt": [
+            "                            Label{width: Fill text: \"Riverside Field Notes · 08:24\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r1_lb := Flat{text: \"Remove\" on_click: || do_toggle_later(\"v1\")}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"v1\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 325,
+          "excerpt_start_line": 324,
+          "excerpt": [
+            "                            Label{width: Fill text: \"Docklands Workshop · 21:07\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r2_lb := Flat{text: \"Remove\" on_click: || do_toggle_later(\"v2\")}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"v2\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 337,
+          "excerpt_start_line": 336,
+          "excerpt": [
+            "                            Label{width: Fill text: \"Alex Outdoors · 14:51\" draw_text.color: muted draw_text.text_style.font_size: 11}",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            r3_lb := Flat{text: \"Remove\" on_click: || do_toggle_later(\"v3\")}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"v3\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        }
+      ],
+      "startup_conclusion": "Original source yields no root children while policy remains runnable; not evidence of instruction-budget exhaustion.",
+      "additional_tail_close": {
+        "line_range": [
+          382,
+          384
+        ],
+        "footer_open_line": 371,
+        "excerpt_start_line": 380,
+        "excerpt": [
+          "        }",
+          "        status := Label{width: Fill text: \"\" draw_text.color: muted draw_text.text_style.font_size: 12}",
+          "    }",
+          "    }",
+          "}",
+          ""
+        ],
+        "finding": "After accounting for the six identified premature action-row closing tokens, only footer View and root SolidView need closure here, but the tail has three consecutive closing braces. One excess closing token remains in this tail. No corrected source produced or evaluated."
+      }
+    },
+    {
+      "family": "mail",
+      "snapshot": "minimax-round12-diagnostic-01/card-templates/mail/bundle/main.splash",
+      "sha256": "cdad1eec14b14805dcfd2566721dcf98273a9e2eb7defd77bc520b4e09a0a2cb",
+      "bytes": 23246,
+      "lines": 508,
+      "raw_brace_balance": -4,
+      "native_exit_code": 0,
+      "native_startup_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 23246 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 3\nRUNNING Some(true)\n",
+      "reported_premature_container_closes": [
+        {
+          "line": 390,
+          "later_closing_line": 392,
+          "excerpt_start_line": 389,
+          "excerpt": [
+            "                            }",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"m1\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 405,
+          "later_closing_line": 407,
+          "excerpt_start_line": 404,
+          "excerpt": [
+            "                            }",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"m2\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 420,
+          "later_closing_line": 422,
+          "excerpt_start_line": 419,
+          "excerpt": [
+            "                            }",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"m3\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        },
+        {
+          "line": 435,
+          "later_closing_line": 437,
+          "excerpt_start_line": 434,
+          "excerpt": [
+            "                            }",
+            "                            View{width: Fill height: Fit flow: Right spacing: 8}",
+            "                            Flat{text: \"Open\" on_click: || do_open(\"m4\")}",
+            "                            }",
+            "                        }",
+            "                    }"
+          ]
+        }
+      ],
+      "timer_diagnostic_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 23246 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 3\nRUNNING Some(true)\nTIMERS 0\n",
+      "startup_conclusion": "Partial widget result: CHILDREN3/RUNNINGtrue but TIMERS0 despite final start_timeout at508. Four premature action-row closes390,405,420,435 account for net-4. Successful root creation alone does not establish full initialization."
+    },
+    {
+      "family": "finance",
+      "snapshot": "minimax-round12-diagnostic-01/card-templates/finance/bundle/main.splash",
+      "sha256": "779fc7d594c4689311929ffe20737dd028a1b5fba7d1c067969b83fb37bffa43",
+      "bytes": 21119,
+      "lines": 417,
+      "raw_brace_balance": 0,
+      "native_exit_code": 0,
+      "native_startup_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 21119 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 1\nRUNNING Some(true)\n",
+      "startup_conclusion": "Original source produces CHILDREN1/RUNNINGtrue with balanced raw braces. This headless check alone does not establish input behavior or visual correctness."
+    },
+    {
+      "family": "calendar",
+      "snapshot": "minimax-round12-diagnostic-01/card-templates/calendar/bundle/main.splash",
+      "sha256": "9df515379942153fafa48d4e12d2a8f239baa538f89f7b0c23e1fe9091636708",
+      "bytes": 16137,
+      "lines": 371,
+      "raw_brace_balance": 0,
+      "native_exit_code": 0,
+      "native_startup_output": "{\"reason\":\"makepad-error-log\",\"message\":{\"message\":\"[SPLASH] eval: 16137 bytes preserve=false view=true animating=false tick=false epoch=0\",\"level\":\"log\",\"spans\":[{\"file_name\":\".sources/makepad/widgets/src/splash.rs\",\"byte_start\":0,\"byte_end\":0,\"line_start\":414,\"line_end\":414,\"column_start\":8,\"column_end\":12,\"is_primary\":true,\"text\":[]}],\"children\":[]}}\nCHILDREN 1\nRUNNING Some(true)\n",
+      "startup_conclusion": "Original source produces CHILDREN1/RUNNINGtrue with balanced raw braces. This headless check alone does not establish input behavior or visual correctness."
+    }
+  ],
+  "limits": "Reported line sites must be interpreted against these exact hashes. Native headless startup diagnosis does not establish Android functional or visual acceptance; final model files may differ.",
+  "archive_metadata": {
+    "status": "intermediate_diagnostic_only_active_model_turn",
+    "original_operator_receipt_sha256": "696cdea09f98423ce0d7ca7deac1ce81257e1f58049fc57821aacac10a6edaaa",
+    "path_transformations": [
+      {
+        "field": "results.news.snapshot",
+        "operator_snapshot": "minimax-round12-diagnostic-01/card-templates/news/bundle/main.splash"
+      },
+      {
+        "field": "results.photo.snapshot",
+        "operator_snapshot": "minimax-round12-diagnostic-01/card-templates/photo/bundle/main.splash"
+      },
+      {
+        "field": "results.youtube.snapshot",
+        "operator_snapshot": "minimax-round12-diagnostic-01/card-templates/youtube/bundle/main.splash"
+      },
+      {
+        "field": "results.mail.snapshot",
+        "operator_snapshot": "minimax-round12-diagnostic-01/card-templates/mail/bundle/main.splash"
+      },
+      {
+        "field": "results.finance.snapshot",
+        "operator_snapshot": "minimax-round12-diagnostic-01/card-templates/finance/bundle/main.splash"
+      },
+      {
+        "field": "results.calendar.snapshot",
+        "operator_snapshot": "minimax-round12-diagnostic-01/card-templates/calendar/bundle/main.splash"
+      }
+    ],
+    "source_copied_or_modified": false,
+    "snapshot_paths": "Identify retained operator originals; app source is not included in this diagnostic packet."
+  }
+}

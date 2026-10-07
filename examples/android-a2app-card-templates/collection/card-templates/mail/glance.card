@@ -1,0 +1,74 @@
+# ledger mail.glance@1.0.0
+theme taskplan_light
+# level:   L0
+# profile: ui/l0
+#
+# MAIL — reusable L0 compact glance card template.
+# Renders the L0 "glance" presentation depth; the LANGUAGE level stays L0.
+#
+# Synthetic demo fixture only: no mailbox is read and nothing is sent.
+# Facts come from the catalogued `sys.dataset` source; the summary/note are the
+# card's own model-copy and never act. The visible card says it is a demo.
+
+source msg sys.dataset(fields: [title, subtitle, as_of])
+
+state mode  { shape: enum[brief, reply, archived], initial: .brief }
+state draft { shape: text, initial: "" }
+
+event reply   { mode: set(.reply) }
+event back    { mode: set(.brief) }
+event edit    { draft: set($value) }
+event archive { mode: set(.archived) }
+event restore { mode: set(.brief) }
+
+copy app      { class: vocabulary, en: "Mail · demo", zh: "邮件 · 演示" }
+copy h_draft  { class: vocabulary, en: "DRAFT (NOT SENT)" }
+copy b_reply  { class: vocabulary, en: "Reply" }
+copy b_cancel { class: vocabulary, en: "Cancel" }
+copy b_arch   { class: vocabulary, en: "Archive" }
+copy b_undo   { class: vocabulary, en: "Undo" }
+copy archived { class: vocabulary, en: "Archived (demo)" }
+copy loading  { class: vocabulary, en: "Loading…", zh: "加载中…" }
+copy offline  { class: vocabulary, en: "Can't reach the network", zh: "网络不可用" }
+copy empty    { class: vocabulary, en: "No messages" }
+copy hint     { class: vocabulary, en: "Write a draft reply…" }
+copy note     { class: model-copy, en: "Draft only — this demo card does not send mail." }
+
+view root Surface(pad: .tight) {
+  Col(gap: 10) {
+    Row(gap: 8, align: .center) {
+      Icon(name: .mail, size: .row)
+      TextCaption(text: copy.app, width: .fill)
+      TextCaption(value: msg.as_of)
+    }
+    when msg.$state == .pending { TextBody(text: copy.loading) }
+    when msg.$state == .failed  { TextBody(text: copy.offline) }
+    when msg.$state == .ready {
+      TextTitle(text: msg.title, width: .fill)
+      TextCaption(value: msg.subtitle, width: .fill)
+      when mode == .brief {
+        Row(gap: 8) {
+          Chip(text: copy.b_reply, on_tap: reply, tone: .primary)
+          Chip(text: copy.b_arch, on_tap: archive)
+        }
+      }
+      when mode == .reply {
+        TextEyebrow(text: copy.h_draft)
+        Field(text: draft, placeholder: copy.hint, on_change: edit, width: .fill)
+        TextCaption(text: copy.note)
+        Row(gap: 8) {
+          Chip(text: copy.b_cancel, on_tap: back, tone: .primary)
+        }
+      }
+      when mode == .archived {
+        Row(gap: 8, align: .center) {
+          Icon(name: .check, size: .row)
+          TextTitle(text: copy.archived)
+        }
+        Row(gap: 8) {
+          Chip(text: copy.b_undo, on_tap: restore, tone: .primary)
+        }
+      }
+    }
+  }
+}

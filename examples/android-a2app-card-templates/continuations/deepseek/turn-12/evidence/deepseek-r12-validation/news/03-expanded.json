@@ -1,0 +1,860 @@
+{
+  "height": 2132,
+  "instance_id": "2556850e-d3c0-46ff-8ba0-cfeee46bdbc1",
+  "path": ".studio-486f4633-1b7a-4f29-8277-d6f8f333b31d.png",
+  "settled": false,
+  "snapshot": {
+    "checks": {
+      "findings": [],
+      "instrument": "makepad_widget_tree",
+      "pass": true
+    },
+    "geometry": {
+      "widgets": [
+        {
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 0,
+          "id": "-",
+          "kind": "Splash",
+          "parent": -1,
+          "text": "// News Cards \u2014 native interactive preview of the NEWS card template.\n// Presentation depths: L0 compact glance / L1 expanded actionable / L2 full app.\n// Synthetic demo content only. No live feed, no network, no article fetched.\n//\n// Layout: navigation + status pinned at TOP so they stay reachable when the\n// Android keyboard shrinks the viewport; the card scrolls below.\n// Fictional stories; a saved record is a LINK, never a downloaded article.\n\nlet depth = \"glance\"\nlet view_state = \"ready\"\nlet show_states = false\nlet tab = \"feed\"\nlet detail_open = false\nlet open_id = \"\"\nlet saved_a = false\nlet saved_b = false\n\nlet NavBtn = ButtonFlat{height: 44 padding: 10 draw_bg +: {color: #xe8edf3 color_hover: #xdde5ef color_down: #xd0dae7} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}\nlet AccentBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xd6342b color_hover: #xe0443b color_down: #xc02b22} draw_text +: {color: #xffffff color_hover: #xffffff color_down: #xffffff}}\nlet GhostBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xffffff color_hover: #xf0f4f8 color_down: #xe6ecf3} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}\nlet OpenBtn = ButtonFlat{height: 44 width: 108 padding: 8 draw_bg +: {color: #xe8edf3 color_hover: #xdde5ef color_down: #xd0dae7} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}\n\nfn depth_name(){\n    if depth == \"glance\" { return \"L0 glance\" }\n    if depth == \"expand\" { return \"L1 expanded\" }\n    return \"L2 app\"\n}\nfn title_of(id){\n    if id == \"harbor\" { return \"Harbor line opens after two-year rebuild\" }\n    return \"City council approves night bus pilot\"\n}\nfn src_of(id){\n    if id == \"harbor\" { return \"Demo Daily \u00b7 Transit desk \u00b7 2h ago\" }\n    return \"Demo Daily \u00b7 City desk \u00b7 5h ago\"\n}\nfn summary_of(id){\n    if id == \"harbor\" { return \"The fictional Harbor line reopens with new signalling; officials say peak-hour trips drop by six minutes.\" }\n    return \"A one-year pilot adds two late-night routes on weekends, with a review due next spring.\"\n}\nfn is_saved(id){\n    if id == \"harbor\" { return saved_a }\n    return saved_b\n}\nfn save_label(id){\n    if is_saved(id) { return \"Saved \u2713\" }\n    return \"Save\"\n}\nfn saved_count(){\n    let n = 0\n    if saved_a { n = n + 1 }\n    if saved_b { n = n + 1 }\n    return n\n}\n\nfn refresh_nav(){\n    let s = \"News Cards   \u00b7   \" + depth_name() + \"   \u00b7   \" + view_state + \"   \u00b7   saved: \" + saved_count()\n    ui.depth_status.set_text(s)\n    if depth == \"glance\" { ui.d_gl.set_text(\"\u2022 Glance\") } else { ui.d_gl.set_text(\"Glance\") }\n    if depth == \"expand\" { ui.d_ex.set_text(\"\u2022 Expand\") } else { ui.d_ex.set_text(\"Expand\") }\n    if depth == \"app\" { ui.d_ap.set_text(\"\u2022 Open app\") } else { ui.d_ap.set_text(\"Open app\") }\n}\nfn toggle_states(){\n    if show_states { show_states = false } else { show_states = true }\n    if show_states { ui.states_btn.set_text(\"States \u25be\") } else { ui.states_btn.set_text(\"States \u25b8\") }\n    ui.states_row.set_visible(show_states)\n}\n\nfn set_depth(d){ depth = d detail_open = false refresh_nav() ui.stage.render() }\nfn set_state(s){ view_state = s refresh_nav() ui.stage.render() }\nfn set_tab(t){ tab = t detail_open = false refresh_nav() ui.stage.render() }\nfn open_detail(id){ open_id = id detail_open = true ui.stage.render() }\nfn close_detail(){ detail_open = false ui.stage.render() }\nfn toggle_save(id){\n    if id == \"harbor\" { if saved_a { saved_a = false } else { saved_a = true } }\n    else { if saved_b { saved_b = false } else { saved_b = true } }\n    refresh_nav() ui.stage.render()\n}\n\nfn boot(){ refresh_nav() ui.states_row.set_visible(false) ui.stage.render() }\n\nstart_timeout(0.05, || boot())\n\nSolidView{width: Fill height: Fill flow: Down padding: 12 spacing: 8 draw_bg.color: #xf6f5f3\n    // Title folded into the consolidated status line below (density).\n    depth_status := Label{width: Fill height: Fit text: \"Depth: L0 glance   \u00b7   state: ready   \u00b7   saved: 0\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}\n    View{width: Fill height: Fit flow: Right spacing: 8\n        d_gl := NavBtn{text: \"\u2022 Glance\" on_click: || set_depth(\"glance\")}\n        d_ex := NavBtn{text: \"Expand\" on_click: || set_depth(\"expand\")}\n        d_ap := NavBtn{text: \"Open app\" on_click: || set_depth(\"app\")}\n        View{width: Fill height: Fit}\n        states_btn := NavBtn{text: \"States \u25b8\" on_click: || toggle_states()}\n    }\n    states_row := View{width: Fill height: Fit flow: Right spacing: 8\n        NavBtn{text: \"Ready\" on_click: || set_state(\"ready\")}\n        NavBtn{text: \"Loading\" on_click: || set_state(\"loading\")}\n        NavBtn{text: \"Empty\" on_click: || set_state(\"empty\")}\n        NavBtn{text: \"Error\" on_click: || set_state(\"error\")}\n    }\n\n    ScrollYView{width: Fill height: Fill flow: Down spacing: 8\n        stage := RoundedView{width: Fill height: Fit flow: Down padding: 14 spacing: 8 draw_bg.color: #xffffff draw_bg.radius: 16 on_render: || {\n\n            // ---------- L0 \u00b7 compact glance ----------\n            if depth == \"glance\" {\n                View{width: Fill height: Fit flow: Right spacing: 8\n                    Label{text: \"NEWS\" draw_text.color: #xd6342b draw_text.text_style.font_size: 12}\n                    View{width: Fill height: Fit}\n                    Label{text: \"2h\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}\n                }\n                if view_state == \"loading\" { Label{text: \"Loading\u2026\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }\n                if view_state == \"empty\" { Label{text: \"No stories\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }\n                if view_state == \"error\" { Label{width: Fill height: Fit text: \"Couldn't load stories \u2014 demo error state\" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }\n                if view_state == \"ready\" {\n                    Label{text: \"Demo Daily \u00b7 Transit desk\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                    Label{width: Fill height: Fit text: \"Harbor line opens after two-year rebuild\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}\n                    Label{width: Fill height: Fit text: \"New signalling cuts peak trips by six minutes.\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        AccentBtn{text: save_label(\"harbor\") on_click: || toggle_save(\"harbor\")}\n                        GhostBtn{text: \"Read \u203a\" on_click: || set_depth(\"expand\")}\n                    }\n                }\n            }\n\n            // ---------- L1 \u00b7 expanded actionable ----------\n            if depth == \"expand\" {\n                View{width: Fill height: Fit flow: Right spacing: 8\n                    Label{text: \"NEWS\" draw_text.color: #xd6342b draw_text.text_style.font_size: 11}\n                    View{width: Fill height: Fit}\n                    Label{text: \"2h\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}\n                }\n                if view_state == \"loading\" { Label{text: \"Loading\u2026\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }\n                if view_state == \"empty\" { Label{text: \"No stories\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }\n                if view_state == \"error\" { Label{width: Fill height: Fit text: \"Couldn't load stories \u2014 demo error state\" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }\n                if view_state == \"ready\" {\n                    Label{width: Fill height: Fit text: \"Harbor line opens after two-year rebuild\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}\n                    Label{text: \"Demo Daily \u00b7 Transit desk \u00b7 2h ago\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}\n                    SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}\n                    Label{width: Fill height: Fit text: \"The fictional Harbor line reopens with new signalling; officials say peak-hour trips drop by six minutes. The rebuild ran two years and replaced the old relay interlocking.\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 15 draw_text.wrap: true}\n                    Label{text: \"demo.invalid/harbor-line\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        AccentBtn{text: save_label(\"harbor\") on_click: || toggle_save(\"harbor\")}\n                        NavBtn{text: \"Open app\" on_click: || set_depth(\"app\")}\n                    }\n                    Label{width: Fill height: Fit text: \"Demo link \u2014 the story is not downloaded.\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}\n                }\n            }\n\n            // ---------- L2 \u00b7 full app (feed / saved) ----------\n            if depth == \"app\" {\n                View{width: Fill height: Fit flow: Right spacing: 8\n                    if tab == \"feed\" {\n                        AccentBtn{text: \"Feed\" width: 108 on_click: || set_tab(\"feed\")}\n                        NavBtn{text: \"Saved\" width: 108 on_click: || set_tab(\"saved\")}\n                    }\n                    if tab == \"saved\" {\n                        NavBtn{text: \"Feed\" width: 108 on_click: || set_tab(\"feed\")}\n                        AccentBtn{text: \"Saved\" width: 108 on_click: || set_tab(\"saved\")}\n                    }\n                }\n                SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}\n                if detail_open {\n                    Label{width: Fill height: Fit text: title_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}\n                    Label{width: Fill height: Fit text: src_of(open_id) draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}\n                    SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}\n                    Label{width: Fill height: Fit text: summary_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 14 draw_text.wrap: true}\n                    Label{width: Fill height: Fit text: \"Saved as a link (demo) \u2014 no article is downloaded.\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        AccentBtn{text: save_label(open_id) on_click: || toggle_save(open_id)}\n                        NavBtn{text: \"\u2039 Back\" on_click: || close_detail()}\n                    }\n                }\n                if detail_open == false {\n                    if tab == \"feed\" {\n                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                            Label{width: Fill height: Fit text: \"Demo Daily \u00b7 Transit desk \u00b7 2h\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                            Label{width: Fill height: Fit text: \"Harbor line opens after two-year rebuild\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                                NavBtn{text: save_label(\"harbor\") on_click: || toggle_save(\"harbor\")}\n                                OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"harbor\")}\n                            }\n                        }\n                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                            Label{text: \"Demo Daily \u00b7 City desk \u00b7 5h\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                            Label{width: Fill height: Fit text: \"City council approves night bus pilot\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                                NavBtn{text: save_label(\"bus\") on_click: || toggle_save(\"bus\")}\n                                OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"bus\")}\n                            }\n                        }\n                    }\n                    if tab == \"saved\" {\n                        Label{width: Fill height: Fit text: \"Saved stories \u00b7 \" + saved_count() draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}\n                        if saved_count() == 0 {\n                            Label{text: \"No saved stories\" draw_text.color: #x8a8a8e draw_text.text_style.font_size: 15}\n                        }\n                        if saved_a {\n                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                                Label{text: \"Demo Daily \u00b7 Transit desk \u00b7 2h\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                                Label{width: Fill height: Fit text: \"Harbor line opens after two-year rebuild\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                                View{width: Fill height: Fit flow: Right spacing: 8\n                                    NavBtn{text: \"Saved \u2713\" on_click: || toggle_save(\"harbor\")}\n                                    OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"harbor\")}\n                                }\n                            }\n                        }\n                        if saved_b {\n                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                                Label{text: \"Demo Daily \u00b7 City desk \u00b7 5h\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                                Label{width: Fill height: Fit text: \"City council approves night bus pilot\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                                View{width: Fill height: Fit flow: Right spacing: 8\n                                    NavBtn{text: \"Saved \u2713\" on_click: || toggle_save(\"bus\")}\n                                    OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"bus\")}\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n\n        }}\n    }\n}",
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "bg": "#fff6f5f3",
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 1,
+          "id": "11",
+          "kind": "View",
+          "parent": 0,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 48,
+          "cw": 353,
+          "cx": 16,
+          "cy": 44,
+          "fg": "#ff5b6672",
+          "h": 48,
+          "i": 2,
+          "id": "depth_status",
+          "kind": "Label",
+          "parent": 1,
+          "text": "News Cards   \u00b7   L1 expanded   \u00b7   ready   \u00b7   saved: 0",
+          "w": 353,
+          "x": 16,
+          "y": 44
+        },
+        {
+          "ch": 50,
+          "cw": 360,
+          "cx": 12,
+          "cy": 104,
+          "h": 50,
+          "i": 3,
+          "id": "-",
+          "kind": "View",
+          "parent": 1,
+          "w": 360,
+          "x": 12,
+          "y": 104
+        },
+        {
+          "ch": 44,
+          "cw": 69,
+          "cx": 12,
+          "cy": 107,
+          "glyphs": 1,
+          "h": 44,
+          "i": 4,
+          "id": "d_gl",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "Glance",
+          "w": 69,
+          "x": 12,
+          "y": 107
+        },
+        {
+          "ch": 44,
+          "cw": 83,
+          "cx": 89,
+          "cy": 107,
+          "glyphs": 1,
+          "h": 44,
+          "i": 5,
+          "id": "d_ex",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "\u2022 Expand",
+          "w": 83,
+          "x": 89,
+          "y": 107
+        },
+        {
+          "ch": 44,
+          "cw": 89,
+          "cx": 180,
+          "cy": 107,
+          "glyphs": 1,
+          "h": 44,
+          "i": 6,
+          "id": "d_ap",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "Open app",
+          "w": 89,
+          "x": 180,
+          "y": 107
+        },
+        {
+          "ch": 44,
+          "cw": 74,
+          "cx": 298,
+          "cy": 107,
+          "glyphs": 1,
+          "h": 44,
+          "i": 8,
+          "id": "states_btn",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "States \u25b8",
+          "w": 74,
+          "x": 298,
+          "y": 107
+        },
+        {
+          "ch": 613,
+          "cw": 360,
+          "cx": 12,
+          "cy": 162,
+          "h": 613,
+          "i": 14,
+          "id": "1",
+          "kind": "View",
+          "parent": 1,
+          "w": 360,
+          "x": 12,
+          "y": 162
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 490,
+          "cw": 360,
+          "cx": 12,
+          "cy": 162,
+          "h": 490,
+          "i": 15,
+          "id": "stage",
+          "kind": "View",
+          "parent": 14,
+          "w": 360,
+          "x": 12,
+          "y": 162
+        },
+        {
+          "ch": 33,
+          "cw": 332,
+          "cx": 26,
+          "cy": 176,
+          "h": 33,
+          "i": 16,
+          "id": "-",
+          "kind": "View",
+          "parent": 15,
+          "w": 332,
+          "x": 26,
+          "y": 176
+        },
+        {
+          "ch": 24,
+          "cw": 47,
+          "cx": 30,
+          "cy": 179,
+          "fg": "#ffd6342b",
+          "h": 24,
+          "i": 17,
+          "id": "-",
+          "kind": "Label",
+          "parent": 16,
+          "text": "NEWS",
+          "w": 47,
+          "x": 30,
+          "y": 179
+        },
+        {
+          "ch": 26,
+          "cw": 25,
+          "cx": 330,
+          "cy": 179,
+          "fg": "#ff9aa4b0",
+          "h": 26,
+          "i": 19,
+          "id": "2",
+          "kind": "Label",
+          "parent": 16,
+          "text": "2h",
+          "w": 25,
+          "x": 330,
+          "y": 179
+        },
+        {
+          "ch": 69,
+          "cw": 325,
+          "cx": 30,
+          "cy": 220,
+          "fg": "#ff1c2430",
+          "h": 69,
+          "i": 20,
+          "id": "1",
+          "kind": "Label",
+          "parent": 15,
+          "text": "Harbor line opens after two-year rebuild",
+          "w": 325,
+          "x": 30,
+          "y": 220
+        },
+        {
+          "ch": 26,
+          "cw": 246,
+          "cx": 30,
+          "cy": 304,
+          "fg": "#ff5b6672",
+          "h": 26,
+          "i": 21,
+          "id": "2",
+          "kind": "Label",
+          "parent": 15,
+          "text": "Demo Daily \u00b7 Transit desk \u00b7 2h ago",
+          "w": 246,
+          "x": 30,
+          "y": 304
+        },
+        {
+          "bg": "#ffe2e7ec",
+          "ch": 1,
+          "cw": 332,
+          "cx": 26,
+          "cy": 341,
+          "h": 1,
+          "i": 22,
+          "id": "3",
+          "kind": "View",
+          "parent": 15,
+          "w": 332,
+          "x": 26,
+          "y": 341
+        },
+        {
+          "ch": 143,
+          "cw": 325,
+          "cx": 30,
+          "cy": 354,
+          "fg": "#ff1c2430",
+          "h": 143,
+          "i": 23,
+          "id": "4",
+          "kind": "Label",
+          "parent": 15,
+          "text": "The fictional Harbor line reopens with new signalling; officials say peak-hour trips drop by six minutes. The rebuild ran two years and replaced the old relay interlocking.",
+          "w": 325,
+          "x": 30,
+          "y": 354
+        },
+        {
+          "ch": 26,
+          "cw": 180,
+          "cx": 30,
+          "cy": 512,
+          "fg": "#ff9aa4b0",
+          "h": 26,
+          "i": 24,
+          "id": "5",
+          "kind": "Label",
+          "parent": 15,
+          "text": "demo.invalid/harbor-line",
+          "w": 180,
+          "x": 30,
+          "y": 512
+        },
+        {
+          "ch": 50,
+          "cw": 332,
+          "cx": 26,
+          "cy": 549,
+          "h": 50,
+          "i": 25,
+          "id": "6",
+          "kind": "View",
+          "parent": 15,
+          "w": 332,
+          "x": 26,
+          "y": 549
+        },
+        {
+          "ch": 44,
+          "cw": 58,
+          "cx": 26,
+          "cy": 552,
+          "glyphs": 1,
+          "h": 44,
+          "i": 26,
+          "id": "-",
+          "kind": "Button",
+          "parent": 25,
+          "tappable": true,
+          "text": "Save",
+          "w": 58,
+          "x": 26,
+          "y": 552
+        },
+        {
+          "ch": 44,
+          "cw": 89,
+          "cx": 92,
+          "cy": 552,
+          "glyphs": 1,
+          "h": 44,
+          "i": 27,
+          "id": "1",
+          "kind": "Button",
+          "parent": 25,
+          "tappable": true,
+          "text": "Open app",
+          "w": 89,
+          "x": 92,
+          "y": 552
+        },
+        {
+          "ch": 24,
+          "cw": 325,
+          "cx": 30,
+          "cy": 610,
+          "fg": "#ff9aa4b0",
+          "h": 24,
+          "i": 28,
+          "id": "7",
+          "kind": "Label",
+          "parent": 15,
+          "text": "Demo link \u2014 the story is not downloaded.",
+          "w": 325,
+          "x": 30,
+          "y": 610
+        }
+      ]
+    },
+    "tree": "W3 22\n0 -1 - Splash 0 28 384 758\n1 0 11 View 0 28 384 758\n2 1 depth_status Label 16 44 353 48\n3 1 - View 12 104 360 50\n4 3 d_gl Button 12 107 69 44\n5 3 d_ex Button 89 107 83 44\n6 3 d_ap Button 180 107 89 44\n7 3 states_btn Button 298 107 74 44\n8 1 1 View 12 162 360 613\n9 8 stage View 12 162 360 490\n10 9 - View 26 176 332 33\n11 10 - Label 30 179 47 24\n12 10 2 Label 330 179 25 26\n13 9 1 Label 30 220 325 69\n14 9 2 Label 30 304 246 26\n15 9 3 View 26 341 332 1\n16 9 4 Label 30 354 325 143\n17 9 5 Label 30 512 180 26\n18 9 6 View 26 549 332 50\n19 18 - Button 26 552 58 44\n20 18 1 Button 92 552 89 44\n21 9 7 Label 30 610 325 24\n",
+    "widgets": [
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "-@0",
+        "text": null,
+        "type": "Splash",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "11",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "11@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "depth_status",
+        "rect": [
+          16,
+          44,
+          353,
+          48
+        ],
+        "selected": null,
+        "selector": "depth_status@0",
+        "text": "News Cards   \u00b7   L1 expanded   \u00b7   ready   \u00b7   saved: 0",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          12,
+          104,
+          360,
+          50
+        ],
+        "selected": null,
+        "selector": "-@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_gl",
+        "rect": [
+          12,
+          107,
+          69,
+          44
+        ],
+        "selected": null,
+        "selector": "d_gl@0",
+        "text": "Glance",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_ex",
+        "rect": [
+          89,
+          107,
+          83,
+          44
+        ],
+        "selected": null,
+        "selector": "d_ex@0",
+        "text": "\u2022 Expand",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_ap",
+        "rect": [
+          180,
+          107,
+          89,
+          44
+        ],
+        "selected": null,
+        "selector": "d_ap@0",
+        "text": "Open app",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "states_btn",
+        "rect": [
+          298,
+          107,
+          74,
+          44
+        ],
+        "selected": null,
+        "selector": "states_btn@0",
+        "text": "States \u25b8",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "states_row",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "states_row@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@3",
+        "text": "Ready",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@0",
+        "text": "Loading",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@0",
+        "text": "Empty",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "3",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "3@0",
+        "text": "Error",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          12,
+          162,
+          360,
+          613
+        ],
+        "selected": null,
+        "selector": "1@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "stage",
+        "rect": [
+          12,
+          162,
+          360,
+          490
+        ],
+        "selected": null,
+        "selector": "stage@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          26,
+          176,
+          332,
+          33
+        ],
+        "selected": null,
+        "selector": "-@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          30,
+          179,
+          47,
+          24
+        ],
+        "selected": null,
+        "selector": "-@5",
+        "text": "NEWS",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          330,
+          179,
+          25,
+          26
+        ],
+        "selected": null,
+        "selector": "2@1",
+        "text": "2h",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          30,
+          220,
+          325,
+          69
+        ],
+        "selected": null,
+        "selector": "1@3",
+        "text": "Harbor line opens after two-year rebuild",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          30,
+          304,
+          246,
+          26
+        ],
+        "selected": null,
+        "selector": "2@2",
+        "text": "Demo Daily \u00b7 Transit desk \u00b7 2h ago",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "3",
+        "rect": [
+          26,
+          341,
+          332,
+          1
+        ],
+        "selected": null,
+        "selector": "3@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "4",
+        "rect": [
+          30,
+          354,
+          325,
+          143
+        ],
+        "selected": null,
+        "selector": "4@0",
+        "text": "The fictional Harbor line reopens with new signalling; officials say peak-hour trips drop by six minutes. The rebuild ran two years and replaced the old relay interlocking.",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "5",
+        "rect": [
+          30,
+          512,
+          180,
+          26
+        ],
+        "selected": null,
+        "selector": "5@0",
+        "text": "demo.invalid/harbor-line",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "6",
+        "rect": [
+          26,
+          549,
+          332,
+          50
+        ],
+        "selected": null,
+        "selector": "6@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          26,
+          552,
+          58,
+          44
+        ],
+        "selected": null,
+        "selector": "-@6",
+        "text": "Save",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          92,
+          552,
+          89,
+          44
+        ],
+        "selected": null,
+        "selector": "1@4",
+        "text": "Open app",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "7",
+        "rect": [
+          30,
+          610,
+          325,
+          24
+        ],
+        "selected": null,
+        "selector": "7@0",
+        "text": "Demo link \u2014 the story is not downloaded.",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      }
+    ]
+  },
+  "width": 1080
+}

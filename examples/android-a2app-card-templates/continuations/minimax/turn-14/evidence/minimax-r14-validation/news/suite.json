@@ -1,0 +1,270 @@
+{
+  "family": "news",
+  "draft": false,
+  "source_file": "minimax-round14-final/card-templates/news/bundle/main.splash",
+  "source_sha256": "4ac0923154598527e48ac0c87ef076d976605c13adc4cd5c363e99ff49ef4abe",
+  "status": "Operator confirmed native source byte-identical from reconciled round13 to final round14; input suite ready, actual runtime outcomes pending.",
+  "assumptions": [
+    "Fresh disposable preview starts with no saved/watched records.",
+    "Named widget ids are from source; unlabelled Read/Open uses visible-list occurrence 1 for second and 2 for last. Inspect actual final snapshots before relying on these ordinals.",
+    "Positive wheel delta scrolls down; l2 is the named ScrollYView. If the compact list has no overflow this is a no-op, not a retained-offset stress test.",
+    "Contains checks alone do not prove title is at viewport top. Manually inspect last-item-detail JSON/PNG and Android screenshot for visible title/metadata and clipping.",
+    "L1 removal and L0 action identity retain acceptance probes from the intermediate draft. Round10 now calls toggle helpers and lead_id; do not carry forward historical defect claims without actual test failures.",
+    "No loading/error controls exist in this intermediate source; no invented state controls are tested.",
+    "L0 here is native presentation depth. Exported glance.card admission/rendering needs a separate renderer check.",
+    "Round13 native source is reconciled; only final round14 byte equality remains. This is not native test evidence."
+  ],
+  "manual_checks": [
+    "Confirm full last-item title and metadata begin visibly at top after list navigation; do not treat offscreen snapshot text as visual pass.",
+    "In Finance second-item detail, verify -0.38 is displayed with the negative color. Current draft source uses a separate down-colored label; source intent alone is not visual verification.",
+    "Inspect any failed geometry report: distinguish expected scroll-edge partial rows from horizontal truncation or unreachable controls.",
+    "No enabled controls may falsely promise online article access, trading, or other unavailable services. This suite checks named prohibitions and empty-state controls, not every possible dead action."
+  ],
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "● L0",
+        "Riverside bridge reopens after inspection",
+        "3 stories · 0 saved",
+        "DEMO"
+      ],
+      "delay_ms": 150
+    },
+    {
+      "label": "expanded",
+      "contains": [
+        "● L1",
+        "Riverside bridge reopens after inspection",
+        "Save"
+      ],
+      "action": "tap",
+      "target": "b1"
+    },
+    {
+      "label": "full-list",
+      "contains": [
+        "● L2",
+        "Library extends weekend hours",
+        "3 stories · 0 saved"
+      ],
+      "action": "tap",
+      "target": "b2",
+      "no_enabled_button_text": [
+        "‹ Feed"
+      ]
+    },
+    {
+      "label": "second-item-detail",
+      "contains": [
+        "● L2",
+        "Library extends weekend hours",
+        "Harbour Times · 07:55",
+        "Demo summary, not a fetched article."
+      ],
+      "action": "tap",
+      "target": "Read",
+      "occurrence": 1
+    },
+    {
+      "label": "save-second",
+      "contains": [
+        "3 stories · 1 saved",
+        "Remove",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "rd_action"
+    },
+    {
+      "label": "back-to-list",
+      "contains": [
+        "● L2",
+        "Library extends weekend hours"
+      ],
+      "action": "tap",
+      "target": "‹ Feed",
+      "no_enabled_button_text": [
+        "‹ Feed"
+      ]
+    },
+    {
+      "label": "filtered-second",
+      "contains": [
+        "Library extends weekend hours",
+        "3 stories · 1 saved",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "tab_saved",
+      "excludes": [
+        "Riverside bridge reopens after inspection",
+        "Docklands solar trial powers first block"
+      ],
+      "no_enabled_button_text": [
+        "‹ Feed"
+      ]
+    },
+    {
+      "label": "remove-second",
+      "contains": [
+        "Nothing saved",
+        "3 stories · 0 saved",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "r2_sb",
+      "no_enabled_button_text": [
+        "Read",
+        "Remove",
+        "‹ Feed"
+      ]
+    },
+    {
+      "label": "return-all",
+      "contains": [
+        "Library extends weekend hours",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "tab_all",
+      "no_enabled_button_text": [
+        "‹ Feed"
+      ]
+    },
+    {
+      "label": "scroll-list",
+      "contains": [
+        "Docklands solar trial powers first block",
+        "● L2"
+      ],
+      "action": "scroll",
+      "target": "l2",
+      "delta_y": 360
+    },
+    {
+      "label": "last-item-detail",
+      "contains": [
+        "● L2",
+        "Docklands solar trial powers first block",
+        "Field Notes · Yesterday",
+        "Demo summary, not a fetched article."
+      ],
+      "action": "tap",
+      "target": "Read",
+      "occurrence": 2,
+      "capture_android": true
+    },
+    {
+      "label": "save-last",
+      "contains": [
+        "3 stories · 1 saved",
+        "Remove",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "rd_action"
+    },
+    {
+      "label": "back-after-last",
+      "contains": [
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "‹ Feed",
+      "no_enabled_button_text": [
+        "‹ Feed"
+      ]
+    },
+    {
+      "label": "filtered-last",
+      "contains": [
+        "Docklands solar trial powers first block",
+        "3 stories · 1 saved",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "tab_saved",
+      "excludes": [
+        "Riverside bridge reopens after inspection",
+        "Library extends weekend hours"
+      ],
+      "no_enabled_button_text": [
+        "‹ Feed"
+      ]
+    },
+    {
+      "label": "remove-last",
+      "contains": [
+        "Nothing saved",
+        "3 stories · 0 saved",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "r3_sb",
+      "no_enabled_button_text": [
+        "Read",
+        "Remove",
+        "‹ Feed"
+      ]
+    },
+    {
+      "label": "expanded-selected-last",
+      "contains": [
+        "● L1",
+        "Docklands solar trial powers first block",
+        "Save"
+      ],
+      "action": "tap",
+      "target": "b1"
+    },
+    {
+      "label": "expanded-save",
+      "contains": [
+        "3 stories · 1 saved",
+        "Remove from Saved",
+        "● L1"
+      ],
+      "action": "tap",
+      "target": "x_action"
+    },
+    {
+      "label": "expanded-remove",
+      "contains": [
+        "3 stories · 0 saved",
+        "Save",
+        "● L1"
+      ],
+      "action": "tap",
+      "target": "x_action"
+    },
+    {
+      "label": "return-lead-glance",
+      "contains": [
+        "● L0",
+        "Riverside bridge reopens after inspection"
+      ],
+      "action": "tap",
+      "target": "b0"
+    },
+    {
+      "label": "glance-opens-displayed-lead",
+      "contains": [
+        "● L2",
+        "Riverside bridge reopens after inspection"
+      ],
+      "action": "tap",
+      "target": "Read",
+      "excludes": [
+        "Docklands solar trial powers first block"
+      ]
+    }
+  ],
+  "reconciliation": "Read native diffs round12→13: Mail/Photo/YouTube unchanged; News removes extra closing brace; Finance reflows six list rows with same IDs/copy/actions; Calendar adds persistent depth markers and moves status. All115 steps retained; marker assertions reflect actual controls. Round14 native hash confirmation still pending.",
+  "native_source_reconciled": true,
+  "awaiting_round14_hash_confirmation": true,
+  "final_round14_binding": {
+    "main_and_manifest_byte_identical_to_round13": true,
+    "execution_status_at_preparation": "pending"
+  }
+}

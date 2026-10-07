@@ -1,0 +1,85 @@
+{
+  "family": "finance",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Demo Corp"
+      ]
+    },
+    {
+      "label": "full-app",
+      "action": "tap",
+      "target": "d_ap"
+    },
+    {
+      "label": "last-row-scroll",
+      "action": "scroll",
+      "target": "stage",
+      "delta_y": 300,
+      "contains": [
+        "GridWorks \u00b7 GRDW"
+      ]
+    },
+    {
+      "label": "last-detail-top",
+      "action": "tap",
+      "target": "Open \u203a",
+      "occurrence": -1,
+      "contains": [
+        "GridWorks \u00b7 GRDW",
+        "54.30 USD",
+        "53.20 \u2013 54.80"
+      ],
+      "excludes": [
+        "Demo Corp"
+      ]
+    },
+    {
+      "label": "save-last",
+      "action": "tap",
+      "target": "Watch",
+      "occurrence": -1,
+      "contains": [
+        "Watching \u2713"
+      ]
+    },
+    {
+      "label": "back-to-list",
+      "action": "tap",
+      "target": "\u2039 Back"
+    },
+    {
+      "label": "saved-only-last",
+      "action": "tap",
+      "target": "Watching",
+      "occurrence": 0,
+      "contains": [
+        "GridWorks \u00b7 GRDW"
+      ],
+      "excludes": [
+        "Demo Corp"
+      ]
+    },
+    {
+      "label": "remove-last",
+      "action": "tap",
+      "target": "Watching \u2713",
+      "contains": [
+        "Nothing watched yet"
+      ]
+    },
+    {
+      "label": "first-still-independent",
+      "action": "tap",
+      "target": "d_gl",
+      "contains": [
+        "Demo Corp",
+        "Watch"
+      ],
+      "no_enabled_button_text": [
+        "Watching \u2713"
+      ]
+    }
+  ]
+}

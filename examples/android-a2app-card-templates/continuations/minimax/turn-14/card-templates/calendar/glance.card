@@ -1,0 +1,114 @@
+# ledger calendar.glance@0.1.0
+# level:   L0
+# profile: ui/l0
+# model:   dev.studio.cards.calendar
+#
+theme taskplan_light
+#
+# CALENDAR family's compact L0 glance: the next event only. Day/time, title and
+# place, one action, one cue. The agenda list, the detail view and the RSVP
+# actions live behind the card's own detail, not in the glance.
+# L0/L1/L2 are PRESENTATION depths; this file is language L0 at every depth.
+#
+# Fixture: glance.data.json — synthetic demo events. No account, no calendar
+# service, nothing synced, so the card SAYS DEMO.
+#
+# OFFLINE SOURCE CONTRACT:
+#   * fixture keys are the SOURCE ALIASES (next_ev, agenda);
+#   * `id:` is OMITTED so fixture values lower to literals;
+#   * every lifecycle-bound read sits inside a `.$state == .ready` guard;
+#   * `when` takes no else; branches reference named views.
+#
+# RSVP remains card-local and reversible: Clear returns to unanswered.
+
+source next_ev sys.dataset(fields: [title, subtitle, summary, as_of, status, metric1_label, metric1_value, metric2_label, metric2_value])
+
+state mode { shape: enum[glance, detail], initial: .glance }
+state rsvp { shape: enum[unanswered, going, maybe, declined], initial: .unanswered }
+
+event open_detail { mode: set(.detail) }
+event back        { mode: set(.glance) }
+event rsvp_going  { rsvp: set(.going) }
+event rsvp_maybe  { rsvp: set(.maybe) }
+event rsvp_no     { rsvp: set(.declined) }
+event rsvp_clear  { rsvp: set(.unanswered) }
+
+copy app      { class: vocabulary, en: "Calendar", zh: "日历" }
+copy open     { class: vocabulary, en: "Open",        zh: "打开" }
+copy back     { class: vocabulary, en: "‹ Back",      zh: "‹ 返回" }
+copy going    { class: vocabulary, en: "Going",       zh: "参加" }
+copy maybe    { class: vocabulary, en: "Maybe",       zh: "或许" }
+copy no       { class: vocabulary, en: "No",          zh: "不去" }
+copy clear    { class: vocabulary, en: "Clear answer", zh: "清除回答" }
+copy h_rsvp   { class: vocabulary, en: "YOUR REPLY", zh: "你的回复" }
+copy h_going  { class: vocabulary, en: "Answer: Going", zh: "回答：参加" }
+copy h_maybe  { class: vocabulary, en: "Answer: Maybe", zh: "回答：或许" }
+copy h_decl   { class: vocabulary, en: "Answer: No",   zh: "回答：不去" }
+copy demo_note { class: vocabulary, en: "Demo events. No calendar account.", zh: "演示事件。无日历账号。" }
+
+# Lifecycle strings are declared copy, never inline (framework-l0 §1).
+copy loading { class: vocabulary, en: "Loading demo events…", zh: "正在加载演示事件…" }
+copy offline { class: vocabulary, en: "Can't load demo events", zh: "无法加载演示事件" }
+
+view root Surface(pad: .tight) {
+  Col(gap: 8) {
+    Row(gap: 8, align: .center) {
+      Icon(name: .calendar, size: .row)
+      TextCaption(text: copy.app, width: .fill)
+      TextCaption(value: next_ev.as_of)
+    }
+    when next_ev.$state == .pending { loading_row }
+    when next_ev.$state == .failed  { offline_row }
+    when next_ev.$state == .ready   {
+      when mode == .glance { glance_row }
+      when mode == .detail { detail }
+    }
+  }
+}
+
+view loading_row Col {
+  TextBody(text: copy.loading, width: .fill)
+}
+
+view offline_row Col {
+  TextBody(text: copy.offline, width: .fill)
+}
+
+view glance_row Col(gap: 8) {
+  TextTitle(text: next_ev.title, width: .fill)
+  TextRow(text: next_ev.subtitle, width: .fill)
+  Row(gap: 8) {
+    Chip(text: copy.open, on_tap: open_detail, tone: .primary)
+  }
+  TextCaption(text: copy.demo_note, width: .fill)
+}
+
+view detail Col(gap: 8) {
+  TextTitle(text: next_ev.title, width: .fill)
+  Row(gap: 8, align: .center) {
+    Icon(name: .location, size: .row)
+    TextRow(text: next_ev.subtitle, width: .fill)
+  }
+  TextBody(text: next_ev.summary, width: .fill)
+  TextEyebrow(text: copy.h_rsvp)
+  when rsvp == .unanswered {
+    Row(gap: 8) {
+      Chip(text: copy.going, on_tap: rsvp_going, tone: .primary)
+      Chip(text: copy.maybe, on_tap: rsvp_maybe)
+      Chip(text: copy.no, on_tap: rsvp_no)
+    }
+  }
+  when rsvp == .going    { answered_row }
+  when rsvp == .maybe    { answered_row }
+  when rsvp == .declined { answered_row }
+  Row(gap: 8) {
+    Chip(text: copy.back, on_tap: back)
+  }
+}
+
+view answered_row Row(gap: 8, align: .center) {
+  when rsvp == .going    { TextRow(text: copy.h_going, width: .fill) }
+  when rsvp == .maybe    { TextRow(text: copy.h_maybe, width: .fill) }
+  when rsvp == .declined { TextRow(text: copy.h_decl, width: .fill) }
+  Chip(text: copy.clear, on_tap: rsvp_clear)
+}

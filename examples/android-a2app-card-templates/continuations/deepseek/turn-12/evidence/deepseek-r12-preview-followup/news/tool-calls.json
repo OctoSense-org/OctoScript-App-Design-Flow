@@ -1,0 +1,1331 @@
+[
+  {
+    "request_id": "cd6dc469-f79a-44d2-9a21-575629bfbba8",
+    "request": {
+      "name": "studio.bundle_check",
+      "args": {
+        "bundle_path": "card-templates/news/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "cd6dc469-f79a-44d2-9a21-575629bfbba8",
+      "data": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.news",
+        "capabilities": [],
+        "digest": "a7c25f5dec33f54e218df5f28c1e6a3418a10ebe62ca40d33a77b3006c958383",
+        "name": "News Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.678
+  },
+  {
+    "request_id": "1d5ff9d8-64ff-4c1a-8105-4b324709064b",
+    "request": {
+      "name": "studio.open",
+      "args": {
+        "bundle_path": "card-templates/news/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "1d5ff9d8-64ff-4c1a-8105-4b324709064b",
+      "data": {
+        "bundle": {
+          "admission": "local_developer",
+          "app_id": "dev.studio.cards.news",
+          "capabilities": [],
+          "digest": "a7c25f5dec33f54e218df5f28c1e6a3418a10ebe62ca40d33a77b3006c958383",
+          "name": "News Cards",
+          "publisher_signed": false,
+          "source_modified": false,
+          "version": "0.1.0"
+        },
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "ready": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.956
+  },
+  {
+    "request_id": "42a91070-c67b-4231-9ee7-1a3f5287ff96",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449"
+      }
+    },
+    "reply": {
+      "call_id": "42a91070-c67b-4231-9ee7-1a3f5287ff96",
+      "data": {
+        "height": 2132,
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-ad47021c-11cc-429b-8ba2-5820b39b849f.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "News Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   saved: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "NEWS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "2h",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Demo Daily \u00b7 Transit desk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Harbor line opens after two-year rebuild",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "New signalling cuts peak trips by six minutes.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Read \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-218043ba-e41b-4872-bd5e-8f5888b4a94a.json",
+        "total_widgets": 18,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.352
+  },
+  {
+    "request_id": "68c5f5b8-3777-473b-ab28-6c6bf3d3f5f3",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "widget_id": "states_btn@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "68c5f5b8-3777-473b-ab28-6c6bf3d3f5f3",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.134
+  },
+  {
+    "request_id": "eb0e0085-b693-4b28-be8d-f26e2b9d3b3e",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449"
+      }
+    },
+    "reply": {
+      "call_id": "eb0e0085-b693-4b28-be8d-f26e2b9d3b3e",
+      "data": {
+        "height": 2132,
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-44682617-bbcd-4909-b106-5084003bd576.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "News Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   saved: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "NEWS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "2h",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Demo Daily \u00b7 Transit desk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Harbor line opens after two-year rebuild",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "New signalling cuts peak trips by six minutes.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Read \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-92a0325a-5538-4dde-bc07-5957ee73efdb.json",
+        "total_widgets": 23,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.323
+  },
+  {
+    "request_id": "07caf4c6-5d11-4697-9cfe-1edf92b798a4",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "widget_id": "1@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "07caf4c6-5d11-4697-9cfe-1edf92b798a4",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.109
+  },
+  {
+    "request_id": "74bf8a75-4c6f-4c84-9b15-5035076f863a",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449"
+      }
+    },
+    "reply": {
+      "call_id": "74bf8a75-4c6f-4c84-9b15-5035076f863a",
+      "data": {
+        "height": 2132,
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-2fdfa366-0813-4a56-a313-70f9385062c4.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "News Cards   \u00b7   L0 glance   \u00b7   loading   \u00b7   saved: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "NEWS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "2h",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Loading\u2026",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-50bd22e8-159d-446d-8a53-643b5ef4623b.json",
+        "total_widgets": 18,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.328
+  },
+  {
+    "request_id": "256d7347-77dc-45ea-a0aa-461c16b79f8c",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "widget_id": "2@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "256d7347-77dc-45ea-a0aa-461c16b79f8c",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.101
+  },
+  {
+    "request_id": "7601de6a-7309-44ea-8ac0-1861acb8a923",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449"
+      }
+    },
+    "reply": {
+      "call_id": "7601de6a-7309-44ea-8ac0-1861acb8a923",
+      "data": {
+        "height": 2132,
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-95faf3c8-8881-4982-bcf2-0be4f4190a4c.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "News Cards   \u00b7   L0 glance   \u00b7   empty   \u00b7   saved: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "NEWS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "2h",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "No stories",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-00bf0fb9-5729-42bf-9253-d9ba24cedb81.json",
+        "total_widgets": 18,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.373
+  },
+  {
+    "request_id": "4a143bed-d772-4423-8d49-086b41655e8d",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "widget_id": "3@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "4a143bed-d772-4423-8d49-086b41655e8d",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.152
+  },
+  {
+    "request_id": "f082257a-1771-4a4b-b670-a2f217622b15",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449"
+      }
+    },
+    "reply": {
+      "call_id": "f082257a-1771-4a4b-b670-a2f217622b15",
+      "data": {
+        "height": 2132,
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-97ee6655-f4cb-48ef-aabf-ddbe47f65e80.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "News Cards   \u00b7   L0 glance   \u00b7   error   \u00b7   saved: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "NEWS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "2h",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Couldn't load stories \u2014 demo error state",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-4a5c37bf-026d-4616-b921-288d8b46f244.json",
+        "total_widgets": 18,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.323
+  },
+  {
+    "request_id": "f7bea0ac-099b-477d-8fd7-8bf7ba176fd2",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "widget_id": "-@3",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "f7bea0ac-099b-477d-8fd7-8bf7ba176fd2",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.334
+  },
+  {
+    "request_id": "cceef3c8-66c1-4735-a465-77d6c32c2027",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449"
+      }
+    },
+    "reply": {
+      "call_id": "cceef3c8-66c1-4735-a465-77d6c32c2027",
+      "data": {
+        "height": 2132,
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-d16feac3-4a1d-4263-83dd-b53a0deb9e85.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "News Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   saved: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "NEWS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "2h",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Demo Daily \u00b7 Transit desk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Harbor line opens after two-year rebuild",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "New signalling cuts peak trips by six minutes.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Read \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-8f8fbff6-c51c-4740-afc1-abb1e3f44ca8.json",
+        "total_widgets": 23,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.365
+  },
+  {
+    "request_id": "3f65de01-c6f0-486d-b305-c801e2f7e919",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "widget_id": "states_btn@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "3f65de01-c6f0-486d-b305-c801e2f7e919",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.143
+  },
+  {
+    "request_id": "91161c26-5a95-44a2-80f9-1bbfdcba7cb9",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449"
+      }
+    },
+    "reply": {
+      "call_id": "91161c26-5a95-44a2-80f9-1bbfdcba7cb9",
+      "data": {
+        "height": 2132,
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-ca6fe73e-21af-4923-8783-5d5b97ebd3da.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "11@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "News Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   saved: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "NEWS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "2h",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Demo Daily \u00b7 Transit desk",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Harbor line opens after two-year rebuild",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "New signalling cuts peak trips by six minutes.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Save",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Read \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-96641e35-1e7f-48ae-a034-b14f942dd22c.json",
+        "total_widgets": 18,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.317
+  },
+  {
+    "request_id": "d5a118ee-960d-4131-bfdd-52596da1b149",
+    "request": {
+      "name": "studio.close",
+      "args": {
+        "instance_id": "914baf89-f225-4451-98a6-4035c8fbc449"
+      }
+    },
+    "reply": {
+      "call_id": "d5a118ee-960d-4131-bfdd-52596da1b149",
+      "data": {
+        "closed": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.137
+  }
+]

@@ -1,0 +1,67 @@
+# ledger calendar.glance@1.0.0
+theme taskplan_light
+# level:   L0
+# profile: ui/l0
+#
+# CALENDAR — reusable L0 compact glance card template.
+# Renders the L0 "glance" presentation depth; the LANGUAGE level stays L0.
+#
+# Synthetic demo fixture only: no calendar is synced and no event is created.
+# Facts come from the catalogued `sys.dataset` source. RSVP is a local,
+# reversible demo choice; the visible card says it is a demo.
+
+source ev sys.dataset(fields: [title, subtitle, status, as_of])
+
+state mode { shape: enum[brief, rsvp], initial: .brief }
+state rsvp { shape: enum[going, maybe], initial: .going }
+
+event open_rsvp { mode: set(.rsvp) }
+event back      { mode: set(.brief) }
+event go        { rsvp: set(.going) }
+event maybe     { rsvp: set(.maybe) }
+event details   { mode: set(.brief) }
+
+copy app      { class: vocabulary, en: "Calendar · demo", zh: "日历 · 演示" }
+copy h_rsvp   { class: vocabulary, en: "RSVP (local demo)" }
+copy b_rsvp   { class: vocabulary, en: "RSVP" }
+copy b_going  { class: vocabulary, en: "Going" }
+copy b_maybe  { class: vocabulary, en: "Maybe" }
+copy b_back   { class: vocabulary, en: "Done" }
+copy b_detail { class: vocabulary, en: "Details" }
+copy loading  { class: vocabulary, en: "Loading…", zh: "加载中…" }
+copy offline  { class: vocabulary, en: "Can't reach the network", zh: "网络不可用" }
+copy empty    { class: vocabulary, en: "No events today" }
+copy note     { class: model-copy, en: "RSVP here is a local demo choice — nothing is sent to any calendar." }
+
+view root Surface(pad: .tight) {
+  Col(gap: 10) {
+    Row(gap: 8, align: .center) {
+      Icon(name: .calendar, size: .row)
+      TextCaption(text: copy.app, width: .fill)
+      TextCaption(value: ev.as_of)
+    }
+    when ev.$state == .pending { TextBody(text: copy.loading) }
+    when ev.$state == .failed  { TextBody(text: copy.offline) }
+    when ev.$state == .ready {
+      TextTitle(text: ev.title, width: .fill)
+      TextCaption(value: ev.subtitle, width: .fill)
+      when mode == .brief {
+        Row(gap: 8) {
+          Chip(text: copy.b_rsvp, on_tap: open_rsvp, tone: .primary)
+          Chip(text: copy.b_detail, on_tap: details)
+        }
+      }
+      when mode == .rsvp {
+        TextEyebrow(text: copy.h_rsvp)
+        Row(gap: 8) {
+          Chip(text: copy.b_going, on_tap: go, active: rsvp == .going, tone: .primary)
+          Chip(text: copy.b_maybe, on_tap: maybe, active: rsvp == .maybe)
+        }
+        TextCaption(text: copy.note)
+        Row(gap: 8) {
+          Chip(text: copy.b_back, on_tap: back, tone: .primary)
+        }
+      }
+    }
+  }
+}

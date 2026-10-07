@@ -1,0 +1,337 @@
+{
+  "family": "youtube",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "Lo-fi build session"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Lo-fi build session",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-app",
+      "input": {
+        "label": "full-app",
+        "action": "tap",
+        "target": "d_ap"
+      },
+      "target_rect": [
+        180,
+        107,
+        89,
+        44
+      ],
+      "target_selector": "d_ap@0",
+      "png": "01-full-app.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "last-row-scroll",
+      "input": {
+        "label": "last-row-scroll",
+        "action": "scroll",
+        "target": "stage",
+        "delta_y": 300,
+        "contains": [
+          "Desk setup tour 2026"
+        ]
+      },
+      "target_rect": [
+        12,
+        162,
+        360,
+        577
+      ],
+      "target_selector": "stage@0",
+      "png": "02-last-row-scroll.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Desk setup tour 2026",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "last-detail-top",
+      "input": {
+        "label": "last-detail-top",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": -1,
+        "contains": [
+          "Desk setup tour 2026",
+          "Study Corner",
+          "2 months ago"
+        ],
+        "excludes": [
+          "Lo-fi build session"
+        ]
+      },
+      "target_rect": [
+        146,
+        666,
+        108,
+        44
+      ],
+      "target_selector": "1@9",
+      "png": "03-last-detail-top.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Desk setup tour 2026",
+          "pass": true
+        },
+        {
+          "contains": "Study Corner",
+          "pass": true
+        },
+        {
+          "contains": "2 months ago",
+          "pass": true
+        },
+        {
+          "excludes": "Lo-fi build session",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-last",
+      "input": {
+        "label": "save-last",
+        "action": "tap",
+        "target": "Watch later",
+        "occurrence": -1,
+        "contains": [
+          "In Watch later \u2713"
+        ]
+      },
+      "target_rect": [
+        26,
+        429,
+        104,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "04-save-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "In Watch later \u2713",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back-to-list",
+      "input": {
+        "label": "back-to-list",
+        "action": "tap",
+        "target": "\u2039 Back"
+      },
+      "target_rect": [
+        174,
+        429,
+        64,
+        44
+      ],
+      "target_selector": "1@5",
+      "png": "05-back-to-list.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "saved-only-last",
+      "input": {
+        "label": "saved-only-last",
+        "action": "tap",
+        "target": "Watch later",
+        "occurrence": 0,
+        "contains": [
+          "Desk setup tour 2026"
+        ],
+        "excludes": [
+          "Lo-fi build session"
+        ]
+      },
+      "target_rect": [
+        138,
+        179,
+        126,
+        44
+      ],
+      "target_selector": "1@2",
+      "png": "06-saved-only-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Desk setup tour 2026",
+          "pass": true
+        },
+        {
+          "excludes": "Lo-fi build session",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-last",
+      "input": {
+        "label": "remove-last",
+        "action": "tap",
+        "target": "In Watch later \u2713",
+        "contains": [
+          "Nothing saved yet"
+        ]
+      },
+      "target_rect": [
+        38,
+        380,
+        136,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "07-remove-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Nothing saved yet",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "first-still-independent",
+      "input": {
+        "label": "first-still-independent",
+        "action": "tap",
+        "target": "d_gl",
+        "contains": [
+          "Lo-fi build session",
+          "Watch later"
+        ],
+        "no_enabled_button_text": [
+          "In Watch later \u2713"
+        ]
+      },
+      "target_rect": [
+        12,
+        107,
+        69,
+        44
+      ],
+      "target_selector": "d_gl@0",
+      "png": "08-first-still-independent.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Lo-fi build session",
+          "pass": true
+        },
+        {
+          "contains": "Watch later",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "In Watch later \u2713",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.youtube",
+    "capabilities": [],
+    "digest": "10699a2b3e3a5c8881a41e934f97088bb5eaace2a416aa1a8ac26eb2e846ebc4",
+    "name": "YouTube Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

@@ -1,0 +1,17 @@
+"""Replay the recorded Android model edits against the preserved turn-12 files."""
+import hashlib
+import json
+from pathlib import Path
+root = Path(__file__).resolve().parent
+record = json.loads((root / "provenance.json").read_text())
+for item in record["files"]:
+    before = (root / item["base"]).read_bytes()
+    after = (root / item["output"]).read_bytes()
+    assert hashlib.sha256(before).hexdigest() == item["base_sha256"]
+    replay = before
+    for edit in item.get("mutations", [item.get("mutation")]):
+        assert edit["success"] and replay.count(edit["old_string"].encode()) == 1
+        replay = replay.replace(edit["old_string"].encode(), edit["new_string"].encode(), 1)
+    assert replay == after
+    assert hashlib.sha256(after).hexdigest() == item["output_sha256"]
+    print(item["output"], "model edit replay: PASS")

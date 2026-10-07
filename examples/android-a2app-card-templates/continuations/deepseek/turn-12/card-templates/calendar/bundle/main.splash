@@ -1,0 +1,236 @@
+// Calendar Cards — native interactive preview of the CALENDAR card template.
+// Presentation depths: L0 compact next-event glance / L1 expanded actionable /
+// L2 full app (agenda -> event detail).
+// Synthetic demo content only. No calendar sync, no event created, nothing sent.
+//
+// Layout intent (from Mail failures): navigation + status pinned at TOP so they
+// stay reachable when the Android keyboard shrinks the viewport; the card sits
+// in a Fill ScrollYView below. All active tap targets >= 44 logical px.
+// RSVP is PER EVENT (separate state per event id), not a shared global.
+
+let depth = "glance"
+let view_state = "ready"
+let show_states = false
+let tab = "today"
+let detail_open = false
+let open_id = ""
+let rsvp_review = "none"
+let rsvp_sam = "none"
+let rsvp_standup = "none"
+
+let NavBtn = ButtonFlat{height: 44 padding: 10 draw_bg +: {color: #xe8edf3 color_hover: #xdde5ef color_down: #xd0dae7} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+let AccentBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xe0642f color_hover: #xe9743f color_down: #xd0551f} draw_text +: {color: #xffffff color_hover: #xffffff color_down: #xffffff}}
+let GhostBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xffffff color_hover: #xf0f4f8 color_down: #xe6ecf3} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+let OpenBtn = ButtonFlat{height: 44 width: 108 padding: 8 draw_bg +: {color: #xe8edf3 color_hover: #xdde5ef color_down: #xd0dae7} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}
+
+fn depth_name(){
+    if depth == "glance" { return "L0 glance" }
+    if depth == "expand" { return "L1 expanded" }
+    return "L2 app"
+}
+fn title_of(id){
+    if id == "review" { return "Design review" }
+    if id == "sam" { return "1:1 with Sam" }
+    return "Team standup"
+}
+fn when_of(id){
+    if id == "review" { return "Today · 10:00–11:00" }
+    if id == "sam" { return "Today · 14:00–14:30" }
+    return "Friday · 09:00–09:15"
+}
+fn where_of(id){
+    if id == "review" { return "Studio 2" }
+    if id == "sam" { return "Room 4 · 2nd floor" }
+    return "Online · meet.demo/standup"
+}
+fn body_of(id){
+    if id == "review" { return "Walk through the new card layouts and pick the family accent set. Bring the L0/L1 comps." }
+    if id == "sam" { return "Weekly catch-up. Topics: roadmap, review load, next sprint." }
+    return "Quick sync: blockers, then the day's plan."
+}
+fn get_rsvp(id){
+    if id == "sam" { return rsvp_sam }
+    if id == "standup" { return rsvp_standup }
+    return rsvp_review
+}
+fn rsvp_label(id){
+    if get_rsvp(id) == "going" { return "Going (demo)" }
+    if get_rsvp(id) == "maybe" { return "Maybe (demo)" }
+    return "No response"
+}
+
+fn refresh_nav(){
+    let s = "Calendar Cards   ·   " + depth_name() + "   ·   " + view_state + "   ·   RSVP(review): " + rsvp_review
+    ui.depth_status.set_text(s)
+    if depth == "glance" { ui.d_gl.set_text("• Glance") } else { ui.d_gl.set_text("Glance") }
+    if depth == "expand" { ui.d_ex.set_text("• Expand") } else { ui.d_ex.set_text("Expand") }
+    if depth == "app" { ui.d_ap.set_text("• Open app") } else { ui.d_ap.set_text("Open app") }
+}
+fn toggle_states(){
+    if show_states { show_states = false } else { show_states = true }
+    if show_states { ui.states_btn.set_text("States ▾") } else { ui.states_btn.set_text("States ▸") }
+    ui.states_row.set_visible(show_states)
+}
+
+fn set_depth(d){ depth = d detail_open = false refresh_nav() ui.stage.render() }
+fn set_state(s){ view_state = s refresh_nav() ui.stage.render() }
+fn set_tab(t){ tab = t detail_open = false refresh_nav() ui.stage.render() }
+fn open_detail(id){ open_id = id detail_open = true ui.stage.render() }
+fn close_detail(){ detail_open = false ui.stage.render() }
+fn set_rsvp(id, r){
+    if id == "sam" { rsvp_sam = r }
+    elif id == "standup" { rsvp_standup = r }
+    else { rsvp_review = r }
+    refresh_nav() ui.stage.render()
+}
+
+fn boot(){ refresh_nav() ui.states_row.set_visible(false) ui.stage.render() }
+
+start_timeout(0.05, || boot())
+
+SolidView{width: Fill height: Fill flow: Down padding: 12 spacing: 8 draw_bg.color: #xf6f3f0
+    // Title folded into the consolidated status line below (density).
+    depth_status := Label{width: Fill height: Fit text: "Depth: L0 glance   ·   state: ready   ·   RSVP(review): none" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}
+    View{width: Fill height: Fit flow: Right spacing: 8
+        d_gl := NavBtn{text: "• Glance" on_click: || set_depth("glance")}
+        d_ex := NavBtn{text: "Expand" on_click: || set_depth("expand")}
+        d_ap := NavBtn{text: "Open app" on_click: || set_depth("app")}
+        View{width: Fill height: Fit}
+        states_btn := NavBtn{text: "States ▸" on_click: || toggle_states()}
+    }
+    states_row := View{width: Fill height: Fit flow: Right spacing: 8
+        NavBtn{text: "Ready" on_click: || set_state("ready")}
+        NavBtn{text: "Loading" on_click: || set_state("loading")}
+        NavBtn{text: "Empty" on_click: || set_state("empty")}
+        NavBtn{text: "Error" on_click: || set_state("error")}
+    }
+
+    stage := RoundedView{width: Fill height: Fill flow: Down draw_bg.color: #xf6f3f0 on_render: || {
+        ScrollYView{width: Fill height: Fill flow: Down spacing: 8
+            RoundedView{width: Fill height: Fit flow: Down padding: 14 spacing: 8 draw_bg.color: #xffffff draw_bg.radius: 16
+
+            // ---------- L0 · compact next-event glance ----------
+            if depth == "glance" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    Label{text: "CALENDAR" draw_text.color: #xe0642f draw_text.text_style.font_size: 12}
+                    View{width: Fill height: Fit}
+                    Label{text: "Today" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}
+                }
+                if view_state == "loading" { Label{text: "Loading…" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }
+                if view_state == "empty" { Label{text: "No events today" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }
+                if view_state == "error" { Label{width: Fill height: Fit text: "Couldn't load calendar — demo error state" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }
+                if view_state == "ready" {
+                    Label{text: "10:00–11:00 · Studio 2" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}
+                    Label{width: Fill height: Fit text: "Design review" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{text: rsvp_label("review") draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        AccentBtn{text: "RSVP" on_click: || set_depth("expand")}
+                    }
+                }
+            }
+
+            // ---------- L1 · expanded actionable ----------
+            if depth == "expand" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    Label{text: "CALENDAR" draw_text.color: #xe0642f draw_text.text_style.font_size: 11}
+                    View{width: Fill height: Fit}
+                    Label{text: "Today" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}
+                }
+                if view_state == "loading" { Label{text: "Loading…" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }
+                if view_state == "empty" { Label{text: "No events today" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }
+                if view_state == "error" { Label{width: Fill height: Fit text: "Couldn't load calendar — demo error state" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }
+                if view_state == "ready" {
+                    Label{width: Fill height: Fit text: "Design review" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{text: "Today · 10:00–11:00 · Studio 2" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                    Label{text: "Attendees: you, Meera, Tom (demo)" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                    SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}
+                    Label{text: "RSVP (local demo — nothing is sent)" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        if rsvp_review == "going" {
+                            AccentBtn{text: "Going" on_click: || set_rsvp("review", "going")}
+                            GhostBtn{text: "Maybe" on_click: || set_rsvp("review", "maybe")}
+                        }
+                        if rsvp_review == "maybe" {
+                            GhostBtn{text: "Going" on_click: || set_rsvp("review", "going")}
+                            AccentBtn{text: "Maybe" on_click: || set_rsvp("review", "maybe")}
+                        }
+                        if rsvp_review == "none" {
+                            GhostBtn{text: "Going" on_click: || set_rsvp("review", "going")}
+                            GhostBtn{text: "Maybe" on_click: || set_rsvp("review", "maybe")}
+                        }
+                    }
+                    Label{text: rsvp_label("review") draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                    Label{width: Fill height: Fit text: "Walk through the new card layouts and pick the family accent set." draw_text.color: #x1c2430 draw_text.text_style.font_size: 14 draw_text.wrap: true}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        NavBtn{text: "Open app" on_click: || set_depth("app")}
+                    }
+                }
+            }
+
+            // ---------- L2 · full app (agenda -> detail) ----------
+            if depth == "app" {
+                View{width: Fill height: Fit flow: Right spacing: 8
+                    if tab == "today" {
+                        AccentBtn{text: "Today" width: 116 on_click: || set_tab("today")}
+                        NavBtn{text: "Week" width: 116 on_click: || set_tab("week")}
+                    }
+                    if tab == "week" {
+                        NavBtn{text: "Today" width: 116 on_click: || set_tab("today")}
+                        AccentBtn{text: "Week" width: 116 on_click: || set_tab("week")}
+                    }
+                }
+                SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}
+                if detail_open {
+                    Label{width: Fill height: Fit text: title_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}
+                    Label{width: Fill height: Fit text: when_of(open_id) draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}
+                    Label{width: Fill height: Fit text: where_of(open_id) draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}
+                    SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}
+                    Label{width: Fill height: Fit text: body_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 14 draw_text.wrap: true}
+                    Label{text: rsvp_label(open_id) draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        if get_rsvp(open_id) == "going" {
+                            AccentBtn{text: "Going" on_click: || set_rsvp(open_id, "going")}
+                            GhostBtn{text: "Maybe" on_click: || set_rsvp(open_id, "maybe")}
+                        }
+                        if get_rsvp(open_id) == "maybe" {
+                            GhostBtn{text: "Going" on_click: || set_rsvp(open_id, "going")}
+                            AccentBtn{text: "Maybe" on_click: || set_rsvp(open_id, "maybe")}
+                        }
+                        if get_rsvp(open_id) == "none" {
+                            GhostBtn{text: "Going" on_click: || set_rsvp(open_id, "going")}
+                            GhostBtn{text: "Maybe" on_click: || set_rsvp(open_id, "maybe")}
+                        }
+                    }
+                    Label{text: "Demo event · no calendar sync" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}
+                    View{width: Fill height: Fit flow: Right spacing: 8
+                        NavBtn{text: "‹ Back to agenda" on_click: || close_detail()}
+                    }
+                }
+                if detail_open == false {
+                    Label{width: Fill height: Fit text: "Thursday · 2 events" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}
+                    RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                        Label{text: "10:00–11:00" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}
+                        Label{width: Fill height: Fit text: "Design review" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                        Label{width: Fill height: Fit text: "Studio 2" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                        OpenBtn{text: "Open ›" on_click: || open_detail("review")}
+                    }
+                    RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                        Label{text: "14:00–14:30" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}
+                        Label{width: Fill height: Fit text: "1:1 with Sam" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                        Label{width: Fill height: Fit text: "Room 4 · 2nd floor" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                        OpenBtn{text: "Open ›" on_click: || open_detail("sam")}
+                    }
+                    if tab == "week" {
+                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12
+                            Label{text: "Friday · 09:00–09:15" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}
+                            Label{width: Fill height: Fit text: "Team standup" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}
+                            Label{width: Fill height: Fit text: "Online · meet.demo/standup" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}
+                            OpenBtn{text: "Open ›" on_click: || open_detail("standup")}
+                        }
+                    }
+                }
+            }
+            }
+        }
+    }}
+}

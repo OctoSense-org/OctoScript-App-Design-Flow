@@ -2,12 +2,13 @@
 
 English | [简体中文](README.zh-CN.md)
 
-Reference journeys built with the [image-to-card flow](../flows/image-to-card/FLOW.md)
-and contained apps built with the [script-app flow](../flows/script-app/FLOW.md).
+Reference journeys built with the [image-to-card flow](../flows/image-to-card/FLOW.md),
+contained apps built with the [script-app flow](../flows/script-app/FLOW.md),
+and Android-authored prototype archives with historical phone review evidence.
 Each example keeps its source, walkthrough and validation evidence together;
-the card journeys also include service code and reviewed scenes. Runtime
-state and personal data stay ignored. The older journeys were `apps/<name>/`
-before the restructure.
+the card journeys also include service code, reviewed scenes, design source,
+launchers, tests and fixture evidence. Runtime state and personal data stay
+ignored. The older journeys were `apps/<name>/` before the restructure.
 
 | Example | Surfaces | Description |
 | --- | --- | --- |
@@ -17,6 +18,7 @@ before the restructure.
 | [Health](health/README.md) | Native cards / WASM | Fictional health-check booking journey. |
 | [Reunion](reunion/README.md) | Native cards / WASM | Reunion planning, RSVP and payment journey. |
 | [Calendar](calendar/README.md) | Native cards / browser preview + sync server | Calendar for two devices: 10 screens, 4 service cards, and a SQLite-backed operation-log server every client replays. |
+| [Android-authored card prototypes](android-a2app-card-templates/README.md) | AppStudio on Android; glance / expanded / full app | Two model-authored six-family collections: each 4.5/5 overall offline prototype, 4.4/5 visual; exact source replay and native evidence. |
 
 [shared/](shared/README.md) contains common browser adapters and historical
 cross-app verification artifacts; it is not an app.

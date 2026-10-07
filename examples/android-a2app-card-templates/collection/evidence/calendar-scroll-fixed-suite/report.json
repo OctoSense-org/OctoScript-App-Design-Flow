@@ -1,0 +1,890 @@
+{
+  "family": "calendar",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "Design review",
+          "10:00"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design review",
+          "pass": true
+        },
+        {
+          "contains": "10:00",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "action": "tap",
+        "target": "Expand",
+        "contains": [
+          "Studio 2",
+          "Going",
+          "Maybe"
+        ]
+      },
+      "target_rect": [
+        89,
+        157,
+        73,
+        44
+      ],
+      "target_selector": "1@2",
+      "png": "01-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Studio 2",
+          "pass": true
+        },
+        {
+          "contains": "Going",
+          "pass": true
+        },
+        {
+          "contains": "Maybe",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "going",
+      "input": {
+        "label": "going",
+        "action": "tap",
+        "target": "Going",
+        "contains": [
+          "Going"
+        ]
+      },
+      "target_rect": [
+        26,
+        507,
+        66,
+        44
+      ],
+      "target_selector": "-@9",
+      "png": "02-going.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Going",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "maybe",
+      "input": {
+        "label": "maybe",
+        "action": "tap",
+        "target": "Maybe",
+        "contains": [
+          "maybe"
+        ]
+      },
+      "target_rect": [
+        100,
+        507,
+        72,
+        44
+      ],
+      "target_selector": "1@6",
+      "png": "03-maybe.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "maybe",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-app",
+      "input": {
+        "label": "full-app",
+        "action": "tap",
+        "target": "Open app",
+        "occurrence": 0,
+        "contains": [
+          "Today",
+          "Week",
+          "1:1 with Sam"
+        ]
+      },
+      "target_rect": [
+        170,
+        157,
+        89,
+        44
+      ],
+      "target_selector": "2@1",
+      "png": "04-full-app.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Today",
+          "pass": true
+        },
+        {
+          "contains": "Week",
+          "pass": true
+        },
+        {
+          "contains": "1:1 with Sam",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-event",
+      "input": {
+        "label": "second-event",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": 1,
+        "contains": [
+          "1:1 with Sam",
+          "Room 4",
+          "No response"
+        ],
+        "excludes": [
+          "Design review",
+          "Maybe (demo)",
+          "Going (demo)"
+        ]
+      },
+      "target_rect": [
+        38,
+        728,
+        108,
+        44
+      ],
+      "target_selector": "3@3",
+      "png": "05-second-event.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "1:1 with Sam",
+          "pass": true
+        },
+        {
+          "contains": "Room 4",
+          "pass": true
+        },
+        {
+          "contains": "No response",
+          "pass": true
+        },
+        {
+          "excludes": "Design review",
+          "pass": true
+        },
+        {
+          "excludes": "Maybe (demo)",
+          "pass": true
+        },
+        {
+          "excludes": "Going (demo)",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-going",
+      "input": {
+        "label": "second-going",
+        "action": "tap",
+        "target": "Going",
+        "contains": [
+          "Going (demo)"
+        ]
+      },
+      "target_rect": [
+        26,
+        605,
+        66,
+        44
+      ],
+      "target_selector": "-@9",
+      "png": "06-second-going.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Going (demo)",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "agenda-after-second-rsvp",
+      "input": {
+        "label": "agenda-after-second-rsvp",
+        "action": "tap",
+        "target": "\u2039 Back to agenda",
+        "contains": [
+          "Design review",
+          "1:1 with Sam"
+        ]
+      },
+      "target_rect": [
+        26,
+        703,
+        139,
+        44
+      ],
+      "target_selector": "-@10",
+      "png": "07-agenda-after-second-rsvp.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design review",
+          "pass": true
+        },
+        {
+          "contains": "1:1 with Sam",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "first-rsvp-preserved",
+      "input": {
+        "label": "first-rsvp-preserved",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": 0,
+        "contains": [
+          "Design review",
+          "Maybe (demo)"
+        ],
+        "excludes": [
+          "Going (demo)"
+        ]
+      },
+      "target_rect": [
+        38,
+        526,
+        108,
+        44
+      ],
+      "target_selector": "3@2",
+      "png": "08-first-rsvp-preserved.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design review",
+          "pass": true
+        },
+        {
+          "contains": "Maybe (demo)",
+          "pass": true
+        },
+        {
+          "excludes": "Going (demo)",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back-to-agenda",
+      "input": {
+        "label": "back-to-agenda",
+        "action": "tap",
+        "target": "\u2039 Back to agenda",
+        "contains": [
+          "Design review",
+          "1:1 with Sam"
+        ]
+      },
+      "target_rect": [
+        26,
+        729,
+        139,
+        44
+      ],
+      "target_selector": "-@10",
+      "png": "09-back-to-agenda.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design review",
+          "pass": true
+        },
+        {
+          "contains": "1:1 with Sam",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "week",
+      "input": {
+        "label": "week",
+        "action": "tap",
+        "target": "Week"
+      },
+      "target_rect": [
+        150,
+        287,
+        116,
+        44
+      ],
+      "target_selector": "1@4",
+      "png": "10-week.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "-",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "1",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "2",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "last-event-reachable",
+      "input": {
+        "label": "last-event-reachable",
+        "action": "scroll",
+        "target": "stage",
+        "delta_y": 300,
+        "contains": [
+          "Team standup"
+        ]
+      },
+      "target_rect": [
+        12,
+        270,
+        360,
+        505
+      ],
+      "target_selector": "stage@0",
+      "png": "11-last-event-reachable.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "2",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "-",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "1",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "2",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Team standup",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "last-event-detail",
+      "input": {
+        "label": "last-event-detail",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": -1,
+        "contains": [
+          "Team standup",
+          "Online",
+          "No response"
+        ],
+        "excludes": [
+          "Maybe (demo)"
+        ]
+      },
+      "target_rect": [
+        38,
+        701,
+        108,
+        44
+      ],
+      "target_selector": "3@4",
+      "png": "12-last-event-detail.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Team standup",
+          "pass": true
+        },
+        {
+          "contains": "Online",
+          "pass": true
+        },
+        {
+          "contains": "No response",
+          "pass": true
+        },
+        {
+          "excludes": "Maybe (demo)",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "last-event-going",
+      "input": {
+        "label": "last-event-going",
+        "action": "tap",
+        "target": "Going",
+        "contains": [
+          "Team standup",
+          "Going (demo)"
+        ]
+      },
+      "target_rect": [
+        26,
+        605,
+        66,
+        44
+      ],
+      "target_selector": "-@9",
+      "png": "13-last-event-going.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Team standup",
+          "pass": true
+        },
+        {
+          "contains": "Going (demo)",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back-after-last",
+      "input": {
+        "label": "back-after-last",
+        "action": "tap",
+        "target": "\u2039 Back to agenda",
+        "contains": [
+          "Design review",
+          "Today",
+          "Week"
+        ]
+      },
+      "target_rect": [
+        26,
+        703,
+        139,
+        44
+      ],
+      "target_selector": "-@10",
+      "png": "14-back-after-last.png",
+      "checks": {
+        "findings": [
+          {
+            "code": "text_clipped",
+            "id": "-",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "1",
+            "severity": "error"
+          },
+          {
+            "code": "text_clipped",
+            "id": "2",
+            "severity": "error"
+          }
+        ],
+        "instrument": "makepad_widget_tree",
+        "pass": false
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design review",
+          "pass": true
+        },
+        {
+          "contains": "Today",
+          "pass": true
+        },
+        {
+          "contains": "Week",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "first-response-still-independent",
+      "input": {
+        "label": "first-response-still-independent",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": 0,
+        "contains": [
+          "Design review",
+          "Maybe (demo)"
+        ],
+        "excludes": [
+          "Going (demo)"
+        ]
+      },
+      "target_rect": [
+        38,
+        526,
+        108,
+        44
+      ],
+      "target_selector": "3@2",
+      "png": "15-first-response-still-independent.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design review",
+          "pass": true
+        },
+        {
+          "contains": "Maybe (demo)",
+          "pass": true
+        },
+        {
+          "excludes": "Going (demo)",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "glance-again",
+      "input": {
+        "label": "glance-again",
+        "action": "tap",
+        "target": "Glance",
+        "contains": [
+          "Design review"
+        ]
+      },
+      "target_rect": [
+        12,
+        157,
+        69,
+        44
+      ],
+      "target_selector": "-@3",
+      "png": "16-glance-again.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design review",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "loading",
+      "input": {
+        "label": "loading",
+        "action": "tap",
+        "target": "Loading",
+        "contains": [
+          "Loading\u2026"
+        ]
+      },
+      "target_rect": [
+        83,
+        215,
+        77,
+        44
+      ],
+      "target_selector": "1@3",
+      "png": "17-loading.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Loading\u2026",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "empty",
+      "input": {
+        "label": "empty",
+        "action": "tap",
+        "target": "Empty",
+        "contains": [
+          "No events today"
+        ]
+      },
+      "target_rect": [
+        169,
+        215,
+        64,
+        44
+      ],
+      "target_selector": "2@3",
+      "png": "18-empty.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "No events today",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "error",
+      "input": {
+        "label": "error",
+        "action": "tap",
+        "target": "Error",
+        "contains": [
+          "Couldn't load calendar"
+        ]
+      },
+      "target_rect": [
+        241,
+        215,
+        54,
+        44
+      ],
+      "target_selector": "3@0",
+      "png": "19-error.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Couldn't load calendar",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "ready",
+      "input": {
+        "label": "ready",
+        "action": "tap",
+        "target": "Ready",
+        "contains": [
+          "Design review"
+        ]
+      },
+      "target_rect": [
+        12,
+        215,
+        63,
+        44
+      ],
+      "target_selector": "-@4",
+      "png": "20-ready.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design review",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.calendar",
+    "capabilities": [],
+    "digest": "4f23201d913dcda07f475a298c8e3edc0f4fe6c04a596ec9a20b19cdf6799969",
+    "name": "Calendar Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

@@ -1,0 +1,10 @@
+{
+  "source_after": {
+    "files": 25,
+    "exact": true
+  },
+  "result": "studio.open failed: studio_eval_failed, no root content or exceeded admitted instruction budget",
+  "diagnosis": "Exact pinned native evaluation identifies one extra News footer closing brace at line380. No input steps executed.",
+  "source_before": "Operator froze all25 source files immediately before this read-only admission attempt; receipt included.",
+  "source_modified": false
+}

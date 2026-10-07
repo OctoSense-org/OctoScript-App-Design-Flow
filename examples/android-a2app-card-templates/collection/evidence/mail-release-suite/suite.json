@@ -1,0 +1,27 @@
+{
+  "family": "mail",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Ana Rivera",
+        "Contract signing"
+      ]
+    },
+    {
+      "label": "expanded",
+      "action": "tap",
+      "target": "Expand",
+      "contains": [
+        "Send (demo)",
+        "Contract signing"
+      ]
+    },
+    {
+      "label": "full-app",
+      "action": "tap",
+      "target": "Open app",
+      "occurrence": -1
+    }
+  ]
+}

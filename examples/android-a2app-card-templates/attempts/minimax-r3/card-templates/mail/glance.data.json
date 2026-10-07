@@ -1,0 +1,24 @@
+{
+  "$comment": "Fixture for glance.card. SYNTHETIC demo records only - no mailbox is read, no account is used, nothing is sent. The card's own words are demo words; the shape mirrors a real inbox so the template can be reviewed offline.",
+  "ledger": "mail.glance@0.1.0",
+  "published_as": "os.mail",
+  "inbox_count": 5,
+  "unread_count": 2,
+  "as_of": "09:12",
+  "lead": {
+    "from": "Ana Ruiz",
+    "subject": "Contract renewal - signature by Friday",
+    "preview": "The revised payment terms are in the attached PDF. Can you confirm whether we can sign by Friday?",
+    "at": "09:12",
+    "folder": "Inbox",
+    "tag": "Work",
+    "unread": true,
+    "attachment": true
+  },
+  "rest": [
+    {"from": "City Library", "subject": "Hold ready: your request is available", "at": "08:47", "unread": true, "attachment": false, "tag": "Personal"},
+    {"from": "Priya N.", "subject": "Design review moved to Thursday 10:00", "at": "Yesterday", "unread": false, "attachment": false, "tag": "Work"},
+    {"from": "Northwind Studio", "subject": "Invoice 2291 - August retainer", "at": "Mon", "unread": false, "attachment": true, "tag": "Finance"},
+    {"from": "Jonas Berg", "subject": "Weekend ride - route and pace", "at": "Sun", "unread": false, "attachment": false, "tag": "Personal"}
+  ]
+}

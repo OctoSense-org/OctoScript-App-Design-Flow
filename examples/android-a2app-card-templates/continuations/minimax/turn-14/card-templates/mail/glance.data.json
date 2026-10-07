@@ -1,0 +1,22 @@
+{
+  "$comment": "Fixture for glance.card. Keys are the SOURCE ALIASES (lead, more) because the offline realizer looks fixture values up by alias, not by sys.dataset id; no live id is declared so these lower to literals. Field names are the sys.dataset answer names in catalog.md. All records are SYNTHETIC demo data: no mailbox is read and nothing is sent.",
+  "ledger": "mail.glance@0.1.0",
+  "published_as": "os.mail",
+  "lead": {
+    "title": "Contract renewal - signature by Friday",
+    "subtitle": "Ana Ruiz · 09:12 · Work",
+    "summary": "The revised payment terms are in the attached PDF: net 45 instead of net 30, and the renewal window moves to 60 days.",
+    "as_of": "09:12",
+    "status": "Unread",
+    "metric1_label": "Folder",
+    "metric1_value": "Inbox",
+    "metric2_label": "Attachment",
+    "metric2_value": "1 PDF"
+  },
+  "more": {
+    "title": "4 in Inbox",
+    "subtitle": "2 unread",
+    "as_of": "09:12",
+    "status": "Unread"
+  }
+}

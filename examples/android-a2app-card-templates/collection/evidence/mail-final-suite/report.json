@@ -1,0 +1,480 @@
+{
+  "family": "mail",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "Ana Rivera",
+          "Contract signing"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Ana Rivera",
+          "pass": true
+        },
+        {
+          "contains": "Contract signing",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "action": "tap",
+        "target": "Expand",
+        "contains": [
+          "Send (demo)",
+          "Contract signing"
+        ]
+      },
+      "target_rect": [
+        89,
+        134,
+        73,
+        44
+      ],
+      "target_selector": "1@2",
+      "png": "01-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Send (demo)",
+          "pass": true
+        },
+        {
+          "contains": "Contract signing",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "blank-send",
+      "input": {
+        "label": "blank-send",
+        "action": "tap",
+        "target": "Send (demo)",
+        "contains": [
+          "Write a reply first"
+        ],
+        "excludes": [
+          "Reply queued"
+        ]
+      },
+      "target_rect": [
+        26,
+        458,
+        115,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "02-blank-send.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Write a reply first",
+          "pass": true
+        },
+        {
+          "excludes": "Reply queued",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "archived",
+      "input": {
+        "label": "archived",
+        "action": "tap",
+        "target": "Archive",
+        "contains": [
+          "Undo",
+          "Archived (demo)"
+        ]
+      },
+      "target_rect": [
+        149,
+        458,
+        76,
+        44
+      ],
+      "target_selector": "1@6",
+      "png": "03-archived.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Undo",
+          "pass": true
+        },
+        {
+          "contains": "Archived (demo)",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "inbox-after-archive",
+      "input": {
+        "label": "inbox-after-archive",
+        "action": "tap",
+        "target": "Open app",
+        "occurrence": -1,
+        "contains": [
+          "Design Weekly"
+        ],
+        "excludes": [
+          "Ana Rivera"
+        ]
+      },
+      "target_rect": [
+        215,
+        480,
+        89,
+        44
+      ],
+      "target_selector": "2@6",
+      "png": "04-inbox-after-archive.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design Weekly",
+          "pass": true
+        },
+        {
+          "excludes": "Ana Rivera",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "archived-folder",
+      "input": {
+        "label": "archived-folder",
+        "action": "tap",
+        "target": "Archived",
+        "contains": [
+          "Ana Rivera",
+          "Finance"
+        ]
+      },
+      "target_rect": [
+        97,
+        264,
+        81,
+        44
+      ],
+      "target_selector": "1@4",
+      "png": "05-archived-folder.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Ana Rivera",
+          "pass": true
+        },
+        {
+          "contains": "Finance",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expand-for-undo",
+      "input": {
+        "label": "expand-for-undo",
+        "action": "tap",
+        "target": "Expand",
+        "contains": [
+          "Undo"
+        ]
+      },
+      "target_rect": [
+        89,
+        134,
+        73,
+        44
+      ],
+      "target_selector": "1@2",
+      "png": "06-expand-for-undo.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Undo",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "undo",
+      "input": {
+        "label": "undo",
+        "action": "tap",
+        "target": "Undo",
+        "contains": [
+          "Archive"
+        ],
+        "excludes": [
+          "Archived (demo)"
+        ]
+      },
+      "target_rect": [
+        149,
+        480,
+        58,
+        44
+      ],
+      "target_selector": "1@6",
+      "png": "07-undo.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Archive",
+          "pass": true
+        },
+        {
+          "excludes": "Archived (demo)",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-app",
+      "input": {
+        "label": "full-app",
+        "action": "tap",
+        "target": "Open app",
+        "occurrence": -1
+      },
+      "target_rect": [
+        234,
+        458,
+        89,
+        44
+      ],
+      "target_selector": "2@6",
+      "png": "08-full-app.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "inbox",
+      "input": {
+        "label": "inbox",
+        "action": "tap",
+        "target": "Inbox",
+        "contains": [
+          "Ana Rivera",
+          "Design Weekly"
+        ]
+      },
+      "target_rect": [
+        26,
+        264,
+        59,
+        44
+      ],
+      "target_selector": "-@6",
+      "png": "09-inbox.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Ana Rivera",
+          "pass": true
+        },
+        {
+          "contains": "Design Weekly",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-message-detail",
+      "input": {
+        "label": "second-message-detail",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": 1,
+        "contains": [
+          "Your Thursday digest is ready",
+          "Design Weekly",
+          "Five short reads on card UI, motion and type."
+        ],
+        "excludes": [
+          "Ana Rivera"
+        ]
+      },
+      "target_rect": [
+        38,
+        665,
+        108,
+        44
+      ],
+      "target_selector": "3@5",
+      "png": "10-second-message-detail.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Your Thursday digest is ready",
+          "pass": true
+        },
+        {
+          "contains": "Design Weekly",
+          "pass": true
+        },
+        {
+          "contains": "Five short reads on card UI, motion and type.",
+          "pass": true
+        },
+        {
+          "excludes": "Ana Rivera",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back-to-list",
+      "input": {
+        "label": "back-to-list",
+        "action": "tap",
+        "target": "\u2039 Back to list",
+        "contains": [
+          "Design Weekly",
+          "Ana Rivera"
+        ]
+      },
+      "target_rect": [
+        26,
+        567,
+        106,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "11-back-to-list.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Design Weekly",
+          "pass": true
+        },
+        {
+          "contains": "Ana Rivera",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.mail",
+    "capabilities": [
+      "storage"
+    ],
+    "digest": "28564e4f2be77b7675b6d688df074340431d3e5b9e8601d98745edf2626947c2",
+    "name": "Mail Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}
