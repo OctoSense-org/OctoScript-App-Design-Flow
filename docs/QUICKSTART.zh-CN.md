@@ -276,7 +276,9 @@ fn tip_20_percent() {
 - **保留 id。** `tools/octo new` 只检查它创建时用的 id。如果之后把 id 改成 `com.example.notes`，准入检查会拒绝它，因为最后一段 `notes` 是保留名（§3）。
 - **`.DS_Store`。** Finder 会把它写进你打开过的文件夹，而准入检查会拒绝任何扩展名未知的文件。检查之前先删除它：`find ~/apps/my-app/bundle -name .DS_Store -delete`。
 - **换行符。** 如果 Git 检出时转换了换行符，字节就会改变，摘要随之失效。请 commit §3 中的 `.gitattributes`。
-- **字体。** 卡片套件的 `font_src` 只能引用一种内置字体：`makepad_widgets:resources/Inter.ttf`；其他字体都要作为文件放进应用包（[App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)）。应用包内 `.txt` 或 `.md` 文件（例如字体许可证）中的 URL，准入检查同样会拒绝。
+- **卡片中的字体。** 卡片中的中日韩文字请用纯 L0 角色套件（`Surface`、`TextTitle`、`TextBody` 等）编写，不设 `font_src`：它用内置的霞鹜文楷（LXGW WenKai）显示中文，准入检查也能通过。套件的 `font_src` 只能引用一种内置字体 `makepad_widgets:resources/Inter.ttf`，而它没有中日韩字形。在 `font_src` 中引用应用包内的字体文件同样能通过准入检查，但目前 `card-host` 加载不了它，所以不要为卡片附带字体文件（[App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)）。
+- **脚本应用中的字体。** 把字体文件放进应用包，例如 `bundle/fonts/X.ttf`，然后在 `main.splash` 中把它作为 `TextStyle` 的 `FontFamily` 成员加载：`FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`。字体的许可证要放在 `bundle/` 之外：准入检查会拒绝含有 URL 的应用包内 `.txt` 或 `.md` 文件。
+- **缺失的字形。** 用 `MAKEPAD_SYSTEM_FONTS=0` 测试应用（`MAKEPAD_SYSTEM_FONTS=0 tools/octo run …`）。不设这个变量时，macOS 的系统字体会补上你的字体缺少的字形，把问题掩盖起来；在没有中日韩系统字体的 Linux 上，同样的文字会显示为方框。**未验证**：字体在 OctoSense Shell 中的表现。
 - **大小。** 应用包不能超过 8 MiB（8,388,608 字节）。
 
 ## 8. 检查应用包
@@ -346,6 +348,7 @@ Android 版 `card-host` 不编译远程控制桥。在手机上，请用 OctoSen
 | 点击、输入或修改似乎都不起作用 | 某个处理函数失败了（搜索日志，见 §4）；或者你没有用 `tools/octo run` 启动应用，操作的是该端口上一个较旧的实例（`curl -s 127.0.0.1:8141/s` 会显示它的进程号）。 |
 | `shot` 提示 `still changing after 2s` | 应用在持续播放动画；PNG 是最后一帧。查看这张图，或传入更长的 `--settle`。 |
 | 在 Linux 上 `shot` 或 `/g?raw=1` 超时 | 有报告称，在软件渲染（llvmpipe、WSL）下截帧会超时。Linux 未验证；请在 macOS 上截图。绝不要根据 `/snap` 重画截图。 |
+| 卡片中的中日韩文字显示为方框或 `NO GLYPH` | 套件的 `font_src` 引用了没有中日韩字形的 `Inter.ttf`，或者引用了加载不了的应用包内字体。请改用不设 `font_src` 的纯 L0 角色套件（§7）。 |
 | 按钮上不显示文字 | `ButtonFlat` 的默认文字是为深色主题准备的白色；请设置 `draw_text +: {color: …}`（[SCRIPT-API § Gotchas](SCRIPT-API.md#gotchas)）。 |
 | 数字显示为 `NaN` | `"".to_f64()` 和非数字文本得到的是 NaN，而不是 nil；请用 `if v >= 0` 判断（[SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings)）。 |
 | 输入文字后出现 `widget has no uid` / `widget '<id>' not found in tree` | 运行时早于 Makepad `d0a9def5`：在这些版本中，`TextInput` 的 `on_change` 无法通过 `ui` 读取同一个输入框。运行 `python3 tools/setup-native.py --update`，然后重新构建 `card-host`。 |
@@ -358,7 +361,7 @@ Android 版 `card-host` 不编译远程控制桥。在手机上，请用 OctoSen
 | `check`：`[refused] contents: .DS_Store has extension "", which a bundle may not hold` | 删除这个文件：`find <bundle> -name .DS_Store -delete`。其他扩展名未知的文件也必须移出 `bundle/`。 |
 | `check`：`[refused] digest: the bundle hashes to …, the manifest claims …` | 上次写入摘要之后，字节发生了变化。未签名的应用包：再运行一次 `tools/octo check`。已签名的应用包：由人工重新写入摘要并签名。只在全新克隆上出现时：检出时转换了换行符（commit §3 中的 `.gitattributes`），或者 commit 中的摘要已过期（§8）。 |
 | `check`：`[refused] assets: … contains https://…`（`.txt` 或 `.md` 文件） | 应用包中的文本文件不能包含 URL；删掉这些 URL，或把文件放在 `bundle/` 之外。 |
-| `check`：`[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | 内置字体只能用 `Inter.ttf`；把字体文件放进应用包（§7）。 |
+| `check`：`[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | 套件的 `font_src` 只能引用内置的 `Inter.ttf`。中日韩文字请用不设 `font_src` 的纯 L0 角色套件；应用包内的字体文件能通过准入检查，但在卡片中加载不了（§7）。 |
 | `hub: the bundle exceeds the size limit`，没有报告 | 应用包超过了 8 MiB。压缩或删除图片和字体。 |
 | 对已签名的应用包运行 `check` 或 `hub scan`：`publisher key "…" is not registered with this hub` | 传入发布者公钥：`tools/octo check <bundle> --publisher-key <publisher-id>=<hex public key>`（`hub scan` 也可以用同一个参数）。 |
 | `card-host: refused: no signature verifier is installed` | `card-host` 不运行已签名的应用包；请用未签名的副本测试，最后再签名。 |

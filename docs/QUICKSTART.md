@@ -429,11 +429,23 @@ lists what exists and what is planned, with a verified call that handles
   check: `find ~/apps/my-app/bundle -name .DS_Store -delete`.
 - **Line endings.** A Git checkout that converts line endings changes the
   bytes and breaks the digest. Commit the `.gitattributes` from §3.
-- **Fonts.** A card kit's `font_src` may name only one built-in font,
-  `makepad_widgets:resources/Inter.ttf`; ship any other font as a file in the
-  bundle ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
-  A URL inside a bundled `.txt` or `.md` file, such as a font license, is
-  refused too.
+- **Fonts in a card.** Write CJK text with the plain L0 role kit (`Surface`,
+  `TextTitle`, `TextBody`, …) and no `font_src`: it draws Chinese with the
+  built-in LXGW WenKai, and the gate passes it. A kit's `font_src` may name
+  only one built-in font, `makepad_widgets:resources/Inter.ttf`, which has no
+  CJK glyphs. A bundled font file in `font_src` also passes the gate, but it
+  does not load in `card-host` today, so do not ship one for a card
+  ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
+- **Fonts in a script app.** Bundle the file, such as `bundle/fonts/X.ttf`,
+  and load it in `main.splash` as a member of a `TextStyle`'s `FontFamily`:
+  `FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`. Keep the font's
+  license outside `bundle/`: the gate refuses a URL inside a bundled `.txt` or
+  `.md` file.
+- **Missing glyphs.** Test the app with `MAKEPAD_SYSTEM_FONTS=0`
+  (`MAKEPAD_SYSTEM_FONTS=0 tools/octo run …`). Without it, a macOS system font
+  fills in the glyphs your fonts lack and hides the problem; on Linux without
+  a CJK system font, the same text shows boxes. **Unverified:** how fonts
+  behave in the OctoSense shells.
 - **Size.** The bundle must stay within 8 MiB (8,388,608 bytes).
 
 ## 8. Check it
@@ -544,6 +556,7 @@ tags and submits it, following App Hub's
 | Clicks, typing or edits seem to have no effect | A handler failed (grep the log, §4), or you started the app some other way than `tools/octo run` and are driving an older instance on that port (`curl -s 127.0.0.1:8141/s` shows its pid). |
 | `shot` says `still changing after 2s` | The app animates continuously; the PNG is the last frame. Look at it, or pass a longer `--settle`. |
 | `shot` or `/g?raw=1` times out on Linux | Frame capture is reported to time out under software rendering (llvmpipe, WSL). Linux is unverified; capture on macOS. Never redraw a screenshot from `/snap`. |
+| CJK text in a card shows boxes, or `NO GLYPH` | The kit's `font_src` names `Inter.ttf`, which has no CJK glyphs, or a bundled font, which does not load. Use the plain L0 role kit with no `font_src` (§7). |
 | A button shows no label | `ButtonFlat`'s default text is white for a dark theme; set `draw_text +: {color: …}` ([SCRIPT-API § Gotchas](SCRIPT-API.md#gotchas)). |
 | A number shows `NaN` | `"".to_f64()` and non-numeric text give NaN, not nil; guard with `if v >= 0` ([SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings)). |
 | `widget has no uid` / `widget '<id>' not found in tree` after typing | A runtime older than Makepad `d0a9def5`, where a `TextInput`'s `on_change` could not read that same input through `ui`: run `python3 tools/setup-native.py --update` and rebuild `card-host`. |
@@ -556,7 +569,7 @@ tags and submits it, following App Hub's
 | `check`: `[refused] contents: .DS_Store has extension "", which a bundle may not hold` | Delete the file: `find <bundle> -name .DS_Store -delete`. Any other file without a known extension must leave `bundle/` too. |
 | `check`: `[refused] digest: the bundle hashes to …, the manifest claims …` | The bytes changed after the last stamp. Unsigned: run `tools/octo check` again. Signed: a person stamps and signs again. On a fresh clone only: the checkout converted line endings (commit the `.gitattributes` from §3), or the commit holds a stale digest (§8). |
 | `check`: `[refused] assets: … contains https://…` in a `.txt` or `.md` file | Bundled text may not hold URLs; remove them, or keep the file outside `bundle/`. |
-| `check`: `[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | Only `Inter.ttf` is a built-in font; bundle the font file (§7). |
+| `check`: `[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | A kit's `font_src` may name only the built-in `Inter.ttf`. For CJK text, use the plain L0 role kit with no `font_src`; a bundled font file passes the gate but does not load in a card (§7). |
 | `hub: the bundle exceeds the size limit`, with no report | The bundle is over 8 MiB. Shrink or drop images and fonts. |
 | `check` or `hub scan` on a signed bundle: `publisher key "…" is not registered with this hub` | Pass the publisher's public key: `tools/octo check <bundle> --publisher-key <publisher-id>=<hex public key>` (the same flag works for `hub scan`). |
 | `card-host: refused: no signature verifier is installed` | `card-host` does not run signed bundles; test the unsigned copy and sign last. |
