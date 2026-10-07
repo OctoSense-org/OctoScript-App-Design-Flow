@@ -298,7 +298,7 @@ list.
   (open or history only).
 - **For an app with an `agent` block**, the store adds permission lines for
   the assistant, and they differ by build. The `desktop-v0.1.0-beta.2` store
-  shows "Run an assistant for this app (<tools>), inside this app's own data
+  shows "Run an assistant for this app (&lt;tools&gt;), inside this app's own data
   only", where `<tools>` lists the `agent.tools` entries that are not kernel
   tools, or says `no tools`; it leaves out the `tools.json` tools. The store
   in OctoSense `main` (not in any release yet) shows "Run an assistant for
