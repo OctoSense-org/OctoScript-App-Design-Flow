@@ -454,14 +454,18 @@ Desktop 0.1.0-beta.2 refuses it too.
 - **Fonts in a card.** To use a font of your own, put the `.ttf` or `.otf`
   file in the bundle and name it in `font_src` with a bundle-relative path,
   such as `"font_src": "assets/Body.ttf"`. `card-host` loads it from the
-  bundle's own asset server; it needs no network grant, and it counts toward
-  the 8 MiB limit. Text the font lacks, such as Chinese, falls back to the
-  renderer's built-in Chinese face, LXGW WenKai, which also draws Chinese in
-  the plain L0 role kit (`Surface`, `TextTitle`, `TextBody`, …) with no
-  `font_src`. The only built-in font a kit may name is
+  bundle's own asset server, with no network grant. A bundled face counts
+  toward the 8 MiB limit, so bundle a subset of a large CJK font. Text the
+  font lacks, such as Chinese, falls back to the renderer's built-in Chinese
+  face, LXGW WenKai. The only built-in font a kit may name is
   `makepad_widgets:resources/Inter.ttf`; the gate refuses any other, such as
   the CJK font
   ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
+  OctoSense desktop 0.1.0-beta.2 predates this font loading: it installs an
+  app with a bundled font, but its cards do not load the font. For Chinese
+  text there, build the card from the plain L0 role kit (`Surface`,
+  `TextTitle`, `TextBody`, …) and set no `font_src`; it draws Chinese with
+  Makepad's built-in CJK face, LXGW WenKai.
 - **Fonts in a script app.** Bundle the file, such as `bundle/fonts/X.ttf`,
   and load it in `main.splash` as a member of a `TextStyle`'s `FontFamily`:
   `FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`. Keep the font's
@@ -583,7 +587,7 @@ tags and submits it, following App Hub's
 | `shot` says `still changing after 2s` | The app animates continuously; the PNG is the last frame. Look at it, or pass a longer `--settle`. |
 | `shot` or `/g?raw=1` times out on Linux | Frame capture is reported to time out under software rendering (llvmpipe, WSL). Capture on macOS, the verified path. On Linux (**unverified** here), start the app with `MAKEPAD_WRITE_FRAMEBUFFER_PNG=<file>` set (`MAKEPAD_WRITE_FRAMEBUFFER_PNG=<file> tools/octo run …`); Makepad's Linux OpenGL backend then writes every frame it draws to the window into `<file>`, replacing the previous one. Never redraw a screenshot from `/snap`. |
 | Under WSL, Chinese typed through an input method never reaches `card-host` | Reported, **unverified**. Test text input on macOS. |
-| CJK text in a card shows boxes, or `NO GLYPH` | The runtime predates OctoScript-Makepad `704a3ad7`, which gives card text a Chinese fallback. Run `python3 tools/setup-native.py --update`, then rebuild `card-host` (§2). |
+| CJK text in a card shows boxes, or `NO GLYPH` | In `card-host`, the runtime predates OctoScript-Makepad `704a3ad7`, which gives card text a Chinese fallback: run `python3 tools/setup-native.py --update`, then rebuild `card-host` (§2). OctoSense desktop 0.1.0-beta.2 predates that runtime: build the card from the plain L0 role kit with no `font_src` (§7). |
 | A button shows no label | `ButtonFlat`'s default text is white for a dark theme; set `draw_text +: {color: …}` ([SCRIPT-API § Gotchas](SCRIPT-API.md#gotchas)). |
 | A number shows `NaN` | `"".to_f64()` and non-numeric text give NaN, not nil; guard with `if v >= 0` ([SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings)). |
 | `widget has no uid` / `widget '<id>' not found in tree` after typing | A runtime older than Makepad `d0a9def5`, where a `TextInput`'s `on_change` could not read that same input through `ui`: run `python3 tools/setup-native.py --update` and rebuild `card-host`. |
@@ -597,7 +601,7 @@ tags and submits it, following App Hub's
 | `check`: `[refused] contents: .DS_Store has extension "", which a bundle may not hold` | Delete the file: `find <bundle> -name .DS_Store -delete`. Any other file without a known extension must leave `bundle/` too. |
 | `check`: `[refused] digest: the bundle hashes to …, the manifest claims …` | The bytes changed after the last stamp. Unsigned: run `tools/octo check` again. Signed: a person stamps and signs again. On a fresh clone only: the checkout converted line endings (commit the `.gitattributes` that `new` wrote, §3), or the commit holds a stale digest (§8). |
 | `check`: `[refused] assets: … contains https://…` in a `.txt` or `.md` file | Bundled text may not hold URLs; remove them, or keep the file outside `bundle/`. |
-| `check`: `[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | A kit's `font_src` may name only one built-in font, `Inter.ttf`. For another face, bundle the font file and name it with a bundle-relative path, such as `assets/Body.ttf`; Chinese text falls back to the built-in Chinese face (§7). |
+| `check`: `[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | A kit's `font_src` may name only one built-in font, `Inter.ttf`. For another face, bundle the font file and name it with a bundle-relative path, such as `assets/Body.ttf`; Chinese text falls back to the built-in Chinese face. Desktop 0.1.0-beta.2 does not load a bundled font: there, use the plain L0 role kit with no `font_src` (§7). |
 | `hub: the bundle exceeds the size limit`, with no report | The bundle is over 8 MiB. Shrink or drop images and fonts. |
 | `check` or `hub scan` on a signed bundle: `publisher key "…" is not registered with this hub` | Pass the publisher's public key: `tools/octo check <bundle> --publisher-key <publisher-id>=<hex public key>` (the same flag works for `hub scan`). |
 | `card-host: refused: no signature verifier is installed` | `card-host` does not run signed bundles; test the unsigned copy and sign last. |

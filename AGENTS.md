@@ -168,15 +168,20 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
 - **Name a card's own font with a bundle-relative path.** Put the `.ttf` or
   `.otf` file in the bundle and set `font_src` to its path, such as
   `"font_src": "assets/Body.ttf"`; `card-host` loads it from the bundle's
-  asset server. Text the font lacks, such as Chinese, falls back to the
-  renderer's built-in Chinese face, LXGW WenKai, which also draws Chinese in
-  the plain L0 role kit with no `font_src`. The only built-in font a kit may
-  name is `makepad_widgets:resources/Inter.ttf`; the gate refuses any other
+  asset server. A bundled face counts toward the 8 MiB limit, so bundle a
+  subset of a large CJK font. Text the font lacks, such as Chinese, falls
+  back to the renderer's built-in Chinese face, LXGW WenKai. The only
+  built-in font a kit may name is `makepad_widgets:resources/Inter.ttf`; the
+  gate refuses any other
   ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
+  OctoSense desktop 0.1.0-beta.2 predates this font loading: it installs an
+  app with a bundled font, but its cards do not load the font. For Chinese
+  text there, build the card from the plain L0 role kit and set no
+  `font_src`; Makepad's built-in CJK face, LXGW WenKai, draws it.
   A script app may bundle a font and load it with
   `FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`. Check text with
   `MAKEPAD_SYSTEM_FONTS=0`, so a system font cannot hide a missing glyph.
-  Font behavior in the OctoSense shells is unverified.
+  Font behavior in the OctoSense shells is otherwise unverified.
 - **Keep the bytes exact.** The digest covers every byte of every file, so a
   line-ending conversion breaks it. Commit the `.gitattributes` that
   `tools/octo new` writes (`bundle/** -text`), so that a Windows checkout
