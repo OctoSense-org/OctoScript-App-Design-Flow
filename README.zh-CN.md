@@ -21,6 +21,15 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 自 2026-09-27 起位于 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
 （OctoSense-System-Apps 已归档，不再公开）。
 
+## 连接 GitHub、Gmail 和 Google Calendar
+
+[三个开发示例](examples/connected-apps/README.zh-CN.md) 复用共享提供商登录，不创建
+OctoSense 账户：Rinx GitHub Notes 编辑器、Inbox Assistant 和 Google Calendar。
+指南列出准确应用 ID、匹配的主机／工具版本及原生测试证据。真实提供商服务需要
+新增连接服务的 OctoSense 构建；独立 `card-host` 不能完成真实登录，也没有原生
+Markdown 编辑器。真实提供商、模型和手机验收仍待完成；Android Google 登录
+还需要原生授权适配器。
+
 ## 代码导读
 
 [代码导读（英文）](docs/CODE-WALKTHROUGH.md) 沿着 Python CLI，从脚本模板走到运行中的

@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "subtitle": "Read, edit and review one saved reply",
+  "description": "A connected-app sample for Gmail. Read messages, edit one saved reply with your app agent, and request native exact-message review. Includes fictional offline fixtures and a quiet incoming-email peer workflow. Local tests cover UI and connector safety; live OAuth, model processing and phone sending remain unverified.",
+  "category": "productivity",
+  "keywords": [
+    "email",
+    "gmail",
+    "reply",
+    "sample"
+  ],
+  "screenshots": [
+    "screenshots/01-main.png",
+    "screenshots/02-chat.png"
+  ],
+  "icon": "assets/icon.svg",
+  "platforms": [
+    "macos"
+  ],
+  "publisher": {
+    "name": "Replace with your publisher name",
+    "support": "https://example.com/support",
+    "privacy_policy_url": "https://example.com/privacy"
+  },
+  "release_notes": "Development sample. Local editing and connector safety tests; no live-service release claim.",
+  "age_rating": "all",
+  "license": "Apache-2.0"
+}

@@ -1,0 +1,31 @@
+{
+  "reviewer": "Codex",
+  "date": "2026-10-06",
+  "scope": "Original native macOS PNGs at 430x850 logical points / 860x1700 pixels, signed installed app, synthetic provider only",
+  "result": "pass within recorded scope",
+  "checks": [
+    "Each published original PNG opened individually; readable Unicode source and rendered preview",
+    "Repository scrolling exposes empty-state message and new-path controls; header remains accessible",
+    "Review shows exact owner/repository, branch, path, commit message and Wednesday14:30 Markdown",
+    "Cancel returns exact retained edit; successful synthetic writes show returned commit SHA",
+    "Conflict and lost-response screens show error and Back to editing, with consumed approval absent",
+    "Offline installed restart displays exact unsent note and its original destination"
+  ],
+  "not_verified": [
+    "Live GitHub OAuth or remote commit",
+    "Physical human approval",
+    "Android/iOS/Windows/Linux native UI",
+    "Production App Hub catalog publication, peer tool dispatch or Glance"
+  ],
+  "captures": {
+    "01-installed-preview.png": "850062cda768ce0a5a1deec579d9b2bcbf4ce5e2b0e4323c550b19b99fec8982",
+    "02-empty-repository.png": "d587d25f684bfa842efbd6587317cdfae3963bd90046e77dd8860ac57adc394d",
+    "02-exact-host-review.png": "073dfac40124d4b6449b7480704171b90ed0088e2825fcc49c7a761bda4fff8b",
+    "03-cancel-retains-edit.png": "a3cbf34189ae2e366145cf860b2c4338c0c0a6d230710edd54d6e25359357996",
+    "04-synthetic-commit-confirmed.png": "da0ea1f3c94b74dfd6a8cd038a0426d77c1ae06a1f721a6247856ac163e9552a",
+    "05-provider-conflict.png": "b1c7151c6f445509dc54d025b209247977df7d0e3438e1d766dc927e9dbd8bb8",
+    "06-new-file-commit.png": "db422e2faecba520db764a7d7c166f00744a004309603574834dc6e9e49b9aae",
+    "07-uncertain-save-response.png": "fffdabb2d29c5cce4b4c41db4521cb7e8b2353ada5155a574cf67f337fb4302a",
+    "08-offline-restart-retains-note.png": "bde29e89373d4721a1559f7c11a746e8bf07b63d50fc75af2bf200ee26b2e9bf"
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "date": "2026-10-06",
+  "scope": "Synthetic Calendar provider; actual signed install, native macOS UI, host services and shared Glance",
+  "live_google": false,
+  "physical_approval": false,
+  "installed": {
+    "result": "pass",
+    "source_sha256": "7292894f1576d2283726eeafdb79742bd6fe6fb9a651cb1646462bbde4185ff0",
+    "binary_sha256": "ef8b5e4c7fcb01b52b6c71fbec2980b87d0b69e7b1a106e8658159fb06e6ff9d",
+    "cases": [
+      "signed install and verified reopen",
+      "provider-backed populated agenda (synthetic)",
+      "exact immutable host review and cancel",
+      "create and reopen",
+      "edit with ETag",
+      "conflict without retry and draft retained",
+      "offline cached agenda after restart",
+      "draft retained after restart"
+    ],
+    "not_verified": [
+      "Live Google OAuth/read/write",
+      "Full shell Glance routing",
+      "Actual agent conversations",
+      "Android, Linux, Windows"
+    ],
+    "hub_commit": "5c7a13f92fa25d36ba1fe7fb99dc9fb1b235f8d3",
+    "captures": [
+      "02-host-create-review.png",
+      "07-visible-conflict-error.png",
+      "08-offline-restart-cached-agenda.png"
+    ]
+  },
+  "shell": {
+    "result": "pass",
+    "source_sha256": "7292894f1576d2283726eeafdb79742bd6fe6fb9a651cb1646462bbde4185ff0",
+    "binary_sha256": "b28a4fe6f0494e5bbf3d53b8822f05feaa49b33f6edae48bb4b6fde9a399de7e",
+    "cases": [
+      "signed installed app publishes real shared Glance card",
+      "warm Open Calendar selects exact event from another event",
+      "app Chat opens with same event and input",
+      "card restores without agent consent or app open",
+      "cold Open Calendar launches exact installed event",
+      "restart preserves original publication and expiry"
+    ],
+    "not_verified": [
+      "Google OAuth/live provider",
+      "Real model conversations",
+      "Phone keyboard/lifecycle",
+      "Linux and Windows"
+    ],
+    "captures": [
+      "04-restored-glance-without-open-app.png",
+      "05-cold-exact-event-route.png"
+    ]
+  },
+  "captures": {
+    "07-real-advisory-model-answer.png": "7d9069db5cc3016497f29807454349c20e4627e2d69b288d751bda0bcf8c61be",
+    "07-visible-conflict-error.png": "3b9bd4dcd494513947fe6e4182b3b1a2e8b2b0a2248ed0a380fbfffc42a7159b",
+    "02-host-create-review.png": "55e6473c6692f11ee2818887a1ed50e8f5005ae80145bb6f3943d40dd255d495",
+    "05-cold-exact-event-route.png": "7efad1063e02c4f656af26a69002527464c3f857790dbfa547ab4d5016bebde4",
+    "06-agent-consent.png": "dafb3acb3db04767d5006ce9dc917e60c87726cff6da9bdaadd147c259d0c1dc",
+    "04-restored-glance-without-open-app.png": "d10b0418d2bc0b031412ed6d901be831423e000fcbcad2a3c9c1f17a007e60b4",
+    "08-offline-restart-cached-agenda.png": "3c387cc5c447ce84a90c3330952c521684d09e65b193c18f493a71a0144f2678"
+  },
+  "bundle_integrity": {
+    "bundle_blake3": "6b8a9397960a684545b283e4f65f8c082405cfe7df945a5c0c8435169a691671"
+  },
+  "real_model": {
+    "result": "pass",
+    "source_sha256": "7292894f1576d2283726eeafdb79742bd6fe6fb9a651cb1646462bbde4185ff0",
+    "binary_sha256": "e2ac14b40d26abf1db451019b0a6ff0106f145fcfe9b0ad50b0fe9666049ebbb",
+    "model": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "kernel_sha256": "6c5341a8a4bf17dcd4355f3540947d4bf5d600b7609b397bc1c58e363ab70495"
+    },
+    "cases": [
+      "signed installed app publishes real shared Glance card",
+      "warm Open Calendar selects exact event from another event",
+      "app Chat opens with same event and input",
+      "card restores without agent consent or app open",
+      "cold Open Calendar launches exact installed event",
+      "restart preserves original publication and expiry",
+      "real configured model answers about selected synthetic event"
+    ],
+    "not_verified": [
+      "Google OAuth/live provider",
+      "Phone keyboard/lifecycle",
+      "Linux and Windows",
+      "Glance-card/app shared conversation continuity"
+    ],
+    "advisory_writes": 0,
+    "answer": "Verified via `googlecalendar.event` (read-only; nothing changed):\n\n- **Title:** Synthetic planning session\n- **Local start:** 2026-10-08 09:00 \u201307:00 (9:00 AM), ends 09:30\n- **Timezone:** America/Los_Angeles\n- **Location:** Fixture room\n\nThe tool returned the same values as the event JSON you provided (status: confirmed, ETag `\"synthetic-1\"`). To make any change, use Edit in the app and confirm through the host review sheet.",
+    "tool_audit": [
+      {
+        "tool": "googlecalendar.event",
+        "app": "org.octosense.samples.googlecalendar",
+        "risk": "read",
+        "decision": "allowed",
+        "outcome": "ok",
+        "duration_ms": 13
+      }
+    ],
+    "captures": [
+      "06-agent-consent.png",
+      "07-real-advisory-model-answer.png"
+    ]
+  }
+}

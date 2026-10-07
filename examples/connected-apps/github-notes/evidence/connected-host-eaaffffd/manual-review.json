@@ -1,0 +1,21 @@
+{
+  "result": "pass for the recorded consent/cancel/account-selection scenario only",
+  "reviewer": "Codex",
+  "method": "Individual original native PNG inspection and decoded-RGB retained-ink assertions",
+  "observed": [
+    "Host consent shows requested public-repository scopes",
+    "Host sheet itself shows missing-registration error",
+    "Cancel after failure and cancel before Continue return to the intact note",
+    "Host active account B visibly selected",
+    "Returning to note retains exact Unicode content and local destination"
+  ],
+  "hub_revision": "eaaffffd695caf7ebf6205c455377c1f8567b906",
+  "limits": [
+    "No live OAuth registration or account",
+    "Account fixtures contain metadata only, with no scopes or credentials",
+    "No remote repository read, commit or physical approval",
+    "Cross-family replacement protection has a separate actual Splash/pump Hub regression; this native journey verifies normal consent teardown/reopen behavior",
+    "Not a full UX score or cross-platform acceptance"
+  ],
+  "receipt": "receipt.json"
+}

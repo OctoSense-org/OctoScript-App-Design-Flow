@@ -1,0 +1,24 @@
+{
+  "reviewer": "Codex",
+  "method": "Each original native PNG opened and visually inspected; synthetic data only",
+  "result": "pass for the scoped installed journey",
+  "findings": [
+    "Rinx icon header and bottom formatting remain visible without extra Notes text-button rows.",
+    "Unicode source and preview are readable. Repository status is visible after the layout repair.",
+    "Host review contains the exact destination and changed Markdown; cancel/conflict/uncertain response retain a visible return to editing.",
+    "Long service messages are wrapped below the editor toolbar. Remote GitHub delivery and physical approval are not validated."
+  ],
+  "captures": {
+    "01-installed-preview.png": "1fa65e33adec702180f545d047d9223bf1a513a18cdfd35e8174f50ac3658de9",
+    "03-cancel-retains-edit.png": "98a511dbb7f13c216904b001bceb6937d5b772c8a22af5c9dc96000e233fc091",
+    "08-offline-restart-retains-note.png": "a5c547aca972b9723ea83ca2c302a0fe8fa3838ba13e3ff939b442f096ba9905",
+    "04-synthetic-commit-confirmed.png": "e12b1159faade16b02c8f4c9551dab79215a1ac006d2a121931c937538330070",
+    "05-provider-conflict.png": "b1c7151c6f445509dc54d025b209247977df7d0e3438e1d766dc927e9dbd8bb8",
+    "02-empty-repository.png": "f9db681162c75228da7702598525be6f7a2445b1df3e23614d8526d1a7af675d",
+    "02-exact-host-review.png": "073dfac40124d4b6449b7480704171b90ed0088e2825fcc49c7a761bda4fff8b",
+    "02-before-save.png": "f95def5775a34e7bb14b12b6739b267b35009bd7f297cd3328428fe5f11ff5bc",
+    "06-new-file-commit.png": "b009971a50b6048af7662b2fb5bc0489cbe30e4f16ffac1ba95eec2d1287272f",
+    "07-uncertain-save-response.png": "fffdabb2d29c5cce4b4c41db4521cb7e8b2353ada5155a574cf67f337fb4302a"
+  },
+  "final_rerun": "All ten final-run PNGs are byte-identical to the individually inspected originals; final receipt includes rejected-load guard and refreshed listing."
+}

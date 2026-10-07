@@ -1,0 +1,395 @@
+[
+  {
+    "i": "main_window",
+    "ty": "Window",
+    "r": [
+      0,
+      0,
+      412,
+      892
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "caption_bar",
+    "ty": "View",
+    "r": [
+      0,
+      0,
+      412,
+      32
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "caption_label",
+    "ty": "View",
+    "r": [
+      0,
+      0,
+      412,
+      32
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "caption_icon",
+    "ty": "AppIcon",
+    "r": [
+      133,
+      8,
+      16,
+      16
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "label",
+    "ty": "Label",
+    "r": [
+      158,
+      5,
+      119,
+      22
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Card host [remote]"
+  },
+  {
+    "i": "body",
+    "ty": "KeyboardView",
+    "r": [
+      0,
+      32,
+      412,
+      860
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "15",
+    "ty": "View",
+    "r": [
+      0,
+      32,
+      412,
+      860
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "-",
+    "ty": "View",
+    "r": [
+      16,
+      48,
+      380,
+      46
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "-",
+    "ty": "Label",
+    "r": [
+      19,
+      51,
+      377,
+      40
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Inbox Assistant"
+  },
+  {
+    "i": "status",
+    "ty": "Label",
+    "r": [
+      19,
+      107,
+      374,
+      25
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Your saved draft is unchanged"
+  },
+  {
+    "i": "workspace",
+    "ty": "View",
+    "r": [
+      16,
+      145,
+      380,
+      731
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "-",
+    "ty": "View",
+    "r": [
+      16,
+      145,
+      380,
+      50
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "-",
+    "ty": "Button",
+    "r": [
+      16,
+      148,
+      66,
+      44
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Back"
+  },
+  {
+    "i": "message_tab",
+    "ty": "Button",
+    "r": [
+      86,
+      148,
+      71,
+      44
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Email"
+  },
+  {
+    "i": "reply_tab",
+    "ty": "Button",
+    "r": [
+      161,
+      148,
+      71,
+      44
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Reply"
+  },
+  {
+    "i": "chat_tab",
+    "ty": "Button",
+    "r": [
+      237,
+      148,
+      75,
+      44
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "\u2022 Chat"
+  },
+  {
+    "i": "subject",
+    "ty": "Label",
+    "r": [
+      19,
+      208,
+      374,
+      69
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Choose your refrigerator delivery window"
+  },
+  {
+    "i": "sender",
+    "ty": "Label",
+    "r": [
+      19,
+      293,
+      374,
+      25
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Harbor Delivery"
+  },
+  {
+    "i": "chat_view",
+    "ty": "View",
+    "r": [
+      16,
+      332,
+      380,
+      544
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "chat_log",
+    "ty": "View",
+    "r": [
+      16,
+      332,
+      380,
+      448
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "-",
+    "ty": "View",
+    "r": [
+      16,
+      332,
+      380,
+      100
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "-",
+    "ty": "Label",
+    "r": [
+      19,
+      335,
+      374,
+      25
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "You"
+  },
+  {
+    "i": "1",
+    "ty": "Label",
+    "r": [
+      19,
+      370,
+      374,
+      59
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Change the delivery time to Friday at 11 AM Pacific."
+  },
+  {
+    "i": "1",
+    "ty": "View",
+    "r": [
+      16,
+      446,
+      380,
+      100
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "-",
+    "ty": "Label",
+    "r": [
+      19,
+      449,
+      374,
+      25
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Assistant unavailable"
+  },
+  {
+    "i": "1",
+    "ty": "Label",
+    "r": [
+      19,
+      484,
+      374,
+      59
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "no service answers \"octos\" on this device"
+  },
+  {
+    "i": "-",
+    "ty": "View",
+    "r": [
+      16,
+      790,
+      380,
+      86
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "question",
+    "ty": "TextInput",
+    "r": [
+      16,
+      793,
+      317,
+      80
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Ask or change the reply\u2026",
+    "val": ""
+  },
+  {
+    "i": "-",
+    "ty": "Button",
+    "r": [
+      341,
+      829,
+      55,
+      44
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Ask"
+  }
+]

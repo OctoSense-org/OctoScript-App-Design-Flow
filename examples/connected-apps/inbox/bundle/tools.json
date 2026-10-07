@@ -1,0 +1,394 @@
+{
+  "schema": 1,
+  "tools": [
+    {
+      "name": "inbox.messages",
+      "description": "List message IDs for this account and selected Gmail label. Use page_token when present.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "page_token": {
+            "type": "string",
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "connection"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object"
+      },
+      "risk": "read",
+      "background": true,
+      "private_data": true,
+      "shareable": false,
+      "implemented_by": "host-service",
+      "host_method": "gmail.messages"
+    },
+    {
+      "name": "inbox.message",
+      "description": "Read the bound email as plain text, with an explicit notice for omitted attachments.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "message_id": {
+            "type": "string",
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "connection",
+          "message_id"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object"
+      },
+      "risk": "read",
+      "background": true,
+      "private_data": true,
+      "shareable": false,
+      "implemented_by": "host-service",
+      "host_method": "gmail.message"
+    },
+    {
+      "name": "inbox.draft_open",
+      "description": "Open or restore the one authoritative local reply draft for this email. Does not send.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "message_id": {
+            "type": "string",
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "connection",
+          "message_id"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object"
+      },
+      "risk": "act",
+      "background": true,
+      "private_data": true,
+      "shareable": false,
+      "implemented_by": "host-service",
+      "host_method": "gmail.draft.open"
+    },
+    {
+      "name": "inbox.draft_get",
+      "description": "Read the exact saved draft body, revision and submission state.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "draft": {
+            "type": "string",
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "connection",
+          "draft"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object"
+      },
+      "risk": "read",
+      "background": true,
+      "private_data": true,
+      "shareable": false,
+      "implemented_by": "host-service",
+      "host_method": "gmail.draft.get"
+    },
+    {
+      "name": "inbox.draft_edit",
+      "description": "Save an explicitly requested draft change only against its current revision. Never authorizes sending.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "draft": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "to": {
+            "type": "string",
+            "maxLength": 320
+          },
+          "subject": {
+            "type": "string",
+            "maxLength": 512
+          },
+          "body": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "provenance": {
+            "type": "string",
+            "enum": [
+              "model"
+            ]
+          }
+        },
+        "required": [
+          "connection",
+          "draft",
+          "revision",
+          "to",
+          "subject",
+          "body",
+          "provenance"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object"
+      },
+      "risk": "act",
+      "background": true,
+      "private_data": true,
+      "shareable": false,
+      "implemented_by": "host-service",
+      "host_method": "gmail.draft.edit"
+    },
+    {
+      "name": "inbox.event_status",
+      "description": "Read the durable decision, if any, for this incoming Gmail event.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "event_id": {
+            "type": "string",
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "connection",
+          "event_id"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object"
+      },
+      "risk": "read",
+      "background": true,
+      "private_data": true,
+      "shareable": false,
+      "implemented_by": "host-service",
+      "host_method": "gmail.event.status"
+    },
+    {
+      "name": "inbox.event_decide",
+      "description": "Record a quiet relevance decision, or acknowledge a successfully published card. Host verifies publication; prose cannot replace a receipt.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "event_id": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "quiet",
+              "published"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "connection",
+          "event_id",
+          "decision",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object"
+      },
+      "risk": "act",
+      "background": true,
+      "private_data": true,
+      "shareable": false,
+      "implemented_by": "host-service",
+      "host_method": "gmail.event.decide"
+    },
+    {
+      "name": "inbox.notify",
+      "description": "Publish one important-email workspace under this app/account. Prefer admitted template glance-workspace.splash with initial.message; the host binds its connection. Use message ID as card_id; notify only if relevant.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "card_id": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "source": {
+            "type": "string",
+            "maxLength": 16384
+          },
+          "script": {
+            "type": "string",
+            "maxLength": 16384
+          },
+          "data": {
+            "type": "object"
+          },
+          "notify": {
+            "type": "boolean"
+          },
+          "priority": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "expires": {
+            "type": "integer",
+            "minimum": 60,
+            "maximum": 604800
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "template": {
+            "type": "string",
+            "enum": [
+              "glance-workspace.splash"
+            ]
+          },
+          "initial": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "maxLength": 128
+                  },
+                  "from": {
+                    "type": "string",
+                    "maxLength": 320
+                  },
+                  "subject": {
+                    "type": "string",
+                    "maxLength": 512
+                  },
+                  "body": {
+                    "type": "string",
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "id",
+                  "from",
+                  "subject",
+                  "body"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "message"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "card_id",
+          "title"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object"
+      },
+      "risk": "act",
+      "background": true,
+      "private_data": true,
+      "shareable": false,
+      "implemented_by": "host-service",
+      "host_method": "glance.publish"
+    },
+    {
+      "name": "inbox.withdraw",
+      "description": "Retire a processed message card after actual completion; does not delete its draft or mail.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "card_id": {
+            "type": "string",
+            "maxLength": 64
+          }
+        },
+        "required": [
+          "card_id"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object"
+      },
+      "risk": "act",
+      "background": true,
+      "private_data": true,
+      "shareable": false,
+      "implemented_by": "host-service",
+      "host_method": "glance.withdraw"
+    }
+  ]
+}

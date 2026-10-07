@@ -1,0 +1,346 @@
+// Host-owned OAuth handles only; no provider token enters this app.
+let draft = {connection: "", owner: "", repo: "", branch: "main", path: "notes/new-note.md", sha: nil, content: "", dirty: false, message: "Update note"}
+let connection = ""
+let auth_epoch = 0
+let accounts = []
+let repos = []
+let files = []
+let repo_page = 1
+let browse_owner = ""
+let browse_repo = ""
+let browse_branch = "main"
+let browse_path = ""
+let busy = false
+let pending = nil
+let save_timer = nil
+let local_revision = 0
+let local_file = "draft-b.json"
+let editor_ready = false
+fn notice(text){ ui.editor.set_status(text) ui.status.set_text(text) }
+fn persist(){
+    // Verify the alternate snapshot before advancing it. The previous good
+    // draft remains intact if the process stops or storage becomes full.
+    let saved = try {
+        let path = "draft-a.json"
+        if local_file == path { path = "draft-b.json" }
+        let data = {revision: local_revision + 1, draft: draft}.to_json()
+        fs.write(path, data)
+        if fs.read(path) != data { return false }
+        local_file = path
+        local_revision = local_revision + 1
+        true
+    } catch { false }
+    if !saved { notice("Could not save locally · keep this app open and free storage") }
+    saved
+}
+fn edited(text){
+    if !editor_ready { notice("Saved draft could not load · choose a valid file or recovery draft first") return }
+    draft.content = text
+    draft.dirty = true
+    if save_timer != nil { stop_timer(save_timer) }
+    save_timer = start_timeout(0.35, || {if persist() {notice("Saved locally")}})
+}
+fn show_editor(){
+    if !editor_ready { notice("Saved draft could not load · choose a valid file or recovery draft first") return }
+    ui.repository.set_visible(false)
+    ui.workspace.set_visible(true)
+    ui.status.set_visible(false)
+    ui.replace_prompt.set_visible(false)
+    ui.editor.set_destination(draft.path)
+    if draft.repo == "" { ui.editor.set_destination("Untitled note") }
+}
+fn show_repository(){
+    persist()
+    ui.workspace.set_visible(false)
+    ui.repository.set_visible(true)
+    ui.status.set_visible(true)
+    ui.path_entry.set_text(draft.path)
+    ui.commit_entry.set_text(draft.message)
+    ui.branch_entry.set_text(browse_branch)
+    ui.account_list.render()
+    ui.repo_list.render()
+    ui.file_list.render()
+    load_accounts()
+}
+fn set_active(handle){
+    if connection == handle { return }
+    connection = handle
+    repos = [] files = []
+    browse_owner = "" browse_repo = "" browse_branch = "main" browse_path = ""
+    ui.branch_entry.set_text(browse_branch)
+    ui.repo_list.render() ui.file_list.render()
+}
+fn load_accounts(){
+    let epoch = auth_epoch
+    host.request("auth.accounts", {}, fn(r){
+        if epoch != auth_epoch { return }
+        if !r.is_ok { notice(r.error) return }
+        accounts = []
+        for i in r.data.len() { if r.data[i].provider == "github" { accounts.push(r.data[i]) } }
+        ui.account_list.render()
+        host.request("auth.active", {}, fn(active){
+            if epoch != auth_epoch { return }
+            if !active.is_ok { notice(active.error) return }
+            let handle = ""
+            if active.data != nil && active.data.provider == "github" { handle = active.data.handle }
+            set_active(handle)
+            ui.account_list.render()
+        })
+    })
+}
+fn boot(){
+    for path in ["draft-a.json", "draft-b.json"] {
+        let saved = try { if fs.exists(path) {fs.read(path).parse_json()} else {nil} } catch {nil}
+        if saved != nil && saved.revision > local_revision && saved.draft != nil && saved.draft.content != nil {
+            draft = saved.draft
+            local_revision = saved.revision
+            local_file = path
+        }
+    }
+    let error = ui.editor.load(draft.content)
+    if error != "" { notice(error + " · original draft remains on disk") }
+    else { editor_ready = true notice("Saved locally") }
+    browse_owner = draft.owner
+    browse_repo = draft.repo
+    browse_branch = draft.branch
+    if editor_ready { show_editor() } else { show_repository() notice(error + " · saved draft retained; choose a valid file or recovery draft") }
+    load_accounts()
+}
+fn connect(private_repos){
+    if busy { return }
+    busy = true
+    auth_epoch = auth_epoch + 1
+    notice("Continue in the OctoSense GitHub sign-in sheet")
+    let scopes = ["read:user", "public_repo"]
+    if private_repos { scopes = ["read:user", "repo"] }
+    host.request("auth.connect", {provider: "github", scopes: scopes}, fn(r){
+        busy = false
+        if !r.is_ok { notice(r.error) return }
+        choose_account(r.data.handle)
+    })
+}
+fn choose_account(handle){
+    if busy { return }
+    busy = true
+    auth_epoch = auth_epoch + 1
+    host.request("auth.select", {connection: handle}, fn(r){
+        busy = false
+        if !r.is_ok { notice(r.error) return }
+        set_active(r.data.handle)
+        // Account choice changes browsing, never the identity of an open draft.
+        ui.account_list.render()
+        list_repos(1)
+    })
+}
+fn disconnect(){
+    if busy || connection == "" { return }
+    busy = true
+    auth_epoch = auth_epoch + 1
+    host.request("auth.disconnect", {connection: connection}, fn(r){
+        busy = false
+        if !r.is_ok { notice(r.error) return }
+        set_active("")
+        load_accounts()
+        notice("Disconnected · your local draft and its original destination are retained")
+    })
+}
+fn list_repos(page){
+    if busy { return }
+    if connection == "" { notice("Connect GitHub or select an account first") return }
+    busy = true
+    notice("Loading repositories…")
+    host.request("github.repositories", {connection: connection, page: page}, fn(r){
+        busy = false
+        if !r.is_ok { notice(r.error) return }
+        repos = r.data
+        repo_page = page
+        ui.repo_list.render()
+        notice("Choose a repository · page " + page)
+    })
+}
+fn choose_repo(i){
+    if busy { return }
+    browse_owner = repos[i].owner.login
+    browse_repo = repos[i].name
+    browse_branch = repos[i].default_branch
+    ui.branch_entry.set_text(browse_branch)
+    list_files("")
+}
+fn list_files(path){
+    if busy { return }
+    if browse_repo == "" { notice("Choose a repository first") return }
+    browse_branch = ui.branch_entry.text().trim()
+    if browse_branch == "" { notice("Enter a branch name") return }
+    busy = true
+    notice("Loading " + browse_owner + "/" + browse_repo + "…")
+    host.request("github.files", {connection: connection, owner: browse_owner, repo: browse_repo, branch: browse_branch, path: path}, fn(r){
+        busy = false
+        if !r.is_ok { notice(r.error) return }
+        files = r.data.files
+        browse_path = r.data.path
+        ui.file_list.render()
+        notice(browse_owner + "/" + browse_repo + " · " + browse_branch + " / " + browse_path)
+    })
+}
+fn choose_file(i){
+    if files[i].type == "dir" { list_files(files[i].path) return }
+    ui.path_entry.set_text(files[i].path)
+    read_file()
+}
+fn current_target(){
+    {connection: connection, owner: browse_owner, repo: browse_repo, branch: ui.branch_entry.text().trim(), path: ui.path_entry.text().trim(), message: ui.commit_entry.text().trim(), sha: nil, content: "", dirty: false}
+}
+fn target_valid(target){
+    if target.connection == "" || target.repo == "" || target.owner == "" { notice("Connect GitHub and choose a repository") return false }
+    if target.branch == "" || !regex("[.](md|markdown)$", "i").test(target.path) { notice("Choose a branch and a .md or .markdown path") return false }
+    return true
+}
+fn read_file(){
+    if busy { return }
+    let target = current_target()
+    if !target_valid(target) { return }
+    busy = true
+    notice("Loading remote Markdown · current draft retained")
+    host.request("github.read", target, fn(r){
+        busy = false
+        if !r.is_ok { notice(r.error + " · draft retained") return }
+        target.content = r.data.content
+        target.sha = r.data.sha
+        offer_replace(target)
+    })
+}
+fn new_file(){
+    if busy { return }
+    let target = current_target()
+    if !target_valid(target) { return }
+    // An existing path cannot be overwritten without its current SHA.
+    target.content = draft.content
+    target.dirty = true
+    offer_replace(target)
+}
+fn offer_replace(target){
+    pending = target
+    if draft.dirty && draft.content != target.content {
+        ui.replace_text.set_text("Open " + target.owner + "/" + target.repo + " / " + target.path + "? Your current draft will be kept as a recovery copy.")
+        ui.replace_prompt.set_visible(true)
+        return
+    }
+    apply_pending()
+}
+fn apply_pending(){
+    if pending == nil { return }
+    let recovery = draft.to_json()
+    let kept = try { fs.write("recovery.json", recovery) fs.read("recovery.json") == recovery } catch {false}
+    if !kept { notice("Could not keep your current draft · nothing replaced") return }
+    let error = ui.editor.load(pending.content)
+    if error != "" { notice(error + " · current draft unchanged") return }
+    editor_ready = true
+    draft = pending
+    pending = nil
+    persist()
+    show_editor()
+    notice("Opened " + draft.path + " · edits stay local until approved")
+}
+fn recover(){
+    if busy { return }
+    if !fs.exists("recovery.json") { notice("No recovery draft yet") return }
+    let previous = fs.read("recovery.json").parse_json()
+    if previous == nil { notice("Recovery draft could not be read") return }
+    offer_replace(previous)
+}
+fn save_remote(){
+    if busy { return }
+    if !editor_ready { notice("The saved draft could not load · recover it before saving") return }
+    // Saving settles the debounce first, so a late local-save message cannot
+    // erase a host validation error or the review status.
+    if save_timer != nil { stop_timer(save_timer) save_timer = nil }
+    draft.content = ui.editor.text()
+    if !persist() { return }
+    if draft.connection == "" || draft.repo == "" { show_repository() notice("Connect GitHub, select a repository and choose a file or new path") return }
+    if connection != draft.connection { show_repository() notice("Select the draft’s original GitHub account, or choose a new destination. Your note was not rebound to another account.") return }
+    if draft.message.trim() == "" { show_repository() notice("Add a commit message before review") return }
+    let frozen = draft.to_json().parse_json()
+    busy = true
+    notice("Review the exact Markdown in the host sheet")
+    host.request("github.review_save", {connection: frozen.connection, file: {owner: frozen.owner, repo: frozen.repo, branch: frozen.branch, path: frozen.path, sha: frozen.sha, content: frozen.content, message: frozen.message}}, fn(r){
+        busy = false
+        if !r.is_ok { notice(r.error + " · local draft retained") return }
+        // Editing may continue while review is open. Preserve newer local text.
+        if draft.connection == frozen.connection && draft.owner == frozen.owner && draft.repo == frozen.repo && draft.path == frozen.path && draft.branch == frozen.branch {
+            draft.sha = r.data.content_sha
+            draft.dirty = draft.content != frozen.content
+            persist()
+        }
+        notice("GitHub committed " + r.data.commit_sha)
+    })
+}
+start_timeout(0.05, || boot())
+let ink = #x172b40
+let muted = #x576d80
+SolidView {width: Fill height: Fill flow: Down draw_bg.color: #xffffff
+    workspace := View {width: Fill height: Fill flow: Down
+        editor := MarkdownEditor {width: Fill height: Fill
+            on_change: |text| edited(text)
+            on_repository: || show_repository()
+            on_save: || save_remote()
+        }
+    }
+    repository := View {width: Fill height: Fill flow: Down padding: 16 spacing: 8 visible: false
+        View {width: Fill height: 44 spacing: 8 align: Align{y: 0.5}
+            Label {width: Fill text: "Repository & file" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 20}}
+            ButtonFlat {height: 44 text: "Back to note" on_click: || {draft.message = ui.commit_entry.text() persist() show_editor()}}
+        }
+        ScrollYView {width: Fill height: Fill flow: Down spacing: 8
+            Label {width: Fill text: "GitHub access stays with OctoSense. Your note stays editable while disconnected." draw_text.color: muted draw_text.wrap: Words}
+            account_list := View {width: Fill height: Fit flow: Down spacing: 6 on_render: || {
+                if accounts.len() == 0 { Label {width: Fill text: "No GitHub connection" draw_text.color: muted} }
+                for i in accounts.len() { ButtonFlat {width: Fill height: 44 text: (if accounts[i].handle == connection {"Selected · " + accounts[i].label} else {accounts[i].label}) on_click: || choose_account(accounts[i].handle)} }
+            }}
+            View {width: Fill height: Fit flow: Down spacing: 4
+                ButtonFlat {width: Fill height: 44 text: "Connect public repositories" on_click: || connect(false)}
+                ButtonFlat {width: Fill height: 44 text: "Connect private repositories (broader access)" on_click: || connect(true)}
+                ButtonFlat {width: Fill height: 44 text: "Disconnect selected account" on_click: || disconnect()}
+            }
+            Hr {}
+            ButtonFlat {width: Fill height: 44 text: "Refresh repositories" on_click: || list_repos(1)}
+            repo_list := View {width: Fill height: Fit flow: Down spacing: 4 on_render: || {
+                for i in repos.len() { ButtonFlat {width: Fill height: 44 text: repos[i].full_name on_click: || choose_repo(i)} }
+                if repos.len() == 0 { Label {width: Fill text: "No repositories on this page" draw_text.color: muted} }
+                if repos.len() > 0 || repo_page > 1 {
+                    View {width: Fill height: 44 spacing: 8
+                        ButtonFlat {width: Fill height: 44 text: "Previous" on_click: || {if repo_page > 1 {list_repos(repo_page - 1)}}}
+                        if repos.len() > 0 { ButtonFlat {width: Fill height: 44 text: "Next" on_click: || list_repos(repo_page + 1)} }
+                    }
+                }
+            }}
+            Label {text: "Branch" draw_text.color: muted}
+            branch_entry := TextInput {width: Fill height: 44 text: "main" empty_text: "Branch"}
+            ButtonFlat {width: Fill height: 44 text: "Browse root on this branch" on_click: || list_files("")}
+            file_list := View {width: Fill height: Fit flow: Down spacing: 4 on_render: || {
+                if browse_repo != "" && files.len() == 0 { Label {width: Fill text: "No Markdown files here · choose a new path below" draw_text.color: muted draw_text.wrap: Words} }
+                for i in files.len() {
+                    if files[i].type == "dir" || regex("[.](md|markdown)$", "i").test(files[i].name) {
+                        ButtonFlat {width: Fill height: 44 text: files[i].path on_click: || choose_file(i)}
+                    }
+                }
+            }}
+            Label {text: "Markdown file path" draw_text.color: muted}
+            path_entry := TextInput {width: Fill height: 44 text: "notes/new-note.md"}
+            View {width: Fill height: 44 spacing: 8
+                ButtonFlat {width: Fill height: 44 text: "Open existing" on_click: || read_file()}
+                ButtonFlat {width: Fill height: 44 text: "Use as new path" on_click: || new_file()}
+            }
+            Label {text: "Commit message" draw_text.color: muted}
+            commit_entry := TextInput {width: Fill height: 44 text: "Update note" on_change: |text| {draft.message = text persist()}}
+            ButtonFlat {width: Fill height: 44 text: "Recover previous draft" on_click: || recover()}
+        }
+    }
+    replace_prompt := View {width: Fill height: Fit flow: Down padding: 16 spacing: 6 visible: false
+        replace_text := Label {width: Fill draw_text.color: ink draw_text.wrap: Words}
+        View {width: Fill height: 44 spacing: 8
+            ButtonFlat {width: Fill height: 44 text: "Keep current draft" on_click: || {pending = nil ui.replace_prompt.set_visible(false)}}
+            Button {width: Fill height: 44 text: "Open & keep recovery" on_click: || apply_pending()}
+        }
+    }
+    status := Label {width: Fill height: Fit visible: false padding: Inset{left: 16 right: 16 top: 6 bottom: 8} text: "Opening local draft…" draw_text.color: muted draw_text.wrap: Words draw_text.text_style.font_size: 11}
+}

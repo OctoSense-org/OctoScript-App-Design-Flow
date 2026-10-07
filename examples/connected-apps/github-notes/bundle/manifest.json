@@ -1,0 +1,18 @@
+{
+  "capabilities": [
+    "storage",
+    "auth",
+    "github"
+  ],
+  "id": "org.octosense.samples.githubnotes",
+  "integrity": {
+    "bundle_blake3": "a00115ba96985140dc4382323d936c1c5e09539d24e0c772e2ddd608ea5e1c7d"
+  },
+  "name": "GitHub Notes",
+  "schema": 1,
+  "storage": {
+    "accounts": true,
+    "max_bytes": 4194304
+  },
+  "version": "0.1.0"
+}

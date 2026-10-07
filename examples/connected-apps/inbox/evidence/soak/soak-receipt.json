@@ -1,0 +1,232 @@
+{
+  "status": "functional_checks_passed",
+  "visual_status": "Original first/long/cold review and cold draft inspected; no repeated editor overlap in selected repaired captures. Instrument frame errors remain unresolved.",
+  "scope": "macOS full Shell; real DeepSeek, synthetic Gmail; no real OAuth or send",
+  "monitoring_status_refreshed_without_manual_refresh": true,
+  "cycles": 33,
+  "sustained_seconds": 610.002,
+  "model": "real DeepSeek deepseek-v4-flash",
+  "model_case": "prior completed edit in this same profile",
+  "initial_model_body_sha256": "ab9f33be9be686a9c2125878ab30c1143523b7b8ab3a3a9472e618de40f3fa98",
+  "final_revision": 43,
+  "final_body_sha256": "ea6ca2128f10ba1e294c4e3e9f3b18c8e650f0dd96fbc85a93fc5d7a90c58bb3",
+  "restart_exact_body": true,
+  "provider_send_attempts": 0,
+  "first_failure": null,
+  "native_frame_wait_rtt_ms": {
+    "count": 1204,
+    "p50": 8.168,
+    "p95": 18.548,
+    "max": 60.99,
+    "meaning": "HTTP native input with wait=1; not FPS or display latency"
+  },
+  "rss_kib": {
+    "start": 522256,
+    "end": 584400,
+    "min": 546176,
+    "max": 584400,
+    "meaning": "process RSS, includes full Shell, renderer and capture caches; finite-run trend is not a leak verdict"
+  },
+  "instrument_errors": [
+    {
+      "route": "click",
+      "parameters": {
+        "x": 650,
+        "y": 570,
+        "wait": 1
+      },
+      "status": 404,
+      "body": "{\"err\":\"requested input frame could not be submitted; retry\"}",
+      "milliseconds": 38.53
+    },
+    {
+      "route": "k",
+      "parameters": {
+        "k": "down",
+        "c": "KeyA",
+        "cmd": 1,
+        "wait": 1
+      },
+      "status": 404,
+      "body": "{\"err\":\"requested input frame could not be submitted; retry\"}",
+      "milliseconds": 5.889
+    }
+  ],
+  "performance_context": "Concurrent other native soaks and Android compilation; not an idle benchmark",
+  "responsiveness_status": "failed: observed native instrument errors",
+  "recorded_at": "2026-10-06T22:48:36.922069+00:00",
+  "driver_sha256": "145744fe5181989fe25c6f83332fc076c83cb711d76b937a8ca586ade1504bbb",
+  "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69",
+  "model_run_binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69",
+  "glance_card_source_sha256": "791757d29403011e48542139d70f9b2e285238c9a2de4db5527babfbf7a1297c",
+  "instrument_source_sha256": "05630f12ee87d8926d7cd90fb72987f9e2cac6b828965852ae7e0a28eca84d5b",
+  "app_source_sha256": "42b2827a168cd74b1c945f1e567ced6380e934a9b68fbcd125c219fcb015d6b1",
+  "bundle_digest": "2ca58e32e871a5336c878691a0d6b257409a4208428f3731ee82fcae2e097caa",
+  "captures": {
+    "01-summary.png": {
+      "sha256": "42c7494fa70237e3db2fbc64ec38c4678713ca4df4bdf6fc5efe26dc83df3100",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "02-model-chat.png": {
+      "sha256": "ebd87fdb5030992e225eb98ffe1490e41477387315e0a3c3e6f9ef53dce8142a",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "cycle-01-review.png": {
+      "sha256": "579ffb3dbd1539aa09f8bb64ef07602842687593f75d29a065bd2f5d11b47b90",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "cycle-01-reply.png": {
+      "sha256": "a83a07dccb1c873cfb75200fb9b8ea2cb55f70dca467253cd3658680d0388991",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "cycle-10-review.png": {
+      "sha256": "08cf114086966c2005def3b0d27214823c00853865a0d4c91d3f3eaf63798c44",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "cycle-10-reply.png": {
+      "sha256": "6d8d2bef03db10e636d102336cbade1f1c739b138977a224aec7eead65366f88",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "cycle-20-review.png": {
+      "sha256": "69fec18d32878c9602e15992154a0cefc9062d1461cddefb54d275a3d2e5375a",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "cycle-20-reply.png": {
+      "sha256": "da39a14266b16ffc723e49de5d7d09dee527bdd34841be2f1f583bad2e03ac00",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "input-error-01.png": {
+      "sha256": "bac8183058ff526a5829dd9ea7fe91ad47c293c484e037062a2e69232b4ab9b2",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "cycle-30-review.png": {
+      "sha256": "20db65e9d653a70c209271c50bb2f7ca14ac77376af16731faf677d7c3c6813c",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "cycle-30-reply.png": {
+      "sha256": "a49a47ef51c60cedfb353d8780dc41832e8c77432ac017853676c4f76102698c",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "input-error-02.png": {
+      "sha256": "6962425212bc9d3ea76be4ae4b6d55df084694ed07d56a05d64ef6e26cbc1435",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "cycle-33-review.png": {
+      "sha256": "b76e22a181a1f80268f42992fbf2639f0f35b776b714a1fcdde3f13a482fd902",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "cycle-33-reply.png": {
+      "sha256": "0aaf16396570a96fd9136063a0797f297b0cfce0ffd895a52ca7f612f6ad7c32",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "03-before-restart.png": {
+      "sha256": "77ef3a846d16a49d3fab2ccccf36d7869b84ffcd241ff1d72a8c05cde6c5e15a",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "04-cold-summary.png": {
+      "sha256": "2b20de62aff7d061bb5e7033338584101a888bf834759163618980720befb206",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "05-cold-reply.png": {
+      "sha256": "76841756bf99560b7f2a169ed915cebe4286ce0adabba9badd265da2082eadf4",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    },
+    "06-cold-review.png": {
+      "sha256": "9fb7f642e8eb537314bddec7aa071cb670252c5be0d2a695a3cccccc763d6256",
+      "native_pixels": [
+        2800,
+        1800
+      ],
+      "binary_sha256": "8a146802c38aef3a5f7d4dee3fbbadb74dabf3a40456bdc0d339a8e2148c8f69"
+    }
+  },
+  "live_google_oauth": false,
+  "physical_approval": false,
+  "real_delivery": false,
+  "android": false,
+  "cleanup": {
+    "owned_port_closed": true,
+    "owned_shells_exited": true,
+    "owned_kernel_processes_exited": true
+  },
+  "instrument_error_count": 2,
+  "frame_wait_timeout_count": 0,
+  "instrument_metric_note": "The driver raw field zero_instrument_timeouts counted all HTTP errors; this exported receipt derives explicit error and timeout counts from the preserved response bodies.",
+  "runtime_tree_at_build": "4d551700 (parent build record); later Android-only Java patch does not change the loaded executable",
+  "exported_captures": {
+    "cycle-10-review.png": "08cf114086966c2005def3b0d27214823c00853865a0d4c91d3f3eaf63798c44",
+    "cycle-33-review.png": "b76e22a181a1f80268f42992fbf2639f0f35b776b714a1fcdde3f13a482fd902",
+    "05-cold-reply.png": "76841756bf99560b7f2a169ed915cebe4286ce0adabba9badd265da2082eadf4",
+    "06-cold-review.png": "9fb7f642e8eb537314bddec7aa071cb670252c5be0d2a695a3cccccc763d6256",
+    "input-error-01.png": "bac8183058ff526a5829dd9ea7fe91ad47c293c484e037062a2e69232b4ab9b2",
+    "input-error-02.png": "6962425212bc9d3ea76be4ae4b6d55df084694ed07d56a05d64ef6e26cbc1435"
+  }
+}

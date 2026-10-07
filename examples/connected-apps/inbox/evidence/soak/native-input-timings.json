@@ -1,0 +1,7226 @@
+[
+  {
+    "route": "click",
+    "milliseconds": 10.833666999999991,
+    "frame": 206,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.535665999999999,
+    "frame": 207,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.707875000000028,
+    "frame": 209,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.645166999999951,
+    "frame": 210,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.93183400000008,
+    "frame": 211,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.236166999999957,
+    "frame": 213,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.151499999999864,
+    "frame": 214,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.147416999999884,
+    "frame": 216,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.841875000000003,
+    "frame": 229,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.158624999999978,
+    "frame": 230,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.68054200000001,
+    "frame": 232,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.044333999999818,
+    "frame": 233,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.246750000000079,
+    "frame": 234,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.086250000000181,
+    "frame": 236,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.5937920000000965,
+    "frame": 237,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.274750000000003,
+    "frame": 239,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.556499999999852,
+    "frame": 240,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.432792000000019,
+    "frame": 242,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.381791000000032,
+    "frame": 243,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.495749999999916,
+    "frame": 245,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.353374999999993,
+    "frame": 246,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.449499999999995,
+    "frame": 248,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.917874999999961,
+    "frame": 249,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.53662499999985,
+    "frame": 251,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.705166999999907,
+    "frame": 252,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.137417000000038,
+    "frame": 254,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.182250000000062,
+    "frame": 255,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.5590420000000123,
+    "frame": 259,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.065667000000106,
+    "frame": 260,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 7.504583000000009,
+    "frame": 262,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.002000000000177,
+    "frame": 263,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.167040999999987,
+    "frame": 313,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.346500000000038,
+    "frame": 323,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.884833000000203,
+    "frame": 324,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.020000000000145,
+    "frame": 326,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.250041999999787,
+    "frame": 327,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 20.535750000000075,
+    "frame": 329,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.299582999999558,
+    "frame": 1221,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.46145900000306,
+    "frame": 1222,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.042457999999584,
+    "frame": 1224,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.688999999999055,
+    "frame": 1225,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.5458750000017005,
+    "frame": 1227,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.743125000000958,
+    "frame": 1228,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.168583999999754,
+    "frame": 1230,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.9287920000003,
+    "frame": 1231,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.367958000003455,
+    "frame": 1244,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.671749999997871,
+    "frame": 1246,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.3367080000003,
+    "frame": 1247,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.621332999999339,
+    "frame": 1249,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.20670800000056,
+    "frame": 1250,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.04454100000018,
+    "frame": 1252,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.87254200000109,
+    "frame": 1253,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.063207999998497,
+    "frame": 1255,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.839084000000327,
+    "frame": 1256,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.891917000001911,
+    "frame": 1258,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.699332999998148,
+    "frame": 1259,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.595374999998853,
+    "frame": 1261,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.2768749999986255,
+    "frame": 1262,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.084708000000603,
+    "frame": 1264,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.945917000001799,
+    "frame": 1265,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.455999999997573,
+    "frame": 1267,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.366959000001287,
+    "frame": 1268,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.831832999998682,
+    "frame": 1270,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.662124999998525,
+    "frame": 1271,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.913042000000644,
+    "frame": 1277,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.156875000000838,
+    "frame": 1278,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.666917000000552,
+    "frame": 1280,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.92570800000081,
+    "frame": 1281,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.897917000000092,
+    "frame": 1297,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.40970800000207,
+    "frame": 1298,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 19.830250000001826,
+    "frame": 1300,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.450250000001432,
+    "frame": 1301,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 20.546959000000697,
+    "frame": 1303,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.550249999999096,
+    "frame": 2155,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.397249999994585,
+    "frame": 2156,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.784874999996248,
+    "frame": 2158,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.227209000002176,
+    "frame": 2159,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.376875000000837,
+    "frame": 2160,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.950499999999636,
+    "frame": 2162,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.092875000004881,
+    "frame": 2163,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.630999999996618,
+    "frame": 2165,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.509750000001986,
+    "frame": 2176,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.353208000000393,
+    "frame": 2178,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.714499999998623,
+    "frame": 2179,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.631708000005119,
+    "frame": 2181,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.838041999998268,
+    "frame": 2182,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.851084000002004,
+    "frame": 2184,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.504083000000492,
+    "frame": 2185,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.00391600000006,
+    "frame": 2187,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.472999999997285,
+    "frame": 2188,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.244999999999834,
+    "frame": 2190,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.568334000001016,
+    "frame": 2191,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.840749999997513,
+    "frame": 2193,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.57616699999619,
+    "frame": 2194,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.703915999996866,
+    "frame": 2196,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.849959000002514,
+    "frame": 2197,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.62058299999768,
+    "frame": 2199,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.335832999999297,
+    "frame": 2200,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.56245800000022,
+    "frame": 2202,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.815291999994315,
+    "frame": 2203,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.481583000002786,
+    "frame": 2209,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.204957999995429,
+    "frame": 2210,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 7.473541999999611,
+    "frame": 2212,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.367500000003304,
+    "frame": 2213,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.76208299999837,
+    "frame": 2228,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.40533300000368,
+    "frame": 2230,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.815208999995889,
+    "frame": 2231,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 6.780542000001333,
+    "frame": 2233,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 5.687083000005089,
+    "frame": 2234,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.287166999996657,
+    "frame": 3135,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.29954200000094,
+    "frame": 3136,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.804416000003698,
+    "frame": 3138,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.556207999999231,
+    "frame": 3139,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.8970420000056265,
+    "frame": 3140,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.874291000000142,
+    "frame": 3142,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.831416999998339,
+    "frame": 3143,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.88779199999857,
+    "frame": 3145,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.34837500000674,
+    "frame": 3156,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.928584000003184,
+    "frame": 3158,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.471457999997597,
+    "frame": 3159,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.757540999996479,
+    "frame": 3161,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.0471250000020405,
+    "frame": 3162,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.507457999999076,
+    "frame": 3164,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.798667000000535,
+    "frame": 3165,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.313917000000288,
+    "frame": 3167,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.992500000000177,
+    "frame": 3168,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.803374999999278,
+    "frame": 3170,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 21.74912499999948,
+    "frame": 3171,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.711416999998448,
+    "frame": 3173,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.068167000004564,
+    "frame": 3174,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.5725840000017115,
+    "frame": 3176,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.933458999997754,
+    "frame": 3177,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.029916999996885,
+    "frame": 3179,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.974999999997294,
+    "frame": 3180,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.337249999996857,
+    "frame": 3182,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.25708399999803,
+    "frame": 3183,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.256457999993302,
+    "frame": 3188,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.0618330000015135,
+    "frame": 3189,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.595750000004898,
+    "frame": 3191,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.571874999998897,
+    "frame": 3192,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.803624999998874,
+    "frame": 3205,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.659500000000264,
+    "frame": 3207,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.684999999997729,
+    "frame": 3208,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 6.817791999999656,
+    "frame": 3210,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 5.645958000002338,
+    "frame": 3211,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.290874999995708,
+    "frame": 4076,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.046624999986989,
+    "frame": 4077,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.829624999994621,
+    "frame": 4079,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 10.550917000003324,
+    "frame": 4080,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.177041999995026,
+    "frame": 4081,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.263041000001522,
+    "frame": 4082,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.0842499999959045,
+    "frame": 4084,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.941500000001383,
+    "frame": 4085,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.78487499999892,
+    "frame": 4098,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.494084000001294,
+    "frame": 4100,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.660957999988113,
+    "frame": 4101,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.579416999987984,
+    "frame": 4103,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.029083000001378,
+    "frame": 4104,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.790249999999219,
+    "frame": 4106,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.922250000007011,
+    "frame": 4107,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.742125000007377,
+    "frame": 4109,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.358124999995994,
+    "frame": 4110,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.467542000000435,
+    "frame": 4112,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.163584000006722,
+    "frame": 4113,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.642291999990562,
+    "frame": 4115,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.185249999991925,
+    "frame": 4116,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.1817909999934955,
+    "frame": 4118,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.635124999997743,
+    "frame": 4119,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.24591699999155,
+    "frame": 4121,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.111666999999215,
+    "frame": 4122,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.250332999992452,
+    "frame": 4124,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.839582999996878,
+    "frame": 4125,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.570166000002928,
+    "frame": 4130,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.681125000004727,
+    "frame": 4131,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.758291999996004,
+    "frame": 4133,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.521833000003312,
+    "frame": 4134,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.972458999996775,
+    "frame": 4148,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.505666999999335,
+    "frame": 4149,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.961291999999958,
+    "frame": 4152,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 18.238499999995383,
+    "frame": 4157,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.7589580000106935,
+    "frame": 4158,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 22.46837500000254,
+    "frame": 4160,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.16504200000179,
+    "frame": 5030,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.932875000008835,
+    "frame": 5031,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.111540999995668,
+    "frame": 5033,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.064584000005311,
+    "frame": 5034,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.944624999988491,
+    "frame": 5036,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.423708000004467,
+    "frame": 5037,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.878583000007097,
+    "frame": 5039,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.873791999988725,
+    "frame": 5040,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.893582999997989,
+    "frame": 5050,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.248832999986803,
+    "frame": 5052,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.407125000000178,
+    "frame": 5053,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.64787500000341,
+    "frame": 5055,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 8.642209000001344,
+    "frame": 5056,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.483667000007131,
+    "frame": 5058,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.821167000002902,
+    "frame": 5059,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.99216700000261,
+    "frame": 5061,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.930707999993956,
+    "frame": 5062,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.935666999998034,
+    "frame": 5064,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.874958000007155,
+    "frame": 5065,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.421249999993279,
+    "frame": 5067,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.7349160000086385,
+    "frame": 5068,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.676624999997216,
+    "frame": 5070,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.843708999999421,
+    "frame": 5071,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.70958399999688,
+    "frame": 5073,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.507542000004037,
+    "frame": 5074,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.152874999993514,
+    "frame": 5076,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.433374999995863,
+    "frame": 5077,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.498582999995392,
+    "frame": 5081,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 3.8632499999948777,
+    "frame": 5082,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.469207999993955,
+    "frame": 5084,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.535458000001995,
+    "frame": 5085,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.326042000002758,
+    "frame": 5099,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.578959000004716,
+    "frame": 5100,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 19.612207999998077,
+    "frame": 5102,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.124833999995303,
+    "frame": 5103,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 20.79366700000662,
+    "frame": 5105,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.923125000005143,
+    "frame": 5956,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.74345799998855,
+    "frame": 5957,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.2489170000077365,
+    "frame": 5959,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.598708999992596,
+    "frame": 5960,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.892375000006723,
+    "frame": 5962,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.280333000011183,
+    "frame": 5963,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.6447500000018636,
+    "frame": 5965,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.251999999994268,
+    "frame": 5966,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.183624999991707,
+    "frame": 5977,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.887291999997274,
+    "frame": 5978,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.122624999998493,
+    "frame": 5980,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.62191700000858,
+    "frame": 5981,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 8.441916999998966,
+    "frame": 5983,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.02779100000339,
+    "frame": 5984,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.739957999992384,
+    "frame": 5986,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.944625000007818,
+    "frame": 5987,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.766749999997046,
+    "frame": 5989,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.181957999999099,
+    "frame": 5990,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.590666999997893,
+    "frame": 5992,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.252125000003389,
+    "frame": 5993,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.102832999995144,
+    "frame": 5995,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.584250000007728,
+    "frame": 5996,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.4814170000033755,
+    "frame": 5998,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.807041000006507,
+    "frame": 5999,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.259291000001895,
+    "frame": 6001,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.939625000001342,
+    "frame": 6002,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.050250000001597,
+    "frame": 6004,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.652875000000222,
+    "frame": 6008,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.591000000004897,
+    "frame": 6009,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.773957999991921,
+    "frame": 6011,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.611709000002634,
+    "frame": 6012,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.893917000004308,
+    "frame": 6026,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.427584000007982,
+    "frame": 6027,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 18.54766600000346,
+    "frame": 6029,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.692667000000483,
+    "frame": 6030,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 20.641834000002746,
+    "frame": 6032,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.871750000006841,
+    "frame": 6927,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.283625000009124,
+    "frame": 6928,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.565959000023213,
+    "frame": 6930,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 3.9764579999825855,
+    "frame": 6931,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.315540999996983,
+    "frame": 6933,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.242208999983177,
+    "frame": 6934,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.399540999997953,
+    "frame": 6936,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.512874999998758,
+    "frame": 6937,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.83437499998763,
+    "frame": 6950,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.232834000007188,
+    "frame": 6952,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.605125000011867,
+    "frame": 6953,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.7450409999783005,
+    "frame": 6955,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.664083999993409,
+    "frame": 6956,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.198999999976195,
+    "frame": 6958,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.780167000006941,
+    "frame": 6959,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.08783400000857,
+    "frame": 6961,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.291666999994504,
+    "frame": 6962,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.306875000002265,
+    "frame": 6964,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.816166000002795,
+    "frame": 6965,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.285958999996183,
+    "frame": 6967,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.899042000010013,
+    "frame": 6968,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.2811669999925925,
+    "frame": 6970,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 8.072459000004528,
+    "frame": 6971,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.221791000001531,
+    "frame": 6973,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 26.111666999980798,
+    "frame": 6974,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.464707999986558,
+    "frame": 6976,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.598000000001775,
+    "frame": 6977,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.01249999999709,
+    "frame": 6979,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.681624999994028,
+    "frame": 6980,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.363124999997808,
+    "frame": 6982,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.166874999981701,
+    "frame": 6983,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.387040999982446,
+    "frame": 6997,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.541291999994428,
+    "frame": 6999,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.735500000010006,
+    "frame": 7000,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 6.855916000006346,
+    "frame": 7002,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 5.866083000000799,
+    "frame": 7003,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.365250000020978,
+    "frame": 7855,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.431250000015325,
+    "frame": 7856,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.788916000000199,
+    "frame": 7858,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.288791999982777,
+    "frame": 7859,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.878416999995807,
+    "frame": 7861,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.329374999997526,
+    "frame": 7862,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.074125000016693,
+    "frame": 7864,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.249332999999751,
+    "frame": 7865,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.150208999997858,
+    "frame": 7878,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.333291999989115,
+    "frame": 7879,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.564833000017643,
+    "frame": 7881,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 3.8722500000005766,
+    "frame": 7882,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.119707999999946,
+    "frame": 7884,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.486416999981202,
+    "frame": 7885,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.665791999997282,
+    "frame": 7887,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.86941600000091,
+    "frame": 7888,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.719458000010945,
+    "frame": 7890,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.630000000020118,
+    "frame": 7891,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.1941670000042,
+    "frame": 7893,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.826708999990387,
+    "frame": 7894,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.214083999992681,
+    "frame": 7896,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.4784160000119755,
+    "frame": 7897,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.193624999985104,
+    "frame": 7899,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.051041999986182,
+    "frame": 7900,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.831166000021767,
+    "frame": 7902,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.534417000007124,
+    "frame": 7903,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.937750000020287,
+    "frame": 7905,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.7292499999921347,
+    "frame": 7909,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.941875000014306,
+    "frame": 7910,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.233749999992824,
+    "frame": 7912,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.947540999978855,
+    "frame": 7913,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.005000000002156,
+    "frame": 7926,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.946417000008978,
+    "frame": 7927,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.862916999997424,
+    "frame": 7929,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.389707999990833,
+    "frame": 7930,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 21.84441699998274,
+    "frame": 7932,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.618333000001257,
+    "frame": 8853,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.186084000001983,
+    "frame": 8854,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.706708000019489,
+    "frame": 8856,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.305291999997962,
+    "frame": 8857,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.413833000015302,
+    "frame": 8859,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.053416999994397,
+    "frame": 8860,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 8.407333000008066,
+    "frame": 8862,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.205082999997785,
+    "frame": 8863,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.886334000000943,
+    "frame": 8875,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.928042000022288,
+    "frame": 8877,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.4908750000161035,
+    "frame": 8878,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.480499999999665,
+    "frame": 8880,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.058582999997952,
+    "frame": 8881,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.532457999999906,
+    "frame": 8883,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.322791999982201,
+    "frame": 8884,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.27354200000741,
+    "frame": 8886,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.370875000006436,
+    "frame": 8887,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.551999999989675,
+    "frame": 8889,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.732375000013008,
+    "frame": 8890,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.62162499997521,
+    "frame": 8892,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.274624999993648,
+    "frame": 8893,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.401083999994171,
+    "frame": 8895,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.827166000017314,
+    "frame": 8896,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.300999999998112,
+    "frame": 8898,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.411417000009806,
+    "frame": 8899,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.649667000000363,
+    "frame": 8901,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.516791999985344,
+    "frame": 8902,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.8183750000087002,
+    "frame": 8906,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.170708000003742,
+    "frame": 8907,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.067667000010715,
+    "frame": 8909,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.550708000006125,
+    "frame": 8910,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.293208999991975,
+    "frame": 8965,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.028541000011273,
+    "frame": 8974,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.086541000006946,
+    "frame": 8975,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.741084000007504,
+    "frame": 8979,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.822124999999687,
+    "frame": 8983,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.491624999985788,
+    "frame": 8984,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 23.243875000019898,
+    "frame": 8986,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.13537499998074,
+    "frame": 9861,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.019125000023223,
+    "frame": 9862,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.417541999975128,
+    "frame": 9864,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.184292000019241,
+    "frame": 9865,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.9211249999957545,
+    "frame": 9867,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.962291000021878,
+    "frame": 9868,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 7.7863329999843245,
+    "frame": 9870,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.810959000006505,
+    "frame": 9871,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.43241700001363,
+    "frame": 9885,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.94262500001264,
+    "frame": 9887,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 8.260457999995197,
+    "frame": 9888,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.126917000007779,
+    "frame": 9889,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.986333000009836,
+    "frame": 9890,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.54762499998651,
+    "frame": 9892,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.345625000013342,
+    "frame": 9893,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.121291000004476,
+    "frame": 9895,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.405666999986124,
+    "frame": 9896,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.513292000012825,
+    "frame": 9898,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.79920900000775,
+    "frame": 9899,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.555041000003484,
+    "frame": 9901,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.058000000014772,
+    "frame": 9902,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.177499999997281,
+    "frame": 9904,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.64770799999792,
+    "frame": 9905,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.382165999999188,
+    "frame": 9907,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.82641600002421,
+    "frame": 9908,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.058334000011882,
+    "frame": 9910,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.25754200001461,
+    "frame": 9911,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.509457999996357,
+    "frame": 9916,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 3.8326659999938784,
+    "frame": 9917,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 7.3534170000186805,
+    "frame": 9919,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.258417000012287,
+    "frame": 9920,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.890124999988984,
+    "frame": 9934,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.819207999977152,
+    "frame": 9935,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.989666000000625,
+    "frame": 9937,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.617458000012675,
+    "frame": 9938,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 21.472167000013087,
+    "frame": 9940,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.26495799999816,
+    "frame": 10834,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.474665999998024,
+    "frame": 10835,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.67574999999465,
+    "frame": 10837,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.2483750000030795,
+    "frame": 10838,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.656292000002395,
+    "frame": 10840,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.060625000022355,
+    "frame": 10841,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.557082999980366,
+    "frame": 10843,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.865833999995857,
+    "frame": 10844,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.560249999983398,
+    "frame": 10858,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.917624999990494,
+    "frame": 10860,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.330500000008897,
+    "frame": 10861,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.338375000003225,
+    "frame": 10863,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.606999999997697,
+    "frame": 10864,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.718083000000206,
+    "frame": 10866,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.515958000013143,
+    "frame": 10867,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.186125000009042,
+    "frame": 10869,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.559207999993987,
+    "frame": 10870,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.86058400000411,
+    "frame": 10872,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.986999999981208,
+    "frame": 10873,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.589999999988777,
+    "frame": 10875,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.47608299998592,
+    "frame": 10876,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.490833000005523,
+    "frame": 10878,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.040624999997135,
+    "frame": 10879,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.3320000000051095,
+    "frame": 10881,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.531582999997681,
+    "frame": 10882,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.994459000021607,
+    "frame": 10884,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.105208999997785,
+    "frame": 10885,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.6123749999887877,
+    "frame": 10890,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 3.841792000002897,
+    "frame": 10891,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.124249999985068,
+    "frame": 10893,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.830792000002475,
+    "frame": 10894,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.862416999989136,
+    "frame": 10908,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.706832999990866,
+    "frame": 10909,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.960665999988578,
+    "frame": 10911,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.470375000011018,
+    "frame": 10912,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 21.87266699999668,
+    "frame": 10914,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.527040999993687,
+    "frame": 11776,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.197083000013208,
+    "frame": 11777,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.670375000022432,
+    "frame": 11779,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.473875000002181,
+    "frame": 11780,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.550959000009016,
+    "frame": 11782,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.1948749999960455,
+    "frame": 11783,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.00516700000253,
+    "frame": 11785,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.245750000005273,
+    "frame": 11786,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.213082999982362,
+    "frame": 11800,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.061541000003672,
+    "frame": 11802,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.21558299998992,
+    "frame": 11803,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.259249999989834,
+    "frame": 11805,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.8971660000111115,
+    "frame": 11806,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.74645799999962,
+    "frame": 11808,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.217041999993398,
+    "frame": 11809,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.399917000015193,
+    "frame": 11811,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 8.501459000001432,
+    "frame": 11812,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.244749999998021,
+    "frame": 11813,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.463749999994889,
+    "frame": 11815,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.163833000011891,
+    "frame": 11816,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.607250000020713,
+    "frame": 11818,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 3.821999999985337,
+    "frame": 11819,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.227707999983068,
+    "frame": 11821,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 3.9888750000045547,
+    "frame": 11822,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.307374999977583,
+    "frame": 11824,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.325458000015942,
+    "frame": 11825,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.271875000010368,
+    "frame": 11827,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.8279579999880298,
+    "frame": 11832,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.1019159999962085,
+    "frame": 11833,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 7.225499999975682,
+    "frame": 11835,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.977250000015147,
+    "frame": 11836,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.945250000001352,
+    "frame": 11851,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.875665999994453,
+    "frame": 11852,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.74858300000892,
+    "frame": 11854,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.282165999995868,
+    "frame": 11855,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 21.8166250000138,
+    "frame": 11857,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.98270800000023,
+    "frame": 12741,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.978207999987944,
+    "frame": 12742,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.472749999995585,
+    "frame": 12744,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.057457999977032,
+    "frame": 12745,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.894499999987147,
+    "frame": 12747,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.1497499999820775,
+    "frame": 12748,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.509249999983922,
+    "frame": 12750,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.023708000015176,
+    "frame": 12751,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.710542000007763,
+    "frame": 12764,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.577958999993143,
+    "frame": 12766,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.097749999999678,
+    "frame": 12767,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.229541999990261,
+    "frame": 12769,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.85491699999352,
+    "frame": 12770,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.534667000001491,
+    "frame": 12772,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.264041999988422,
+    "frame": 12773,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.631416999994372,
+    "frame": 12775,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.959332999987964,
+    "frame": 12776,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.22749999998473,
+    "frame": 12778,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.829957999997532,
+    "frame": 12779,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.717417000023488,
+    "frame": 12781,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.069583000017474,
+    "frame": 12782,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.15625000002251,
+    "frame": 12784,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.66808299998911,
+    "frame": 12785,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.363749999981792,
+    "frame": 12787,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.969375000011496,
+    "frame": 12788,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.190916000003881,
+    "frame": 12790,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.086709000016072,
+    "frame": 12791,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.478291000021727,
+    "frame": 12796,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 3.990999999984979,
+    "frame": 12797,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.687833000010414,
+    "frame": 12799,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.763125000006312,
+    "frame": 12800,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.424959000014724,
+    "frame": 12813,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.47258400000328,
+    "frame": 12814,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.214042000001427,
+    "frame": 12816,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.446959000006245,
+    "frame": 12817,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 21.662165999998706,
+    "frame": 12819,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.606332999974711,
+    "frame": 13688,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.17833400002155,
+    "frame": 13689,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.791583000018363,
+    "frame": 13691,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.4314159999885305,
+    "frame": 13692,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.017082999993818,
+    "frame": 13694,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.5900000000074215,
+    "frame": 13695,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.128750000006676,
+    "frame": 13697,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.577292000003126,
+    "frame": 13698,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.616042000023754,
+    "frame": 13713,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.826000000008662,
+    "frame": 13714,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.675500000018928,
+    "frame": 13716,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 3.794125000013082,
+    "frame": 13717,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.484250000028169,
+    "frame": 13719,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.504791999977442,
+    "frame": 13720,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.993833000014547,
+    "frame": 13722,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.371249999953761,
+    "frame": 13723,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.3951250000068285,
+    "frame": 13725,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.71704099999215,
+    "frame": 13726,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.351915999985977,
+    "frame": 13728,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.400875000011638,
+    "frame": 13729,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.514499999970667,
+    "frame": 13730,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.407582999988335,
+    "frame": 13732,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.7375839999735945,
+    "frame": 13733,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.438375000006545,
+    "frame": 13735,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.19816600005197,
+    "frame": 13736,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.419792000026519,
+    "frame": 13738,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.911708000023282,
+    "frame": 13739,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.602499999999509,
+    "frame": 13744,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.323999999996886,
+    "frame": 13745,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.2183339999915,
+    "frame": 13747,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.167500000022756,
+    "frame": 13748,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.33175000004394,
+    "frame": 13761,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.752458000046317,
+    "frame": 13762,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.503209000025436,
+    "frame": 13767,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.866165999990244,
+    "frame": 13770,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.590457999995579,
+    "frame": 13771,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 21.87954099997569,
+    "frame": 13773,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.026875000027303,
+    "frame": 14661,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.297416000047633,
+    "frame": 14662,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.028291000006902,
+    "frame": 14664,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.124624999974458,
+    "frame": 14665,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.518916999970315,
+    "frame": 14667,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.157542000029935,
+    "frame": 14668,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.53337499997042,
+    "frame": 14670,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.678333000029852,
+    "frame": 14671,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.490834000004725,
+    "frame": 14685,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.39312500000733,
+    "frame": 14686,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.843917000016518,
+    "frame": 14688,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.543957999999293,
+    "frame": 14689,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 8.291542000051777,
+    "frame": 14691,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.869874999997137,
+    "frame": 14692,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.953666999995221,
+    "frame": 14694,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.754832999974042,
+    "frame": 14695,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.264749999980722,
+    "frame": 14697,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.171832999986691,
+    "frame": 14698,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.23983300000009,
+    "frame": 14699,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.537124999984826,
+    "frame": 14700,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.593499999998585,
+    "frame": 14702,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.0819999999825995,
+    "frame": 14703,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.6374580000001515,
+    "frame": 14705,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.170833000046059,
+    "frame": 14706,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.869583000030161,
+    "frame": 14708,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.156833999962146,
+    "frame": 14709,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.411749999988842,
+    "frame": 14711,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.571292000003723,
+    "frame": 14716,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 3.9929579999693487,
+    "frame": 14717,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.673708000003444,
+    "frame": 14719,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.390583000026709,
+    "frame": 14720,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.867749999998068,
+    "frame": 14734,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.447500000021591,
+    "frame": 14735,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.819084000019302,
+    "frame": 14737,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.452791000005618,
+    "frame": 14738,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 22.05683400001135,
+    "frame": 14740,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.654250000015963,
+    "frame": 15605,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.736124999970343,
+    "frame": 15606,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.715917000031823,
+    "frame": 15608,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.98837499999172,
+    "frame": 15609,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.494083999996292,
+    "frame": 15610,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.978084000015315,
+    "frame": 15612,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.1406250000477485,
+    "frame": 15613,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.7760419999845,
+    "frame": 15615,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.308791999975256,
+    "frame": 15629,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.732334000010724,
+    "frame": 15630,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.862791999983074,
+    "frame": 15632,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.701124999973217,
+    "frame": 15633,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.816750000008142,
+    "frame": 15634,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.792750000035539,
+    "frame": 15636,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.3747080000002825,
+    "frame": 15637,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.879333000033967,
+    "frame": 15639,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.531832999987273,
+    "frame": 15640,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.459541000016998,
+    "frame": 15642,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.118374999976368,
+    "frame": 15643,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.508957999978975,
+    "frame": 15645,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.476749999980711,
+    "frame": 15646,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.479624999987664,
+    "frame": 15648,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.748125000025084,
+    "frame": 15649,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.4417500000122345,
+    "frame": 15651,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.325459000005594,
+    "frame": 15652,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.746000000040112,
+    "frame": 15653,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.112916999967638,
+    "frame": 15654,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.476040999998986,
+    "frame": 15659,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.120291999981873,
+    "frame": 15660,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 7.621874999983902,
+    "frame": 15662,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.435208000013517,
+    "frame": 15663,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.786291999963396,
+    "frame": 15677,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.599166999999852,
+    "frame": 15678,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.365458000052513,
+    "frame": 15680,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.371415999969486,
+    "frame": 15681,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 20.28500000000122,
+    "frame": 15683,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.17375000001175,
+    "frame": 16572,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.832166999989568,
+    "frame": 16573,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.234749999999622,
+    "frame": 16575,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.272624999998698,
+    "frame": 16576,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.789917000025071,
+    "frame": 16578,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.293707999977414,
+    "frame": 16579,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 8.368625000002794,
+    "frame": 16581,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.529041999982837,
+    "frame": 16582,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.237916000036876,
+    "frame": 16596,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.122124999985772,
+    "frame": 16598,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.33112500002153,
+    "frame": 16599,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.437792000032914,
+    "frame": 16601,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.393541999988429,
+    "frame": 16602,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.885541999977704,
+    "frame": 16603,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.952957999989849,
+    "frame": 16605,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.548332999960166,
+    "frame": 16606,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.74979099999473,
+    "frame": 16608,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 8.891291999987061,
+    "frame": 16609,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.892042000032689,
+    "frame": 16610,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.864916000002722,
+    "frame": 16612,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.350290999980189,
+    "frame": 16613,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.284999999981665,
+    "frame": 16615,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.869500000017069,
+    "frame": 16616,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.29300000001831,
+    "frame": 16618,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.13137500000039,
+    "frame": 16619,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.411124999995081,
+    "frame": 16621,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.177375000021584,
+    "frame": 16622,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.777541999966161,
+    "frame": 16627,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.064834000018891,
+    "frame": 16628,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.905709000032402,
+    "frame": 16630,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.409500000003845,
+    "frame": 16631,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.73970799994595,
+    "frame": 16645,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.781916999997975,
+    "frame": 16647,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 22.264000000006945,
+    "frame": 16648,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.131291000040619,
+    "frame": 16650,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 6.421292000027279,
+    "frame": 16651,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.266500000042925,
+    "frame": 17548,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.422250000009626,
+    "frame": 17549,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.741457999988597,
+    "frame": 17551,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.268792000004851,
+    "frame": 17552,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.689332999997077,
+    "frame": 17554,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.2450000000258115,
+    "frame": 17555,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.934749999984888,
+    "frame": 17557,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.940708999986782,
+    "frame": 17558,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.596958999949948,
+    "frame": 17572,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.828041999990546,
+    "frame": 17574,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.40045900000996,
+    "frame": 17575,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.2215839999926175,
+    "frame": 17577,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.872124999996231,
+    "frame": 17578,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.672249999998712,
+    "frame": 17580,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.329250000012053,
+    "frame": 17581,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.923666000006051,
+    "frame": 17583,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.054624999957014,
+    "frame": 17584,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.749749999973574,
+    "frame": 17586,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.652834000050461,
+    "frame": 17587,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.991125000032298,
+    "frame": 17589,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.336167000019486,
+    "frame": 17590,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.513041999985035,
+    "frame": 17592,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.019166999976733,
+    "frame": 17593,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.526666000003843,
+    "frame": 17595,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.853916999972625,
+    "frame": 17596,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.058124999976826,
+    "frame": 17598,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.989458000016384,
+    "frame": 17599,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.17504099997268,
+    "frame": 17603,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 3.8954170000238264,
+    "frame": 17605,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 7.551666999972895,
+    "frame": 17606,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.362375000023349,
+    "frame": 17608,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.988666000012472,
+    "frame": 17622,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.652333999975781,
+    "frame": 17623,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.623917000003985,
+    "frame": 17625,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.1720830000144815,
+    "frame": 17626,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 20.457500000020445,
+    "frame": 17628,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.031249999949978,
+    "frame": 18541,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.218666999980087,
+    "frame": 18542,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.3240839999944,
+    "frame": 18544,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.442582999956812,
+    "frame": 18545,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.793125000034706,
+    "frame": 18547,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.418874999998934,
+    "frame": 18548,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.281292000006488,
+    "frame": 18550,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.469959000043218,
+    "frame": 18551,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.578875000031076,
+    "frame": 18565,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.916000000008808,
+    "frame": 18567,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.286083000010876,
+    "frame": 18568,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.431791000001795,
+    "frame": 18570,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.633166999984951,
+    "frame": 18571,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.401958000016748,
+    "frame": 18573,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.046792000053756,
+    "frame": 18574,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.792499999989104,
+    "frame": 18576,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.1739999999776956,
+    "frame": 18577,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.354125000020304,
+    "frame": 18579,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.105999999960204,
+    "frame": 18580,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.55825000000732,
+    "frame": 18582,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.194583000014518,
+    "frame": 18583,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.187915999978031,
+    "frame": 18585,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.71695799999361,
+    "frame": 18586,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.106791000026533,
+    "frame": 18588,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.899458999982016,
+    "frame": 18589,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.893249999957334,
+    "frame": 18591,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.248500000055174,
+    "frame": 18592,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.7571669999465485,
+    "frame": 18597,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.2282919999934165,
+    "frame": 18598,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.802375000016127,
+    "frame": 18600,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.206667000000834,
+    "frame": 18601,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.835083000041323,
+    "frame": 18654,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.466915999970297,
+    "frame": 18664,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.738791999969635,
+    "frame": 18665,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.254583999957049,
+    "frame": 18670,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.609959000016715,
+    "frame": 18673,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.455041000028359,
+    "frame": 18674,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 21.736041999986355,
+    "frame": 18676,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.958042000012938,
+    "frame": 19561,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.96104199996762,
+    "frame": 19562,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 10.796208000044771,
+    "frame": 19564,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 8.297999999967942,
+    "frame": 19565,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 9.509999999977481,
+    "frame": 19567,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.057291999979952,
+    "frame": 19568,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 8.017499999994016,
+    "frame": 19570,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 18.14737500001229,
+    "frame": 19571,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 18.31166699997766,
+    "frame": 19581,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.411583999958566,
+    "frame": 19582,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.529459000011229,
+    "frame": 19584,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.12229200001002,
+    "frame": 19585,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 9.035750000009557,
+    "frame": 19587,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.969832999994651,
+    "frame": 19588,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.083708000005572,
+    "frame": 19590,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.869083000007777,
+    "frame": 19591,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.6122919999997976,
+    "frame": 19593,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.859208000027593,
+    "frame": 19594,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.123791000007714,
+    "frame": 19596,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.128708000010647,
+    "frame": 19597,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.352249999963533,
+    "frame": 19599,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.091041000014229,
+    "frame": 19600,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.161707999955524,
+    "frame": 19602,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.2975000000069485,
+    "frame": 19603,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.659999999992124,
+    "frame": 19605,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.057499999988067,
+    "frame": 19606,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.138333000028979,
+    "frame": 19607,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.809792000026846,
+    "frame": 19611,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.6194159999686235,
+    "frame": 19612,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.559875000003103,
+    "frame": 19614,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.111041000049227,
+    "frame": 19615,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.577250000025742,
+    "frame": 19629,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.46716700000161,
+    "frame": 19630,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.02458300002263,
+    "frame": 19632,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.703500000005079,
+    "frame": 19633,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 21.795291999978872,
+    "frame": 19635,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.371791999986726,
+    "frame": 20501,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.03262500002711,
+    "frame": 20502,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.620916999997007,
+    "frame": 20504,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.52291700000751,
+    "frame": 20505,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 9.18337499996369,
+    "frame": 20507,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.168292000007568,
+    "frame": 20508,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.628624999962085,
+    "frame": 20510,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.132832999995571,
+    "frame": 20511,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.432542000041849,
+    "frame": 20523,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.144749999957185,
+    "frame": 20525,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.727417000002788,
+    "frame": 20526,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.155124999997042,
+    "frame": 20528,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 9.301542000002883,
+    "frame": 20529,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.339249999996355,
+    "frame": 20531,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 7.0993329999851085,
+    "frame": 20532,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.174708999983523,
+    "frame": 20534,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.0514169999805745,
+    "frame": 20535,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.500208000034036,
+    "frame": 20537,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.783125000008113,
+    "frame": 20538,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.099999999961256,
+    "frame": 20540,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.462209000029361,
+    "frame": 20541,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.876458000045659,
+    "frame": 20543,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.014207999986866,
+    "frame": 20544,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.451042000004236,
+    "frame": 20546,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.250208000021303,
+    "frame": 20547,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.308167000000594,
+    "frame": 20549,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.157749999990756,
+    "frame": 20550,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 7.939375000034943,
+    "frame": 20554,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.61004199994386,
+    "frame": 20555,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.921040999993693,
+    "frame": 20557,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.411083000027247,
+    "frame": 20558,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 20.436667000012676,
+    "frame": 20567,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.7959160000255,
+    "frame": 20569,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 22.544708999987506,
+    "frame": 20570,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.649499999999534,
+    "frame": 20572,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.540916000015386,
+    "frame": 20573,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.0005410000158,
+    "frame": 21431,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.967250000016975,
+    "frame": 21432,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 8.673624999971707,
+    "frame": 21434,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.128042000000278,
+    "frame": 21435,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 8.483541999964928,
+    "frame": 21437,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.782584000030511,
+    "frame": 21438,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.370333000006667,
+    "frame": 21440,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.296208999984628,
+    "frame": 21441,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 19.735332999971433,
+    "frame": 21451,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.120499999999538,
+    "frame": 21452,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.485750000000735,
+    "frame": 21454,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.825249999986681,
+    "frame": 21455,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 8.77645799999982,
+    "frame": 21457,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.602167000006375,
+    "frame": 21458,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.384667000020272,
+    "frame": 21460,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.600583000013103,
+    "frame": 21461,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.992292000030375,
+    "frame": 21463,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.775249999999232,
+    "frame": 21464,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 18.387041999972098,
+    "frame": 21466,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.66966600004116,
+    "frame": 21467,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.3675000000102955,
+    "frame": 21469,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.655332999992879,
+    "frame": 21470,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 8.490125000037096,
+    "frame": 21472,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.330208999964725,
+    "frame": 21473,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.053249999970376,
+    "frame": 21475,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.298791999976856,
+    "frame": 21476,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.585291000012603,
+    "frame": 21478,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 7.249584000021514,
+    "frame": 21481,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.446124999991753,
+    "frame": 21482,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.146000000043841,
+    "frame": 21483,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.020708999988528,
+    "frame": 21485,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.135875000008127,
+    "frame": 21495,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.015542000005098,
+    "frame": 21496,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 23.451082999997652,
+    "frame": 21498,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.611250000001291,
+    "frame": 21499,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 36.338457999988805,
+    "frame": 21501,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.2987920000337,
+    "frame": 22347,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.685084000030656,
+    "frame": 22348,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.395083000005798,
+    "frame": 22350,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.997583000009854,
+    "frame": 22351,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 8.801124999990861,
+    "frame": 22353,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.633624999973108,
+    "frame": 22354,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 7.071042000006855,
+    "frame": 22356,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.934082999990551,
+    "frame": 22357,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.485791999969024,
+    "frame": 22367,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.621749999956137,
+    "frame": 22369,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.550333000006958,
+    "frame": 22370,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.448834000001625,
+    "frame": 22372,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 9.632124999995995,
+    "frame": 22373,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 7.069917000023906,
+    "frame": 22375,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.810124999958589,
+    "frame": 22376,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 20.402124999975513,
+    "frame": 22378,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.858833000023878,
+    "frame": 22379,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.7165840000029675,
+    "frame": 22381,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 23.334874999989097,
+    "frame": 22382,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 27.495459000022038,
+    "frame": 22384,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 9.001666000017394,
+    "frame": 22385,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 10.280915999999252,
+    "frame": 22387,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 12.130874999968455,
+    "frame": 22388,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 8.81791599999815,
+    "frame": 22390,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 26.374874999987696,
+    "frame": 22391,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 20.446291000041583,
+    "frame": 22393,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 22.23066699997389,
+    "frame": 22394,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 10.354875000018637,
+    "frame": 22396,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.306166000034864,
+    "frame": 22397,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.768540999999914,
+    "frame": 22399,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.125167000017427,
+    "frame": 22400,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 18.582125000023098,
+    "frame": 22410,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.53533400000606,
+    "frame": 22412,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 25.225832999979048,
+    "frame": 22413,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.659083000030932,
+    "frame": 22415,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.081209000010858,
+    "frame": 22416,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 23.583459000008133,
+    "frame": 23245,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 20.663708000029146,
+    "frame": 23246,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 8.23595800000021,
+    "frame": 23248,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.420707999974184,
+    "frame": 23249,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 8.565250000003743,
+    "frame": 23251,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.477166999980909,
+    "frame": 23252,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.793125000025157,
+    "frame": 23254,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.96070799999916,
+    "frame": 23255,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.878709000025083,
+    "frame": 23267,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.31816700002264,
+    "frame": 23268,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.474208000019189,
+    "frame": 23270,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.647208999960185,
+    "frame": 23271,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 8.236457999998947,
+    "frame": 23273,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.879624999977295,
+    "frame": 23274,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.90070900000228,
+    "frame": 23276,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.622374999963995,
+    "frame": 23277,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.981958999996095,
+    "frame": 23279,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.193416999986766,
+    "frame": 23280,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.00975000002336,
+    "frame": 23282,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.080417000002399,
+    "frame": 23283,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.770459000018491,
+    "frame": 23285,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.949957999997423,
+    "frame": 23286,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.918208000035065,
+    "frame": 23288,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.0856670000030135,
+    "frame": 23289,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.94891700003609,
+    "frame": 23291,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.639334000037252,
+    "frame": 23292,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.90216600002259,
+    "frame": 23294,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.593167000005451,
+    "frame": 23297,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.705707999993592,
+    "frame": 23298,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.567917000003035,
+    "frame": 23300,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.891750000017964,
+    "frame": 23301,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.680583999994724,
+    "frame": 23312,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.045166000049903,
+    "frame": 23313,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.375208000004022,
+    "frame": 23317,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 18.430749999993168,
+    "frame": 23320,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 6.0056250000002365,
+    "frame": 23321,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 28.209249999974872,
+    "frame": 23323,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.520332999974016,
+    "frame": 24205,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.849290999961795,
+    "frame": 24206,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.829374999995252,
+    "frame": 24208,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.422582999983661,
+    "frame": 24209,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 8.93691599998192,
+    "frame": 24211,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.391250000002401,
+    "frame": 24212,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 7.247833000008086,
+    "frame": 24214,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.92600000000266,
+    "frame": 24215,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.10924999999952,
+    "frame": 24224,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.60100000000375,
+    "frame": 24226,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.976583999995455,
+    "frame": 24227,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.182292000005418,
+    "frame": 24229,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 8.149875000015072,
+    "frame": 24230,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.468625000024986,
+    "frame": 24232,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.286375000001954,
+    "frame": 24233,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 19.45212499998661,
+    "frame": 24235,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 7.741041999963727,
+    "frame": 24236,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 7.077707999997074,
+    "frame": 24238,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.589458000031755,
+    "frame": 24239,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.943041999970319,
+    "frame": 24241,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.237291999980243,
+    "frame": 24242,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.9036659999947005,
+    "frame": 24244,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.783000000017637,
+    "frame": 24245,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.884959000013623,
+    "frame": 24247,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 19.194833000028666,
+    "frame": 24248,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.93470900002103,
+    "frame": 24250,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.55491599999459,
+    "frame": 24251,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.330250000009528,
+    "frame": 24255,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.763500000000477,
+    "frame": 24256,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.938417000019854,
+    "frame": 24258,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.798582999982045,
+    "frame": 24259,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.324791000011828,
+    "frame": 24269,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.421374999973978,
+    "frame": 24271,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 26.905999999996766,
+    "frame": 24272,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.419249999984004,
+    "frame": 24274,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.000917000037134,
+    "frame": 24275,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.280500000026677,
+    "frame": 25100,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.234541000040736,
+    "frame": 25101,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 8.256583999980194,
+    "frame": 25103,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.626457999994727,
+    "frame": 25104,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 9.671957999955794,
+    "frame": 25106,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.688207999980932,
+    "frame": 25107,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.812042000002293,
+    "frame": 25109,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.53962500003081,
+    "frame": 25110,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.732000000014068,
+    "frame": 25119,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.673125000001619,
+    "frame": 25121,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.937708999965707,
+    "frame": 25122,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.963000000008378,
+    "frame": 25124,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.7560409999932745,
+    "frame": 25125,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.594833000008293,
+    "frame": 25127,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.933958000014172,
+    "frame": 25128,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 18.555582999965736,
+    "frame": 25130,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.601999999986674,
+    "frame": 25131,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 7.301584000003913,
+    "frame": 25133,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.198709000036615,
+    "frame": 25134,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.886375000036423,
+    "frame": 25136,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.056124999986423,
+    "frame": 25137,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.933999999967909,
+    "frame": 25139,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.818749999955799,
+    "frame": 25140,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.718082999976559,
+    "frame": 25142,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.44091699998762,
+    "frame": 25143,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.270333000022674,
+    "frame": 25145,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 18.38674999999057,
+    "frame": 25146,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 11.982334000038009,
+    "frame": 25150,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.017290999977831,
+    "frame": 25151,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.863500000004024,
+    "frame": 25153,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.614042000038353,
+    "frame": 25154,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 27.10562499999014,
+    "frame": 25163,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.276834000028884,
+    "frame": 25164,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 33.039667000025474,
+    "frame": 25166,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.699457999966853,
+    "frame": 25167,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 29.095124999969357,
+    "frame": 25169,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.469374999990123,
+    "frame": 26042,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.244083999997656,
+    "frame": 26043,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.743041000016547,
+    "frame": 26045,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.103750000012951,
+    "frame": 26046,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.183874999952877,
+    "frame": 26048,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.421207999996568,
+    "frame": 26049,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.8328750000337095,
+    "frame": 26051,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.139749999960259,
+    "frame": 26052,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.723791999997957,
+    "frame": 26066,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.448583000027156,
+    "frame": 26067,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.771791999985453,
+    "frame": 26069,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 3.974666999965848,
+    "frame": 26070,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.567833000019618,
+    "frame": 26072,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.258624999977201,
+    "frame": 26073,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.792875000021013,
+    "frame": 26075,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.242417000014939,
+    "frame": 26076,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.939333999971041,
+    "frame": 26078,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.305000000054406,
+    "frame": 26079,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.094375000036962,
+    "frame": 26080,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.801000000014938,
+    "frame": 26082,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.150666999976238,
+    "frame": 26083,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.293749999987995,
+    "frame": 26085,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.698584000015217,
+    "frame": 26086,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.2179170000054,
+    "frame": 26088,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.78645900003994,
+    "frame": 26089,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.757082999987233,
+    "frame": 26091,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.428874999955042,
+    "frame": 26092,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.9026669999771,
+    "frame": 26097,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.073084000026483,
+    "frame": 26098,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.929792000003545,
+    "frame": 26100,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.299583000029088,
+    "frame": 26101,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.769334000016897,
+    "frame": 26116,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.011792000023888,
+    "frame": 26117,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 20.282167000004847,
+    "frame": 26119,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.894125000021177,
+    "frame": 26120,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 21.525457999985065,
+    "frame": 26122,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.959667000084664,
+    "frame": 27014,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.703583000004073,
+    "frame": 27015,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.170125000039661,
+    "frame": 27017,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.609542000025613,
+    "frame": 27018,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 8.328083000037623,
+    "frame": 27020,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 7.225542000014684,
+    "frame": 27021,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.054082999980892,
+    "frame": 27023,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.184666999924048,
+    "frame": 27024,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.93545800008178,
+    "frame": 27034,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.27341600008458,
+    "frame": 27035,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.327333000082035,
+    "frame": 27037,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.702542000018184,
+    "frame": 27038,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.586416000004647,
+    "frame": 27040,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 7.471541999962028,
+    "frame": 27041,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.762750000007145,
+    "frame": 27043,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.162208000058854,
+    "frame": 27044,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.163417000062509,
+    "frame": 27046,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.567957999938699,
+    "frame": 27047,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.803166999968198,
+    "frame": 27049,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.631791000013436,
+    "frame": 27050,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.670250000003762,
+    "frame": 27052,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 3.955749999931868,
+    "frame": 27053,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.83016600000974,
+    "frame": 27055,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 3.90287499999431,
+    "frame": 27056,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.628292000021247,
+    "frame": 27058,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.413665999953082,
+    "frame": 27059,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.766000000032363,
+    "frame": 27061,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.020500000024185,
+    "frame": 27066,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 3.917417000025125,
+    "frame": 27067,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 7.444083999985196,
+    "frame": 27069,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.236874999942302,
+    "frame": 27070,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.537208000092505,
+    "frame": 27082,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.103499999947417,
+    "frame": 27083,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 15.404375000002801,
+    "frame": 27085,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.296082999985629,
+    "frame": 27086,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 20.43025000000398,
+    "frame": 27088,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.35962499993093,
+    "frame": 27953,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.606875000026776,
+    "frame": 27954,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.571124999960375,
+    "frame": 27956,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.603125000016917,
+    "frame": 27957,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.732209000096191,
+    "frame": 27959,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.014083000015489,
+    "frame": 27960,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.533290999892415,
+    "frame": 27962,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.733582999999271,
+    "frame": 27963,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.740708000023915,
+    "frame": 27974,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.205375000007734,
+    "frame": 27975,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.547916999968038,
+    "frame": 27977,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.014458000028753,
+    "frame": 27978,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.022625000014159,
+    "frame": 27980,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.30491700001312,
+    "frame": 27981,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.487041000061254,
+    "frame": 27983,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.458291999995708,
+    "frame": 27984,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.225917000075242,
+    "frame": 27986,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.301832999999533,
+    "frame": 27987,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.969792000011694,
+    "frame": 27989,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.12674999999308,
+    "frame": 27990,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.503791999899477,
+    "frame": 27992,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.6877079998921545,
+    "frame": 27993,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.071584000073017,
+    "frame": 27995,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 8.185792000062975,
+    "frame": 27996,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 60.990416999970876,
+    "frame": 27998,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 38.530124999965665,
+    "frame": null,
+    "frame_wait_error": true
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.72891700002765,
+    "frame": 28066,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.676124999969943,
+    "frame": 28069,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.16587500001242,
+    "frame": 28070,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.674541000004865,
+    "frame": 28072,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.327500000040345,
+    "frame": 28073,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.218041999905836,
+    "frame": 28126,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.076124999997774,
+    "frame": 28135,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.9454160000696,
+    "frame": 28136,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.543874999986656,
+    "frame": 28140,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 18.403958000021703,
+    "frame": 28143,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.264374999934262,
+    "frame": 28144,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 21.872499999972206,
+    "frame": 28146,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.092499999970642,
+    "frame": 28999,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.062249999985397,
+    "frame": 29000,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.8544169999995574,
+    "frame": 29002,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.211291000023266,
+    "frame": 29003,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.850958999962131,
+    "frame": 29005,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.835750000007465,
+    "frame": 29006,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.037708000031671,
+    "frame": 29008,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.655999999992673,
+    "frame": 29009,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.560834000008072,
+    "frame": 29020,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.5990410000677,
+    "frame": 29022,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.4727499999908105,
+    "frame": 29023,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.406667000012021,
+    "frame": 29025,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.519041999946239,
+    "frame": 29026,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.75620899999285,
+    "frame": 29028,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.64279200002693,
+    "frame": 29029,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.471374999994623,
+    "frame": 29031,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.686583000079736,
+    "frame": 29032,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.898084000046765,
+    "frame": 29034,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.21199999995315,
+    "frame": 29035,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.419375000012224,
+    "frame": 29037,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.8885830000008355,
+    "frame": null,
+    "frame_wait_error": true
+  },
+  {
+    "route": "k",
+    "milliseconds": 3.2679160000270713,
+    "frame": 29126,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.265666999979658,
+    "frame": 29127,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.7385420000409795,
+    "frame": 29129,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.14437500002441,
+    "frame": 29130,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.558083999943847,
+    "frame": 29132,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.262874999919404,
+    "frame": 29133,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.640458000063518,
+    "frame": 29138,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.357542000093417,
+    "frame": 29139,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 7.914041999924848,
+    "frame": 29141,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.643958999959068,
+    "frame": 29142,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.754790999973011,
+    "frame": 29156,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.008999999968182,
+    "frame": 29157,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 21.03908300000512,
+    "frame": 29159,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.8328750000337095,
+    "frame": 29160,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 22.022083000024395,
+    "frame": 29162,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.767500000019027,
+    "frame": 29998,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.084624999943117,
+    "frame": 29999,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.925124999976106,
+    "frame": 30001,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.495166000036079,
+    "frame": 30002,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.212333999973453,
+    "frame": 30003,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.126375000031658,
+    "frame": 30005,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.838209000013194,
+    "frame": 30006,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.316416000085155,
+    "frame": 30008,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 18.978582999920945,
+    "frame": 30017,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.084750000094573,
+    "frame": 30019,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.342041999914727,
+    "frame": 30020,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.6018750000012005,
+    "frame": 30022,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 7.57729199995083,
+    "frame": 30023,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.431749999933345,
+    "frame": 30025,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.551540999931603,
+    "frame": 30026,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 19.22795899997709,
+    "frame": 30028,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.046416999993198,
+    "frame": 30029,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 6.182416000001467,
+    "frame": 30031,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 18.484667000052468,
+    "frame": 30032,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.743042000006426,
+    "frame": 30034,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.20962499997313,
+    "frame": 30035,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 7.025999999996202,
+    "frame": 30037,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 9.869458000025588,
+    "frame": 30038,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.5175839999938034,
+    "frame": 30040,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.97245800003111,
+    "frame": 30041,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 18.209082999987913,
+    "frame": 30043,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 19.773041999997076,
+    "frame": 30044,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.659000000060587,
+    "frame": 30048,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 5.457500000034088,
+    "frame": 30049,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.013582999931714,
+    "frame": 30051,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.210291999987021,
+    "frame": 30052,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 23.49824999998873,
+    "frame": 30061,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 17.14100000003782,
+    "frame": 30062,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 26.094542000009824,
+    "frame": 30064,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 5.349832999968385,
+    "frame": 30065,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 25.030334000007315,
+    "frame": 30067,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.649917000089772,
+    "frame": 30929,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.435291999987385,
+    "frame": 30930,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.455083000015293,
+    "frame": 30932,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 5.88212500008467,
+    "frame": 30933,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.061416999955327,
+    "frame": 30934,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.572542000005342,
+    "frame": 30936,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.9047499999469437,
+    "frame": 30937,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.522417000013775,
+    "frame": 30939,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.7047500000117,
+    "frame": 30954,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.970375000056265,
+    "frame": 30955,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.864750000024287,
+    "frame": 30957,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.452374999914355,
+    "frame": 30958,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 6.5341249999164575,
+    "frame": 30960,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.434707999962484,
+    "frame": 30961,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.621666999923946,
+    "frame": 30963,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.289207999970131,
+    "frame": 30964,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 5.214374999923166,
+    "frame": 30966,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 4.145125000036387,
+    "frame": 30967,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 12.999042000046757,
+    "frame": 30969,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 10.396875000083128,
+    "frame": 30970,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.551666999986992,
+    "frame": 30972,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 3.857291000031182,
+    "frame": 30973,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 6.322334000060437,
+    "frame": 30975,
+    "frame_wait_error": false
+  },
+  {
+    "route": "k",
+    "milliseconds": 4.102999999986423,
+    "frame": 30976,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.300208999998176,
+    "frame": 30978,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.552625000035732,
+    "frame": 30979,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 13.095417000045018,
+    "frame": 30981,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.580584000019371,
+    "frame": 30985,
+    "frame_wait_error": false
+  },
+  {
+    "route": "t",
+    "milliseconds": 4.0422499999976935,
+    "frame": 30986,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 7.598290999908386,
+    "frame": 30988,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 8.850374999951782,
+    "frame": 30989,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.347291000040059,
+    "frame": 31042,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.536292000002504,
+    "frame": 31050,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.906999999998334,
+    "frame": 31051,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 16.744875000085813,
+    "frame": 31053,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 4.835957999944185,
+    "frame": 31054,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 21.497374999967178,
+    "frame": 31056,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 11.495042000092326,
+    "frame": 181,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.648167000018475,
+    "frame": 238,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 14.454916999966372,
+    "frame": 287,
+    "frame_wait_error": false
+  },
+  {
+    "route": "m",
+    "milliseconds": 3.4218329999475827,
+    "frame": 291,
+    "frame_wait_error": false
+  },
+  {
+    "route": "click",
+    "milliseconds": 9.672708000039165,
+    "frame": 340,
+    "frame_wait_error": false
+  }
+]

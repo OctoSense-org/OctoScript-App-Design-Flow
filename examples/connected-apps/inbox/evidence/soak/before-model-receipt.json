@@ -1,0 +1,45 @@
+{
+  "model": "DeepSeek deepseek-v4-flash",
+  "turns": [
+    {
+      "kind": "human_draft_change",
+      "elapsed_seconds": 9.594,
+      "tools": [
+        "inbox_message",
+        "inbox_draft_get",
+        "inbox_draft_edit",
+        "inbox_draft_get"
+      ],
+      "decisions": [],
+      "tool_error_count": 0
+    },
+    {
+      "kind": "important_mail",
+      "elapsed_seconds": 11.766,
+      "tools": [
+        "inbox_event_status",
+        "inbox_message",
+        "inbox_notify",
+        "inbox_event_decide"
+      ],
+      "decisions": [
+        "published"
+      ],
+      "tool_error_count": 0
+    },
+    {
+      "kind": "quiet_mail",
+      "elapsed_seconds": 6.98,
+      "tools": [
+        "inbox_event_status",
+        "inbox_message",
+        "inbox_event_decide"
+      ],
+      "decisions": [
+        "quiet"
+      ],
+      "tool_error_count": 0
+    }
+  ],
+  "model_run_binary_sha256": "7b7f022f32b5777fbfbbbc7afccdd2b5e2a35ca9150bedc9040dfd98a8dac431"
+}

@@ -10,6 +10,31 @@ Sources: `crates/appstore/src/services.rs` in
 and the Mail service in
 [OctoSense `apps/mail/host-service`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/mail/host-service).
 
+## Shared provider services: connected-samples branch
+
+The ordinary [connected app samples](../examples/connected-apps/README.md) use
+`auth`, `github`, `gcalendar` and `gmail`. These require OctoSense
+`feat/app-hub-connected-samples` and the matching App Hub policy
+`eaaffffd695caf7ebf6205c455377c1f8567b906`; they are not a claim about older
+installed shells. [The shared-service guide](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/crates/oauth-service/README.md) contains client
+registration, supported methods, account lifecycle and platform limits.
+
+| Family | Purpose |
+| --- | --- |
+| `auth` | Provider consent, account handles, active selection and disconnect; no OctoSense cloud account |
+| `github` | Repository/file reads and host-reviewed saves using the remote blob SHA |
+| `gcalendar` | Calendar/event reads, complete incremental sync and host-reviewed writes using ETags |
+| `gmail` | Mail reads, revisioned drafts, native exact-message send review and durable incoming-event status/decisions |
+
+Each business service needs its own capability as well as an authorized
+provider connection. A bundle receives handles and results, never provider
+tokens or client secrets. Configure clients outside app data. Android Google
+login is unsupported until the native authorization adapter exists; desktop
+loopback is not an Android fallback. Live provider operations and these samples
+on the OnePlus 6 remain unverified. Standalone `card-host` registers none of the
+new services. App-defined peer aliases use only reviewed `host_method` values;
+they cannot expose sign-in mutation, approval or remote send methods.
+
 ## The services that exist
 
 | Family | Service (source) | Who may call it | Shells that register it |
