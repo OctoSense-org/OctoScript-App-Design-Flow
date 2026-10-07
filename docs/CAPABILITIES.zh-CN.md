@@ -47,7 +47,7 @@
 | --- | --- | --- |
 | `net` | `net.http_request` 和 `net.web_socket`，只能访问 `network.hosts` 中列出的主机。主机必须写成精确的小写纯主机名：不带协议、路径、端口或通配符。 | 脚本中根本没有 `net`：`variable net not found in scope`。申请了 `net` 但主机列表为空时也是如此。 |
 | `images` | 任何公开 `https://` 主机上的图片（`Image{src: http_resource(url)}`），不限于 `network.hosts`，例如 RSS 阅读器的缩略图。`net.http_request` 的访问范围不会因此扩大。 | 只能加载已列出主机上的图片。 |
-| `web` | `WebReader` 可以打开任何公开的 `https://` 网页。网页无法反过来访问应用。 | `WebReader.open` 只能打开已列出主机上的网页，其他一律拒绝：``refused <url>: not on this app's host list, and no `web` grant``。 |
+| `web` | `WebReader` 可以在系统的网页视图中打开任何公开的 `https://` 网页。网页无法反过来访问应用。这个视图只能在 macOS、iOS 和 Android 上打开。Windows、Linux 和 OpenHarmony 版本没有对应的处理程序：`open` 返回 `true`，但不会出现网页，日志中显示 `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`。 | `WebReader.open` 只能打开已列出主机上的网页，其他一律拒绝：``refused <url>: not on this app's host list, and no `web` grant``。 |
 
 运行时和准入检查会拒绝以下情况：
 
@@ -191,7 +191,7 @@ this app was not granted "mail", which "mail.accounts" needs
 | 名称 | 授予什么 | 由谁提供 |
 | --- | --- | --- |
 | `octos.session.open`、`octos.session.history`、`octos.turn.start`、`octos.turn.interrupt` | 应用与设备助手的专属对话。见 [AI-SERVICES](AI-SERVICES.zh-CN.md#助手相关能力)。 | 运行 octos 内核的 OctoSense Shell，前提是用户已允许该应用的 Agent。在此之前，调用会返回 `Waiting for the person to allow this app's agent (OctoSense asks the first time)`。Matrix 客户端 Rinx 也向以迷你应用形式导入其中的应用包提供这些服务。 |
-| `matrix.*`（45 个名称，例如 `matrix.read_messages`） | 每个名称对应用户 Matrix 账户上的一项操作。 | 只有 Rinx 提供，且只面向它自己的迷你应用。不要申请。 |
+| `matrix.*`（45 个名称，例如 `matrix.read_messages`） | 每个名称对应用户 Matrix 账户上的一项操作。 | 没有任何 OctoSense Shell 向已安装的应用提供。**未验证**：Rinx 向它自己的迷你应用提供这些名称。只有开发 Rinx 迷你应用时才申请。 |
 | `palpo.*`（29 个名称，例如 `palpo.inbox.list`） | 每个名称对应一项操作，在 Matrix 服务器 Palpo 上针对用户的账户执行。 | 没有任何 OctoSense Shell 提供。不要申请。 |
 
 ## 存储、计算与 Agent 上限

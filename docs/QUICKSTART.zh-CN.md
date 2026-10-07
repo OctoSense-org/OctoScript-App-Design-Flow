@@ -115,8 +115,13 @@ created …/my-app
 ```sh
 cd ~/apps/my-app
 git init
-printf 'bundle/** -text\n' > .gitattributes
+printf 'bundle/** -text\n' >> .gitattributes
+git check-attr text -- bundle/manifest.json
 ```
+
+成功时输出 `bundle/manifest.json: text: unset`。`>>` 是追加写入，已有的 `.gitattributes` 会保留原来的规则。
+
+如果应用放在一个更大的仓库里，根目录 `.gitattributes` 中的 `bundle/**` 覆盖不到它的应用包。请写出从根目录算起的应用包路径，例如 `apps/my-app/bundle/** -text`；或者写 `**/bundle/** -text`，匹配任意层级的 `bundle/` 文件夹。然后在根目录下检查清单的真实路径：`git check-attr text -- apps/my-app/bundle/manifest.json`。在那里检查 `bundle/manifest.json` 说明不了任何问题：只要路径与模式匹配，`git check-attr` 就输出 `unset`，即使这个文件并不存在。
 
 ## 4. 在桌面上运行
 

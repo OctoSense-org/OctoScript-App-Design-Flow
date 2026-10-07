@@ -164,8 +164,20 @@ converts line endings (Git on Windows with `core.autocrlf=true`) breaks it:
 ```sh
 cd ~/apps/my-app
 git init
-printf 'bundle/** -text\n' > .gitattributes
+printf 'bundle/** -text\n' >> .gitattributes
+git check-attr text -- bundle/manifest.json
 ```
+
+Success prints `bundle/manifest.json: text: unset`. `>>` appends, so an
+existing `.gitattributes` keeps its rules.
+
+If the app sits inside a larger repository, `bundle/**` in the root's
+`.gitattributes` does not cover its bundle. Write the bundle's path from the
+root, such as `apps/my-app/bundle/** -text`, or `**/bundle/** -text` for a
+`bundle/` folder at any depth. Then check the real manifest path from the
+root: `git check-attr text -- apps/my-app/bundle/manifest.json`. A check of
+`bundle/manifest.json` there proves nothing: `git check-attr` prints `unset`
+for any path that matches the pattern, even one that does not exist.
 
 ## 4. Run it on the desktop
 

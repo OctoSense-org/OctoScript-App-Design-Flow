@@ -267,10 +267,13 @@ supported tool that interprets them. A record saved at the jail root stays
 outside the account workspace. Host-service credentials and
 `.host` state remain outside the app's jail.
 
-An app's `tools.json` describes APIs for model callers. The shell runs a
-granted tool with `implemented_by: "host-service"` on the host service of
-its namespace or of its `host_method`, for store and system apps alike. A tool
-with `implemented_by: "app"` has no executor, and the shell refuses it.
+An app's `tools.json` describes APIs for model callers. The shell runs a tool
+with `implemented_by: "host-service"` on the host service its `host_method`
+names, or else on the service of its namespace, when the app is granted that
+family. A system app's own namespace counts as granted; a store app's
+namespace grants nothing, so a store app's tools run through a `host_method`
+from App Hub's reviewed list. A tool with `implemented_by: "app"` has no
+executor, and the shell refuses it.
 `AGENT.md` and skills are loaded as guidance for each turn. `background` and
 `triggers.events` are honored for two events: Mail's `mail.messages.new` and
 the Gmail service's `<namespace>.new_message`. Not yet: schedules, and model

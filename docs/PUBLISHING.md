@@ -224,7 +224,9 @@ before App Hub's current `main` overwrites without asking and uses your
 default permissions; rebuild it first.
 
 [SUBMITTING §5](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#5-produce-the-final-bytes)
-gives the publisher id, `publisher.json` and the signing commands; App Hub's
+gives the publisher id and the signing commands, and
+[SUBMITTING §1](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#1-lay-out-the-repository)
+shows what `publisher.json` holds; App Hub's
 [Signing](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#signing)
 is the reference.
 
@@ -431,7 +433,8 @@ under `store-data/my-test-notes/bundle`; **OPEN** does not show the app.
 [ ] tools/octo check "$B"                               -> "— PASSED" (only the unsigned warning)
 [ ] tools/octo check "$B" --catalog <App Hub catalog.json>   -> no version or continuity refusal
 [ ] mkdir -p "$APP/build"; hub scan "$B" --packet "$APP/build/review.json"   -> 7 questions answered in writing (8 with tools.json, AGENT.md or skills)
-[ ] .gitattributes holds bundle/** -text; git status: only bundle/ and app sources; no keys, .local-state or build/
+[ ] git -C "$APP" check-attr text -- "$B/manifest.json"   -> "text: unset" (QUICKSTART §3)
+[ ] git status: only bundle/ and app sources; no keys, .local-state or build/
 [ ] HUMAN: sign last; hub check --publisher-key <publisher-id>=<hex public key> -> PASSED (App Hub SUBMITTING §5)
 [ ] HUMAN: commit, tag v<version>, plain hub check on a fresh clone of the tag (SUBMITTING §6)
 [ ] HUMAN: open the issue "Submit <app id> <version>" on OctoSense-App-Hub (SUBMITTING §7)

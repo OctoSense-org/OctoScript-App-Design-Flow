@@ -157,7 +157,7 @@ no --reviewer given; the packet holds 7 questions for one
 
 `keygen` 从不覆盖已有文件。如果该路径上已经有文件或符号链接，它会停下并报错 `hub: cannot create new signing key "<key-file>": File exists (os error 17)`；请换一个路径，并且绝不要删除已经用来发布过的密钥。在 macOS 和 Linux 上，它以 0600 权限创建文件，只有你能读取。在 Windows 上，请把密钥放在只有你能读取的文件夹中。比 App Hub 当前 `main` 旧的 `hub` 会不加询问地直接覆盖，并沿用你的默认权限；请先重新构建 `hub`。
 
-发布者 id、`publisher.json` 和签名命令见 [SUBMITTING §5](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#5-生成最终字节)；完整参考见 App Hub 的 [签名](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#签名) 一节。
+发布者 id 和签名命令见 [SUBMITTING §5](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#5-生成最终字节)，`publisher.json` 包含哪些内容见 [SUBMITTING §1](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#1-安排仓库结构)；完整参考见 App Hub 的 [签名](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#签名) 一节。
 
 ### 3.7 为最终字节签名（HUMAN）
 
@@ -296,7 +296,8 @@ App Hub 的独立商店 `appstore` 不需要 Shell 也能从同一个镜像安�
 [ ] tools/octo check "$B"                               -> "— PASSED"（只有未签名警告）
 [ ] tools/octo check "$B" --catalog <App Hub catalog.json>   -> 没有 version 或 continuity 拒绝
 [ ] mkdir -p "$APP/build"; hub scan "$B" --packet "$APP/build/review.json"   -> 7 个问题都已书面作答（附带 tools.json、AGENT.md 或 skills 时为 8 个）
-[ ] .gitattributes 中有 bundle/** -text；git status 中只有 bundle/ 和应用源码，没有密钥、.local-state 或 build/
+[ ] git -C "$APP" check-attr text -- "$B/manifest.json"   -> "text: unset"（QUICKSTART §3）
+[ ] git status 中只有 bundle/ 和应用源码，没有密钥、.local-state 或 build/
 [ ] HUMAN：最后签名；hub check --publisher-key <publisher-id>=<hex public key> -> PASSED（App Hub SUBMITTING §5）
 [ ] HUMAN：commit，打 tag v<version>，在 tag 的全新克隆上直接运行 hub check（SUBMITTING §6）
 [ ] HUMAN：在 OctoSense-App-Hub 开 issue "Submit <app id> <version>"（SUBMITTING §7）

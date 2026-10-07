@@ -97,10 +97,14 @@ needs no AI service or API key.
   - the host runs the OAuth sign-in and gives the app a connection handle,
     never a token. Beta.2 has no built-in provider registrations, so the
     host's operator supplies them in `oauth/clients.json`;
-  - `tools.json` tools run only with `implemented_by: "host-service"`,
-    directly or through an allowlisted `host_method`. The capability, risk,
-    private-data and account checks still apply, and the shell refuses
-    `implemented_by: "app"`;
+  - a store app's `tools.json` tools run only with
+    `implemented_by: "host-service"` and a `host_method` from App Hub's
+    reviewed list: reads of `github`, `gcalendar` and `gmail`, Gmail drafts
+    and events, and `glance`. A tool without `host_method` calls its
+    namespace's service, such as `summary` for `dev.example.summary`, which
+    no capability grants, so it answers `not_granted`. The shell refuses
+    `implemented_by: "app"`, so no tool runs the app's own code. The
+    capability, risk, private-data and account checks still apply;
   - admitted `AGENT.md` and skill text is per-turn guidance, not an
     executable kernel skill.
 
@@ -156,9 +160,12 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   `makepad_widgets:resources/Inter.ttf`. Ship any other font as a file in the
   bundle ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
 - **Keep the bytes exact.** The digest covers every byte of every file, so a
-  line-ending conversion breaks it. Commit a `.gitattributes` holding
-  `bundle/** -text`, so that a Windows checkout with `core.autocrlf=true`
-  leaves the bundle alone.
+  line-ending conversion breaks it. Commit a `.gitattributes` that unsets
+  `text` for the bundle (`bundle/** -text` when `bundle/` is at the
+  repository root), so that a Windows checkout with `core.autocrlf=true`
+  leaves the bundle alone. Confirm it with
+  `git check-attr text -- <path to bundle>/manifest.json`, which prints
+  `text: unset` ([QUICKSTART §3](docs/QUICKSTART.md#3-create-an-app)).
 - **Sign last, and never edit after signing.** Capture screenshots and run
   `card-host` on the unsigned bundle; `card-host` refuses a signed one. Only
   a person signs. Any edit after signing needs a new stamp and a new

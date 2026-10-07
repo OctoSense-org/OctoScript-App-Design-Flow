@@ -58,7 +58,7 @@ the gate warns about each script that calls `fs.*` and about a `camera` grant:
 | --- | --- | --- |
 | `net` | `net.http_request` and `net.web_socket`, to exactly the hosts in `network.hosts`. A host is a bare, exact, lowercase name: no scheme, path, port or wildcard. | No `net` in the script at all: `variable net not found in scope`. The same holds for `net` with an empty host list. |
 | `images` | Pictures (`Image{src: http_resource(url)}`) from any public `https://` host, beyond `network.hosts`: a feed reader's thumbnails. It does not widen `net.http_request`. | Pictures load only from listed hosts. |
-| `web` | `WebReader` opens any public `https://` page. The page has no way back into the app. | `WebReader.open` works only for listed hosts and refuses others: ``refused <url>: not on this app's host list, and no `web` grant``. |
+| `web` | `WebReader` opens any public `https://` page in the system web view. The page has no way back into the app. The view opens only on macOS, iOS and Android. Windows, Linux and OpenHarmony builds have no handler for it: `open` returns `true`, no page appears, and the log says `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`. | `WebReader.open` works only for listed hosts and refuses others: ``refused <url>: not on this app's host list, and no `web` grant``. |
 
 The runtime and the gate refuse these:
 
@@ -269,7 +269,7 @@ Each is its own consent; a prefix grants nothing.
 | Names | What they grant | Who serves them |
 | --- | --- | --- |
 | `octos.session.open`, `octos.session.history`, `octos.turn.start`, `octos.turn.interrupt` | The app's own conversation with the device's assistant. See [AI-SERVICES](AI-SERVICES.md#the-assistant-capabilities). | An OctoSense shell that hosts the octos kernel, once the person allows the app's agent. Until then a call answers `Waiting for the person to allow this app's agent (OctoSense asks the first time)`. Rinx, a Matrix client, also serves them to bundles imported into it as mini-apps. |
-| `matrix.*` (45 names, such as `matrix.read_messages`) | One operation each on the person's Matrix account. | Only Rinx, for its own mini-apps. Do not request them. |
+| `matrix.*` (45 names, such as `matrix.read_messages`) | One operation each on the person's Matrix account. | No OctoSense shell, for an installed app. **Unverified:** Rinx serves them to its own mini-apps. Request them only for a Rinx mini-app. |
 | `palpo.*` (29 names, such as `palpo.inbox.list`) | One operation each on Palpo, a Matrix server, for the person's account. | No OctoSense shell. Do not request them. |
 
 ## Storage, compute and agent limits

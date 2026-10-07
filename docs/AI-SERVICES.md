@@ -163,9 +163,9 @@ override), and `0` turns the assistant off for every app.
 ### The person talks to an app's agent directly
 
 An app's agent is not only reachable through the system agent: the person
-can talk to it directly, in three places, all of them the **person's lane**
-of the same conversation. Nothing runs until the person has allowed the
-app's agent on its first-use sheet.
+can talk to it directly, in three places. Each place has a **person's lane**
+of its own, beside the system agent's lane. Nothing runs until the person
+has allowed the app's agent on its first-use sheet.
 
 | Where | What the person does | What the app author writes |
 | --- | --- | --- |
@@ -174,11 +174,16 @@ app's agent on its first-use sheet.
 | The **app's own screens** | Uses whatever chat or "ask" control the app draws. | `host.request("octos.session.open" / "octos.turn.start" / "octos.session.history" / "octos.turn.interrupt", …)` on the `octos` service, with those names in `capabilities` ([A minimal call](#a-minimal-call-and-handling-unavailable)). |
 
 - **One conversation, two lanes.** The system agent's lane is the peer's
-  own session (`_main:api:octosense#peer-…`); the person's lane is a request
+  own session (`_main:api:octosense#peer-…`); a person's lane is a request
   context opened with shared history (`…#peerctx-…`). Each lane sees the
   other's recent messages, read only. Turns are labeled by speaker, and the
   events and `octos.session.history` rows carry `lane` (`person` or
   `system_agent`) and `speaker`.
+- **Each place keeps its own person's lane.** OctoSense keys a person's lane
+  by account and client instance. The panel's instance is `shell-ask`, an
+  in-card chat's is `card-chat`, and the app's own `octos.*` calls use
+  `<peer>-g<generation>`. So `octos.session.history` returns the app's own
+  conversation, never what the person asked in the panel or in a card.
 - A turn from the panel or the system chat is the person's own
   (`TurnTrigger::Person`).
 - **Stop on the shell's approval surface** for an app's agent (the button
@@ -189,9 +194,9 @@ app's agent on its first-use sheet.
   no touch control opens it (the phone's Assistant tile opens the system
   chat); not run on a device. An app's own screens and its Glance cards
   work there as on the desktop.
-- Native modules and process apps reach the same person's lane their own
-  way (`open_conversation` on the injected service, or the peer link); a
-  script app uses the `octos.*` names above.
+- Native modules and process apps open a person's lane their own way
+  (`open_conversation` on the injected service, or the peer link); a script
+  app uses the `octos.*` names above.
 
 ## The assistant capabilities
 
@@ -203,7 +208,7 @@ App Hub [PUBLISHING § The manifest](https://github.com/OctoSense-org/OctoSense-
 | Capability and call | Args | Answer (`r.data`) |
 | --- | --- | --- |
 | `octos.session.open` | `{}` | `{open: true, conversation, shared_history, model: {lane, provider, model} or nil}` |
-| `octos.session.history` | `{}` | the conversation, `{session_id, messages: [...], …}`: both lanes merged by time, each message with its `lane` and speaker |
+| `octos.session.history` | `{}` | the app's own conversation, `{session_id, messages: [...], …}`: its lane and the system agent's, merged by time, each message with its `lane` and speaker. It never includes the "Ask &lt;app&gt;" panel's turns. |
 | `octos.turn.start` | `{text}` (1 byte to 32 KiB) | `{turn_id, text, speaker, lane}`: the reply, once the turn ends |
 | `octos.turn.interrupt` | `{}` | `{interrupted, turns}`: in the OctoSense shells it stops the running turns in both lanes, the system agent's included |
 
@@ -501,7 +506,7 @@ OctoSense `crates/shell/src/host_tools/`:
 | --- | --- | --- | --- |
 | `ask_user_question` (octos kernel tool) | `agent.tools: ["ask_user_question"]` | **yes** | **yes** (every system app with an agent) |
 | `files.list`, `files.read`, `files.search` (read, no approval) | every peer whose agent has a workspace, on Unix platforms | **yes**: its account folder only, 128 KiB per read, 500 entries per listing, 100 matches per search | **yes** |
-| Its own `tools.json` tools, `implemented_by: "host-service"` | run on the host service of the tool's `host_method` family, or of its namespace, with the app's identity, as its own `host.request` would; the family must be granted, or be the system app's own namespace | **yes**, for a granted family. Otherwise `not_granted`: `<app> was not granted the <family> service`. A `github`, `gcalendar` or `gmail` call also needs an active connection: `Connect this app account first` | **yes**: News (`news.list`, `news.read`, `news.notify`), Mail (12 tools, such as `mail.peek` and `mail.propose_reply`), Calendar (`calendar.events`, `add_event`, `update_event`, `remove_event`, `notify`, `agenda`), and `photos.notify`, `maps.notify`, `youtube.notify`, `camera.notify` |
+| Its own `tools.json` tools, `implemented_by: "host-service"` | run on the host service of the tool's `host_method` family, or of its namespace, with the app's identity, as its own `host.request` would; the family must be granted, or be the system app's own namespace | **yes**, through a `host_method` on a granted `github`, `gcalendar`, `gmail` or `glance`. Without `host_method`, a tool calls its namespace's service, which no capability grants: `summary.list` in `dev.example.summary` answers `not_granted`, `dev.example.summary was not granted the summary service`. A `github`, `gcalendar` or `gmail` call also needs an active connection: `Connect this app account first` | **yes**: News (`news.list`, `news.read`, `news.notify`), Mail (12 tools, such as `mail.peek` and `mail.propose_reply`), Calendar (`calendar.events`, `add_event`, `update_event`, `remove_event`, `notify`, `agenda`), and `photos.notify`, `maps.notify`, `youtube.notify`, `camera.notify` |
 | Its own `tools.json` tools, `implemented_by: "app"` | would run in the app's script | refused (`app_tool_unavailable`): `<tool> declares a script implementation, but this host does not support script tool dispatch` | the same |
 | The generic host tools `ledger.read`, `ledger.write`, `net.fetch`, `storage.read`, `storage.write`, `card.render` | `agent.tools` | admitted by the gate, but no shell implements them | the same |
 | Other apps' shareable tools (`mail.send`) | a dotted name in `agent.tools` | refused by the gate (`hub check`): `app <id> requests tool "mail.send", which this host does not offer contained apps` (**✓ run**) | granted by the shell's own policy; for example, Mail keeps `calendar.events`, `calendar.add_event` and `calendar.notify` |
@@ -709,8 +714,10 @@ app's own card template through the shared `glance.publish` method:
   `host_method` names, or else its namespace's (`news.list` → `news`). The
   family must be granted, or be a system app's own namespace (`os.calendar`
   → `calendar`); otherwise the call answers
-  `<app> was not granted the <family> service`. The gate admits an `app`
-  tool, but the shell refuses every call to it:
+  `<app> was not granted the <family> service`. A store app's namespace,
+  such as `summary`, is not a capability, so its tools run only through
+  `host_method`. The gate admits an `app` tool, but the shell refuses every
+  call to it:
   `<tool> declares a script implementation, but this host does not support script tool dispatch`
   (OctoSense `crates/shell/src/host_tools/script_apps.rs`).
 - `host_method` maps an ordinary app's tool to a reviewed shared-service

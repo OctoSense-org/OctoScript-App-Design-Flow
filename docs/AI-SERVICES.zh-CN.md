@@ -79,7 +79,7 @@
 
 ### 用户直接与应用的 Agent 对话
 
-应用的 Agent 不只能通过系统 Agent 联系到：用户也可以直接与它对话，有三个地方，都属于同一个对话中的**用户通道**。在用户于首次使用面板上允许该应用的 Agent 之前，什么都不会运行。
+应用的 Agent 不只能通过系统 Agent 联系到：用户也可以在三个地方直接与它对话。每个地方都有自己的**用户通道**，与系统 Agent 的通道并列。在用户于首次使用面板上允许该应用的 Agent 之前，什么都不会运行。
 
 | 在哪里 | 用户怎么做 | 应用作者要写什么 |
 | --- | --- | --- |
@@ -87,11 +87,12 @@
 | 速览栏上的**卡片内对话** | 在应用发布的卡片中输入；应用自己的 Agent 在卡片中回答。 | 一张带 `sys.chat` 和 `ChatEntry` 的 L0 卡片，用 `glance` 发布（见[下文](#ai-撰写的文字与卡片内对话model-copysyschat)）。 |
 | **应用自己的界面** | 使用应用绘制的对话或“提问”控件。 | 在 `octos` 服务上调用 `host.request("octos.session.open" / "octos.turn.start" / "octos.session.history" / "octos.turn.interrupt", …)`，并在 `capabilities` 中列出这些名称（见[最小调用示例](#最小调用示例与不可用状态)）。 |
 
-- **一个对话，两条通道。** 系统 Agent 的通道是 peer 自己的会话（`_main:api:octosense#peer-…`）；用户的通道是一个以共享历史方式打开的请求上下文（`…#peerctx-…`）。每条通道都能只读地看到另一条通道最近的消息。回合按发言者标注，事件和 `octos.session.history` 的每一行都带有 `lane`（`person` 或 `system_agent`）和 `speaker`。
+- **一个对话，两条通道。** 系统 Agent 的通道是 peer 自己的会话（`_main:api:octosense#peer-…`）；用户通道是一个以共享历史方式打开的请求上下文（`…#peerctx-…`）。每条通道都能只读地看到另一条通道最近的消息。回合按发言者标注，事件和 `octos.session.history` 的每一行都带有 `lane`（`person` 或 `system_agent`）和 `speaker`。
+- **每个地方各有自己的用户通道。** OctoSense 按账户和客户端实例区分用户通道。对话栏的实例是 `shell-ask`，卡片内对话的是 `card-chat`，应用自己的 `octos.*` 调用用的是 `<peer>-g<generation>`。所以 `octos.session.history` 返回的是应用自己的对话，从不包含用户在对话栏或卡片中问的内容。
 - 来自对话栏或系统对话的回合是用户本人的（`TurnTrigger::Person`）。
 - **Shell 审批界面上的 Stop**（某个应用 Agent 的待审批事项和问题下方的按钮，`approvals::stop_agent`）会拒绝该 Agent 正在等待的事项，并停止它在**两条**通道中正在运行的回合：设备归用户所有。
 - **在手机上**，这个对话栏做成了全屏面板，但在 `main` 上没有任何触控入口能打开它（手机的 Assistant 磁贴打开的是系统对话）；未在设备上运行。应用自己的界面和它的速览卡片在手机上与桌面端一样可用。
-- 原生模块和进程应用通过各自的途径（注入服务上的 `open_conversation`，或 peer link）到达同一条用户通道；脚本应用使用上面的 `octos.*` 名称。
+- 原生模块和进程应用通过各自的途径（注入服务上的 `open_conversation`，或 peer link）打开用户通道；脚本应用使用上面的 `octos.*` 名称。
 
 ## 助手相关能力
 
@@ -100,7 +101,7 @@
 | 能力与调用 | 参数 | 返回（`r.data`） |
 | --- | --- | --- |
 | `octos.session.open` | `{}` | `{open: true, conversation, shared_history, model: {lane, provider, model} or nil}` |
-| `octos.session.history` | `{}` | 会话内容，`{session_id, messages: [...], …}`：两条通道按时间合并，每条消息带有它的 `lane` 和发言者 |
+| `octos.session.history` | `{}` | 应用自己的会话内容，`{session_id, messages: [...], …}`：它的通道和系统 Agent 的通道按时间合并，每条消息带有它的 `lane` 和发言者。其中从不包含“Ask &lt;app&gt;”对话栏中的回合。 |
 | `octos.turn.start` | `{text}`（1 字节到 32 KiB） | 回合结束后的 `{turn_id, text, speaker, lane}`，即回复 |
 | `octos.turn.interrupt` | `{}` | `{interrupted, turns}`：在 OctoSense Shell 中，它停止两条通道中正在运行的回合，系统 Agent 的也包括在内 |
 
@@ -258,7 +259,7 @@ Shell 在脚本应用的 peer（`card.<app id>`）上注册的内容，读自 Oc
 | --- | --- | --- | --- |
 | `ask_user_question`（octos 内核工具） | `agent.tools: ["ask_user_question"]` | **有** | **有**（每个有 Agent 的系统应用） |
 | `files.list`、`files.read`、`files.search`（只读，无需审批） | Agent 有工作区的每个 peer，限 Unix 平台 | **有**：只限它的账户文件夹，每次读取 128 KiB，每次列出 500 项，每次搜索 100 条匹配 | **有** |
-| 它自己 `tools.json` 中 `implemented_by: "host-service"` 的工具 | 在工具的 `host_method` 所属能力族、或其命名空间对应的宿主服务上，以应用的身份运行，就像它自己调用 `host.request` 一样；该能力族必须已授予，或者是系统应用自己的命名空间 | 能力族已授予时**有**。否则返回 `not_granted`：`<app> was not granted the <family> service`。调用 `github`、`gcalendar` 或 `gmail` 还需要一个活动连接：`Connect this app account first` | **有**：News（`news.list`、`news.read`、`news.notify`）、Mail（12 个工具，例如 `mail.peek` 和 `mail.propose_reply`）、Calendar（`calendar.events`、`add_event`、`update_event`、`remove_event`、`notify`、`agenda`），以及 `photos.notify`、`maps.notify`、`youtube.notify`、`camera.notify` |
+| 它自己 `tools.json` 中 `implemented_by: "host-service"` 的工具 | 在工具的 `host_method` 所属能力族、或其命名空间对应的宿主服务上，以应用的身份运行，就像它自己调用 `host.request` 一样；该能力族必须已授予，或者是系统应用自己的命名空间 | 通过 `host_method` 调用已授予的 `github`、`gcalendar`、`gmail` 或 `glance` 时**有**。没有 `host_method` 时，工具调用其命名空间对应的服务，而没有任何能力能授予它：`dev.example.summary` 中的 `summary.list` 返回 `not_granted`，即 `dev.example.summary was not granted the summary service`。调用 `github`、`gcalendar` 或 `gmail` 还需要一个活动连接：`Connect this app account first` | **有**：News（`news.list`、`news.read`、`news.notify`）、Mail（12 个工具，例如 `mail.peek` 和 `mail.propose_reply`）、Calendar（`calendar.events`、`add_event`、`update_event`、`remove_event`、`notify`、`agenda`），以及 `photos.notify`、`maps.notify`、`youtube.notify`、`camera.notify` |
 | 它自己 `tools.json` 中 `implemented_by: "app"` 的工具 | 本应在应用的脚本中运行 | 拒绝执行（`app_tool_unavailable`）：`<tool> declares a script implementation, but this host does not support script tool dispatch` | 同左 |
 | 通用宿主工具 `ledger.read`、`ledger.write`、`net.fetch`、`storage.read`、`storage.write`、`card.render` | `agent.tools` | 准入检查接受，但没有任何 Shell 实现它们 | 同左 |
 | 其他应用可共享的工具（`mail.send`） | `agent.tools` 中带点的名称 | 准入检查（`hub check`）拒绝：`app <id> requests tool "mail.send", which this host does not offer contained apps`（**✓ 已运行**） | 由 Shell 自己的策略授予；例如 Mail 保留 `calendar.events`、`calendar.add_event` 和 `calendar.notify` |
@@ -400,7 +401,7 @@ Shell 把已准入、经过摘要校验的 `AGENT.md` 和技能文字作为应�
 
 - `name` 的形式是 `<namespace>.<tool>`；命名空间是**应用 id 的最后一段**（`dev.example.summary` → `summary`，`os.news` → `news`）。
 - `input_schema` 和 `output_schema` 都必须提供（缺少 `output_schema` 的工具会被拒绝：``tools.json is not valid: missing field `output_schema` ``，**✓ 已运行**）。它们使用 JSON Schema 的一个子集（`type title description properties required items enum const default minimum maximum minLength maxLength minItems maxItems additionalProperties format pattern`）；输入必须是对象。最多 64 个工具，描述最长 1024 个字符。
-- `implemented_by`：`host-service`（持有数据、网络或密钥的原生代码）或 `app`（应用自己的脚本）。Shell 以应用的身份在宿主服务上运行 `host-service` 工具，就像应用自己调用 `host.request` 一样，从不经由面板（`may_prompt: false`）。服务是工具的 `host_method` 指定的那个，没有时是它命名空间对应的那个（`news.list` → `news`）。该能力族必须已授予，或者是系统应用自己的命名空间（`os.calendar` → `calendar`）；否则返回 `<app> was not granted the <family> service`。准入检查接受 `app` 工具，但 Shell 拒绝对它的每次调用：`<tool> declares a script implementation, but this host does not support script tool dispatch`（OctoSense `crates/shell/src/host_tools/script_apps.rs`）。
+- `implemented_by`：`host-service`（持有数据、网络或密钥的原生代码）或 `app`（应用自己的脚本）。Shell 以应用的身份在宿主服务上运行 `host-service` 工具，就像应用自己调用 `host.request` 一样，从不经由面板（`may_prompt: false`）。服务是工具的 `host_method` 指定的那个，没有时是它命名空间对应的那个（`news.list` → `news`）。该能力族必须已授予，或者是系统应用自己的命名空间（`os.calendar` → `calendar`）；否则返回 `<app> was not granted the <family> service`。商店应用的命名空间（例如 `summary`）不是能力，所以它的工具只能通过 `host_method` 运行。准入检查接受 `app` 工具，但 Shell 拒绝对它的每次调用：`<tool> declares a script implementation, but this host does not support script tool dispatch`（OctoSense `crates/shell/src/host_tools/script_apps.rs`）。
 - `host_method` 把普通应用的工具映射到一个经过 App Hub 审核的共享服务方法，例如上面的 `summary.card.publish` → `glance.publish`。App Hub 只接受 `SHARED_HOST_METHODS`（`crates/app-policy/src/agent.rs`）中的方法：`github`、`gcalendar` 和 `gmail` 的读取方法，`gmail.draft.open`、`gmail.draft.edit`、`gmail.event.decide`，以及 `glance.publish`、`glance.withdraw` 和 `glance.list`。这样的工具必须申请该方法的能力、声明 `private_data: true`，并且风险不低于该方法的要求。提供方写入、宿主确认面板上的批准和账户变更都不能作为别名。对 `github`、`gcalendar` 和 `gmail`，Shell 会把应用的活动连接加入参数。
 - 发布速览卡片的 Agent 工具只应接受 `template` + `initial`（如上），或 L0 的 `source` + `data`，不要接受 `script`：脚本卡片按应用自己的策略运行，回合一旦受输入误导，就可能发布任意代码。`desktop-v0.1.0-beta.2` 会发布工具接受的任何卡片；OctoSense `main` 则拒绝 Agent 工具传来的 `script`（见[谁可以发布](#谁可以发布)）。
 - `background`、`shareable`、`private_data`、`confirm`、`outward`、`auto_approvable`：见 [审批：`risk` 与 `confirm`](#审批risk-与-confirm)。

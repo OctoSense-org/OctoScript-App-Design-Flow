@@ -28,7 +28,7 @@ OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home�
 
 对于没有自己服务的其他系统应用，例如 Maps 和 Camera，`glance_notice.rs` 也会响应它们的 `<namespace>.notify`。
 
-没有任何 OctoSense Shell 向已安装的应用提供 `prompt`、`ledger.read`、`clipboard`、`matrix.*` 或 `palpo.*`。Rinx 是 OctoSense 作为原生应用随附的 Matrix 客户端。用户可以把应用包作为迷你应用导入 Rinx，Rinx 只向这样导入的应用包提供 `matrix.*` 和 `octos.*`；这种导入方式不属于 App Hub 的安装途径。`research` 和 `crawl` 为应用的 Agent 授予工具箱中的工具，它们不是 `host.request` 的能力族（[AI-SERVICES § 系统工具箱](AI-SERVICES.zh-CN.md#系统工具箱)）。
+没有任何 OctoSense Shell 向已安装的应用提供 `prompt`、`ledger.read`、`clipboard`、`matrix.*` 或 `palpo.*`。Rinx 是 OctoSense 作为原生应用随附的 Matrix 客户端。用户可以把应用包作为迷你应用导入 Rinx，Rinx 向这样导入的应用包提供 `octos.*`；这种导入方式不属于 App Hub 的安装途径。**未验证**：Rinx 也向这些迷你应用提供 `matrix.*`。只有开发 Rinx 迷你应用时才申请 `matrix.*`。`research` 和 `crawl` 为应用的 Agent 授予工具箱中的工具，它们不是 `host.request` 的能力族（[AI-SERVICES § 系统工具箱](AI-SERVICES.zh-CN.md#系统工具箱)）。
 
 有些服务要先完成配置才能使用，而且并非每个构建都有：
 
@@ -155,7 +155,7 @@ Mail 的 Agent 在同一个服务上还有自己的工具（`peek`、`draft`、`
    | `host.open_sheet(source)`、`host.close_sheet()` | 弹出和关闭面板。在工作线程中改用 `close_sheet_later(app_id)`。凡是接收密钥的方法，都放在 `sheet.` 之下。 |
    | `HostService::timeout` | 默认 60 秒；面板显示期间暂停计时。慢服务可以覆盖它：`model` 允许 2 × 120 秒 + 30 秒。 |
 
-   服务方法也可以是应用 Agent 的工具。`tools.json` 中 `implemented_by: "host-service"` 的工具会以来自该应用的普通 `ServiceCall` 到达服务，且 `may_prompt` 为 false。这样，应用的界面和它的 Agent 可以共用同一个方法（[AI-SERVICES § 应用的工具](AI-SERVICES.zh-CN.md#应用的工具与-peer-工具)）。
+   服务方法也可以是应用 Agent 的工具。`tools.json` 中 `implemented_by: "host-service"` 的工具会以来自该应用的普通 `ServiceCall` 到达服务，且 `may_prompt` 为 false。这样，应用的界面和它的 Agent 可以共用同一个方法（[AI-SERVICES § 应用的工具](AI-SERVICES.zh-CN.md#应用的工具与-peer-工具)）。系统应用的工具可以直接到达它自己命名空间的服务。商店应用的工具通过 `host_method` 到达某个方法，而 App Hub 只接受其审核列表中的方法，所以新增方法还需要修改 App Hub。
 3. **在 Shell 中注册。** 在 `crates/shell/src/apps.rs` 的 `register_host_services` 中调用 `octosense_appstore::services::register_host_service(Box::new(Weather))`。之后，Card runner 会驱动这个服务（`services::pump`）。Mail 的 crate 把这个调用封装在 `octosense_mail_service::register()` 中，再由 `apps.rs` 调用它。
 4. **在服务 crate 中测试。** Mail 的测试在 OctoSense 检出目录中执行（未运行）：
 
