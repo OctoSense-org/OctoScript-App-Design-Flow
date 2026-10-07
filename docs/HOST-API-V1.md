@@ -12,6 +12,13 @@ An app can call Rust services compiled into its host, plus its own declared
 Splash functions through the script-tool ABI. This work does not load custom
 Rust libraries, Wasm or JIT code, or expose every OS API.
 
+For a runnable source example, use OctoSense's
+[native Host API Lab](https://github.com/OctoSense-org/OctoSense/tree/feat/host-api-contract/tools/fixtures/host-api-lab).
+It has passed on macOS with signed installation, an app-owned Splash tool,
+a real Rust/OS permission-status call, live UI updates and permission refusals.
+It is a development acceptance fixture, not a public App Hub release or a
+real-model/peer-consent test. Its README includes the exact build and run commands.
+
 ## 1. Declare what the app needs
 
 The following is a **manifest fragment**, not a complete publishable bundle:
