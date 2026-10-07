@@ -16,13 +16,13 @@ apps inside that package, not two standalone APKs.
 From a connected development machine, open its private App Hub directly:
 
 ```sh
-adb -s cfb7c9e3 shell am start \
+adb -s YOUR_DEVICE_SERIAL shell am start \
   -n dev.makepad.octosense.hackathon/.MakepadApp \
   --es makepad.APP_CONFIG '{"test_actions":["launch-apphub"]}'
 ```
 
 Wait for the two catalog entries before tapping **Open**. For a fresh test
-process, `adb -s cfb7c9e3 shell am force-stop dev.makepad.octosense.hackathon`
+process, `adb -s YOUR_DEVICE_SERIAL shell am force-stop dev.makepad.octosense.hackathon`
 stops only this package and preserves its data. Change the serial for another
 authorized device. Android Back can leave the package; reopen **Hackathon
 Demos** to continue. Do not confuse the existing Home's catalog with this one.
