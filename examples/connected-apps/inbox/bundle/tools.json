@@ -264,7 +264,7 @@
     },
     {
       "name": "inbox.notify",
-      "description": "Publish one important-email workspace under this app/account. Prefer admitted template glance-workspace.splash with initial.message; the host binds its connection. Use message ID as card_id; notify only if relevant.",
+      "description": "Publish one important-email workspace using only the admitted glance-workspace.splash template and initial.message. The host binds its connection. Use the exact message ID as card_id; notify only if relevant. Executable card source is not accepted.",
       "input_schema": {
         "type": "object",
         "properties": {
@@ -275,17 +275,6 @@
           "title": {
             "type": "string",
             "maxLength": 80
-          },
-          "source": {
-            "type": "string",
-            "maxLength": 16384
-          },
-          "script": {
-            "type": "string",
-            "maxLength": 16384
-          },
-          "data": {
-            "type": "object"
           },
           "notify": {
             "type": "boolean"
@@ -318,7 +307,7 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "maxLength": 128
+                    "maxLength": 64
                   },
                   "from": {
                     "type": "string",
@@ -350,7 +339,11 @@
         },
         "required": [
           "card_id",
-          "title"
+          "title",
+          "summary",
+          "template",
+          "initial",
+          "notify"
         ],
         "additionalProperties": false
       },

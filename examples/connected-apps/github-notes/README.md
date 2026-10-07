@@ -114,3 +114,12 @@ Rinx limits a parsed article to 512 KiB. A saved draft that fails to load stays
 protected in the recovery/repository screen; it cannot be overwritten by typing
 into a blank editor. Explicitly replacing it with a valid file preserves its
 exact recovery copy.
+
+The manifest explicitly declares the optional **Ask GitHub Notes** foreground
+read-only agent and [AGENT.md](bundle/AGENT.md). Installing or connecting GitHub
+does not grant agent consent. If used, questions, conversation context and
+permitted repository/file read results may reach the host-configured model.
+The three existing tools remain private, non-shareable and foreground-only;
+there is no agent write or approval tool. Remote reads do not read the editor's
+unsaved draft. Manual editing works without a model. The declaration correction
+and gate check are not new live-model execution evidence.

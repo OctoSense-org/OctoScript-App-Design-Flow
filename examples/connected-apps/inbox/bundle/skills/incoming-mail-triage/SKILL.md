@@ -38,8 +38,10 @@ turn. A person may already have dismissed or acted on the published card.
    it reads the full original email and uses the same Reply/Chat draft. Do not
    embed the private full body in the Glance metadata. A missing template or
    unavailable host service is an integration error; never claim a card appeared.
-   Use `source` only for an explicitly requested standalone L0 design; do not
-   replace this interaction with a static summary that omits Reply and Chat.
+   The notify tool accepts only this admitted template and its initial data.
+   Never supply `script`, `source` or `data`, or generate replacement Splash.
+   A standalone L0 design is outside this tool's contract; do not replace this
+   interaction with a static summary that omits Reply and Chat.
 
 5. Read the publish tool's success receipt, then call inbox.event_decide with
    decision `published`. The host independently verifies a real card under the

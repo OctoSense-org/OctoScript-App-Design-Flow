@@ -52,13 +52,14 @@ and the complete shell/peer path in
 
 `hub_repo` selects `OCTOSENSE_APP_HUB`, or the sibling App Hub checkout.
 `find_binary` checks explicit `OCTO_HUB`/`OCTO_CARD_HOST`, candidate release
-directories and `PATH`. It checks the `hub help` banner when searching so
+directories (including `.exe` names on Windows) and `PATH`. It checks the `hub help` banner when searching so
 GitHub's unrelated `hub` executable is not mistaken for App Hub. Explicit
 binary overrides are the caller's responsibility.
 
-`cmd_new` validates the app id, rejects `os.*` without `--system`, copies
-the template and contributor instructions, and edits name/version/id in
-the new manifest. It stamps when `hub` is available. Complete the listing,
+`cmd_new` validates the app id, rejects native/host ids and final namespaces,
+and rejects `os.*` without `--system`. It requires explicit `--platform` targets,
+copies the template/instructions and edits the manifest and listing. It stamps
+when `hub` is available. A target selection is not platform test evidence. Complete the listing,
 artwork and screenshots before submitting the generated app.
 
 `cmd_run` requires a manifest and a free remote port. It constructs:
@@ -116,7 +117,7 @@ Back in Design Flow:
 
 ```sh
 tools/octo doctor
-tools/octo new /tmp/octosense-walkthrough-notes --id walkthrough.notes --name "Walkthrough Notes"
+tools/octo new /tmp/octosense-walkthrough-notes --platform macos --id walkthrough.quicknotes --name "Walkthrough Notes"
 tools/octo run /tmp/octosense-walkthrough-notes/bundle --hidden --detach --port 8141
 curl -s http://127.0.0.1:8141/snap
 tools/octo shot 8141 /tmp/octosense-walkthrough-notes/first-frame.png
