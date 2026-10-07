@@ -19,13 +19,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 3795,
-      "sha256": "e51c11cab2cbaadd6e057126ba10b7584960ce8b02cadab8ed4b5508bab3d386"
+      "bytes": 4348,
+      "sha256": "cfe5c129b9fe117c20c74d0feb045eea70cd0c9a0ca9c0ab1c07412f2c859efd"
     },
     {
       "path": "README.zh-CN.md",
-      "bytes": 3329,
-      "sha256": "7a821080ac217901552b558e4727942c1646c2b4310b8bd997409769b1f1a939"
+      "bytes": 3830,
+      "sha256": "b55daa36f3a1b66eb1b2e3ec5cec85ebbf470293d6ac000ce64d08e55d9035b5"
     },
     {
       "path": "REVIEW-TEMPLATE.md",
@@ -1508,6 +1508,156 @@
       "sha256": "b3420f1db0fdc7cb7c474a8a0b36b90f16a6702ba0cf37578f58c4cfe3565bb8"
     },
     {
+      "path": "continuations/deepseek/workspace-ux-20261005/README.md",
+      "bytes": 3493,
+      "sha256": "5119d9106f05f12b7d6dfb026d7502b0db653b9368b084519952374747e377fa"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/README.zh-CN.md",
+      "bytes": 3162,
+      "sha256": "81a367e2a7afe92f8f698e1cf0fa23c8b98fcd5e3dbaa65ed48f03c5f4919268"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/calendar.glance.card",
+      "bytes": 2563,
+      "sha256": "aef15e44cf3f29150859ce650020272c9138aa58735ad564a75fa7c9ef8385ed"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/calendar.main.splash",
+      "bytes": 15304,
+      "sha256": "78ac370582a39af198a8cc87a4c6946536e6038dd09f774a076df8a0ae37d3c7"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/finance.glance.card",
+      "bytes": 2258,
+      "sha256": "cb1dfdf479175a4ec17ca889178c1859c4ad80a1a4e0844f54e1665af0d518ab"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/finance.main.splash",
+      "bytes": 18815,
+      "sha256": "f1ea687b8da10909efac5de2ef082bbfc08b113a80a7bf31c6d8459b4eb2015c"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/mail.glance.card",
+      "bytes": 2761,
+      "sha256": "ca4b0266fc1682920f8938e7e4b6a76f8b2f5011c954526ccb516170e2a7f262"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/mail.main.splash",
+      "bytes": 15799,
+      "sha256": "ac8221280ec69ba23ad7cf9a4c197c120b328fd69ce2ac9ef6f60eaa48db5342"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/news.glance.card",
+      "bytes": 2049,
+      "sha256": "3f808b454d3e50aadb6f7719184643349f540bc4678ce2b4881d73ebb7da4bc9"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/news.main.splash",
+      "bytes": 14801,
+      "sha256": "f7287ceb5296deabd1a0cc1a39874409dfcc3ea61ca8e7d38966401a06f51a1f"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/photo.glance.card",
+      "bytes": 2279,
+      "sha256": "73cfa19c057e8f48f5402c5d7786877f2aa6a6fc8b9114253d0692260c65183a"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/photo.main.splash",
+      "bytes": 16470,
+      "sha256": "57089382690865cdc9f4363d9fc95f99069d42979fe5e84e3afe79dbf6cd6cfb"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/provenance.json",
+      "bytes": 12078,
+      "sha256": "05ee34a45ed1994461d635293850c753330ab444c792c2517a617e01921747c3"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/calendar-navigation-after.png",
+      "bytes": 124725,
+      "sha256": "ae8c3c0c7336031f379853ec232ea7ec7f77a8389ecd0eb4365eb4e6f7ba138f"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/finance-navigation-after.png",
+      "bytes": 111581,
+      "sha256": "f431087c7fe43caa01f1572ed6505d85255c011826e82bc2915324fd1b00e27d"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/mail-navigation-after.png",
+      "bytes": 124502,
+      "sha256": "3088ae5453b11157197781a6e5b05d71c4946c37ceeac687ac7c5ed0cb08e8ef"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/navigation-before.png",
+      "bytes": 125196,
+      "sha256": "813edd1662e9d9ecbf7f2b83513d60fda6c2e14722151a19b0354039b88779a7"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/navigation-first-attempt.png",
+      "bytes": 198714,
+      "sha256": "ff355cc8d0f1f792a6c91e4c3d75e80a1df65c9a210332a5df51e769d9e889c9"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/news-after.png",
+      "bytes": 178662,
+      "sha256": "5e4a5e0b5508edfca3d142c6299bf71cc27e6f5b6be18f334f298c8864cd2e44"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/news-before.png",
+      "bytes": 176900,
+      "sha256": "0a0fa7f2f4107ec0a5a2cabef3633a857c9c8783d903a9e6e3ea6de66ca68dce"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/news-navigation-after.png",
+      "bytes": 147682,
+      "sha256": "84baba3505825df79661c7e1dda0ccb6d1b4ae916e9339e07add246a0ce0ba2f"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/photo-after.png",
+      "bytes": 189769,
+      "sha256": "d4833d88fb69bc831f9213dd3192e0b25dacf959276c9a158bd18e1e06779258"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/photo-before.png",
+      "bytes": 172139,
+      "sha256": "6d296223e37b2a6258f025946dc96b64f4ba2b8b6bd4bd7a21ee8411967fce46"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/photo-navigation-after.png",
+      "bytes": 126985,
+      "sha256": "288dbbdc2f878be4e8e7728ee358ebf4dcb90e2295e1a36e334e36341f96108e"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/youtube-after.png",
+      "bytes": 198759,
+      "sha256": "5c675d9581033b695fab5ff1d4d5ee084049ef5b41fd1a03f4fd254ab4c0cacc"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/youtube-before.png",
+      "bytes": 181963,
+      "sha256": "9a65b51ed6e18623da63a13fb36b8835eaee0a24acfb1d425686e6a160805fee"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/screenshots/youtube-navigation-after.png",
+      "bytes": 136907,
+      "sha256": "3ec4f8a6410ba4307cef6d1d5a5fda08491bd726eaacb0cf20cfa0e2fcc17350"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/verify.py",
+      "bytes": 837,
+      "sha256": "d8377622c8f99d810b953cdd0c3d573f7ced0bee63a081b1f00147d26e9b1894"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/youtube.glance.card",
+      "bytes": 2305,
+      "sha256": "9f9d6439b4b165cea038f608e64429f00504d2226ca3a0255f09a0b180eac37a"
+    },
+    {
+      "path": "continuations/deepseek/workspace-ux-20261005/youtube.main.splash",
+      "bytes": 16759,
+      "sha256": "ade822a3b541a3dc7845d5a615d4faceaeab4a84705635d0a0525a0fba0c8be1"
+    },
+    {
       "path": "continuations/minimax/turn-14/README.md",
       "bytes": 7302,
       "sha256": "8b7aff35444b9c0c8ba0492ecd92075ca99c5a5db9525cb88784105574cc4b80"
@@ -2056,6 +2206,51 @@
       "path": "continuations/minimax/turn-14/visual-review.json",
       "bytes": 7522,
       "sha256": "cc0eaf25d48db79b6114d9c5acb0bd0c18e28cd6093a05e5674c3d1ffa19e1a3"
+    },
+    {
+      "path": "continuations/minimax/workspace-ux-20261005/README.md",
+      "bytes": 1504,
+      "sha256": "e9ec1feb60aa6a97b4f21bd0698ca483055c1183e880fbc8cace8a50cca9f129"
+    },
+    {
+      "path": "continuations/minimax/workspace-ux-20261005/README.zh-CN.md",
+      "bytes": 1387,
+      "sha256": "c3488d87749a747a4ab231acb8a3eeef73008843c57d8936a322d945e6d5113e"
+    },
+    {
+      "path": "continuations/minimax/workspace-ux-20261005/mail.main.splash",
+      "bytes": 23411,
+      "sha256": "5739f8474cf1ba932b96c995bdf2fa0b59a226fe06ab57ea1027a5460b8aac13"
+    },
+    {
+      "path": "continuations/minimax/workspace-ux-20261005/provenance.json",
+      "bytes": 960,
+      "sha256": "a698da91e6f62ec2f91be1de9a694f54e4473bcefd75add9fbcc7a6e50da94b8"
+    },
+    {
+      "path": "continuations/minimax/workspace-ux-20261005/screenshots/keyboard.png",
+      "bytes": 147500,
+      "sha256": "b0bcf308beae98f0e953ac6ad5094c571bbbfb204ffff686822544f5a2b29dda"
+    },
+    {
+      "path": "continuations/minimax/workspace-ux-20261005/screenshots/reply-after.png",
+      "bytes": 104374,
+      "sha256": "e1cc08279f78310dd7a27e28a4aefddd15ab4a25c2cabdd6cef513f0431e231d"
+    },
+    {
+      "path": "continuations/minimax/workspace-ux-20261005/screenshots/reply-before.png",
+      "bytes": 150671,
+      "sha256": "5f456dcac1327c1a159ad8ee4312fa27387f6239c51fa6da54336c98241229d0"
+    },
+    {
+      "path": "continuations/minimax/workspace-ux-20261005/screenshots/retained.png",
+      "bytes": 107731,
+      "sha256": "ae6bfc2b8b9177912b244c5f337cf6a60c64bc67e8ee26ce050b43dcf6e48ae2"
+    },
+    {
+      "path": "continuations/minimax/workspace-ux-20261005/verify.py",
+      "bytes": 735,
+      "sha256": "657e86c460bcf26a9bd913e12813f42a71f43fa9341a097affb95c679b0a4c1f"
     },
     {
       "path": "import-snapshot.py",
