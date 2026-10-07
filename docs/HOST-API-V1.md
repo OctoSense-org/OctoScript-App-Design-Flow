@@ -4,7 +4,7 @@ English | [简体中文](HOST-API-V1.zh-CN.md)
 
 **Implementation guide, not a released-host promise.** These changes target the
 1.6 App Hub contract and a compatible OctoSense, runner and Makepad build.
-Published compatible artifacts and phone acceptance are pending. An older host
+Contract 1.6.0 is published; compatible host artifacts and phone acceptance are pending. An older host
 must reject an app that requires these features. For the earlier release
 behavior, see [Host services](HOST-SERVICES.md).
 

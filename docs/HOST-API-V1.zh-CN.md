@@ -3,7 +3,7 @@
 [English](HOST-API-V1.md) | 简体中文
 
 **本文是实现指南，不代表已发布宿主已经支持。** 这些改动面向 App Hub 1.6 契约及
-配套的 OctoSense、运行器和 Makepad 构建。兼容组件发布和手机验收仍待完成。
+配套的 OctoSense、运行器和 Makepad 构建。契约 1.6.0 已发布；兼容宿主发布和手机验收仍待完成。
 旧宿主必须拒绝要求这些特性的应用。此前发布版本的行为见[宿主服务](HOST-SERVICES.zh-CN.md)。
 
 应用可调用宿主已编译的 Rust 服务，也可通过脚本工具 ABI 调用自己声明的 Splash
