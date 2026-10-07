@@ -100,9 +100,10 @@ needs no AI service or API key.
   - a store app's `tools.json` tools run only with
     `implemented_by: "host-service"` and a `host_method` from App Hub's
     reviewed list: reads of `github`, `gcalendar` and `gmail`, Gmail drafts
-    and events, and `glance`. A tool without `host_method` calls its
-    namespace's service, such as `summary` for `dev.example.summary`, which
-    no capability grants, so it answers `not_granted`. The shell refuses
+    and events, and `glance`. A tool without `host_method` calls the service
+    named after the app's namespace (`summary` for `dev.example.summary`); no
+    capability grants that service, so the call answers `not_granted`. The
+    shell refuses
     `implemented_by: "app"`, so no tool runs the app's own code. The
     capability, risk, private-data and account checks still apply;
   - admitted `AGENT.md` and skill text is per-turn guidance, not an
@@ -159,8 +160,8 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
 - **CJK text in a card uses the plain L0 role kit.** Write it with
   `Surface`, `TextTitle`, `TextBody` and the other role components, and set
   no `font_src`; the built-in LXGW WenKai draws Chinese. A kit's `font_src`
-  may name only `makepad_widgets:resources/Inter.ttf`, which has no CJK
-  glyphs. A bundled font file in `font_src` passes the gate but does not load
+  may name only one built-in font, `makepad_widgets:resources/Inter.ttf`,
+  which has no CJK glyphs. A bundled font file in `font_src` passes the gate but does not load
   in `card-host` today, so never ship one for a card
   ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
   A script app may bundle a font and load it with
@@ -172,8 +173,8 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   `text` for the bundle (`bundle/** -text` when `bundle/` is at the
   repository root), so that a Windows checkout with `core.autocrlf=true`
   leaves the bundle alone. Confirm it with
-  `git check-attr text -- <path to bundle>/manifest.json`, which prints
-  `text: unset` ([QUICKSTART §3](docs/QUICKSTART.md#3-create-an-app)).
+  `git check-attr text -- <path to bundle>/manifest.json`, which prints a
+  line ending in `text: unset` ([QUICKSTART §3](docs/QUICKSTART.md#3-create-an-app)).
 - **Sign last, and never edit after signing.** Capture screenshots and run
   `card-host` on the unsigned bundle; `card-host` refuses a signed one. Only
   a person signs. Any edit after signing needs a new stamp and a new

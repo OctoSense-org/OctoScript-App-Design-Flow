@@ -251,7 +251,7 @@ OctoSense 每个 Shell 运行一个 octos Agent 内核，由用户在系统应�
 | --- | --- | --- |
 | 一次性调用模型，结果按 schema 校验 | `model` 能力，`host.request("model.complete", …)`，受每日预算限制，`model.budget` 报告预算 | `no service answers "model"` |
 | 在自己的界面上与助手对话 | 4 个 `octos.*` 能力；用户须先在首次使用时弹出的面板上允许该应用的 Agent | `no service answers "octos"` |
-| 拥有自己的 Agent：用户可以直接与它对话（Shell 的 `Ask <app>` 窗格、卡片内对话、应用自己的界面），系统 Agent 也可以把任务交给它 | `agent` 块加 `tools.json`：标为 `implemented_by: "host-service"` 的工具通过 App Hub 审核列表中的 `host_method`，在 `github`、`gcalendar`、`gmail` 或 `glance` 上运行；`AGENT.md` 和 skills 作为每轮对话的指引加载 | 只能用 `hub check` 检查 |
+| 拥有自己的 Agent：用户可以直接与它对话（Shell 的 `Ask <app>` 窗格、卡片内对话、应用自己的界面），系统 Agent 也可以把任务交给它 | `agent` 块加 `tools.json`：标为 `implemented_by: "host-service"` 的工具通过 App Hub 审核通过的 `host_method`，在 `github`、`gcalendar`、`gmail` 或 `glance` 上运行；`AGENT.md` 和 skills 作为每轮对话的指引加载 | 只能用 `hub check` 检查 |
 | 向速览栏发布卡片，卡片内可与应用 Agent 对话，模型写的文字标为 AI 撰写 | `glance` 能力，`glance.publish`（L0 `sys.chat`、`model-copy`） | `no service answers "glance"` |
 | 收到新邮件时让 Agent 在后台运行 | `agent.background: true` 和 `agent.triggers.events: ["<namespace>.new_message"]`，再加 `auth` 和 `gmail`，Inbox Assistant 就是这样做的 | 不支持 |
 

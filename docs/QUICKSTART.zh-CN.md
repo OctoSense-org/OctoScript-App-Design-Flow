@@ -121,7 +121,7 @@ git check-attr text -- bundle/manifest.json
 
 成功时输出 `bundle/manifest.json: text: unset`。`>>` 是追加写入，已有的 `.gitattributes` 会保留原来的规则。
 
-如果应用放在一个更大的仓库里，根目录 `.gitattributes` 中的 `bundle/**` 覆盖不到它的应用包。请写出从根目录算起的应用包路径，例如 `apps/my-app/bundle/** -text`；或者写 `**/bundle/** -text`，匹配任意层级的 `bundle/` 文件夹。然后在根目录下检查清单的真实路径：`git check-attr text -- apps/my-app/bundle/manifest.json`。在那里检查 `bundle/manifest.json` 说明不了任何问题：只要路径与模式匹配，`git check-attr` 就输出 `unset`，即使这个文件并不存在。
+如果应用放在一个更大的仓库里，根目录 `.gitattributes` 中的 `bundle/**` 覆盖不到它的应用包。请写出从根目录算起的应用包路径，例如 `apps/my-app/bundle/** -text`；或者写 `**/bundle/** -text`，匹配任意层级的 `bundle/` 文件夹。然后在根目录下，用清单的真实路径检查：`git check-attr text -- apps/my-app/bundle/manifest.json`。在那里检查 `bundle/manifest.json` 说明不了任何问题：只要路径与模式匹配，`git check-attr` 就输出 `unset`，即使这个文件并不存在。
 
 ## 4. 在桌面上运行
 
@@ -278,7 +278,7 @@ fn tip_20_percent() {
 - **换行符。** 如果 Git 检出时转换了换行符，字节就会改变，摘要随之失效。请 commit §3 中的 `.gitattributes`。
 - **卡片中的字体。** 卡片中的中日韩文字请用纯 L0 角色套件（`Surface`、`TextTitle`、`TextBody` 等）编写，不设 `font_src`：它用内置的霞鹜文楷（LXGW WenKai）显示中文，准入检查也能通过。套件的 `font_src` 只能引用一种内置字体 `makepad_widgets:resources/Inter.ttf`，而它没有中日韩字形。在 `font_src` 中引用应用包内的字体文件同样能通过准入检查，但目前 `card-host` 加载不了它，所以不要为卡片附带字体文件（[App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)）。
 - **脚本应用中的字体。** 把字体文件放进应用包，例如 `bundle/fonts/X.ttf`，然后在 `main.splash` 中把它作为 `TextStyle` 的 `FontFamily` 成员加载：`FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`。字体的许可证要放在 `bundle/` 之外：准入检查会拒绝含有 URL 的应用包内 `.txt` 或 `.md` 文件。
-- **缺失的字形。** 用 `MAKEPAD_SYSTEM_FONTS=0` 测试应用（`MAKEPAD_SYSTEM_FONTS=0 tools/octo run …`）。不设这个变量时，macOS 的系统字体会补上你的字体缺少的字形，把问题掩盖起来；在没有中日韩系统字体的 Linux 上，同样的文字会显示为方框。**未验证**：字体在 OctoSense Shell 中的表现。
+- **缺失的字形。** 用 `MAKEPAD_SYSTEM_FONTS=0` 测试应用（`MAKEPAD_SYSTEM_FONTS=0 tools/octo run …`）。不设这个变量时，macOS 的系统字体会补上你的字体缺少的字形，把问题掩盖起来。**未验证**：在没有中日韩系统字体的 Linux 上，同样的文字是否会显示为方框，以及字体在 OctoSense Shell 中的表现。
 - **大小。** 应用包不能超过 8 MiB（8,388,608 字节）。
 
 ## 8. 检查应用包
