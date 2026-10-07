@@ -1,0 +1,33 @@
+{
+  "device": "OnePlus 6 / ONEPLUS_A6003 / Android 15",
+  "package": "dev.makepad.octosense.hackathon",
+  "model": "deepseek-v4-flash",
+  "install": "Phone App Hub Get/Install, signed private local catalog sequence4; no installed bundle seeding",
+  "dev_mode_for_live_test": false,
+  "app_agent_consent": "Each app allowed through host first-use sheet; ask retried",
+  "email": "Real app-peer reply, AI-written provenance, review and confirmation; exact reply saved to fictional outbox",
+  "meeting": "Peer files_list, files_read calendar.json, files_read state.json;14:00 proposal; human confirmation created one local booking",
+  "restart": "Package force-stop, launch App Hub, Open each app, inspect receipt and compare saved state",
+  "checks": [
+    {
+      "app_id": "demo.deepseek-email",
+      "source_sha256": "a462937ca76d59daad215a60aa477aeb8488dd370c0f66dc6f614988eb2d4b49",
+      "generated_equals_packaged_equals_installed": true,
+      "receipt_survived_restart": true,
+      "receipt_count": 1
+    },
+    {
+      "app_id": "demo.deepseek-meeting",
+      "source_sha256": "5f020068fbb8b56dba9e91e9f857a840f050a5838d6ef9e39b032ccba31c66c9",
+      "generated_equals_packaged_equals_installed": true,
+      "receipt_survived_restart": true,
+      "receipt_count": 1
+    }
+  ],
+  "limitations": [
+    "Calendar plain label exposes Markdown returned by model",
+    "Email multiline editor does not wrap long lines; full review wraps",
+    "No provider-key exposure; no real mail/calendar account or real delivery",
+    "No phone cancellation/late reply race assertion in this run"
+  ]
+}

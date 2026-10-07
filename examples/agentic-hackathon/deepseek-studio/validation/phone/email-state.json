@@ -1,0 +1,25 @@
+{
+  "drafts": {
+    "m1": "Hi Maya,\n\nThanks for the note. Sam has permission to join Friday's science museum visit. I've noted the 09:00 departure and 15:30 return.\n\nPlease let me know if you need anything else from me before Wednesday.\n\nThank you,\n[Your name]",
+    "m2": "",
+    "m3": ""
+  },
+  "provs": {
+    "m1": "AI-written",
+    "m2": "",
+    "m3": ""
+  },
+  "revs": {
+    "m1": 1,
+    "m2": 0,
+    "m3": 0
+  },
+  "outbox": {
+    "m1": {
+      "to": "Maya Chen <maya@example.invalid>",
+      "subject": "Re: Permission slip for Friday",
+      "body": "Hi Maya,\n\nThanks for the note. Sam has permission to join Friday's science museum visit. I've noted the 09:00 departure and 15:30 return.\n\nPlease let me know if you need anything else from me before Wednesday.\n\nThank you,\n[Your name]"
+    }
+  },
+  "sel": 0
+}

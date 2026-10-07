@@ -1,0 +1,29 @@
+{
+  "agent": {
+    "model": {
+      "needs": [
+        "tool_calling"
+      ]
+    },
+    "profile": "read-only",
+    "tools": [
+      "ask_user_question"
+    ]
+  },
+  "capabilities": [
+    "storage",
+    "octos.turn.start",
+    "octos.turn.interrupt"
+  ],
+  "id": "demo.deepseek-meeting",
+  "integrity": {
+    "bundle_blake3": "a1616e8ac951ab8646fb139a323b2735ded15cb323094b6ea9d0413f053017d7"
+  },
+  "name": "Meeting Planner DS",
+  "schema": 1,
+  "storage": {
+    "accounts": false,
+    "agent_workspace": "account"
+  },
+  "version": "0.1.0"
+}

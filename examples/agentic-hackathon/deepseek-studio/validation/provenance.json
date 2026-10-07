@@ -1,0 +1,36 @@
+{
+  "author": "DeepSeek V4 Flash through the OnePlus 6 system agent and App Studio",
+  "operator": "Codex supplied briefs, source references, defect reports, packaging, independent tests; no generated card/script/icon source edits",
+  "model_id": "deepseek-v4-flash",
+  "phone": "OnePlus 6 ONEPLUS_A6003 / Android 15",
+  "package": "dev.makepad.octosense.hackathon",
+  "runtime_commit": "ccf8013f2bd7adbb6c20d5f52f47bcfbcbb55313",
+  "operator_hub_commit": "927f2fe0c06b620f47f2f25befd0b2cb0bafe244",
+  "record_scope": "Counts from the 197 assistant tool calls in the retained sanitized model-tools.json ledger only. Earlier failed streaming turns and omitted calls are not a complete transcript. Reasoning, provider credentials and unrelated context excluded.",
+  "tool_counts": {
+    "read_file": 12,
+    "studio_render": 4,
+    "view_image": 22,
+    "edit_file": 31,
+    "write_file": 18,
+    "studio_bundle_check": 8,
+    "studio_open": 10,
+    "studio_inspect": 45,
+    "studio_input": 41,
+    "studio_close": 6
+  },
+  "artifacts": {
+    "email-action": {
+      "bundle/main.splash": "a462937ca76d59daad215a60aa477aeb8488dd370c0f66dc6f614988eb2d4b49",
+      "glance.card": "6c9ae836a15c8acbb0e13be14bf6d4f8dcc184d50c3511c12541378a22261f26",
+      "glance.data.json": "281f9a95b2d307d16d472626a4cb53d9c6659c35f1fd010cfc3c49785664a703",
+      "bundle/assets/icon.svg": "79b37a4873e5aae5f7e08dff92313bd22438fd2915ae0659a7a4388bae16143f"
+    },
+    "meeting-planner": {
+      "bundle/main.splash": "5f020068fbb8b56dba9e91e9f857a840f050a5838d6ef9e39b032ccba31c66c9",
+      "glance.card": "af35d742d9ad59ba193d29fec2684526abb8d4414b63d1030384c4b45eadb51b",
+      "glance.data.json": "a8bb25b131ed5d0126fd3ddf95a4bcb4c448a8b0e7b416aff27aee8cfc65cfad",
+      "bundle/assets/icon.svg": "6c2f53a7ae46670329f36453228ea14a32026df7417fc61c1d4eb6078822bccc"
+    }
+  }
+}

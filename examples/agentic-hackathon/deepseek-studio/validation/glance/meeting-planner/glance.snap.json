@@ -1,0 +1,419 @@
+{
+  "s": [
+    {
+      "enabled": true,
+      "i": "-",
+      "r": [
+        -40,
+        -52,
+        0,
+        0
+      ],
+      "ty": "Root",
+      "v": 0,
+      "w": 0,
+      "window_id": ""
+    },
+    {
+      "enabled": true,
+      "i": "main_window",
+      "r": [
+        0,
+        0,
+        350,
+        160
+      ],
+      "ty": "Window",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "caption_bar",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "View",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "caption_label",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "View",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "caption_icon",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "AppIcon",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "label",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "t": "Card host [remote]",
+      "ty": "Label",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "voice_wave",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "View",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "windows_buttons",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "View",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "min",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "DesktopButton",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "max",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "DesktopButton",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "close",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "DesktopButton",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "web_fullscreen",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "View",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "fullscreen",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "DesktopButton",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "window_menu",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "WindowMenu",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "body",
+      "r": [
+        0,
+        0,
+        350,
+        160
+      ],
+      "ty": "KeyboardView",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "card",
+      "r": [
+        0,
+        0,
+        350,
+        160
+      ],
+      "t": "width:Fill height:Fill flow:Overlay beauty_0 := RoundedView {\n    flow: Down\n    width: Fill\n    height: Fill\n    padding: Inset{left: 20, right: 20, top: 36, bottom: 24}\n    show_bg: true\n    draw_bg +: { color: #0a0e14ff, color_2: #000103ff }\n    beauty_0_0 := View {\n        flow: Down\n        width: Fill\n        height: Fit\n        spacing: 8\n        beauty_0_0_0 := View {\n            flow: Right\n            align: Align{x: 0, y: 0.5}\n            width: Fill\n            height: Fit\n            spacing: 8\n            beauty_0_0_0_0 := Label {\n                width: Fit\n                height: Fit\n                padding: 0\n                text: \"\\u{f073}\"\n                draw_text.text_style: mod.theme.font_icons{ font_size: 14 }\n                draw_text.color: #ffffffe6\n            }\n            beauty_0_0_0_1 := Label {\n                width: Fill\n                height: Fit\n                padding: 0\n                text: \"Meeting Planner\"\n                draw_text.text_style: TextStyle{ font_family: FontFamily{ latin := FontMember{res: crate_resource(\"makepad_widgets:resources/Roboto-Regular.ttf\") asc: -0.1 desc: 0.0 weight: 400} cjk := FontMember{res: crate_resource(\"makepad_widgets:resources/LXGWWenKaiRegular.ttf\") asc: 0.0 desc: 0.0} emoji := FontMember{res: crate_resource(\"makepad_widgets:resources/NotoColorEmoji.ttf\") asc: 0.0 desc: 0.0} } line_spacing: 1.45 font_size: 8 }\n                draw_text.color: #ffffff99\n            }\n            beauty_0_0_0_2 := Label {\n                height: Fit\n                padding: 0\n                text: \"Demo\"\n                draw_text.text_style: TextStyle{ font_family: FontFamily{ latin := FontMember{res: crate_resource(\"makepad_widgets:resources/Roboto-Regular.ttf\") asc: -0.1 desc: 0.0 weight: 400} cjk := FontMember{res: crate_resource(\"makepad_widgets:resources/LXGWWenKaiRegular.ttf\") asc: 0.0 desc: 0.0} emoji := FontMember{res: crate_resource(\"makepad_widgets:resources/NotoColorEmoji.ttf\") asc: 0.0 desc: 0.0} } line_spacing: 1.45 font_size: 8 }\n                draw_text.color: #ffffff99\n            }\n        }\n        beauty_0_0_1 := Label {\n            width: Fill\n            height: Fit\n            padding: 0\n            text: \"Design review · 30 min\"\n            draw_text.text_style: TextStyle{ font_family: FontFamily{ latin := FontMember{res: crate_resource(\"makepad_widgets:resources/Roboto-Regular.ttf\") asc: -0.1 desc: 0.0 weight: 700} cjk := FontMember{res: crate_resource(\"makepad_widgets:resources/LXGWWenKaiRegular.ttf\") asc: 0.0 desc: 0.0} emoji := FontMember{res: crate_resource(\"makepad_widgets:resources/NotoColorEmoji.ttf\") asc: 0.0 desc: 0.0} } line_spacing: 1.45 font_size: 18 }\n            draw_text.color: #ffffffff\n        }\n        beauty_0_0_2 := View {\n            flow: Right\n            align: Align{x: 0, y: 0.5}\n            width: Fill\n            height: Fit\n            spacing: 8\n            beauty_0_0_2_0 := Label {\n                width: Fill\n                height: Fit\n                padding: 0\n                text: \"Mon 5 Oct, 14:00–14:30 UTC\"\n                draw_text.text_style: TextStyle{ font_family: FontFamily{ latin := FontMember{res: crate_resource(\"makepad_widgets:resources/Roboto-Regular.ttf\") asc: -0.1 desc: 0.0 weight: 400} cjk := FontMember{res: crate_resource(\"makepad_widgets:resources/LXGWWenKaiRegular.ttf\") asc: 0.0 desc: 0.0} emoji := FontMember{res: crate_resource(\"makepad_widgets:resources/NotoColorEmoji.ttf\") asc: 0.0 desc: 0.0} } line_spacing: 1.45 font_size: 10 }\n                draw_text.color: #ffffffe6\n            }\n            beauty_0_0_2_1 := Label {\n                height: Fit\n                padding: 0\n                text: \"candidate\"\n                draw_text.text_style: TextStyle{ font_family: FontFamily{ latin := FontMember{res: crate_resource(\"makepad_widgets:resources/Roboto-Regular.ttf\") asc: -0.1 desc: 0.0 weight: 400} cjk := FontMember{res: crate_resource(\"makepad_widgets:resources/LXGWWenKaiRegular.ttf\") asc: 0.0 desc: 0.0} emoji := FontMember{res: crate_resource(\"makepad_widgets:resources/NotoColorEmoji.ttf\") asc: 0.0 desc: 0.0} } line_spacing: 1.45 font_size: 8 }\n                draw_text.color: #ffffff99\n            }\n        }\n        beauty_0_0_3 := Label {\n            height: Fit\n            padding: 0\n            text: \"Alex, Maya, Jordan · review before booking\"\n            draw_text.text_style: TextStyle{ font_family: FontFamily{ latin := FontMember{res: crate_resource(\"makepad_widgets:resources/Roboto-Regular.ttf\") asc: -0.1 desc: 0.0 weight: 400} cjk := FontMember{res: crate_resource(\"makepad_widgets:resources/LXGWWenKaiRegular.ttf\") asc: 0.0 desc: 0.0} emoji := FontMember{res: crate_resource(\"makepad_widgets:resources/NotoColorEmoji.ttf\") asc: 0.0 desc: 0.0} } line_spacing: 1.45 font_size: 8 }\n            draw_text.color: #ffffff99\n        }\n    }\n}\n",
+      "ty": "Splash",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "beauty_0",
+      "r": [
+        0,
+        0,
+        350,
+        160
+      ],
+      "ty": "View",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "beauty_0_0",
+      "r": [
+        20,
+        36,
+        310,
+        95
+      ],
+      "ty": "View",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "beauty_0_0_0",
+      "r": [
+        20,
+        36,
+        310,
+        19
+      ],
+      "ty": "View",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "beauty_0_0_0_0",
+      "r": [
+        20,
+        36,
+        16,
+        19
+      ],
+      "t": "",
+      "ty": "Label",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "beauty_0_0_0_1",
+      "r": [
+        44,
+        40,
+        250,
+        11
+      ],
+      "t": "Meeting Planner",
+      "ty": "Label",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "beauty_0_0_0_2",
+      "r": [
+        302,
+        40,
+        28,
+        11
+      ],
+      "t": "Demo",
+      "ty": "Label",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "beauty_0_0_1",
+      "r": [
+        20,
+        63,
+        310,
+        26
+      ],
+      "t": "Design review · 30 min",
+      "ty": "Label",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "beauty_0_0_2",
+      "r": [
+        20,
+        97,
+        310,
+        14
+      ],
+      "ty": "View",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "beauty_0_0_2_0",
+      "r": [
+        20,
+        97,
+        255,
+        14
+      ],
+      "t": "Mon 5 Oct, 14:00–14:30 UTC",
+      "ty": "Label",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "beauty_0_0_2_1",
+      "r": [
+        283,
+        99,
+        47,
+        11
+      ],
+      "t": "candidate",
+      "ty": "Label",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "beauty_0_0_3",
+      "r": [
+        20,
+        119,
+        202,
+        11
+      ],
+      "t": "Alex, Maya, Jordan · review before booking",
+      "ty": "Label",
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "sheet",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "Splash",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "ai_chat",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "AiChatSlot",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    },
+    {
+      "enabled": true,
+      "i": "tweaker",
+      "r": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "ty": "Tweaker",
+      "v": 0,
+      "w": 0,
+      "window_id": "main_window"
+    }
+  ]
+}

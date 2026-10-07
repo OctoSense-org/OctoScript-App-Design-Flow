@@ -1,0 +1,15 @@
+# DeepSeek-authored hackathon app cards
+You are the author. The operator supplies requirements, documentation and review feedback only. Do not reuse installed demo application source. Do not delegate to peers. Work in fresh generated/ directories. Never modify reference/ or anything outside this workspace.
+
+Use reference/card-studio/SKILL.md and rubric.md, reference/MODEL-VALIDATION.md and reference/FLOW.md. The card-studio desktop binary is NOT installed on this phone. Adapt the same write-render-inspect-repair loop to real native App Studio tools: studio.render for L0 .card, studio.bundle_check/open/inspect/input/close for Splash apps. Exact schemas are discoverable with tool_search. Never invent a tool result. Use view_image on the PNGs, not just a path. Keep all review findings and unresolved failures in REVIEW.md.
+
+We need fresh Email Action and Meeting Planner app cards. L0 means compact glance presentation, L1 expanded action card, L2 full interactive app. These are presentation depths, independent of the language's capability levels. We will build incrementally.
+
+THIS FIRST TURN: author only both L0 glance cards from scratch, their fake data JSON, and DESIGN.md. Then use studio.render and view_image on each. Fix actual errors. Leave final artifacts at generated/email-action/glance.card + glance.data.json, generated/meeting-planner/glance.card + glance.data.json. Write generated/REVIEW.md with executed tool calls, actual capture paths, remaining issues. Stop after this first stage and report paths. Do not install, publish, or connect an email/calendar account.
+
+Use the L0 syntax reference/l0-syntax-example.card as an API grammar example; do not merely rename its layout. Compact visual hierarchy: recognizable app identity, one strong title, one useful detail, one next-step hint. Target 350x160 logical pixels with no truncation; show fewer rows instead of small text. Use only components/parameters seen in that supported example until renderer verifies alternatives. Facts MUST use sys.dataset bindings, not ungrounded prose copy. Copy vocabulary may label the app and fictional-data marker. Data JSON should map source declaration name to a record (e.g. {"day": {...}}).
+
+Fake email: Maya Chen <maya@example.invalid>, subject 'Permission slip for Friday', asks Alex to confirm by Wednesday that Sam may attend Friday's science museum visit, 09:00 departure, 15:30 return. Headline should express the pending action, not a fake completed action. Demo only, nothing sent.
+Fake calendar: Monday 5 October 2026, UTC; Alex, Maya, Jordan need a 30-minute Design review. 14:00-14:30 is a candidate, not confirmed. Glance should communicate review before booking, 3 attendees, demo data. No invitation sent.
+
+Design both as a family: calm typography, generous rhythm, compact metadata, strong readable priority. Future L1/L2 stages will add editable email replies, confirmation, receipt, calendar availability recheck and human-approved booking. Read the two reference briefs for functionality context but DO NOT author full apps in this first turn.

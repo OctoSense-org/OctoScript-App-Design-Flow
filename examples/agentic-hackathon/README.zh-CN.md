@@ -2,6 +2,10 @@
 
 [English](README.md) | 简体中文
 
+要看 **DeepSeek 通过 App Studio 自行生成**的卡片，请使用独立的
+[DeepSeek Studio 示例](deepseek-studio/README.zh-CN.md)，包含 L0 速览、交互应用、
+生成记录和独立验证。下文的两个原始示例由 Codex 编写，运行时调用 DeepSeek。
+
 从一条可审查的路径开始：**读原始数据 → 问应用 Agent → 审核建议 → 确认本地操作 → 查看回执**。
 这两个 Splash 应用使用虚构邮件/日历，接入真实的 `octos.turn.start`，并明确标注离线替代路径。
 不会向真实账号发送邮件、邀请或日历更新。

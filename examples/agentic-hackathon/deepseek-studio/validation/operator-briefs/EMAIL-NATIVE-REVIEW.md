@@ -1,0 +1,8 @@
+# Independent normal-host native test findings
+Email source SHA256 03a6669d1e20c6acdf00bde9d1485b1ae27f6a08b131bcf71432d336d5128e16, macOS hidden native card-host with real widget clicks/text, same source bytes. Reproduction/results:
+PASS: persisted draft edits; review invalidates on later edit; confirm stores exact recipient/body; repeat confirmation preserves original delivered body.
+FAIL: tap undobtn after delivery. Notice says removed, but state.json still contains outbox.m1 and receipt still shows the entry. delete outbox[id] did not actually remove this key. Fix using supported object operations; rebuilding a fresh object while excluding the selected key is an alternative. Validate actual state and receipt, not the notice. Preserve other-message deliveries and current draft. Do not modify storage with test tools.
+FAIL: open full view then Ask agent with blank field. No visible error because notice is in hidden home; show validation in the full view's qtext/status.
+UX: full inbox has fixed220pt list; it shows one huge row plus clipped Jordan while much bottom area is blank. Make rows compact (sender/subject, details on card), show all3 at normal phone height, tapping a message should visibly select/open its action card. Both full-view root and long agent answer must remain scrollable with keyboard open. No tiny buttons.
+Busy guard must cover both draft and Q&A requests, otherwise global generation invalidates one call while its UI remains busy. Reset/reconcile both flags when stopping or changing messages.
+Operator will rerun native tests and actual DeepSeek host path after your fix. Preserve a bounded model test record.

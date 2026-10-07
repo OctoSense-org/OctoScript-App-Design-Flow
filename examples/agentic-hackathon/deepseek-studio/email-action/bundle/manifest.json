@@ -1,0 +1,29 @@
+{
+  "agent": {
+    "model": {
+      "needs": [
+        "tool_calling"
+      ]
+    },
+    "profile": "read-only",
+    "tools": [
+      "ask_user_question"
+    ]
+  },
+  "capabilities": [
+    "storage",
+    "octos.turn.start",
+    "octos.turn.interrupt"
+  ],
+  "id": "demo.deepseek-email",
+  "integrity": {
+    "bundle_blake3": "da7d1410e946c7ca1ab38089d0cdbea6a6b6a7ff12e419ea891fb212beca68e7"
+  },
+  "name": "Email Action DS",
+  "schema": 1,
+  "storage": {
+    "accounts": false,
+    "agent_workspace": "account"
+  },
+  "version": "0.1.0"
+}

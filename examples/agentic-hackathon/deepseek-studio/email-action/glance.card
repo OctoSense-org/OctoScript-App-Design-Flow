@@ -1,0 +1,30 @@
+# ledger email-action.glance@0.1.0
+# level:   L0
+# profile: ui/l0
+#
+# Email Action's glance card (`email-action.glance`), as `demo.email-action`.
+# `msg` is a `sys.dataset` record the app fills from the selected message:
+# the pending action it asks of Alex (title), who sent it (subtitle), when a
+# reply is due (status) and a next-step line (summary). The card states
+# nothing else, and no mail has been sent or connected.
+
+source msg sys.dataset(fields: [title, subtitle, status, summary])
+
+copy app { class: vocabulary, en: "Email Action" }
+copy demo { class: vocabulary, en: "Demo" }
+
+view root Surface(pad: .tight) {
+  Col(gap: 8) {
+    Row(gap: 8, align: .center) {
+      Icon(name: .mail, size: .row)
+      TextCaption(text: copy.app, width: .fill)
+      TextCaption(text: copy.demo)
+    }
+    TextTitle(text: msg.title, width: .fill)
+    Row(gap: 8) {
+      TextRow(text: msg.subtitle, width: .fill)
+      TextCaption(text: msg.status)
+    }
+    TextCaption(value: msg.summary)
+  }
+}
