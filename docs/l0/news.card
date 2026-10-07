@@ -3,7 +3,7 @@
 # profile: ui/l0
 # model:   glm-5.2
 #
-# Reference card for Splash/docs/ui-profile-l0.md. Expresses everything
+# Reference card for Octoscript/docs/ui-profile-l0.md. Expresses everything
 # app/app/src/app/plan/news.rs lowers: Masthead, LeadStory, StoryFeed.
 #
 # Note what is absent: no headline, byline, score or url appears anywhere. A

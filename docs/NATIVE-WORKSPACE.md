@@ -1,9 +1,9 @@
-# Unified native runtime
+# Set up the native runtime workspace
 
-Every AppCard uses the release of
-[Octoscript-Makepad](https://github.com/OctoSense-org/Octoscript-Makepad)
+Every native app and card built here uses the release of
+[OctoScript-Makepad](https://github.com/OctoSense-org/OctoScript-Makepad)
 selected by `native-runtime.lock.json`. That framework owns `runtime.json`,
-which fixes the underlying Makepad and Octoscript commits. Applications do not
+which fixes the underlying Makepad and OctoScript commits. Applications do not
 carry alternate Makepad branches or compatibility patches.
 
 ```text
@@ -16,25 +16,40 @@ carry alternate Makepad branches or compatibility patches.
   makepad/                    # native platform at the framework's revision
 ```
 
-From this repository's root, run `python3 tools/setup-native.py` to prepare the
-sibling repositories. Use `--update` when updating clean checkouts to a new
-release. The command preserves dirty source trees and custom Cargo
-configuration and refuses a root inside this repository. `--check` verifies
-the prepared source set without changing it; `--cargo-manifest <Cargo.toml>`
-additionally checks that a Cargo workspace resolves a single Makepad
-VM/platform/draw/widgets source (for example
-`--cargo-manifest examples/calendar/native/Cargo.toml`). `--root` selects the
-workspace; the default is this repository's parent directory, and
-`OCTOSENSE_WORKSPACE` selects another one. `OCTOS_APPCARD_NATIVE_ROOT` overrides
-where `flows/core/native_paths.py` looks for the prepared checkouts.
+1. From this repository's root, prepare the sibling repositories:
 
-The WASM builder (`flows/image-to-card/wasm/build.py`) consumes this release in
-both `existing` and `isolated` modes and applies no application-specific
-runtime patches. Update the framework first, verify its native and browser
-behavior, then update `native-runtime.lock.json` here.
+   ```sh
+   python3 tools/setup-native.py
+   ```
+
+   The command keeps dirty source trees and custom Cargo configuration, and
+   refuses a workspace inside this repository.
+
+2. Verify the prepared set without changing it:
+
+   ```sh
+   python3 tools/setup-native.py --check
+   ```
+
+   On success it prints a JSON receipt of the verified sources. If a sibling
+   does not match the lock, it stops with a `RuntimeError`, for example
+   `<workspace>/makepad differs from the unified runtime source lock`
+   (**✓ run** on a workspace whose `makepad` carries local patches). Revert
+   the local changes, or prepare a clean workspace with `--root`.
+
+| Option or variable | What it does |
+| --- | --- |
+| `--update` | Moves clean checkouts to a new release |
+| `--cargo-manifest <Cargo.toml>` | Also checks that a Cargo workspace resolves one Makepad VM, platform, draw and widgets source, for example `--cargo-manifest examples/calendar/native/Cargo.toml` |
+| `--root <dir>` or `OCTOSENSE_WORKSPACE` | Uses another workspace; the default is this repository's parent directory |
+| `OCTOS_APPCARD_NATIVE_ROOT` | Sets where `flows/core/native_paths.py` looks for the prepared checkouts |
+
+The WASM builder (`flows/image-to-card/wasm/build.py`) uses this release in
+both its `existing` and `isolated` modes and applies no application-specific
+runtime patches. To move to a new release, update the framework first, verify
+its native and browser behavior, then update `native-runtime.lock.json` here.
 
 Native UI checks use standalone release binaries, Makepad's built-in HTTP
-instrument and hidden Metal windows. They do not use Studio. Close owned test
-instances through `/gq` and verify exit. See
-[the instrument runbook](../flows/core/NATIVE-INSTRUMENT.md).
-Historical evidence retains the source paths and hashes from its original run.
+instrument and hidden Metal windows. They do not need Makepad Studio. Close
+each test instance you started with `/gq` (capture every window, then quit)
+and check that it exited. See [the instrument runbook](../flows/core/NATIVE-INSTRUMENT.md).
