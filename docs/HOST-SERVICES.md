@@ -13,6 +13,11 @@ OctoSense owns the services: `crates/shell`, `crates/ai-host`,
 [OctoSense](https://github.com/OctoSense-org/OctoSense). Paths below are
 OctoSense's unless marked.
 
+For the host API program now being implemented, see [Host API v1](HOST-API-V1.md):
+version requirements, discovery, signed backend operations, device consent and
+script tools. That guide requires compatible releases; it does not change the
+earlier release limits recorded below.
+
 ## Which shell serves which service
 
 Both OctoSense shells register every service below in their standard builds:

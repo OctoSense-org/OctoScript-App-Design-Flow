@@ -8,6 +8,10 @@
 
 分发器属于 App Hub（[OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 中的 `crates/appstore/src/services.rs`）。服务属于 OctoSense：[OctoSense](https://github.com/OctoSense-org/OctoSense) 中的 `crates/shell`、`crates/ai-host`、`crates/oauth-service` 和 `apps/*/host-service`。下文未加标注的路径都在 OctoSense 中。
 
+正在实现的宿主 API 方案见 [Host API v1](HOST-API-V1.zh-CN.md)：版本要求、发现、
+签名后端操作、设备授权和脚本工具。该指南需要配套发布版本；不改变下文记录的
+此前发布版本限制。
+
 ## 哪个 Shell 提供哪项服务
 
 OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home（`phone/`）。两者的标准构建都注册了下表中的全部服务。`crates/shell/src/apps.rs` 中的 `register_host_services` 注册面向应用的服务；`crates/ai-host/src/lib.rs` 注册 `llm`、`model` 和 `octos`。App Hub 的 `card-host` 不注册任何服务。
