@@ -1,0 +1,27 @@
+{
+  "status": "reviewed_offline_prototype",
+  "source_receipt_sha256": "c42c924f1f788d9cb8b4588c16d8479ee1fd4acb588f8b4f88630016869928eb",
+  "source_files": 25,
+  "authorship_exact_matches": 25,
+  "native_behavior": "Observed exercised paths pass in corrected operator routes/assertions; initial failed runs retained",
+  "native_raw_geometry": "Findings remain; not an all-bounds pass",
+  "exported_glance_render": "6/6 pass_render and settled; source hashes match",
+  "visual_review": "Independent review: overall offline-prototype4.5/5, visual4.4/5",
+  "score": {
+    "overall_offline_prototype": 4.5,
+    "visual": 4.4,
+    "rubric": {
+      "hierarchy_compactness": 4.2,
+      "depth_navigation": 4.6,
+      "per_item_state_keyboard": 4.6,
+      "coherence_honesty": 4.5,
+      "source_bound_evidence": 4.6
+    }
+  },
+  "cleanup": "complete; see ../../cleanup.json",
+  "source_modified_on_import": false,
+  "review_scope": "Artifact review, not a model ranking or publisher/store acceptance",
+  "evidence_index": "evidence/index.json",
+  "independent_review": "visual-review.json",
+  "cleanup_receipt": "../../cleanup.json"
+}

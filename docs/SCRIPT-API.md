@@ -4,7 +4,7 @@ What a script app's `main.splash` can use when it runs in a policed isolate
 (App Hub `card-host` and the shells' Card runner). Everything here was read in
 the runtime source (OctoSense-org/makepad `sandbox/contained-tier-gates` at
 `d94e5e6`, merged to `main` as #30, `cd812acd`; the file:line references
-were checked at `cd812acd`, the pinned runtime is now `c155f61d`) and, where
+were checked at `cd812acd`, the pinned runtime is now `68d1f4ec`) and, where
 marked **✓ run**, executed in
 `card-host` (App Hub `79a2c4f`) on macOS. Idioms are taken from the System
 Apps (OctoSense `apps/<name>/bundle/main.splash`), which are
@@ -123,6 +123,9 @@ Math is bare too: `floor ceil round abs min max clamp pow sqrt sin cos …`
 The app's jail (`<app-data>/<id>/`; in `card-host` `<app>/.local-state/<id>/`).
 Paths are relative to it; a leading `/` means the jail root; `..` above the
 root is an error; symlinks are refused (`MP/widgets/src/splash_storage.rs`).
+Only an app granted `storage` has a jail. Without it every call below errors
+with `storage not available in this context` (see
+[CAPABILITIES](CAPABILITIES.md)).
 
 | Call | Returns | |
 | --- | --- | --- |

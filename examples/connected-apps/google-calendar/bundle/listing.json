@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "subtitle": "Prepare events and connect Google Calendar",
+  "description": "An experimental App Hub sample for shared Google sign-in and Calendar services. View cached events, sync a selected calendar, retain a local draft, and review new or edited events on the host before saving. Includes optional event chat and Glance publication. The bundled screenshots show synthetic local drafts, the embedded Glance template and the real service-unavailable state in standalone card-host. Live Google sign-in, sync, writes and phone behavior require the integrated OctoSense host and remain unverified for this sample. Recurring series can be viewed but not edited.",
+  "category": "productivity",
+  "keywords": [
+    "calendar",
+    "Google",
+    "OAuth",
+    "sample"
+  ],
+  "screenshots": [
+    "screenshots/01-local-draft.png",
+    "screenshots/02-notes.png",
+    "screenshots/03-host-required.png",
+    "screenshots/04-glance-template.png"
+  ],
+  "icon": "assets/icon.svg",
+  "platforms": [
+    "macos"
+  ],
+  "publisher": {
+    "name": "Replace with your publisher name",
+    "support": "https://example.com/support",
+    "privacy_policy_url": "https://example.com/privacy"
+  },
+  "release_notes": "Development sample: host-owned credentials, atomic sync cache, timezone-aware drafts and native local-UI checks. Not yet a live-provider release.",
+  "age_rating": "all",
+  "license": "Apache-2.0"
+}

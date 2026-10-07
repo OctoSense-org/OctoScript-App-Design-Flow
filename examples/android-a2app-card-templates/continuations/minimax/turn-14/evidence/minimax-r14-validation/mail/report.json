@@ -1,0 +1,634 @@
+{
+  "family": "mail",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "Ana Ruiz",
+          "4 in Inbox",
+          "\u25cf L0"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Ana Ruiz",
+          "pass": true
+        },
+        {
+          "contains": "4 in Inbox",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L0",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "action": "tap",
+        "target": "b1",
+        "contains": [
+          "Mark as read",
+          "\u25cf L1"
+        ]
+      },
+      "target_rect": [
+        136,
+        675,
+        112,
+        44
+      ],
+      "target_selector": "b1@0",
+      "png": "01-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Mark as read",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "mark-read",
+      "input": {
+        "label": "mark-read",
+        "action": "tap",
+        "target": "Mark as read",
+        "contains": [
+          "Mark as unread",
+          "1 unread",
+          "\u25cf L1"
+        ]
+      },
+      "target_rect": [
+        16,
+        371,
+        139,
+        44
+      ],
+      "target_selector": "x_mark@0",
+      "png": "02-mark-read.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Mark as unread",
+          "pass": true
+        },
+        {
+          "contains": "1 unread",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "mark-unread",
+      "input": {
+        "label": "mark-unread",
+        "action": "tap",
+        "target": "Mark as unread",
+        "contains": [
+          "Mark as read",
+          "2 unread",
+          "\u25cf L1"
+        ]
+      },
+      "target_rect": [
+        16,
+        371,
+        161,
+        44
+      ],
+      "target_selector": "x_mark@0",
+      "png": "03-mark-unread.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Mark as read",
+          "pass": true
+        },
+        {
+          "contains": "2 unread",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "archive",
+      "input": {
+        "label": "archive",
+        "action": "tap",
+        "target": "Archive",
+        "contains": [
+          "3 in Inbox",
+          "\u25cf L1"
+        ]
+      },
+      "target_rect": [
+        163,
+        371,
+        89,
+        44
+      ],
+      "target_selector": "-@12",
+      "png": "04-archive.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "3 in Inbox",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "undo",
+      "input": {
+        "label": "undo",
+        "action": "tap",
+        "target": "Undo",
+        "contains": [
+          "4 in Inbox",
+          "\u25cf L1"
+        ]
+      },
+      "target_rect": [
+        307,
+        733,
+        61,
+        44
+      ],
+      "target_selector": "-@40",
+      "png": "05-undo.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "4 in Inbox",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "inbox",
+      "input": {
+        "label": "inbox",
+        "action": "tap",
+        "target": "b2",
+        "contains": [
+          "City Library",
+          "Priya",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        252,
+        675,
+        112,
+        44
+      ],
+      "target_selector": "b2@0",
+      "png": "06-inbox.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "City Library",
+          "pass": true
+        },
+        {
+          "contains": "Priya",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-message",
+      "input": {
+        "label": "second-message",
+        "action": "tap",
+        "target": "Open",
+        "occurrence": 1,
+        "contains": [
+          "City Library",
+          "Holds ready until Saturday",
+          "Three books",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        30,
+        439,
+        71,
+        44
+      ],
+      "target_selector": "-@22",
+      "png": "07-second-message.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "City Library",
+          "pass": true
+        },
+        {
+          "contains": "Holds ready until Saturday",
+          "pass": true
+        },
+        {
+          "contains": "Three books",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "reply",
+      "input": {
+        "label": "reply",
+        "action": "tap",
+        "target": "Reply",
+        "contains": [
+          "To City Library",
+          "Queue reply",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        16,
+        359,
+        72,
+        44
+      ],
+      "target_selector": "-@33",
+      "png": "08-reply.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "To City Library",
+          "pass": true
+        },
+        {
+          "contains": "Queue reply",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "blank-rejected",
+      "input": {
+        "label": "blank-rejected",
+        "action": "tap",
+        "target": "Queue reply",
+        "contains": [
+          "Nothing to send",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        30,
+        312,
+        129,
+        44
+      ],
+      "target_selector": "-@35",
+      "png": "09-blank-rejected.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Nothing to send",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "typed-with-keyboard",
+      "input": {
+        "label": "typed-with-keyboard",
+        "action": "text",
+        "target": "field",
+        "text": "Thanks, I will collect the books Saturday.",
+        "input_value": "Thanks, I will collect the books Saturday.",
+        "capture_android": true,
+        "excludes": [
+          "Nothing to send"
+        ],
+        "contains": [
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        30,
+        254,
+        324,
+        48
+      ],
+      "target_selector": "field@0",
+      "png": "10-typed-with-keyboard.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "android_screenshot": "10-typed-with-keyboard-android.png",
+      "small_button_targets": [
+        {
+          "selector": "-@35",
+          "text": "Queue reply",
+          "rect": [
+            30,
+            312,
+            129,
+            22
+          ]
+        }
+      ],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "excludes": "Nothing to send",
+          "pass": true
+        },
+        {
+          "input_value": "Thanks, I will collect the books Saturday.",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": false
+    },
+    {
+      "label": "send-scroll-keyboard",
+      "input": {
+        "label": "send-scroll-keyboard",
+        "action": "scroll",
+        "target": "l2",
+        "delta_y": 180,
+        "capture_android": true,
+        "contains": [
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        0,
+        162,
+        384,
+        173
+      ],
+      "target_selector": "l2@0",
+      "png": "11-send-scroll-keyboard.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "android_screenshot": "11-send-scroll-keyboard-android.png",
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "queue-with-keyboard",
+      "input": {
+        "label": "queue-with-keyboard",
+        "action": "tap",
+        "target": "Queue reply",
+        "contains": [
+          "Queued for City Library",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        30,
+        221,
+        129,
+        44
+      ],
+      "target_selector": "-@35",
+      "png": "12-queue-with-keyboard.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Queued for City Library",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "return-to-inbox",
+      "input": {
+        "label": "return-to-inbox",
+        "action": "tap",
+        "target": "\u2039 Inbox",
+        "contains": [
+          "Ana Ruiz",
+          "City Library",
+          "Priya",
+          "\u25cf L2"
+        ]
+      },
+      "target_rect": [
+        96,
+        359,
+        84,
+        44
+      ],
+      "target_selector": "1@14",
+      "png": "13-return-to-inbox.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Ana Ruiz",
+          "pass": true
+        },
+        {
+          "contains": "City Library",
+          "pass": true
+        },
+        {
+          "contains": "Priya",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "last-item",
+      "input": {
+        "label": "last-item",
+        "action": "tap",
+        "target": "Open",
+        "occurrence": 3,
+        "contains": [
+          "Northwind Studio",
+          "Invoice 2291",
+          "\u25cf L2"
+        ]
+      },
+      "pass": false,
+      "error": "list index out of range"
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.mail",
+    "capabilities": [],
+    "digest": "86802d868870e702f8ae6141e0f61b3ba0149dd00307e853a765b918de11c7b9",
+    "name": "Mail Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

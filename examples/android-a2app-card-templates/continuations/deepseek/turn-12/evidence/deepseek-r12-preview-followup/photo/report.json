@@ -1,0 +1,318 @@
+{
+  "family": "photo",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "Harbor sunset",
+          "UNAVAILABLE"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor sunset",
+          "pass": true
+        },
+        {
+          "contains": "UNAVAILABLE",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "reveal-preview-states",
+      "input": {
+        "label": "reveal-preview-states",
+        "action": "tap",
+        "target": "states_btn",
+        "contains": [
+          "Loading",
+          "Empty",
+          "Error"
+        ]
+      },
+      "target_rect": [
+        298,
+        107,
+        74,
+        44
+      ],
+      "target_selector": "states_btn@0",
+      "png": "01-reveal-preview-states.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Loading",
+          "pass": true
+        },
+        {
+          "contains": "Empty",
+          "pass": true
+        },
+        {
+          "contains": "Error",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "loading",
+      "input": {
+        "label": "loading",
+        "action": "tap",
+        "target": "Loading",
+        "contains": [
+          "Loading\u2026"
+        ]
+      },
+      "target_rect": [
+        83,
+        165,
+        77,
+        44
+      ],
+      "target_selector": "1@0",
+      "png": "02-loading.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Loading\u2026",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "empty",
+      "input": {
+        "label": "empty",
+        "action": "tap",
+        "target": "Empty",
+        "contains": [
+          "No photos"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        169,
+        165,
+        64,
+        44
+      ],
+      "target_selector": "2@0",
+      "png": "03-empty.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "No photos",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "error",
+      "input": {
+        "label": "error",
+        "action": "tap",
+        "target": "Error",
+        "contains": [
+          "Couldn't load"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        241,
+        165,
+        54,
+        44
+      ],
+      "target_selector": "3@0",
+      "png": "04-error.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Couldn't load",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "ready",
+      "input": {
+        "label": "ready",
+        "action": "tap",
+        "target": "Ready",
+        "contains": [
+          "Harbor sunset"
+        ],
+        "excludes": [
+          "local and real",
+          "local-image route"
+        ]
+      },
+      "target_rect": [
+        12,
+        165,
+        63,
+        44
+      ],
+      "target_selector": "-@3",
+      "png": "05-ready.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor sunset",
+          "pass": true
+        },
+        {
+          "excludes": "local and real",
+          "pass": true
+        },
+        {
+          "excludes": "local-image route",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "collapse-preview-states",
+      "input": {
+        "label": "collapse-preview-states",
+        "action": "tap",
+        "target": "states_btn",
+        "excludes": [
+          "Loading",
+          "Empty",
+          "Error"
+        ]
+      },
+      "target_rect": [
+        298,
+        107,
+        74,
+        44
+      ],
+      "target_selector": "states_btn@0",
+      "png": "06-collapse-preview-states.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "excludes": "Loading",
+          "pass": true
+        },
+        {
+          "excludes": "Empty",
+          "pass": true
+        },
+        {
+          "excludes": "Error",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.photo",
+    "capabilities": [],
+    "digest": "a3c9d4301df224f43bb64b02f0520e2f323663522b1174d1a95cbca8c0110b98",
+    "name": "Photo Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

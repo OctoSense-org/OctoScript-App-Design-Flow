@@ -1,0 +1,33 @@
+{
+  "turn": 9,
+  "type": "collector_recovery",
+  "description": "Collector exited on a prior turn orphan event. Same baseline recovered without a new model invocation. Separate the collector issue from the model decision to make8read-only calls and no mutations.",
+  "assistant_finals": 1,
+  "elapsed_seconds": null,
+  "original_and_recovered_artifact_hashes": [
+    {
+      "operator_artifact": "initial-collector-transcript.json",
+      "sha256": "310b6850b8a39770b8d8d92d2e0c6c69341d11b069db6ad9ddb6e43b2c47cc71",
+      "bytes": 241,
+      "raw_transcript_not_imported": true
+    },
+    {
+      "operator_artifact": "initial-collector-timing.json",
+      "sha256": "893a3a06ae62df8e05599b4d06b1d48457c96fae287f2ec303cc41aaaf0dbc38",
+      "bytes": 26,
+      "raw_transcript_not_imported": false
+    },
+    {
+      "operator_artifact": "transcript.json",
+      "sha256": "663cdc0701dd9640a6923d9015ac858974771902434f45dc3b380f8f16a2604f",
+      "bytes": 8680,
+      "raw_transcript_not_imported": true
+    },
+    {
+      "operator_artifact": "timing.json",
+      "sha256": "032de2dbea2a1917006dfc5d03bab91b73d499882ffb21d119e319f511c697be",
+      "bytes": 202,
+      "raw_transcript_not_imported": false
+    }
+  ]
+}

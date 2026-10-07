@@ -1,0 +1,12 @@
+{
+  "article": {
+    "title": "Harbor line opens after two-year rebuild",
+    "subtitle": "Demo Daily · Transit desk · 2h ago",
+    "summary": "The fictional Harbor line reopens with new signalling; officials say peak-hour trips drop by six minutes.",
+    "as_of": "2h",
+    "url1": "https://demo.invalid/harbor-line",
+    "$state": "ready",
+    "$status": "ready"
+  },
+  "_note": "Synthetic demo fixture for card-templates/news/glance.card (sys.dataset). Bound under the source alias `article`. Not a live feed."
+}

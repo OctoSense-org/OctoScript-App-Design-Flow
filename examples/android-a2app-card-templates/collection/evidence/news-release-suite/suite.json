@@ -1,0 +1,31 @@
+{
+  "family": "news",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Harbor line",
+        "Demo Daily"
+      ]
+    },
+    {
+      "label": "expanded",
+      "action": "tap",
+      "target": "Expand",
+      "contains": [
+        "fictional Harbor",
+        "Transit desk"
+      ]
+    },
+    {
+      "label": "full-app",
+      "action": "tap",
+      "target": "Open app",
+      "occurrence": 0,
+      "contains": [
+        "Harbor line",
+        "City council"
+      ]
+    }
+  ]
+}

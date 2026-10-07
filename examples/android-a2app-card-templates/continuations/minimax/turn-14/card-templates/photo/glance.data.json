@@ -1,0 +1,22 @@
+{
+  "$comment": "Fixture for glance.card. Keys are the SOURCE ALIASES (lead, more) because the offline realizer looks fixture values up by alias, not by sys.dataset id; no live id is declared so these lower to literals. Field names are the sys.dataset answer names in catalog.md. All records are SYNTHETIC demo data: no image is loaded and no photo library is read in this offline build.",
+  "ledger": "photo.glance@0.1.0",
+  "published_as": "os.photos",
+  "lead": {
+    "title": "Mill Street at first light",
+    "subtitle": "17 Sep · Riverside",
+    "summary": "Long exposure from the north bank, before the bridge opened to traffic.",
+    "as_of": "17 Sep",
+    "status": "Favorite available",
+    "metric1_label": "People",
+    "metric1_value": "Alex, Sofia",
+    "metric2_label": "Moment",
+    "metric2_value": "September snapshots"
+  },
+  "more": {
+    "title": "3 photos",
+    "subtitle": "Alex, Sofia, Noah, Lily, James",
+    "as_of": "12 Sep",
+    "status": "Demo album"
+  }
+}

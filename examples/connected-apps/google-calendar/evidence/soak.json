@@ -1,0 +1,681 @@
+{
+  "result": "pass",
+  "scope": "macOS signed installed Calendar; synthetic provider",
+  "source_sha256": "7292894f1576d2283726eeafdb79742bd6fe6fb9a651cb1646462bbde4185ff0",
+  "binary_sha256": "ef8b5e4c7fcb01b52b6c71fbec2980b87d0b69e7b1a106e8658159fb06e6ff9d",
+  "interaction_duration_s": 620.01,
+  "elapsed_s": 620.853,
+  "cycles": [
+    {
+      "cycle": 1,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 01",
+      "draft_sha256": "fe35096013a85e878de3520e98028c54e218f65b7672867f62119964aab60c34",
+      "etag": "\"synthetic-1\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.485
+    },
+    {
+      "cycle": 2,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 02",
+      "draft_sha256": "7104fac99883e6f01638a88831829b555af5528fef5f6bb5b3ef61ce1abe3c52",
+      "etag": "\"synthetic-1\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.42
+    },
+    {
+      "cycle": 3,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 03",
+      "draft_sha256": "004ca783d79a2549fe3283c263ebe0fe8d45fc3954b6d725743bdb02e683273e",
+      "etag": "\"synthetic-1\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.431
+    },
+    {
+      "cycle": 4,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 04",
+      "draft_sha256": "e88c4e4fcbf6b368f60c9395c7b25c41a97153d16b8b88afcf996dace1946c0c",
+      "etag": "\"synthetic-1\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.423
+    },
+    {
+      "cycle": 5,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 05",
+      "draft_sha256": "b77d48f4a5908796ef5ebbd13b463c0d94e0f9eb7c8dcf12151afc2e36074e78",
+      "etag": "\"synthetic-1\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.449
+    },
+    {
+      "cycle": 6,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 06",
+      "draft_sha256": "c1478b40e2c780f60cd624a30a7c6915190f83ce27b68c3c72ae7fe08cd81d0e",
+      "etag": "\"synthetic-1\"",
+      "outcome": "saved and read back exact event",
+      "cold_restart": false,
+      "active_s": 0.955
+    },
+    {
+      "cycle": 7,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 07",
+      "draft_sha256": "78cfa57a3a1260a4bf6bada8301699cf82b2ff6a41c04b32a6211be9b15476f6",
+      "etag": "\"synthetic-2\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.423
+    },
+    {
+      "cycle": 8,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 08",
+      "draft_sha256": "7fb9afb249ca413a36d28ae1c2e0d98c820670607cd1fadab8c9765cb2e79fea",
+      "etag": "\"synthetic-2\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.429
+    },
+    {
+      "cycle": 9,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 09",
+      "draft_sha256": "a86d2105a9ed29480d474c7517c5cd931dc08006aacea8c7d5a5df473badc68c",
+      "etag": "\"synthetic-2\"",
+      "outcome": "cancel/discard",
+      "cold_restart": true,
+      "active_s": 0.836
+    },
+    {
+      "cycle": 10,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 10",
+      "draft_sha256": "e96964bc35b1e4a6c0671b9a15a4b7ea221b01e2e281abbcb75da60d745ebbcc",
+      "etag": "\"synthetic-2\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.434
+    },
+    {
+      "cycle": 11,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 11",
+      "draft_sha256": "db5ad3c675fea974fc171a75b523c0f7fc2f92d83177de1e416b9a85bba7440c",
+      "etag": "\"synthetic-2\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.409
+    },
+    {
+      "cycle": 12,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 12",
+      "draft_sha256": "3c7088f9efce13cc1c9f63ab3d80d98755b7fcbf272c9289d56f9918c07b56be",
+      "etag": "\"synthetic-2\"",
+      "outcome": "conflict refused; local draft retained then explicitly discarded",
+      "cold_restart": false,
+      "active_s": 1.135
+    },
+    {
+      "cycle": 13,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 13",
+      "draft_sha256": "49f46c051e5d7be2f8fb26ceea13f572945b3d6fca76dc59c2b9d95d29b2aea8",
+      "etag": "\"synthetic-external-12\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.438
+    },
+    {
+      "cycle": 14,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 14",
+      "draft_sha256": "cb350d0e9854bb6d0613bb3610cb4b2d6b84f49d7f82ce301d70ca62394b400e",
+      "etag": "\"synthetic-external-12\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.431
+    },
+    {
+      "cycle": 15,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 15",
+      "draft_sha256": "79969555f79abd95bc5b17076ee123b0fe63836251fe97ba38f91f0bffa9a9be",
+      "etag": "\"synthetic-external-12\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 1.37
+    },
+    {
+      "cycle": 16,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 16",
+      "draft_sha256": "e77dff340073a058a38e9470e0da7a6f075b0fdbe76196c170129d845ca82366",
+      "etag": "\"synthetic-external-12\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.442
+    },
+    {
+      "cycle": 17,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 17",
+      "draft_sha256": "9464e826fb52afc6db3d24b3aab806b0464906c518a3497acad971266d75212a",
+      "etag": "\"synthetic-external-12\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.45
+    },
+    {
+      "cycle": 18,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 18",
+      "draft_sha256": "8abc697311b0c16f257bb9ec82bfc5a142426e8b69458e049275a4d6bb05d58b",
+      "etag": "\"synthetic-external-12\"",
+      "outcome": "saved and read back exact event",
+      "cold_restart": true,
+      "active_s": 1.432
+    },
+    {
+      "cycle": 19,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 19",
+      "draft_sha256": "5ff2184217728f64ac9a60b77d722f3b375659abec520b197ed605223fb1c467",
+      "etag": "\"synthetic-4\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.437
+    },
+    {
+      "cycle": 20,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 20",
+      "draft_sha256": "293ec25a8c0f90142d79e6dd5f721f46e1cac87d9b58b0405fe1634c304514f5",
+      "etag": "\"synthetic-4\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.427
+    },
+    {
+      "cycle": 21,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 21",
+      "draft_sha256": "92414241c9f3adc7d21cd964c9ea274ce1e6ac694f5246eb0cd89bb0db774c88",
+      "etag": "\"synthetic-4\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.45
+    },
+    {
+      "cycle": 22,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 22",
+      "draft_sha256": "26892eb20a2cdce029b888d936cc900b9093e285fd21f70c2bfc1f3cfe39356b",
+      "etag": "\"synthetic-4\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.441
+    },
+    {
+      "cycle": 23,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 23",
+      "draft_sha256": "e4a974c81e2f7d9eeb994cae100b891828217a10df95753133eb50ce2bb0216d",
+      "etag": "\"synthetic-4\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.443
+    },
+    {
+      "cycle": 24,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 24",
+      "draft_sha256": "b7355b23a3ee1c3fe0c92ce5671c774d3156b85ca350e0c081e527f2e8caffea",
+      "etag": "\"synthetic-4\"",
+      "outcome": "conflict refused; local draft retained then explicitly discarded",
+      "cold_restart": false,
+      "active_s": 1.19
+    },
+    {
+      "cycle": 25,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 25",
+      "draft_sha256": "5ddcac359d44e51149807c36bcc44b2b988915bbea932338a9d6c2220dd58408",
+      "etag": "\"synthetic-external-24\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.447
+    },
+    {
+      "cycle": 26,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 26",
+      "draft_sha256": "5646f9c4bb7fe412a99637014bc4c11938d47c0020a9eb766cf3d7c044eb729b",
+      "etag": "\"synthetic-external-24\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.421
+    },
+    {
+      "cycle": 27,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 27",
+      "draft_sha256": "9c774a3f87594cc5c4fdac6428e7b256b42936f0cbaeab20a105fe03e828c462",
+      "etag": "\"synthetic-external-24\"",
+      "outcome": "cancel/discard",
+      "cold_restart": true,
+      "active_s": 0.831
+    },
+    {
+      "cycle": 28,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 28",
+      "draft_sha256": "a2ae6aa7ac41c7fe74602ebd0144fc68dfe89eca936749ae9ea2637cd1f9f7f0",
+      "etag": "\"synthetic-external-24\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.443
+    },
+    {
+      "cycle": 29,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 29",
+      "draft_sha256": "ebbc8d93455b20b689dffedf606feedb1fc948c9a2a56a5215759ce1a065ad39",
+      "etag": "\"synthetic-external-24\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.42
+    },
+    {
+      "cycle": 30,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 30",
+      "draft_sha256": "97e54a57883c731b5a45cfb0c0f63c0965f2d61f266c1bf15791538cdc5cad7a",
+      "etag": "\"synthetic-external-24\"",
+      "outcome": "saved and read back exact event",
+      "cold_restart": false,
+      "active_s": 1.059
+    },
+    {
+      "cycle": 31,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 31",
+      "draft_sha256": "94cc851eef1b3e4348b50a770e2b4112ecaac6e91b7f23baabb2dfd54b609b06",
+      "etag": "\"synthetic-6\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.428
+    },
+    {
+      "cycle": 32,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 32",
+      "draft_sha256": "e63ec7db82ad4e4b8c9f179b7bb50bf1152df05746da8d5d96ae89d46ee563bb",
+      "etag": "\"synthetic-6\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.431
+    },
+    {
+      "cycle": 33,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 33",
+      "draft_sha256": "3ab64d76886f4cefabb6693d330a9053539a7b7985398ae454e188cfa1546c1a",
+      "etag": "\"synthetic-6\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.439
+    },
+    {
+      "cycle": 34,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 34",
+      "draft_sha256": "13866ca7e09ac5a658642172375b59eb426cb35ea47dcd8e8949668489f3fd48",
+      "etag": "\"synthetic-6\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.436
+    },
+    {
+      "cycle": 35,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 35",
+      "draft_sha256": "a779acd2bf2948f8e9739ad6a546bea9ab42acc941596f374102e006191ee2a0",
+      "etag": "\"synthetic-6\"",
+      "outcome": "cancel/discard",
+      "cold_restart": false,
+      "active_s": 0.407
+    },
+    {
+      "cycle": 36,
+      "event_id": "event00001",
+      "draft_title": "Synthetic soak event 36",
+      "draft_sha256": "afe2136791936363b54ca7c5f98c4d6339d3a6caa589a59ad70f50f32743b3eb",
+      "etag": "\"synthetic-6\"",
+      "outcome": "conflict refused; local draft retained then explicitly discarded",
+      "cold_restart": true,
+      "active_s": 1.463
+    }
+  ],
+  "restarts": 4,
+  "input_latency_ms": {
+    "count": 1743,
+    "median": 1.127,
+    "p95": 2.228,
+    "max": 6.023
+  },
+  "rss": [
+    {
+      "cycle": 0,
+      "process": 1,
+      "elapsed_s": 0.805,
+      "kib": 308592
+    },
+    {
+      "cycle": 1,
+      "process": 1,
+      "elapsed_s": 1.29,
+      "kib": 331600
+    },
+    {
+      "cycle": 2,
+      "process": 1,
+      "elapsed_s": 18.45,
+      "kib": 333712
+    },
+    {
+      "cycle": 3,
+      "process": 1,
+      "elapsed_s": 35.685,
+      "kib": 335472
+    },
+    {
+      "cycle": 4,
+      "process": 1,
+      "elapsed_s": 52.895,
+      "kib": 335760
+    },
+    {
+      "cycle": 5,
+      "process": 1,
+      "elapsed_s": 70.143,
+      "kib": 340336
+    },
+    {
+      "cycle": 6,
+      "process": 1,
+      "elapsed_s": 87.875,
+      "kib": 341152
+    },
+    {
+      "cycle": 7,
+      "process": 1,
+      "elapsed_s": 104.563,
+      "kib": 341568
+    },
+    {
+      "cycle": 8,
+      "process": 1,
+      "elapsed_s": 121.794,
+      "kib": 341744
+    },
+    {
+      "cycle": 9,
+      "process": 2,
+      "elapsed_s": 139.421,
+      "kib": 290640
+    },
+    {
+      "cycle": 10,
+      "process": 2,
+      "elapsed_s": 156.24,
+      "kib": 306512
+    },
+    {
+      "cycle": 11,
+      "process": 2,
+      "elapsed_s": 173.439,
+      "kib": 307920
+    },
+    {
+      "cycle": 12,
+      "process": 2,
+      "elapsed_s": 191.387,
+      "kib": 327808
+    },
+    {
+      "cycle": 13,
+      "process": 2,
+      "elapsed_s": 207.914,
+      "kib": 328720
+    },
+    {
+      "cycle": 14,
+      "process": 2,
+      "elapsed_s": 225.13,
+      "kib": 331152
+    },
+    {
+      "cycle": 15,
+      "process": 2,
+      "elapsed_s": 243.291,
+      "kib": 332144
+    },
+    {
+      "cycle": 16,
+      "process": 2,
+      "elapsed_s": 259.583,
+      "kib": 332336
+    },
+    {
+      "cycle": 17,
+      "process": 2,
+      "elapsed_s": 276.813,
+      "kib": 337024
+    },
+    {
+      "cycle": 18,
+      "process": 3,
+      "elapsed_s": 295.017,
+      "kib": 306528
+    },
+    {
+      "cycle": 19,
+      "process": 3,
+      "elapsed_s": 311.247,
+      "kib": 310880
+    },
+    {
+      "cycle": 20,
+      "process": 3,
+      "elapsed_s": 328.459,
+      "kib": 317600
+    },
+    {
+      "cycle": 21,
+      "process": 3,
+      "elapsed_s": 345.702,
+      "kib": 318672
+    },
+    {
+      "cycle": 22,
+      "process": 3,
+      "elapsed_s": 362.917,
+      "kib": 319072
+    },
+    {
+      "cycle": 23,
+      "process": 3,
+      "elapsed_s": 380.137,
+      "kib": 319360
+    },
+    {
+      "cycle": 24,
+      "process": 3,
+      "elapsed_s": 398.106,
+      "kib": 339408
+    },
+    {
+      "cycle": 25,
+      "process": 3,
+      "elapsed_s": 414.589,
+      "kib": 340848
+    },
+    {
+      "cycle": 26,
+      "process": 3,
+      "elapsed_s": 431.787,
+      "kib": 341008
+    },
+    {
+      "cycle": 27,
+      "process": 4,
+      "elapsed_s": 449.418,
+      "kib": 291088
+    },
+    {
+      "cycle": 28,
+      "process": 4,
+      "elapsed_s": 466.252,
+      "kib": 306768
+    },
+    {
+      "cycle": 29,
+      "process": 4,
+      "elapsed_s": 483.451,
+      "kib": 311184
+    },
+    {
+      "cycle": 30,
+      "process": 4,
+      "elapsed_s": 501.316,
+      "kib": 312768
+    },
+    {
+      "cycle": 31,
+      "process": 4,
+      "elapsed_s": 517.907,
+      "kib": 313424
+    },
+    {
+      "cycle": 32,
+      "process": 4,
+      "elapsed_s": 535.131,
+      "kib": 315984
+    },
+    {
+      "cycle": 33,
+      "process": 4,
+      "elapsed_s": 552.365,
+      "kib": 316464
+    },
+    {
+      "cycle": 34,
+      "process": 4,
+      "elapsed_s": 569.575,
+      "kib": 317424
+    },
+    {
+      "cycle": 35,
+      "process": 4,
+      "elapsed_s": 586.777,
+      "kib": 317728
+    },
+    {
+      "cycle": 36,
+      "process": 5,
+      "elapsed_s": 605.055,
+      "kib": 330192
+    }
+  ],
+  "not_verified": [
+    "Live Google",
+    "Android/iOS/Linux/Windows",
+    "Physical approval",
+    "Real model calls",
+    "Full-shell Glance soak"
+  ],
+  "cleanup": "owned host processes stopped; temporary synthetic profile removed",
+  "app_hub_commit": "5c7a13f92fa25d36ba1fe7fb99dc9fb1b235f8d3",
+  "latency_scope": "HTTP instrument request through macOS wait=1 applied-frame submission; not FPS, display completion or physical-input latency",
+  "environment": {
+    "platform": "Darwin",
+    "machine": "arm64",
+    "macos": "26.6.2",
+    "cpu_count": 18,
+    "conditions": "Concurrent Android cross-compile (4 jobs), Notes and Inbox native soaks. Input/frame-wait round trips under concurrent load; not an idle benchmark or FPS measurement.",
+    "load_sample": "{ 12.42 10.55 7.87 }",
+    "sampled_unix_s": 1791325284.503
+  },
+  "outcomes": {
+    "cancel/discard": 30,
+    "saved and read back exact event": 3,
+    "conflict refused; local draft retained then explicitly discarded": 3
+  },
+  "input_routes": {
+    "/click": 420,
+    "/m": 1035,
+    "/k": 144,
+    "/t": 144
+  },
+  "rss_per_process": [
+    {
+      "process": 1,
+      "first_cycle": 0,
+      "last_cycle": 8,
+      "start_mib": 301.4,
+      "end_mib": 333.7,
+      "peak_mib": 333.7
+    },
+    {
+      "process": 2,
+      "first_cycle": 9,
+      "last_cycle": 17,
+      "start_mib": 283.8,
+      "end_mib": 329.1,
+      "peak_mib": 329.1
+    },
+    {
+      "process": 3,
+      "first_cycle": 18,
+      "last_cycle": 26,
+      "start_mib": 299.3,
+      "end_mib": 333.0,
+      "peak_mib": 333.0
+    },
+    {
+      "process": 4,
+      "first_cycle": 27,
+      "last_cycle": 35,
+      "start_mib": 284.3,
+      "end_mib": 310.3,
+      "peak_mib": 310.3
+    },
+    {
+      "process": 5,
+      "first_cycle": 36,
+      "last_cycle": 36,
+      "start_mib": 322.5,
+      "end_mib": 322.5,
+      "peak_mib": 322.5
+    }
+  ],
+  "memory_conclusion": "RSS increased within each process. Restarts prevent a steady-state/leak-free conclusion; longer uninterrupted profiling remains needed.",
+  "provider_write_attempts": 6,
+  "review_cancellations": 36,
+  "captures": {
+    "09-soak-exact-review.png": "938e4efecefe83545d5067577a1a698d1b2076a36fed252db8950646e590d348",
+    "10-soak-conflict.png": "4d3780d7b7832a7cef380dffdbf764a9a38a29a12ffeee230cf6d574298e7f97",
+    "11-soak-final-agenda.png": "0e99ec6282abce59720bf6d291c4aa7a5222e784e56c3e0be2a37c96b2afa003"
+  }
+}

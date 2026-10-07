@@ -1,0 +1,412 @@
+{
+  "method": "last successful write_file plus subsequent successful exact edits, UTF-8 byte/hash comparison",
+  "scope": "Recorded file mutations only; no reasoning, device operations, or app edits.",
+  "limitations": [
+    "Matching bytes prove the frozen copy is reproducible from recorded Android model tool arguments, not absence of every possible unrecorded historical intervention.",
+    "Redacted payloads cannot establish original exact bytes or hashes.",
+    "Ambiguous/fuzzy edits or applicable patches after the last write are not guessed."
+  ],
+  "cases": {
+    "deepseek_r3": {
+      "copy": "deepseek-mail-round3",
+      "transcript_sha256": {
+        "01-mail-design/transcript.json": "b8b5ab704c528d1cc2f9a9880dced0dd73a3ac7840550406b5ddff0095bf3af4",
+        "02-mail-review/transcript.json": "34dea3faaa03ad4d4ccc2dd17629f20c6546d52d51f4746bf2b82ee78be65523",
+        "03-mail-revision/transcript.json": "0eb086e1ecd3255cbcb15e73de0c1a431f26213287769d3b2b7de32d5e389739"
+      },
+      "excluded_unsuccessful_mutations": [],
+      "files": [
+        {
+          "path": "card-templates/DESIGN.md",
+          "category": "design_document",
+          "replayed_mutations": [
+            {
+              "transcript": "01-mail-design/transcript.json",
+              "tool_calls_index": 8,
+              "tool_call_id": "call_00_3Mt4X2qU6upecjczVn1a9333",
+              "tool": "write_file",
+              "start_seq": 87111,
+              "end_seq": 87114
+            },
+            {
+              "transcript": "03-mail-revision/transcript.json",
+              "tool_calls_index": 6,
+              "tool_call_id": "call_01_TECxQZQvijsbBKd6QSLY7115",
+              "tool": "edit_file",
+              "start_seq": 110576,
+              "end_seq": 110579
+            },
+            {
+              "transcript": "03-mail-revision/transcript.json",
+              "tool_calls_index": 7,
+              "tool_call_id": "call_02_53lH7gm7GMe2gsnagDg47864",
+              "tool": "edit_file",
+              "start_seq": 110582,
+              "end_seq": 110585
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 6909,
+          "frozen_sha256": "6fa07c8a98f28d1a28753231358f29532e6c9119bac434b91aa7026a901b438b",
+          "replay_bytes": 6909,
+          "replay_payload_sha256": "6fa07c8a98f28d1a28753231358f29532e6c9119bac434b91aa7026a901b438b",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/mail/bundle/main.splash",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "03-mail-revision/transcript.json",
+              "tool_calls_index": 4,
+              "tool_call_id": "call_00_6fhAnaK3apZ2naHcL87Y2972",
+              "tool": "write_file",
+              "start_seq": 109668,
+              "end_seq": 109671
+            },
+            {
+              "transcript": "03-mail-revision/transcript.json",
+              "tool_calls_index": 16,
+              "tool_call_id": "call_00_NqXA76eB5ntaRtAPGJCn5591",
+              "tool": "edit_file",
+              "start_seq": 114245,
+              "end_seq": 114248
+            },
+            {
+              "transcript": "03-mail-revision/transcript.json",
+              "tool_calls_index": 17,
+              "tool_call_id": "call_01_CkyrS6lJMhrC67XBuTpd3097",
+              "tool": "edit_file",
+              "start_seq": 114251,
+              "end_seq": 114254
+            },
+            {
+              "transcript": "03-mail-revision/transcript.json",
+              "tool_calls_index": 18,
+              "tool_call_id": "call_02_FaHkTzUDHfIXlosJl7HJ1919",
+              "tool": "edit_file",
+              "start_seq": 114257,
+              "end_seq": 114260
+            }
+          ],
+          "superseded_mutations": 6,
+          "frozen_bytes": 14615,
+          "frozen_sha256": "c1fcbb4b255ba15f749cc3da0e2d21a5f73114bdb46c0bfd2851f88263ab6729",
+          "replay_bytes": 14615,
+          "replay_payload_sha256": "c1fcbb4b255ba15f749cc3da0e2d21a5f73114bdb46c0bfd2851f88263ab6729",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/mail/bundle/manifest.json",
+          "category": "manifest",
+          "replayed_mutations": [
+            {
+              "transcript": "01-mail-design/transcript.json",
+              "tool_calls_index": 11,
+              "tool_call_id": "call_03_dflfaDqwLZxwWSUXeT8G3955",
+              "tool": "write_file",
+              "start_seq": 87129,
+              "end_seq": 87132
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 283,
+          "frozen_sha256": "dacbd301693ad71b28e25bea40cc9b0d8845929839f36d32ee29b3b7fd00ac13",
+          "replay_bytes": 283,
+          "replay_payload_sha256": "dacbd301693ad71b28e25bea40cc9b0d8845929839f36d32ee29b3b7fd00ac13",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true,
+          "integrity_placeholder": true,
+          "real_bundle_integrity_verified": false,
+          "publisher_signing_verified": false,
+          "note": "Literal 64-zero placeholder matches the recorded model mutation bytes exactly. No redaction affected these on-disk arguments. Authorship verification is distinct from real bundle-integrity or publisher-signing verification."
+        },
+        {
+          "path": "card-templates/mail/glance.card",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "02-mail-review/transcript.json",
+              "tool_calls_index": 2,
+              "tool_call_id": "call_00_Hv6tV2SyJRD64U1NSjVN5654",
+              "tool": "write_file",
+              "start_seq": 91374,
+              "end_seq": 91377
+            },
+            {
+              "transcript": "02-mail-review/transcript.json",
+              "tool_calls_index": 3,
+              "tool_call_id": "call_00_AWfhSD25KhZ0Oubjjwp45385",
+              "tool": "edit_file",
+              "start_seq": 91650,
+              "end_seq": 91653
+            },
+            {
+              "transcript": "02-mail-review/transcript.json",
+              "tool_calls_index": 4,
+              "tool_call_id": "call_01_8BFtvhKgJohUGFQmZfec0754",
+              "tool": "edit_file",
+              "start_seq": 91656,
+              "end_seq": 91659
+            }
+          ],
+          "superseded_mutations": 1,
+          "frozen_bytes": 2798,
+          "frozen_sha256": "190f728d58cf07d692aed8ac82990277f47916c1166146ffeebc367d434ce529",
+          "replay_bytes": 2798,
+          "replay_payload_sha256": "190f728d58cf07d692aed8ac82990277f47916c1166146ffeebc367d434ce529",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/mail/glance.data.json",
+          "category": "fixture_data",
+          "replayed_mutations": [
+            {
+              "transcript": "03-mail-revision/transcript.json",
+              "tool_calls_index": 5,
+              "tool_call_id": "call_00_svgvok0OQ6Jm7kzku2WZ2805",
+              "tool": "write_file",
+              "start_seq": 110570,
+              "end_seq": 110573
+            }
+          ],
+          "superseded_mutations": 1,
+          "frozen_bytes": 325,
+          "frozen_sha256": "9c1008f68ec958292d01195725491d07a0dd595a4c02073b92374766ad97aba9",
+          "replay_bytes": 325,
+          "replay_payload_sha256": "9c1008f68ec958292d01195725491d07a0dd595a4c02073b92374766ad97aba9",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        }
+      ]
+    },
+    "minimax_r3": {
+      "copy": "minimax-mail-round3-final",
+      "transcript_sha256": {
+        "minimax-01-mail-design/transcript.json": "3bcce9a4b6b11e30bb6212cc98757711a6937cf857f29015b811815cada2e0b2",
+        "minimax-02-mail-review/transcript.json": "befd1bf167e392292ad09704e20318dd7ab288e5a81a94951d0d620a70cf6b93",
+        "minimax-03-mail-final-review/transcript.json": "9dd5728d5538e06a18cc2be00d2eee60137a86b910da087c6b6b8ffe54f54f23"
+      },
+      "excluded_unsuccessful_mutations": [
+        {
+          "transcript": "minimax-01-mail-design/transcript.json",
+          "tool_calls_index": 28,
+          "tool_call_id": "call_function_q6uatjpce2i8_1",
+          "tool": "apply_patch",
+          "start_seq": 1102,
+          "end_seq": 1104
+        }
+      ],
+      "files": [
+        {
+          "path": "card-templates/DESIGN.md",
+          "category": "design_document",
+          "replayed_mutations": [
+            {
+              "transcript": "minimax-01-mail-design/transcript.json",
+              "tool_calls_index": 21,
+              "tool_call_id": "call_function_9zrn4b98rdhj_1",
+              "tool": "write_file",
+              "start_seq": 472,
+              "end_seq": 475
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 11331,
+          "frozen_sha256": "5603413b851679880e742b3e3dcbb576195095aa2533334ad345ed5421413054",
+          "replay_bytes": 11331,
+          "replay_payload_sha256": "5603413b851679880e742b3e3dcbb576195095aa2533334ad345ed5421413054",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/mail/bundle/main.splash",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "minimax-03-mail-final-review/transcript.json",
+              "tool_calls_index": 4,
+              "tool_call_id": "call_function_jkhtygd5472c_1",
+              "tool": "write_file",
+              "start_seq": 3536,
+              "end_seq": 3539
+            },
+            {
+              "transcript": "minimax-03-mail-final-review/transcript.json",
+              "tool_calls_index": 9,
+              "tool_call_id": "call_function_fbaiqzawew0a_1",
+              "tool": "edit_file",
+              "start_seq": 3590,
+              "end_seq": 3593
+            },
+            {
+              "transcript": "minimax-03-mail-final-review/transcript.json",
+              "tool_calls_index": 10,
+              "tool_call_id": "call_function_9xrdjazzp6d7_1",
+              "tool": "edit_file",
+              "start_seq": 3601,
+              "end_seq": 3604
+            },
+            {
+              "transcript": "minimax-03-mail-final-review/transcript.json",
+              "tool_calls_index": 11,
+              "tool_call_id": "call_function_9xrdjazzp6d7_2",
+              "tool": "edit_file",
+              "start_seq": 3607,
+              "end_seq": 3610
+            },
+            {
+              "transcript": "minimax-03-mail-final-review/transcript.json",
+              "tool_calls_index": 12,
+              "tool_call_id": "call_function_9xrdjazzp6d7_3",
+              "tool": "edit_file",
+              "start_seq": 3613,
+              "end_seq": 3616
+            },
+            {
+              "transcript": "minimax-03-mail-final-review/transcript.json",
+              "tool_calls_index": 13,
+              "tool_call_id": "call_function_9xrdjazzp6d7_4",
+              "tool": "edit_file",
+              "start_seq": 3619,
+              "end_seq": 3622
+            },
+            {
+              "transcript": "minimax-03-mail-final-review/transcript.json",
+              "tool_calls_index": 20,
+              "tool_call_id": "call_function_wz56pjtonn4l_1",
+              "tool": "edit_file",
+              "start_seq": 3739,
+              "end_seq": 3742
+            },
+            {
+              "transcript": "minimax-03-mail-final-review/transcript.json",
+              "tool_calls_index": 25,
+              "tool_call_id": "call_function_j0mfdwk2cskz_1",
+              "tool": "edit_file",
+              "start_seq": 3843,
+              "end_seq": 3846
+            },
+            {
+              "transcript": "minimax-03-mail-final-review/transcript.json",
+              "tool_calls_index": 26,
+              "tool_call_id": "call_function_j0mfdwk2cskz_2",
+              "tool": "edit_file",
+              "start_seq": 3849,
+              "end_seq": 3852
+            },
+            {
+              "transcript": "minimax-03-mail-final-review/transcript.json",
+              "tool_calls_index": 27,
+              "tool_call_id": "call_function_j0mfdwk2cskz_3",
+              "tool": "edit_file",
+              "start_seq": 3855,
+              "end_seq": 3858
+            },
+            {
+              "transcript": "minimax-03-mail-final-review/transcript.json",
+              "tool_calls_index": 28,
+              "tool_call_id": "call_function_j0mfdwk2cskz_4",
+              "tool": "edit_file",
+              "start_seq": 3861,
+              "end_seq": 3864
+            },
+            {
+              "transcript": "minimax-03-mail-final-review/transcript.json",
+              "tool_calls_index": 35,
+              "tool_call_id": "call_function_g55gmcggkraf_1",
+              "tool": "edit_file",
+              "start_seq": 3989,
+              "end_seq": 3992
+            },
+            {
+              "transcript": "minimax-03-mail-final-review/transcript.json",
+              "tool_calls_index": 36,
+              "tool_call_id": "call_function_hfek4dv13kmw_1",
+              "tool": "edit_file",
+              "start_seq": 4009,
+              "end_seq": 4012
+            }
+          ],
+          "superseded_mutations": 14,
+          "frozen_bytes": 19795,
+          "frozen_sha256": "1c2cc7cb15149e642a3e971aaad8fb7ad418a7a71a15947301fcdba1b103f1a9",
+          "replay_bytes": 19795,
+          "replay_payload_sha256": "1c2cc7cb15149e642a3e971aaad8fb7ad418a7a71a15947301fcdba1b103f1a9",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/mail/bundle/manifest.json",
+          "category": "manifest",
+          "replayed_mutations": [
+            {
+              "transcript": "minimax-01-mail-design/transcript.json",
+              "tool_calls_index": 35,
+              "tool_call_id": "call_function_a0tfb4brdnpb_1",
+              "tool": "write_file",
+              "start_seq": 1226,
+              "end_seq": 1229
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 235,
+          "frozen_sha256": "bc5ca857f20a2ef5ce2bdb402afac2016f9574bae6307cad1f1a45f538c1809b",
+          "replay_bytes": 235,
+          "replay_payload_sha256": "bc5ca857f20a2ef5ce2bdb402afac2016f9574bae6307cad1f1a45f538c1809b",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true,
+          "integrity_placeholder": true,
+          "real_bundle_integrity_verified": false,
+          "publisher_signing_verified": false,
+          "note": "Literal 64-zero placeholder matches the recorded model mutation bytes exactly. No redaction affected these on-disk arguments. Authorship verification is distinct from real bundle-integrity or publisher-signing verification."
+        },
+        {
+          "path": "card-templates/mail/glance.card",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "minimax-02-mail-review/transcript.json",
+              "tool_calls_index": 33,
+              "tool_call_id": "call_function_re4bansauruj_1",
+              "tool": "write_file",
+              "start_seq": 3254,
+              "end_seq": 3257
+            }
+          ],
+          "superseded_mutations": 4,
+          "frozen_bytes": 4317,
+          "frozen_sha256": "9fdc2a4a610219496c435f4806948c4ff8d128eb65955a67877a691b1056617b",
+          "replay_bytes": 4317,
+          "replay_payload_sha256": "9fdc2a4a610219496c435f4806948c4ff8d128eb65955a67877a691b1056617b",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/mail/glance.data.json",
+          "category": "fixture_data",
+          "replayed_mutations": [
+            {
+              "transcript": "minimax-01-mail-design/transcript.json",
+              "tool_calls_index": 36,
+              "tool_call_id": "call_function_a0tfb4brdnpb_2",
+              "tool": "write_file",
+              "start_seq": 1232,
+              "end_seq": 1235
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 1290,
+          "frozen_sha256": "7737594f8cad20e29dafe461b3fb1eec1894eb792a35f851bf93bb7ce583b1ec",
+          "replay_bytes": 1290,
+          "replay_payload_sha256": "7737594f8cad20e29dafe461b3fb1eec1894eb792a35f851bf93bb7ce583b1ec",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        }
+      ]
+    }
+  }
+}

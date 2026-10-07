@@ -1,0 +1,22 @@
+{
+  "$comment": "Fixture for glance.card. Keys are the SOURCE ALIASES (lead, more) because the offline realizer looks fixture values up by alias, not by sys.dataset id; no live id is declared so these lower to literals. Field names are the sys.dataset answer names in catalog.md. All records are SYNTHETIC demo data: no thumbnail is loaded, no search is run and no player url is opened in this offline build.",
+  "ledger": "youtube.glance@0.1.0",
+  "published_as": "os.youtube",
+  "lead": {
+    "title": "Slow harbour morning, timelapse",
+    "subtitle": "Riverside Field Notes",
+    "summary": "A demo record written to exercise this card. Nothing is streamed or played here.",
+    "as_of": "2 days ago",
+    "status": "Watch later available",
+    "metric1_label": "Length",
+    "metric1_value": "08:24",
+    "metric2_label": "Views",
+    "metric2_value": "41.2K"
+  },
+  "more": {
+    "title": "3 videos",
+    "subtitle": "Riverside Field Notes, Docklands Workshop, Alex Outdoors",
+    "as_of": "1 week ago",
+    "status": "Demo list"
+  }
+}

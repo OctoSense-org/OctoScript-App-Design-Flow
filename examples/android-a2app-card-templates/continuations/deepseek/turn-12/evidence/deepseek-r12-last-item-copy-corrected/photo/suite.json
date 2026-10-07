@@ -1,0 +1,85 @@
+{
+  "family": "photo",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Harbor sunset"
+      ]
+    },
+    {
+      "label": "full-app",
+      "action": "tap",
+      "target": "d_ap"
+    },
+    {
+      "label": "last-row-scroll",
+      "action": "scroll",
+      "target": "stage",
+      "delta_y": 300,
+      "contains": [
+        "Trail ridge, mist"
+      ]
+    },
+    {
+      "label": "last-detail-top",
+      "action": "tap",
+      "target": "Open \u203a",
+      "occurrence": -1,
+      "contains": [
+        "Trail ridge, mist",
+        "North Ridge",
+        "21 Apr"
+      ],
+      "excludes": [
+        "Harbor sunset"
+      ]
+    },
+    {
+      "label": "save-last",
+      "action": "tap",
+      "target": "Favorite",
+      "occurrence": -1,
+      "contains": [
+        "Favorited \u2713"
+      ]
+    },
+    {
+      "label": "back-to-list",
+      "action": "tap",
+      "target": "\u2039 Back"
+    },
+    {
+      "label": "saved-only-last",
+      "action": "tap",
+      "target": "Favorites",
+      "occurrence": 0,
+      "contains": [
+        "Trail ridge, mist"
+      ],
+      "excludes": [
+        "Harbor sunset"
+      ]
+    },
+    {
+      "label": "remove-last",
+      "action": "tap",
+      "target": "Favorited \u2713",
+      "contains": [
+        "No favorites yet"
+      ]
+    },
+    {
+      "label": "first-still-independent",
+      "action": "tap",
+      "target": "d_gl",
+      "contains": [
+        "Harbor sunset",
+        "Favorite"
+      ],
+      "no_enabled_button_text": [
+        "Favorited \u2713"
+      ]
+    }
+  ]
+}

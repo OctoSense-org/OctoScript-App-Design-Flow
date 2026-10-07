@@ -1,0 +1,402 @@
+{
+  "family": "photo",
+  "draft": false,
+  "source_file": "minimax-round14-final/card-templates/photo/bundle/main.splash",
+  "source_sha256": "99d535019dc451db5948703843327c21ae86aaab7f07ac9ad14df553b0ba5353",
+  "status": "Operator confirmed native source byte-identical from reconciled round13 to final round14; input suite ready, actual runtime outcomes pending.",
+  "assumptions": [
+    "Fresh disposable preview starts with no favorites/watch-later entries.",
+    "Widget ids are taken directly from source. Anonymous Open uses list occurrence1 for second and2 for last; confirm actual snapshot selector ordering.",
+    "Positive wheel delta scrolls down in named l2 ScrollYView. A compact list may not overflow; a no-op cannot prove reset after a genuine scroll.",
+    "No invented preview-state controls. Exported glance.card validation/rendering is separate from native L0 presentation.",
+    "No-enabled-Play assertions cover common textual labels and symbol, not every conceivable icon or dead action. Manually inspect all visible controls.",
+    "Round13 native source is reconciled; only final round14 byte equality remains. This is not native test evidence."
+  ],
+  "manual_checks": [
+    "Inspect second-item and last-item detail PNG/JSON: complete title, identity metadata and offline cue must be visibly inside the viewport at top, not merely present in snapshot text.",
+    "Check full and filtered list titles/metadata for horizontal cuts, especially with long Favorite/Watch later action labels.",
+    "Verify no photo/thumbnail/player is falsely shown as loaded and no enabled control promises unavailable playback.",
+    "Keep expected vertical scroll-edge clipping distinct from horizontal truncation or unreachable action targets.",
+    "All encountered action targets must remain44logical points; retain raw geometry failures even when behavior passes."
+  ],
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "● L0",
+        "Mill Street at first light",
+        "3 photos · 0 favorites",
+        "PHOTO NOT LOADED OFFLINE",
+        "DEMO"
+      ],
+      "delay_ms": 150,
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "expanded",
+      "contains": [
+        "● L1",
+        "Mill Street at first light",
+        "Favorite",
+        "PHOTO NOT LOADED OFFLINE"
+      ],
+      "action": "tap",
+      "target": "b1",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "full-list",
+      "contains": [
+        "● L2",
+        "Reading room, west window",
+        "3 photos · 0 favorites"
+      ],
+      "action": "tap",
+      "target": "b2",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ Album"
+      ]
+    },
+    {
+      "label": "second-item-detail",
+      "contains": [
+        "● L2",
+        "Reading room, west window",
+        "15 Sep",
+        "Central Library",
+        "Noah, Lily",
+        "PHOTO NOT LOADED OFFLINE"
+      ],
+      "action": "tap",
+      "target": "Open",
+      "occurrence": 1,
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "save-second",
+      "contains": [
+        "3 photos · 1 favorites",
+        "Remove from Favorites",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "rd_action",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "back-to-list",
+      "contains": [
+        "● L2",
+        "Reading room, west window"
+      ],
+      "action": "tap",
+      "target": "‹ Album",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ Album"
+      ]
+    },
+    {
+      "label": "filtered-second",
+      "contains": [
+        "Reading room, west window",
+        "3 photos · 1 favorites",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "tab_fav",
+      "excludes": [
+        "Mill Street at first light",
+        "Harbour cranes at dusk"
+      ],
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ Album"
+      ]
+    },
+    {
+      "label": "remove-second",
+      "contains": [
+        "No favorites yet",
+        "3 photos · 0 favorites",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "r2_fb",
+      "no_enabled_button_text": [
+        "Open",
+        "Remove",
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ Album"
+      ]
+    },
+    {
+      "label": "return-all",
+      "contains": [
+        "Reading room, west window",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "tab_all",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ Album"
+      ]
+    },
+    {
+      "label": "scroll-list",
+      "contains": [
+        "Harbour cranes at dusk",
+        "● L2"
+      ],
+      "action": "scroll",
+      "target": "l2",
+      "delta_y": 360,
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "last-item-detail",
+      "contains": [
+        "● L2",
+        "Harbour cranes at dusk",
+        "12 Sep",
+        "Docklands",
+        "James",
+        "PHOTO NOT LOADED OFFLINE"
+      ],
+      "action": "tap",
+      "target": "Open",
+      "occurrence": 2,
+      "capture_android": true,
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "save-last",
+      "contains": [
+        "3 photos · 1 favorites",
+        "Remove from Favorites",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "rd_action",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "back-after-last",
+      "contains": [
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "‹ Album",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ Album"
+      ]
+    },
+    {
+      "label": "filtered-last",
+      "contains": [
+        "Harbour cranes at dusk",
+        "3 photos · 1 favorites",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "tab_fav",
+      "excludes": [
+        "Mill Street at first light",
+        "Reading room, west window"
+      ],
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ Album"
+      ]
+    },
+    {
+      "label": "remove-last",
+      "contains": [
+        "No favorites yet",
+        "3 photos · 0 favorites",
+        "● L2"
+      ],
+      "action": "tap",
+      "target": "r3_fb",
+      "no_enabled_button_text": [
+        "Open",
+        "Remove",
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream",
+        "‹ Album"
+      ]
+    },
+    {
+      "label": "expanded-selected-last",
+      "contains": [
+        "● L1",
+        "Harbour cranes at dusk",
+        "Favorite",
+        "PHOTO NOT LOADED OFFLINE"
+      ],
+      "action": "tap",
+      "target": "b1",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "expanded-save",
+      "contains": [
+        "3 photos · 1 favorites",
+        "Remove from Favorites",
+        "● L1"
+      ],
+      "action": "tap",
+      "target": "x_action",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "expanded-remove",
+      "contains": [
+        "3 photos · 0 favorites",
+        "Favorite",
+        "● L1"
+      ],
+      "action": "tap",
+      "target": "x_action",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "return-lead-glance",
+      "contains": [
+        "● L0",
+        "Mill Street at first light",
+        "PHOTO NOT LOADED OFFLINE"
+      ],
+      "action": "tap",
+      "target": "b0",
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    },
+    {
+      "label": "glance-opens-displayed-lead",
+      "contains": [
+        "● L2",
+        "Mill Street at first light",
+        "PHOTO NOT LOADED OFFLINE"
+      ],
+      "action": "tap",
+      "target": "Open",
+      "excludes": [
+        "Harbour cranes at dusk"
+      ],
+      "no_enabled_button_text": [
+        "Play",
+        "PLAY",
+        "play",
+        "▶",
+        "Stream"
+      ]
+    }
+  ],
+  "reconciliation": "Read native diffs round12→13: Mail/Photo/YouTube unchanged; News removes extra closing brace; Finance reflows six list rows with same IDs/copy/actions; Calendar adds persistent depth markers and moves status. All115 steps retained; marker assertions reflect actual controls. Round14 native hash confirmation still pending.",
+  "native_source_reconciled": true,
+  "awaiting_round14_hash_confirmation": true,
+  "final_round14_binding": {
+    "main_and_manifest_byte_identical_to_round13": true,
+    "execution_status_at_preparation": "pending"
+  }
+}

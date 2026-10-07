@@ -1,0 +1,204 @@
+{
+  "family": "calendar",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Design review",
+        "10:00"
+      ]
+    },
+    {
+      "label": "expanded",
+      "action": "tap",
+      "target": "Expand",
+      "contains": [
+        "Studio 2",
+        "Going",
+        "Maybe"
+      ]
+    },
+    {
+      "label": "going",
+      "action": "tap",
+      "target": "Going",
+      "contains": [
+        "Going"
+      ]
+    },
+    {
+      "label": "maybe",
+      "action": "tap",
+      "target": "Maybe",
+      "contains": [
+        "maybe"
+      ]
+    },
+    {
+      "label": "full-app",
+      "action": "tap",
+      "target": "Open app",
+      "occurrence": 0,
+      "contains": [
+        "Today",
+        "Week",
+        "1:1 with Sam"
+      ]
+    },
+    {
+      "label": "second-event",
+      "action": "tap",
+      "target": "Open \u203a",
+      "occurrence": 1,
+      "contains": [
+        "1:1 with Sam",
+        "Room 4",
+        "No response"
+      ],
+      "excludes": [
+        "Design review",
+        "Maybe (demo)",
+        "Going (demo)"
+      ]
+    },
+    {
+      "label": "second-going",
+      "action": "tap",
+      "target": "Going",
+      "contains": [
+        "Going (demo)"
+      ]
+    },
+    {
+      "label": "agenda-after-second-rsvp",
+      "action": "tap",
+      "target": "\u2039 Back to agenda",
+      "contains": [
+        "Design review",
+        "1:1 with Sam"
+      ]
+    },
+    {
+      "label": "first-rsvp-preserved",
+      "action": "tap",
+      "target": "Open \u203a",
+      "occurrence": 0,
+      "contains": [
+        "Design review",
+        "Maybe (demo)"
+      ],
+      "excludes": [
+        "Going (demo)"
+      ]
+    },
+    {
+      "label": "back-to-agenda",
+      "action": "tap",
+      "target": "\u2039 Back to agenda",
+      "contains": [
+        "Design review",
+        "1:1 with Sam"
+      ]
+    },
+    {
+      "label": "week",
+      "action": "tap",
+      "target": "Week"
+    },
+    {
+      "label": "last-event-reachable",
+      "action": "scroll",
+      "target": "stage",
+      "delta_y": 300,
+      "contains": [
+        "Team standup"
+      ]
+    },
+    {
+      "label": "last-event-detail",
+      "action": "tap",
+      "target": "Open \u203a",
+      "occurrence": -1,
+      "contains": [
+        "Team standup",
+        "Online",
+        "No response"
+      ],
+      "excludes": [
+        "Maybe (demo)"
+      ]
+    },
+    {
+      "label": "last-event-going",
+      "action": "tap",
+      "target": "Going",
+      "contains": [
+        "Team standup",
+        "Going (demo)"
+      ]
+    },
+    {
+      "label": "back-after-last",
+      "action": "tap",
+      "target": "\u2039 Back to agenda",
+      "contains": [
+        "Design review",
+        "Today",
+        "Week"
+      ]
+    },
+    {
+      "label": "first-response-still-independent",
+      "action": "tap",
+      "target": "Open \u203a",
+      "occurrence": 0,
+      "contains": [
+        "Design review",
+        "Maybe (demo)"
+      ],
+      "excludes": [
+        "Going (demo)"
+      ]
+    },
+    {
+      "label": "glance-again",
+      "action": "tap",
+      "target": "Glance",
+      "contains": [
+        "Design review"
+      ]
+    },
+    {
+      "label": "loading",
+      "action": "tap",
+      "target": "Loading",
+      "contains": [
+        "Loading\u2026"
+      ]
+    },
+    {
+      "label": "empty",
+      "action": "tap",
+      "target": "Empty",
+      "contains": [
+        "No events today"
+      ]
+    },
+    {
+      "label": "error",
+      "action": "tap",
+      "target": "Error",
+      "contains": [
+        "Couldn't load calendar"
+      ]
+    },
+    {
+      "label": "ready",
+      "action": "tap",
+      "target": "Ready",
+      "contains": [
+        "Design review"
+      ]
+    }
+  ]
+}

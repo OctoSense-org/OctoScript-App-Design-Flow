@@ -21,6 +21,15 @@ Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到�
 自 2026-09-27 起位于 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
 （OctoSense-System-Apps 已归档，不再公开）。
 
+## 连接 GitHub、Gmail 和 Google Calendar
+
+[三个开发示例](examples/connected-apps/README.zh-CN.md) 复用共享提供商登录，不创建
+OctoSense 账户：Rinx GitHub Notes 编辑器、Inbox Assistant 和 Google Calendar。
+指南列出准确应用 ID、匹配的主机／工具版本及原生测试证据。真实提供商服务需要
+新增连接服务的 OctoSense 构建；独立 `card-host` 不能完成真实登录，也没有原生
+Markdown 编辑器。真实提供商、模型和手机验收仍待完成；Android Google 登录
+还需要原生授权适配器。
+
 ## 代码导读
 
 [代码导读（英文）](docs/CODE-WALKTHROUGH.md) 沿着 Python CLI，从脚本模板走到运行中的
@@ -91,6 +100,21 @@ Rust、Splash 与 L0 应用的差别、跨应用工具限制、运行时版本�
 [flows/README.md](flows/README.zh-CN.md#每个流程都遵循同一份约定) 中。Agent
 绝不伪造批准、审核结果或提交记录。
 
+### AppCard UX 技能
+
+设计或验收 Glance 应用卡片时，使用
+[octoscript-app-card-ux](skills/octoscript-app-card-ux/SKILL.md)。它补充摘要 →
+展开卡片 → 完整工作区的任务流程、Chat／编辑／审核共用状态、键盘和滚动检查，
+以及保留指定模型创作归属的修复循环。验收矩阵区分本地行为、真实 Agent 执行、
+外部业务效果和视觉批准，历史分数不能代替新卡片的验收。
+
+任何编程 Agent 都可以配合所选流程直接阅读该技能。需要 Codex 自动发现时，
+把整个 `skills/octoscript-app-card-ux` 目录复制到自己的 Codex skills 目录，
+再在加载了该目录的会话中使用：`用 $octoscript-app-card-ux 设计并验收这个应用卡片。`
+采用后续修订时同步更新已安装的副本。该技能不会给手机系统／应用 Agent 自动配置
+指令，也不替代 App Hub 发布检查。它适配所选运行时、作者和设备；DeepSeek、
+MiniMax 和 OnePlus 6 是历史案例，不是每个应用的固定要求。
+
 ## 现状
 
 脚本应用依赖的工作已于 2026-09-26 合入各仓库的 `main`；请使用各仓库的 `main`。
@@ -98,7 +122,7 @@ Rust、Splash 与 L0 应用的差别、跨应用工具限制、运行时版本�
 | 部分 | 状态 |
 | --- | --- |
 | `hub` 中的脚本应用准入检查、扫描与 `os.` id 检查 | 已在 App Hub `main`（[OctoSense-App-Hub#4](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/4)，合并为 `0d36f50b`）。本仓库文档基于其合并前的提交 `79a2c4f` 验证，并于 2026-09-26 在 `main` 上端到端重新跑通。 |
-| 运行时中的隔离脚本应用与宿主服务 | 已在 makepad `main`（[OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30)，合并为 `cd812acd`，现为 `c155f61d`），由 `native-runtime.lock.json` 固定的 Octoscript-Makepad `2cc5ef37` 选定。合并前在 `d94e5e6` 验证。 |
+| 运行时中的隔离脚本应用与宿主服务 | 已在 makepad `main`（[OctoSense-org/makepad#30](https://github.com/OctoSense-org/makepad/pull/30)，合并为 `cd812acd`，现为 `68d1f4ec`），由 `native-runtime.lock.json` 固定的 Octoscript-Makepad `aa80f72c` 选定。合并前在 `d94e5e6` 验证。 |
 | Shell 中的系统应用与商店应用 | 已在 [OctoSense](https://github.com/OctoSense-org/OctoSense) 的 `main`，桌面端 Shell 与手机 Home 均包含（仓库合并前分别以 OctoSense-Desktop [#36](https://github.com/OctoSense-org/OctoSense/pull/36) 和 OctoSense-ROM #18 合入）。 |
 | 提交途径 | 在 OctoSense-App-Hub 开一个 issue（见下文），如 App Hub 的 [PUBLISHING § Submitting](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#submitting) 所述。其中提到的索引仓库和 release action 尚不存在。 |
 | 在手机上安装自己的应用包 | 不支持。见[运行应用](#运行应用)。 |
@@ -140,7 +164,7 @@ cd OctoScript-App-Design-Flow && python3 tools/setup-native.py
 tools/octo doctor                                        # finds hub and card-host; prints fixes if not
 
 # 2. Create an app from the template
-tools/octo new ~/apps/my-app --id my-notes --name "My Notes"
+tools/octo new ~/apps/my-app --platform macos --id my-notes --name "My Notes"
 
 # 3. Run it in a real window with the remote-control bridge
 tools/octo run ~/apps/my-app/bundle --port 8141 --detach
@@ -183,7 +207,7 @@ tools/octo package-help
 | 命令 | 作用 |
 | --- | --- |
 | `doctor` | 检查 Python，查找 `hub` 与 `card-host`（排除 GitHub 那个同名的 `hub` CLI），检查模板，并输出缺失项的修复方法。 |
-| `new <dir> [--id ID] [--name NAME] [--system]` | 复制 `templates/script-app`（`bundle/`、`AGENTS.md`、`.gitignore`），设置 id、名称和版本 `0.1.0`，并 stamp 应用包。id 格式为 `[a-z0-9.-]{1,64}`；`os.*` 需要 `--system`。 |
+| `new <dir> --platform PLATFORM [--id ID] [--name NAME] [--system]` | 复制 `templates/script-app`（`bundle/`、`AGENTS.md`、`.gitignore`），设置 id、名称和版本 `0.1.0`，并 stamp 应用包。id 格式为 `[a-z0-9.-]{1,64}`；拒绝原生应用／宿主保留 id 和末尾命名空间。`os.*` 需要 `--system`。多个目标可重复 `--platform`，发布前逐一实测。 |
 | `run <bundle> [--port N] [--hidden] [--detach] [--system] [--no-stamp] [--app-data DIR] [--static PREFIX=DIR]` | 以 `MAKEPAD_REMOTE=<port>`（默认 8141）运行 `card-host --bundle … --app-data … --allow-unsigned --stamp`。端口已被占用时拒绝运行。`--detach` 在应用通过准入、远程桥开始监听并画出第一帧后返回。应用的 jail 在 `<app>/.local-state/<id>/`。 |
 | `shot <port> <out.png> [--settle S]` | 等应用的控件出现、且连续两帧相同（最多 `--settle`，默认 2 秒）后，保存运行中窗口的 PNG（`GET /g?raw=1`）。 |
 | `check <bundle> [hub check flags]` | 先 `hub stamp`，再 `hub check --allow-unsigned`；被拒绝时以非零状态退出。不会对已签名的 manifest 重新 stamp。 |
@@ -426,7 +450,7 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 
 ## 示例
 
-用 image-to-card 流程构建的参考旅程，以及用 script-app 流程构建的受控应用。源码和验证记录与示例放在一起。
+用 image-to-card 流程构建的参考旅程、用 script-app 流程构建的受控应用，以及 Android 模型编写的原型档案。各项目的源码、验证证据和当前限制与示例放在一起。
 
 | 示例 | 形态 | 内容 |
 | --- | --- | --- |
@@ -436,6 +460,7 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 | [Health](examples/health/README.zh-CN.md) | 原生卡片 / WASM | 虚构的体检预约 |
 | [Reunion](examples/reunion/README.zh-CN.md) | 原生卡片 / WASM | 聚会筹划、回复与付款 |
 | [Calendar](examples/calendar/README.zh-CN.md) | 原生卡片 / 浏览器预览 + 同步服务器 | 两台设备共用一份日历，附基于 SQLite 的同步服务器 |
+| [Android 模型编写的卡片原型](examples/android-a2app-card-templates/README.zh-CN.md) | Android 上的 AppStudio；概览／展开／完整应用 | 两份模型编写的六类集合：各自离线原型整体 4.5/5、视觉 4.4/5；源码精确重放及原生证据。 |
 
 脚本应用的完整示例是 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)
 中的第一方应用包（`apps/<name>/bundle/`），以及 [templates/script-app](templates/script-app/README.zh-CN.md)。

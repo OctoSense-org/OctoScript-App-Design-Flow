@@ -1,0 +1,57 @@
+[
+  {
+    "file": "framework-l0.md",
+    "source": "apps/appcard/a2app-l0/framework/l0.md",
+    "sha256": "1af1883a1cf6b4a1161787737cfb0e8be5a88c6a3fc93754bddc56c24c45301f"
+  },
+  {
+    "file": "catalog.md",
+    "source": "apps/appcard/a2app-l0/framework/catalog.md",
+    "sha256": "135fddd30fb5ef5226e07e68dbf0fe10e9f3e5e5c27b6fa62c8ca8a7edd50c5d"
+  },
+  {
+    "file": "a2app-design-system.md",
+    "source": "apps/appcard/a2app/widgets/design-system.md",
+    "sha256": "ca5af031d1bb04d7f34c30c92fcce17eae3e125258460ca9b2265c42d2f554cc"
+  },
+  {
+    "file": "news.card",
+    "source": "apps/appcard/a2app-l0/apps/news/exemplar.card",
+    "sha256": "93df5b5e9571774e1d5570e87ec7fb84cc91963c0f0da185da34626d080c9f51"
+  },
+  {
+    "file": "finance.card",
+    "source": "apps/appcard/a2app-l0/apps/stock/exemplar.card",
+    "sha256": "466819c3d16724148b93b91fab27875ffc68991aaa8e5d9b5f8bbbc3d36dabbe"
+  },
+  {
+    "file": "youtube.card",
+    "source": "apps/appcard/a2app-l0/apps/youtube/exemplar.card",
+    "sha256": "67a977984e4f7648b7cd072c7b57478711401f43187d19b7f439914f555182c5"
+  },
+  {
+    "file": "mail-request.card",
+    "source": "crates/shell/resources/glance/mail-request.card",
+    "sha256": "9e3e136daf3edcf006a181c569f5e80f20d2e72178bceeef95f9a7bafbdc92e4"
+  },
+  {
+    "file": "calendar-event.card",
+    "source": "apps/calendar/host-service/resources/event.card",
+    "sha256": "ec92edc8d7a0a3ed7e302b14b8d61aa839e855e246402046da3fd9679e05c91f"
+  },
+  {
+    "file": "calendar-agenda.card",
+    "source": "apps/calendar/host-service/resources/agenda.card",
+    "sha256": "711f3a47c0dbb2e1a6f4c36637c16d29e65f19096536b698560f2d4ae5ec9134"
+  },
+  {
+    "file": "photos.splash",
+    "source": "apps/photos/bundle/main.splash",
+    "sha256": "7d992912af9fc1a9a3c9c89d79f83a5203c168649244547e33b3c9910b4e1c5f"
+  },
+  {
+    "file": "SCRIPT-API.md",
+    "source": "OctoScript-App-Design-Flow/docs/SCRIPT-API.md",
+    "sha256": "6953b7cd3f7faa363f165e413631b7fd17274ab1045bcea4d274c5e2e45e0cde"
+  }
+]

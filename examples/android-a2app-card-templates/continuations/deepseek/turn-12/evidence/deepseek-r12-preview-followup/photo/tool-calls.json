@@ -1,0 +1,1355 @@
+[
+  {
+    "request_id": "61899fa7-da84-4ab2-b473-0008b5a600a0",
+    "request": {
+      "name": "studio.bundle_check",
+      "args": {
+        "bundle_path": "card-templates/photo/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "61899fa7-da84-4ab2-b473-0008b5a600a0",
+      "data": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.photo",
+        "capabilities": [],
+        "digest": "a3c9d4301df224f43bb64b02f0520e2f323663522b1174d1a95cbca8c0110b98",
+        "name": "Photo Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.613
+  },
+  {
+    "request_id": "a8e8d152-6a07-4f67-874c-266fa2522f6d",
+    "request": {
+      "name": "studio.open",
+      "args": {
+        "bundle_path": "card-templates/photo/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "a8e8d152-6a07-4f67-874c-266fa2522f6d",
+      "data": {
+        "bundle": {
+          "admission": "local_developer",
+          "app_id": "dev.studio.cards.photo",
+          "capabilities": [],
+          "digest": "a3c9d4301df224f43bb64b02f0520e2f323663522b1174d1a95cbca8c0110b98",
+          "name": "Photo Cards",
+          "publisher_signed": false,
+          "source_modified": false,
+          "version": "0.1.0"
+        },
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "ready": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 1.147
+  },
+  {
+    "request_id": "38e6e449-8576-4b21-9868-b5dd4a7685fb",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4"
+      }
+    },
+    "reply": {
+      "call_id": "38e6e449-8576-4b21-9868-b5dd4a7685fb",
+      "data": {
+        "height": 2132,
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-3f3e8802-255f-45e3-8dd6-ae7ad93c72fb.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Photo Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   favorites: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "PHOTOS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "IMAGE UNAVAILABLE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Can't show in this demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Harbor sunset",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "San Remo Pier \u00b7 12 May",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-8cc32c3f-086a-4e49-9870-62e4b2aacddc.json",
+        "total_widgets": 19,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.356
+  },
+  {
+    "request_id": "f4264bcc-ffe0-4cb3-a348-375e9ba2731d",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "widget_id": "states_btn@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "f4264bcc-ffe0-4cb3-a348-375e9ba2731d",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.101
+  },
+  {
+    "request_id": "da58e859-22ed-4737-bbd3-c7b819291782",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4"
+      }
+    },
+    "reply": {
+      "call_id": "da58e859-22ed-4737-bbd3-c7b819291782",
+      "data": {
+        "height": 2132,
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-4f59ac32-766e-46e8-bc89-8c8ba87c3907.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Photo Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   favorites: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "PHOTOS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "IMAGE UNAVAILABLE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Can't show in this demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Harbor sunset",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "San Remo Pier \u00b7 12 May",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-3bc7ef40-a9e7-442b-b087-6f475cb2aada.json",
+        "total_widgets": 24,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.313
+  },
+  {
+    "request_id": "38deffc7-7fdf-4bc2-8019-e238b063b9b3",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "widget_id": "1@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "38deffc7-7fdf-4bc2-8019-e238b063b9b3",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.127
+  },
+  {
+    "request_id": "338ab6b3-4ce2-4643-a58f-b454947de3b3",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4"
+      }
+    },
+    "reply": {
+      "call_id": "338ab6b3-4ce2-4643-a58f-b454947de3b3",
+      "data": {
+        "height": 2132,
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-d58de9d5-1998-482e-9165-909ec812af47.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Photo Cards   \u00b7   L0 glance   \u00b7   loading   \u00b7   favorites: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "PHOTOS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Loading\u2026",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-cb9dd115-eb55-4b93-914a-339b71e9ddc9.json",
+        "total_widgets": 18,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.309
+  },
+  {
+    "request_id": "a3a55ae4-ca4a-43a7-a8c5-39af654423d6",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "widget_id": "2@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "a3a55ae4-ca4a-43a7-a8c5-39af654423d6",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.332
+  },
+  {
+    "request_id": "417fd3fd-34a2-4b05-a3e3-45655d2cb6be",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4"
+      }
+    },
+    "reply": {
+      "call_id": "417fd3fd-34a2-4b05-a3e3-45655d2cb6be",
+      "data": {
+        "height": 2132,
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-d54efc1b-28eb-427d-a8c8-d35c421012a7.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Photo Cards   \u00b7   L0 glance   \u00b7   empty   \u00b7   favorites: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "PHOTOS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "No photos",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-752cdd7e-dd43-4980-8a49-2fe295dd7495.json",
+        "total_widgets": 18,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.38
+  },
+  {
+    "request_id": "85bf2163-6d38-4cda-9681-9b9933cfdf8d",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "widget_id": "3@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "85bf2163-6d38-4cda-9681-9b9933cfdf8d",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.106
+  },
+  {
+    "request_id": "24162eeb-986d-4466-939a-122fa4d5e02c",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4"
+      }
+    },
+    "reply": {
+      "call_id": "24162eeb-986d-4466-939a-122fa4d5e02c",
+      "data": {
+        "height": 2132,
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-816f10d0-c71c-4cb6-814c-0e98c62bd438.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Photo Cards   \u00b7   L0 glance   \u00b7   error   \u00b7   favorites: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "PHOTOS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Couldn't load library \u2014 demo error state",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-9d2f31d7-6cfd-4ab8-93ae-d9129ddf1036.json",
+        "total_widgets": 18,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.341
+  },
+  {
+    "request_id": "0899c0b0-30b4-4e18-a18b-3f86ccd011bd",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "widget_id": "-@3",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "0899c0b0-30b4-4e18-a18b-3f86ccd011bd",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.131
+  },
+  {
+    "request_id": "9ecddd3f-1643-4d67-9f0c-0db3c8526e55",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4"
+      }
+    },
+    "reply": {
+      "call_id": "9ecddd3f-1643-4d67-9f0c-0db3c8526e55",
+      "data": {
+        "height": 2132,
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-bc77c363-71d8-44f0-9470-18b93ef1a607.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Photo Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   favorites: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25be",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_row@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Ready",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "text": "Loading",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "text": "Empty",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "text": "Error",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "PHOTOS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "IMAGE UNAVAILABLE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Can't show in this demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Harbor sunset",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "San Remo Pier \u00b7 12 May",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-a5e6d7d1-5c6d-460d-aaf3-6583a9f58183.json",
+        "total_widgets": 24,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.376
+  },
+  {
+    "request_id": "94b55172-99a6-4956-8205-3b2f74b44526",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "widget_id": "states_btn@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "94b55172-99a6-4956-8205-3b2f74b44526",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.34
+  },
+  {
+    "request_id": "5493b4fc-a953-4b9f-afd5-75c2d9f4e15a",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4"
+      }
+    },
+    "reply": {
+      "call_id": "5493b4fc-a953-4b9f-afd5-75c2d9f4e15a",
+      "data": {
+        "height": 2132,
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-4fcbb869-e5a6-4cc0-b901-1a8759e3929e.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "10@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Photo Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   favorites: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "PHOTOS",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Today",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "IMAGE UNAVAILABLE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Can't show in this demo",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "Harbor sunset",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "San Remo Pier \u00b7 12 May",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Favorite",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-da5cc9b8-cbd2-4f43-a528-fcf344cbe63f.json",
+        "total_widgets": 19,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.303
+  },
+  {
+    "request_id": "87db161f-0df2-41d0-892d-4ef4646ee358",
+    "request": {
+      "name": "studio.close",
+      "args": {
+        "instance_id": "176a0573-d9a9-4a01-9208-051e8abe64e4"
+      }
+    },
+    "reply": {
+      "call_id": "87db161f-0df2-41d0-892d-4ef4646ee358",
+      "data": {
+        "closed": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.358
+  }
+]

@@ -1,0 +1,128 @@
+{
+  "model": "deepseek",
+  "round": 12,
+  "source_before": {
+    "files": 25,
+    "exact": true
+  },
+  "suites": {
+    "mail-keyboard": {
+      "exit": 1,
+      "steps": 9,
+      "behavior_pass": 9,
+      "raw_pass": 6,
+      "errors": []
+    },
+    "mail": {
+      "exit": 0,
+      "steps": 12,
+      "behavior_pass": 12,
+      "raw_pass": 12,
+      "errors": []
+    },
+    "calendar": {
+      "exit": 1,
+      "steps": 22,
+      "behavior_pass": 22,
+      "raw_pass": 19,
+      "errors": []
+    },
+    "news": {
+      "exit": 1,
+      "steps": 14,
+      "behavior_pass": 11,
+      "raw_pass": 11,
+      "errors": [
+        {
+          "label": "empty",
+          "error": "Target 'Empty' matches 0 enabled nodes",
+          "assertions": null
+        },
+        {
+          "label": "error",
+          "error": "Target 'Error' matches 0 enabled nodes",
+          "assertions": null
+        },
+        {
+          "label": "ready",
+          "error": "Target 'Ready' matches 0 enabled nodes",
+          "assertions": null
+        }
+      ]
+    },
+    "finance": {
+      "exit": 1,
+      "steps": 14,
+      "behavior_pass": 11,
+      "raw_pass": 9,
+      "errors": [
+        {
+          "label": "empty",
+          "error": "Target 'Empty' matches 0 enabled nodes",
+          "assertions": null
+        },
+        {
+          "label": "error",
+          "error": "Target 'Error' matches 0 enabled nodes",
+          "assertions": null
+        },
+        {
+          "label": "ready",
+          "error": "Target 'Ready' matches 0 enabled nodes",
+          "assertions": null
+        }
+      ]
+    },
+    "photo": {
+      "exit": 1,
+      "steps": 14,
+      "behavior_pass": 11,
+      "raw_pass": 11,
+      "errors": [
+        {
+          "label": "empty",
+          "error": "Target 'Empty' matches 0 enabled nodes",
+          "assertions": null
+        },
+        {
+          "label": "error",
+          "error": "Target 'Error' matches 0 enabled nodes",
+          "assertions": null
+        },
+        {
+          "label": "ready",
+          "error": "Target 'Ready' matches 0 enabled nodes",
+          "assertions": null
+        }
+      ]
+    },
+    "youtube": {
+      "exit": 1,
+      "steps": 14,
+      "behavior_pass": 11,
+      "raw_pass": 11,
+      "errors": [
+        {
+          "label": "empty",
+          "error": "Target 'Empty' matches 0 enabled nodes",
+          "assertions": null
+        },
+        {
+          "label": "error",
+          "error": "Target 'Error' matches 0 enabled nodes",
+          "assertions": null
+        },
+        {
+          "label": "ready",
+          "error": "Target 'Ready' matches 0 enabled nodes",
+          "assertions": null
+        }
+      ]
+    }
+  },
+  "helper_sha256": "37faf491caedfa3fbdf95f707b4d02c3750de86db481090fd2166da144339298",
+  "source_after": {
+    "files": 25,
+    "exact": true
+  }
+}

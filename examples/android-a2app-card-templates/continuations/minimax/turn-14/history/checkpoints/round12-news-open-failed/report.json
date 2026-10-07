@@ -1,0 +1,15 @@
+{
+  "family": "news",
+  "steps": [],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.news",
+    "capabilities": [],
+    "digest": "492237466d6800ecfde108b00214e54216c1634d5b6267159688743b5146ad77",
+    "name": "News Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

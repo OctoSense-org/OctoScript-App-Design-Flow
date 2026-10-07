@@ -1,0 +1,21 @@
+{
+  "family":"mail",
+  "steps":[
+    {"label":"glance","contains":["Ana Rivera","Contract signing"]},
+    {"label":"expanded","action":"tap","target":"Expand","contains":["Draft reply","Send (demo)"]},
+    {"label":"blank-send","action":"tap","target":"Send (demo)","contains":["Write a reply first"],"excludes":["Reply queued"]},
+    {"label":"typed-draft","action":"text","target":"reply_field","text":"Friday at 10 works for me.","input_value":"Friday at 10 works for me."},
+    {"label":"glance-return","action":"tap","target":"Glance","contains":["Ana Rivera"]},
+    {"label":"draft-retained","action":"tap","target":"Expand","input_value":"Friday at 10 works for me."},
+    {"label":"local-send","action":"tap","target":"Send (demo)","contains":["Reply queued (local demo)"]},
+    {"label":"archived","action":"tap","target":"Archive","contains":["Undo","Archived (demo)"]},
+    {"label":"inbox-after-archive","action":"tap","target":"Open app","occurrence":-1,"contains":["Design Weekly"],"excludes":["Ana Rivera"]},
+    {"label":"archived-folder","action":"tap","target":"Archived","contains":["Ana Rivera","Finance"]},
+    {"label":"expand-for-undo","action":"tap","target":"Expand","contains":["Undo"]},
+    {"label":"undo","action":"tap","target":"Undo","contains":["Archive"],"excludes":["Archived (demo)"]},
+    {"label":"full-app","action":"tap","target":"Open app","occurrence":-1},
+    {"label":"inbox","action":"tap","target":"Inbox","contains":["Ana Rivera","Design Weekly"]},
+    {"label":"second-message-detail","action":"tap","target":"Open ›","occurrence":1,"contains":["Your Thursday digest is ready","Design Weekly"],"excludes":["Ana Rivera"]},
+    {"label":"back-to-list","action":"tap","target":"‹ Back to list","contains":["Design Weekly","Ana Rivera"]}
+  ]
+}

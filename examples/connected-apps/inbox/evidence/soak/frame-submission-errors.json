@@ -1,0 +1,13 @@
+[
+  {
+    "route": "click",
+    "parameters": {
+      "x": 1243,
+      "y": 16,
+      "wait": 1
+    },
+    "status": 404,
+    "body": "{\"err\":\"requested input frame could not be submitted; retry\"}",
+    "milliseconds": 19.136
+  }
+]

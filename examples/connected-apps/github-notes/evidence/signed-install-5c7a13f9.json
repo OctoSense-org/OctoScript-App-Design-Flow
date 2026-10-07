@@ -1,0 +1,81 @@
+{
+  "hub_revision": "5c7a13f92fa25d36ba1fe7fb99dc9fb1b235f8d3",
+  "result": {
+    "apps": [
+      {
+        "accounts": true,
+        "app": "org.octosense.samples.githubnotes",
+        "bundle_digest": "be32e021bf4d87f3b8226e8372dfc18193574eb718b4e08e274e7093dd74030d",
+        "capabilities": [
+          "auth",
+          "github",
+          "storage"
+        ],
+        "cross_app_staging_refused": true,
+        "direct_network_hosts": [],
+        "fresh_store_reopen": true,
+        "modified_source_refused": true,
+        "signed_install": true
+      },
+      {
+        "accounts": true,
+        "app": "org.octosense.samples.inbox",
+        "bundle_digest": "0b005c320205df3b59f61174f717a11456f3534e577cd49c30fd70eb4c1bca5e",
+        "capabilities": [
+          "auth",
+          "glance",
+          "gmail",
+          "model",
+          "octos.session.open",
+          "octos.turn.start",
+          "storage"
+        ],
+        "cross_app_staging_refused": true,
+        "direct_network_hosts": [],
+        "fresh_store_reopen": true,
+        "modified_source_refused": true,
+        "signed_install": true
+      },
+      {
+        "accounts": true,
+        "app": "org.octosense.samples.googlecalendar",
+        "bundle_digest": "9d0013433c89f349819b161ce9a9dcdb52b0723c816135a16e09088025a73350",
+        "capabilities": [
+          "auth",
+          "gcalendar",
+          "glance",
+          "octos.session.open",
+          "octos.turn.start",
+          "storage"
+        ],
+        "cross_app_staging_refused": true,
+        "direct_network_hosts": [],
+        "fresh_store_reopen": true,
+        "modified_source_refused": true,
+        "signed_install": true
+      }
+    ],
+    "cleanup": "temporary fixture removed and checked",
+    "input_bundles_unchanged": true,
+    "keys": "ephemeral memory only",
+    "not_verified": [
+      "public catalog publication",
+      "provider OAuth",
+      "live provider reads/writes",
+      "Android runtime"
+    ],
+    "production_catalog_modified": false,
+    "proof": "private signed catalog installation",
+    "result": "pass",
+    "separate_storage_jails": true,
+    "unsigned_catalog_refused": true,
+    "untrusted_anchor_refused": true
+  },
+  "source_sha256": {
+    "Cargo.lock": "032ae9064ab4d020f29af868c4d4678ad2d22f68928f25aa7f05d2cf6b758f88",
+    "crates/shell/examples/connected-install.rs": "9df9062370e7a047a10b1c8b42a86a62e2cefcc130053f8988f4ede231a9f45b",
+    "crates/shell/examples/connected_support/mod.rs": "dab9b2c3aa1c96d92fdb74e582da5f9b88b4e0499dcf312be47b1303d6a0218a"
+  },
+  "binary_sha256": "a2959bea204b0213e705ce7162c3c14766b00b0e1b15536a23554a08b26c06e4",
+  "command": "target/release/examples/connected-install <github-notes bundle> <inbox bundle> <google-calendar bundle>"
+}

@@ -1,0 +1,1309 @@
+{
+  "family": "finance",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "\u25cf L0",
+          "Harbour Rail",
+          "3 instruments \u00b7 0 watched",
+          "DEMO"
+        ],
+        "delay_ms": 150,
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L0",
+          "pass": true
+        },
+        {
+          "contains": "Harbour Rail",
+          "pass": true
+        },
+        {
+          "contains": "3 instruments \u00b7 0 watched",
+          "pass": true
+        },
+        {
+          "contains": "DEMO",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "contains": [
+          "\u25cf L1",
+          "Harbour Rail",
+          "Watch"
+        ],
+        "action": "tap",
+        "target": "b1",
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade"
+        ]
+      },
+      "target_rect": [
+        136,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b1@0",
+      "png": "01-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        },
+        {
+          "contains": "Harbour Rail",
+          "pass": true
+        },
+        {
+          "contains": "Watch",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-list",
+      "input": {
+        "label": "full-list",
+        "contains": [
+          "\u25cf L2",
+          "DLK \u00b7 Delta Logistics",
+          "3 instruments \u00b7 0 watched"
+        ],
+        "action": "tap",
+        "target": "b2",
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        252,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b2@0",
+      "png": "02-full-list.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "DLK \u00b7 Delta Logistics",
+          "pass": true
+        },
+        {
+          "contains": "3 instruments \u00b7 0 watched",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-item-detail",
+      "input": {
+        "label": "second-item-detail",
+        "contains": [
+          "\u25cf L2",
+          "DLK \u00b7 Delta Logistics",
+          "17.62",
+          "demo, not a live quote",
+          "-0.38"
+        ],
+        "action": "tap",
+        "target": "Open",
+        "occurrence": 1,
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade"
+        ]
+      },
+      "target_rect": [
+        118,
+        401,
+        71,
+        44
+      ],
+      "target_selector": "-@21",
+      "png": "03-second-item-detail.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "DLK \u00b7 Delta Logistics",
+          "pass": true
+        },
+        {
+          "contains": "17.62",
+          "pass": true
+        },
+        {
+          "contains": "demo, not a live quote",
+          "pass": true
+        },
+        {
+          "contains": "-0.38",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-second",
+      "input": {
+        "label": "save-second",
+        "contains": [
+          "3 instruments \u00b7 1 watched",
+          "Remove",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "rd_action",
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade"
+        ]
+      },
+      "target_rect": [
+        16,
+        501,
+        80,
+        44
+      ],
+      "target_selector": "rd_action@0",
+      "png": "04-save-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "3 instruments \u00b7 1 watched",
+          "pass": true
+        },
+        {
+          "contains": "Remove",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back-to-list",
+      "input": {
+        "label": "back-to-list",
+        "contains": [
+          "\u25cf L2",
+          "DLK \u00b7 Delta Logistics"
+        ],
+        "action": "tap",
+        "target": "\u2039 List",
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        253,
+        501,
+        67,
+        44
+      ],
+      "target_selector": "-@34",
+      "png": "05-back-to-list.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "DLK \u00b7 Delta Logistics",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "filtered-second",
+      "input": {
+        "label": "filtered-second",
+        "contains": [
+          "DLK \u00b7 Delta Logistics",
+          "3 instruments \u00b7 1 watched",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "tab_watch",
+        "excludes": [
+          "Harbour Rail",
+          "SGE \u00b7 Sage Energy"
+        ],
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        194,
+        138,
+        170,
+        44
+      ],
+      "target_selector": "tab_watch@0",
+      "png": "06-filtered-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "DLK \u00b7 Delta Logistics",
+          "pass": true
+        },
+        {
+          "contains": "3 instruments \u00b7 1 watched",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "excludes": "Harbour Rail",
+          "pass": true
+        },
+        {
+          "excludes": "SGE \u00b7 Sage Energy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-second",
+      "input": {
+        "label": "remove-second",
+        "contains": [
+          "Not watching anything",
+          "3 instruments \u00b7 0 watched",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "r2_wb",
+        "no_enabled_button_text": [
+          "Open",
+          "Remove",
+          "Buy",
+          "Sell",
+          "Trade",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        30,
+        271,
+        95,
+        44
+      ],
+      "target_selector": "r2_wb@0",
+      "png": "07-remove-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Not watching anything",
+          "pass": true
+        },
+        {
+          "contains": "3 instruments \u00b7 0 watched",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Open",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Remove",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "return-all",
+      "input": {
+        "label": "return-all",
+        "contains": [
+          "DLK \u00b7 Delta Logistics",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "tab_all",
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        20,
+        138,
+        170,
+        44
+      ],
+      "target_selector": "tab_all@0",
+      "png": "08-return-all.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "DLK \u00b7 Delta Logistics",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "scroll-list",
+      "input": {
+        "label": "scroll-list",
+        "contains": [
+          "SGE \u00b7 Sage Energy",
+          "\u25cf L2"
+        ],
+        "action": "scroll",
+        "target": "l2",
+        "delta_y": 360,
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade"
+        ]
+      },
+      "target_rect": [
+        0,
+        127,
+        384,
+        546
+      ],
+      "target_selector": "l2@0",
+      "png": "09-scroll-list.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "SGE \u00b7 Sage Energy",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "last-item-detail",
+      "input": {
+        "label": "last-item-detail",
+        "contains": [
+          "\u25cf L2",
+          "SGE \u00b7 Sage Energy",
+          "9.94",
+          "demo, not a live quote"
+        ],
+        "action": "tap",
+        "target": "Open",
+        "occurrence": 2,
+        "capture_android": true,
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade"
+        ]
+      },
+      "target_rect": [
+        118,
+        530,
+        71,
+        44
+      ],
+      "target_selector": "-@27",
+      "png": "10-last-item-detail.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "android_screenshot": "10-last-item-detail-android.png",
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "SGE \u00b7 Sage Energy",
+          "pass": true
+        },
+        {
+          "contains": "9.94",
+          "pass": true
+        },
+        {
+          "contains": "demo, not a live quote",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-last",
+      "input": {
+        "label": "save-last",
+        "contains": [
+          "3 instruments \u00b7 1 watched",
+          "Remove",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "rd_action",
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade"
+        ]
+      },
+      "target_rect": [
+        16,
+        501,
+        80,
+        44
+      ],
+      "target_selector": "rd_action@0",
+      "png": "11-save-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "3 instruments \u00b7 1 watched",
+          "pass": true
+        },
+        {
+          "contains": "Remove",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back-after-last",
+      "input": {
+        "label": "back-after-last",
+        "contains": [
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "\u2039 List",
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        253,
+        501,
+        67,
+        44
+      ],
+      "target_selector": "-@34",
+      "png": "12-back-after-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "filtered-last",
+      "input": {
+        "label": "filtered-last",
+        "contains": [
+          "SGE \u00b7 Sage Energy",
+          "3 instruments \u00b7 1 watched",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "tab_watch",
+        "excludes": [
+          "Harbour Rail",
+          "DLK \u00b7 Delta Logistics"
+        ],
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        194,
+        138,
+        170,
+        44
+      ],
+      "target_selector": "tab_watch@0",
+      "png": "13-filtered-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "SGE \u00b7 Sage Energy",
+          "pass": true
+        },
+        {
+          "contains": "3 instruments \u00b7 1 watched",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "excludes": "Harbour Rail",
+          "pass": true
+        },
+        {
+          "excludes": "DLK \u00b7 Delta Logistics",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-last",
+      "input": {
+        "label": "remove-last",
+        "contains": [
+          "Not watching anything",
+          "3 instruments \u00b7 0 watched",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "r3_wb",
+        "no_enabled_button_text": [
+          "Open",
+          "Remove",
+          "Buy",
+          "Sell",
+          "Trade",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        30,
+        271,
+        95,
+        44
+      ],
+      "target_selector": "r3_wb@0",
+      "png": "14-remove-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Not watching anything",
+          "pass": true
+        },
+        {
+          "contains": "3 instruments \u00b7 0 watched",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Open",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Remove",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded-selected-last",
+      "input": {
+        "label": "expanded-selected-last",
+        "contains": [
+          "\u25cf L1",
+          "SGE \u00b7 Sage Energy",
+          "Watch"
+        ],
+        "action": "tap",
+        "target": "b1",
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade"
+        ]
+      },
+      "target_rect": [
+        136,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b1@0",
+      "png": "15-expanded-selected-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        },
+        {
+          "contains": "SGE \u00b7 Sage Energy",
+          "pass": true
+        },
+        {
+          "contains": "Watch",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded-save",
+      "input": {
+        "label": "expanded-save",
+        "contains": [
+          "3 instruments \u00b7 1 watched",
+          "Remove",
+          "\u25cf L1"
+        ],
+        "action": "tap",
+        "target": "x_action",
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade"
+        ]
+      },
+      "target_rect": [
+        16,
+        311,
+        80,
+        44
+      ],
+      "target_selector": "x_action@0",
+      "png": "16-expanded-save.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "3 instruments \u00b7 1 watched",
+          "pass": true
+        },
+        {
+          "contains": "Remove",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded-remove",
+      "input": {
+        "label": "expanded-remove",
+        "contains": [
+          "3 instruments \u00b7 0 watched",
+          "Watch",
+          "\u25cf L1"
+        ],
+        "action": "tap",
+        "target": "x_action",
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade"
+        ]
+      },
+      "target_rect": [
+        16,
+        311,
+        95,
+        44
+      ],
+      "target_selector": "x_action@0",
+      "png": "17-expanded-remove.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "3 instruments \u00b7 0 watched",
+          "pass": true
+        },
+        {
+          "contains": "Watch",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "return-lead-glance",
+      "input": {
+        "label": "return-lead-glance",
+        "contains": [
+          "\u25cf L0",
+          "Harbour Rail"
+        ],
+        "action": "tap",
+        "target": "b0",
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade"
+        ]
+      },
+      "target_rect": [
+        20,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b0@0",
+      "png": "18-return-lead-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L0",
+          "pass": true
+        },
+        {
+          "contains": "Harbour Rail",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "glance-opens-displayed-lead",
+      "input": {
+        "label": "glance-opens-displayed-lead",
+        "contains": [
+          "\u25cf L2",
+          "Harbour Rail"
+        ],
+        "action": "tap",
+        "target": "Open",
+        "excludes": [
+          "SGE \u00b7 Sage Energy"
+        ],
+        "no_enabled_button_text": [
+          "Buy",
+          "Sell",
+          "Trade"
+        ]
+      },
+      "target_rect": [
+        16,
+        356,
+        71,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "19-glance-opens-displayed-lead.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "Harbour Rail",
+          "pass": true
+        },
+        {
+          "excludes": "SGE \u00b7 Sage Energy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Buy",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Sell",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Trade",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.finance",
+    "capabilities": [],
+    "digest": "ba0d952c405ed284b97f1f5e1859c2eb4278b3e599bf306c60cdab052b81076f",
+    "name": "Finance Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

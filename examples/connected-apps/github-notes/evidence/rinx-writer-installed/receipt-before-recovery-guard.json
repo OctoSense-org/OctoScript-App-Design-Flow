@@ -1,0 +1,537 @@
+{
+  "result": "pass",
+  "scope": "signed installed UI and actual host services with synthetic GitHub I/O",
+  "live_provider": false,
+  "physical_approval": false,
+  "driver": "Codex native Makepad instrument",
+  "binary_sha256": "a4a11541df397758d7121a94af8b931ac83b1b7b586049ece5af27fd03c75522",
+  "installer_sha256": "a2959bea204b0213e705ce7162c3c14766b00b0e1b15536a23554a08b26c06e4",
+  "source_sha256": {
+    "OctoSense/tools/connected-e2e/notes.py": "6fe4e4f9d9aa924ac255e9358482e28f284eb3eee54d8967466e7a88025671e8",
+    "OctoSense/tools/connected-e2e/native.py": "3182c430d9b3797a823a67403543d056891598b404cf7fda577836f09e7ae7b6",
+    "OctoSense/tools/connected-e2e/notes_native.py": "66f32ddc8b29e2cbd3b4f2f8ae1cc8997fa9b47b23bc7b9d4cec2b56d573ff5e",
+    "OctoSense/Cargo.lock": "032ae9064ab4d020f29af868c4d4678ad2d22f68928f25aa7f05d2cf6b758f88",
+    "OctoSense/crates/shell/examples/connected-app-host.rs": "a5bf6f48cc2df238edec0ce3b13b6d0de3d386ad7e4628c65e56b52b7d28a900",
+    "OctoSense/crates/shell/examples/connected_support/mod.rs": "dab9b2c3aa1c96d92fdb74e582da5f9b88b4e0499dcf312be47b1303d6a0218a",
+    "OctoSense/crates/oauth-service/src/acceptance_github.rs": "520fd3681f4831c35cf671f0d4883af8c7d9e63e748ec41ede96d54fcaa77c7d",
+    "OctoSense/crates/oauth-service/src/acceptance_fixtures.rs": "af8b2c8187a35015ea42b59aa7b2ca8e5c4e4834efa0144259ca691f00bcfdf0",
+    "OctoSense/crates/oauth-service/src/host_api.rs": "2b691daf5f25739e7ba622f1d697ebe3a9e75d706033182b5636f91296b0cfae",
+    "OctoSense/crates/oauth-service/src/api.rs": "c173b0c78ffdd0fa2ce0eb63e93d0e2f9aad52983d8fb692bb4c7c3a76543aae",
+    "OctoSense/crates/markdown-editor/src/lib.rs": "4ed1f604a1c273a183629bba29bef195ebd6b7b638b9fc06c707680cda64480c",
+    "OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle/main.splash": "0df7443c0beddc1b3145b80ef20772d695a9e045d162fcd4626abbb5cffa208a",
+    "OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle/manifest.json": "4e90645c8d2d77e77cf53d45e1be60d528907331d863abe48cdd1f3eb24ea0e2",
+    "OctoSense/crates/markdown-editor/src/table_picker.rs": "86e831bfdbac5303463ce8d7e9ef4a7ca0fd0bd13e601f8943e67b99bda537b2",
+    "OctoSense/crates/markdown-editor/resources/icons/add_photo.svg": "840cda756e68ccad22bccba2d725bb8d24bede399a07b5192ffb0e6e20d8a4cd",
+    "OctoSense/crates/markdown-editor/resources/icons/article_bold.svg": "3a2260a678f6e00b99632c8afc92aa7bad8ff3327dc2f3ce6c2ef1824be43b9d",
+    "OctoSense/crates/markdown-editor/resources/icons/article_bullet.svg": "c351146d425cb58122ee697c6dfa5f010e5647b2599ba96b865b401c2fde1faf",
+    "OctoSense/crates/markdown-editor/resources/icons/article_heading.svg": "5c909bc2a8bc7ae595d0c381a8a653932e1fa5f3e87873925622881bc99b6a43",
+    "OctoSense/crates/markdown-editor/resources/icons/article_italic.svg": "ed23967446c80685d8dd3bd815e439a7846f009d2b0a584102c55bda10bc4ac8",
+    "OctoSense/crates/markdown-editor/resources/icons/article_numbered.svg": "fc59a88878ac35b021177dc4ef6df0e4c96b7797ebe9e6a10e0c605100f31769",
+    "OctoSense/crates/markdown-editor/resources/icons/article_palette.svg": "605d0ee2b1a39c7d380c7b80b88caa18ee30800e6c0a075ba9fa22c44a7e52d3",
+    "OctoSense/crates/markdown-editor/resources/icons/article_quote.svg": "d3594d8cb334482e873c93a81eacbe65b364bfbc537014088bef7d7cff72a86f",
+    "OctoSense/crates/markdown-editor/resources/icons/article_redo.svg": "090d9803a66f69ddd0813427a5709d746e6c82b8b77dc354553d15bfb69d9b67",
+    "OctoSense/crates/markdown-editor/resources/icons/article_rule.svg": "8536337fe83d30afb86b21858fef8901908834e201053a57042be1809f478896",
+    "OctoSense/crates/markdown-editor/resources/icons/article_split.svg": "3dee35d447f871e93e163bfb6dc27486172d2ade44af3e51679a2f3141be50e0",
+    "OctoSense/crates/markdown-editor/resources/icons/article_table.svg": "0fd7487803e8a0257aa650cfd7784209596685a44568eae10bd1b4c76a54abd5",
+    "OctoSense/crates/markdown-editor/resources/icons/article_undo.svg": "dc9ae00ad7484f4b3f3cf4ba1696c1357be2fdeb5b05134e0b37d70d08b1c4bb",
+    "OctoSense/crates/markdown-editor/resources/icons/checkmark.svg": "93264d1a3ed9170d4924bc37461e83384cbd5b65f4ec666037d67b301f0434d0",
+    "OctoSense/crates/markdown-editor/resources/icons/chevron_left.svg": "9042df9a92f23a1f02d0833f2e44eef672836ae10459804a2e711a5267f56872",
+    "OctoSense/crates/markdown-editor/resources/icons/close.svg": "2ada6acbddfb1ab4505168ca2abb20ad4a457f3f621a2dd7ed576c738ea23bd3",
+    "OctoSense/crates/markdown-editor/resources/icons/edit.svg": "200a997c49de5e0d75f9ea0e2c7c03df1bdf0f83d32c690cfc2bba83cad27d76",
+    "OctoSense/crates/markdown-editor/resources/icons/eye_open.svg": "6e0565d97692cbae6222b9c56d4dcfe40057761bcc76abf7852bb4035f1802eb",
+    "OctoSense/crates/markdown-editor/resources/icons/link.svg": "3447a24710cc402dba6833ba4ea2c88885484a3984445fcbac7e002dafaf1545",
+    "OctoSense/crates/markdown-editor/resources/icons/send.svg": "ca62c5d227ecb4c1ad02c48319c38345067f7bed0bd74aaa6dbe4a757af62279",
+    "OctoSense/crates/markdown-editor/resources/icons/view_source.svg": "f68c681a24d253c6c346f9e313bd99617cb54a67b0890d97cc52034badf37ac1"
+  },
+  "checks": [
+    "Signed Store launch, Unicode source edit and Preview round trip",
+    "Verified installed restart restores exact unsent local note",
+    "Empty repository and empty paginated response keep navigation usable",
+    "Dirty note replacement refusal preserves the original note",
+    "Actual host review shows exact edited Markdown and destination; cancel makes no provider write",
+    "Reviewed save invokes real GitHub API adapter; synthetic provider content/commit SHA and local clean state agree",
+    "409 conflict keeps the changed local note and never retries or overwrites",
+    "Explicit new Markdown path creates a reviewed file through actual host API",
+    "Lost provider response retains dirty draft and consumed approval cannot retry automatically",
+    "Unsent text and destination survive provider-offline installed restart"
+  ],
+  "visual_review": "pending",
+  "installation": {
+    "anchor": "f6ed40f0004b356946625c6f568be553c3c77bdfa3b9aeec111ccc05d8a3b980",
+    "apps": [
+      {
+        "bundle_digest": "8e36b59bb3ae2f6916aa3b8f0476db3926c915836e3f7d63a19f889dcf43a81a",
+        "id": "org.octosense.samples.githubnotes",
+        "prepared_launch_verified": true,
+        "signed_install": true
+      }
+    ],
+    "fixture": "connected-e2e",
+    "private_keys": "ephemeral memory only",
+    "provider_credentials": "not created or copied",
+    "schema": 1
+  },
+  "actions": [
+    {
+      "session": "01-first-launch",
+      "actions": [
+        {
+          "click": "source_mode",
+          "rect": [
+            276,
+            64,
+            44,
+            44
+          ]
+        },
+        {
+          "edit": "markdown",
+          "characters": 67
+        },
+        {
+          "click": "preview_mode",
+          "rect": [
+            320,
+            64,
+            44,
+            44
+          ]
+        },
+        {
+          "click": "source_mode",
+          "rect": [
+            276,
+            64,
+            44,
+            44
+          ]
+        }
+      ]
+    },
+    {
+      "session": "02-restart",
+      "actions": [
+        {
+          "click": "source_mode",
+          "rect": [
+            276,
+            64,
+            44,
+            44
+          ]
+        },
+        {
+          "click": "repository_button",
+          "rect": [
+            8,
+            64,
+            36,
+            44
+          ]
+        },
+        {
+          "click": "Refresh repositories",
+          "rect": [
+            16,
+            435,
+            398,
+            44
+          ]
+        },
+        {
+          "click": "Next",
+          "rect": [
+            219,
+            601,
+            195,
+            41
+          ]
+        },
+        {
+          "click": "Previous",
+          "rect": [
+            16,
+            525,
+            398,
+            41
+          ]
+        },
+        {
+          "click": "fixture-author/empty",
+          "rect": [
+            16,
+            547,
+            398,
+            44
+          ]
+        },
+        {
+          "click": "fixture-author/notes",
+          "rect": [
+            16,
+            303,
+            398,
+            44
+          ]
+        },
+        {
+          "click": "docs",
+          "rect": [
+            16,
+            669,
+            398,
+            44
+          ]
+        },
+        {
+          "click": "docs/second-note.md",
+          "rect": [
+            16,
+            615,
+            398,
+            44
+          ]
+        },
+        {
+          "click": "Keep current draft",
+          "rect": [
+            16,
+            747,
+            195,
+            41
+          ]
+        },
+        {
+          "click": "Back to note",
+          "rect": [
+            326,
+            51,
+            88,
+            41
+          ]
+        },
+        {
+          "click": "repository_button",
+          "rect": [
+            8,
+            64,
+            36,
+            44
+          ]
+        },
+        {
+          "click": "docs/second-note.md",
+          "rect": [
+            16,
+            615,
+            398,
+            44
+          ]
+        },
+        {
+          "click": "Open & keep recovery",
+          "rect": [
+            219,
+            747,
+            195,
+            41
+          ]
+        },
+        {
+          "click": "source_mode",
+          "rect": [
+            276,
+            64,
+            44,
+            44
+          ]
+        },
+        {
+          "edit": "markdown",
+          "characters": 130
+        },
+        {
+          "click": "save_button",
+          "rect": [
+            374,
+            64,
+            44,
+            44
+          ]
+        },
+        {
+          "click": "Back to editing",
+          "rect": [
+            16,
+            783,
+            193,
+            48
+          ]
+        },
+        {
+          "click": "save_button",
+          "rect": [
+            374,
+            64,
+            44,
+            44
+          ]
+        },
+        {
+          "click": "Approve & Save",
+          "rect": [
+            221,
+            783,
+            193,
+            48
+          ]
+        },
+        {
+          "edit": "markdown",
+          "characters": 179
+        },
+        {
+          "click": "save_button",
+          "rect": [
+            374,
+            64,
+            44,
+            44
+          ]
+        },
+        {
+          "click": "Approve & Save",
+          "rect": [
+            221,
+            783,
+            193,
+            48
+          ]
+        },
+        {
+          "click": "Back to editing",
+          "rect": [
+            16,
+            783,
+            398,
+            48
+          ]
+        },
+        {
+          "click": "repository_button",
+          "rect": [
+            8,
+            64,
+            36,
+            44
+          ]
+        },
+        {
+          "click": "docs/second-note.md",
+          "rect": [
+            16,
+            709,
+            398,
+            44
+          ]
+        },
+        {
+          "edit": "path_entry",
+          "characters": 30
+        },
+        {
+          "click": "Use as new path",
+          "rect": [
+            219,
+            577,
+            195,
+            41
+          ]
+        },
+        {
+          "click": "save_button",
+          "rect": [
+            374,
+            64,
+            44,
+            44
+          ]
+        },
+        {
+          "click": "Approve & Save",
+          "rect": [
+            221,
+            783,
+            193,
+            48
+          ]
+        },
+        {
+          "edit": "markdown",
+          "characters": 248
+        },
+        {
+          "click": "save_button",
+          "rect": [
+            374,
+            64,
+            44,
+            44
+          ]
+        },
+        {
+          "click": "Approve & Save",
+          "rect": [
+            221,
+            783,
+            193,
+            48
+          ]
+        },
+        {
+          "click": "Back to editing",
+          "rect": [
+            16,
+            783,
+            398,
+            48
+          ]
+        }
+      ]
+    },
+    {
+      "session": "03-offline-restart",
+      "actions": [
+        {
+          "click": "source_mode",
+          "rect": [
+            276,
+            64,
+            44,
+            44
+          ]
+        },
+        {
+          "click": "repository_button",
+          "rect": [
+            8,
+            64,
+            36,
+            44
+          ]
+        },
+        {
+          "click": "Refresh repositories",
+          "rect": [
+            16,
+            435,
+            398,
+            44
+          ]
+        },
+        {
+          "click": "Back to note",
+          "rect": [
+            326,
+            51,
+            88,
+            41
+          ]
+        }
+      ]
+    }
+  ],
+  "provider_requests": [
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/user/repos",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/user/repos",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/user/repos",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/repos/fixture-author/empty/contents",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/repos/fixture-author/notes/contents",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/repos/fixture-author/notes/contents/docs",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/repos/fixture-author/notes/contents/docs/second-note.md",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/repos/fixture-author/notes/contents/docs/second-note.md",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "PUT",
+      "path": "/repos/fixture-author/notes/contents/docs/second-note.md",
+      "status": 201
+    },
+    {
+      "failed": false,
+      "method": "PUT",
+      "path": "/repos/fixture-author/notes/contents/docs/second-note.md",
+      "status": 409
+    },
+    {
+      "failed": false,
+      "method": "PUT",
+      "path": "/repos/fixture-author/notes/contents/notes/created-in-acceptance.md",
+      "status": 201
+    },
+    {
+      "failed": true,
+      "method": "PUT",
+      "path": "/repos/fixture-author/notes/contents/notes/created-in-acceptance.md",
+      "status": null
+    },
+    {
+      "failed": true,
+      "method": "GET",
+      "path": "/user/repos",
+      "status": null
+    }
+  ],
+  "synthetic_provider_final_revision": 3,
+  "captures": {
+    "01-installed-preview.png": "1fa65e33adec702180f545d047d9223bf1a513a18cdfd35e8174f50ac3658de9",
+    "03-cancel-retains-edit.png": "98a511dbb7f13c216904b001bceb6937d5b772c8a22af5c9dc96000e233fc091",
+    "08-offline-restart-retains-note.png": "a5c547aca972b9723ea83ca2c302a0fe8fa3838ba13e3ff939b442f096ba9905",
+    "04-synthetic-commit-confirmed.png": "e12b1159faade16b02c8f4c9551dab79215a1ac006d2a121931c937538330070",
+    "05-provider-conflict.png": "b1c7151c6f445509dc54d025b209247977df7d0e3438e1d766dc927e9dbd8bb8",
+    "02-empty-repository.png": "f9db681162c75228da7702598525be6f7a2445b1df3e23614d8526d1a7af675d",
+    "02-exact-host-review.png": "073dfac40124d4b6449b7480704171b90ed0088e2825fcc49c7a761bda4fff8b",
+    "02-before-save.png": "f95def5775a34e7bb14b12b6739b267b35009bd7f297cd3328428fe5f11ff5bc",
+    "06-new-file-commit.png": "b009971a50b6048af7662b2fb5bc0489cbe30e4f16ffac1ba95eec2d1287272f",
+    "07-uncertain-save-response.png": "fffdabb2d29c5cce4b4c41db4521cb7e8b2353ada5155a574cf67f337fb4302a"
+  }
+}

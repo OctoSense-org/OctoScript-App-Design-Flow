@@ -1,0 +1,130 @@
+{
+  "family": "news",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Harbor line",
+        "Demo Daily"
+      ]
+    },
+    {
+      "label": "save",
+      "action": "tap",
+      "target": "Save",
+      "contains": [
+        "Saved \u2713",
+        "saved: 1"
+      ]
+    },
+    {
+      "label": "unsave",
+      "action": "tap",
+      "target": "Saved \u2713",
+      "contains": [
+        "Save",
+        "saved: 0"
+      ]
+    },
+    {
+      "label": "expanded",
+      "action": "tap",
+      "target": "Read \u203a",
+      "contains": [
+        "fictional Harbor",
+        "Transit desk"
+      ]
+    },
+    {
+      "label": "full-app",
+      "action": "tap",
+      "target": "Open app",
+      "occurrence": 0,
+      "contains": [
+        "Harbor line",
+        "City council"
+      ]
+    },
+    {
+      "label": "second-story",
+      "action": "tap",
+      "target": "Open \u203a",
+      "occurrence": 1,
+      "contains": [
+        "City council",
+        "City desk"
+      ],
+      "excludes": [
+        "Harbor line"
+      ]
+    },
+    {
+      "label": "save-second-story",
+      "action": "tap",
+      "target": "Save",
+      "contains": [
+        "Saved \u2713"
+      ]
+    },
+    {
+      "label": "back",
+      "action": "tap",
+      "target": "\u2039 Back",
+      "contains": [
+        "Harbor line",
+        "City council"
+      ]
+    },
+    {
+      "label": "saved-collection",
+      "action": "tap",
+      "target": "Saved",
+      "contains": [
+        "City council"
+      ],
+      "excludes": [
+        "Harbor line"
+      ]
+    },
+    {
+      "label": "remove-second-story",
+      "action": "tap",
+      "target": "Saved \u2713",
+      "contains": [
+        "No saved stories"
+      ]
+    },
+    {
+      "label": "glance-return",
+      "action": "tap",
+      "target": "Glance",
+      "contains": [
+        "Harbor line"
+      ]
+    },
+    {
+      "label": "empty",
+      "action": "tap",
+      "target": "Empty",
+      "contains": [
+        "No stories"
+      ]
+    },
+    {
+      "label": "error",
+      "action": "tap",
+      "target": "Error",
+      "contains": [
+        "Couldn't load stories"
+      ]
+    },
+    {
+      "label": "ready",
+      "action": "tap",
+      "target": "Ready",
+      "contains": [
+        "Harbor line"
+      ]
+    }
+  ]
+}

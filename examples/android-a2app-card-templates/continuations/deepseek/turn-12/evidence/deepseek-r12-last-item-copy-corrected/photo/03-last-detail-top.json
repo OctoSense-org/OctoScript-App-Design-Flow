@@ -1,0 +1,844 @@
+{
+  "height": 2132,
+  "instance_id": "cccdc7a9-1704-427d-b8b7-43dc8dccb58d",
+  "path": ".studio-9f1e0c25-808b-4649-b772-7ffede80780c.png",
+  "settled": false,
+  "snapshot": {
+    "checks": {
+      "findings": [],
+      "instrument": "makepad_widget_tree",
+      "pass": true
+    },
+    "geometry": {
+      "widgets": [
+        {
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 0,
+          "id": "-",
+          "kind": "Splash",
+          "parent": -1,
+          "text": "// Photo Cards \u2014 native interactive preview of the PHOTO card template.\n// Presentation depths: L0 compact glance / L1 expanded actionable / L2 full app.\n//\n// HONEST MEDIA: this offline Studio slice has no local-image route, so media is\n// drawn as a concise unavailable placeholder \u2014 never a fake photo. Metadata and\n// the favorite choice are the local, functional content.\n// Layout: nav + status pinned at TOP; the card scrolls below. Targets >= 44 px.\n\nlet depth = \"glance\"\nlet view_state = \"ready\"\nlet show_states = false\nlet tab = \"all\"\nlet detail_open = false\nlet open_id = \"\"\nlet fav_a = false\nlet fav_b = false\nlet fav_c = false\n\nlet NavBtn = ButtonFlat{height: 44 padding: 10 draw_bg +: {color: #xedeaf3 color_hover: #xe4dff0 color_down: #xd8d1e8} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}\nlet AccentBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #x8a4fff color_hover: #x9966ff color_down: #x7a3fe6} draw_text +: {color: #xffffff color_hover: #xffffff color_down: #xffffff}}\nlet GhostBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xffffff color_hover: #xf0f4f8 color_down: #xe6ecf3} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}\nlet OpenBtn = ButtonFlat{height: 44 width: 108 padding: 8 draw_bg +: {color: #xedeaf3 color_hover: #xe4dff0 color_down: #xd8d1e8} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}\n\nfn depth_name(){\n    if depth == \"glance\" { return \"L0 glance\" }\n    if depth == \"expand\" { return \"L1 expanded\" }\n    return \"L2 app\"\n}\nfn name_of(id){\n    if id == \"still\" { return \"Studio still life\" }\n    if id == \"ridge\" { return \"Trail ridge, mist\" }\n    return \"Harbor sunset\"\n}\nfn meta_of(id){\n    if id == \"still\" { return \"Studio \u00b7 3 Mar \u00b7 5184\u00d73456\" }\n    if id == \"ridge\" { return \"North Ridge \u00b7 21 Apr \u00b7 4032\u00d73024\" }\n    return \"San Remo Pier \u00b7 12 May \u00b7 4032\u00d73024\"\n}\nfn is_fav(id){\n    if id == \"still\" { return fav_b }\n    if id == \"ridge\" { return fav_c }\n    return fav_a\n}\nfn fav_label(id){\n    if is_fav(id) { return \"Favorited \u2713\" }\n    return \"Favorite\"\n}\nfn fav_count(){\n    let n = 0\n    if fav_a { n = n + 1 }\n    if fav_b { n = n + 1 }\n    if fav_c { n = n + 1 }\n    return n\n}\n\nfn refresh_nav(){\n    let s = \"Photo Cards   \u00b7   \" + depth_name() + \"   \u00b7   \" + view_state + \"   \u00b7   favorites: \" + fav_count()\n    ui.depth_status.set_text(s)\n    if depth == \"glance\" { ui.d_gl.set_text(\"\u2022 Glance\") } else { ui.d_gl.set_text(\"Glance\") }\n    if depth == \"expand\" { ui.d_ex.set_text(\"\u2022 Expand\") } else { ui.d_ex.set_text(\"Expand\") }\n    if depth == \"app\" { ui.d_ap.set_text(\"\u2022 Open app\") } else { ui.d_ap.set_text(\"Open app\") }\n}\nfn toggle_states(){\n    if show_states { show_states = false } else { show_states = true }\n    if show_states { ui.states_btn.set_text(\"States \u25be\") } else { ui.states_btn.set_text(\"States \u25b8\") }\n    ui.states_row.set_visible(show_states)\n}\n\nfn set_depth(d){ depth = d detail_open = false refresh_nav() ui.stage.render() }\nfn set_state(s){ view_state = s refresh_nav() ui.stage.render() }\nfn set_tab(t){ tab = t detail_open = false refresh_nav() ui.stage.render() }\nfn open_detail(id){ open_id = id detail_open = true ui.stage.render() }\nfn close_detail(){ detail_open = false ui.stage.render() }\nfn toggle_fav(id){\n    if id == \"still\" { if fav_b { fav_b = false } else { fav_b = true } }\n    elif id == \"ridge\" { if fav_c { fav_c = false } else { fav_c = true } }\n    else { if fav_a { fav_a = false } else { fav_a = true } }\n    refresh_nav() ui.stage.render()\n}\n\nfn boot(){ refresh_nav() ui.states_row.set_visible(false) ui.stage.render() }\n\nstart_timeout(0.05, || boot())\n\nSolidView{width: Fill height: Fill flow: Down padding: 12 spacing: 8 draw_bg.color: #xf5f3f8\n    // Title folded into the consolidated status line below (density).\n    depth_status := Label{width: Fill height: Fit text: \"Depth: L0 glance   \u00b7   state: ready   \u00b7   favorites: 0\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}\n    View{width: Fill height: Fit flow: Right spacing: 8\n        d_gl := NavBtn{text: \"\u2022 Glance\" on_click: || set_depth(\"glance\")}\n        d_ex := NavBtn{text: \"Expand\" on_click: || set_depth(\"expand\")}\n        d_ap := NavBtn{text: \"Open app\" on_click: || set_depth(\"app\")}\n        View{width: Fill height: Fit}\n        states_btn := NavBtn{text: \"States \u25b8\" on_click: || toggle_states()}\n    }\n    states_row := View{width: Fill height: Fit flow: Right spacing: 8\n        NavBtn{text: \"Ready\" on_click: || set_state(\"ready\")}\n        NavBtn{text: \"Loading\" on_click: || set_state(\"loading\")}\n        NavBtn{text: \"Empty\" on_click: || set_state(\"empty\")}\n        NavBtn{text: \"Error\" on_click: || set_state(\"error\")}\n    }\n\n    ScrollYView{width: Fill height: Fill flow: Down spacing: 8\n        stage := RoundedView{width: Fill height: Fit flow: Down padding: 14 spacing: 8 draw_bg.color: #xffffff draw_bg.radius: 16 on_render: || {\n\n            // ---------- L0 \u00b7 compact glance ----------\n            if depth == \"glance\" {\n                View{width: Fill height: Fit flow: Right spacing: 8\n                    Label{text: \"PHOTOS\" draw_text.color: #x8a4fff draw_text.text_style.font_size: 12}\n                    View{width: Fill height: Fit}\n                    Label{text: \"Today\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}\n                }\n                if view_state == \"loading\" { Label{text: \"Loading\u2026\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }\n                if view_state == \"empty\" { Label{text: \"No photos\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }\n                if view_state == \"error\" { Label{width: Fill height: Fit text: \"Couldn't load library \u2014 demo error state\" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }\n                if view_state == \"ready\" {\n                    RoundedView{width: Fill height: 84 flow: Down padding: 12 spacing: 4 draw_bg.color: #xeef1f4 draw_bg.radius: 12\n                        Label{text: \"IMAGE UNAVAILABLE\" draw_text.color: #x6b7280 draw_text.text_style.font_size: 12}\n                        Label{width: Fill height: Fit text: \"Can't show in this demo\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}\n                    }\n                    Label{width: Fill height: Fit text: \"Harbor sunset\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}\n                    Label{text: \"San Remo Pier \u00b7 12 May\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        AccentBtn{text: fav_label(\"harbor\") on_click: || toggle_fav(\"harbor\")}\n                    }\n                }\n            }\n\n            // ---------- L1 \u00b7 expanded actionable ----------\n            if depth == \"expand\" {\n                View{width: Fill height: Fit flow: Right spacing: 8\n                    Label{text: \"PHOTOS\" draw_text.color: #x8a4fff draw_text.text_style.font_size: 11}\n                    View{width: Fill height: Fit}\n                    Label{text: \"Today\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}\n                }\n                if view_state == \"loading\" { Label{text: \"Loading\u2026\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }\n                if view_state == \"empty\" { Label{text: \"No photos\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }\n                if view_state == \"error\" { Label{width: Fill height: Fit text: \"Couldn't load library \u2014 demo error state\" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }\n                if view_state == \"ready\" {\n                    RoundedView{width: Fill height: 84 flow: Down padding: 12 spacing: 4 draw_bg.color: #xeef1f4 draw_bg.radius: 12\n                        Label{text: \"IMAGE UNAVAILABLE\" draw_text.color: #x6b7280 draw_text.text_style.font_size: 13}\n                        Label{width: Fill height: Fit text: \"Media can't be shown in this offline demo.\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}\n                    }\n                    Label{width: Fill height: Fit text: \"Harbor sunset\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}\n                    Label{text: \"San Remo Pier \u00b7 12 May \u00b7 4032\u00d73024\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}\n                    Label{text: \"Tags: harbor, sunset, pier (demo)\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        AccentBtn{text: fav_label(\"harbor\") on_click: || toggle_fav(\"harbor\")}\n                        NavBtn{text: \"Open app\" on_click: || set_depth(\"app\")}\n                    }\n                }\n            }\n\n            // ---------- L2 \u00b7 full app (library) ----------\n            if depth == \"app\" {\n                View{width: Fill height: Fit flow: Right spacing: 8\n                    if tab == \"all\" {\n                        AccentBtn{text: \"All\" width: 116 on_click: || set_tab(\"all\")}\n                        NavBtn{text: \"Favorites\" width: 126 on_click: || set_tab(\"fav\")}\n                    }\n                    if tab == \"fav\" {\n                        NavBtn{text: \"All\" width: 116 on_click: || set_tab(\"all\")}\n                        AccentBtn{text: \"Favorites\" width: 126 on_click: || set_tab(\"fav\")}\n                    }\n                }\n                SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}\n                if detail_open {\n                    RoundedView{width: Fill height: 84 flow: Down padding: 12 spacing: 4 draw_bg.color: #xeef1f4 draw_bg.radius: 12\n                        Label{text: \"IMAGE UNAVAILABLE\" draw_text.color: #x6b7280 draw_text.text_style.font_size: 13}\n                        Label{width: Fill height: Fit text: \"Media can't be shown in this offline demo.\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}\n                    }\n                    Label{width: Fill height: Fit text: name_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}\n                    Label{width: Fill height: Fit text: meta_of(open_id) draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        AccentBtn{text: fav_label(open_id) on_click: || toggle_fav(open_id)}\n                        NavBtn{text: \"\u2039 Back\" on_click: || close_detail()}\n                    }\n                }\n                if detail_open == false {\n                    if tab == \"all\" {\n                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                            Label{width: Fill height: Fit text: \"Harbor sunset\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                            Label{width: Fill height: Fit text: \"San Remo Pier \u00b7 12 May\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                                NavBtn{text: fav_label(\"harbor\") on_click: || toggle_fav(\"harbor\")}\n                                OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"harbor\")}\n                            }\n                        }\n                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                            Label{width: Fill height: Fit text: \"Studio still life\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                            Label{width: Fill height: Fit text: \"Studio \u00b7 3 Mar\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                                NavBtn{text: fav_label(\"still\") on_click: || toggle_fav(\"still\")}\n                                OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"still\")}\n                            }\n                        }\n                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                            Label{width: Fill height: Fit text: \"Trail ridge, mist\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                            Label{width: Fill height: Fit text: \"North Ridge \u00b7 21 Apr\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                            View{width: Fill height: Fit flow: Right spacing: 8\n                                NavBtn{text: fav_label(\"ridge\") on_click: || toggle_fav(\"ridge\")}\n                                OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"ridge\")}\n                            }\n                        }\n                    }\n                    if tab == \"fav\" {\n                        Label{width: Fill height: Fit text: \"Favorites \u00b7 \" + fav_count() draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}\n                        if fav_count() == 0 {\n                            Label{text: \"No favorites yet\" draw_text.color: #x8a8a8e draw_text.text_style.font_size: 15}\n                        }\n                        if fav_a {\n                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                                Label{width: Fill height: Fit text: \"Harbor sunset\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                                Label{width: Fill height: Fit text: \"San Remo Pier \u00b7 12 May\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                                View{width: Fill height: Fit flow: Right spacing: 8\n                                    NavBtn{text: \"Favorited \u2713\" on_click: || toggle_fav(\"harbor\")}\n                                    OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"harbor\")}\n                                }\n                            }\n                        }\n                        if fav_b {\n                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                                Label{width: Fill height: Fit text: \"Studio still life\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                                Label{width: Fill height: Fit text: \"Studio \u00b7 3 Mar\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                                View{width: Fill height: Fit flow: Right spacing: 8\n                                    NavBtn{text: \"Favorited \u2713\" on_click: || toggle_fav(\"still\")}\n                                    OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"still\")}\n                                }\n                            }\n                        }\n                        if fav_c {\n                            RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                                Label{width: Fill height: Fit text: \"Trail ridge, mist\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                                Label{width: Fill height: Fit text: \"North Ridge \u00b7 21 Apr\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                                View{width: Fill height: Fit flow: Right spacing: 8\n                                    NavBtn{text: \"Favorited \u2713\" on_click: || toggle_fav(\"ridge\")}\n                                    OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"ridge\")}\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n\n        }}\n    }\n}",
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "bg": "#fff5f3f8",
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 1,
+          "id": "10",
+          "kind": "View",
+          "parent": 0,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 26,
+          "cw": 353,
+          "cx": 16,
+          "cy": 44,
+          "fg": "#ff5b6672",
+          "h": 26,
+          "i": 2,
+          "id": "depth_status",
+          "kind": "Label",
+          "parent": 1,
+          "text": "Photo Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   favorites: 0",
+          "w": 353,
+          "x": 16,
+          "y": 44
+        },
+        {
+          "ch": 50,
+          "cw": 360,
+          "cx": 12,
+          "cy": 81,
+          "h": 50,
+          "i": 3,
+          "id": "-",
+          "kind": "View",
+          "parent": 1,
+          "w": 360,
+          "x": 12,
+          "y": 81
+        },
+        {
+          "ch": 44,
+          "cw": 69,
+          "cx": 12,
+          "cy": 84,
+          "glyphs": 1,
+          "h": 44,
+          "i": 4,
+          "id": "d_gl",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "Glance",
+          "w": 69,
+          "x": 12,
+          "y": 84
+        },
+        {
+          "ch": 44,
+          "cw": 73,
+          "cx": 89,
+          "cy": 84,
+          "glyphs": 1,
+          "h": 44,
+          "i": 5,
+          "id": "d_ex",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "Expand",
+          "w": 73,
+          "x": 89,
+          "y": 84
+        },
+        {
+          "ch": 44,
+          "cw": 99,
+          "cx": 170,
+          "cy": 84,
+          "glyphs": 1,
+          "h": 44,
+          "i": 6,
+          "id": "d_ap",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "\u2022 Open app",
+          "w": 99,
+          "x": 170,
+          "y": 84
+        },
+        {
+          "ch": 44,
+          "cw": 74,
+          "cx": 298,
+          "cy": 84,
+          "glyphs": 1,
+          "h": 44,
+          "i": 8,
+          "id": "states_btn",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "States \u25b8",
+          "w": 74,
+          "x": 298,
+          "y": 84
+        },
+        {
+          "ch": 635,
+          "cw": 360,
+          "cx": 12,
+          "cy": 139,
+          "h": 635,
+          "i": 14,
+          "id": "1",
+          "kind": "View",
+          "parent": 1,
+          "w": 360,
+          "x": 12,
+          "y": 139
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 328,
+          "cw": 360,
+          "cx": 12,
+          "cy": 139,
+          "h": 328,
+          "i": 15,
+          "id": "stage",
+          "kind": "View",
+          "parent": 14,
+          "w": 360,
+          "x": 12,
+          "y": 139
+        },
+        {
+          "ch": 50,
+          "cw": 332,
+          "cx": 26,
+          "cy": 153,
+          "h": 50,
+          "i": 16,
+          "id": "-",
+          "kind": "View",
+          "parent": 15,
+          "w": 332,
+          "x": 26,
+          "y": 153
+        },
+        {
+          "ch": 44,
+          "cw": 116,
+          "cx": 26,
+          "cy": 156,
+          "glyphs": 1,
+          "h": 44,
+          "i": 17,
+          "id": "-",
+          "kind": "Button",
+          "parent": 16,
+          "tappable": true,
+          "text": "All",
+          "w": 116,
+          "x": 26,
+          "y": 156
+        },
+        {
+          "ch": 44,
+          "cw": 126,
+          "cx": 150,
+          "cy": 156,
+          "glyphs": 1,
+          "h": 44,
+          "i": 18,
+          "id": "1",
+          "kind": "Button",
+          "parent": 16,
+          "tappable": true,
+          "text": "Favorites",
+          "w": 126,
+          "x": 150,
+          "y": 156
+        },
+        {
+          "bg": "#ffe2e7ec",
+          "ch": 1,
+          "cw": 332,
+          "cx": 26,
+          "cy": 211,
+          "h": 1,
+          "i": 19,
+          "id": "1",
+          "kind": "View",
+          "parent": 15,
+          "w": 332,
+          "x": 26,
+          "y": 211
+        },
+        {
+          "bg": "#ffeef1f4",
+          "ch": 84,
+          "cw": 332,
+          "cx": 26,
+          "cy": 220,
+          "h": 84,
+          "i": 20,
+          "id": "2",
+          "kind": "View",
+          "parent": 15,
+          "w": 332,
+          "x": 26,
+          "y": 220
+        },
+        {
+          "ch": 27,
+          "cw": 173,
+          "cx": 42,
+          "cy": 236,
+          "fg": "#ff6b7280",
+          "h": 27,
+          "i": 21,
+          "id": "-",
+          "kind": "Label",
+          "parent": 20,
+          "text": "IMAGE UNAVAILABLE",
+          "w": 173,
+          "x": 42,
+          "y": 236
+        },
+        {
+          "ch": 24,
+          "cw": 301,
+          "cx": 42,
+          "cy": 274,
+          "fg": "#ff9aa4b0",
+          "h": 24,
+          "i": 22,
+          "id": "1",
+          "kind": "Label",
+          "parent": 20,
+          "text": "Media can't be shown in this offline demo.",
+          "w": 301,
+          "x": 42,
+          "y": 274
+        },
+        {
+          "ch": 35,
+          "cw": 325,
+          "cx": 30,
+          "cy": 316,
+          "fg": "#ff1c2430",
+          "h": 35,
+          "i": 23,
+          "id": "3",
+          "kind": "Label",
+          "parent": 15,
+          "text": "Trail ridge, mist",
+          "w": 325,
+          "x": 30,
+          "y": 316
+        },
+        {
+          "ch": 26,
+          "cw": 325,
+          "cx": 30,
+          "cy": 366,
+          "fg": "#ff5b6672",
+          "h": 26,
+          "i": 24,
+          "id": "4",
+          "kind": "Label",
+          "parent": 15,
+          "text": "North Ridge \u00b7 21 Apr \u00b7 4032\u00d73024",
+          "w": 325,
+          "x": 30,
+          "y": 366
+        },
+        {
+          "ch": 50,
+          "cw": 332,
+          "cx": 26,
+          "cy": 403,
+          "h": 50,
+          "i": 25,
+          "id": "5",
+          "kind": "View",
+          "parent": 15,
+          "w": 332,
+          "x": 26,
+          "y": 403
+        },
+        {
+          "ch": 44,
+          "cw": 80,
+          "cx": 26,
+          "cy": 406,
+          "glyphs": 1,
+          "h": 44,
+          "i": 26,
+          "id": "-",
+          "kind": "Button",
+          "parent": 25,
+          "tappable": true,
+          "text": "Favorite",
+          "w": 80,
+          "x": 26,
+          "y": 406
+        },
+        {
+          "ch": 44,
+          "cw": 64,
+          "cx": 114,
+          "cy": 406,
+          "glyphs": 1,
+          "h": 44,
+          "i": 27,
+          "id": "1",
+          "kind": "Button",
+          "parent": 25,
+          "tappable": true,
+          "text": "\u2039 Back",
+          "w": 64,
+          "x": 114,
+          "y": 406
+        }
+      ]
+    },
+    "tree": "W3 22\n0 -1 - Splash 0 28 384 758\n1 0 10 View 0 28 384 758\n2 1 depth_status Label 16 44 353 26\n3 1 - View 12 81 360 50\n4 3 d_gl Button 12 84 69 44\n5 3 d_ex Button 89 84 73 44\n6 3 d_ap Button 170 84 99 44\n7 3 states_btn Button 298 84 74 44\n8 1 1 View 12 139 360 635\n9 8 stage View 12 139 360 328\n10 9 - View 26 153 332 50\n11 10 - Button 26 156 116 44\n12 10 1 Button 150 156 126 44\n13 9 1 View 26 211 332 1\n14 9 2 View 26 220 332 84\n15 14 - Label 42 236 173 27\n16 14 1 Label 42 274 301 24\n17 9 3 Label 30 316 325 35\n18 9 4 Label 30 366 325 26\n19 9 5 View 26 403 332 50\n20 19 - Button 26 406 80 44\n21 19 1 Button 114 406 64 44\n",
+    "widgets": [
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "-@0",
+        "text": null,
+        "type": "Splash",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "10",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "10@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "depth_status",
+        "rect": [
+          16,
+          44,
+          353,
+          26
+        ],
+        "selected": null,
+        "selector": "depth_status@0",
+        "text": "Photo Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   favorites: 0",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          12,
+          81,
+          360,
+          50
+        ],
+        "selected": null,
+        "selector": "-@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_gl",
+        "rect": [
+          12,
+          84,
+          69,
+          44
+        ],
+        "selected": null,
+        "selector": "d_gl@0",
+        "text": "Glance",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_ex",
+        "rect": [
+          89,
+          84,
+          73,
+          44
+        ],
+        "selected": null,
+        "selector": "d_ex@0",
+        "text": "Expand",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_ap",
+        "rect": [
+          170,
+          84,
+          99,
+          44
+        ],
+        "selected": null,
+        "selector": "d_ap@0",
+        "text": "\u2022 Open app",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "states_btn",
+        "rect": [
+          298,
+          84,
+          74,
+          44
+        ],
+        "selected": null,
+        "selector": "states_btn@0",
+        "text": "States \u25b8",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "states_row",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "states_row@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@3",
+        "text": "Ready",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@0",
+        "text": "Loading",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@0",
+        "text": "Empty",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "3",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "3@0",
+        "text": "Error",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          12,
+          139,
+          360,
+          635
+        ],
+        "selected": null,
+        "selector": "1@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "stage",
+        "rect": [
+          12,
+          139,
+          360,
+          328
+        ],
+        "selected": null,
+        "selector": "stage@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          26,
+          153,
+          332,
+          50
+        ],
+        "selected": null,
+        "selector": "-@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          26,
+          156,
+          116,
+          44
+        ],
+        "selected": null,
+        "selector": "-@5",
+        "text": "All",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          150,
+          156,
+          126,
+          44
+        ],
+        "selected": null,
+        "selector": "1@2",
+        "text": "Favorites",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          26,
+          211,
+          332,
+          1
+        ],
+        "selected": null,
+        "selector": "1@3",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          26,
+          220,
+          332,
+          84
+        ],
+        "selected": null,
+        "selector": "2@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          42,
+          236,
+          173,
+          27
+        ],
+        "selected": null,
+        "selector": "-@6",
+        "text": "IMAGE UNAVAILABLE",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          42,
+          274,
+          301,
+          24
+        ],
+        "selected": null,
+        "selector": "1@4",
+        "text": "Media can't be shown in this offline demo.",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "3",
+        "rect": [
+          30,
+          316,
+          325,
+          35
+        ],
+        "selected": null,
+        "selector": "3@1",
+        "text": "Trail ridge, mist",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "4",
+        "rect": [
+          30,
+          366,
+          325,
+          26
+        ],
+        "selected": null,
+        "selector": "4@0",
+        "text": "North Ridge \u00b7 21 Apr \u00b7 4032\u00d73024",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "5",
+        "rect": [
+          26,
+          403,
+          332,
+          50
+        ],
+        "selected": null,
+        "selector": "5@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          26,
+          406,
+          80,
+          44
+        ],
+        "selected": null,
+        "selector": "-@7",
+        "text": "Favorite",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          114,
+          406,
+          64,
+          44
+        ],
+        "selected": null,
+        "selector": "1@5",
+        "text": "\u2039 Back",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      }
+    ]
+  },
+  "width": 1080
+}

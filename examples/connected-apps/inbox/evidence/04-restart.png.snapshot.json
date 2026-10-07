@@ -1,0 +1,358 @@
+[
+  {
+    "i": "main_window",
+    "ty": "Window",
+    "r": [
+      0,
+      0,
+      412,
+      892
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "caption_bar",
+    "ty": "View",
+    "r": [
+      0,
+      0,
+      412,
+      32
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "caption_label",
+    "ty": "View",
+    "r": [
+      0,
+      0,
+      412,
+      32
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "caption_icon",
+    "ty": "AppIcon",
+    "r": [
+      133,
+      8,
+      16,
+      16
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "label",
+    "ty": "Label",
+    "r": [
+      158,
+      5,
+      119,
+      22
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Card host [remote]"
+  },
+  {
+    "i": "body",
+    "ty": "KeyboardView",
+    "r": [
+      0,
+      32,
+      412,
+      860
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "15",
+    "ty": "View",
+    "r": [
+      0,
+      32,
+      412,
+      860
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "-",
+    "ty": "View",
+    "r": [
+      16,
+      48,
+      380,
+      46
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "-",
+    "ty": "Label",
+    "r": [
+      19,
+      51,
+      377,
+      40
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Inbox Assistant"
+  },
+  {
+    "i": "status",
+    "ty": "Label",
+    "r": [
+      19,
+      107,
+      374,
+      25
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Fictional message \u00b7 no email can be sent"
+  },
+  {
+    "i": "workspace",
+    "ty": "View",
+    "r": [
+      16,
+      145,
+      380,
+      731
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "-",
+    "ty": "View",
+    "r": [
+      16,
+      145,
+      380,
+      50
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "-",
+    "ty": "Button",
+    "r": [
+      16,
+      148,
+      66,
+      44
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Back"
+  },
+  {
+    "i": "message_tab",
+    "ty": "Button",
+    "r": [
+      86,
+      148,
+      71,
+      44
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Email"
+  },
+  {
+    "i": "reply_tab",
+    "ty": "Button",
+    "r": [
+      161,
+      148,
+      83,
+      44
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "\u2022 Reply"
+  },
+  {
+    "i": "chat_tab",
+    "ty": "Button",
+    "r": [
+      249,
+      148,
+      63,
+      44
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Chat"
+  },
+  {
+    "i": "subject",
+    "ty": "Label",
+    "r": [
+      19,
+      208,
+      374,
+      69
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Choose your refrigerator delivery window"
+  },
+  {
+    "i": "sender",
+    "ty": "Label",
+    "r": [
+      19,
+      293,
+      374,
+      25
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Harbor Delivery"
+  },
+  {
+    "i": "reply_view",
+    "ty": "View",
+    "r": [
+      16,
+      332,
+      380,
+      544
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "recipient",
+    "ty": "TextInput",
+    "r": [
+      16,
+      335,
+      380,
+      44
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "delivery@example.test",
+    "val": "delivery@example.test"
+  },
+  {
+    "i": "reply_subject",
+    "ty": "TextInput",
+    "r": [
+      16,
+      393,
+      380,
+      44
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Re: Choose your refrigerator delivery window",
+    "val": "Re: Choose your refrigerator delivery window"
+  },
+  {
+    "i": "reply_body",
+    "ty": "TextInput",
+    "r": [
+      16,
+      451,
+      380,
+      325
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Please deliver Thursday at 10:30 AM Pacific.\nRing the bell twice. \u8c22\u8c22\u3002",
+    "val": "Please deliver Thursday at 10:30 AM Pacific.\nRing the bell twice. \u8c22\u8c22\u3002"
+  },
+  {
+    "i": "draft_note",
+    "ty": "Label",
+    "r": [
+      19,
+      790,
+      374,
+      25
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Saved revision 16 \u00b7 draft"
+  },
+  {
+    "i": "-",
+    "ty": "View",
+    "r": [
+      16,
+      826,
+      380,
+      50
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true
+  },
+  {
+    "i": "-",
+    "ty": "Button",
+    "r": [
+      16,
+      829,
+      186,
+      44
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Save draft"
+  },
+  {
+    "i": "1",
+    "ty": "Button",
+    "r": [
+      210,
+      829,
+      186,
+      44
+    ],
+    "w": 0,
+    "window_id": "main_window",
+    "enabled": true,
+    "t": "Review & Send"
+  }
+]

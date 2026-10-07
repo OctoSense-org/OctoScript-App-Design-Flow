@@ -1,0 +1,990 @@
+{
+  "height": 2132,
+  "instance_id": "a7677ee7-d0ee-4ed4-8bb1-04276f5457d8",
+  "path": ".studio-f11e9c9c-5d6e-49b8-b188-421376342f43.png",
+  "settled": false,
+  "snapshot": {
+    "checks": {
+      "findings": [],
+      "instrument": "makepad_widget_tree",
+      "pass": true
+    },
+    "geometry": {
+      "widgets": [
+        {
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 0,
+          "id": "-",
+          "kind": "Splash",
+          "parent": -1,
+          "text": "// Calendar Cards \u2014 native interactive preview of the CALENDAR card template.\n// Presentation depths: L0 compact next-event glance / L1 expanded actionable /\n// L2 full app (agenda -> event detail).\n// Synthetic demo content only. No calendar sync, no event created, nothing sent.\n//\n// Layout intent (from Mail failures): navigation + status pinned at TOP so they\n// stay reachable when the Android keyboard shrinks the viewport; the card sits\n// in a Fill ScrollYView below. All active tap targets >= 44 logical px.\n// RSVP is PER EVENT (separate state per event id), not a shared global.\n\nlet depth = \"glance\"\nlet view_state = \"ready\"\nlet show_states = false\nlet tab = \"today\"\nlet detail_open = false\nlet open_id = \"\"\nlet rsvp_review = \"none\"\nlet rsvp_sam = \"none\"\nlet rsvp_standup = \"none\"\n\nlet NavBtn = ButtonFlat{height: 44 padding: 10 draw_bg +: {color: #xe8edf3 color_hover: #xdde5ef color_down: #xd0dae7} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}\nlet AccentBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xe0642f color_hover: #xe9743f color_down: #xd0551f} draw_text +: {color: #xffffff color_hover: #xffffff color_down: #xffffff}}\nlet GhostBtn = ButtonFlat{height: 44 padding: 12 draw_bg +: {color: #xffffff color_hover: #xf0f4f8 color_down: #xe6ecf3} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}\nlet OpenBtn = ButtonFlat{height: 44 width: 108 padding: 8 draw_bg +: {color: #xe8edf3 color_hover: #xdde5ef color_down: #xd0dae7} draw_text +: {color: #x1c2430 color_hover: #x1c2430 color_down: #x1c2430}}\n\nfn depth_name(){\n    if depth == \"glance\" { return \"L0 glance\" }\n    if depth == \"expand\" { return \"L1 expanded\" }\n    return \"L2 app\"\n}\nfn title_of(id){\n    if id == \"review\" { return \"Design review\" }\n    if id == \"sam\" { return \"1:1 with Sam\" }\n    return \"Team standup\"\n}\nfn when_of(id){\n    if id == \"review\" { return \"Today \u00b7 10:00\u201311:00\" }\n    if id == \"sam\" { return \"Today \u00b7 14:00\u201314:30\" }\n    return \"Friday \u00b7 09:00\u201309:15\"\n}\nfn where_of(id){\n    if id == \"review\" { return \"Studio 2\" }\n    if id == \"sam\" { return \"Room 4 \u00b7 2nd floor\" }\n    return \"Online \u00b7 meet.demo/standup\"\n}\nfn body_of(id){\n    if id == \"review\" { return \"Walk through the new card layouts and pick the family accent set. Bring the L0/L1 comps.\" }\n    if id == \"sam\" { return \"Weekly catch-up. Topics: roadmap, review load, next sprint.\" }\n    return \"Quick sync: blockers, then the day's plan.\"\n}\nfn get_rsvp(id){\n    if id == \"sam\" { return rsvp_sam }\n    if id == \"standup\" { return rsvp_standup }\n    return rsvp_review\n}\nfn rsvp_label(id){\n    if get_rsvp(id) == \"going\" { return \"Going (demo)\" }\n    if get_rsvp(id) == \"maybe\" { return \"Maybe (demo)\" }\n    return \"No response\"\n}\n\nfn refresh_nav(){\n    let s = \"Calendar Cards   \u00b7   \" + depth_name() + \"   \u00b7   \" + view_state + \"   \u00b7   RSVP(review): \" + rsvp_review\n    ui.depth_status.set_text(s)\n    if depth == \"glance\" { ui.d_gl.set_text(\"\u2022 Glance\") } else { ui.d_gl.set_text(\"Glance\") }\n    if depth == \"expand\" { ui.d_ex.set_text(\"\u2022 Expand\") } else { ui.d_ex.set_text(\"Expand\") }\n    if depth == \"app\" { ui.d_ap.set_text(\"\u2022 Open app\") } else { ui.d_ap.set_text(\"Open app\") }\n}\nfn toggle_states(){\n    if show_states { show_states = false } else { show_states = true }\n    if show_states { ui.states_btn.set_text(\"States \u25be\") } else { ui.states_btn.set_text(\"States \u25b8\") }\n    ui.states_row.set_visible(show_states)\n}\n\nfn set_depth(d){ depth = d detail_open = false refresh_nav() ui.stage.render() }\nfn set_state(s){ view_state = s refresh_nav() ui.stage.render() }\nfn set_tab(t){ tab = t detail_open = false refresh_nav() ui.stage.render() }\nfn open_detail(id){ open_id = id detail_open = true ui.stage.render() }\nfn close_detail(){ detail_open = false ui.stage.render() }\nfn set_rsvp(id, r){\n    if id == \"sam\" { rsvp_sam = r }\n    elif id == \"standup\" { rsvp_standup = r }\n    else { rsvp_review = r }\n    refresh_nav() ui.stage.render()\n}\n\nfn boot(){ refresh_nav() ui.states_row.set_visible(false) ui.stage.render() }\n\nstart_timeout(0.05, || boot())\n\nSolidView{width: Fill height: Fill flow: Down padding: 12 spacing: 8 draw_bg.color: #xf6f3f0\n    // Title folded into the consolidated status line below (density).\n    depth_status := Label{width: Fill height: Fit text: \"Depth: L0 glance   \u00b7   state: ready   \u00b7   RSVP(review): none\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}\n    View{width: Fill height: Fit flow: Right spacing: 8\n        d_gl := NavBtn{text: \"\u2022 Glance\" on_click: || set_depth(\"glance\")}\n        d_ex := NavBtn{text: \"Expand\" on_click: || set_depth(\"expand\")}\n        d_ap := NavBtn{text: \"Open app\" on_click: || set_depth(\"app\")}\n        View{width: Fill height: Fit}\n        states_btn := NavBtn{text: \"States \u25b8\" on_click: || toggle_states()}\n    }\n    states_row := View{width: Fill height: Fit flow: Right spacing: 8\n        NavBtn{text: \"Ready\" on_click: || set_state(\"ready\")}\n        NavBtn{text: \"Loading\" on_click: || set_state(\"loading\")}\n        NavBtn{text: \"Empty\" on_click: || set_state(\"empty\")}\n        NavBtn{text: \"Error\" on_click: || set_state(\"error\")}\n    }\n\n    stage := RoundedView{width: Fill height: Fill flow: Down draw_bg.color: #xf6f3f0 on_render: || {\n        ScrollYView{width: Fill height: Fill flow: Down spacing: 8\n            RoundedView{width: Fill height: Fit flow: Down padding: 14 spacing: 8 draw_bg.color: #xffffff draw_bg.radius: 16\n\n            // ---------- L0 \u00b7 compact next-event glance ----------\n            if depth == \"glance\" {\n                View{width: Fill height: Fit flow: Right spacing: 8\n                    Label{text: \"CALENDAR\" draw_text.color: #xe0642f draw_text.text_style.font_size: 12}\n                    View{width: Fill height: Fit}\n                    Label{text: \"Today\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}\n                }\n                if view_state == \"loading\" { Label{text: \"Loading\u2026\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }\n                if view_state == \"empty\" { Label{text: \"No events today\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }\n                if view_state == \"error\" { Label{width: Fill height: Fit text: \"Couldn't load calendar \u2014 demo error state\" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }\n                if view_state == \"ready\" {\n                    Label{text: \"10:00\u201311:00 \u00b7 Studio 2\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                    Label{width: Fill height: Fit text: \"Design review\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}\n                    Label{text: rsvp_label(\"review\") draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        AccentBtn{text: \"RSVP\" on_click: || set_depth(\"expand\")}\n                    }\n                }\n            }\n\n            // ---------- L1 \u00b7 expanded actionable ----------\n            if depth == \"expand\" {\n                View{width: Fill height: Fit flow: Right spacing: 8\n                    Label{text: \"CALENDAR\" draw_text.color: #xe0642f draw_text.text_style.font_size: 11}\n                    View{width: Fill height: Fit}\n                    Label{text: \"Today\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 12}\n                }\n                if view_state == \"loading\" { Label{text: \"Loading\u2026\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 15} }\n                if view_state == \"empty\" { Label{text: \"No events today\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 15} }\n                if view_state == \"error\" { Label{width: Fill height: Fit text: \"Couldn't load calendar \u2014 demo error state\" draw_text.color: #xd6342b draw_text.text_style.font_size: 14 draw_text.wrap: true} }\n                if view_state == \"ready\" {\n                    Label{width: Fill height: Fit text: \"Design review\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}\n                    Label{text: \"Today \u00b7 10:00\u201311:00 \u00b7 Studio 2\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}\n                    Label{text: \"Attendees: you, Meera, Tom (demo)\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}\n                    SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}\n                    Label{text: \"RSVP (local demo \u2014 nothing is sent)\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11}\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        if rsvp_review == \"going\" {\n                            AccentBtn{text: \"Going\" on_click: || set_rsvp(\"review\", \"going\")}\n                            GhostBtn{text: \"Maybe\" on_click: || set_rsvp(\"review\", \"maybe\")}\n                        }\n                        if rsvp_review == \"maybe\" {\n                            GhostBtn{text: \"Going\" on_click: || set_rsvp(\"review\", \"going\")}\n                            AccentBtn{text: \"Maybe\" on_click: || set_rsvp(\"review\", \"maybe\")}\n                        }\n                        if rsvp_review == \"none\" {\n                            GhostBtn{text: \"Going\" on_click: || set_rsvp(\"review\", \"going\")}\n                            GhostBtn{text: \"Maybe\" on_click: || set_rsvp(\"review\", \"maybe\")}\n                        }\n                    }\n                    Label{text: rsvp_label(\"review\") draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}\n                    Label{width: Fill height: Fit text: \"Walk through the new card layouts and pick the family accent set.\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 14 draw_text.wrap: true}\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        NavBtn{text: \"Open app\" on_click: || set_depth(\"app\")}\n                    }\n                }\n            }\n\n            // ---------- L2 \u00b7 full app (agenda -> detail) ----------\n            if depth == \"app\" {\n                View{width: Fill height: Fit flow: Right spacing: 8\n                    if tab == \"today\" {\n                        AccentBtn{text: \"Today\" width: 116 on_click: || set_tab(\"today\")}\n                        NavBtn{text: \"Week\" width: 116 on_click: || set_tab(\"week\")}\n                    }\n                    if tab == \"week\" {\n                        NavBtn{text: \"Today\" width: 116 on_click: || set_tab(\"today\")}\n                        AccentBtn{text: \"Week\" width: 116 on_click: || set_tab(\"week\")}\n                    }\n                }\n                SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}\n                if detail_open {\n                    Label{width: Fill height: Fit text: title_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 18 draw_text.wrap: true}\n                    Label{width: Fill height: Fit text: when_of(open_id) draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}\n                    Label{width: Fill height: Fit text: where_of(open_id) draw_text.color: #x5b6672 draw_text.text_style.font_size: 12 draw_text.wrap: true}\n                    SolidView{width: Fill height: 1 draw_bg.color: #xe2e7ec}\n                    Label{width: Fill height: Fit text: body_of(open_id) draw_text.color: #x1c2430 draw_text.text_style.font_size: 14 draw_text.wrap: true}\n                    Label{text: rsvp_label(open_id) draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        if get_rsvp(open_id) == \"going\" {\n                            AccentBtn{text: \"Going\" on_click: || set_rsvp(open_id, \"going\")}\n                            GhostBtn{text: \"Maybe\" on_click: || set_rsvp(open_id, \"maybe\")}\n                        }\n                        if get_rsvp(open_id) == \"maybe\" {\n                            GhostBtn{text: \"Going\" on_click: || set_rsvp(open_id, \"going\")}\n                            AccentBtn{text: \"Maybe\" on_click: || set_rsvp(open_id, \"maybe\")}\n                        }\n                        if get_rsvp(open_id) == \"none\" {\n                            GhostBtn{text: \"Going\" on_click: || set_rsvp(open_id, \"going\")}\n                            GhostBtn{text: \"Maybe\" on_click: || set_rsvp(open_id, \"maybe\")}\n                        }\n                    }\n                    Label{text: \"Demo event \u00b7 no calendar sync\" draw_text.color: #x9aa4b0 draw_text.text_style.font_size: 11 draw_text.wrap: true}\n                    View{width: Fill height: Fit flow: Right spacing: 8\n                        NavBtn{text: \"\u2039 Back to agenda\" on_click: || close_detail()}\n                    }\n                }\n                if detail_open == false {\n                    Label{width: Fill height: Fit text: \"Thursday \u00b7 2 events\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 12}\n                    RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                        Label{text: \"10:00\u201311:00\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                        Label{width: Fill height: Fit text: \"Design review\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                        Label{width: Fill height: Fit text: \"Studio 2\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                        OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"review\")}\n                    }\n                    RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                        Label{text: \"14:00\u201314:30\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                        Label{width: Fill height: Fit text: \"1:1 with Sam\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                        Label{width: Fill height: Fit text: \"Room 4 \u00b7 2nd floor\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                        OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"sam\")}\n                    }\n                    if tab == \"week\" {\n                        RoundedView{width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg.color: #xf7f9fb draw_bg.radius: 12\n                            Label{text: \"Friday \u00b7 09:00\u201309:15\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13}\n                            Label{width: Fill height: Fit text: \"Team standup\" draw_text.color: #x1c2430 draw_text.text_style.font_size: 16 draw_text.wrap: true}\n                            Label{width: Fill height: Fit text: \"Online \u00b7 meet.demo/standup\" draw_text.color: #x5b6672 draw_text.text_style.font_size: 13 draw_text.wrap: true}\n                            OpenBtn{text: \"Open \u203a\" on_click: || open_detail(\"standup\")}\n                        }\n                    }\n                }\n            }\n            }\n        }\n    }}\n}",
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "bg": "#fff6f3f0",
+          "ch": 758,
+          "cw": 384,
+          "cx": 0,
+          "cy": 28,
+          "h": 758,
+          "i": 1,
+          "id": "11",
+          "kind": "View",
+          "parent": 0,
+          "w": 384,
+          "x": 0,
+          "y": 28
+        },
+        {
+          "ch": 48,
+          "cw": 353,
+          "cx": 16,
+          "cy": 44,
+          "fg": "#ff5b6672",
+          "h": 48,
+          "i": 2,
+          "id": "depth_status",
+          "kind": "Label",
+          "parent": 1,
+          "text": "Calendar Cards   \u00b7   L1 expanded   \u00b7   ready   \u00b7   RSVP(review): none",
+          "w": 353,
+          "x": 16,
+          "y": 44
+        },
+        {
+          "ch": 50,
+          "cw": 360,
+          "cx": 12,
+          "cy": 104,
+          "h": 50,
+          "i": 3,
+          "id": "-",
+          "kind": "View",
+          "parent": 1,
+          "w": 360,
+          "x": 12,
+          "y": 104
+        },
+        {
+          "ch": 44,
+          "cw": 69,
+          "cx": 12,
+          "cy": 107,
+          "glyphs": 1,
+          "h": 44,
+          "i": 4,
+          "id": "d_gl",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "Glance",
+          "w": 69,
+          "x": 12,
+          "y": 107
+        },
+        {
+          "ch": 44,
+          "cw": 83,
+          "cx": 89,
+          "cy": 107,
+          "glyphs": 1,
+          "h": 44,
+          "i": 5,
+          "id": "d_ex",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "\u2022 Expand",
+          "w": 83,
+          "x": 89,
+          "y": 107
+        },
+        {
+          "ch": 44,
+          "cw": 89,
+          "cx": 180,
+          "cy": 107,
+          "glyphs": 1,
+          "h": 44,
+          "i": 6,
+          "id": "d_ap",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "Open app",
+          "w": 89,
+          "x": 180,
+          "y": 107
+        },
+        {
+          "ch": 44,
+          "cw": 74,
+          "cx": 298,
+          "cy": 107,
+          "glyphs": 1,
+          "h": 44,
+          "i": 8,
+          "id": "states_btn",
+          "kind": "Button",
+          "parent": 3,
+          "tappable": true,
+          "text": "States \u25b8",
+          "w": 74,
+          "x": 298,
+          "y": 107
+        },
+        {
+          "bg": "#fff6f3f0",
+          "ch": 613,
+          "cw": 360,
+          "cx": 12,
+          "cy": 162,
+          "h": 613,
+          "i": 14,
+          "id": "stage",
+          "kind": "View",
+          "parent": 1,
+          "w": 360,
+          "x": 12,
+          "y": 162
+        },
+        {
+          "ch": 613,
+          "cw": 360,
+          "cx": 12,
+          "cy": 162,
+          "h": 613,
+          "i": 15,
+          "id": "-",
+          "kind": "View",
+          "parent": 14,
+          "w": 360,
+          "x": 12,
+          "y": 162
+        },
+        {
+          "bg": "#ffffffff",
+          "ch": 467,
+          "cw": 360,
+          "cx": 12,
+          "cy": 162,
+          "h": 467,
+          "i": 16,
+          "id": "-",
+          "kind": "View",
+          "parent": 15,
+          "w": 360,
+          "x": 12,
+          "y": 162
+        },
+        {
+          "ch": 33,
+          "cw": 332,
+          "cx": 26,
+          "cy": 176,
+          "h": 33,
+          "i": 17,
+          "id": "-",
+          "kind": "View",
+          "parent": 16,
+          "w": 332,
+          "x": 26,
+          "y": 176
+        },
+        {
+          "ch": 24,
+          "cw": 80,
+          "cx": 30,
+          "cy": 179,
+          "fg": "#ffe0642f",
+          "h": 24,
+          "i": 18,
+          "id": "-",
+          "kind": "Label",
+          "parent": 17,
+          "text": "CALENDAR",
+          "w": 80,
+          "x": 30,
+          "y": 179
+        },
+        {
+          "ch": 26,
+          "cw": 49,
+          "cx": 305,
+          "cy": 179,
+          "fg": "#ff9aa4b0",
+          "h": 26,
+          "i": 20,
+          "id": "2",
+          "kind": "Label",
+          "parent": 17,
+          "text": "Today",
+          "w": 49,
+          "x": 305,
+          "y": 179
+        },
+        {
+          "ch": 35,
+          "cw": 325,
+          "cx": 30,
+          "cy": 220,
+          "fg": "#ff1c2430",
+          "h": 35,
+          "i": 21,
+          "id": "1",
+          "kind": "Label",
+          "parent": 16,
+          "text": "Design review",
+          "w": 325,
+          "x": 30,
+          "y": 220
+        },
+        {
+          "ch": 26,
+          "cw": 222,
+          "cx": 30,
+          "cy": 270,
+          "fg": "#ff5b6672",
+          "h": 26,
+          "i": 22,
+          "id": "2",
+          "kind": "Label",
+          "parent": 16,
+          "text": "Today \u00b7 10:00\u201311:00 \u00b7 Studio 2",
+          "w": 222,
+          "x": 30,
+          "y": 270
+        },
+        {
+          "ch": 26,
+          "cw": 260,
+          "cx": 30,
+          "cy": 311,
+          "fg": "#ff5b6672",
+          "h": 26,
+          "i": 23,
+          "id": "3",
+          "kind": "Label",
+          "parent": 16,
+          "text": "Attendees: you, Meera, Tom (demo)",
+          "w": 260,
+          "x": 30,
+          "y": 311
+        },
+        {
+          "bg": "#ffe2e7ec",
+          "ch": 1,
+          "cw": 332,
+          "cx": 26,
+          "cy": 348,
+          "h": 1,
+          "i": 24,
+          "id": "4",
+          "kind": "View",
+          "parent": 16,
+          "w": 332,
+          "x": 26,
+          "y": 348
+        },
+        {
+          "ch": 24,
+          "cw": 245,
+          "cx": 30,
+          "cy": 361,
+          "fg": "#ff9aa4b0",
+          "h": 24,
+          "i": 25,
+          "id": "5",
+          "kind": "Label",
+          "parent": 16,
+          "text": "RSVP (local demo \u2014 nothing is sent)",
+          "w": 245,
+          "x": 30,
+          "y": 361
+        },
+        {
+          "ch": 50,
+          "cw": 332,
+          "cx": 26,
+          "cy": 396,
+          "h": 50,
+          "i": 26,
+          "id": "6",
+          "kind": "View",
+          "parent": 16,
+          "w": 332,
+          "x": 26,
+          "y": 396
+        },
+        {
+          "ch": 44,
+          "cw": 66,
+          "cx": 26,
+          "cy": 399,
+          "glyphs": 1,
+          "h": 44,
+          "i": 27,
+          "id": "-",
+          "kind": "Button",
+          "parent": 26,
+          "tappable": true,
+          "text": "Going",
+          "w": 66,
+          "x": 26,
+          "y": 399
+        },
+        {
+          "ch": 44,
+          "cw": 72,
+          "cx": 100,
+          "cy": 399,
+          "glyphs": 1,
+          "h": 44,
+          "i": 28,
+          "id": "1",
+          "kind": "Button",
+          "parent": 26,
+          "tappable": true,
+          "text": "Maybe",
+          "w": 72,
+          "x": 100,
+          "y": 399
+        },
+        {
+          "ch": 26,
+          "cw": 97,
+          "cx": 30,
+          "cy": 458,
+          "fg": "#ff5b6672",
+          "h": 26,
+          "i": 29,
+          "id": "7",
+          "kind": "Label",
+          "parent": 16,
+          "text": "No response",
+          "w": 97,
+          "x": 30,
+          "y": 458
+        },
+        {
+          "ch": 55,
+          "cw": 325,
+          "cx": 30,
+          "cy": 499,
+          "fg": "#ff1c2430",
+          "h": 55,
+          "i": 30,
+          "id": "8",
+          "kind": "Label",
+          "parent": 16,
+          "text": "Walk through the new card layouts and pick the family accent set.",
+          "w": 325,
+          "x": 30,
+          "y": 499
+        },
+        {
+          "ch": 50,
+          "cw": 332,
+          "cx": 26,
+          "cy": 565,
+          "h": 50,
+          "i": 31,
+          "id": "9",
+          "kind": "View",
+          "parent": 16,
+          "w": 332,
+          "x": 26,
+          "y": 565
+        },
+        {
+          "ch": 44,
+          "cw": 89,
+          "cx": 26,
+          "cy": 568,
+          "glyphs": 1,
+          "h": 44,
+          "i": 32,
+          "id": "-",
+          "kind": "Button",
+          "parent": 31,
+          "tappable": true,
+          "text": "Open app",
+          "w": 89,
+          "x": 26,
+          "y": 568
+        }
+      ]
+    },
+    "tree": "W3 26\n0 -1 - Splash 0 28 384 758\n1 0 11 View 0 28 384 758\n2 1 depth_status Label 16 44 353 48\n3 1 - View 12 104 360 50\n4 3 d_gl Button 12 107 69 44\n5 3 d_ex Button 89 107 83 44\n6 3 d_ap Button 180 107 89 44\n7 3 states_btn Button 298 107 74 44\n8 1 stage View 12 162 360 613\n9 8 - View 12 162 360 613\n10 9 - View 12 162 360 467\n11 10 - View 26 176 332 33\n12 11 - Label 30 179 80 24\n13 11 2 Label 305 179 49 26\n14 10 1 Label 30 220 325 35\n15 10 2 Label 30 270 222 26\n16 10 3 Label 30 311 260 26\n17 10 4 View 26 348 332 1\n18 10 5 Label 30 361 245 24\n19 10 6 View 26 396 332 50\n20 19 - Button 26 399 66 44\n21 19 1 Button 100 399 72 44\n22 10 7 Label 30 458 97 26\n23 10 8 Label 30 499 325 55\n24 10 9 View 26 565 332 50\n25 24 - Button 26 568 89 44\n",
+    "widgets": [
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "-@0",
+        "text": null,
+        "type": "Splash",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "11",
+        "rect": [
+          0,
+          28,
+          384,
+          758
+        ],
+        "selected": null,
+        "selector": "11@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "depth_status",
+        "rect": [
+          16,
+          44,
+          353,
+          48
+        ],
+        "selected": null,
+        "selector": "depth_status@0",
+        "text": "Calendar Cards   \u00b7   L1 expanded   \u00b7   ready   \u00b7   RSVP(review): none",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          12,
+          104,
+          360,
+          50
+        ],
+        "selected": null,
+        "selector": "-@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_gl",
+        "rect": [
+          12,
+          107,
+          69,
+          44
+        ],
+        "selected": null,
+        "selector": "d_gl@0",
+        "text": "Glance",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_ex",
+        "rect": [
+          89,
+          107,
+          83,
+          44
+        ],
+        "selected": null,
+        "selector": "d_ex@0",
+        "text": "\u2022 Expand",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "d_ap",
+        "rect": [
+          180,
+          107,
+          89,
+          44
+        ],
+        "selected": null,
+        "selector": "d_ap@0",
+        "text": "Open app",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@2",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "states_btn",
+        "rect": [
+          298,
+          107,
+          74,
+          44
+        ],
+        "selected": null,
+        "selector": "states_btn@0",
+        "text": "States \u25b8",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "states_row",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "states_row@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "-@3",
+        "text": "Ready",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@0",
+        "text": "Loading",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "2@0",
+        "text": "Empty",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "3",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "3@0",
+        "text": "Error",
+        "type": "Button",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "stage",
+        "rect": [
+          12,
+          162,
+          360,
+          613
+        ],
+        "selected": null,
+        "selector": "stage@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          12,
+          162,
+          360,
+          613
+        ],
+        "selected": null,
+        "selector": "-@4",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          12,
+          162,
+          360,
+          467
+        ],
+        "selected": null,
+        "selector": "-@5",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          26,
+          176,
+          332,
+          33
+        ],
+        "selected": null,
+        "selector": "-@6",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          30,
+          179,
+          80,
+          24
+        ],
+        "selected": null,
+        "selector": "-@7",
+        "text": "CALENDAR",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "selected": null,
+        "selector": "1@1",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": false
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          305,
+          179,
+          49,
+          26
+        ],
+        "selected": null,
+        "selector": "2@1",
+        "text": "Today",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          30,
+          220,
+          325,
+          35
+        ],
+        "selected": null,
+        "selector": "1@2",
+        "text": "Design review",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "2",
+        "rect": [
+          30,
+          270,
+          222,
+          26
+        ],
+        "selected": null,
+        "selector": "2@2",
+        "text": "Today \u00b7 10:00\u201311:00 \u00b7 Studio 2",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "3",
+        "rect": [
+          30,
+          311,
+          260,
+          26
+        ],
+        "selected": null,
+        "selector": "3@1",
+        "text": "Attendees: you, Meera, Tom (demo)",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "4",
+        "rect": [
+          26,
+          348,
+          332,
+          1
+        ],
+        "selected": null,
+        "selector": "4@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "5",
+        "rect": [
+          30,
+          361,
+          245,
+          24
+        ],
+        "selected": null,
+        "selector": "5@0",
+        "text": "RSVP (local demo \u2014 nothing is sent)",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "6",
+        "rect": [
+          26,
+          396,
+          332,
+          50
+        ],
+        "selected": null,
+        "selector": "6@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          26,
+          399,
+          66,
+          44
+        ],
+        "selected": null,
+        "selector": "-@8",
+        "text": "Going",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "1",
+        "rect": [
+          100,
+          399,
+          72,
+          44
+        ],
+        "selected": null,
+        "selector": "1@3",
+        "text": "Maybe",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "7",
+        "rect": [
+          30,
+          458,
+          97,
+          26
+        ],
+        "selected": null,
+        "selector": "7@0",
+        "text": "No response",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "8",
+        "rect": [
+          30,
+          499,
+          325,
+          55
+        ],
+        "selected": null,
+        "selector": "8@0",
+        "text": "Walk through the new card layouts and pick the family accent set.",
+        "type": "Label",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "9",
+        "rect": [
+          26,
+          565,
+          332,
+          50
+        ],
+        "selected": null,
+        "selector": "9@0",
+        "text": null,
+        "type": "View",
+        "value": null,
+        "visible": true
+      },
+      {
+        "checked": null,
+        "enabled": true,
+        "id": "-",
+        "rect": [
+          26,
+          568,
+          89,
+          44
+        ],
+        "selected": null,
+        "selector": "-@9",
+        "text": "Open app",
+        "type": "Button",
+        "value": null,
+        "visible": true
+      }
+    ]
+  },
+  "width": 1080
+}

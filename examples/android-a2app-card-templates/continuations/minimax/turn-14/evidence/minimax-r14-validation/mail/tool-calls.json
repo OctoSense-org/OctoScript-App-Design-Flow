@@ -1,0 +1,3926 @@
+[
+  {
+    "request_id": "4ce51455-51e2-49b6-9964-89e3eed527dc",
+    "request": {
+      "name": "studio.bundle_check",
+      "args": {
+        "bundle_path": "card-templates/mail/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "4ce51455-51e2-49b6-9964-89e3eed527dc",
+      "data": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.mail",
+        "capabilities": [],
+        "digest": "86802d868870e702f8ae6141e0f61b3ba0149dd00307e853a765b918de11c7b9",
+        "name": "Mail Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.668
+  },
+  {
+    "request_id": "7c86bdb5-3075-41f3-9ca2-50259eac8ef7",
+    "request": {
+      "name": "studio.open",
+      "args": {
+        "bundle_path": "card-templates/mail/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "7c86bdb5-3075-41f3-9ca2-50259eac8ef7",
+      "data": {
+        "bundle": {
+          "admission": "local_developer",
+          "app_id": "dev.studio.cards.mail",
+          "capabilities": [],
+          "digest": "86802d868870e702f8ae6141e0f61b3ba0149dd00307e853a765b918de11c7b9",
+          "name": "Mail Cards",
+          "publisher_signed": false,
+          "source_modified": false,
+          "version": "0.1.0"
+        },
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "ready": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 1.051
+  },
+  {
+    "request_id": "e0b77f9f-a576-4e02-9742-87209c403365",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "e0b77f9f-a576-4e02-9742-87209c403365",
+      "data": {
+        "height": 2132,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-f5535d96-8bad-445f-9e0e-568fcb01dc66.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "4 in Inbox \u00b7 2 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "glance@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_from@0",
+              "text": "Ana Ruiz",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_time@0",
+              "text": "09:12",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_subj@0",
+              "text": "Contract renewal",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_prev@0",
+              "text": "Revised payment terms are in the PDF. Can we sign by Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "g_meta@0",
+              "text": "Work \u00b7 Unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Open card",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "\u25cf L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_now@0",
+              "text": "L0 Glance",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@40",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-a4ffa1a7-44da-4c24-90cc-419ec1439422.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.346
+  },
+  {
+    "request_id": "cbf8fd78-6d09-48c4-9f7b-172e813b25d2",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "widget_id": "b1@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "cbf8fd78-6d09-48c4-9f7b-172e813b25d2",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.124
+  },
+  {
+    "request_id": "7efdf891-1991-409e-8c5a-a161ef98fc6b",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "7efdf891-1991-409e-8c5a-a161ef98fc6b",
+      "data": {
+        "height": 2132,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-696b16da-6151-4547-9814-f48e90e66529.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "4 in Inbox \u00b7 2 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_from@0",
+              "text": "Ana Ruiz",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_time@0",
+              "text": "09:12",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_subj@0",
+              "text": "Contract renewal",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_meta@0",
+              "text": "Work \u00b7 Unread \u00b7 1 attachment",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_prev@0",
+              "text": "Revised payment terms are in the PDF. Can we sign by Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_mark@0",
+              "text": "Mark as read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "text": "Archive",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "text": "Reply",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_now@0",
+              "text": "L1 Card",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@40",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-ff50ec06-da67-4d17-9456-2cec1f1abcda.json",
+        "total_widgets": 37,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.367
+  },
+  {
+    "request_id": "219955bb-dda5-478b-8b62-17c2dbf8e5b6",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "widget_id": "x_mark@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "219955bb-dda5-478b-8b62-17c2dbf8e5b6",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.146
+  },
+  {
+    "request_id": "51bf1c9d-a0f1-49a8-94a4-723b25332690",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "51bf1c9d-a0f1-49a8-94a4-723b25332690",
+      "data": {
+        "height": 2132,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-68651a0d-dac7-4400-afe8-07ae56013d43.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "4 in Inbox \u00b7 1 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Ana Ruiz marked read",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_from@0",
+              "text": "Ana Ruiz",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_time@0",
+              "text": "09:12",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_subj@0",
+              "text": "Contract renewal",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_meta@0",
+              "text": "Work \u00b7 Read \u00b7 1 attachment",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_prev@0",
+              "text": "Revised payment terms are in the PDF. Can we sign by Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_mark@0",
+              "text": "Mark as unread",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "text": "Archive",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "text": "Reply",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_now@0",
+              "text": "L1 Card",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@40",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-3de695c1-788e-48cc-875f-893d1b9b4c66.json",
+        "total_widgets": 37,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.325
+  },
+  {
+    "request_id": "90bf714b-be4d-4b84-8eec-628142c98b56",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "widget_id": "x_mark@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "90bf714b-be4d-4b84-8eec-628142c98b56",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.124
+  },
+  {
+    "request_id": "4c0f87ce-eb8d-4563-8e2e-f4b65c1eb353",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "4c0f87ce-eb8d-4563-8e2e-f4b65c1eb353",
+      "data": {
+        "height": 2132,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-ae5abc68-3829-42e1-86e7-ab10974e234a.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "4 in Inbox \u00b7 2 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Ana Ruiz marked unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_from@0",
+              "text": "Ana Ruiz",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_time@0",
+              "text": "09:12",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_subj@0",
+              "text": "Contract renewal",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_meta@0",
+              "text": "Work \u00b7 Unread \u00b7 1 attachment",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_prev@0",
+              "text": "Revised payment terms are in the PDF. Can we sign by Friday?",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_mark@0",
+              "text": "Mark as read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "text": "Archive",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "text": "Reply",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_now@0",
+              "text": "L1 Card",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@40",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-bb7d4bb8-78f7-43ce-9264-cb4bdbb7dce8.json",
+        "total_widgets": 37,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.355
+  },
+  {
+    "request_id": "d6a2bb68-4a29-47d6-aef5-28b67dd4d23b",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "widget_id": "-@12",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "d6a2bb68-4a29-47d6-aef5-28b67dd4d23b",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.125
+  },
+  {
+    "request_id": "b0dcb136-eaa8-4bee-8105-ab174f2a1381",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "b0dcb136-eaa8-4bee-8105-ab174f2a1381",
+      "data": {
+        "height": 2132,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-6b0f47e9-84c9-4d1c-9d5c-10c4b01df16d.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "3 in Inbox \u00b7 1 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Archived Ana Ruiz",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_from@0",
+              "text": "City Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_time@0",
+              "text": "08:47",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_subj@0",
+              "text": "Holds ready until Saturday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_meta@0",
+              "text": "Personal \u00b7 Unread \u00b7 no attachment",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_prev@0",
+              "text": "Three books from your request are on the holds shelf.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_mark@0",
+              "text": "Mark as read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "text": "Archive",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "text": "Reply",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_now@0",
+              "text": "L1 Card",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@40",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-40d8ab2f-8fd0-4688-8f75-7238a0c20abf.json",
+        "total_widgets": 37,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.366
+  },
+  {
+    "request_id": "7cd4ec81-a687-4428-89d2-44aced53a4a1",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "widget_id": "-@40",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "7cd4ec81-a687-4428-89d2-44aced53a4a1",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.136
+  },
+  {
+    "request_id": "69c912b7-d1c4-47ae-8ef5-644245756938",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "69c912b7-d1c4-47ae-8ef5-644245756938",
+      "data": {
+        "height": 2132,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-e4f5eba4-cab7-4b73-93b6-e00ce290dcb7.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "4 in Inbox \u00b7 2 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Restored to Inbox",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "expanded@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_card@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_from@0",
+              "text": "City Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_time@0",
+              "text": "08:47",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_subj@0",
+              "text": "Holds ready until Saturday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_meta@0",
+              "text": "Personal \u00b7 Unread \u00b7 no attachment",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_prev@0",
+              "text": "Three books from your request are on the holds shelf.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@11",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "x_mark@0",
+              "text": "Mark as read",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@12",
+              "text": "Archive",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@13",
+              "text": "Reply",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@14",
+              "text": "\u2039 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "\u25cf L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_now@0",
+              "text": "L1 Card",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@40",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-3cc7da03-53aa-4247-a761-aa63bc06dc70.json",
+        "total_widgets": 37,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.377
+  },
+  {
+    "request_id": "e4301a14-a920-4470-afc7-c582ada90f39",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "widget_id": "b2@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "e4301a14-a920-4470-afc7-c582ada90f39",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.143
+  },
+  {
+    "request_id": "3db3c9fc-b01d-421c-90d8-dec0f848e008",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "3db3c9fc-b01d-421c-90d8-dec0f848e008",
+      "data": {
+        "height": 2132,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": 47,
+        "offset": 0,
+        "path": ".studio-eb68b460-17cf-4466-bf08-b35294b607d2.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "4 in Inbox \u00b7 2 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "text": "Ana Ruiz",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@9",
+              "text": "Contract renewal",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "text": "09:12",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_u@0",
+              "text": "Unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "City Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@10",
+              "text": "Holds ready until Saturday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "08:47",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_u@0",
+              "text": "Unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@22",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@23",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "text": "Priya N.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "text": "Design review moved to Thursday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "text": "Yesterday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_u@0",
+              "text": "Read",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-7c8ecd06-8320-428c-a09b-7b0a68c9a74c.json",
+        "total_widgets": 51,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.373
+  },
+  {
+    "request_id": "30a61b53-1a29-482b-a6b7-1c67c8690f07",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "widget_id": "-@22",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "30a61b53-1a29-482b-a6b7-1c67c8690f07",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.127
+  },
+  {
+    "request_id": "bd3c0361-5765-45b0-9655-b8d11da03c86",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "bd3c0361-5765-45b0-9655-b8d11da03c86",
+      "data": {
+        "height": 2132,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-32845e2b-abea-404e-8e6c-048a8de02311.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "4 in Inbox \u00b7 2 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_reader@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@31",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_from@0",
+              "text": "City Library \u00b7 08:47",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_subj@0",
+              "text": "Holds ready until Saturday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_body@0",
+              "text": "Three books from your request are on the holds shelf until Saturday. The reading room closes at 20:00.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "text": "Reply",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@14",
+              "text": "\u2039 Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_now@0",
+              "text": "L2 Reader",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@40",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-3bbfe60d-509e-4e18-a49c-f926b563e406.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.365
+  },
+  {
+    "request_id": "0c96488a-cea8-4d6f-9179-6c083cc65b80",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "widget_id": "-@33",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "0c96488a-cea8-4d6f-9179-6c083cc65b80",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.149
+  },
+  {
+    "request_id": "47f5bd06-e17a-4e38-bc37-58f2b7dd00a2",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "47f5bd06-e17a-4e38-bc37-58f2b7dd00a2",
+      "data": {
+        "height": 2132,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-52bd249c-2df0-49b1-ab19-160ed3014939.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "4 in Inbox \u00b7 2 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_reply@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "cmp_to@0",
+              "text": "To City Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "cmp_subj@0",
+              "text": "Re: Holds ready until Saturday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "field@0",
+              "text": "Your text here",
+              "type": "TextInput",
+              "value": "",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "text": "Queue reply",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@38",
+              "text": "\u2039 Message",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_now@0",
+              "text": "L2 Reply",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@40",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-c344472f-7991-4f8f-a84b-cf4cfd1c1bb4.json",
+        "total_widgets": 29,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.382
+  },
+  {
+    "request_id": "cc0b9337-cf86-4cfb-9428-c161f290e175",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "widget_id": "-@35",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "cc0b9337-cf86-4cfb-9428-c161f290e175",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.141
+  },
+  {
+    "request_id": "095c8838-2204-4e79-98cd-15024c91a1cb",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "095c8838-2204-4e79-98cd-15024c91a1cb",
+      "data": {
+        "height": 2132,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-b4fc130f-639e-457a-ac60-801fd16215f4.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "4 in Inbox \u00b7 2 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Nothing to send \u00b7 write a reply first",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_reply@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "cmp_to@0",
+              "text": "To City Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "cmp_subj@0",
+              "text": "Re: Holds ready until Saturday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "field@0",
+              "text": "Your text here",
+              "type": "TextInput",
+              "value": "",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "text": "Queue reply",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@38",
+              "text": "\u2039 Message",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_now@0",
+              "text": "L2 Reply",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@40",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-df047662-21d0-48d0-b110-c0a628635d56.json",
+        "total_widgets": 29,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.391
+  },
+  {
+    "request_id": "a57b48d3-12d8-464d-9c4e-932e3bb6c145",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "widget_id": "field@0",
+        "action": "text",
+        "text": "Thanks, I will collect the books Saturday."
+      }
+    },
+    "reply": {
+      "call_id": "a57b48d3-12d8-464d-9c4e-932e3bb6c145",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.13
+  },
+  {
+    "request_id": "5701e473-dd10-46a5-833d-99ca09486964",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "5701e473-dd10-46a5-833d-99ca09486964",
+      "data": {
+        "height": 1218,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-20fa5d58-1ffd-4c04-b179-624391aaf401.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "4 in Inbox \u00b7 2 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_reply@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "cmp_to@0",
+              "text": "To City Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "cmp_subj@0",
+              "text": "Re: Holds ready until Saturday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "field@0",
+              "text": "Thanks, I will collect the books Saturday.",
+              "type": "TextInput",
+              "value": "Thanks, I will collect the books Saturday.",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "text": "Queue reply",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_now@0",
+              "text": "L2 Reply",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@40",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-75d0a890-27ba-4574-aff4-dd42a13ea882.json",
+        "total_widgets": 27,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.401
+  },
+  {
+    "request_id": "e120d621-26a5-429c-8ab4-eefcb3ff010b",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "widget_id": "l2@0",
+        "action": "scroll",
+        "delta_y": 180
+      }
+    },
+    "reply": {
+      "call_id": "e120d621-26a5-429c-8ab4-eefcb3ff010b",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.36
+  },
+  {
+    "request_id": "0f7b098b-9aaf-4243-a610-c49c32d78040",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "0f7b098b-9aaf-4243-a610-c49c32d78040",
+      "data": {
+        "height": 1218,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-4d3b71a2-0b5a-42d1-ad6b-0b99e53bc8f7.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "4 in Inbox \u00b7 2 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_reply@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@34",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "field@0",
+              "text": "Thanks, I will collect the books Saturday.",
+              "type": "TextInput",
+              "value": "Thanks, I will collect the books Saturday.",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@35",
+              "text": "Queue reply",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@38",
+              "text": "\u2039 Message",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_now@0",
+              "text": "L2 Reply",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@40",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-cdcf91b5-4e8a-407e-8a59-60465e703fa1.json",
+        "total_widgets": 27,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.393
+  },
+  {
+    "request_id": "3532c030-b7e9-46cc-9236-04b29b93e818",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "widget_id": "-@35",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "3532c030-b7e9-46cc-9236-04b29b93e818",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.12
+  },
+  {
+    "request_id": "84b63515-8165-4dc1-813f-c071c874e07c",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "84b63515-8165-4dc1-813f-c071c874e07c",
+      "data": {
+        "height": 2132,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-f39d8567-0d02-4f6c-970c-30e2fbc6b995.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "4 in Inbox \u00b7 2 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": "Queued for City Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_reader@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@31",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_from@0",
+              "text": "City Library \u00b7 08:47",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_subj@0",
+              "text": "Holds ready until Saturday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@32",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "rd_body@0",
+              "text": "Three books from your request are on the holds shelf until Saturday. The reading room closes at 20:00.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@13",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@33",
+              "text": "Reply",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@14",
+              "text": "\u2039 Inbox",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b2@0",
+              "text": "\u25cf L2",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_now@0",
+              "text": "L2 Reader",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@40",
+              "text": "Undo",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-ec1fd666-1057-41ea-a77a-c6545b8f06b7.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.39
+  },
+  {
+    "request_id": "54641747-68ec-4219-aa3b-2150a3fb031b",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "widget_id": "1@14",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "54641747-68ec-4219-aa3b-2150a3fb031b",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.14
+  },
+  {
+    "request_id": "ff0e476e-596d-496d-b5de-dc15a34f81c2",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "ff0e476e-596d-496d-b5de-dc15a34f81c2",
+      "data": {
+        "height": 2132,
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc",
+        "next_offset": 47,
+        "offset": 0,
+        "path": ".studio-b543d3da-cc85-4524-9f2c-99fb3d65dd78.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "17@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@3",
+              "text": "Mail",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "text": "DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "count@0",
+              "text": "4 in Inbox \u00b7 2 unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "status@0",
+              "text": " ",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "full@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "l2_list@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@15",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@16",
+              "text": "Ana Ruiz",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@9",
+              "text": "Contract renewal",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@17",
+              "text": "09:12",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r1_u@0",
+              "text": "Unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@18",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@19",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@20",
+              "text": "City Library",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@10",
+              "text": "Holds ready until Saturday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@21",
+              "text": "08:47",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r2_u@0",
+              "text": "Unread",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@22",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@23",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@24",
+              "text": "Priya N.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@11",
+              "text": "Design review moved to Thursday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@25",
+              "text": "Yesterday",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r3_u@0",
+              "text": "Read",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@26",
+              "text": "Open",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "r4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@27",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@6",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@39",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@16",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b0@0",
+              "text": "L0",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "b1@0",
+              "text": "L1",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-cd9b96a7-b9e5-492b-bf83-ba2c45bd6a31.json",
+        "total_widgets": 51,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.371
+  },
+  {
+    "request_id": "586537d6-0251-4384-949c-ff1998f7b662",
+    "request": {
+      "name": "studio.close",
+      "args": {
+        "instance_id": "2c617e30-b17b-40bf-a2f4-10f1561572cc"
+      }
+    },
+    "reply": {
+      "call_id": "586537d6-0251-4384-949c-ff1998f7b662",
+      "data": {
+        "closed": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.154
+  }
+]

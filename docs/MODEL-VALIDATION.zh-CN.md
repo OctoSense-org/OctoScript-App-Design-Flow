@@ -6,6 +6,10 @@
 完成与否取决于最终源码的验证证据，不能仅凭工具调用成功或模型自己的总结。
 本指南配合所选[设计流程](../flows/README.zh-CN.md)使用，不替代准入、视觉评审或发布检查。
 
+Glance 卡片可进一步使用 [AppCard UX 技能](../skills/octoscript-app-card-ux/SKILL.md)，
+补充工作区展开、共享编辑状态、手机键盘可达性和上下文保留的任务流程与验收矩阵。
+该技能复用本文的模型验证循环，不另建模型服务或截图协议。
+
 **证据核对日期：2026-10-03。** [DeepSeek 第 12 轮与 MiniMax 第 14 轮合集](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/REVIEW.zh-CN.md)
 各包含六类由 Android 上的模型编写的离线应用原型。独立 Agent 评审给两者的综合分均为
 4.5/5、视觉分均为 4.4/5。操作人员提供了反馈和独立测试；这些结果证明了有人监督的开发流程，

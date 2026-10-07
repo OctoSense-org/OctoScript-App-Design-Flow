@@ -3,7 +3,7 @@
 English | [简体中文](README.zh-CN.md)
 
 A runnable OctoSense script app: **My Notes** (type a note, keep it in the
-app's storage, tap it to remove it). `tools/octo new <dir>` copies it and
+app's storage, tap it to remove it). `tools/octo new <dir> --platform macos` copies it and
 sets the id and name; run it with `tools/octo run <dir>/bundle`.
 
 ```text
@@ -31,8 +31,10 @@ Deliberately incomplete, so a copy cannot be published by accident:
   (`tools/octo shot`). Do not add a dummy image.
 - The publisher name, support URL and privacy-policy URL are placeholders
   (`tools/octo check` notes them). A person replaces them.
-- `platforms` says `android`; replace it with what you actually ran it on
-  (a `card-host` run on a Mac is `macos`). A person confirms the claim.
+- The raw template's `platforms` is empty. `octo new` requires `--platform`
+  and writes only the selected targets (repeat the option for multiple targets).
+  This selection is not test evidence. Before publishing, retain only platforms
+  actually exercised; a `card-host` run on a Mac covers `macos`, not Android.
 
 Origin: a draft script-app template made alongside OctoSense-App-Hub (never
 committed there; App Hub's `templates/app/` is the card-app starter), with one fix: the list's empty state is a separate `if`

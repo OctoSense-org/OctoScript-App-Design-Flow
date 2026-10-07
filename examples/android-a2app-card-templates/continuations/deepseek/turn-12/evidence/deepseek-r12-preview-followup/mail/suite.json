@@ -1,0 +1,66 @@
+{
+  "family": "mail",
+  "steps": [
+    {
+      "label": "glance",
+      "contains": [
+        "Contract signing"
+      ]
+    },
+    {
+      "label": "reveal-preview-states",
+      "action": "tap",
+      "target": "states_btn",
+      "contains": [
+        "Loading",
+        "Empty",
+        "Error"
+      ]
+    },
+    {
+      "label": "loading",
+      "action": "tap",
+      "target": "Loading",
+      "contains": [
+        "Loading\u2026"
+      ],
+      "excludes": [
+        "Contract signing"
+      ]
+    },
+    {
+      "label": "empty",
+      "action": "tap",
+      "target": "Empty",
+      "contains": [
+        "No messages"
+      ]
+    },
+    {
+      "label": "error",
+      "action": "tap",
+      "target": "Error",
+      "contains": [
+        "Couldn't load mail"
+      ]
+    },
+    {
+      "label": "ready",
+      "action": "tap",
+      "target": "Ready",
+      "contains": [
+        "Contract signing"
+      ]
+    },
+    {
+      "label": "collapse-preview-states",
+      "action": "tap",
+      "target": "states_btn",
+      "excludes": [
+        "Loading",
+        "Empty",
+        "Error"
+      ]
+    }
+  ]
+}

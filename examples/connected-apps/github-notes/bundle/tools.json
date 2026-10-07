@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "tools": [
+    {
+      "name": "githubnotes.repositories",
+      "description": "List repositories available to the connected GitHub account.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "description": "The opaque GitHub connection bound to this app; never a provider token."
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          }
+        },
+        "required": [
+          "connection"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "risk": "read",
+      "background": false,
+      "shareable": false,
+      "private_data": true,
+      "implemented_by": "host-service",
+      "host_method": "github.repositories"
+    },
+    {
+      "name": "githubnotes.files",
+      "description": "List file and directory metadata in a selected repository branch.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "description": "The opaque GitHub connection bound to this app; never a provider token."
+          },
+          "owner": {
+            "type": "string"
+          },
+          "repo": {
+            "type": "string"
+          },
+          "branch": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string",
+            "description": "Repository-relative directory; empty means the root."
+          }
+        },
+        "required": [
+          "connection",
+          "owner",
+          "repo",
+          "branch"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "risk": "read",
+      "background": false,
+      "shareable": false,
+      "private_data": true,
+      "implemented_by": "host-service",
+      "host_method": "github.files"
+    },
+    {
+      "name": "githubnotes.read",
+      "description": "Read a UTF-8 note from the selected repository branch, including its current blob SHA.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "connection": {
+            "type": "string",
+            "description": "The opaque GitHub connection bound to this app; never a provider token."
+          },
+          "owner": {
+            "type": "string"
+          },
+          "repo": {
+            "type": "string"
+          },
+          "branch": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "connection",
+          "owner",
+          "repo",
+          "branch",
+          "path"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "risk": "read",
+      "background": false,
+      "shareable": false,
+      "private_data": true,
+      "implemented_by": "host-service",
+      "host_method": "github.read"
+    }
+  ]
+}

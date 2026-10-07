@@ -21,15 +21,44 @@ below as of App Hub `79a2c4f`; the `research`, `crawl`, `prompt` and `agent` row
 Ask for the least the app needs; the scan asks the reviewer to "name any grant
 nothing on screen needs".
 
+## Connected-provider additions
+
+App Hub `eaaffffd695caf7ebf6205c455377c1f8567b906` adds `auth`, `github`,
+`gcalendar` and `gmail`. They are for ordinary store apps, with matching
+OctoSense `feat/app-hub-connected-samples` host implementations. `auth` manages
+provider consent and opaque app-bound accounts; the other capabilities grant
+GitHub, Google Calendar or Gmail business operations. `auth` alone grants no
+mail, calendar or repository data. No OctoSense cloud account is required.
+
+Use `storage.accounts: true` for these account-bound peers. Google scope aliases
+such as `mail.read`, `mail.send`, `calendar.list` and `calendar.events` belong in
+`auth.connect`; they are separate from manifest capabilities. Do not add
+provider API hosts to `network.hosts` when all requests go through these native
+services. Declare only what the app calls. See the [sample bundles](../examples/connected-apps/README.md)
+and [host setup guide](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/crates/oauth-service/README.md).
+
+A tool's `host_method` mapping needs the target service capability, a reviewed
+method, sufficient risk and its required `private_data` declaration. It is not
+a wildcard for arbitrary service calls. The shell loads admitted `AGENT.md`
+and skill text as trusted turn guidance. The connected Gmail collector supports
+its declared `<app namespace>.new_message` event with account/agent consent;
+this does not establish generic scheduling or trigger support on older shells.
+Standalone `card-host` provides neither OAuth nor the peer runtime. Live
+provider/phone tests remain pending; Android Google authorization is unsupported
+until its native adapter is implemented.
+
+The table below retains its earlier dated capability descriptions; use this
+section and the linked guide for the four provider additions.
+
 ## The list
 
 | Capability | Unlocks | The person sees (store) | Rules and runtime behavior |
 | --- | --- | --- | --- |
-| `storage` | Storing data in the app's own jail through `fs.*` (quota: `storage.max_bytes`, ceiling 16 MiB; system apps 64 MiB). | Permission: "Keep its own data on this device". Privacy: "Keeps its own data on this device, in a space only it can read." Without it: "Stores nothing." | The jail is one directory per app id. In the current runtime `fs` is available whenever the host provides a jail, but the privacy summary says "Stores nothing" without `storage`, so declare it whenever you write. |
+| `storage` | The app's own jail: `fs.*`, camera captures, and the local files a widget reads, such as a map archive (quota: `storage.max_bytes`, ceiling 16 MiB; system apps 64 MiB). | Permission: "Keep its own data on this device". Privacy: "Keeps its own data on this device, in a space only it can read." Without it: "Stores nothing." | The jail is one directory per app id. Without `storage` the app has no jail: every `fs.*` call errors (`storage not available in this context`), a capture saves nothing, and a widget reads no local file. `hub check` warns when a script calls `fs` or the app requests `camera` without `storage`, and its `grants:` line says `storage none`. `card-host` enforces this from App Hub `6a639e3a`; the OctoSense shells do once they pin that App Hub or later. |
 | `net` | `net.http_request` (and `net.*`) to exactly the hosts in `network.hosts`. | Permission: "Reach only: *hosts*". Privacy: "Contacts only: *hosts*." Without it (or with no hosts): "Never contacts the network." | Hosts are bare, exact, lowercase names: no scheme, path, port, wildcard (`policy: host "https://x" must be a bare host name…`). Hosts without `net` are refused (`lists hosts but does not request the net capability`). `net` with an empty list reaches nothing and `net` is not even defined in the script. Requests to other hosts: `this app may not reach <url>`. The gate refuses a `.splash` naming an undeclared `https://` host, and any `http://`. |
 | `images` | Pictures (`Image{src: http_resource(url)}`) from **any public `https://` host**, beyond `network.hosts`. For a feed reader's thumbnails. | Permission: "Show pictures from any website". Privacy: "Shows pictures from any website its content links to." | Only public https hosts; private and internal addresses are refused (`host not permitted (private/internal): <h>`). Does not widen `net.http_request`. With `images` the gate stops checking `https://` hosts in the source. |
 | `web` | Opening **any public `https://` page** in `WebReader` (the system web view), which has no way back into the app. | Permission: "Open web pages in a browser view". Privacy: "Opens web pages, which cannot reach back into the app." | Without `web`, `WebReader.open` works only for listed hosts and refuses others: `refused <url>: not on this app's host list, and no \`web\` grant`. With `web` the gate stops checking `https://` hosts in the source. |
-| `camera` | `CameraPreview`: preview, photo and video capture into the jail (`DCIM/IMG_<ms>.jpg`, `DCIM/VID_<ms>.mp4`). | Permission: "Use the camera". Privacy: "Uses the camera." | Without it `CameraPreview` refuses: `this app was not granted the camera`. The OS permission prompt still applies. |
+| `camera` | `CameraPreview`: preview, photo and video capture into the jail (`DCIM/IMG_<ms>.jpg`, `DCIM/VID_<ms>.mp4`). | Permission: "Use the camera". Privacy: "Uses the camera." | Without it `CameraPreview` refuses: `this app was not granted the camera`. The OS permission prompt still applies. A capture is saved in the jail, so it needs `storage` too; without it the preview shows and a capture saves nothing. |
 | `microphone` | Sound in camera videos. | Permission: "Use the microphone". Privacy: "Records sound with videos." | Only meaningful with `camera`. |
 | `library` | Copying captures to the system photo library, where other apps can see them. | Permission: "Save to your photo library, where other apps can see it". Privacy: "Saves photos and videos to your photo library." | Without it captures stay in the app's jail. |
 | `location` | The device position: `sys.gps(...)`, MapView's follow camera. | Permission: "Use your location". Privacy: "Uses your location." | Without it `sys.gps("ok")` reads 0 (no fix). OS permission still applies. |
@@ -67,7 +96,7 @@ consent; a prefix (`octos.`, `matrix.`) or any other name is refused.
 | `storage.max_bytes` | Whole-jail quota | 16 MiB / 64 MiB |
 | `compute.instruction_budget` | Script instructions per session, cumulative | 20 000 000 / 4 000 000 000 |
 | `compute.memory_bytes` | Isolate heap | 64 MiB / 128 MiB |
-| `agent` | The app's own agent: `profile` one of `read-only`, `workspace-write`, `workspace-write-never-ask`; `tools` from `ledger.read ledger.write net.fetch storage.read storage.write card.render` and the kernel's `ask_user_question` (no other kernel tool); iterations ≤ 8, tokens ≤ 200 000; `model` needs and tier, `background`, `triggers`, `instructions` (`AGENT.md`) and `skills`. The person sees "Runs an assistant limited to this app's own data…" (or "Runs no assistant."). The OctoSense shells give a declared agent its own peer once the person allows it, with `ask_user_question` and read tools over its account folder; they do not yet choose its model, fire its triggers, install `AGENT.md` or skills, or implement the generic host tools. See [AI-SERVICES](AI-SERVICES.md#an-apps-own-agent). | – |
+| `agent` | The app's own agent: `profile` one of `read-only`, `workspace-write`, `workspace-write-never-ask`; `tools` from `ledger.read ledger.write net.fetch storage.read storage.write card.render` and the kernel's `ask_user_question` (no other kernel tool); iterations ≤ 8, tokens ≤ 200 000; `model` needs and tier, `background`, `triggers`, `instructions` (`AGENT.md`) and `skills`. The person sees "Runs an assistant limited to this app's own data…" (or "Runs no assistant."). The OctoSense shells give a declared agent its own peer once the person allows it, with `ask_user_question` and read tools over its account folder; the dated baseline here does not provide all requested features. The connected-services branch loads admitted guidance and supports the bounded Gmail event route described above; generic host tools/scheduling are not implied. See [AI-SERVICES](AI-SERVICES.md#an-apps-own-agent). | – |
 | `storage.accounts` | `true`: data and one agent per account; default one `device` folder | – |
 | `storage.agent_workspace` | `"account"` (default): the agent reads its account's folder; `"none"`: no files | – |
 | `storage.cache_max_bytes` | Ceiling for the jail's `cache/` | – |

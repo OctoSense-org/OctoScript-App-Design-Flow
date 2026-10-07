@@ -1,0 +1,18 @@
+[
+  {
+    "package": "dev.makepad.octosense.studio",
+    "installed_apk_sha256": "d1dbebdf602f01ee427d68109c500e607b7a5c50fc3f387d5a7c46a1f7b4f882",
+    "matches_build_receipt": true,
+    "source_revision": "ccf8013f2bd7adbb6c20d5f52f47bcfbcbb55313",
+    "source_dirty": false,
+    "method": "readback SHA-256 of installed base.apk, after tests and credential cleanup"
+  },
+  {
+    "package": "dev.makepad.octosense.studio.minimax",
+    "installed_apk_sha256": "219a81645c60d315f1d7638e1efa15ab5ff4aa88f06fe0495edf44dbf4c2f34b",
+    "matches_build_receipt": true,
+    "source_revision": "ccf8013f2bd7adbb6c20d5f52f47bcfbcbb55313",
+    "source_dirty": false,
+    "method": "readback SHA-256 of installed base.apk, after tests and credential cleanup"
+  }
+]

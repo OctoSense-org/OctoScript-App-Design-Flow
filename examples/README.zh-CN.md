@@ -2,9 +2,11 @@
 
 [English](README.md) | 简体中文
 
-用 [image-to-card 流程](../flows/image-to-card/FLOW.md) 构建的参考旅程，以及用
-[script-app 流程](../flows/script-app/FLOW.md) 构建的受控应用。
-每个示例把源码、操作说明和验证证据放在一起；卡片旅程还包含服务代码和已评审场景。
+用 [image-to-card 流程](../flows/image-to-card/FLOW.md) 构建的参考旅程、用
+[script-app 流程](../flows/script-app/FLOW.md) 构建的受控应用，
+以及保留历史手机评审证据的 Android 模型原型档案。
+每个示例把源码、操作说明和验证证据放在一起；卡片旅程还包含服务代码、已评审场景、
+设计源文件、启动器、测试和 fixture 证据。
 运行时状态和个人数据均被忽略，不入库。旧的旅程示例在重构之前位于 `apps/<name>/`。
 
 | 示例 | 呈现方式 | 说明 |
@@ -15,6 +17,7 @@
 | [Health](health/README.zh-CN.md) | 原生卡片 / WASM | 虚构的体检预约旅程。 |
 | [Reunion](reunion/README.zh-CN.md) | 原生卡片 / WASM | 同学聚会的筹划、回复（RSVP）与付款旅程。 |
 | [Calendar](calendar/README.zh-CN.md) | 原生卡片 / 浏览器预览 + 同步服务器 | 双设备日历：10 个画面、4 个服务卡片，以及一个基于 SQLite 的操作日志服务器，每个客户端都重放同一份日志。 |
+| [Android 模型编写的卡片原型](android-a2app-card-templates/README.zh-CN.md) | Android 上的 AppStudio；概览／展开／完整应用 | 两份模型编写的六类集合：各自离线原型整体 4.5/5、视觉 4.4/5；源码精确重放及原生证据。 |
 
 [shared/](shared/README.zh-CN.md) 存放通用的浏览器适配器和历史上的跨应用验证产物，它不是一个应用。
 

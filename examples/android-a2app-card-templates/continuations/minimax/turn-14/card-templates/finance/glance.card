@@ -1,0 +1,98 @@
+# ledger finance.glance@0.1.0
+# level:   L0
+# profile: ui/l0
+# model:   dev.studio.cards.finance
+#
+theme taskplan_light
+#
+# FINANCE family's compact L0 glance: the lead instrument only. Symbol, price and
+# change, one action, one honest cue. The watchlist, the detail view and the
+# range list live behind the card's own detail, not in the glance.
+# L0/L1/L2 are PRESENTATION depths; this file is language L0 at every depth.
+#
+# Fixture: glance.data.json — synthetic demo instruments. No quote is live and no
+# trade can be placed, so the card SAYS DEMO.
+#
+# OFFLINE SOURCE CONTRACT:
+#   * fixture keys are the SOURCE ALIASES (lead, more);
+#   * `id:` is OMITTED so fixture values lower to literals;
+#   * every lifecycle-bound read sits inside a `.$state == .ready` guard;
+#   * `when` takes no else; branches reference named views.
+#
+# Watch remains card-local and reversible. No buy/sell affordance exists.
+
+source lead sys.dataset(fields: [title, subtitle, summary, as_of, status, metric1_label, metric1_value, metric2_label, metric2_value])
+
+state mode { shape: enum[glance, detail], initial: .glance }
+state watch { shape: enum[plain, watched], initial: .plain }
+
+event open_detail { mode: set(.detail) }
+event back        { mode: set(.glance) }
+event watch_add   { watch: set(.watched) }
+event watch_drop  { watch: set(.plain) }
+
+copy app       { class: vocabulary, en: "Finance", zh: "金融" }
+copy open      { class: vocabulary, en: "Open",     zh: "打开" }
+copy back      { class: vocabulary, en: "‹ Back",   zh: "‹ 返回" }
+copy watch     { class: vocabulary, en: "Watch",    zh: "关注" }
+copy unwatch   { class: vocabulary, en: "Remove from Watching", zh: "取消关注" }
+copy demo_note { class: vocabulary, en: "Demo prices. No live quote, no trading.", zh: "演示价格。无实时报价，不可交易。" }
+
+# Lifecycle strings are declared copy, never inline (framework-l0 §1).
+copy loading { class: vocabulary, en: "Loading demo prices…", zh: "正在加载演示价格…" }
+copy offline { class: vocabulary, en: "Can't load demo prices", zh: "无法加载演示价格" }
+
+view root Surface(pad: .tight) {
+  Col(gap: 8) {
+    Row(gap: 8, align: .center) {
+      Icon(name: .activity, size: .row)
+      TextCaption(text: copy.app, width: .fill)
+      TextCaption(value: lead.as_of)
+    }
+    when lead.$state == .pending { loading_row }
+    when lead.$state == .failed  { offline_row }
+    when lead.$state == .ready   {
+      when mode == .glance { glance_row }
+      when mode == .detail { detail }
+    }
+  }
+}
+
+view loading_row Col {
+  TextBody(text: copy.loading, width: .fill)
+}
+
+view offline_row Col {
+  TextBody(text: copy.offline, width: .fill)
+}
+
+view glance_row Col(gap: 8) {
+  TextTitle(text: lead.title, width: .fill)
+  # Price and change share a Row so the sign stays adjacent to the number; both
+  # are width: Fit so neither can truncate the other's digits.
+  Row(gap: 8, align: .center) {
+    TextCaption(value: lead.metric1_value)
+    TextCaption(value: lead.metric2_value)
+  }
+  Row(gap: 8) {
+    Chip(text: copy.open, on_tap: open_detail, tone: .primary)
+  }
+  TextCaption(text: copy.demo_note, width: .fill)
+}
+
+view detail Col(gap: 8) {
+  TextTitle(text: lead.title, width: .fill)
+  TextRow(text: lead.subtitle, width: .fill)
+  Row(gap: 8, align: .center) {
+    TextCaption(value: lead.metric1_value)
+    TextCaption(value: lead.metric2_value)
+  }
+  TextBody(text: lead.summary, width: .fill)
+  Row(gap: 8) {
+    when watch == .plain    { Chip(text: copy.watch, on_tap: watch_add, tone: .primary) }
+    when watch == .watched { Chip(text: copy.unwatch, on_tap: watch_drop) }
+  }
+  Row(gap: 8) {
+    Chip(text: copy.back, on_tap: back)
+  }
+}

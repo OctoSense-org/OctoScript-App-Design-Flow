@@ -1,0 +1,541 @@
+{
+  "result": "pass",
+  "scope": "signed installed UI and actual host services with synthetic GitHub I/O",
+  "live_provider": false,
+  "physical_approval": false,
+  "driver": "Codex native Makepad instrument",
+  "binary_sha256": "ef8b5e4c7fcb01b52b6c71fbec2980b87d0b69e7b1a106e8658159fb06e6ff9d",
+  "installer_sha256": "a2959bea204b0213e705ce7162c3c14766b00b0e1b15536a23554a08b26c06e4",
+  "source_sha256": {
+    "OctoSense/tools/connected-e2e/notes.py": "170f3ce15809249af6e07ffc24ece1b867b68a0c67e816ebad5cdaec6d542a4f",
+    "OctoSense/tools/connected-e2e/native.py": "688fa49751501d6b17580baac399fb227dc19971544e2f2ec8e657c81454265f",
+    "OctoSense/Cargo.lock": "032ae9064ab4d020f29af868c4d4678ad2d22f68928f25aa7f05d2cf6b758f88",
+    "OctoSense/crates/shell/examples/connected-app-host.rs": "59b29b5a8d240628d47a3047194efdb13dafd558c35db781b3f5e4527e3e7115",
+    "OctoSense/crates/shell/examples/connected_support/mod.rs": "dab9b2c3aa1c96d92fdb74e582da5f9b88b4e0499dcf312be47b1303d6a0218a",
+    "OctoSense/crates/oauth-service/src/acceptance_github.rs": "520fd3681f4831c35cf671f0d4883af8c7d9e63e748ec41ede96d54fcaa77c7d",
+    "OctoSense/crates/oauth-service/src/acceptance_fixtures.rs": "af8b2c8187a35015ea42b59aa7b2ca8e5c4e4834efa0144259ca691f00bcfdf0",
+    "OctoSense/crates/oauth-service/src/host_api.rs": "2b691daf5f25739e7ba622f1d697ebe3a9e75d706033182b5636f91296b0cfae",
+    "OctoSense/crates/oauth-service/src/api.rs": "c173b0c78ffdd0fa2ce0eb63e93d0e2f9aad52983d8fb692bb4c7c3a76543aae",
+    "OctoSense/crates/markdown-editor/src/lib.rs": "5081d03ecedff31ffef1f1a71c9d545a1803b086dd638383504990cd1cd544a4",
+    "OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle/main.splash": "18146f05f012c110d02865e265ff77f1fd088349ce44959e26aa21fb81569de4",
+    "OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle/manifest.json": "27288bcea801797bfe3e0dfc00ba2b577ff45b571cf1c1252bc8e1b8161699c3"
+  },
+  "checks": [
+    "Signed Store launch, Unicode source edit and Preview round trip",
+    "Verified installed restart restores exact unsent local note",
+    "Empty repository and empty paginated response keep navigation usable",
+    "Dirty note replacement refusal preserves the original note",
+    "Actual host review shows exact edited Markdown and destination; cancel makes no provider write",
+    "Reviewed save invokes real GitHub API adapter; synthetic provider content/commit SHA and local clean state agree",
+    "409 conflict keeps the changed local note and never retries or overwrites",
+    "Explicit new Markdown path creates a reviewed file through actual host API",
+    "Lost provider response retains dirty draft and consumed approval cannot retry automatically",
+    "Unsent text and destination survive provider-offline installed restart"
+  ],
+  "visual_review": "See manual-review.json; all nine published original frames inspected separately",
+  "installation": {
+    "anchor": "21b5d7459203cde9d16fc89c5343b05c7d01f18c413eeaa0e9e4a4d29be4d366",
+    "apps": [
+      {
+        "bundle_digest": "c254ddb25658e9243e2313cf7edcc953452cf15c5afe96ba4227ad0482c65016",
+        "id": "org.octosense.samples.githubnotes",
+        "prepared_launch_verified": true,
+        "signed_install": true
+      }
+    ],
+    "fixture": "connected-e2e",
+    "private_keys": "ephemeral memory only",
+    "provider_credentials": "not created or copied",
+    "schema": 1
+  },
+  "actions": [
+    {
+      "session": "01-first-launch",
+      "actions": [
+        {
+          "click": "Markdown",
+          "rect": [
+            149,
+            130,
+            133,
+            44
+          ]
+        },
+        {
+          "click": "Write Markdown\u2026",
+          "rect": [
+            12,
+            185,
+            406,
+            561
+          ]
+        },
+        {
+          "edit": "markdown",
+          "characters": 67
+        },
+        {
+          "click": "Preview",
+          "rect": [
+            285,
+            130,
+            133,
+            44
+          ]
+        },
+        {
+          "click": "Markdown",
+          "rect": [
+            149,
+            130,
+            133,
+            44
+          ]
+        }
+      ]
+    },
+    {
+      "session": "02-restart",
+      "actions": [
+        {
+          "click": "Markdown",
+          "rect": [
+            149,
+            130,
+            133,
+            44
+          ]
+        },
+        {
+          "click": "Repository",
+          "rect": [
+            292,
+            47,
+            77,
+            41
+          ]
+        },
+        {
+          "click": "Refresh repositories",
+          "rect": [
+            12,
+            431,
+            406,
+            44
+          ]
+        },
+        {
+          "click": "Next",
+          "rect": [
+            219,
+            597,
+            199,
+            41
+          ]
+        },
+        {
+          "click": "Previous",
+          "rect": [
+            12,
+            521,
+            406,
+            41
+          ]
+        },
+        {
+          "click": "fixture-author/empty",
+          "rect": [
+            12,
+            543,
+            406,
+            44
+          ]
+        },
+        {
+          "click": "fixture-author/notes",
+          "rect": [
+            12,
+            299,
+            406,
+            44
+          ]
+        },
+        {
+          "click": "docs",
+          "rect": [
+            12,
+            665,
+            406,
+            44
+          ]
+        },
+        {
+          "click": "docs/second-note.md",
+          "rect": [
+            12,
+            611,
+            406,
+            44
+          ]
+        },
+        {
+          "click": "Keep current draft",
+          "rect": [
+            12,
+            759,
+            199,
+            41
+          ]
+        },
+        {
+          "click": "Back to note",
+          "rect": [
+            330,
+            47,
+            88,
+            41
+          ]
+        },
+        {
+          "click": "Repository",
+          "rect": [
+            292,
+            47,
+            77,
+            41
+          ]
+        },
+        {
+          "click": "docs/second-note.md",
+          "rect": [
+            12,
+            455,
+            406,
+            44
+          ]
+        },
+        {
+          "click": "Open & keep recovery",
+          "rect": [
+            219,
+            759,
+            199,
+            41
+          ]
+        },
+        {
+          "click": "# Delivery notes\n\nOriginal appointment: Tuesday at 09:00.\n\n- Bring the printed checklist\n- Ask about parking\n",
+          "rect": [
+            12,
+            185,
+            406,
+            540
+          ]
+        },
+        {
+          "edit": "markdown",
+          "characters": 130
+        },
+        {
+          "click": "Save",
+          "rect": [
+            377,
+            47,
+            41,
+            41
+          ]
+        },
+        {
+          "click": "Back to editing",
+          "rect": [
+            16,
+            783,
+            193,
+            48
+          ]
+        },
+        {
+          "click": "Save",
+          "rect": [
+            377,
+            47,
+            41,
+            41
+          ]
+        },
+        {
+          "click": "Approve & Save",
+          "rect": [
+            221,
+            783,
+            193,
+            48
+          ]
+        },
+        {
+          "click": "# Delivery notes\n\nUpdated appointment: Wednesday at 14:30.\n\nBring caf\u00e9 and \u8c22\u8c22\u3002\n\n| Task | State |\n| --- | --- |\n| Review | Ready |\n",
+          "rect": [
+            12,
+            185,
+            406,
+            540
+          ]
+        },
+        {
+          "edit": "markdown",
+          "characters": 179
+        },
+        {
+          "click": "Save",
+          "rect": [
+            377,
+            47,
+            41,
+            41
+          ]
+        },
+        {
+          "click": "Approve & Save",
+          "rect": [
+            221,
+            783,
+            193,
+            48
+          ]
+        },
+        {
+          "click": "Back to editing",
+          "rect": [
+            16,
+            783,
+            398,
+            48
+          ]
+        },
+        {
+          "click": "Repository",
+          "rect": [
+            292,
+            47,
+            77,
+            41
+          ]
+        },
+        {
+          "click": "docs/second-note.md",
+          "rect": [
+            12,
+            528,
+            406,
+            44
+          ]
+        },
+        {
+          "edit": "path_entry",
+          "characters": 30
+        },
+        {
+          "click": "Use as new path",
+          "rect": [
+            219,
+            586,
+            199,
+            41
+          ]
+        },
+        {
+          "click": "Save",
+          "rect": [
+            377,
+            47,
+            41,
+            41
+          ]
+        },
+        {
+          "click": "Approve & Save",
+          "rect": [
+            221,
+            783,
+            193,
+            48
+          ]
+        },
+        {
+          "click": "# Delivery notes\n\nUpdated appointment: Wednesday at 14:30.\n\nBring caf\u00e9 and \u8c22\u8c22\u3002\n\n| Task | State |\n| --- | --- |\n| Review | Ready |\n\nA newer unsaved change must survive a conflict.\n",
+          "rect": [
+            12,
+            185,
+            406,
+            540
+          ]
+        },
+        {
+          "edit": "markdown",
+          "characters": 248
+        },
+        {
+          "click": "Save",
+          "rect": [
+            377,
+            47,
+            41,
+            41
+          ]
+        },
+        {
+          "click": "Approve & Save",
+          "rect": [
+            221,
+            783,
+            193,
+            48
+          ]
+        },
+        {
+          "click": "Back to editing",
+          "rect": [
+            16,
+            783,
+            398,
+            48
+          ]
+        }
+      ]
+    },
+    {
+      "session": "03-offline-restart",
+      "actions": [
+        {
+          "click": "Markdown",
+          "rect": [
+            149,
+            130,
+            133,
+            44
+          ]
+        },
+        {
+          "click": "Repository",
+          "rect": [
+            292,
+            47,
+            77,
+            41
+          ]
+        },
+        {
+          "click": "Refresh repositories",
+          "rect": [
+            12,
+            431,
+            406,
+            44
+          ]
+        },
+        {
+          "click": "Back to note",
+          "rect": [
+            330,
+            47,
+            88,
+            41
+          ]
+        }
+      ]
+    }
+  ],
+  "provider_requests": [
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/user/repos",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/user/repos",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/user/repos",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/repos/fixture-author/empty/contents",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/repos/fixture-author/notes/contents",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/repos/fixture-author/notes/contents/docs",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/repos/fixture-author/notes/contents/docs/second-note.md",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "GET",
+      "path": "/repos/fixture-author/notes/contents/docs/second-note.md",
+      "status": 200
+    },
+    {
+      "failed": false,
+      "method": "PUT",
+      "path": "/repos/fixture-author/notes/contents/docs/second-note.md",
+      "status": 201
+    },
+    {
+      "failed": false,
+      "method": "PUT",
+      "path": "/repos/fixture-author/notes/contents/docs/second-note.md",
+      "status": 409
+    },
+    {
+      "failed": false,
+      "method": "PUT",
+      "path": "/repos/fixture-author/notes/contents/notes/created-in-acceptance.md",
+      "status": 201
+    },
+    {
+      "failed": true,
+      "method": "PUT",
+      "path": "/repos/fixture-author/notes/contents/notes/created-in-acceptance.md",
+      "status": null
+    },
+    {
+      "failed": true,
+      "method": "GET",
+      "path": "/user/repos",
+      "status": null
+    }
+  ],
+  "synthetic_provider_final_revision": 3,
+  "captures": {
+    "01-installed-preview.png": "850062cda768ce0a5a1deec579d9b2bcbf4ce5e2b0e4323c550b19b99fec8982",
+    "02-empty-repository.png": "d587d25f684bfa842efbd6587317cdfae3963bd90046e77dd8860ac57adc394d",
+    "02-exact-host-review.png": "073dfac40124d4b6449b7480704171b90ed0088e2825fcc49c7a761bda4fff8b",
+    "03-cancel-retains-edit.png": "e1a2c4ee5b6ba19b90f9ad30e046e6de26b653176d6605a416448bc5391fa180",
+    "04-synthetic-commit-confirmed.png": "da0ea1f3c94b74dfd6a8cd038a0426d77c1ae06a1f721a6247856ac163e9552a",
+    "05-provider-conflict.png": "b1c7151c6f445509dc54d025b209247977df7d0e3438e1d766dc927e9dbd8bb8",
+    "06-new-file-commit.png": "db422e2faecba520db764a7d7c166f00744a004309603574834dc6e9e49b9aae",
+    "07-uncertain-save-response.png": "fffdabb2d29c5cce4b4c41db4521cb7e8b2353ada5155a574cf67f337fb4302a",
+    "08-offline-restart-retains-note.png": "bde29e89373d4721a1559f7c11a746e8bf07b63d50fc75af2bf200ee26b2e9bf"
+  },
+  "hub_revision": "5c7a13f92fa25d36ba1fe7fb99dc9fb1b235f8d3"
+}

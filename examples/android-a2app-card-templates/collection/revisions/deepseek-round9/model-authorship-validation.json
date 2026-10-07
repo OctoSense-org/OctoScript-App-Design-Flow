@@ -1,0 +1,848 @@
+{
+  "method": "last successful write_file plus subsequent successful exact edits, UTF-8 byte/hash comparison",
+  "scope": "Recorded file mutations only; no reasoning, device operations, or app edits.",
+  "limitations": [
+    "Matching bytes prove the frozen copy is reproducible from recorded Android model tool arguments, not absence of every possible unrecorded historical intervention.",
+    "Redacted payloads cannot establish original exact bytes or hashes.",
+    "Ambiguous/fuzzy edits or applicable patches after the last write are not guessed."
+  ],
+  "cases": {
+    "deepseek_final_collection": {
+      "copy": "deepseek-final-collection",
+      "transcript_sha256": {
+        "01-mail-design/transcript.json": "b8b5ab704c528d1cc2f9a9880dced0dd73a3ac7840550406b5ddff0095bf3af4",
+        "02-mail-review/transcript.json": "34dea3faaa03ad4d4ccc2dd17629f20c6546d52d51f4746bf2b82ee78be65523",
+        "03-mail-revision/transcript.json": "0eb086e1ecd3255cbcb15e73de0c1a431f26213287769d3b2b7de32d5e389739",
+        "deepseek-04-mail-calendar/transcript.json": "fde54cb80231957f3e2b6ded124d54c8433da6c96247db8180e0ffe6dd0c310d",
+        "deepseek-05-news-finance/transcript.json": "55fd8cc60089d48a8ea4deb4576fc79fd3868b894aea77ef9565491539e93de5",
+        "deepseek-06-photo-youtube/transcript.json": "0e146de2b09b6a933337a4c2e088b7359bbf5926770c54836d204d5f5b7ca880",
+        "deepseek-07-final-polish/transcript.json": "e9992c2215fb3204c1f416dc2512c06b947c0d83f021d4ad6efa61f227a5207b",
+        "deepseek-08-final-metadata/transcript.json": "86465fb769b0e56fcd3480d20a1d61d11c849b412e1ca4a8758e7795336920b6",
+        "deepseek-09-reference-audit/transcript.json": "415c4863b3eb3063e6ca55375eba3b98d05e45b2007dedb0d834a8299bc3e65a"
+      },
+      "excluded_unsuccessful_mutations": [],
+      "coverage": {
+        "frozen_file_count": 25,
+        "replayed_file_count": 25,
+        "unaccounted_frozen_files": [],
+        "missing_frozen_files": [],
+        "exact_match_count": 25
+      },
+      "files": [
+        {
+          "path": "card-templates/DESIGN.md",
+          "category": "design_document",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-08-final-metadata/transcript.json",
+              "tool_calls_index": 8,
+              "tool_call_id": "call_00_YjCvtJwvyiOHmNEafKO40264",
+              "tool": "write_file",
+              "start_seq": 188503,
+              "end_seq": 188506
+            },
+            {
+              "transcript": "deepseek-09-reference-audit/transcript.json",
+              "tool_calls_index": 9,
+              "tool_call_id": "call_00_JbuPYZqACmtYFgHN5yQV9024",
+              "tool": "edit_file",
+              "start_seq": 194158,
+              "end_seq": 194161
+            },
+            {
+              "transcript": "deepseek-09-reference-audit/transcript.json",
+              "tool_calls_index": 10,
+              "tool_call_id": "call_01_Y0I14eiYcUVodVdnB31B2842",
+              "tool": "edit_file",
+              "start_seq": 194164,
+              "end_seq": 194167
+            },
+            {
+              "transcript": "deepseek-09-reference-audit/transcript.json",
+              "tool_calls_index": 11,
+              "tool_call_id": "call_02_LI6rjErZhrhowgO3ZMzh9373",
+              "tool": "edit_file",
+              "start_seq": 194170,
+              "end_seq": 194173
+            }
+          ],
+          "superseded_mutations": 7,
+          "frozen_bytes": 11540,
+          "frozen_sha256": "4c82c40e1f1ba93c73298682fbb7c7adba70effbbb01ec025d0fa0a27715cdbd",
+          "replay_bytes": 11540,
+          "replay_payload_sha256": "4c82c40e1f1ba93c73298682fbb7c7adba70effbbb01ec025d0fa0a27715cdbd",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/calendar/bundle/main.splash",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-05-news-finance/transcript.json",
+              "tool_calls_index": 1,
+              "tool_call_id": "call_01_vmUmMkg6ryVhzIPbfyQ54811",
+              "tool": "write_file",
+              "start_seq": 139051,
+              "end_seq": 139054
+            },
+            {
+              "transcript": "deepseek-07-final-polish/transcript.json",
+              "tool_calls_index": 8,
+              "tool_call_id": "call_00_GrKWt7EWJT3bAkVJt8p59626",
+              "tool": "edit_file",
+              "start_seq": 180037,
+              "end_seq": 180040
+            },
+            {
+              "transcript": "deepseek-07-final-polish/transcript.json",
+              "tool_calls_index": 9,
+              "tool_call_id": "call_01_iSFK7BPMTJYOurOdjKFB5239",
+              "tool": "edit_file",
+              "start_seq": 180043,
+              "end_seq": 180046
+            },
+            {
+              "transcript": "deepseek-07-final-polish/transcript.json",
+              "tool_calls_index": 10,
+              "tool_call_id": "call_02_VaBu8MPCQ66a3s7a74O24768",
+              "tool": "edit_file",
+              "start_seq": 180049,
+              "end_seq": 180052
+            },
+            {
+              "transcript": "deepseek-07-final-polish/transcript.json",
+              "tool_calls_index": 11,
+              "tool_call_id": "call_03_9WDzKl6jfPfH3CT9yIY41405",
+              "tool": "edit_file",
+              "start_seq": 180055,
+              "end_seq": 180058
+            },
+            {
+              "transcript": "deepseek-08-final-metadata/transcript.json",
+              "tool_calls_index": 9,
+              "tool_call_id": "call_00_TZ2mTThjVl5eGICs3GNt0215",
+              "tool": "edit_file",
+              "start_seq": 188973,
+              "end_seq": 188976
+            }
+          ],
+          "superseded_mutations": 2,
+          "frozen_bytes": 14653,
+          "frozen_sha256": "f0a38a80d0e1e6ccd3d9cc25b96fb3ec3ec5b717189999ad2ca3926d5c3f23f3",
+          "replay_bytes": 14653,
+          "replay_payload_sha256": "f0a38a80d0e1e6ccd3d9cc25b96fb3ec3ec5b717189999ad2ca3926d5c3f23f3",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/calendar/bundle/manifest.json",
+          "category": "manifest",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-08-final-metadata/transcript.json",
+              "tool_calls_index": 11,
+              "tool_call_id": "call_02_pH7SK2E6TT843lXqTYEl3093",
+              "tool": "write_file",
+              "start_seq": 188985,
+              "end_seq": 188988
+            }
+          ],
+          "superseded_mutations": 1,
+          "frozen_bytes": 237,
+          "frozen_sha256": "8056d4a9b8f6e21456ebde3833ff64e4e8326d11736891165c829de6c3721d92",
+          "replay_bytes": 237,
+          "replay_payload_sha256": "8056d4a9b8f6e21456ebde3833ff64e4e8326d11736891165c829de6c3721d92",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true,
+          "integrity_placeholder": true,
+          "real_bundle_integrity_verified": false,
+          "publisher_signing_verified": false,
+          "note": "Manifest bytes match recorded model mutations. No redaction affected these on-disk arguments. Any literal zero digest is a placeholder; authorship verification is distinct from real bundle-integrity or publisher-signing verification."
+        },
+        {
+          "path": "card-templates/calendar/glance.card",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-04-mail-calendar/transcript.json",
+              "tool_calls_index": 27,
+              "tool_call_id": "call_02_qjJCKzAxL5exwBS1dji21670",
+              "tool": "write_file",
+              "start_seq": 131277,
+              "end_seq": 131280
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 2602,
+          "frozen_sha256": "d2c5ffaa303933ffe577b2a7d7c3dbe30fe08951b5f7b08f2485fbc1bd936c82",
+          "replay_bytes": 2602,
+          "replay_payload_sha256": "d2c5ffaa303933ffe577b2a7d7c3dbe30fe08951b5f7b08f2485fbc1bd936c82",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/calendar/glance.data.json",
+          "category": "fixture_data",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-04-mail-calendar/transcript.json",
+              "tool_calls_index": 28,
+              "tool_call_id": "call_03_Hi54xhidlsxkUVWInF9p4828",
+              "tool": "write_file",
+              "start_seq": 131283,
+              "end_seq": 131286
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 344,
+          "frozen_sha256": "45bdb4cabc61ccba5926ab6e0cbd52ad1469d60b5565eeb1bd34fb154ec3d351",
+          "replay_bytes": 344,
+          "replay_payload_sha256": "45bdb4cabc61ccba5926ab6e0cbd52ad1469d60b5565eeb1bd34fb154ec3d351",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/finance/bundle/main.splash",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-05-news-finance/transcript.json",
+              "tool_calls_index": 42,
+              "tool_call_id": "call_00_b9P6CKEzS9FQwDGexr0S3781",
+              "tool": "write_file",
+              "start_seq": 154611,
+              "end_seq": 154614
+            },
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 6,
+              "tool_call_id": "call_04_fiOk3kiX9C44RZx6BvJa5223",
+              "tool": "edit_file",
+              "start_seq": 159144,
+              "end_seq": 159147
+            },
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 7,
+              "tool_call_id": "call_05_PnlrILPmIFakHawHOBep8280",
+              "tool": "edit_file",
+              "start_seq": 159150,
+              "end_seq": 159153
+            },
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 8,
+              "tool_call_id": "call_00_LI9nwQjGMzoydgGtBjJW2488",
+              "tool": "edit_file",
+              "start_seq": 159412,
+              "end_seq": 159415
+            },
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 9,
+              "tool_call_id": "call_01_OQDNlq9T0KalxvY668m77118",
+              "tool": "edit_file",
+              "start_seq": 159418,
+              "end_seq": 159421
+            },
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 10,
+              "tool_call_id": "call_02_kWA8swccMlabDcYHqFL88614",
+              "tool": "edit_file",
+              "start_seq": 159424,
+              "end_seq": 159427
+            },
+            {
+              "transcript": "deepseek-07-final-polish/transcript.json",
+              "tool_calls_index": 13,
+              "tool_call_id": "call_05_Kr9nxMomN3Y3c6Hkm1j44625",
+              "tool": "edit_file",
+              "start_seq": 180067,
+              "end_seq": 180070
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 18261,
+          "frozen_sha256": "7a784dfd5efd2b1734d36eb83cd862659c25fdcbf908ea0d49c1dd411b9ad5cb",
+          "replay_bytes": 18261,
+          "replay_payload_sha256": "7a784dfd5efd2b1734d36eb83cd862659c25fdcbf908ea0d49c1dd411b9ad5cb",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/finance/bundle/manifest.json",
+          "category": "manifest",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-08-final-metadata/transcript.json",
+              "tool_calls_index": 13,
+              "tool_call_id": "call_04_hxkbyoCL8oKHZvsCxHY87703",
+              "tool": "write_file",
+              "start_seq": 188997,
+              "end_seq": 189000
+            }
+          ],
+          "superseded_mutations": 1,
+          "frozen_bytes": 235,
+          "frozen_sha256": "9795fd981fe63b7db711853c5572583917d8ea908d4b94b85e350423466fe600",
+          "replay_bytes": 235,
+          "replay_payload_sha256": "9795fd981fe63b7db711853c5572583917d8ea908d4b94b85e350423466fe600",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true,
+          "integrity_placeholder": true,
+          "real_bundle_integrity_verified": false,
+          "publisher_signing_verified": false,
+          "note": "Manifest bytes match recorded model mutations. No redaction affected these on-disk arguments. Any literal zero digest is a placeholder; authorship verification is distinct from real bundle-integrity or publisher-signing verification."
+        },
+        {
+          "path": "card-templates/finance/glance.card",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-05-news-finance/transcript.json",
+              "tool_calls_index": 40,
+              "tool_call_id": "call_02_zTAqMhIqpd2qkSoj8WGv6598",
+              "tool": "write_file",
+              "start_seq": 153628,
+              "end_seq": 153631
+            },
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 27,
+              "tool_call_id": "call_00_iq2Co0sTxXn2TyAo7B972282",
+              "tool": "edit_file",
+              "start_seq": 161647,
+              "end_seq": 161650
+            },
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 28,
+              "tool_call_id": "call_01_BOs7QXcW83qxSiSpBbWZ8797",
+              "tool": "edit_file",
+              "start_seq": 161653,
+              "end_seq": 161656
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 2240,
+          "frozen_sha256": "d0e71e4d8fb8d99925b70806fba6236031d5e633a5c418570c71fcdb980071ce",
+          "replay_bytes": 2240,
+          "replay_payload_sha256": "d0e71e4d8fb8d99925b70806fba6236031d5e633a5c418570c71fcdb980071ce",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/finance/glance.data.json",
+          "category": "fixture_data",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-05-news-finance/transcript.json",
+              "tool_calls_index": 41,
+              "tool_call_id": "call_03_GSBPXSUmv90j2OdV8IGw9749",
+              "tool": "write_file",
+              "start_seq": 153634,
+              "end_seq": 153637
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 394,
+          "frozen_sha256": "6cdfcce3bc4ec944fc09d5d45c341c9a174060ae6f21bfcb99abc1631a11533f",
+          "replay_bytes": 394,
+          "replay_payload_sha256": "6cdfcce3bc4ec944fc09d5d45c341c9a174060ae6f21bfcb99abc1631a11533f",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/mail/bundle/main.splash",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-04-mail-calendar/transcript.json",
+              "tool_calls_index": 10,
+              "tool_call_id": "call_00_5EaiJtb6rVv9n2EwCTQG3384",
+              "tool": "write_file",
+              "start_seq": 126503,
+              "end_seq": 126506
+            },
+            {
+              "transcript": "deepseek-05-news-finance/transcript.json",
+              "tool_calls_index": 0,
+              "tool_call_id": "call_00_DCS89bzuYA0tOCdjRbSB6443",
+              "tool": "edit_file",
+              "start_seq": 139045,
+              "end_seq": 139048
+            }
+          ],
+          "superseded_mutations": 11,
+          "frozen_bytes": 15305,
+          "frozen_sha256": "8979e89aa28560ca61111b0cc72711e463825cc143c6c81d1b147b788b1d6f50",
+          "replay_bytes": 15305,
+          "replay_payload_sha256": "8979e89aa28560ca61111b0cc72711e463825cc143c6c81d1b147b788b1d6f50",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/mail/bundle/manifest.json",
+          "category": "manifest",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-08-final-metadata/transcript.json",
+              "tool_calls_index": 10,
+              "tool_call_id": "call_01_799twVtmNlZG6TEH3zPd3215",
+              "tool": "write_file",
+              "start_seq": 188979,
+              "end_seq": 188982
+            }
+          ],
+          "superseded_mutations": 1,
+          "frozen_bytes": 229,
+          "frozen_sha256": "98d814db46317a526acf1c4fad2f09c192f3a0a8e0177df701e1947f56411254",
+          "replay_bytes": 229,
+          "replay_payload_sha256": "98d814db46317a526acf1c4fad2f09c192f3a0a8e0177df701e1947f56411254",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true,
+          "integrity_placeholder": true,
+          "real_bundle_integrity_verified": false,
+          "publisher_signing_verified": false,
+          "note": "Manifest bytes match recorded model mutations. No redaction affected these on-disk arguments. Any literal zero digest is a placeholder; authorship verification is distinct from real bundle-integrity or publisher-signing verification."
+        },
+        {
+          "path": "card-templates/mail/glance.card",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "02-mail-review/transcript.json",
+              "tool_calls_index": 2,
+              "tool_call_id": "call_00_Hv6tV2SyJRD64U1NSjVN5654",
+              "tool": "write_file",
+              "start_seq": 91374,
+              "end_seq": 91377
+            },
+            {
+              "transcript": "02-mail-review/transcript.json",
+              "tool_calls_index": 3,
+              "tool_call_id": "call_00_AWfhSD25KhZ0Oubjjwp45385",
+              "tool": "edit_file",
+              "start_seq": 91650,
+              "end_seq": 91653
+            },
+            {
+              "transcript": "02-mail-review/transcript.json",
+              "tool_calls_index": 4,
+              "tool_call_id": "call_01_8BFtvhKgJohUGFQmZfec0754",
+              "tool": "edit_file",
+              "start_seq": 91656,
+              "end_seq": 91659
+            }
+          ],
+          "superseded_mutations": 1,
+          "frozen_bytes": 2798,
+          "frozen_sha256": "190f728d58cf07d692aed8ac82990277f47916c1166146ffeebc367d434ce529",
+          "replay_bytes": 2798,
+          "replay_payload_sha256": "190f728d58cf07d692aed8ac82990277f47916c1166146ffeebc367d434ce529",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/mail/glance.data.json",
+          "category": "fixture_data",
+          "replayed_mutations": [
+            {
+              "transcript": "03-mail-revision/transcript.json",
+              "tool_calls_index": 5,
+              "tool_call_id": "call_00_svgvok0OQ6Jm7kzku2WZ2805",
+              "tool": "write_file",
+              "start_seq": 110570,
+              "end_seq": 110573
+            }
+          ],
+          "superseded_mutations": 1,
+          "frozen_bytes": 325,
+          "frozen_sha256": "9c1008f68ec958292d01195725491d07a0dd595a4c02073b92374766ad97aba9",
+          "replay_bytes": 325,
+          "replay_payload_sha256": "9c1008f68ec958292d01195725491d07a0dd595a4c02073b92374766ad97aba9",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/news/bundle/main.splash",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-05-news-finance/transcript.json",
+              "tool_calls_index": 28,
+              "tool_call_id": "call_00_RxMG6U8Z1zgmDt0o5hSY1151",
+              "tool": "write_file",
+              "start_seq": 150462,
+              "end_seq": 150465
+            },
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 2,
+              "tool_call_id": "call_00_hcYMQhrCW43LQ9xkF9AB7194",
+              "tool": "edit_file",
+              "start_seq": 159120,
+              "end_seq": 159123
+            },
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 3,
+              "tool_call_id": "call_01_IUd3HB6WmWjDMxO37FnK4744",
+              "tool": "edit_file",
+              "start_seq": 159126,
+              "end_seq": 159129
+            },
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 5,
+              "tool_call_id": "call_03_TngyS3XS4PEfKute9BqF1616",
+              "tool": "edit_file",
+              "start_seq": 159138,
+              "end_seq": 159141
+            },
+            {
+              "transcript": "deepseek-07-final-polish/transcript.json",
+              "tool_calls_index": 12,
+              "tool_call_id": "call_04_y2U0LH9NQt96S3BtLcIh8710",
+              "tool": "edit_file",
+              "start_seq": 180061,
+              "end_seq": 180064
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 14247,
+          "frozen_sha256": "4efc64f25cf4895430b8677b3199048a702c77f87eaf1301713aae34d0e213ca",
+          "replay_bytes": 14247,
+          "replay_payload_sha256": "4efc64f25cf4895430b8677b3199048a702c77f87eaf1301713aae34d0e213ca",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/news/bundle/manifest.json",
+          "category": "manifest",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-08-final-metadata/transcript.json",
+              "tool_calls_index": 12,
+              "tool_call_id": "call_03_PJvL4kRqrTZQB7YasTau4198",
+              "tool": "write_file",
+              "start_seq": 188991,
+              "end_seq": 188994
+            }
+          ],
+          "superseded_mutations": 1,
+          "frozen_bytes": 229,
+          "frozen_sha256": "9cd949a8b185004242b34fa41fc8700024b31241669840d52d058594d765ba48",
+          "replay_bytes": 229,
+          "replay_payload_sha256": "9cd949a8b185004242b34fa41fc8700024b31241669840d52d058594d765ba48",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true,
+          "integrity_placeholder": true,
+          "real_bundle_integrity_verified": false,
+          "publisher_signing_verified": false,
+          "note": "Manifest bytes match recorded model mutations. No redaction affected these on-disk arguments. Any literal zero digest is a placeholder; authorship verification is distinct from real bundle-integrity or publisher-signing verification."
+        },
+        {
+          "path": "card-templates/news/glance.card",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-05-news-finance/transcript.json",
+              "tool_calls_index": 26,
+              "tool_call_id": "call_02_xNKLqaA2UjckjF83v5My1279",
+              "tool": "write_file",
+              "start_seq": 149690,
+              "end_seq": 149693
+            },
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 4,
+              "tool_call_id": "call_02_1XIvFYI4OfbQuwNmEtui5537",
+              "tool": "edit_file",
+              "start_seq": 159132,
+              "end_seq": 159135
+            },
+            {
+              "transcript": "deepseek-07-final-polish/transcript.json",
+              "tool_calls_index": 14,
+              "tool_call_id": "call_00_1eoPwCvGUtY9ToiHiTQr7957",
+              "tool": "edit_file",
+              "start_seq": 180242,
+              "end_seq": 180245
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 2035,
+          "frozen_sha256": "429f63f38f78345a31702f1e54dbc517884483d1adfb32c5fcff914a203489a2",
+          "replay_bytes": 2035,
+          "replay_payload_sha256": "429f63f38f78345a31702f1e54dbc517884483d1adfb32c5fcff914a203489a2",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/news/glance.data.json",
+          "category": "fixture_data",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-05-news-finance/transcript.json",
+              "tool_calls_index": 27,
+              "tool_call_id": "call_03_oBqrFpRzmqEDvRxzV3pZ3377",
+              "tool": "write_file",
+              "start_seq": 149696,
+              "end_seq": 149699
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 518,
+          "frozen_sha256": "74fdc2e5e90524309c67a232958d38fc845ae793c3eda9f013a70b5f341ef517",
+          "replay_bytes": 518,
+          "replay_payload_sha256": "74fdc2e5e90524309c67a232958d38fc845ae793c3eda9f013a70b5f341ef517",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/photo/bundle/main.splash",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-07-final-polish/transcript.json",
+              "tool_calls_index": 7,
+              "tool_call_id": "call_00_CH0AjKF2rfid2mEpQh1g9156",
+              "tool": "write_file",
+              "start_seq": 177838,
+              "end_seq": 177841
+            }
+          ],
+          "superseded_mutations": 1,
+          "frozen_bytes": 15979,
+          "frozen_sha256": "5375b6c77a0d338bd8b07a71847bb8f6f68711179b986149c2ab8ba0ee02635b",
+          "replay_bytes": 15979,
+          "replay_payload_sha256": "5375b6c77a0d338bd8b07a71847bb8f6f68711179b986149c2ab8ba0ee02635b",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/photo/bundle/manifest.json",
+          "category": "manifest",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-08-final-metadata/transcript.json",
+              "tool_calls_index": 14,
+              "tool_call_id": "call_05_od0HqDi7XZ51hgylzF7x8043",
+              "tool": "write_file",
+              "start_seq": 189003,
+              "end_seq": 189006
+            }
+          ],
+          "superseded_mutations": 1,
+          "frozen_bytes": 231,
+          "frozen_sha256": "c6ba2216bff2c7543a6e301b23fb92964d4f9683b9380ff23aa3bd7def0a1ce6",
+          "replay_bytes": 231,
+          "replay_payload_sha256": "c6ba2216bff2c7543a6e301b23fb92964d4f9683b9380ff23aa3bd7def0a1ce6",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true,
+          "integrity_placeholder": true,
+          "real_bundle_integrity_verified": false,
+          "publisher_signing_verified": false,
+          "note": "Manifest bytes match recorded model mutations. No redaction affected these on-disk arguments. Any literal zero digest is a placeholder; authorship verification is distinct from real bundle-integrity or publisher-signing verification."
+        },
+        {
+          "path": "card-templates/photo/glance.card",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 31,
+              "tool_call_id": "call_01_JG2d22WVuvPJOXpLLf5V2312",
+              "tool": "write_file",
+              "start_seq": 164516,
+              "end_seq": 164519
+            },
+            {
+              "transcript": "deepseek-07-final-polish/transcript.json",
+              "tool_calls_index": 15,
+              "tool_call_id": "call_01_UEsAf7zdVc3gkeNdestU1889",
+              "tool": "edit_file",
+              "start_seq": 180248,
+              "end_seq": 180251
+            },
+            {
+              "transcript": "deepseek-07-final-polish/transcript.json",
+              "tool_calls_index": 16,
+              "tool_call_id": "call_02_pylEzMPBG0s8y8OPBnUo8072",
+              "tool": "edit_file",
+              "start_seq": 180254,
+              "end_seq": 180257
+            },
+            {
+              "transcript": "deepseek-08-final-metadata/transcript.json",
+              "tool_calls_index": 3,
+              "tool_call_id": "call_00_BvwVjE2reJWLKi5v3hej5056",
+              "tool": "edit_file",
+              "start_seq": 188186,
+              "end_seq": 188189
+            },
+            {
+              "transcript": "deepseek-08-final-metadata/transcript.json",
+              "tool_calls_index": 4,
+              "tool_call_id": "call_01_YhZdvmMT3fyEi56KKtEM8031",
+              "tool": "edit_file",
+              "start_seq": 188192,
+              "end_seq": 188195
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 2265,
+          "frozen_sha256": "c0bf6dd80dcb8d2a4304df09eaf8099dd576f7409379b74b84073d1a90d652ef",
+          "replay_bytes": 2265,
+          "replay_payload_sha256": "c0bf6dd80dcb8d2a4304df09eaf8099dd576f7409379b74b84073d1a90d652ef",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/photo/glance.data.json",
+          "category": "fixture_data",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 32,
+              "tool_call_id": "call_02_ymcRSCq4t0RnvqcqioNO1009",
+              "tool": "write_file",
+              "start_seq": 164522,
+              "end_seq": 164525
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 432,
+          "frozen_sha256": "227fea10798c53833f2f3091e58c604a812acf5c3ac83e79db94231e5c80b6dd",
+          "replay_bytes": 432,
+          "replay_payload_sha256": "227fea10798c53833f2f3091e58c604a812acf5c3ac83e79db94231e5c80b6dd",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/youtube/bundle/main.splash",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-07-final-polish/transcript.json",
+              "tool_calls_index": 6,
+              "tool_call_id": "call_00_stMHNyEjnxddorNf1mEs8581",
+              "tool": "write_file",
+              "start_seq": 177791,
+              "end_seq": 177794
+            }
+          ],
+          "superseded_mutations": 1,
+          "frozen_bytes": 16268,
+          "frozen_sha256": "303de4d02d08dc2265b6fe7d793dcb5f445427bcc29975a020aad903b6582cc5",
+          "replay_bytes": 16268,
+          "replay_payload_sha256": "303de4d02d08dc2265b6fe7d793dcb5f445427bcc29975a020aad903b6582cc5",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/youtube/bundle/manifest.json",
+          "category": "manifest",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-08-final-metadata/transcript.json",
+              "tool_calls_index": 15,
+              "tool_call_id": "call_06_TRuCt29JmQAmBpMuJw1e9363",
+              "tool": "write_file",
+              "start_seq": 189009,
+              "end_seq": 189012
+            }
+          ],
+          "superseded_mutations": 1,
+          "frozen_bytes": 235,
+          "frozen_sha256": "711469c561b7a4ac90bc60fd00f0b7a6a0767a8af24edbef47c2fc8d44ec066a",
+          "replay_bytes": 235,
+          "replay_payload_sha256": "711469c561b7a4ac90bc60fd00f0b7a6a0767a8af24edbef47c2fc8d44ec066a",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true,
+          "integrity_placeholder": true,
+          "real_bundle_integrity_verified": false,
+          "publisher_signing_verified": false,
+          "note": "Manifest bytes match recorded model mutations. No redaction affected these on-disk arguments. Any literal zero digest is a placeholder; authorship verification is distinct from real bundle-integrity or publisher-signing verification."
+        },
+        {
+          "path": "card-templates/youtube/glance.card",
+          "category": "ui_source",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 35,
+              "tool_call_id": "call_01_hzbIvEFy6jAnzhQduS8j6020",
+              "tool": "write_file",
+              "start_seq": 165678,
+              "end_seq": 165681
+            },
+            {
+              "transcript": "deepseek-07-final-polish/transcript.json",
+              "tool_calls_index": 17,
+              "tool_call_id": "call_03_TuryTPKIj6mx5O4xrYTk2334",
+              "tool": "edit_file",
+              "start_seq": 180260,
+              "end_seq": 180263
+            },
+            {
+              "transcript": "deepseek-07-final-polish/transcript.json",
+              "tool_calls_index": 18,
+              "tool_call_id": "call_04_x0BVv68TNctXrxUASdpi4599",
+              "tool": "edit_file",
+              "start_seq": 180266,
+              "end_seq": 180269
+            },
+            {
+              "transcript": "deepseek-08-final-metadata/transcript.json",
+              "tool_calls_index": 5,
+              "tool_call_id": "call_02_JWKWpzeff4QsWjeAVKB89085",
+              "tool": "edit_file",
+              "start_seq": 188198,
+              "end_seq": 188201
+            },
+            {
+              "transcript": "deepseek-08-final-metadata/transcript.json",
+              "tool_calls_index": 6,
+              "tool_call_id": "call_03_kMmDG9EnZDwmCMLo8gTW1053",
+              "tool": "edit_file",
+              "start_seq": 188204,
+              "end_seq": 188207
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 2291,
+          "frozen_sha256": "1732f6ac6f1aa9538ad8ca5254c6e752a39ebf60940a7a6925da19b18df2fecd",
+          "replay_bytes": 2291,
+          "replay_payload_sha256": "1732f6ac6f1aa9538ad8ca5254c6e752a39ebf60940a7a6925da19b18df2fecd",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        },
+        {
+          "path": "card-templates/youtube/glance.data.json",
+          "category": "fixture_data",
+          "replayed_mutations": [
+            {
+              "transcript": "deepseek-06-photo-youtube/transcript.json",
+              "tool_calls_index": 36,
+              "tool_call_id": "call_02_j0XfUnYpE4niyUZowPiD4227",
+              "tool": "write_file",
+              "start_seq": 165684,
+              "end_seq": 165687
+            }
+          ],
+          "superseded_mutations": 0,
+          "frozen_bytes": 458,
+          "frozen_sha256": "dcf54c34d871c2a45fa7baa816018ddfc0ea4108840a915a6e93a138e4a60a18",
+          "replay_bytes": 458,
+          "replay_payload_sha256": "dcf54c34d871c2a45fa7baa816018ddfc0ea4108840a915a6e93a138e4a60a18",
+          "status": "exact_match",
+          "exact_original_bytes_proven": true
+        }
+      ]
+    }
+  }
+}

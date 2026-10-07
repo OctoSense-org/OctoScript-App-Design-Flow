@@ -16,6 +16,40 @@ glance 屏幕上（Mail、Calendar）。Shell 一侧的说明见 OctoSense 的
 [`docs/architecture.zh-CN.md`](https://github.com/OctoSense-org/OctoSense/blob/main/docs/architecture.zh-CN.md)
 和 [ADR 0004](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0004-native-apps-hosting-and-peers.md)。
 
+## 连接服务示例更新 — 2026-10-06
+
+[连接应用示例](../examples/connected-apps/README.zh-CN.md) 面向 OctoSense
+`feat/app-hub-connected-samples` 及 App Hub
+`eaaffffd695caf7ebf6205c455377c1f8567b906`。这是范围明确的较新实现；**下方旧版
+状态表不包含这些新增功能，旧主机也不会因为应用包准入通过就自动获得服务。**
+配置及平台限制见[共享 OAuth／服务指南](https://github.com/OctoSense-org/OctoSense/blob/feat/app-hub-connected-samples/crates/oauth-service/README.zh-CN.md)。
+
+- 普通应用保留自己的命名空间，例如 `inbox.message` 通过
+  `implemented_by: "host-service"` 和 `host_method: "gmail.message"` 映射到共享
+  服务。App Hub 只允许经过审查的方法，并检查目标能力、最低风险及私人数据
+  声明。主机按所属应用的当前账户执行，拒绝过期或其他账户参数。此改动没有
+  实现任意 `implemented_by: "app"` 脚本工具，也没有开放任意远程写入。
+- 主机从摘要检查通过的应用包中读取 `AGENT.md` 和技能文本，作为绑定账户的
+  轮次指导；这不等于安装可执行的内核技能。应用代理调用真实工具，而一次
+  `model.complete` 调用不能冒充应用代理事件或持久会话。
+- Gmail 收集器支持 `<应用命名空间>.new_message`，例如 `inbox.new_message`。
+  需要活动账户、Gmail／auth 能力、后台声明及代理同意。先建立后续增量基线，
+  再把新邮件 ID 交给应用代理。模型决定是否重要；只有成功轮次加持久化静默
+  决定或主机验证过的持久化 Glance 卡片才能确认处理完成。失败仍可重试。
+- `glance.publish` 可从已安装应用包解析已接纳的 Splash `template` 与 JSON
+  `initial`。主机绑定连接并提供原交互界面，Inbox 代理负责相关性和摘要。
+  编辑、聊天及原生审核共用一份带版本的回复。工具映射、模型文字和自动化
+  点击都不能批准 Gmail 发送。
+
+提供商同意创建的是绑定应用的 GitHub／Google 连接，不是 OctoSense 云账户。
+账户授权与代理／模型同意分开控制；三个示例的私人读取工具默认不可分享。
+不能据此推断跨应用预约、系统记忆提升、通用 cron 调度或旧主机支持。已经
+执行本地原生测试和连接器测试，但真实 OAuth／模型／提供商结果、完整主机
+Glance 流程及 OnePlus 6 尚未验证。Android Google 登录在原生适配器完成前不受支持。
+
+以下历史章节保留原日期证据。旧文中“普通应用工具或指导尚不可用”的描述
+只对应旧基线；此分支应以本节的限定更新为准，而不能将旧描述当作当前全局限制。
+
 后面几节介绍正在其上构建的内容：在应用包中声明应用自己的 Agent、它提供的工具、系统工具箱、
 发布到 glance 屏幕、`sys.digest` 卡片、AI 撰写的文字与卡片内对话，以及 News 的端到端流程。那里的每项功能都标为
 **可用**（已合入所列仓库的 `main`，可按描述使用）或**即将推出**（在所列的未合并 PR 中，
@@ -422,7 +456,7 @@ host.request("model.complete", {
   所以不要使用 Shell 锁定版本不认识的字段。
 - 本仓库的 `card-host` 和 `card-studio` 是按
   [`native-runtime.lock.json`](../native-runtime.lock.json) 锁定的运行时构建的：
-  Octoscript-Makepad `2cc5ef37`，它锁定 Octoscript `5991dfae`，与 Shell 锁定的版本相同。它有
+  Octoscript-Makepad `aa80f72c`，它锁定 Octoscript `2e37d9e6`，与 Shell 锁定的版本相同。它有
   `sys.digest`、文本槽中的 `model-copy`、`sys.chat` 和 `ChatEntry`（OctoScript #40、#53）。
 
 如果想提前准备，可以参照 App Hub 的 News 示例
@@ -869,7 +903,7 @@ host.request("glance.publish", {
 
 L0 数据源**可用**：以 [OctoScript#40](https://github.com/OctoSense-org/OctoScript/pull/40) 合入，
 由 [OctoScript-Makepad#50](https://github.com/OctoSense-org/OctoScript-Makepad/pull/50) 更新锁定，
-已在 Shell 的运行时锁定版本中（Octoscript `5991dfae`）。由 Shell 填充它**即将推出**：
+已在 Shell 的运行时锁定版本中（Octoscript `2e37d9e6`）。由 Shell 填充它**即将推出**：
 [OctoSense#87](https://github.com/OctoSense-org/OctoSense/pull/87)（未合并；
 `crates/shell/src/glance_digest.rs`）。摘要的 `summary` 以及要点的 `text` 和 `label` 是模型
 文字，显示时标为 AI 撰写（见[下文](#ai-撰写的文字与卡片内对话model-copysyschat)）。
@@ -940,7 +974,7 @@ view root  Surface(pad: .page) {
 
 （这里省略了部分头部注释。）Shell 的 L0 检查器接受 `sys.digest`；在 #87 合入之前，没有 Shell
 会用工具箱的运行结果填充它（这时卡片显示什么，本文未运行）。本仓库锁定的运行时（Octoscript
-`5991dfae`）包含 OctoScript#40，所以它的检查器也认识这个数据源（本文未运行）。
+`2e37d9e6`）包含 OctoScript#40，所以它的检查器也认识这个数据源（本文未运行）。
 
 ## AI 撰写的文字与卡片内对话：`model-copy`、`sys.chat`
 

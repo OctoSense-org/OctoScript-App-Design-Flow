@@ -1,0 +1,2330 @@
+[
+  {
+    "request_id": "65f8f667-3bb3-4924-b08f-e0a4cd7ced57",
+    "request": {
+      "name": "studio.bundle_check",
+      "args": {
+        "bundle_path": "card-templates/finance/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "65f8f667-3bb3-4924-b08f-e0a4cd7ced57",
+      "data": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.finance",
+        "capabilities": [],
+        "digest": "f9e443bdbf3708cf4f11f1a7aaea20c47bd946c994b511c6e9adef0123d7a9f5",
+        "name": "Finance Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.637
+  },
+  {
+    "request_id": "c250e3b2-c460-42a2-b0d2-18314385b6c3",
+    "request": {
+      "name": "studio.open",
+      "args": {
+        "bundle_path": "card-templates/finance/bundle"
+      }
+    },
+    "reply": {
+      "call_id": "c250e3b2-c460-42a2-b0d2-18314385b6c3",
+      "data": {
+        "bundle": {
+          "admission": "local_developer",
+          "app_id": "dev.studio.cards.finance",
+          "capabilities": [],
+          "digest": "f9e443bdbf3708cf4f11f1a7aaea20c47bd946c994b511c6e9adef0123d7a9f5",
+          "name": "Finance Cards",
+          "publisher_signed": false,
+          "source_modified": false,
+          "version": "0.1.0"
+        },
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "ready": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.964
+  },
+  {
+    "request_id": "54c12052-091c-41bb-9776-73281044e70b",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f"
+      }
+    },
+    "reply": {
+      "call_id": "54c12052-091c-41bb-9776-73281044e70b",
+      "data": {
+        "height": 2132,
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-37a95115-458e-4e10-8335-5fbef7db1f5e.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "13@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Finance Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   watching: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "FINANCE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "15:59",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Demo Corp \u00b7 DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "142.60 USD",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "+1.85 (+1.31%)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-f500f64a-0fe6-46b7-ace3-b4f95d2236e8.json",
+        "total_widgets": 17,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.315
+  },
+  {
+    "request_id": "3ffa238a-2b4c-45dd-8ff8-4dcfed1e8886",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "widget_id": "-@6",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "3ffa238a-2b4c-45dd-8ff8-4dcfed1e8886",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.303
+  },
+  {
+    "request_id": "7079d143-31a2-461c-a848-39162b10c977",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f"
+      }
+    },
+    "reply": {
+      "call_id": "7079d143-31a2-461c-a848-39162b10c977",
+      "data": {
+        "height": 2132,
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-85c29102-03d1-43e6-bb0f-6846e35dcda2.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "13@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Finance Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   watching: 1",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "FINANCE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "15:59",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Demo Corp \u00b7 DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "142.60 USD",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "+1.85 (+1.31%)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Watching \u2713",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-86313648-59f4-4046-b8db-5d26c065603c.json",
+        "total_widgets": 17,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.313
+  },
+  {
+    "request_id": "e721f374-1ab4-4834-bc4f-7571ac67288c",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "widget_id": "-@6",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "e721f374-1ab4-4834-bc4f-7571ac67288c",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.117
+  },
+  {
+    "request_id": "fc1a4738-5b7f-4dc8-b65f-36c4d2084c3b",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f"
+      }
+    },
+    "reply": {
+      "call_id": "fc1a4738-5b7f-4dc8-b65f-36c4d2084c3b",
+      "data": {
+        "height": 2132,
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-a9b34b02-6b1b-424c-a87b-538854e45d22.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "13@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Finance Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   watching: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "FINANCE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "15:59",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Demo Corp \u00b7 DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "142.60 USD",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "+1.85 (+1.31%)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-17055ee0-ded9-492e-b810-95d10f8a2567.json",
+        "total_widgets": 17,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.356
+  },
+  {
+    "request_id": "9ff82192-f78c-4beb-aacc-d068acda71dc",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "widget_id": "d_ex@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "9ff82192-f78c-4beb-aacc-d068acda71dc",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.336
+  },
+  {
+    "request_id": "bb71cf07-403b-4342-bdfc-2e891967792f",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f"
+      }
+    },
+    "reply": {
+      "call_id": "bb71cf07-403b-4342-bdfc-2e891967792f",
+      "data": {
+        "height": 2132,
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-73a84566-c582-4069-9c90-7e8cd36e8fb8.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "13@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Finance Cards   \u00b7   L1 expanded   \u00b7   ready   \u00b7   watching: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "\u2022 Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "FINANCE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "15:59",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Demo Corp \u00b7 DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "142.60 USD",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "+1.85 (+1.31%)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "DAY RANGE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "140.10 \u2013 143.40",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "text": "30d trend (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "8@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "9@0",
+              "text": "Demo quote only \u2014 not a live price, not investment advice.",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-3049e0d8-c428-49cc-87f8-8ea392c2f47d.json",
+        "total_widgets": 32,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.387
+  },
+  {
+    "request_id": "195d193f-66af-482a-910f-60ade55ad420",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "widget_id": "d_ap@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "195d193f-66af-482a-910f-60ade55ad420",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.109
+  },
+  {
+    "request_id": "71e3f725-69c0-4326-b29f-12a7b0efa092",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f"
+      }
+    },
+    "reply": {
+      "call_id": "71e3f725-69c0-4326-b29f-12a7b0efa092",
+      "data": {
+        "height": 2132,
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-05f3e224-430c-4f98-ab2a-37610c03cfb8.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 1,
+            "finding_count": 1,
+            "pass": false
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "13@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Finance Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   watching: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Demo Corp \u00b7 DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "142.60 USD",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "+1.85 (+1.31%)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Northwind Energy \u00b7 NWND",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "86.15 USD",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "\u22120.42 (\u22120.49%)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "GridWorks \u00b7 GRDW",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "54.30 USD",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "text": "+0.30 (+0.56%)",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-faf4aa83-22b3-4324-80a9-8e77050605a7.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.35
+  },
+  {
+    "request_id": "f53d5604-6138-46e9-b7a8-864a878c0834",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "widget_id": "1@7",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "f53d5604-6138-46e9-b7a8-864a878c0834",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.306
+  },
+  {
+    "request_id": "9f2cd5ac-f249-4ddd-a574-187b590f892a",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f"
+      }
+    },
+    "reply": {
+      "call_id": "9f2cd5ac-f249-4ddd-a574-187b590f892a",
+      "data": {
+        "height": 2132,
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-b8ce18d4-e7b3-43c2-b43f-7d4b02712b9d.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "13@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Finance Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   watching: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Northwind Energy \u00b7 NWND",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "86.15 USD",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "\u22120.42 (\u22120.49%)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "DAY RANGE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "84.00 \u2013 87.10",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "text": "30d trend (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "8@0",
+              "text": "Demo quote only \u00b7 no live feed, no trading.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "9@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "\u2039 Back",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-862c2595-4108-4460-b85f-336d49792db6.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.319
+  },
+  {
+    "request_id": "f962a5c4-cbdd-4dc1-bdc9-2cc14a45a789",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "widget_id": "-@8",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "f962a5c4-cbdd-4dc1-bdc9-2cc14a45a789",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.119
+  },
+  {
+    "request_id": "d36b0c83-59d1-4526-9deb-6f23a6d614b8",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f"
+      }
+    },
+    "reply": {
+      "call_id": "d36b0c83-59d1-4526-9deb-6f23a6d614b8",
+      "data": {
+        "height": 2132,
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-42250493-5bbe-4631-bd14-985ae2f910ff.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "13@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Finance Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   watching: 1",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Northwind Energy \u00b7 NWND",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "86.15 USD",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "text": "\u22120.42 (\u22120.49%)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "5@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "DAY RANGE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "84.00 \u2013 87.10",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "6@0",
+              "text": "30d trend (demo)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "7@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "8@0",
+              "text": "Demo quote only \u00b7 no live feed, no trading.",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "9@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Watching \u2713",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "\u2039 Back",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-b3fd5029-7d3a-461b-9bbf-4bd5e6b670c3.json",
+        "total_widgets": 30,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.317
+  },
+  {
+    "request_id": "1005c4e0-2b48-42f6-ad56-2343a44b3883",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "widget_id": "1@6",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "1005c4e0-2b48-42f6-ad56-2343a44b3883",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.121
+  },
+  {
+    "request_id": "06e47765-ba71-4584-b6cd-a42c186a3705",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f"
+      }
+    },
+    "reply": {
+      "call_id": "06e47765-ba71-4584-b6cd-a42c186a3705",
+      "data": {
+        "height": 2132,
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-a76fa4b2-cfff-4588-8251-c8ef9f88a777.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 1,
+            "finding_count": 1,
+            "pass": false
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "13@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Finance Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   watching: 1",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Demo Corp \u00b7 DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "142.60 USD",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "+1.85 (+1.31%)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@8",
+              "text": "Northwind Energy \u00b7 NWND",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@6",
+              "text": "86.15 USD",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@3",
+              "text": "\u22120.42 (\u22120.49%)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@9",
+              "text": "Watching \u2713",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@7",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@10",
+              "text": "GridWorks \u00b7 GRDW",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@8",
+              "text": "54.30 USD",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@4",
+              "text": "+0.30 (+0.56%)",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-a1273241-d8b6-435f-a40f-3373f7065893.json",
+        "total_widgets": 31,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.352
+  },
+  {
+    "request_id": "f93c8d59-60f9-49f0-824a-7460ceed83a7",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "widget_id": "1@2",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "f93c8d59-60f9-49f0-824a-7460ceed83a7",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.113
+  },
+  {
+    "request_id": "d25054ed-90f8-40af-9305-cacf22d523d0",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f"
+      }
+    },
+    "reply": {
+      "call_id": "d25054ed-90f8-40af-9305-cacf22d523d0",
+      "data": {
+        "height": 2132,
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-0b238bce-7338-4ab1-9a60-9f286c342812.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "13@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Finance Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   watching: 1",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Watching \u00b7 1",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Northwind Energy \u00b7 NWND",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@4",
+              "text": "86.15 USD \u00b7 \u22120.42 (\u22120.49%)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@7",
+              "text": "Watching \u2713",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@5",
+              "text": "Open \u203a",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-7070c455-e430-4bf3-be1d-c59da640c50b.json",
+        "total_widgets": 20,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.3
+  },
+  {
+    "request_id": "51eff31f-1b77-4bd4-98f8-d82274dac295",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "widget_id": "-@7",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "51eff31f-1b77-4bd4-98f8-d82274dac295",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.138
+  },
+  {
+    "request_id": "96d17e52-8f50-4396-83b9-c25c19288da6",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f"
+      }
+    },
+    "reply": {
+      "call_id": "96d17e52-8f50-4396-83b9-c25c19288da6",
+      "data": {
+        "height": 2132,
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-430df579-2083-419d-ae03-befe014880f4.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "13@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Finance Cards   \u00b7   L2 app   \u00b7   ready   \u00b7   watching: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "\u2022 Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "All",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@2",
+              "text": "Watching",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "Watching \u00b7 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "No instruments watched",
+              "type": "Label",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-564496ae-e50f-443b-8f5c-6547f7c22338.json",
+        "total_widgets": 15,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.383
+  },
+  {
+    "request_id": "58265357-7186-47e5-882e-24475c221431",
+    "request": {
+      "name": "studio.input",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "widget_id": "d_gl@0",
+        "action": "tap"
+      }
+    },
+    "reply": {
+      "call_id": "58265357-7186-47e5-882e-24475c221431",
+      "data": {
+        "ok": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.155
+  },
+  {
+    "request_id": "4a4d7c10-f815-4e9b-9490-e9e003c8a19c",
+    "request": {
+      "name": "studio.inspect",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f"
+      }
+    },
+    "reply": {
+      "call_id": "4a4d7c10-f815-4e9b-9490-e9e003c8a19c",
+      "data": {
+        "height": 2132,
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f",
+        "next_offset": null,
+        "offset": 0,
+        "path": ".studio-7ae02026-f5af-445f-90b7-bb200fd8dfff.png",
+        "settled": false,
+        "snapshot": {
+          "checks": {
+            "error_count": 0,
+            "finding_count": 0,
+            "pass": true
+          },
+          "widgets": [
+            {
+              "enabled": true,
+              "selector": "13@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "depth_status@0",
+              "text": "Finance Cards   \u00b7   L0 glance   \u00b7   ready   \u00b7   watching: 0",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_gl@0",
+              "text": "\u2022 Glance",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ex@0",
+              "text": "Expand",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "d_ap@0",
+              "text": "Open app",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "states_btn@0",
+              "text": "States \u25b8",
+              "type": "Button",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@1",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "stage@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@4",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@5",
+              "text": "FINANCE",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@1",
+              "text": "15:59",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "1@3",
+              "text": "Demo Corp \u00b7 DEMO",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "2@2",
+              "text": "142.60 USD",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "3@1",
+              "text": "+1.85 (+1.31%)",
+              "type": "Label",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "4@0",
+              "type": "View",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "selector": "-@6",
+              "text": "Watch",
+              "type": "Button",
+              "visible": true
+            }
+          ]
+        },
+        "snapshot_path": ".studio-89a7597c-ee77-4e33-a892-4036dbe565af.json",
+        "total_widgets": 17,
+        "width": 1080
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.362
+  },
+  {
+    "request_id": "e19c13c3-6a09-4286-93dd-60eb9bc4b1d2",
+    "request": {
+      "name": "studio.close",
+      "args": {
+        "instance_id": "3bae01ae-ad23-4009-8c18-8eac6e23118f"
+      }
+    },
+    "reply": {
+      "call_id": "e19c13c3-6a09-4286-93dd-60eb9bc4b1d2",
+      "data": {
+        "closed": true
+      },
+      "ok": true
+    },
+    "elapsed_seconds": 0.353
+  }
+]

@@ -1,0 +1,464 @@
+{
+  "scope": "Original source-bound operator reports and complete tool-call records; selected capture pairs only",
+  "groups": [
+    {
+      "group": "deepseek-r12-validation",
+      "source_receipt_matches_snapshot": true,
+      "totals": {
+        "steps": 99,
+        "behavior_pass": 87,
+        "raw_pass": 79
+      },
+      "suites": [
+        {
+          "family": "mail-keyboard",
+          "report": "deepseek-r12-validation/mail-keyboard/report.json",
+          "calls": "deepseek-r12-validation/mail-keyboard/tool-calls.json",
+          "input": "deepseek-r12-validation/mail-keyboard/suite.json",
+          "input_sha256": "4c33d26a15102aa66e1b6ae36259fc1784f9f01372477db10701ee5dd9c7cb16",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.mail",
+            "capabilities": [],
+            "digest": "09b64aaf8e8923a1177ea0bb267b6cbeaaa92dbb8fef78ae4198485b07a55552",
+            "name": "Mail Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "mail",
+          "report": "deepseek-r12-validation/mail/report.json",
+          "calls": "deepseek-r12-validation/mail/tool-calls.json",
+          "input": "deepseek-r12-validation/mail/suite.json",
+          "input_sha256": "f442dfa2eacc61b34b58d50a2ffd551ac2ad52696149ea780c0f65c409e419f6",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.mail",
+            "capabilities": [],
+            "digest": "09b64aaf8e8923a1177ea0bb267b6cbeaaa92dbb8fef78ae4198485b07a55552",
+            "name": "Mail Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "calendar",
+          "report": "deepseek-r12-validation/calendar/report.json",
+          "calls": "deepseek-r12-validation/calendar/tool-calls.json",
+          "input": "deepseek-r12-validation/calendar/suite.json",
+          "input_sha256": "debc0491fc50ec3b827dcf3f05d5ffb81be3904cd3f64832bef31732f7988d92",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.calendar",
+            "capabilities": [],
+            "digest": "e1d8257b7426a9c774f20cfc96db13f771cc8c2f067c0f50c520f6ddf4d016f0",
+            "name": "Calendar Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "news",
+          "report": "deepseek-r12-validation/news/report.json",
+          "calls": "deepseek-r12-validation/news/tool-calls.json",
+          "input": "deepseek-r12-validation/news/suite.json",
+          "input_sha256": "3c1d884161df3a1d95aba11d5db83a4c2c5102136738ae86fa074c301658809a",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.news",
+            "capabilities": [],
+            "digest": "a7c25f5dec33f54e218df5f28c1e6a3418a10ebe62ca40d33a77b3006c958383",
+            "name": "News Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "finance",
+          "report": "deepseek-r12-validation/finance/report.json",
+          "calls": "deepseek-r12-validation/finance/tool-calls.json",
+          "input": "deepseek-r12-validation/finance/suite.json",
+          "input_sha256": "981037c71b310d9d3cd986684bf80dc2931f7194f3b2eada15592360d4c51817",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.finance",
+            "capabilities": [],
+            "digest": "f9e443bdbf3708cf4f11f1a7aaea20c47bd946c994b511c6e9adef0123d7a9f5",
+            "name": "Finance Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "photo",
+          "report": "deepseek-r12-validation/photo/report.json",
+          "calls": "deepseek-r12-validation/photo/tool-calls.json",
+          "input": "deepseek-r12-validation/photo/suite.json",
+          "input_sha256": "62d91403eb380a2a7e964cb8d303d8590d1ecca9607960085570a9f2ca696d58",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.photo",
+            "capabilities": [],
+            "digest": "a3c9d4301df224f43bb64b02f0520e2f323663522b1174d1a95cbca8c0110b98",
+            "name": "Photo Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "youtube",
+          "report": "deepseek-r12-validation/youtube/report.json",
+          "calls": "deepseek-r12-validation/youtube/tool-calls.json",
+          "input": "deepseek-r12-validation/youtube/suite.json",
+          "input_sha256": "fb0a83ef96df64906d31fb696cf9593e8de53d4daa02e4a47c272db5633c7ceb",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.youtube",
+            "capabilities": [],
+            "digest": "10699a2b3e3a5c8881a41e934f97088bb5eaace2a416aa1a8ac26eb2e846ebc4",
+            "name": "YouTube Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        }
+      ]
+    },
+    {
+      "group": "deepseek-r12-preview-followup",
+      "source_receipt_matches_snapshot": true,
+      "totals": {
+        "steps": 35,
+        "behavior_pass": 35,
+        "raw_pass": 35
+      },
+      "suites": [
+        {
+          "family": "mail",
+          "report": "deepseek-r12-preview-followup/mail/report.json",
+          "calls": "deepseek-r12-preview-followup/mail/tool-calls.json",
+          "input": "deepseek-r12-preview-followup/mail/suite.json",
+          "input_sha256": "66b6431fee973810d89db2ab278594c66e2c412cc8a1f631fb207cf284c2cd31",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.mail",
+            "capabilities": [],
+            "digest": "09b64aaf8e8923a1177ea0bb267b6cbeaaa92dbb8fef78ae4198485b07a55552",
+            "name": "Mail Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "news",
+          "report": "deepseek-r12-preview-followup/news/report.json",
+          "calls": "deepseek-r12-preview-followup/news/tool-calls.json",
+          "input": "deepseek-r12-preview-followup/news/suite.json",
+          "input_sha256": "c02dec52cb4490bc013a9b4b7ae6bf05f77eea9b9e3f9d0156dace3ba2f2c16e",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.news",
+            "capabilities": [],
+            "digest": "a7c25f5dec33f54e218df5f28c1e6a3418a10ebe62ca40d33a77b3006c958383",
+            "name": "News Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "finance",
+          "report": "deepseek-r12-preview-followup/finance/report.json",
+          "calls": "deepseek-r12-preview-followup/finance/tool-calls.json",
+          "input": "deepseek-r12-preview-followup/finance/suite.json",
+          "input_sha256": "2b06249c63b04eb0ad07cbdf4c78bc0ebdf505d47e6d6aaa0d7db7054cb75f1f",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.finance",
+            "capabilities": [],
+            "digest": "f9e443bdbf3708cf4f11f1a7aaea20c47bd946c994b511c6e9adef0123d7a9f5",
+            "name": "Finance Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "photo",
+          "report": "deepseek-r12-preview-followup/photo/report.json",
+          "calls": "deepseek-r12-preview-followup/photo/tool-calls.json",
+          "input": "deepseek-r12-preview-followup/photo/suite.json",
+          "input_sha256": "eef6b79fa5d77db053329e26d760bee10d48eeb573cc5fd9c21ffbe3994cd6ca",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.photo",
+            "capabilities": [],
+            "digest": "a3c9d4301df224f43bb64b02f0520e2f323663522b1174d1a95cbca8c0110b98",
+            "name": "Photo Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "youtube",
+          "report": "deepseek-r12-preview-followup/youtube/report.json",
+          "calls": "deepseek-r12-preview-followup/youtube/tool-calls.json",
+          "input": "deepseek-r12-preview-followup/youtube/suite.json",
+          "input_sha256": "7b835bd68d9cefa9e8c7c9456ebadb8ac6ca24fa219ec37a7d3f70fe102c2fcd",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.youtube",
+            "capabilities": [],
+            "digest": "10699a2b3e3a5c8881a41e934f97088bb5eaace2a416aa1a8ac26eb2e846ebc4",
+            "name": "YouTube Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        }
+      ]
+    },
+    {
+      "group": "deepseek-r12-last-item",
+      "source_receipt_matches_snapshot": true,
+      "totals": {
+        "steps": 27,
+        "behavior_pass": 25,
+        "raw_pass": 23
+      },
+      "suites": [
+        {
+          "family": "finance",
+          "report": "deepseek-r12-last-item/finance/report.json",
+          "calls": "deepseek-r12-last-item/finance/tool-calls.json",
+          "input": "deepseek-r12-last-item/finance/suite.json",
+          "input_sha256": "eeb799b539934a6f2321d030f54ad80fa3a3dacf9db6535987f4f7ef8bdae96b",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.finance",
+            "capabilities": [],
+            "digest": "f9e443bdbf3708cf4f11f1a7aaea20c47bd946c994b511c6e9adef0123d7a9f5",
+            "name": "Finance Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "photo",
+          "report": "deepseek-r12-last-item/photo/report.json",
+          "calls": "deepseek-r12-last-item/photo/tool-calls.json",
+          "input": "deepseek-r12-last-item/photo/suite.json",
+          "input_sha256": "1f4fbf46cb5c57e1ef03e34cf57144a7c3901ca602b8ee69066e74c1bf44fc1f",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.photo",
+            "capabilities": [],
+            "digest": "a3c9d4301df224f43bb64b02f0520e2f323663522b1174d1a95cbca8c0110b98",
+            "name": "Photo Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "youtube",
+          "report": "deepseek-r12-last-item/youtube/report.json",
+          "calls": "deepseek-r12-last-item/youtube/tool-calls.json",
+          "input": "deepseek-r12-last-item/youtube/suite.json",
+          "input_sha256": "cd2d92fa8388c82e071583b0aa6953b78d800b34c6853e75f72b4ce556b6f2a9",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.youtube",
+            "capabilities": [],
+            "digest": "10699a2b3e3a5c8881a41e934f97088bb5eaace2a416aa1a8ac26eb2e846ebc4",
+            "name": "YouTube Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        }
+      ]
+    },
+    {
+      "group": "deepseek-r12-last-item-copy-corrected",
+      "source_receipt_matches_snapshot": true,
+      "totals": {
+        "steps": 18,
+        "behavior_pass": 18,
+        "raw_pass": 16
+      },
+      "suites": [
+        {
+          "family": "finance",
+          "report": "deepseek-r12-last-item-copy-corrected/finance/report.json",
+          "calls": "deepseek-r12-last-item-copy-corrected/finance/tool-calls.json",
+          "input": "deepseek-r12-last-item-copy-corrected/finance/suite.json",
+          "input_sha256": "be78a293f4b80ff26b18b11d86cc2ef99b4aaa0f401ef1ba33d5e8ccdb89c8d9",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.finance",
+            "capabilities": [],
+            "digest": "f9e443bdbf3708cf4f11f1a7aaea20c47bd946c994b511c6e9adef0123d7a9f5",
+            "name": "Finance Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        },
+        {
+          "family": "photo",
+          "report": "deepseek-r12-last-item-copy-corrected/photo/report.json",
+          "calls": "deepseek-r12-last-item-copy-corrected/photo/tool-calls.json",
+          "input": "deepseek-r12-last-item-copy-corrected/photo/suite.json",
+          "input_sha256": "e13461804a7d846c6c341ad9c25453b182a1a74a4c884f40d505f150efb2ab03",
+          "local_developer_admission": {
+            "admission": "local_developer",
+            "app_id": "dev.studio.cards.photo",
+            "capabilities": [],
+            "digest": "a3c9d4301df224f43bb64b02f0520e2f323663522b1174d1a95cbca8c0110b98",
+            "name": "Photo Cards",
+            "publisher_signed": false,
+            "source_modified": false,
+            "version": "0.1.0"
+          }
+        }
+      ]
+    }
+  ],
+  "selected_captures": [
+    {
+      "png": "deepseek-r12-validation/mail-keyboard/05-send-reachable-with-keyboard-android.png",
+      "snapshot": "deepseek-r12-validation/mail-keyboard/05-send-reachable-with-keyboard.json",
+      "png_sha256": "c23586b4adbe63d78b4ab5d9462398037ae51af9c8c288db717f80ee25e9076c",
+      "snapshot_sha256": "557364da70598d0e90b307f718df911f1043fcceb0c22ddfd7472b36c75a8367",
+      "android_screen_with_keyboard": true
+    },
+    {
+      "png": "deepseek-r12-validation/mail/08-full-app.png",
+      "snapshot": "deepseek-r12-validation/mail/08-full-app.json",
+      "png_sha256": "b41ec31f02e9c97d236c2b48d45ae497553681b9300c43dcdd14e790b3ed8b46",
+      "snapshot_sha256": "ebca8e29a1b82de0b7f4a360421672e002365b287efd08a5ac0b7d13201cb2b9",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "deepseek-r12-validation/calendar/01-expanded.png",
+      "snapshot": "deepseek-r12-validation/calendar/01-expanded.json",
+      "png_sha256": "84f1f57271726b2368fd9e6ec7dcd6e4bef4a14f1ed493201b9bbbde4d10a80f",
+      "snapshot_sha256": "7fb1293750fb186606dd16e580f8fb01ac2a62e1433f4f6c5e6e126bcfdab934",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "deepseek-r12-validation/calendar/12-last-event-detail.png",
+      "snapshot": "deepseek-r12-validation/calendar/12-last-event-detail.json",
+      "png_sha256": "13016cc5aa3990e2bdce7b0c5ef73037934dd3abb5e8f0d5712fcf70049acc1a",
+      "snapshot_sha256": "fa73407122c000216e373ff69b6628b21dded2e24687ebefae77d828f9fd30f2",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "deepseek-r12-validation/news/03-expanded.png",
+      "snapshot": "deepseek-r12-validation/news/03-expanded.json",
+      "png_sha256": "bd58376865ee8d8784c3b3a7ec0640421032d6b8c3f168724fc0c013efd02380",
+      "snapshot_sha256": "537655bb815a542e3a2e05bafc2948c43f25329971fd1a8db22cf6d6cbcf7bca",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "deepseek-r12-validation/news/04-full-app.png",
+      "snapshot": "deepseek-r12-validation/news/04-full-app.json",
+      "png_sha256": "a73c84a639d0afd15710c1ed6f02b71f33828a445f577f73289ecf9ee5ea506d",
+      "snapshot_sha256": "afa992dde2a3b494fcb5f034fc605480d473c5221d5e1199ba886e2a6b803092",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "deepseek-r12-validation/finance/03-expanded.png",
+      "snapshot": "deepseek-r12-validation/finance/03-expanded.json",
+      "png_sha256": "97596b11b56edea26f275668b801cdcc7cf3f0ba8fb28c35254f2dc53dc05df6",
+      "snapshot_sha256": "c2f3d5d140164fb7bbc9d6c0a43375f7dde5c02fe2e81cc82cd1024fd13ec283",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "deepseek-r12-last-item-copy-corrected/finance/03-last-detail-top.png",
+      "snapshot": "deepseek-r12-last-item-copy-corrected/finance/03-last-detail-top.json",
+      "png_sha256": "07e239ea605608a2e01ef2bb7b3dcc1193c4537e9ce18054573e243e15773eb7",
+      "snapshot_sha256": "3042aa9123c3ef9817199e02871e227d8555627297bd0a70a6b665ed93990993",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "deepseek-r12-validation/photo/03-expanded.png",
+      "snapshot": "deepseek-r12-validation/photo/03-expanded.json",
+      "png_sha256": "62ca181ae181d7258548341025e145201d9db290b378b315a20beb0218a382f3",
+      "snapshot_sha256": "c624be1ef268ada0b60911a1787c43ad8e2f4a1d7c8f03c62009bbb665148ca2",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "deepseek-r12-last-item-copy-corrected/photo/03-last-detail-top.png",
+      "snapshot": "deepseek-r12-last-item-copy-corrected/photo/03-last-detail-top.json",
+      "png_sha256": "3d2a53613fcb18a41e360a4a512b0558c2b360516e5aa21a9eae2b26944b2abf",
+      "snapshot_sha256": "f9de078fdd7a6fd28e9c5c4735f28ef8003efc68721c619106cc968735d4c443",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "deepseek-r12-validation/youtube/03-expanded.png",
+      "snapshot": "deepseek-r12-validation/youtube/03-expanded.json",
+      "png_sha256": "d99febbfa073699f8e9ec1dda7de7c2da602e90b89c6a322d7f83345320f6c09",
+      "snapshot_sha256": "2401b0c368dc1f7632522c2c9d06204bc20eed2bab252f9db36756cac4aea2f9",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "deepseek-r12-last-item/youtube/03-last-detail-top.png",
+      "snapshot": "deepseek-r12-last-item/youtube/03-last-detail-top.json",
+      "png_sha256": "8e668dff1b306b1c42481c23237238c2df8a7f3ddcf14c18f969e613dedf19ec",
+      "snapshot_sha256": "fe0c9e2cb8921456d71d563f4043d2ab668e3a27bb536832e3378d22619bab5d",
+      "android_screen_with_keyboard": false
+    },
+    {
+      "png": "glances/mail.png",
+      "png_sha256": "6881d587e0205e9f33e81e6870047fa5689d3c61a0c948d2f7f398dead651bb1",
+      "render_only": true
+    },
+    {
+      "png": "glances/calendar.png",
+      "png_sha256": "857f2e5b900300128940ad8c4683b7e1a38165aa5f9447551cf1724036f0d9e4",
+      "render_only": true
+    },
+    {
+      "png": "glances/news.png",
+      "png_sha256": "139e3c95d795a69afa0a5abcf9a9b3f7ad170fa512df55a4563b6cf3aa0fcb4f",
+      "render_only": true
+    },
+    {
+      "png": "glances/finance.png",
+      "png_sha256": "35f76cf4f31a1a92c55049c3f7e3ee916c0e73e5bb3cffb69c38f588c046421b",
+      "render_only": true
+    },
+    {
+      "png": "glances/photo.png",
+      "png_sha256": "8f320c218752cb308493beb10c08d5a5612e22622979845d0d39a3997076183f",
+      "render_only": true
+    },
+    {
+      "png": "glances/youtube.png",
+      "png_sha256": "364ca8543c6f83f01a3c1d20b68be0df300f47badc37b89e35dfe0a3ed68537e",
+      "render_only": true
+    }
+  ],
+  "omitted_captures": "Other PNG/snapshot filenames in raw reports refer to operator originals not copied into this compact archive.",
+  "interpretation": {
+    "initial_validation": "Twelve failures: operator attempted Empty/Error/Ready without opening States in four domain suites; original failed reports retained.",
+    "preview_followup": "All35 behavior/raw pass via correct States disclosure; source unchanged.",
+    "last_item_initial": "Two assertion failures used wrong expected empty-label text; retain those original suites.",
+    "last_item_corrected": "Only Finance/Photo expected-copy inputs corrected;18behavior/16raw. YouTube original9behavior/9raw remains separate.",
+    "remaining_raw_findings": "Geometry findings remain in reports; no all-bounds pass.",
+    "glances": "Six settled renders; card source unchanged from turn11, so no export-improvement credit for turn12.",
+    "cleanup": "complete; current continuation receipt ../../../cleanup.json"
+  }
+}

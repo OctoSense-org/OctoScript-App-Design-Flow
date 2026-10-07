@@ -1,0 +1,332 @@
+{
+  "status": "reviewed_final_prototypes_not_accepted_at_a_minus",
+  "source_binding": [
+    {
+      "family": "mail",
+      "main_splash_sha256": "8979e89aa28560ca61111b0cc72711e463825cc143c6c81d1b147b788b1d6f50",
+      "matches_behavior_round7_source": true,
+      "old_manifest_vs_final_manifest": "source script unchanged; final empty-capability manifest checked in release suite",
+      "old_manifest_sha256": "dacbd301693ad71b28e25bea40cc9b0d8845929839f36d32ee29b3b7fd00ac13",
+      "final_manifest_sha256": "98d814db46317a526acf1c4fad2f09c192f3a0a8e0177df701e1947f56411254"
+    },
+    {
+      "family": "news",
+      "main_splash_sha256": "4efc64f25cf4895430b8677b3199048a702c77f87eaf1301713aae34d0e213ca",
+      "matches_behavior_round7_source": true,
+      "old_manifest_vs_final_manifest": "source script unchanged; final empty-capability manifest checked in release suite",
+      "old_manifest_sha256": "01eb7264ba176f29aa3b3012737f75deb8fce993d5fd371fcc740ac5b11c6ebe",
+      "final_manifest_sha256": "9cd949a8b185004242b34fa41fc8700024b31241669840d52d058594d765ba48"
+    },
+    {
+      "family": "finance",
+      "main_splash_sha256": "7a784dfd5efd2b1734d36eb83cd862659c25fdcbf908ea0d49c1dd411b9ad5cb",
+      "matches_behavior_round7_source": true,
+      "old_manifest_vs_final_manifest": "source script unchanged; final empty-capability manifest checked in release suite",
+      "old_manifest_sha256": "23cef96c7191a6ffd654504281b6730cc5d9b3745cb33372e9f6819568af494d",
+      "final_manifest_sha256": "9795fd981fe63b7db711853c5572583917d8ea908d4b94b85e350423466fe600"
+    },
+    {
+      "family": "photo",
+      "main_splash_sha256": "5375b6c77a0d338bd8b07a71847bb8f6f68711179b986149c2ab8ba0ee02635b",
+      "matches_behavior_round7_source": true,
+      "old_manifest_vs_final_manifest": "source script unchanged; final empty-capability manifest checked in release suite",
+      "old_manifest_sha256": "5a89caca68752b9f9a0ac5d746a06f3cb2abbd8893609b0da4da8e30234b0bce",
+      "final_manifest_sha256": "c6ba2216bff2c7543a6e301b23fb92964d4f9683b9380ff23aa3bd7def0a1ce6"
+    },
+    {
+      "family": "youtube",
+      "main_splash_sha256": "303de4d02d08dc2265b6fe7d793dcb5f445427bcc29975a020aad903b6582cc5",
+      "matches_behavior_round7_source": true,
+      "old_manifest_vs_final_manifest": "source script unchanged; final empty-capability manifest checked in release suite",
+      "old_manifest_sha256": "1ba0ceb40139ff8e13a31e3c16819b58160db3325fb210eeb22407ec9f45d656",
+      "final_manifest_sha256": "711469c561b7a4ac90bc60fd00f0b7a6a0767a8af24edbef47c2fc8d44ec066a"
+    },
+    {
+      "family": "calendar",
+      "main_splash_sha256": "f1509beab8547c15ecc230afb06f6d0026bedd3d326116a2010410fb9e45fb3d",
+      "final_manifest_sha256": "8056d4a9b8f6e21456ebde3833ff64e4e8326d11736891165c829de6c3721d92",
+      "final_source_operator_suite": "calendar-scroll-fixed-suite",
+      "note": "Final round10 model source: recreate ScrollYView under stage.on_render; detail stays inside the new scroll subtree."
+    }
+  ],
+  "suites": [
+    {
+      "suite": "mail-final-suite",
+      "steps": 12,
+      "behavior_pass": 12,
+      "raw_pass": 12,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.mail",
+        "capabilities": [
+          "storage"
+        ],
+        "digest": "28564e4f2be77b7675b6d688df074340431d3e5b9e8601d98745edf2626947c2",
+        "name": "Mail Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "5cacf5adf232d36e05730249159ab87df79c3af6c4eb801dc07c60f2520f1e67"
+    },
+    {
+      "suite": "mail-release-suite",
+      "steps": 3,
+      "behavior_pass": 3,
+      "raw_pass": 3,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.mail",
+        "capabilities": [],
+        "digest": "28564e4f2be77b7675b6d688df074340431d3e5b9e8601d98745edf2626947c2",
+        "name": "Mail Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "13822def9e672a15e49ed05b1b99c655d8c8797a67680b6611f539076db3a8ef"
+    },
+    {
+      "suite": "calendar-final-suite",
+      "steps": 16,
+      "behavior_pass": 14,
+      "raw_pass": 13,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.calendar",
+        "capabilities": [
+          "storage"
+        ],
+        "digest": "5381b0bdd13dc321ce1adf443cfb72ae7b7400cc5be79f5e4dfbf5a95294c2d6",
+        "name": "Calendar Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "533aa3dcbe76960c0cece6673b0b2b9ae81557a7301530402a79edeb90a9030d",
+      "source_revision_scope": "historical pre-navigation-fix Calendar; not final source acceptance"
+    },
+    {
+      "suite": "calendar-release-suite",
+      "steps": 18,
+      "behavior_pass": 17,
+      "raw_pass": 15,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.calendar",
+        "capabilities": [],
+        "digest": "5f092d133536a4dca3a1a354363e77bef3c54a5179f97bfdaf43b36dd47fb1b2",
+        "name": "Calendar Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "f77edaabf2fab323d03a8edc3f6958e0d2e7568ec92f90eb72693c1be1d33ac0",
+      "source_revision_scope": "historical pre-navigation-fix Calendar; not final source acceptance"
+    },
+    {
+      "suite": "news-final-suite",
+      "steps": 14,
+      "behavior_pass": 14,
+      "raw_pass": 14,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.news",
+        "capabilities": [
+          "storage"
+        ],
+        "digest": "df5a508ac0579180584a95944b5b2f1b00e8f68712d877ba870461b3e30552a9",
+        "name": "News Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "faf9b3d8fcb9409928d7b545041d4a99d44f85850896d13f590f9373f4aafe38"
+    },
+    {
+      "suite": "news-release-suite",
+      "steps": 3,
+      "behavior_pass": 3,
+      "raw_pass": 3,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.news",
+        "capabilities": [],
+        "digest": "df5a508ac0579180584a95944b5b2f1b00e8f68712d877ba870461b3e30552a9",
+        "name": "News Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "d71a9c018d160a258dddfaa4e60a672a06edfea8da120754119f53d67b625599"
+    },
+    {
+      "suite": "finance-final-suite",
+      "steps": 14,
+      "behavior_pass": 14,
+      "raw_pass": 12,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.finance",
+        "capabilities": [
+          "storage"
+        ],
+        "digest": "1c592b58cfc4d6702f7202c4021a5a627a792859a396aeb9560d2970eec4ba53",
+        "name": "Finance Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "b423843a8cfd43e1a98949031c8dc70f2c603743da5a577bce8e567a748960c0"
+    },
+    {
+      "suite": "finance-release-suite",
+      "steps": 5,
+      "behavior_pass": 5,
+      "raw_pass": 3,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.finance",
+        "capabilities": [],
+        "digest": "1c592b58cfc4d6702f7202c4021a5a627a792859a396aeb9560d2970eec4ba53",
+        "name": "Finance Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "1237b8635ce1159d8195f5964aa0d353e6b72b393fa5b96943e9047462cc2e51"
+    },
+    {
+      "suite": "photo-final-suite",
+      "steps": 14,
+      "behavior_pass": 14,
+      "raw_pass": 12,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.photo",
+        "capabilities": [
+          "storage"
+        ],
+        "digest": "895169ead8d11fb7ac44e04be0fa184198d00090069e58e6ff068c14c35e3331",
+        "name": "Photo Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "d281aaf69eb55f33e767ccc34201896e7a4be0b8b72ebc1a2dc0d4aed53f94ac"
+    },
+    {
+      "suite": "photo-release-suite",
+      "steps": 5,
+      "behavior_pass": 5,
+      "raw_pass": 3,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.photo",
+        "capabilities": [],
+        "digest": "895169ead8d11fb7ac44e04be0fa184198d00090069e58e6ff068c14c35e3331",
+        "name": "Photo Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "ab5611a734f183471eaaf7579d4da48991b5702df823e2fa0513ac5cbf019df4"
+    },
+    {
+      "suite": "youtube-final-suite",
+      "steps": 14,
+      "behavior_pass": 14,
+      "raw_pass": 12,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.youtube",
+        "capabilities": [
+          "storage"
+        ],
+        "digest": "f6e48064d512fd3595e642065aee679a2e06d205053d6d777fe1d891be9188c7",
+        "name": "YouTube Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "e869ba294448ff25cf0642a753feb19698a916d592b6a069ab30c1e09dcc7956"
+    },
+    {
+      "suite": "youtube-release-suite",
+      "steps": 5,
+      "behavior_pass": 5,
+      "raw_pass": 3,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.youtube",
+        "capabilities": [],
+        "digest": "f6e48064d512fd3595e642065aee679a2e06d205053d6d777fe1d891be9188c7",
+        "name": "YouTube Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "84fff3761da60e230a1c81958ec238e79d9091b4143466b493151a6d0949567f"
+    },
+    {
+      "suite": "mail-keyboard-final-suite",
+      "steps": 7,
+      "behavior_pass": 7,
+      "raw_pass": 5,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.mail",
+        "capabilities": [
+          "storage"
+        ],
+        "digest": "28564e4f2be77b7675b6d688df074340431d3e5b9e8601d98745edf2626947c2",
+        "name": "Mail Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "670d95c3ca6d89485830de7fa8c98dfa427e5ba41e3cfa91b22080455c46d4f5"
+    },
+    {
+      "suite": "calendar-scroll-fixed-suite",
+      "steps": 21,
+      "behavior_pass": 21,
+      "raw_pass": 18,
+      "admission": {
+        "admission": "local_developer",
+        "app_id": "dev.studio.cards.calendar",
+        "capabilities": [],
+        "digest": "4f23201d913dcda07f475a298c8e3edc0f4fe6c04a596ec9a20b19cdf6799969",
+        "name": "Calendar Cards",
+        "publisher_signed": false,
+        "source_modified": false,
+        "version": "0.1.0"
+      },
+      "report_sha256": "833c5f25654597d0305f0b0c80ee5b06b29dfeed190e4b7427f48256f706021c",
+      "operator_helper": "../reproduce.py",
+      "actual_device_execution": true
+    }
+  ],
+  "notes": [
+    "Behavior checks use observed native assertions; raw pass also requires geometry checks and no small enabled buttons.",
+    "Earlier full behavior source main.splash hashes match the five imported families; final manifests have empty capabilities and separate release admission digests.",
+    "Calendar earlier final suite has two stale copy assertions; release suite additionally reproduces retained scroll offset hiding detail heading. Keep these failures unchanged.",
+    "Native snapshot target sizes do not prove exported glance interaction target sizes. Glance evidence is render-only.",
+    "Selected captures only: other PNG names in raw reports refer to unimported operator originals.",
+    "Calendar corrected suite passes21/21behavior and18/21raw; retained-offset defect fixed, three reviewed viewport-edge clips remain in raw report.",
+    "Portable reproduce.py actually ran Calendar suite; exit1 deliberately preserves raw geometry failures. Portable render-glances.py actually ran all6 families with pass_render:true and settled:true.",
+    "Final25sourcefiles strictly replayed from10Androidmodelturns; final manifests contain no capabilities and use literal integrity placeholders.",
+    "Independent visual score4.1/5 remains below4.5A-minus; no acceptedtemplateclaim."
+  ],
+  "portable_helper_verification": {
+    "render-glances.py": {
+      "executed_sha256": "40a52360e9b2c37a2664ed93123aee47d3f5c4ce09a1ce789626dc6da52a339f",
+      "archived_sha256": "21874b6a65be1e7edeafc2f5d7dc49a79bdd8150e6b1ef7fe4f892e2260118eb",
+      "post_execution_change": "Module docstring only: replace stale dry-run wording with actual device execution; executable code unchanged."
+    },
+    "reproduce.py": {
+      "executed_sha256": "37faf491caedfa3fbdf95f707b4d02c3750de86db481090fd2166da144339298",
+      "archived_sha256": "37faf491caedfa3fbdf95f707b4d02c3750de86db481090fd2166da144339298"
+    }
+  }
+}

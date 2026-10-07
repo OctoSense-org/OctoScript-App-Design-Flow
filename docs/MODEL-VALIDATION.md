@@ -8,6 +8,11 @@ from the final source: a successful tool call or a model's summary is not enough
 Use this guide alongside the selected [flow](../flows/README.md), not as a
 replacement for its admission, visual-review or publishing gates.
 
+For Glance card work, the [app-card UX skill](../skills/octoscript-app-card-ux/SKILL.md)
+adds a task journey and acceptance matrix for workspace expansion, shared editing
+state, phone keyboard reachability and retained context. It reuses this model
+validation loop rather than defining another provider or capture protocol.
+
 **Evidence checked 2026-10-03:** the [DeepSeek turn 12 and MiniMax turn 14
 collections](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/REVIEW.md)
 each contain six Android-authored offline app families. Separate agent review

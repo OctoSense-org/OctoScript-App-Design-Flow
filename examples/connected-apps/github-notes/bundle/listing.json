@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "subtitle": "Markdown drafts with reviewed GitHub saves",
+  "description": "Write Markdown with the Rinx article writer layout, icon controls and preview in a compatible OctoSense host. Keep recoverable drafts locally; connect GitHub through host OAuth, select a repository and file, and review exact Markdown before committing. Requires the connected-services host build. Live OAuth and remote commits remain unverified; screenshots show fictional native UI fixtures.",
+  "category": "productivity",
+  "keywords": [
+    "markdown",
+    "github",
+    "notes",
+    "sample"
+  ],
+  "screenshots": [
+    "screenshots/01-preview.png",
+    "screenshots/02-editor.png"
+  ],
+  "icon": "assets/icon.svg",
+  "platforms": [
+    "macos"
+  ],
+  "publisher": {
+    "name": "Replace with your publisher name",
+    "support": "https://example.com/support",
+    "privacy_policy_url": "https://example.com/privacy"
+  },
+  "release_notes": "Development sample: Rinx writer layout, local draft recovery and synthetic GitHub review validated on macOS; local Android editing verified in a separate test app. Not published; live provider acceptance remains pending.",
+  "age_rating": "all",
+  "license": "Apache-2.0"
+}

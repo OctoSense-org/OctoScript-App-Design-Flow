@@ -3,7 +3,7 @@
 [English](README.md) | 简体中文
 
 一个可运行的 OctoSense 脚本应用：**My Notes**（输入一条笔记，保存在应用自己的存储中，
-点击即可删除）。`tools/octo new <dir>` 会复制它并设置 id 和名称；用
+点击即可删除）。`tools/octo new <dir> --platform macos` 会复制它并设置 id 和名称；用
 `tools/octo run <dir>/bundle` 运行。
 
 ```text
@@ -29,8 +29,9 @@ script-app/
   （`tools/octo shot`）之前，检查门会拒绝这个 bundle。不要添加假图片。
 - 发布者名称、支持 URL 和隐私政策 URL 都是占位符（`tools/octo check` 会提示）。
   由人来替换它们。
-- `platforms` 写的是 `android`；请换成你实际运行过的平台（在 Mac 上用 `card-host` 运行即
-  `macos`），并由人确认。
+- 原始模板的 `platforms` 为空。`octo new` 必须指定 `--platform`，只写入所选目标；
+  多目标可重复该选项。选择不等于测试证据，发布前只保留实际运行过的平台。
+  在 Mac 上运行 `card-host` 只验证 `macos`，不代表 Android 已验证。
 
 来源：与 OctoSense-App-Hub 同期制作的脚本应用模板草稿（从未提交到那里；App Hub 的
 `templates/app/` 是卡片应用起步模板），

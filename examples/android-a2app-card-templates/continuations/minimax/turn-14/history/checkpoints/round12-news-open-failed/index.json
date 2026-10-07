@@ -1,0 +1,47 @@
+{
+  "status": "Failed frozen round12 checkpoint; not final continuation quality and not superseded silently",
+  "source_receipt_matches_frozen25": true,
+  "news_source_sha256": "3cb38a9dd428715adc0c5f582fe3a3fbcf45a5e6de7ef194a9765409a704106d",
+  "source_modified": false,
+  "bundle_check": "local developer admission succeeded; not App Hub publication",
+  "studio_open": "failed; original tool response retained",
+  "input_steps_executed": 0,
+  "diagnosis": "Pinned native evaluation identifies residual extra News footer closing brace at line380. Preserve separately from earlier intermediate22site diagnostics and later repairs.",
+  "source_after": {
+    "files": 25,
+    "exact": true
+  },
+  "artifacts": [
+    {
+      "path": "native-diagnosis.json",
+      "sha256": "85dcb36afd81ca14c74300bc167c7375fc29760fa935216b29471b0b946dbc4c",
+      "bytes": 14639
+    },
+    {
+      "path": "operator-result.json",
+      "sha256": "8d59314769e5973119718ca144430f400e50c16f578d946d58c4711986e96a81",
+      "bytes": 461
+    },
+    {
+      "path": "report.json",
+      "sha256": "d20cd4c4badae3aedce5b520e90c137c90950d5adc5ce84f78846b8d06f4dbbb",
+      "bytes": 368
+    },
+    {
+      "path": "source-receipt.json",
+      "sha256": "3aa7e861449a95864e25660d603bbae76908471bd65d32c4a7a9ab808ff92075",
+      "bytes": 4062
+    },
+    {
+      "path": "suite.json",
+      "sha256": "14e0b7bf2ba64d69f29b25a8c6b4b0dcc7cd79b8cc59a8b29f87862d28eef3d1",
+      "bytes": 119
+    },
+    {
+      "path": "tool-calls.json",
+      "sha256": "f26d12072adfb497994f332179c2dd8dff7f6c24e08d2bd252bf8689816ae1cc",
+      "bytes": 1224
+    }
+  ],
+  "limits": "No passing behavior/visual score inferred from this checkpoint; later source needs separate replay and tests."
+}

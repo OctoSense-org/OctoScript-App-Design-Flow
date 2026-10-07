@@ -1,0 +1,29 @@
+{
+  "model": "deepseek",
+  "round": 12,
+  "source_before": {
+    "files": 25,
+    "exact": true
+  },
+  "suites": {
+    "finance": {
+      "exit": 1,
+      "steps": 9,
+      "behavior_pass": 9,
+      "raw_pass": 7,
+      "errors": []
+    },
+    "photo": {
+      "exit": 0,
+      "steps": 9,
+      "behavior_pass": 9,
+      "raw_pass": 9,
+      "errors": []
+    }
+  },
+  "helper_sha256": "37faf491caedfa3fbdf95f707b4d02c3750de86db481090fd2166da144339298",
+  "source_after": {
+    "files": 25,
+    "exact": true
+  }
+}

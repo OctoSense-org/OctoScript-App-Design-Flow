@@ -1,0 +1,30 @@
+{
+  "agent": {
+    "background": false,
+    "instructions": "AGENT.md",
+    "model": {
+      "local_only": false,
+      "needs": [
+        "tool_calling"
+      ]
+    },
+    "profile": "read-only",
+    "tools": []
+  },
+  "capabilities": [
+    "storage",
+    "auth",
+    "github"
+  ],
+  "id": "org.octosense.samples.githubnotes",
+  "integrity": {
+    "bundle_blake3": "6e9d843f2cb9babaf84d14c622e559918fe15d16e0ad53a682158c125f52b93a"
+  },
+  "name": "GitHub Notes",
+  "schema": 1,
+  "storage": {
+    "accounts": true,
+    "max_bytes": 4194304
+  },
+  "version": "0.1.0"
+}

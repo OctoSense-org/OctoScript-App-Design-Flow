@@ -1,0 +1,12 @@
+{
+  "quote": {
+    "title": "Demo Corp · DEMO",
+    "subtitle": "142.60 USD · +1.85 (+1.31%)",
+    "metric1_label": "DAY RANGE",
+    "metric1_value": "140.10 – 143.40",
+    "as_of": "15:59",
+    "$state": "ready",
+    "$status": "ready"
+  },
+  "_note": "Synthetic demo fixture for card-templates/finance/glance.card (sys.dataset). Bound under the source alias `quote`. Not a live quote."
+}

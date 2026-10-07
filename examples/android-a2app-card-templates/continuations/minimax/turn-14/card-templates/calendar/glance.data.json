@@ -1,0 +1,22 @@
+{
+  "$comment": "Fixture for glance.card. Keys are the SOURCE ALIASES (next_ev, agenda) because the offline realizer looks fixture values up by alias, not by sys.dataset id; no live id is declared so these lower to literals. Field names are the sys.dataset answer names in catalog.md. All events are SYNTHETIC demo data: no account, no calendar service, nothing synced.",
+  "ledger": "calendar.glance@0.1.0",
+  "published_as": "os.calendar",
+  "next_ev": {
+    "title": "Design review",
+    "subtitle": "Studio B · 10:00 - 11:00 · Work",
+    "summary": "Bring the revised invoice mockups. Marcus joins from the office.",
+    "as_of": "Thu 8 Oct",
+    "status": "No answer",
+    "metric1_label": "Time",
+    "metric1_value": "10:00 - 11:00",
+    "metric2_label": "When",
+    "metric2_value": "In 2 days"
+  },
+  "agenda": {
+    "title": "3 events ahead",
+    "subtitle": "Next: Design review",
+    "as_of": "Thu 8 Oct",
+    "status": "Ready"
+  }
+}

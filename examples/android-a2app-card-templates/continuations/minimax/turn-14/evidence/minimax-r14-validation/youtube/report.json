@@ -1,0 +1,1549 @@
+{
+  "family": "youtube",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "\u25cf L0",
+          "Slow harbour morning, timelapse",
+          "3 videos \u00b7 0 in Watch later",
+          "THUMBNAIL NOT LOADED OFFLINE",
+          "DEMO"
+        ],
+        "delay_ms": 150,
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L0",
+          "pass": true
+        },
+        {
+          "contains": "Slow harbour morning, timelapse",
+          "pass": true
+        },
+        {
+          "contains": "3 videos \u00b7 0 in Watch later",
+          "pass": true
+        },
+        {
+          "contains": "THUMBNAIL NOT LOADED OFFLINE",
+          "pass": true
+        },
+        {
+          "contains": "DEMO",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "contains": [
+          "\u25cf L1",
+          "Slow harbour morning, timelapse",
+          "Watch later",
+          "PLAYBACK UNAVAILABLE OFFLINE"
+        ],
+        "action": "tap",
+        "target": "b1",
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream"
+        ]
+      },
+      "target_rect": [
+        136,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b1@0",
+      "png": "01-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        },
+        {
+          "contains": "Slow harbour morning, timelapse",
+          "pass": true
+        },
+        {
+          "contains": "Watch later",
+          "pass": true
+        },
+        {
+          "contains": "PLAYBACK UNAVAILABLE OFFLINE",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-list",
+      "input": {
+        "label": "full-list",
+        "contains": [
+          "\u25cf L2",
+          "Restoring a harbour crane, part 2",
+          "3 videos \u00b7 0 in Watch later"
+        ],
+        "action": "tap",
+        "target": "b2",
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        252,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b2@0",
+      "png": "02-full-list.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "Restoring a harbour crane, part 2",
+          "pass": true
+        },
+        {
+          "contains": "3 videos \u00b7 0 in Watch later",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-item-detail",
+      "input": {
+        "label": "second-item-detail",
+        "contains": [
+          "\u25cf L2",
+          "Restoring a harbour crane, part 2",
+          "Docklands Workshop",
+          "21:07",
+          "128K views",
+          "PLAYBACK UNAVAILABLE OFFLINE"
+        ],
+        "action": "tap",
+        "target": "Open",
+        "occurrence": 1,
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream"
+        ]
+      },
+      "target_rect": [
+        162,
+        399,
+        71,
+        44
+      ],
+      "target_selector": "-@18",
+      "png": "03-second-item-detail.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "Restoring a harbour crane, part 2",
+          "pass": true
+        },
+        {
+          "contains": "Docklands Workshop",
+          "pass": true
+        },
+        {
+          "contains": "21:07",
+          "pass": true
+        },
+        {
+          "contains": "128K views",
+          "pass": true
+        },
+        {
+          "contains": "PLAYBACK UNAVAILABLE OFFLINE",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-second",
+      "input": {
+        "label": "save-second",
+        "contains": [
+          "3 videos \u00b7 1 in Watch later",
+          "Remove from Watch later",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "rd_action",
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream"
+        ]
+      },
+      "target_rect": [
+        16,
+        393,
+        124,
+        44
+      ],
+      "target_selector": "rd_action@0",
+      "png": "04-save-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "3 videos \u00b7 1 in Watch later",
+          "pass": true
+        },
+        {
+          "contains": "Remove from Watch later",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back-to-list",
+      "input": {
+        "label": "back-to-list",
+        "contains": [
+          "\u25cf L2",
+          "Restoring a harbour crane, part 2"
+        ],
+        "action": "tap",
+        "target": "\u2039 List",
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        270,
+        393,
+        67,
+        44
+      ],
+      "target_selector": "-@34",
+      "png": "05-back-to-list.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "Restoring a harbour crane, part 2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "filtered-second",
+      "input": {
+        "label": "filtered-second",
+        "contains": [
+          "Restoring a harbour crane, part 2",
+          "3 videos \u00b7 1 in Watch later",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "tab_later",
+        "excludes": [
+          "Slow harbour morning, timelapse",
+          "Weeknight cycling: four rivers route"
+        ],
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        105,
+        138,
+        124,
+        44
+      ],
+      "target_selector": "tab_later@0",
+      "png": "06-filtered-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Restoring a harbour crane, part 2",
+          "pass": true
+        },
+        {
+          "contains": "3 videos \u00b7 1 in Watch later",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "excludes": "Slow harbour morning, timelapse",
+          "pass": true
+        },
+        {
+          "excludes": "Weeknight cycling: four rivers route",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-second",
+      "input": {
+        "label": "remove-second",
+        "contains": [
+          "Watch later is empty",
+          "3 videos \u00b7 0 in Watch later",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "r2_lb",
+        "no_enabled_button_text": [
+          "Open",
+          "Remove",
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        30,
+        269,
+        95,
+        44
+      ],
+      "target_selector": "r2_lb@0",
+      "png": "07-remove-second.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Watch later is empty",
+          "pass": true
+        },
+        {
+          "contains": "3 videos \u00b7 0 in Watch later",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Open",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Remove",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "return-all",
+      "input": {
+        "label": "return-all",
+        "contains": [
+          "Restoring a harbour crane, part 2",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "tab_all",
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        28,
+        138,
+        46,
+        44
+      ],
+      "target_selector": "tab_all@0",
+      "png": "08-return-all.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Restoring a harbour crane, part 2",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "scroll-list",
+      "input": {
+        "label": "scroll-list",
+        "contains": [
+          "Weeknight cycling: four rivers route",
+          "\u25cf L2"
+        ],
+        "action": "scroll",
+        "target": "l2",
+        "delta_y": 360,
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream"
+        ]
+      },
+      "target_rect": [
+        0,
+        127,
+        384,
+        546
+      ],
+      "target_selector": "l2@0",
+      "png": "09-scroll-list.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Weeknight cycling: four rivers route",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "last-item-detail",
+      "input": {
+        "label": "last-item-detail",
+        "contains": [
+          "\u25cf L2",
+          "Weeknight cycling: four rivers route",
+          "Alex Outdoors",
+          "14:51",
+          "17.9K views",
+          "PLAYBACK UNAVAILABLE OFFLINE"
+        ],
+        "action": "tap",
+        "target": "Open",
+        "occurrence": 2,
+        "capture_android": true,
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream"
+        ]
+      },
+      "target_rect": [
+        162,
+        528,
+        71,
+        44
+      ],
+      "target_selector": "-@21",
+      "png": "10-last-item-detail.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "android_screenshot": "10-last-item-detail-android.png",
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "Weeknight cycling: four rivers route",
+          "pass": true
+        },
+        {
+          "contains": "Alex Outdoors",
+          "pass": true
+        },
+        {
+          "contains": "14:51",
+          "pass": true
+        },
+        {
+          "contains": "17.9K views",
+          "pass": true
+        },
+        {
+          "contains": "PLAYBACK UNAVAILABLE OFFLINE",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-last",
+      "input": {
+        "label": "save-last",
+        "contains": [
+          "3 videos \u00b7 1 in Watch later",
+          "Remove from Watch later",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "rd_action",
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream"
+        ]
+      },
+      "target_rect": [
+        16,
+        397,
+        124,
+        44
+      ],
+      "target_selector": "rd_action@0",
+      "png": "11-save-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "3 videos \u00b7 1 in Watch later",
+          "pass": true
+        },
+        {
+          "contains": "Remove from Watch later",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back-after-last",
+      "input": {
+        "label": "back-after-last",
+        "contains": [
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "\u2039 List",
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        270,
+        397,
+        67,
+        44
+      ],
+      "target_selector": "-@34",
+      "png": "12-back-after-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "filtered-last",
+      "input": {
+        "label": "filtered-last",
+        "contains": [
+          "Weeknight cycling: four rivers route",
+          "3 videos \u00b7 1 in Watch later",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "tab_later",
+        "excludes": [
+          "Slow harbour morning, timelapse",
+          "Restoring a harbour crane, part 2"
+        ],
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        105,
+        138,
+        124,
+        44
+      ],
+      "target_selector": "tab_later@0",
+      "png": "13-filtered-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Weeknight cycling: four rivers route",
+          "pass": true
+        },
+        {
+          "contains": "3 videos \u00b7 1 in Watch later",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "excludes": "Slow harbour morning, timelapse",
+          "pass": true
+        },
+        {
+          "excludes": "Restoring a harbour crane, part 2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-last",
+      "input": {
+        "label": "remove-last",
+        "contains": [
+          "Watch later is empty",
+          "3 videos \u00b7 0 in Watch later",
+          "\u25cf L2"
+        ],
+        "action": "tap",
+        "target": "r3_lb",
+        "no_enabled_button_text": [
+          "Open",
+          "Remove",
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream",
+          "\u2039 List"
+        ]
+      },
+      "target_rect": [
+        30,
+        269,
+        95,
+        44
+      ],
+      "target_selector": "r3_lb@0",
+      "png": "14-remove-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Watch later is empty",
+          "pass": true
+        },
+        {
+          "contains": "3 videos \u00b7 0 in Watch later",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Open",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Remove",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u2039 List",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded-selected-last",
+      "input": {
+        "label": "expanded-selected-last",
+        "contains": [
+          "\u25cf L1",
+          "Weeknight cycling: four rivers route",
+          "Watch later",
+          "PLAYBACK UNAVAILABLE OFFLINE"
+        ],
+        "action": "tap",
+        "target": "b1",
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream"
+        ]
+      },
+      "target_rect": [
+        136,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b1@0",
+      "png": "15-expanded-selected-last.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        },
+        {
+          "contains": "Weeknight cycling: four rivers route",
+          "pass": true
+        },
+        {
+          "contains": "Watch later",
+          "pass": true
+        },
+        {
+          "contains": "PLAYBACK UNAVAILABLE OFFLINE",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded-save",
+      "input": {
+        "label": "expanded-save",
+        "contains": [
+          "3 videos \u00b7 1 in Watch later",
+          "Remove from Watch later",
+          "\u25cf L1"
+        ],
+        "action": "tap",
+        "target": "x_action",
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream"
+        ]
+      },
+      "target_rect": [
+        16,
+        399,
+        124,
+        44
+      ],
+      "target_selector": "x_action@0",
+      "png": "16-expanded-save.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "3 videos \u00b7 1 in Watch later",
+          "pass": true
+        },
+        {
+          "contains": "Remove from Watch later",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded-remove",
+      "input": {
+        "label": "expanded-remove",
+        "contains": [
+          "3 videos \u00b7 0 in Watch later",
+          "Watch later",
+          "\u25cf L1"
+        ],
+        "action": "tap",
+        "target": "x_action",
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream"
+        ]
+      },
+      "target_rect": [
+        16,
+        399,
+        246,
+        44
+      ],
+      "target_selector": "x_action@0",
+      "png": "17-expanded-remove.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "3 videos \u00b7 0 in Watch later",
+          "pass": true
+        },
+        {
+          "contains": "Watch later",
+          "pass": true
+        },
+        {
+          "contains": "\u25cf L1",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "return-lead-glance",
+      "input": {
+        "label": "return-lead-glance",
+        "contains": [
+          "\u25cf L0",
+          "Slow harbour morning, timelapse",
+          "THUMBNAIL NOT LOADED OFFLINE"
+        ],
+        "action": "tap",
+        "target": "b0",
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream"
+        ]
+      },
+      "target_rect": [
+        20,
+        691,
+        112,
+        44
+      ],
+      "target_selector": "b0@0",
+      "png": "18-return-lead-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L0",
+          "pass": true
+        },
+        {
+          "contains": "Slow harbour morning, timelapse",
+          "pass": true
+        },
+        {
+          "contains": "THUMBNAIL NOT LOADED OFFLINE",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "glance-opens-displayed-lead",
+      "input": {
+        "label": "glance-opens-displayed-lead",
+        "contains": [
+          "\u25cf L2",
+          "Slow harbour morning, timelapse",
+          "PLAYBACK UNAVAILABLE OFFLINE"
+        ],
+        "action": "tap",
+        "target": "Open",
+        "excludes": [
+          "Weeknight cycling: four rivers route"
+        ],
+        "no_enabled_button_text": [
+          "Play",
+          "PLAY",
+          "play",
+          "\u25b6",
+          "Stream"
+        ]
+      },
+      "target_rect": [
+        16,
+        305,
+        71,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "19-glance-opens-displayed-lead.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "\u25cf L2",
+          "pass": true
+        },
+        {
+          "contains": "Slow harbour morning, timelapse",
+          "pass": true
+        },
+        {
+          "contains": "PLAYBACK UNAVAILABLE OFFLINE",
+          "pass": true
+        },
+        {
+          "excludes": "Weeknight cycling: four rivers route",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "PLAY",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "play",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "\u25b6",
+          "pass": true
+        },
+        {
+          "no_enabled_button_text": "Stream",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.youtube",
+    "capabilities": [],
+    "digest": "ee4fb2bac62d32f75cfa1ed1f78e2e49f11674e30fe4f94f999e14b5b3d91f04",
+    "name": "Video Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}

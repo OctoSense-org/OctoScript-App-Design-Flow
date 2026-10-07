@@ -1,0 +1,471 @@
+{
+  "family": "news",
+  "steps": [
+    {
+      "label": "glance",
+      "input": {
+        "label": "glance",
+        "contains": [
+          "Harbor line",
+          "Demo Daily"
+        ]
+      },
+      "png": "00-glance.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor line",
+          "pass": true
+        },
+        {
+          "contains": "Demo Daily",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save",
+      "input": {
+        "label": "save",
+        "action": "tap",
+        "target": "Save",
+        "contains": [
+          "Saved \u2713",
+          "saved: 1"
+        ]
+      },
+      "target_rect": [
+        26,
+        390,
+        58,
+        44
+      ],
+      "target_selector": "-@6",
+      "png": "01-save.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Saved \u2713",
+          "pass": true
+        },
+        {
+          "contains": "saved: 1",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "unsave",
+      "input": {
+        "label": "unsave",
+        "action": "tap",
+        "target": "Saved \u2713",
+        "contains": [
+          "Save",
+          "saved: 0"
+        ]
+      },
+      "target_rect": [
+        26,
+        390,
+        85,
+        44
+      ],
+      "target_selector": "-@6",
+      "png": "02-unsave.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Save",
+          "pass": true
+        },
+        {
+          "contains": "saved: 0",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "expanded",
+      "input": {
+        "label": "expanded",
+        "action": "tap",
+        "target": "Read \u203a",
+        "contains": [
+          "fictional Harbor",
+          "Transit desk"
+        ]
+      },
+      "target_rect": [
+        92,
+        390,
+        69,
+        44
+      ],
+      "target_selector": "1@4",
+      "png": "03-expanded.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "fictional Harbor",
+          "pass": true
+        },
+        {
+          "contains": "Transit desk",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "full-app",
+      "input": {
+        "label": "full-app",
+        "action": "tap",
+        "target": "Open app",
+        "occurrence": 0,
+        "contains": [
+          "Harbor line",
+          "City council"
+        ]
+      },
+      "target_rect": [
+        180,
+        107,
+        89,
+        44
+      ],
+      "target_selector": "d_ap@0",
+      "png": "04-full-app.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor line",
+          "pass": true
+        },
+        {
+          "contains": "City council",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "second-story",
+      "input": {
+        "label": "second-story",
+        "action": "tap",
+        "target": "Open \u203a",
+        "occurrence": 1,
+        "contains": [
+          "City council",
+          "City desk"
+        ],
+        "excludes": [
+          "Harbor line"
+        ]
+      },
+      "target_rect": [
+        100,
+        540,
+        108,
+        44
+      ],
+      "target_selector": "1@7",
+      "png": "05-second-story.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "City council",
+          "pass": true
+        },
+        {
+          "contains": "City desk",
+          "pass": true
+        },
+        {
+          "excludes": "Harbor line",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "save-second-story",
+      "input": {
+        "label": "save-second-story",
+        "action": "tap",
+        "target": "Save",
+        "contains": [
+          "Saved \u2713"
+        ]
+      },
+      "target_rect": [
+        26,
+        513,
+        58,
+        44
+      ],
+      "target_selector": "-@6",
+      "png": "06-save-second-story.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Saved \u2713",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "back",
+      "input": {
+        "label": "back",
+        "action": "tap",
+        "target": "\u2039 Back",
+        "contains": [
+          "Harbor line",
+          "City council"
+        ]
+      },
+      "target_rect": [
+        119,
+        513,
+        64,
+        44
+      ],
+      "target_selector": "1@4",
+      "png": "07-back.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor line",
+          "pass": true
+        },
+        {
+          "contains": "City council",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "saved-collection",
+      "input": {
+        "label": "saved-collection",
+        "action": "tap",
+        "target": "Saved",
+        "contains": [
+          "City council"
+        ],
+        "excludes": [
+          "Harbor line"
+        ]
+      },
+      "target_rect": [
+        142,
+        156,
+        108,
+        44
+      ],
+      "target_selector": "1@2",
+      "png": "08-saved-collection.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "City council",
+          "pass": true
+        },
+        {
+          "excludes": "Harbor line",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "remove-second-story",
+      "input": {
+        "label": "remove-second-story",
+        "action": "tap",
+        "target": "Saved \u2713",
+        "contains": [
+          "No saved stories"
+        ]
+      },
+      "target_rect": [
+        38,
+        387,
+        81,
+        44
+      ],
+      "target_selector": "-@7",
+      "png": "09-remove-second-story.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "No saved stories",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "glance-return",
+      "input": {
+        "label": "glance-return",
+        "action": "tap",
+        "target": "d_gl",
+        "contains": [
+          "Harbor line"
+        ]
+      },
+      "target_rect": [
+        12,
+        84,
+        69,
+        44
+      ],
+      "target_selector": "d_gl@0",
+      "png": "10-glance-return.png",
+      "checks": {
+        "findings": [],
+        "instrument": "makepad_widget_tree",
+        "pass": true
+      },
+      "settled": false,
+      "small_button_targets": [],
+      "assertions": [
+        {
+          "contains": "Harbor line",
+          "pass": true
+        }
+      ],
+      "behavior_pass": true,
+      "pass": true
+    },
+    {
+      "label": "empty",
+      "input": {
+        "label": "empty",
+        "action": "tap",
+        "target": "Empty",
+        "contains": [
+          "No stories"
+        ]
+      },
+      "pass": false,
+      "error": "Target 'Empty' matches 0 enabled nodes"
+    },
+    {
+      "label": "error",
+      "input": {
+        "label": "error",
+        "action": "tap",
+        "target": "Error",
+        "contains": [
+          "Couldn't load stories"
+        ]
+      },
+      "pass": false,
+      "error": "Target 'Error' matches 0 enabled nodes"
+    },
+    {
+      "label": "ready",
+      "input": {
+        "label": "ready",
+        "action": "tap",
+        "target": "Ready",
+        "contains": [
+          "Harbor line"
+        ]
+      },
+      "pass": false,
+      "error": "Target 'Ready' matches 0 enabled nodes"
+    }
+  ],
+  "admission": {
+    "admission": "local_developer",
+    "app_id": "dev.studio.cards.news",
+    "capabilities": [],
+    "digest": "a7c25f5dec33f54e218df5f28c1e6a3418a10ebe62ca40d33a77b3006c958383",
+    "name": "News Cards",
+    "publisher_signed": false,
+    "source_modified": false,
+    "version": "0.1.0"
+  },
+  "closed": true
+}
