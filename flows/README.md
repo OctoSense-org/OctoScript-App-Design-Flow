@@ -48,9 +48,9 @@ Supporting code, not flows:
      checks the mapping against the source image and approves screenshots.
      A passing script is not a visual approval.
    - **Publisher identity and release workflow.** Review the GitHub repository,
-     workflow and release tag before publication. New GitHub apps and routine
-     updates need no developer signing key. Manual Ed25519 signing is optional
-     compatibility; its private keys never enter a repo, bundle, prompt or log.
+     workflow and release tag before publication. App Hub accepts only
+     GitHub-attested releases, so no publisher key is involved: never create
+     one, sign a manifest or pass `--publisher-key` to publish.
    - **Release and submission.** Tagging the release and opening the
      `Submit <app id> <version>` issue on OctoSense-App-Hub
      ([SUBMITTING §7](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#7-open-the-submission-issue))

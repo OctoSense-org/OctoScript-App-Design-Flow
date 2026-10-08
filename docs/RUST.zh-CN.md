@@ -25,7 +25,7 @@
 | 构建 | 是否接受申请 `wasm` 的应用 | 是否运行它的函数 |
 | --- | --- | --- |
 | `desktop-v0.1.0-beta.2` | 否。它的应用契约是 1.5，会拒绝这项能力：`app <id> requests unknown capability "wasm"`。 | 否 |
-| OctoSense `main` 的默认构建（尚未进入任何发布版本） | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
+| [OctoSense 桌面版 0.1.0-rc.1](../README.zh-CN.md#下载兼容-shell) 及之后的默认构建 | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
 | 启用 `wasm-lab` 构建的 OctoSense `main`（尚未进入任何发布版本） | 是 | 是 |
 | 基于 App Hub `main` 构建的 `card-host` | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
 

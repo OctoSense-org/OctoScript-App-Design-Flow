@@ -169,8 +169,10 @@ GitHub connection configured, so this is not live repository acceptance.
 **Unverified:** live GitHub OAuth, read, commit and conflict; Android
 background lifecycle; Windows and Linux UI; the app agent's tool calls; a
 physical save approval. On desktop-v0.1.0-beta.2, the host's GitHub review
-sheet doesn't check for a physical press. OctoSense `main` requires one on its
-native review (not in any release yet). Live acceptance
+sheet doesn't check for a physical press.
+[OctoSense desktop 0.1.0-rc.1](../../../README.md#compatible-shell-download)
+requires one on its native review on macOS and refuses the save on Windows and
+Linux. Live acceptance
 needs a device-flow client ID, human consent, and a disposable repository,
 branch and path; no GitHub CLI credential is reused. Neither this copy nor the
 published app has full Rinx feature parity. See [BRIEF.md](BRIEF.md) for the

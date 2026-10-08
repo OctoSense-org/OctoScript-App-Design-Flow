@@ -173,13 +173,13 @@ refusal and the unsigned warning. Step 5 captures the screenshot with
 look at the PNG before you use it.
 
 Rerun `hub stamp` after every change to `bundle/`; `card-host` refuses a
-bundle whose digest does not match. Sign last: `card-host` has no signature
-verifier, so it refuses any signed manifest. Next:
+bundle whose digest does not match. Test the editable, unsigned bundle:
+`card-host` has no publisher verifier, so it refuses a sealed release. Next:
 
 - App Flow's [PUBLISHING.md](../../docs/PUBLISHING.md): the final bundle and
   screenshots.
 - App Hub's [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md):
-  signing and the submission issue.
+  the GitHub release and the submission issue.
 - App Hub's [PUBLISHING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md):
   every gate rule.
 
@@ -206,8 +206,8 @@ verifier, so it refuses any signed manifest. Next:
   On a later runtime, OctoScript-Makepad `704a3ad7`, `card-host` loads a
   bundle-relative `font_src` and falls back to LXGW WenKai, Makepad's
   built-in Chinese font; `desktop-v0.1.0-beta.2` does not load a bundled
-  font, and font loading in a shell built from OctoSense `main` is
-  unverified. Check text in the screenshot.
+  font, and font loading in OctoSense desktop 0.1.0-rc.1 is unverified.
+  Check text in the screenshot.
 - **Artboard.** The native image adapter supports `[406, 776]` only.
 - **Evidence.** A passing stage is not visual approval. Studio-backed
   `capture`/`gate` and instrument screenshots are separate evidence; neither

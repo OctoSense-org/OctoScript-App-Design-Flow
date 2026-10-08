@@ -282,7 +282,7 @@ fn tip_20_percent() {
 - **卡片中的字体。** 要使用自己的字体，把 `.ttf` 或 `.otf` 文件放进应用包，并在套件的 `font_src` 中用相对于应用包的路径引用它，例如 `"font_src": "assets/Body.ttf"`。`card-host` 从应用包自己的素材服务加载它，不需要网络权限。打包的字体计入 8 MiB 上限，所以较大的中日韩字体请只打包所需的子集。字体中没有的字形（例如中文）会改用 Makepad 内置的中文字体霞鹜文楷（LXGW WenKai）。套件可以引用 `makepad_widgets:resources/` 下三种确切的内置字体：`Inter.ttf`、`LXGWWenKaiRegular.ttf`、`LXGWWenKaiBold.ttf`。单层 `$token` 引用可以解析为受支持的字符串；任意对象、嵌套 token 引用及其他 crate 资源路径，准入检查会拒绝。[App Hub #146](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/146) 已在禁用系统字体回退的 macOS 原生 `card-host` 中验证两种霞鹜文楷字重的绘制。
 - **`desktop-v0.1.0-beta.2` 上的字体。** 这个版本早于打包字体的加载功能：它会安装带打包字体的应用，但卡片不会加载这些字体。要在这个版本上显示中文，请用纯 L0 角色套件（`Surface`、`TextTitle`、`TextBody` 等）组合卡片，并且不设 `font_src`；中文由霞鹜文楷显示。
 - **脚本应用中的字体。** 把字体文件放进应用包，例如 `bundle/fonts/X.ttf`，然后在 `main.splash` 中把它作为 `TextStyle` 的 `FontFamily` 成员加载：`FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`。许可条款要求随字体提供许可证时，请保留在应用包中，使用受支持的扩展名，例如 `fonts/OFL.txt`。普通文档中的署名 URL 可以通过检查，不会增加网络权限。Agent 指引与结构化资源仍须通过原有的主机、资源检查。
-- **缺失的字形。** 用 `MAKEPAD_SYSTEM_FONTS=0` 测试应用（`MAKEPAD_SYSTEM_FONTS=0 tools/octo run …`）。不设这个变量时，macOS 的系统字体会补上你的字体缺少的字形，把问题掩盖起来。**未验证**：在没有中日韩系统字体的 Linux 上，同样的文字是否会显示为方框，以及字体在用 OctoSense `main` 构建的 Shell 中的表现。
+- **缺失的字形。** 用 `MAKEPAD_SYSTEM_FONTS=0` 测试应用（`MAKEPAD_SYSTEM_FONTS=0 tools/octo run …`）。不设这个变量时，macOS 的系统字体会补上你的字体缺少的字形，把问题掩盖起来。**未验证**：在没有中日韩系统字体的 Linux 上，同样的文字是否会显示为方框，以及字体在 OctoSense 桌面版 0.1.0-rc.1 中的表现。
 - **大小。** 应用包不能超过 8 MiB（8,388,608 字节）。
 
 ## 8. 检查应用包

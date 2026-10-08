@@ -29,7 +29,7 @@
 3. **人工检查点。** 标记为 **HUMAN** 的步骤是 Agent 必须停下的地方：报告已准备好的内容，然后等待人来处理。检查点包括：
    - **使用付费生成器生成图像。** 由人运行生成器（或明确授权这笔花费），并提供原始输出和确切的提示词。
    - **语义与视觉评审。** 由人（或其指定的评审人）对照源图检查映射，并批准截图。脚本通过不等于视觉批准。
-   - **发布者身份与发布工作流。** 发布前审阅 GitHub 仓库、工作流和 tag。新 GitHub 应用及日常更新无需开发者签名密钥。手动 Ed25519 只是可选兼容路径，其私钥永不进入仓库、应用包、提示词或日志。
+   - **发布者身份与 Release 工作流。** 发布前审阅 GitHub 仓库、工作流和 tag。App Hub 只接受带 GitHub 证明的 Release，不涉及任何发布者密钥：不要创建发布者密钥、为清单签名，或为了发布而传入 `--publisher-key`。
    - **发布与提交。** 为发布打 tag，以及在 OctoSense-App-Hub 开 `Submit <app id> <version>` issue（[SUBMITTING §7](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#7-开提交-issue)），都由人决定。
    - 各流程特有的检查点（例如购买 Sketch 或设计套件）列在该流程的步骤表中。
 4. **统一的交接。** 每个应用流程都以相同的方式结束。先设置这些变量：

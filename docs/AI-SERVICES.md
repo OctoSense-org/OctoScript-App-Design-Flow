@@ -385,9 +385,8 @@ Two version differences matter when you test:
   OctoSense's `Cargo.toml` and `native-apps.json`), which can lag App Hub
   `main`. Both take the manifest rules from one crate,
   `octosense-app-contract` ([ADR 0005](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0005-app-contract.md)),
-  which App Hub requires at version 1.7, published on crates.io.
-  OctoSense `main` resolves 1.6.0 from crates.io; Host API v1 needs 1.6 or
-  later.
+  which App Hub requires at version 1.8.0, published on crates.io.
+  OctoSense desktop RC1 links 1.8.0; Host API v1 needs 1.6 or later.
   A manifest at the default `schema_minor` (0) still refuses unknown fields
   (**✓ run**: ``hub: manifest is not valid: unknown field `future_field`, expected one of `schema`, `id`, … `requires`, `schema_minor` ``),
   so do not use a field the shells' pin does not know.
@@ -761,7 +760,7 @@ app's own card template through the shared `glance.publish` method:
   through `host_method`. The gate admits an `app` tool.
   `desktop-v0.1.0-beta.2` refuses every call to it:
   `<tool> declares a script implementation, but this host does not support script tool dispatch`.
-  OctoSense `main` runs it in the open full app, for a manifest that declares
+  OctoSense desktop RC1 runs it in the open full app, for a manifest that declares
   `requires: ["script-tools-v1"]`
   ([HOST-API-V1 §5](HOST-API-V1.md#5-implement-a-declared-app-tool);
   OctoSense `crates/shell/src/host_tools/script_apps.rs`).
@@ -779,7 +778,7 @@ app's own card template through the shared `glance.publish` method:
   `initial`, as above, or an L0 `source` + `data`, never `script`: a script
   card runs under the app's own policy, so a turn misled by its input could
   publish arbitrary code. `desktop-v0.1.0-beta.2` publishes whatever the tool
-  accepts; OctoSense `main` refuses `script` from agent tools
+  accepts; OctoSense desktop RC1 refuses `script` from agent tools
   ([Who may publish](#who-may-publish)).
 - `background`, `shareable`, `private_data`, `confirm`, `outward`,
   `auto_approvable`: see
@@ -826,8 +825,8 @@ from `auto_approvable` (App Hub PUBLISHING):
 
 Not yet for store apps: `confirm: "app"`. The gate allows it only on a tool
 with `implemented_by: "app"` (or a native module's tool).
-`desktop-v0.1.0-beta.2` refuses those tools, and OctoSense `main` refuses a
-script tool call that needs the app's own confirmation:
+`desktop-v0.1.0-beta.2` refuses those tools, and OctoSense desktop RC1 refuses
+a script tool call that needs the app's own confirmation:
 `Script tools require host confirmation; confirm: app is not supported by this ABI`.
 On a host-service tool the gate refuses it (**✓ run**):
 `[refused] tools: summary.card.publish says confirm "app" but is implemented by the host service: …`.
@@ -882,7 +881,8 @@ Templates and tools: OctoSense
 ### `glance.publish`, `glance.withdraw`, `glance.list`
 
 The Glance screen is the desktop's Glance panel and the phone's feed. Its
-service is **available** on OctoSense `main` (`crates/shell/src/glance.rs`):
+service is **available** in the OctoSense shells, desktop RC1 and beta.2
+included (`crates/shell/src/glance.rs`):
 
 | Method | Args | Answer |
 | --- | --- | --- |

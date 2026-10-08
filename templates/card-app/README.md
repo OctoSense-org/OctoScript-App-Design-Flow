@@ -32,7 +32,7 @@ hide a missing glyph.
 bundled font, but its cards do not load the font. For Chinese text there,
 build the card from the plain L0 role kit (`Surface`, `TextTitle`,
 `TextBody`, …) and set no `font_src`; LXGW WenKai draws the Chinese text.
-Font loading in a shell built from OctoSense `main` is unverified.
+Font loading in OctoSense desktop 0.1.0-rc.1 is unverified.
 
 For an app with its own logic, state and requests, use the
 [script-app template](../script-app/README.md) instead.

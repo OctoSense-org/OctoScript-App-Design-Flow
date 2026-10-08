@@ -620,8 +620,9 @@ Publish checklist (full text: docs/PUBLISHING.md). Run top to bottom; stop at HU
      bundle instead and release a new version with a new tag.
  11. After the workflow passes, add the release link and review evidence to
      the submission issue. Until App Hub first publishes the app, post each
-     new release there as a comment (tag, full commit SHA, workflow run);
-     after publication, open a new issue for each new version.
+     new release there as a comment (tag, full commit SHA, workflow run) and
+     update the issue title and Version field; after publication, open a new
+     issue for each new version.
      A maintainer reviews the exact bytes before catalog admission. Never edit
      its catalog/index/artifacts or claim release equals Hub approval.
 

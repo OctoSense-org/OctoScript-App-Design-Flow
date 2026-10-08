@@ -31,7 +31,7 @@ service.
 | Build | Accepts an app that requests `wasm` | Runs its functions |
 | --- | --- | --- |
 | `desktop-v0.1.0-beta.2` | No. Its app contract, 1.5, refuses the capability: `app <id> requests unknown capability "wasm"`. | No |
-| OctoSense `main` (in no release yet), default build | Yes | No. Every call answers `no service answers "wasm" on this device`. |
+| [OctoSense desktop 0.1.0-rc.1](../README.md#compatible-shell-download) and later, default build | Yes | No. Every call answers `no service answers "wasm" on this device`. |
 | OctoSense `main` built with `wasm-lab` (in no release yet) | Yes | Yes |
 | `card-host`, built from App Hub `main` | Yes | No. Every call answers `no service answers "wasm" on this device`. |
 

@@ -488,7 +488,7 @@ in the compatible RC1 release, within its platform limits
   (`MAKEPAD_SYSTEM_FONTS=0 tools/octo run …`). Without it, a macOS system font
   fills in the glyphs your fonts lack and hides the problem. **Unverified:**
   that the same text shows boxes on Linux without a CJK system font, and how
-  fonts behave in a shell built from OctoSense `main`.
+  fonts behave in OctoSense desktop 0.1.0-rc.1.
 - **Size.** The bundle must stay within 8 MiB (8,388,608 bytes).
 
 ## 8. Check it

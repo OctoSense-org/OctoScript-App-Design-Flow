@@ -8,7 +8,7 @@
 
 分发器属于 App Hub（[OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 中的 `crates/appstore/src/services.rs`）。服务属于 OctoSense：[OctoSense](https://github.com/OctoSense-org/OctoSense) 中的 `crates/shell`、`crates/ai-host`、`crates/oauth-service` 和 `apps/*/host-service`。下文未加标注的路径都在 OctoSense 中。
 
-OctoSense `main`（尚未进入任何发布版本）还实现了 Host API v1：版本要求、API 发现、签名的后端操作、设备授权和脚本工具。用法见 [Host API v1](HOST-API-V1.zh-CN.md)。`desktop-v0.1.0-beta.2` 没有这些功能。
+[OctoSense 桌面版 0.1.0-rc.1](../README.zh-CN.md#下载兼容-shell)（RC1）还实现了 Host API v1：版本要求、API 发现、签名的后端操作、设备授权和脚本工具，平台限制见 App Hub 的[宿主 API 兼容性](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/HOST-API.zh-CN.md#限制)。用法见 [Host API v1](HOST-API-V1.zh-CN.md)。`desktop-v0.1.0-beta.2` 没有这些功能。
 
 ## 哪个 Shell 提供哪项服务
 
@@ -17,8 +17,8 @@ OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home�
 | 能力族 | 谁可以调用 | 服务代码 |
 | --- | --- | --- |
 | `mail` | 任何获得 `mail` 授权的应用 | `apps/mail/host-service` |
-| `auth` | 任何获得 `auth` 授权的应用。申请数据权限时，还需要对应的能力族（`github`、`gcalendar` 或 `gmail`）；身份权限，以及 OctoSense `main` 上的后端登录，只需要 `auth`。 | `crates/oauth-service/src/host.rs`、`host_backend.rs` |
-| `github`、`gcalendar` | 获得相应能力族授权的应用，通过 `auth` 建立的连接调用。在 OctoSense `main` 上，保存前的审阅界面与 `gmail` 一样由 Shell 提供。 | `crates/oauth-service/src/host_api.rs`；在 `main` 上还有 `crates/shell/src/connected_review.rs` |
+| `auth` | 任何获得 `auth` 授权的应用。申请数据权限时，还需要对应的能力族（`github`、`gcalendar` 或 `gmail`）；身份权限，以及 RC1 中的后端登录，只需要 `auth`。 | `crates/oauth-service/src/host.rs`、`host_backend.rs` |
+| `github`、`gcalendar` | 获得相应能力族授权的应用，通过 `auth` 建立的连接调用。在 RC1 中，保存前的审阅界面与 `gmail` 一样由 Shell 提供。 | `crates/oauth-service/src/host_api.rs`；在 RC1 中还有 `crates/shell/src/connected_review.rs` |
 | `gmail` | 获得 `gmail` 授权的应用，通过 `auth` 建立的连接调用。发信前的审阅界面由 Shell 提供。 | `crates/oauth-service/src/host_inbox.rs`、`crates/shell/src/connected_review.rs` |
 | `glance` | 任何获得 `glance` 授权的应用 | `crates/shell/src/glance.rs` |
 | `model` | 任何获得 `model` 授权的应用，受每个应用各自的每日预算限制 | `apps/ai-providers/host-service/src/complete/` |
@@ -37,8 +37,8 @@ OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home�
 
 | 服务 | 前提 | 可用的构建 |
 | --- | --- | --- |
-| `auth`、`github`、`gcalendar`、`gmail` | GitHub 和 Google 的提供商注册信息。beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取注册信息，这个文件由宿主的运维人员提供；用 OctoSense `main` 构建时，可以把注册信息编译进去（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。 | 用 OctoSense `main` 构建的版本，以及 desktop-v0.1.0-beta.2 发布版（macOS，Apple 芯片）。尚不支持：在 Android 上登录 Google。 |
-| 使用 `backend` 提供商的 `auth` | 应用后端的注册信息：来自已准入签名应用包的 `backend` 块（[后端指南](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）；应用包没有声明时，来自运维人员配置的 `<apps root>/.host/oauth/backends.json`。 | 仅限用 OctoSense `main` 构建的版本；beta.2 没有后端登录。macOS 和 Android 9 及以上版本使用宿主的 WebView 登录，Windows 和 Linux 使用系统浏览器（未验证）。iOS 不支持。 |
+| `auth`、`github`、`gcalendar`、`gmail` | GitHub 和 Google 的提供商注册信息。beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取注册信息，这个文件由宿主的运维人员提供；RC1 及之后的构建可以把注册信息编译进去，但公开的 RC1 安装包不含任何注册信息（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。 | RC1 及之后的构建（Windows 和 Linux 无法批准受保护的写操作），以及 desktop-v0.1.0-beta.2 发布版（macOS，Apple 芯片）。尚不支持：在 Android 上登录 Google。 |
+| 使用 `backend` 提供商的 `auth` | 应用后端的注册信息：来自已准入签名应用包的 `backend` 块（[后端指南](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）；应用包没有声明时，来自运维人员配置的 `<apps root>/.host/oauth/backends.json`。 | RC1 及之后的构建；beta.2 没有后端登录。macOS 和 Android 9 及以上版本使用宿主的 WebView 登录，Windows 和 Linux 使用系统浏览器（未验证）。iOS 不支持。 |
 | `octos`、`model` | 用户在 AI providers 应用中添加的 AI 提供商。 | 所有标准构建；`octos` 仅限托管内核的 Shell。 |
 | `mail` | 用户在 Mail 的面板上登录的账户。 | 所有标准构建。 |
 
@@ -79,7 +79,7 @@ mail.sheet.submit is for the host's sheet, not an app
 
 面板只出现在前台应用之上。来自信息流中速览卡片或 Agent 工具的调用无法弹出面板，所以服务会拒绝这类调用，并用一句话提示用户打开应用，例如 Mail 会返回 `Signing in needs Mail open: open Mail to add an account.` 这句话。
 
-带 `from_sheet` 标记的调用只能证明它出自面板中的程序，不能证明用户按下了什么。所以，必须由用户本人发起的发送或保存要经过原生控件：它在按下和点击时都检查 Makepad 的 `trusted_user_input()`。Gmail 的发送审阅界面在所有版本上都这样做；GitHub 和 Calendar 的保存在 OctoSense `main`（尚未进入任何发布版本）上也这样做，那里的 `sheet.save` 调用会得到 `Saving requires a physical activation of the native host review. Script and agent requests cannot approve it.` 这句话。在 desktop-v0.1.0-beta.2 上，GitHub 和 Calendar 的服务仍接受来自面板的 `sheet.save`，不做这项检查。
+带 `from_sheet` 标记的调用只能证明它出自面板中的程序，不能证明用户按下了什么。所以，必须由用户本人发起的发送或保存要经过原生控件：它在按下和点击时都检查 Makepad 的 `trusted_user_input()`。Gmail 的发送审阅界面在所有版本上都这样做；GitHub 和 Calendar 的保存在 RC1 中也这样做，那里的 `sheet.save` 调用会得到 `Saving requires a physical activation of the native host review. Script and agent requests cannot approve it.` 这句话。在 Windows 和 Linux 上，RC1 根本无法批准这类保存：受保护的写操作会拒绝执行。在 desktop-v0.1.0-beta.2 上，GitHub 和 Calendar 的服务仍接受来自面板的 `sheet.save`，不做这项检查。
 
 ## 密钥归宿主所有
 

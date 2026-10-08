@@ -19,7 +19,7 @@
 - **Review & Send** 请宿主显示完整、不可修改的邮件。只有在原生控件上亲手点按才能批准发送。脚本、模型、`from_sheet` 标志、自动化点击或开发者模式都不能批准。
 - Gmail 接受提交后，对应的速览卡片会撤下。Gmail 接受与收件人送达分开记录。结果不明时禁止自动重试。
 
-这里有一个工具声明不宜照搬：`inbox.draft_edit` 在后台运行，可以改掉回复的 `to` 地址。0.1.0 版还有第二个：它的 `inbox.notify` 还接受 `script`、`source` 和 `data`，因此在 desktop-v0.1.0-beta.2 上，一轮遭到提示注入的后台对话可以发布任意 Splash 代码。在 0.1.1 和本副本中，`inbox.notify` 必须提供已准入的 `glance-workspace.splash` 模板、`initial.message`、`card_id`、`title`、`summary` 和 `notify`，它的封闭 schema 中没有 `script`、`source` 或 `data`。OctoSense `main` 也会拒绝任何 Agent 工具中的 `script`（尚未进入任何发布版本）。见[哪些可以照搬，哪些不要照搬](../README.zh-CN.md#哪些可以照搬哪些不要照搬)。
+这里有一个工具声明不宜照搬：`inbox.draft_edit` 在后台运行，可以改掉回复的 `to` 地址。0.1.0 版还有第二个：它的 `inbox.notify` 还接受 `script`、`source` 和 `data`，因此在 desktop-v0.1.0-beta.2 上，一轮遭到提示注入的后台对话可以发布任意 Splash 代码。在 0.1.1 和本副本中，`inbox.notify` 必须提供已准入的 `glance-workspace.splash` 模板、`initial.message`、`card_id`、`title`、`summary` 和 `notify`，它的封闭 schema 中没有 `script`、`source` 或 `data`。[OctoSense 桌面版 0.1.0-rc.1](../../../README.zh-CN.md#下载兼容-shell) 也会拒绝任何 Agent 工具中的 `script`。见[哪些可以照搬，哪些不要照搬](../README.zh-CN.md#哪些可以照搬哪些不要照搬)。
 
 ## 运行要求与限制
 

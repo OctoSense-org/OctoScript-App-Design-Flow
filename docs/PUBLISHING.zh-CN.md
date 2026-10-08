@@ -187,7 +187,7 @@ tools/octo publish-github "$APP"
 
 - 创建 GitHub Release 不会自动获得 App Hub 准入。
 - 不要在 pull request 中手改 Hub 的签名目录、索引或已准入产物。受保护的审核和发布工作流会准入确切的应用包。
-- 在 App Hub 首次发布应用之前，每个新 Release 都以评论的形式发在同一个 issue 中，写明它的 tag、完整的 commit SHA 和工作流运行链接。发布之后，每个新版本都开新 issue。
+- 在 App Hub 首次发布应用之前，每个新 Release 都以评论的形式发在同一个 issue 中，写明它的 tag、完整的 commit SHA 和工作流运行链接，并更新 issue 标题和 Version 字段。发布之后，每个新版本都开新 issue。
 - Agent 可以准备工作流，并在 `build/SUBMISSION.md` 中起草 issue；不能声称尚未观察到的 Release、审核或批准已经发生。对外部操作，遵循用户的授权。
 
 ### 3.9 App Hub 接下来做什么

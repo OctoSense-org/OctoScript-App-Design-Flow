@@ -289,8 +289,9 @@ for the current issue fields.
 - Do not hand-edit the Hub's catalog, index or admitted artifacts in a pull
   request. Its protected review/publishing workflow admits the exact bundle.
 - Until App Hub first publishes the app, post each new release on the same
-  issue, as a comment with its tag, full commit SHA and workflow-run link.
-  After publication, open a new issue for each new version.
+  issue, as a comment with its tag, full commit SHA and workflow-run link, and
+  update the issue title and Version field. After publication, open a new
+  issue for each new version.
 - An agent may prepare the workflow and draft the issue in
   `build/SUBMISSION.md`. It must not claim a release, review or approval it
   did not observe. Respect the person's authorization for external actions.

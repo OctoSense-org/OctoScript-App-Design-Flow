@@ -46,7 +46,7 @@ Every file matches the release byte for byte except two:
 | Requirement | Why |
 | --- | --- |
 | [OctoSense desktop-v0.1.0-beta.2](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-beta.2) on macOS (Apple silicon) | The first release whose App Hub contract (1.5) admits `auth`, `github`, `gmail` and `gcalendar`, and whose shell serves them. It also has the `MarkdownEditor` widget that GitHub Notes uses. |
-| Provider registrations in the host's `<apps root>/.host/oauth/clients.json` | The host, not the app, owns the OAuth clients. Beta.2 reads them only from this file, and its downloads contain none. A build from OctoSense `main` can compile them in instead. |
+| Provider registrations in the host's `<apps root>/.host/oauth/clients.json` | The host, not the app, owns the OAuth clients. Beta.2 reads them only from this file, and its downloads contain none. [OctoSense desktop 0.1.0-rc.1](../../README.md#compatible-shell-download) (RC1) and later builds can compile them in instead; the public RC1 packages include none. |
 | A GitHub OAuth app with device flow enabled | GitHub Notes signs in with it. |
 | A Google desktop OAuth client with the Gmail and Calendar APIs enabled, and its consent screen and test users configured | Inbox Assistant and Google Calendar sign in with it. |
 
@@ -115,7 +115,7 @@ which uses OctoSense's test hosts with a synthetic provider.
 | Glance | None | Template file `glance-workspace.splash` | [L0](../../docs/GLOSSARY.md) card source inside `main.splash` |
 | Protected write | GitHub commit through `github.review_save` | Gmail send through `gmail.draft.review` | Event save through `gcalendar.review_save` |
 | Host review checks for a physical press, desktop-v0.1.0-beta.2 | No | Yes | No |
-| Host review checks for a physical press, OctoSense `main` (not in any release yet) | Yes | Yes | Yes |
+| Host review checks for a physical press, RC1 on macOS | Yes | Yes | Yes |
 
 All three follow the same rules:
 
@@ -221,12 +221,13 @@ expires after 10 minutes. How the host accepts approval depends on the build:
 
 - **desktop-v0.1.0-beta.2:** only from its own sheet, but it doesn't check
   that the press was physical.
-- **OctoSense `main` (not in any release yet):** only from a physical
-  press on the native **Approve & Save** control, the same kind of review that
-  guards a Gmail send. Like that review, it checks Makepad's
-  `trusted_user_input()` on both the press and the click, and an approval works
-  once. A script or agent request gets
+- **RC1 on macOS:** only from a physical press on the native
+  **Approve & Save** control, the same kind of review that guards a Gmail
+  send. Like that review, it checks Makepad's `trusted_user_input()` on both
+  the press and the click, and an approval works once. A script or agent
+  request gets
   `Saving requires a physical activation of the native host review. Script and agent requests cannot approve it.`
+  On Windows and Linux, RC1 refuses the save: protected writes fail closed.
 
 ### Inbox Assistant
 
@@ -399,7 +400,7 @@ saving change skips or repeats. `gcalendar.review_save` then opens the host
 sheet with the exact event. An edit carries the event's ETag, so if the event
 changed remotely, the save fails with HTTP 412 instead of overwriting it.
 Approval works as it does for GitHub Notes: desktop-v0.1.0-beta.2's sheet
-doesn't check for a physical press, and OctoSense `main` requires one.
+doesn't check for a physical press, and RC1 requires one.
 
 ## What to copy, what not to copy
 
@@ -424,7 +425,7 @@ These four patterns passed App Hub review, but each carries a risk or a
 surprise. Version 0.1.1 fixes the first two and shows the date range for the
 third; the fourth is still in Inbox Assistant. The host's side depends on the
 build, so the first three lessons cover both desktop-v0.1.0-beta.2 and
-OctoSense `main` (not in any release yet).
+RC1.
 
 #### Glance tools that accept `script`
 
@@ -448,7 +449,7 @@ sender's choosing.
   `data`, and requires `template`, `initial`, `card_id`, `title`, `summary`
   and `notify`. Its description says
   `Executable card source is not accepted.` This repository's copy matches.
-- **OctoSense `main`:** the host refuses `script` from any agent tool that maps
+- **RC1:** the host refuses `script` from any agent tool that maps
   to `glance.publish`:
   `Agents cannot publish executable Splash; choose an admitted template with initial data, or L0 source`.
   A template card needs a template name and an `initial` object, and an
@@ -485,10 +486,10 @@ disclose that agent.
 - **What 0.1.1 changes:** the manifest declares the foreground,
   read-only agent and its `AGENT.md`, and the listing description discloses
   **Ask GitHub Notes**. The three read tools are unchanged.
-- **OctoSense `main` and desktop-v0.1.0-beta.2:** both still give a
+- **RC1 and desktop-v0.1.0-beta.2:** both still give a
   `tools.json` app an agent, but their stores describe it differently:
 
-| Store text | desktop-v0.1.0-beta.2 | OctoSense `main` |
+| Store text | desktop-v0.1.0-beta.2 | RC1 |
 | --- | --- | --- |
 | Privacy summary, 0.1.0 | `Runs no assistant.` | `Offers the host's Ask assistant for its admitted tools, only after you consent. Your conversation and tool results may be sent to your configured AI provider.` and `No app-declared background assistant or automatic triggers.` |
 | Privacy summary, 0.1.1 | `Runs an assistant limited to this app's own data.` | The same |
@@ -519,7 +520,7 @@ agenda covered.
   `date range unavailable` when it doesn't. When the selected event drops out
   of a sync, the app says it may be outside the displayed date range, not that
   it left the calendar. This repository's copy has the same change.
-- **OctoSense `main`:** the host syncs a fixed window, from 30 days before
+- **RC1:** the host syncs a fixed window, from 30 days before
   today to 366 days after on UTC day boundaries, with recurring events expanded
   into single occurrences. The same limits apply.
 - **desktop-v0.1.0-beta.2:** the host still syncs the whole calendar, oldest

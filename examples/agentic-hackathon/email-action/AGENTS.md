@@ -24,10 +24,10 @@ Rules:
   `network.hosts`; never `http://`.
 - Never collect a password, PIN or code; accounts go through a host service.
 - Screenshots are real captures you looked at. Never a dummy.
-- Restamp after every edit (`tools/octo check` does it). After signing, any
-  edit needs a new stamp and signature.
+- Restamp after every edit (`tools/octo check` does it). Never edit a sealed
+  release; a change needs a new version and tag.
 - Keys, `.local-state/`, `build/` and review packets never enter `bundle/` or git.
-- Stop at human steps: publisher key, publisher details, platform claims, submission.
+- Stop at human steps: publisher details, workflow review, platform claims, submission.
 
 ## This reference
 

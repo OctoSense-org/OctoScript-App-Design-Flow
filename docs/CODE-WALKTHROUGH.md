@@ -301,7 +301,7 @@ names, or else on the service of its namespace, when the app is granted that
 family. A system app's own namespace counts as granted; a store app's
 namespace grants nothing, so a store app's host-service tools run through a
 `host_method` from App Hub's reviewed list. A tool with
-`implemented_by: "app"` runs only on OctoSense `main`: `ScriptAppExecutor` in
+`implemented_by: "app"` runs in OctoSense desktop RC1 and later: `ScriptAppExecutor` in
 `crates/shell/src/host_tools/script_apps.rs` submits it to App Hub's
 `script_tools` queue, and the open full app's signed `app_tool` handler
 answers it. `desktop-v0.1.0-beta.2` has no executor for it and refuses it.

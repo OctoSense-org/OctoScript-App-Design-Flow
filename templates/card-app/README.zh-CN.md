@@ -10,6 +10,6 @@ App Hub 的 [`templates/app/`](https://github.com/OctoSense-org/OctoSense-App-Hu
 
 要使用自己的字体，把 `.ttf` 或 `.otf` 文件放进应用包，并在 `font_src` 中用相对于应用包的路径引用它，例如 `"font_src": "assets/Body.ttf"`。打包的字体计入 8 MiB 上限，所以较大的中日韩字体请只打包所需的子集。字体中没有的字形（例如中文）会改用 Makepad 内置的中文字体霞鹜文楷（LXGW WenKai）。套件只能引用一种内置字体 `makepad_widgets:resources/Inter.ttf`（[App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)）。请用 `MAKEPAD_SYSTEM_FONTS=0` 检查文字，这样系统字体就掩盖不了缺失的字形。
 
-`desktop-v0.1.0-beta.2` 早于这项字体加载功能：它会安装带打包字体的应用，但卡片不会加载这些字体。要在这个版本上显示中文，请用纯 L0 角色套件（`Surface`、`TextTitle`、`TextBody` 等）组合卡片，并且不设 `font_src`；中文由霞鹜文楷显示。在用 OctoSense `main` 构建的 Shell 中，字体能否加载尚未验证。
+`desktop-v0.1.0-beta.2` 早于这项字体加载功能：它会安装带打包字体的应用，但卡片不会加载这些字体。要在这个版本上显示中文，请用纯 L0 角色套件（`Surface`、`TextTitle`、`TextBody` 等）组合卡片，并且不设 `font_src`；中文由霞鹜文楷显示。在 OctoSense 桌面版 0.1.0-rc.1 中，字体能否加载尚未验证。
 
 如果应用有自己的逻辑、状态和请求，请改用[脚本应用模板](../script-app/README.zh-CN.md)。
