@@ -96,8 +96,12 @@ and macOS. These methods require `host-api-v1` and the corresponding capability.
 
 A permission request first asks the person to consent for this app on a native
 sheet, then asks the OS for its permission if needed. Consent covers one app
-across its accounts. The app cannot approve its own sheet. A request from the
-background or from an agent fails with `authorization_required`. An agent can
+across its accounts. The app cannot approve its own sheet. A request from an
+agent or a background card fails with
+`<method> is unavailable to agents/background surfaces`. A request still
+waiting when the shell goes to the background fails with
+`authorization_required`, as does `location.get` until the person grants the
+app location access. An agent can
 read status, revoke the app's consent and read the location once the app is
 authorized, but it cannot approve consent.
 

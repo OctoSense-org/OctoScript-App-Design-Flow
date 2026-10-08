@@ -67,7 +67,7 @@ host.request("runtime.describe", {method: "location.get"}, fn(r){
 
 `camera.permission.*`、`microphone.permission.*` 和 `location.permission.*` 在 Android 和 macOS 上提供 `status`、`request` 和 `revoke`，参数都是 `{}`。这些方法要求 `host-api-v1` 和相应的能力。
 
-申请权限时，宿主先在原生面板上请用户为本应用授权，需要时再向系统申请权限。授权针对单个应用，覆盖它的所有账户。应用无法在授权面板上替用户批准。从后台或由 Agent 发起的申请会失败，返回 `authorization_required`。Agent 可以读取状态、撤销应用的授权，也可以在应用获得授权后读取位置，但不能批准授权。
+申请权限时，宿主先在原生面板上请用户为本应用授权，需要时再向系统申请权限。授权针对单个应用，覆盖它的所有账户。应用无法在授权面板上替用户批准。由 Agent 或后台卡片发起的申请会失败，返回 `<method> is unavailable to agents/background surfaces`。Shell 转入后台时仍在等待的申请会失败，返回 `authorization_required`；在用户授予应用位置权限之前，`location.get` 也返回 `authorization_required`。Agent 可以读取状态、撤销应用的授权，也可以在应用获得授权后读取位置，但不能批准授权。
 
 响应分别报告三种状态：`app_policy_granted`（清单授予了该能力）、`app_consent`（用户已为本应用授权）和 `os_permission`（系统授予 Shell 的权限）。撤销应用的授权，不会撤销系统授予 Shell 的权限，也不影响其他应用的授权。
 
