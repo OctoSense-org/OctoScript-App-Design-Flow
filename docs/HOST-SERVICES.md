@@ -20,10 +20,11 @@ tools. [Host API v1](HOST-API-V1.md) shows how to use them.
 
 ## Which shell serves which service
 
-Both OctoSense shells register every service below except `wasm` in their
-standard builds: the desktop (`desktop/`) and Home, the phone shell
-(`phone/`). `register_host_services` in `crates/shell/src/apps.rs` registers
-the app-facing services; `crates/ai-host/src/lib.rs` registers `llm`, `model`
+Both OctoSense shells register every service below in their standard
+builds: the desktop (`desktop/`) and Home, the phone shell (`phone/`). They
+register `wasm` only in builds for macOS, Linux and Android.
+`register_host_services` in `crates/shell/src/apps.rs` registers the
+app-facing services; `crates/ai-host/src/lib.rs` registers `llm`, `model`
 and `octos`. App Hub's `card-host` registers none; it answers only `runtime`
 discovery, which App Hub's dispatcher handles itself.
 
@@ -40,7 +41,7 @@ discovery, which App Hub's dispatcher handles itself.
 | `news` | System apps only | `apps/news/host-service` |
 | `calendar` | Calendar (`os.calendar`) only | `apps/calendar/host-service` |
 | `photos`, `youtube` | Only the matching system app's `notify` | `crates/shell/src/glance_notice.rs` |
-| `wasm` | Apps granted `wasm`, only in builds with the `wasm-lab` feature; no release serves it ([Run your own Rust code](RUST.md)) | `crates/shell/src/wasm_service.rs` |
+| `wasm` | Apps granted `wasm`, in standard builds for macOS, Linux and Android (feature `wasm-functions`, formerly `wasm-lab`); no release serves it yet ([Run your own Rust code](RUST.md)) | `crates/shell/src/wasm_service.rs` |
 
 `glance_notice.rs` also answers `<namespace>.notify` for every other system
 app without a service of its own, such as Maps and Camera.
