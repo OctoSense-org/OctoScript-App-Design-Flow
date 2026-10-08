@@ -4,7 +4,7 @@
 
 未注明中文版的链接指向英文文档。
 
-Host API v1 让应用发现并调用编译进宿主的 Rust 服务，也让应用的 Agent 调用应用声明为工具的 Splash 函数。它不加载自定义的 Rust 库、Wasm 或 JIT 代码，也不会开放全部系统 API。
+Host API v1 让应用发现并调用编译进宿主的 Rust 服务，也让应用的 Agent 调用应用声明为工具的 Splash 函数。它不加载应用自带的原生代码，也不会开放全部系统 API。要运行自己的 Rust 代码，请把它编译成 WebAssembly，并申请 `wasm` 能力；只有启用 `wasm-lab` 特性的 OctoSense 构建提供这项服务（见[运行自己的 Rust 代码](RUST.zh-CN.md)）。
 
 本页的各项声明由 App Hub 契约 1.6 或更高版本定义，这些版本已发布到 crates.io。声明了这些内容的应用在各个构建中的结果如下：
 

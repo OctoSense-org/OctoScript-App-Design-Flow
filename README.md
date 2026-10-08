@@ -556,6 +556,7 @@ compatibility, and old reference releases remain unchanged.
 | [docs/SCRIPT-API.md](docs/SCRIPT-API.md) | The Splash language and every API a contained app may call |
 | [docs/CAPABILITIES.md](docs/CAPABILITIES.md) | Each capability: what it unlocks, what the person sees, the rules |
 | [docs/HOST-SERVICES.md](docs/HOST-SERVICES.md) | `host.request`, sheets, "secrets are the host's", adding a service |
+| [docs/RUST.md](docs/RUST.md) ([简体中文](docs/RUST.zh-CN.md)) | An app's own Rust code: Wasm functions, and the routes for device APIs, the network, files and native code |
 | [docs/AI-SERVICES.md](docs/AI-SERVICES.md) ([简体中文](docs/AI-SERVICES.zh-CN.md)) | OctoSense's assistant (octos): what an app can use today, app agents and their tools, Glance cards and in-card chat (`sys.chat`) |
 | [docs/MODEL-VALIDATION.md](docs/MODEL-VALIDATION.md) ([简体中文](docs/MODEL-VALIDATION.zh-CN.md)) | Checking what a coding agent built: native input and capture, review loops, repair |
 | [docs/PUBLISHING.md](docs/PUBLISHING.md) | From a working app to a publication issue and GitHub-attested release: final listing, screenshots, gate/review, workflow and Hub approval |
