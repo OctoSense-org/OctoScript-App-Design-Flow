@@ -3,7 +3,7 @@
 What a script app's `main.splash` can use when it runs in a policed isolate:
 App Hub's `card-host` and the shells' Card runner. Everything here was read in
 the source of the runtime this repository pins (OctoSense-org/makepad
-`68d1f4ec`) and of App Hub. Behavior marked **✓ run** was observed in
+`32d6415f`) and of App Hub. Behavior marked **✓ run** was observed in
 `card-host` on macOS. Idioms come from the system apps (OctoSense
 `apps/<name>/bundle/main.splash`), which are working code.
 

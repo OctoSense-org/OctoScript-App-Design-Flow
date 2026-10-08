@@ -195,7 +195,7 @@ fn ask(){
 测试时要注意两处版本差异：
 
 - `tools/octo check` 运行的是本仓库旁边的 App Hub 检出（`main`）。OctoSense Shell 锁定自己的一个 App Hub commit（见 OctoSense 的 `Cargo.toml` 和 `native-apps.json`），它可能落后于 App Hub `main`。两者都从同一个 crate 取得清单规则：`octosense-app-contract`（[ADR 0005](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0005-app-contract.md)），App Hub 要求 1.5 版（2026-10-07 已发布到 crates.io，OctoSense `main` 使用的就是这个版本）。默认 `schema_minor`（0）的清单仍会拒绝未知字段（**✓ 已运行**：``hub: manifest is not valid: unknown field `future_field`, expected one of `schema`, `id`, … `requires`, `schema_minor` ``），所以不要使用 Shell 锁定版本不认识的字段。
-- 为本仓库构建的 `card-host` 和 `card-studio`（都是 App Hub 的工具）使用 [`native-runtime.lock.json`](../native-runtime.lock.json) 锁定的运行时：OctoScript-Makepad `aa80f72c`，它锁定 OctoScript `2e37d9e6`，与 Shell 使用的版本相同。这个运行时能检查 `sys.digest`、文本槽中的 `model-copy`、`sys.chat` 和 `ChatEntry`。
+- 为本仓库构建的 `card-host` 和 `card-studio`（都是 App Hub 的工具）使用 [`native-runtime.lock.json`](../native-runtime.lock.json) 锁定的运行时：OctoScript-Makepad `33dea2f1`，它锁定 OctoScript `2e37d9e6`，与 Shell 使用的版本相同。这个运行时能检查 `sys.digest`、文本槽中的 `model-copy`、`sys.chat` 和 `ChatEntry`。
 
 OctoSense 自己的测试为模型、工具箱、应用 peer 和内核准备了替身，见它的[架构导读 § 11. 测试](https://github.com/OctoSense-org/OctoSense/blob/main/docs/architecture-walkthrough.zh-CN.md#11-测试)。应用包无法换用这些替身。
 
