@@ -15,7 +15,7 @@
 "network": { "hosts": ["api.open-meteo.com"] }
 ```
 
-- **列表是封闭的。** App Hub `crates/app-contract/src/manifest.rs` 中的 `KNOWN_CAPABILITIES` 共有 104 个名称：26 个大类能力（例如 `storage` 和 `glance`）和 78 个精确服务名（例如 `octos.turn.start`）。准入检查会拒绝其他任何名称（例如 `contacts`），也会拒绝单独的前缀（例如 `octos.`）：
+- **列表是封闭的。** App Hub `crates/app-contract/src/manifest.rs` 中的 `KNOWN_CAPABILITIES` 共有 105 个名称：27 个大类能力（例如 `storage` 和 `glance`）和 78 个精确服务名（例如 `octos.turn.start`）。准入检查会拒绝其他任何名称（例如 `contacts`），也会拒绝单独的前缀（例如 `octos.`）：
 
   ```text
   [refused] policy: app dev.example.myapp requests unknown capability "contacts"
@@ -82,6 +82,7 @@ this app was not granted "mail", which "mail.accounts" needs
 | `glance` | `glance.publish`、`glance.withdraw` 和 `glance.list`：在速览栏上发布卡片，这些卡片只会打开本应用。见 [AI-SERVICES § 发布到速览栏](AI-SERVICES.zh-CN.md#发布到速览栏)。 |
 | `model` | `model.complete` 和 `model.budget`：通过用户自己的 AI 提供商进行一次性模型调用，结果按应用的 JSON Schema 校验，并受每日预算限制。见 [AI-SERVICES § 一次性模型调用](AI-SERVICES.zh-CN.md#一次性模型调用model)。 |
 | `runtime` | `runtime.list` 和 `runtime.describe`：当前构建实现了哪些宿主 API，不含任何账户数据。用 OctoSense `main` 构建的版本和 `card-host` 都会响应；desktop-v0.1.0-beta.2 拒绝这项能力。见 [HOST-API-V1 §2](HOST-API-V1.zh-CN.md#2-提供可选功能前先查询)。 |
+| `wasm` | 应用自带的函数：应用包 `fns/` 中的 WebAssembly 模块（最多 8 个），由宿主的 `wasm` 服务在沙盒中运行，有截止时间和内存上限。函数只拿到自己的输入，接触不到文件、网络、时钟或其他应用。Agent 工具可以用 `host_method: "wasm.<function>"` 运行其中一个函数。商店显示的说明是“Run its own sandboxed functions on this device”。目前没有任何发布版本提供这项服务；OctoSense 只在启用了 `wasm-lab` 构建特性的版本中提供。 |
 
 除 `runtime` 外，这些服务都不在 `card-host` 中运行，在那里每次调用都返回 `no service answers "<family>" on this device`。请在 OctoSense Shell 中测试它们。
 
@@ -192,7 +193,7 @@ this app was not granted "mail", which "mail.accounts" needs
 
 ## 精确服务名
 
-除了 26 个大类能力，`KNOWN_CAPABILITIES` 还有 78 个精确服务名。每个名称都是一项单独的授权；前缀不授予任何能力。
+除了 27 个大类能力，`KNOWN_CAPABILITIES` 还有 78 个精确服务名。每个名称都是一项单独的授权；前缀不授予任何能力。
 
 | 名称 | 授予什么 | 由谁提供 |
 | --- | --- | --- |

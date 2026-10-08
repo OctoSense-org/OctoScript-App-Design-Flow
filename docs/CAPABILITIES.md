@@ -18,7 +18,7 @@ service.
 ```
 
 - **The list is closed.** `KNOWN_CAPABILITIES` in App Hub
-  `crates/app-contract/src/manifest.rs` holds 104 names: 26 broad
+  `crates/app-contract/src/manifest.rs` holds 105 names: 27 broad
   capabilities, such as `storage` and `glance`, and 78 exact service names,
   such as `octos.turn.start`. The gate refuses any other name, such as
   `contacts`, and any bare prefix, such as `octos.`:
@@ -104,6 +104,7 @@ this app was not granted "mail", which "mail.accounts" needs
 | `glance` | `glance.publish`, `glance.withdraw` and `glance.list`: cards on the Glance screen that open only this app. See [AI-SERVICES § Publishing to the Glance screen](AI-SERVICES.md#publishing-to-the-glance-screen). |
 | `model` | `model.complete` and `model.budget`: one-shot model calls on the person's own AI providers, checked against the app's JSON Schema, within a daily budget. See [AI-SERVICES § One-shot model calls](AI-SERVICES.md#one-shot-model-calls-model). |
 | `runtime` | `runtime.list` and `runtime.describe`: the host APIs this build implements, with no account data. Builds from OctoSense `main` and `card-host` answer them; desktop-v0.1.0-beta.2 refuses the capability. See [HOST-API-V1 §2](HOST-API-V1.md#2-discover-before-offering-an-optional-feature). |
+| `wasm` | The app's own functions: WebAssembly modules in the bundle's `fns/` (at most 8), which the host's `wasm` service runs in a sandbox with a deadline and a memory cap. A function gets only its input and reaches no file, network, clock or other app. An agent tool can run one with `host_method: "wasm.<function>"`. The store says "Run its own sandboxed functions on this device". No release serves it; OctoSense serves it only in builds with its `wasm-lab` feature. |
 
 Apart from `runtime`, none of these services runs in `card-host`. There
 every call answers `no service answers "<family>" on this device`. Test them
@@ -282,7 +283,7 @@ unverified.
 
 ## Exact service names
 
-Besides the 26 broad capabilities, `KNOWN_CAPABILITIES` holds 78 exact service names.
+Besides the 27 broad capabilities, `KNOWN_CAPABILITIES` holds 78 exact service names.
 Each is its own consent; a prefix grants nothing.
 
 | Names | What they grant | Who serves them |

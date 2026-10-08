@@ -7,8 +7,9 @@ host, and lets the app's agent call Splash functions that the app declares as
 tools. It loads no custom Rust library, Wasm or JIT code, and it does not
 expose every OS API.
 
-App Hub contract 1.6.0, published on crates.io, defines the declarations on
-this page. Each build treats an app that declares them as follows:
+App Hub contract 1.6 or later, published on crates.io, defines the
+declarations on this page. Each build treats an app that declares them as
+follows:
 
 | Build | Host API v1 |
 | --- | --- |

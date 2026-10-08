@@ -381,8 +381,9 @@ Two version differences matter when you test:
   OctoSense's `Cargo.toml` and `native-apps.json`), which can lag App Hub
   `main`. Both take the manifest rules from one crate,
   `octosense-app-contract` ([ADR 0005](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0005-app-contract.md)),
-  which App Hub requires at version 1.6, published on crates.io;
-  OctoSense `main` uses that release.
+  which App Hub requires at version 1.7, published on crates.io.
+  OctoSense `main` resolves 1.6.0 from crates.io; Host API v1 needs 1.6 or
+  later.
   A manifest at the default `schema_minor` (0) still refuses unknown fields
   (**✓ run**: ``hub: manifest is not valid: unknown field `future_field`, expected one of `schema`, `id`, … `requires`, `schema_minor` ``),
   so do not use a field the shells' pin does not know.

@@ -155,7 +155,7 @@ Use `main` of each repository.
 
 | Piece | State |
 | --- | --- |
-| The gate (`hub`) | App Hub `main`, app contract 1.6 (the manifest rules `hub` enforces), which admits the connected-account capabilities `auth`, `github`, `gmail` and `gcalendar`, and the [Host API v1](docs/HOST-API-V1.md) declarations. |
+| The gate (`hub`) | App Hub `main`, app contract 1.7 (the manifest rules `hub` enforces), which admits the connected-account capabilities `auth`, `github`, `gmail` and `gcalendar`, the [Host API v1](docs/HOST-API-V1.md) declarations and the `wasm` capability. |
 | `card-host` | App Hub `main`. It runs one bundle and serves no host services except `runtime` discovery. Build it as the [Quick path](#quick-path) shows. |
 | The shells | OctoSense `main`; its latest desktop release is `desktop-v0.1.0-beta.2`. The desktop shell and the phone's Home run system and store apps; the desktop also serves connected accounts and app agents' host-service tools. |
 | Submission | An issue on OctoSense-App-Hub, as App Hub's [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md) describes. |
@@ -319,7 +319,7 @@ my-app/                     the app's own Git repository
 For every field, see App Hub's
 [The manifest](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-manifest).
 
-**Capabilities** form a closed list defined by App Hub: 26 families, such as
+**Capabilities** form a closed list defined by App Hub: 27 families, such as
 `storage`, `net`, `images`, `web`, `camera`, `location`, `mail`, `glance`,
 `model` and the connected-account `auth`, `github`, `gmail` and `gcalendar`,
 plus 78 exact host-service names: 4 `octos.*` for the device's assistant, 45
@@ -367,10 +367,11 @@ lists every check.
   any public `https://` host, but `net` still reaches only listed hosts.
   `http://`, `file://` and `../` are refused.
 - **Only bundle files.** Allowed extensions are
-  `.card .json .l0 .octoscript .splash .svg .png .jpg .jpeg .webp .ttf .otf .txt .md`;
-  any other file is refused, including macOS `.DS_Store`. The gate also
-  refuses other scripts, archives, binaries, symlinks, and URLs inside
-  bundled `.txt` or `.md` files.
+  `.card .json .l0 .octoscript .splash .svg .png .jpg .jpeg .webp .ttf .otf .txt .md`,
+  and an app that requests `wasm` may also carry up to 8 WebAssembly modules
+  at `fns/<name>.wasm`. Any other file is refused, including macOS
+  `.DS_Store`. The gate also refuses other scripts, archives, binaries,
+  symlinks, and URLs inside bundled `.txt` or `.md` files.
 - **Host services for anything privileged.** An app calls
   `host.request("<family>.<method>", args, fn(r){…})`, and the family must be
   a granted capability. Mail is the worked example (`mail.accounts`,
