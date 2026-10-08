@@ -557,14 +557,14 @@ What exists today:
   `OCTOSENSE_HUB_ANCHOR` (a mirror directory or URL, and its anchor) are
   environment variables, which the Android launcher does not set; no
   on-device setting for them was found. **Unverified on a device.**
-- **An optional legacy test path is on the desktop:** publish into a local catalog
-  with your own throwaway anchor, explicitly set `OCTOSENSE_HUB_CATALOG=legacy`
-  with a fresh app-data directory, and install it with App Hub's store,
-  which runs the same install code as a phone
+- **Optional desktop rehearsal:** publish your release pack into a local
+  catalog with your own throwaway anchor, explicitly set
+  `OCTOSENSE_HUB_CATALOG=legacy` with a fresh app-data directory, and install
+  it with App Hub's store, which runs the same install code as a phone
   ([PUBLISHING §4](PUBLISHING.md#4-rehearse-the-store-path-locally)). The
   OctoSense desktop shell reads `OCTOSENSE_HUB` and `OCTOSENSE_HUB_ANCHOR`
   too; its store installs your app from that catalog and opens it in the
-  shell's Card runner.
+  shell's Card runner. **Unverified** with a GitHub-attested release.
 - **First-party apps** reach a phone as system apps: a bundle in
   [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps),
   listed in the shell's `system-apps.json` (OctoSense `phone/system-apps.json`
@@ -601,16 +601,19 @@ Review and commit `.github/workflows/publish-app.yml` with the tested app, then
 push a new `v<manifest.version>` tag. GitHub Actions prepares, attests, verifies
 and packs it; no `publisher.key` or developer signing secret is required.
 Attach the successful workflow and exact release pack to the submission issue.
-Neither installing the workflow nor creating a GitHub release submits or
-approves the app. Routine updates use new versions/tags from the same identity.
+Until App Hub first publishes the app, post each new release on that issue;
+after publication, open a new issue for each new version. Neither installing
+the workflow nor creating a GitHub release submits or approves the app.
+Routine updates use new versions/tags from the same identity.
 
 This path needs contract 1.8.0 / `publisher-github-v1`. Real publishing and native
 Store install/update checks passed with an isolated test catalog
 ([historical evidence](PUBLISHING.md#36-publisher-key--human)). Current public
 macOS samples also passed native install/update and RC reopen checks; see
 [download status and platform limits](../README.md#compatible-shell-download).
-Older hosts and `card-host` refuse the sealed release. The local Ed25519 store
-rehearsal is optional compatibility, not a required publishing step.
+Older hosts and `card-host` refuse the sealed release. The local store
+rehearsal ([PUBLISHING §4](PUBLISHING.md#4-rehearse-the-store-path-locally))
+is optional and unverified with a GitHub-attested release.
 
 ## Troubleshooting
 
@@ -641,12 +644,11 @@ rehearsal is optional compatibility, not a required publishing step.
 | `check`: `[refused] listing: listing names no platforms` | The listing's `platforms` is empty, as in the raw template. List the platforms you tested in `listing.json`, or create the app with `tools/octo new … --platform …` (§3). |
 | `check`: `[refused] identity: app id "…" ends in "…", which is reserved: …` | Change the id's last segment (§3). The same finding repeats under `policy`. |
 | `check`: `[refused] contents: .DS_Store has extension "", which a bundle may not hold` | Delete the file: `find <bundle> -name .DS_Store -delete`. Any other file without a known extension must leave `bundle/` too. |
-| `check`: `[refused] digest: the bundle hashes to …, the manifest claims …` | The bytes changed after the last stamp. Unsigned: run `tools/octo check` again. Signed: a person stamps and signs again. On a fresh clone only: the checkout converted line endings (commit the `.gitattributes` that `new` wrote, §3), or the commit holds a stale digest (§8). |
+| `check`: `[refused] digest: the bundle hashes to …, the manifest claims …` | The bytes changed after the last stamp. Editable source: run `tools/octo check` again. A sealed release: fix the editable source and release a new version with a new tag; never restamp the release. On a fresh clone only: the checkout converted line endings (commit the `.gitattributes` that `new` wrote, §3), or the commit holds a stale digest (§8). |
 | `check`: `[refused] assets: … contains https://…` in an ordinary license `.txt` or `.md` file | Rebuild `hub` from App Hub #146 or later. Plain documentation URLs are accepted; retain required license notices. Agent guidance and structured resource references still have separate checks. |
 | `check`: `[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | Current `hub` accepts the exact built-in `Inter.ttf`, `LXGWWenKaiRegular.ttf` and `LXGWWenKaiBold.ttf` paths (§7). Rebuild an older gate. For other fonts, bundle a font file and use a relative path such as `assets/Body.ttf`. `desktop-v0.1.0-beta.2` still predates bundled-font loading; use the plain L0 role kit without `font_src` on that release. |
 | `hub: the bundle exceeds the size limit`, with no report | The bundle is over 8 MiB. Shrink or drop images and fonts. |
-| Optional legacy Ed25519 `check` or `hub scan` on a signed bundle: `publisher key "…" is not registered with this hub` | Pass the publisher's public key: `tools/octo check <bundle> --publisher-key <publisher-id>=<hex public key>` (the same flag works for `hub scan`). |
-| `card-host: refused: no signature verifier is installed` | `card-host` does not run sealed attested/signed releases; test editable unsigned source, then use a compatible Store host for the admitted release. |
+| `card-host: refused: this host has no GitHub publisher verifier` | `card-host` does not run a sealed release. Test the editable, unsigned source; test the admitted release in a compatible host, such as the [RC1 release](../README.md#compatible-shell-download). |
 | `hub scan … --packet build/review.json` prints `hub: build/review.json: No such file or directory (os error 2)` | `hub` does not create the packet's directory. Run `mkdir -p build` first. |
 | `hub check --help` prints `hub: No such file or directory (os error 2)` | Your `hub` predates App Hub's current `main`, where `--help` prints the usage. Rebuild it (§2), or run `hub` with no arguments. |
 | Any other gate refusal | App Hub's [Common refusals and how to fix them](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#common-refusals-and-how-to-fix-them). |

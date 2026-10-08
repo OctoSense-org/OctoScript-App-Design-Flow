@@ -75,7 +75,7 @@ organizers. What a contestant needs from here:
 
 ## Connected apps: GitHub, Gmail and Google Calendar
 
-Public App Hub catalog **13** offers the following GitHub-proven **0.2.1**
+Public App Hub catalog **13** offers the following GitHub-attested **0.2.1**
 releases. Search their exact fresh IDs; historical `org.octosense.samples.*`
 IDs and local data are not migrated.
 
@@ -94,7 +94,7 @@ architecture; published repositories above own the current release bytes.
 ### Compatible shell download
 
 [**Desktop 0.1.0-rc.1 is available**](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-rc.1), built from source
-`933abbcf`, for GitHub-proven apps, the public v2 catalog and Host API v1.
+`933abbcf`, for GitHub-attested apps, the public v2 catalog and Host API v1.
 
 | Platform | Download |
 | --- | --- |
@@ -299,7 +299,7 @@ Run `tools/octo <command> -h` for flags.
 | `new <dir> --platform PLATFORM [--id ID] [--name NAME] [--system]` | Copies `templates/script-app` (`bundle/`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.gitignore`), sets id, name and version `0.1.0`, writes the `--platform` values into the listing, and stamps the bundle. `--platform` is required; repeat it for each platform you will test on. Ids are `[a-z0-9.-]{1,64}`; `os.*` needs `--system`. It refuses a reserved id, or one whose last segment is reserved, before it creates any file ([What an app is](#what-an-app-is)). |
 | `run <bundle> [--port N] [--hidden] [--detach] [--system] [--no-stamp] [--app-data DIR] [--static PREFIX=DIR]` | Runs `card-host --bundle … --app-data … --allow-unsigned --stamp` with `MAKEPAD_REMOTE=<port>` (default 8141). Refuses a port that is already taken. `--detach` returns once the app is admitted, its bridge listens and the first frame is drawn. The app's jail (its private data directory) is `<app>/.local-state/<id>/`. |
 | `shot <port> <out.png> [--settle S]` | Saves a PNG of the running window (`GET /g?raw=1`) once the app's widgets exist and two frames in a row match (at most `--settle`, 2 s by default). |
-| `check <bundle> [hub check flags]` | `hub stamp`, then `hub check --allow-unsigned`; exits nonzero on a refusal. Passes other flags, such as `--catalog` or `--publisher-key`, to `hub check`. Does not restamp a manifest with a legacy signature or `integrity.github`. A failed stamp returns its status at once and skips the gate. |
+| `check <bundle> [hub check flags]` | `hub stamp`, then `hub check --allow-unsigned`; exits nonzero on a refusal. Passes other flags, such as `--catalog`, to `hub check`. Does not restamp a sealed manifest: one that carries `integrity.github` or a legacy signature. A failed stamp returns its status at once and skips the gate. |
 | `package-help` | Prints the publish checklist. |
 
 `doctor` prints every place it looks for `hub` and `card-host`;
@@ -325,7 +325,7 @@ For a text brief, use script-app: it is the one path `tools/octo` automates
 end to end. The image and Sketch flows need macOS, Python 3.12, their own
 virtual environments and, for native capture, Makepad Studio; each `FLOW.md`
 lists its prerequisites. Every app flow ends in the same hand-off (stamp,
-check, run in `card-host`, screenshot, sign, submit), described in
+check, run in `card-host`, screenshot, release, submit), described in
 [flows/README.md](flows/README.md#every-flow-follows-the-same-contract).
 
 ## What an app is
@@ -356,8 +356,8 @@ my-app/                     the app's own Git repository
 | `capabilities` | The permissions the app asks for. |
 | `network.hosts` | Bare host names; needs `net`. |
 | `storage`, `compute`, `agent` | Optional requests, clamped to the host's ceilings; `hub check` prints the result as its `grants:` line. `storage.accounts: true` gives each account its own data folder and agent, instead of one shared `device` folder; `storage.agent_workspace` sets what the agent may read: its account's folder (the default) or nothing. |
-| `integrity.github` | The repository/owner/workflow/tag/commit identity and GitHub attestation, added by the new publisher workflow (`publisher-github-v1`, requires the compatible RC1 release). |
-| `integrity.bundle_blake3` | Written by `hub stamp` during development; the GitHub workflow prepares the final digest and attestation. Legacy Ed25519 signing remains optional. |
+| `integrity.github` | The repository/owner/workflow/tag/commit identity and GitHub attestation, added by the release workflow (`publisher-github-v1`, requires the compatible RC1 release). |
+| `integrity.bundle_blake3` | Written by `hub stamp` during development; the GitHub workflow prepares the final digest and attestation. |
 
 For every field, see App Hub's
 [The manifest](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-manifest).
@@ -498,12 +498,13 @@ with App Hub's Card runner (the `card` module in App Hub's
 `crates/appstore`), not with `card-host`; the Card runner applies the same
 manifest policy. System apps are packed into the shell build from
 OctoSense's `apps/`; store apps are installed from the App Hub store out of
-the authenticated catalog. For an optional legacy rehearsal before submission,
-publish a test bundle into a local catalog with a throwaway trust anchor,
-then set `OCTOSENSE_HUB_CATALOG=legacy` and point `OCTOSENSE_HUB` /
-`OCTOSENSE_HUB_ANCHOR` at that mirror using a fresh app-data directory. The
-shell's store installs and opens the test app
-([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
+the authenticated catalog. To try a release in the shell before App Hub
+publishes it, publish its release pack into a local catalog with a throwaway
+trust anchor, then set `OCTOSENSE_HUB_CATALOG=legacy` and point
+`OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` at that mirror using a fresh
+app-data directory. The shell's store then installs and opens the app
+([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)); this
+rehearsal is unverified with a GitHub-attested release.
 
 **On a phone, today** ([QUICKSTART §9](docs/QUICKSTART.md#9-run-it-on-an-octosense-phone)):
 
@@ -512,7 +513,7 @@ shell's store installs and opens the test app
   only the anchor compiled into the build; the `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR`
   overrides are environment variables the Android launcher does not set.
   Installing from a local catalog on a device is unsupported and unverified.
-- The closest verified path is the desktop rehearsal above.
+- The closest path is the desktop rehearsal above.
 - `card-host`'s remote bridge is compiled out on Android, so phone testing
   does not use `tools/octo`.
 - After Hub admission, only a compatible host can install the app. Released
@@ -566,23 +567,26 @@ approves the exact candidate, and the Hub publishes its catalog entry.
 review answers. `tools/octo publish-github <app-directory>` installs the
 publishing workflow (`new` also copies it). After review, commit tested source
 and push a new `v<manifest.version>` tag. GitHub Actions prepares, attests,
-verifies and packs the release using its native identity; developers do not
-create `publisher.key` or store a signing secret.
+verifies and packs the release using its native identity. App Hub accepts
+only GitHub-attested releases
+([ADR 0002](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/adr/0002-github-attested-publisher-identity.md)),
+so you never create `publisher.key` or store a signing secret.
 
 Attach the successful workflow and exact release pack to the submission issue.
 A GitHub release supplies verifiable bytes; it is not a new App Hub submission
 channel or automatic approval. See App Hub's
 [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md).
-Routine updates use new versions/tags from the same repository/owner/workflow.
-Never move a released tag or hand-edit the Hub's admitted catalog/artifacts.
+Until App Hub first publishes the app, post each new release on the same
+issue, with its tag, full commit SHA and workflow-run link; after publication,
+open a new issue for each new version. Routine updates use new versions/tags
+from the same repository/owner/workflow. Never move a released tag or
+hand-edit the Hub's admitted catalog/artifacts.
 
 This path requires contract 1.8.0 / `publisher-github-v1`. Real GitHub releases
 and native Store install/update checks passed with an isolated test catalog
 ([historical evidence](docs/PUBLISHING.md#36-publisher-key--human)). Current
 public-catalog sample installation and update passed on macOS; see the
 [compatible shell guide](#compatible-shell-download) for the RC status and limits.
-Manual Ed25519 signing is optional
-compatibility, and old reference releases remain unchanged.
 
 ## Repository layout
 
