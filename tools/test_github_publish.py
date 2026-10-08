@@ -88,7 +88,7 @@ class PublishingSetup(unittest.TestCase):
                     run.return_value.returncode = 1
                     self.assertEqual(octo.cmd_check(args, []), 1)
                     self.assertEqual(run.call_count, 1)
-                    self.assertEqual(run.call_args.args[0], ['/fixture/hub', 'check', str(bundle.resolve())])
+                    self.assertEqual(run.call_args.args[0], [str(Path('/fixture/hub')), 'check', str(bundle.resolve())])
                 self.assertEqual((bundle / 'manifest.json').read_bytes(), original)
 
     def test_run_refuses_sealed_releases_before_startup_or_file_writes(self):
