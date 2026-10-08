@@ -8,7 +8,7 @@
 
 分发器属于 App Hub（[OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 中的 `crates/appstore/src/services.rs`）。服务属于 OctoSense：[OctoSense](https://github.com/OctoSense-org/OctoSense) 中的 `crates/shell`、`crates/ai-host`、`crates/oauth-service` 和 `apps/*/host-service`。下文未加标注的路径都在 OctoSense 中。
 
-OctoSense `main`（尚未进入任何发布版本）还实现了 Host API v1：版本要求、API 发现、签名的后端操作、设备授权和脚本工具。用法见 [Host API v1](HOST-API-V1.zh-CN.md)。桌面版 0.1.0-beta.2 没有这些功能。
+OctoSense `main`（尚未进入任何发布版本）还实现了 Host API v1：版本要求、API 发现、签名的后端操作、设备授权和脚本工具。用法见 [Host API v1](HOST-API-V1.zh-CN.md)。`desktop-v0.1.0-beta.2` 没有这些功能。
 
 ## 哪个 Shell 提供哪项服务
 
@@ -92,7 +92,7 @@ Mail 在 macOS 和 iOS 上把密码存进钥匙串。在 Android 和其他平台
 
 应用的 Agent 同样接触不到这些密钥：它在应用的账户文件夹中工作（[AI-SERVICES](AI-SERVICES.zh-CN.md#agent-在哪里工作storage)）。
 
-如果应用需要某个服务上的账户，它需要的是对接该服务的宿主服务，而不是登录表单。GitHub 和 Google 已有现成的宿主服务（[CAPABILITIES § 使用已连接账户](CAPABILITIES.zh-CN.md#使用已连接账户)）。有自己账户体系的应用可以使用宿主的后端登录，但仅限 OctoSense `main`。应用包在清单的 `backend` 块中声明自己的后端，也可以由宿主的运维人员注册（[CAPABILITIES § 登录应用自己的后端](CAPABILITIES.zh-CN.md#登录应用自己的后端)）。目前还没有发布版本包含这项功能（[App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)）。
+如果应用需要某个服务上的账户，它需要的是对接该服务的宿主服务，而不是登录表单。GitHub 和 Google 已有现成的宿主服务（[CAPABILITIES § 使用已连接账户](CAPABILITIES.zh-CN.md#使用已连接账户)）。有自己账户体系的应用可以使用宿主的后端登录。后端可以在清单的 `backend` 块中声明，也可以由宿主的运维人员注册（[CAPABILITIES § 登录应用自己的后端](CAPABILITIES.zh-CN.md#登录应用自己的后端)）。目前还没有发布版本包含这项功能（[App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)）。
 
 ## 完整示例：Mail
 

@@ -35,7 +35,7 @@ Every file matches the release byte for byte except two:
 - `manifest.json`: it has no signature, and its digest differs because the
   listing does. The published manifests also spell out the defaults that
   `hub sign-manifest` writes, such as `"network": {"hosts": []}` and
-  `"tier": "standard"`, while GitHub Notes' copy writes out the default
+  `"tier": "standard"`. GitHub Notes' copy instead spells out the default
   `"background": false`, which its published manifest omits. Each copy
   declares the same version, capabilities, storage and agent as the release.
 
@@ -518,7 +518,7 @@ agenda covered.
   `past 30 days / next 366 days` when the host reports its sync window, and
   `date range unavailable` when it doesn't. When the selected event drops out
   of a sync, the app says it may be outside the displayed date range, not that
-  it left the calendar. This repository's copy has it too.
+  it left the calendar. This repository's copy has the same change.
 - **OctoSense `main`:** the host syncs a fixed window, from 30 days before
   today to 366 days after on UTC day boundaries, with recurring events expanded
   into single occurrences. The same limits apply.

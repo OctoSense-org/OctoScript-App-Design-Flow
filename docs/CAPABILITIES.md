@@ -95,7 +95,7 @@ this app was not granted "mail", which "mail.accounts" needs
 | `gmail` | Gmail reads, versioned reply drafts, sending after the person approves it in the host's send review, and new-mail events for the app's agent. Needs `auth`. |
 | `glance` | `glance.publish`, `glance.withdraw` and `glance.list`: cards on the Glance screen that open only this app. See [AI-SERVICES § Publishing to the Glance screen](AI-SERVICES.md#publishing-to-the-glance-screen). |
 | `model` | `model.complete` and `model.budget`: one-shot model calls on the person's own AI providers, checked against the app's JSON Schema, within a daily budget. See [AI-SERVICES § One-shot model calls](AI-SERVICES.md#one-shot-model-calls-model). |
-| `runtime` | `runtime.list` and `runtime.describe`: the host APIs this host implements, with no account data. Builds from OctoSense `main` and `card-host` answer them; desktop-v0.1.0-beta.2 refuses the capability. See [HOST-API-V1 §2](HOST-API-V1.md#2-discover-before-offering-an-optional-feature). |
+| `runtime` | `runtime.list` and `runtime.describe`: the host APIs this build implements, with no account data. Builds from OctoSense `main` and `card-host` answer them; desktop-v0.1.0-beta.2 refuses the capability. See [HOST-API-V1 §2](HOST-API-V1.md#2-discover-before-offering-an-optional-feature). |
 
 Apart from `runtime`, none of these services runs in `card-host`. There
 every call answers `no service answers "<family>" on this device`. Test them

@@ -91,7 +91,8 @@ needs no AI service or API key.
   only. Never put a model key in an app. Read
   [docs/AI-SERVICES.md](docs/AI-SERVICES.md) before adding an AI feature, and
   report each one as unverified until exercised on its actual host.
-- **Connected accounts and app tools need OctoSense `desktop-v0.1.0-beta.2`.**
+- **Connected accounts and host-service tools need `desktop-v0.1.0-beta.2`
+  or a build from OctoSense `main`.**
   App Hub's contract 1.5 admits `auth`, `github`, `gmail` and `gcalendar`.
   OctoSense serves them from `desktop-v0.1.0-beta.2` on. On that build:
   - the host runs the OAuth sign-in and gives the app a connection handle,
@@ -110,9 +111,9 @@ needs no AI service or API key.
     executable kernel skill.
 
   OctoSense `main` (in no release yet) also runs `implemented_by: "app"`
-  tools. The manifest declares `requires: ["script-tools-v1"]`, and the shell
-  calls the app's `app_tool` handler while the full app is open; a closed app
-  answers `app_not_running`
+  tools. The manifest must declare `requires: ["script-tools-v1"]`, and the
+  shell calls the app's `app_tool` handler while the full app is open; a call
+  to a closed app answers `app_not_running`
   ([docs/HOST-API-V1.md](docs/HOST-API-V1.md#5-implement-a-declared-app-tool)).
   `card-host` refuses an app that requires `host-api-v1`, `backend-api-v1` or
   `script-tools-v1`; test such an app in a shell built from OctoSense `main`.
@@ -168,20 +169,20 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
 - **Name a card's own font with a bundle-relative path.** Put the `.ttf` or
   `.otf` file in the bundle and set `font_src` to its path, such as
   `"font_src": "assets/Body.ttf"`; `card-host` loads it from the bundle's
-  asset server. A bundled face counts toward the 8 MiB limit, so bundle a
+  asset server. A bundled font counts toward the 8 MiB limit, so bundle a
   subset of a large CJK font. Text the font lacks, such as Chinese, falls
-  back to the renderer's built-in Chinese face, LXGW WenKai. The only
-  built-in font a kit may name is `makepad_widgets:resources/Inter.ttf`; the
-  gate refuses any other
+  back to LXGW WenKai, Makepad's built-in Chinese font. The only built-in
+  font a kit may name is `makepad_widgets:resources/Inter.ttf`; the gate
+  refuses any other
   ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
-  OctoSense desktop 0.1.0-beta.2 predates this font loading: it installs an
-  app with a bundled font, but its cards do not load the font. For Chinese
-  text there, build the card from the plain L0 role kit and set no
-  `font_src`; Makepad's built-in CJK face, LXGW WenKai, draws it.
+  `desktop-v0.1.0-beta.2` predates this font loading: it installs an app
+  with a bundled font, but its cards do not load the font. For Chinese text
+  there, build the card from the plain L0 role kit and set no `font_src`;
+  LXGW WenKai draws it.
   A script app may bundle a font and load it with
   `FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`. Check text with
   `MAKEPAD_SYSTEM_FONTS=0`, so a system font cannot hide a missing glyph.
-  Font behavior in the OctoSense shells is otherwise unverified.
+  Font loading in a shell built from OctoSense `main` is unverified.
 - **Keep the bytes exact.** The digest covers every byte of every file, so a
   line-ending conversion breaks it. Commit the `.gitattributes` that
   `tools/octo new` writes (`bundle/** -text`), so that a Windows checkout

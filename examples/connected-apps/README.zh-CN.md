@@ -18,8 +18,8 @@ App Hub 签名目录第 10 版为每个应用收录了 0.1.0 和 0.1.1 两个版
 
 这里的各个目录是已发布 0.1.1 的未签名开发副本。除两个文件外，其余文件都与发布版逐字节相同：
 
-- `listing.json`：发布者名称、支持链接和隐私政策链接是占位内容，供你替换。商店信息的其余内容与发布版一致。
-- `manifest.json`：没有签名；由于 `listing.json` 不同，摘要也不同。已发布的清单还写出了 `hub sign-manifest` 补全的默认值，例如 `"network": {"hosts": []}` 和 `"tier": "standard"`；GitHub Notes 的副本则写明了默认值 `"background": false`，它已发布的清单省略了这一项。每个副本声明的版本、能力、存储和 Agent 都与发布版相同。
+- `listing.json`：发布者名称、支持 URL 和隐私政策 URL 是占位内容，供你替换。商店信息的其余内容与发布版一致。
+- `manifest.json`：没有签名；由于 `listing.json` 不同，摘要也不同。已发布的清单还写出了 `hub sign-manifest` 补全的默认值，例如 `"network": {"hosts": []}` 和 `"tier": "standard"`。GitHub Notes 的副本则写明了默认值 `"background": false`，而已发布的清单省略了这一项。每个副本声明的版本、能力、存储和 Agent 都与发布版相同。
 
 ## 运行这些应用
 

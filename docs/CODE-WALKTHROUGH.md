@@ -278,7 +278,7 @@ namespace grants nothing, so a store app's host-service tools run through a
 `implemented_by: "app"` runs only on OctoSense `main`: `ScriptAppExecutor` in
 `crates/shell/src/host_tools/script_apps.rs` submits it to App Hub's
 `script_tools` queue, and the open full app's signed `app_tool` handler
-answers it. Desktop 0.1.0-beta.2 has no executor for it and refuses it.
+answers it. `desktop-v0.1.0-beta.2` has no executor for it and refuses it.
 `AGENT.md` and skills are loaded as guidance for each turn. `background` and
 `triggers.events` are honored for two events: Mail's `mail.messages.new` and
 the Gmail service's `<namespace>.new_message`. Not yet: schedules, and model

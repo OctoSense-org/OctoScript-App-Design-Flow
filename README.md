@@ -406,15 +406,17 @@ the system chat) and one **app agent** for each app that has one. On
 | Run its agent in the background when new mail arrives | `agent.background: true` and `agent.triggers.events: ["<namespace>.new_message"]`, plus `auth` and `gmail`, as Inbox Assistant does | not available |
 
 Not yet: image, audio and video generation and embeddings (`model.image`,
-`model.audio`, `model.video`, `model.embeddings`). Agent tools that run the
-app's own code work only on OctoSense `main`, in no release yet: the manifest
-declares `requires: ["script-tools-v1"]`, and a tool runs only while the app
-is open. Desktop 0.1.0-beta.2 refuses `implemented_by: "app"`, and there a
-host-service tool can only call an existing host service method. `llm`
-manages AI providers for system apps only. A bundle that ships `tools.json`
-gets an app agent even without an `agent` block, so say so in the listing.
-Read [docs/AI-SERVICES.md](docs/AI-SERVICES.md) before you add an AI feature:
-it has a verified call that handles "unavailable".
+`model.audio`, `model.video`, `model.embeddings`).
+
+Agent tools that run the app's own code work only on OctoSense `main`, in no
+release yet: the manifest must declare `requires: ["script-tools-v1"]`, and a
+tool runs only while the app is open. `desktop-v0.1.0-beta.2` refuses
+`implemented_by: "app"`, and on that build, a host-service tool can only call
+an existing host service method. `llm` manages AI providers for system apps
+only. A bundle that ships `tools.json` gets an app agent even without an
+`agent` block, so say so in the listing. Read
+[docs/AI-SERVICES.md](docs/AI-SERVICES.md) before you add an AI feature: it
+has a verified call that handles "unavailable".
 
 ## Running an app
 

@@ -58,7 +58,7 @@ decline, and a device may have no kernel (iOS) or no provider.
 | Make one-shot model calls (`model`) | **available** in the OctoSense shells: a schema-checked call answered by the person's own AI providers, within a daily budget. `card-host` answers `no service answers "model" on this device` (**✓ run**). | [One-shot model calls](#one-shot-model-calls-model) |
 | Talk to the assistant from your screens (`octos.*`) | **available** where the shell hosts a kernel (not iOS). The first call is refused with `Waiting for the person to allow this app's agent (OctoSense asks the first time)` while the shell asks; after that, the app talks to its own peer. `card-host` answers `no service answers "octos" on this device` (**✓ run**). | [A minimal call](#a-minimal-call-and-handling-unavailable) |
 | Give the app its own agent (`agent`, `tools.json`, `AGENT.md`, `skills/`) | **available**: once the person allows it, the agent gets a peer, an "Ask &lt;app&gt;" panel, `ask_user_question`, read tools over the account folder (Unix only), its granted host-service tools, and `AGENT.md` and skills as guidance for each turn. A `tools.json` without an `agent` block also gives the app an agent. | [An app's own agent](#an-apps-own-agent) |
-| Run a tool the app's script implements (`implemented_by: "app"`) | **not yet in a release**: on OctoSense `main`, the tool runs in the open app when the manifest declares `requires: ["script-tools-v1"]`, and a closed app answers `app_not_running`. desktop-v0.1.0-beta.2 refuses it. | [The app's tools](#the-apps-tools-and-peer-tools), [HOST-API-V1 §5](HOST-API-V1.md#5-implement-a-declared-app-tool) |
+| Run a tool the app's script implements (`implemented_by: "app"`) | **not yet in a release**: on OctoSense `main`, the tool runs in the open app when the manifest declares `requires: ["script-tools-v1"]`, and a call to a closed app answers `app_not_running`. `desktop-v0.1.0-beta.2` refuses it. | [The app's tools](#the-apps-tools-and-peer-tools), [HOST-API-V1 §5](HOST-API-V1.md#5-implement-a-declared-app-tool) |
 | Wake the agent on an event | **available** for the Gmail service's `<namespace>.new_message`; **not yet** for other events. | [The manifest's agent](#the-manifests-agent) |
 | Wake the agent on a schedule, or choose its model from `needs` | **not yet** | [The manifest's agent](#the-manifests-agent) |
 | Publish Glance cards (`glance`) | **available**: L0, script and template cards, with notifications. On OctoSense `main` (not in any release yet), an agent's tools may publish only template and L0 cards. | [Publishing to the Glance screen](#publishing-to-the-glance-screen) |
@@ -389,9 +389,11 @@ Two version differences matter when you test:
 - The `card-host` and `card-studio` you build for this repository (both
   App Hub tools) use the runtime that
   [`native-runtime.lock.json`](../native-runtime.lock.json) pins:
-  OctoScript-Makepad `704a3ad7`, which pins OctoScript `2e37d9e6`, the same
-  revision the shells use. That runtime checks `sys.digest`, `model-copy` in
-  text slots, `sys.chat` and `ChatEntry`.
+  OctoScript-Makepad `704a3ad7`, which pins OctoScript `2e37d9e6`. That
+  runtime checks `sys.digest`, `model-copy` in text slots, `sys.chat` and
+  `ChatEntry`. The shells use the same OctoScript, but
+  `desktop-v0.1.0-beta.2` pins the older OctoScript-Makepad `aa80f72c`,
+  which does not load a bundled card font.
 
 OctoSense's own tests use fakes for the model, the toolbox, the app peers and
 the kernel; see its
@@ -508,7 +510,7 @@ OctoSense `crates/shell/src/host_tools/`:
 | `ask_user_question` (octos kernel tool) | `agent.tools: ["ask_user_question"]` | **yes** | **yes** (every system app with an agent) |
 | `files.list`, `files.read`, `files.search` (read, no approval) | every peer whose agent has a workspace, on Unix platforms | **yes**: its account folder only, 128 KiB per read, 500 entries per listing, 100 matches per search | **yes** |
 | Its own `tools.json` tools, `implemented_by: "host-service"` | run on the host service of the tool's `host_method` family, or of its namespace, with the app's identity, as its own `host.request` would; the family must be granted, or be the system app's own namespace | **yes**, through a `host_method` on a granted `github`, `gcalendar`, `gmail` or `glance`. Without `host_method`, a tool calls its namespace's service, which no capability grants: `summary.list` in `dev.example.summary` answers `not_granted`, `dev.example.summary was not granted the summary service`. A `github`, `gcalendar` or `gmail` call also needs an active connection: `Connect this app account first` | **yes**: News (`news.list`, `news.read`, `news.notify`), Mail (12 tools, such as `mail.peek` and `mail.propose_reply`), Calendar (`calendar.events`, `add_event`, `update_event`, `remove_event`, `notify`, `agenda`), and `photos.notify`, `maps.notify`, `youtube.notify`, `camera.notify` |
-| Its own `tools.json` tools, `implemented_by: "app"` | the app's `app_tool` handler, in its open full app | on OctoSense `main` only, with `requires: ["script-tools-v1"]`; a closed app answers `app_not_running`. desktop-v0.1.0-beta.2 refuses them (`app_tool_unavailable`): `<tool> declares a script implementation, but this host does not support script tool dispatch` | the same |
+| Its own `tools.json` tools, `implemented_by: "app"` | the app's `app_tool` handler, in its open full app | on OctoSense `main` only, with `requires: ["script-tools-v1"]`; a call to a closed app answers `app_not_running`. `desktop-v0.1.0-beta.2` refuses them (`app_tool_unavailable`): `<tool> declares a script implementation, but this host does not support script tool dispatch` | the same |
 | The generic host tools `ledger.read`, `ledger.write`, `net.fetch`, `storage.read`, `storage.write`, `card.render` | `agent.tools` | admitted by the gate, but no shell implements them | the same |
 | Other apps' shareable tools (`mail.send`) | a dotted name in `agent.tools` | refused by the gate (`hub check`): `app <id> requests tool "mail.send", which this host does not offer contained apps` (**✓ run**) | granted by the shell's own policy; for example, Mail keeps `calendar.events`, `calendar.add_event` and `calendar.notify` |
 | System toolbox tools | the `research` / `crawl` capabilities | **not yet** | with `toolbox-peers` ([below](#the-system-toolbox)); no system app declares `research` |
@@ -717,8 +719,8 @@ app's own card template through the shared `glance.publish` method:
   → `calendar`); otherwise the call answers
   `<app> was not granted the <family> service`. A store app's namespace,
   such as `summary`, is not a capability, so its host-service tools run only
-  through `host_method`. The gate admits an `app` tool. desktop-v0.1.0-beta.2
-  refuses every call to it:
+  through `host_method`. The gate admits an `app` tool.
+  `desktop-v0.1.0-beta.2` refuses every call to it:
   `<tool> declares a script implementation, but this host does not support script tool dispatch`.
   OctoSense `main` runs it in the open full app, for a manifest that declares
   `requires: ["script-tools-v1"]`
@@ -785,7 +787,7 @@ from `auto_approvable` (App Hub PUBLISHING):
 
 Not yet for store apps: `confirm: "app"`. The gate allows it only on a tool
 with `implemented_by: "app"` (or a native module's tool).
-desktop-v0.1.0-beta.2 refuses those tools, and OctoSense `main` refuses a
+`desktop-v0.1.0-beta.2` refuses those tools, and OctoSense `main` refuses a
 script tool call that needs the app's own confirmation:
 `Script tools require host confirmation; confirm: app is not supported by this ABI`.
 On a host-service tool the gate refuses it (**✓ run**):

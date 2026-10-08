@@ -15,8 +15,8 @@ OctoSense's unless marked.
 
 OctoSense `main` (in no release yet) also implements Host API v1: version
 requirements, discovery, signed backend operations, device consent and script
-tools. [Host API v1](HOST-API-V1.md) shows how to use them. Desktop
-0.1.0-beta.2 has none of them.
+tools. [Host API v1](HOST-API-V1.md) shows how to use them.
+`desktop-v0.1.0-beta.2` has none of them.
 
 ## Which shell serves which service
 
@@ -166,9 +166,9 @@ folder ([AI-SERVICES](AI-SERVICES.md#where-the-agent-works-storage)).
 If your app needs an account on some service, it needs a host service for
 that service, not a login form. GitHub and Google already have one
 ([CAPABILITIES § Use a connected account](CAPABILITIES.md#use-a-connected-account)).
-An app with an account system of its own can use the host's backend sign-in,
-on OctoSense `main` only. The bundle declares its backend in the manifest's
-`backend` block, or the host's operator registers it
+An app with an account system of its own can use the host's backend sign-in.
+The bundle declares its backend in the manifest's `backend` block, or the
+host's operator registers it
 ([CAPABILITIES § Sign in to your own backend](CAPABILITIES.md#sign-in-to-your-own-backend)).
 No release has this yet
 ([App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)).
