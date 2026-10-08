@@ -36,46 +36,46 @@ jobs:
         with:
           # A clean parent directory: setup-native.py prepares the shared
           # runtime (makepad, octoscript, octoscript-makepad) beside the repo.
-          path: octosense-org/OctoScript-App-Design-Flow
+          path: octosense-org/OctoSense-App-Flow
 
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
       - name: Prepare the shared Octoscript-Makepad runtime
-        working-directory: octosense-org/OctoScript-App-Design-Flow
+        working-directory: octosense-org/OctoSense-App-Flow
         run: |
           python tools/setup-native.py --root ../
           python tools/setup-native.py --check --root ../
 
       - name: Runtime setup safeguards
-        working-directory: octosense-org/OctoScript-App-Design-Flow
+        working-directory: octosense-org/OctoSense-App-Flow
         run: PYTHONPATH=flows python -m unittest core.test_native_runtime
 
       - name: Environments (image library and Sketch kit pin different NumPy majors)
-        working-directory: octosense-org/OctoScript-App-Design-Flow
+        working-directory: octosense-org/OctoSense-App-Flow
         run: |
           python -m venv "$RUNNER_TEMP/image" && "$RUNNER_TEMP/image/bin/pip" install -q -r flows/image-lib/requirements.txt
           python -m venv "$RUNNER_TEMP/sketch" && "$RUNNER_TEMP/sketch/bin/pip" install -q -r flows/kits/sketch/requirements.txt
 
       - name: image-to-card flow tests
-        working-directory: octosense-org/OctoScript-App-Design-Flow
+        working-directory: octosense-org/OctoSense-App-Flow
         run: |
           "$RUNNER_TEMP/image/bin/python" -m unittest discover -s flows/image-to-card -p 'test_*.py'
           "$RUNNER_TEMP/image/bin/python" -m unittest discover -s flows/image-to-card/wasm -p 'test_*.py'
 
       - name: Core tests
-        working-directory: octosense-org/OctoScript-App-Design-Flow
+        working-directory: octosense-org/OctoSense-App-Flow
         run: |
           "$RUNNER_TEMP/sketch/bin/python" -m unittest discover -s flows/core -p 'test_*.py'
 
       - name: Sketch kit flow tests
-        working-directory: octosense-org/OctoScript-App-Design-Flow
+        working-directory: octosense-org/OctoSense-App-Flow
         run: |
           "$RUNNER_TEMP/sketch/bin/python" -m unittest discover -s flows/kits/sketch -p 'test_*.py'
 
       - name: Maintenance tests
-        working-directory: octosense-org/OctoScript-App-Design-Flow
+        working-directory: octosense-org/OctoSense-App-Flow
         run: python -m unittest discover -s flows/tests -p 'test_*.py'
 
       # flows/image-lib's own tests read ignored per-design capture rounds
@@ -83,7 +83,7 @@ jobs:
       # they run locally, not here.
 
       - name: Every example manifest plans
-        working-directory: octosense-org/OctoScript-App-Design-Flow
+        working-directory: octosense-org/OctoSense-App-Flow
         run: |
           for example in aircon school health reunion calendar; do
             bash tools/image-to-appcard-flow.sh plan \
