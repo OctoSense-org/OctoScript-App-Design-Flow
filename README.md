@@ -53,7 +53,7 @@ organizers. What a contestant needs from here:
 | **Start** | The [Quick path](#quick-path) below: every step is a shell command. |
 | **Machine** | The complete guide was run on Apple silicon macOS. App Hub's Windows and Linux CI also passes the native tools build and contract, policy, CLI and modal-input tests; native app interaction on those platforms is a separate check. Linux software-rendered frame capture remains unverified. See [platform evidence](docs/QUICKSTART.md#1-prerequisites) and the [Quick path](#quick-path). |
 | **What an app can do** | Keep its own storage; make HTTPS requests to hosts it declares; show pictures and web pages; use the camera and the device's location; read and send mail through the host's `mail` service; publish Glance cards; call `model.complete`; and, in `desktop-v0.1.0-beta.2`, use a person's GitHub, Gmail or Google Calendar account through the host. [docs/CAPABILITIES.md](docs/CAPABILITIES.md) lists the capabilities; [docs/SCRIPT-API.md](docs/SCRIPT-API.md) covers the language and every API. |
-| **What it cannot do** | Hold a password, API key or token, even in its own storage. Sign people in to its own backend on a released build: only OctoSense `main` has the host-run backend sign-in, with the backend declared in the app's manifest or registered by the host's operator ([CAPABILITIES](docs/CAPABILITIES.md#sign-in-to-your-own-backend), [App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)). Generate images, audio or video, or compute embeddings: `model.image`, `model.audio`, `model.video` and `model.embeddings` do not exist ([App Hub#85](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/85)–[#88](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/88)). Add a capability or host service (an App Hub and shell change), use the system-app-only `llm`, `news` and `calendar` capabilities or an `os.*` id, or ship native code. |
+| **What it cannot do** | Hold a password, API key or token, even in its own storage. Sign people in to its own backend on a released build: only OctoSense `main` has the host-run backend sign-in, with the backend declared in the app's manifest or registered by the host's operator ([CAPABILITIES](docs/CAPABILITIES.md#sign-in-to-your-own-backend), [App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)). Use media generation or embeddings on beta.2 or `card-host`: those services require the implementation in [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368), pending integration and release ([media guide](docs/AI-SERVICES.md#media-and-embeddings-model)). Add a capability or host service (an App Hub and shell change), use the system-app-only `llm`, `news` and `calendar` capabilities or an `os.*` id, or ship native code. |
 | **AI in the app** | Building an app needs no AI service, and `card-host` serves none, so make the app complete without one. See [AI in your app](#ai-in-your-app). |
 | **Reference apps** | The three published [connected apps](#connected-apps-github-gmail-and-google-calendar). |
 | **Demo** | The app in `card-host` (`tools/octo run`, driven over the remote bridge) and real screenshots from `tools/octo shot`. To show it inside OctoSense, with its host services, run the OctoSense desktop shell against a local catalog ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)). |
@@ -409,8 +409,12 @@ the system chat) and one **app agent** for each app that has one. On
 | Publish cards to the Glance screen, with an in-card chat its agent answers and model-written text marked AI-written | `glance` capability, `glance.publish` (L0 `sys.chat`, `model-copy`) | `no service answers "glance"` |
 | Run its agent in the background when new mail arrives | `agent.background: true` and `agent.triggers.events: ["<namespace>.new_message"]`, plus `auth` and `gmail`, as Inbox Assistant does | not available |
 
-Not yet: image, audio and video generation and embeddings (`model.image`,
-`model.audio`, `model.video`, `model.embeddings`).
+Image, speech, video and embeddings are implemented in [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368),
+pending integration and release. They are absent from beta.2 and `card-host`;
+a compatible shell and an entitled host-configured provider are required.
+Live paid-provider and device validation remain **unverified**. See
+[media and embeddings](docs/AI-SERVICES.md#media-and-embeddings-model) for discovery,
+app-agent aliases and the source-pinned API reference.
 
 Agent tools that run the app's own code work only on OctoSense `main`, in no
 release yet: the manifest must declare `requires: ["script-tools-v1"]`, and a

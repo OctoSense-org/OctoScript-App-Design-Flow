@@ -85,10 +85,13 @@ needs no AI service or API key.
   `card-host` (and so `tools/octo run`) serves no AI service, and every call
   there answers `no service answers "…" on this device`. On an OctoSense
   device a store app can call `model.complete`, and `octos.*` once the person
-  allows its agent. `model` offers
-  `model.complete` and `model.budget` only; `model.image`, `model.audio`,
-  `model.video` and `model.embeddings` do not exist. `llm` is for system apps
-  only. Never put a model key in an app. Read
+  allows its agent. Released hosts offer `model.complete` and `model.budget`.
+  Image, speech, video and embedding methods are implemented in
+  [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368), pending integration and release; neither beta.2 nor
+  `card-host` provides them. Follow the [media guide](docs/AI-SERVICES.md#media-and-embeddings-model)
+  and its source-pinned API reference. A configured chat provider is not
+  proof of media entitlement; live paid providers and device execution remain
+  unverified. `llm` is for system apps only. Never put a model key in an app. Read
   [docs/AI-SERVICES.md](docs/AI-SERVICES.md) before adding an AI feature, and
   report each one as unverified until exercised on its actual host.
 - **Connected accounts and host-service tools need `desktop-v0.1.0-beta.2`
