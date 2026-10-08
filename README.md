@@ -77,7 +77,8 @@ organizers. What a contestant needs from here:
 
 Public App Hub catalog **13** offers the following GitHub-attested **0.2.1**
 releases. Search their exact fresh IDs; historical `org.octosense.samples.*`
-IDs and local data are not migrated.
+IDs and local data are not migrated. App Hub is withdrawing those older
+key-signed entries.
 
 | App | App id | Source |
 | --- | --- | --- |
@@ -490,7 +491,7 @@ Widgets built by `on_render` are listed in `/snap` and `/d` like any other;
 content an app adds later, from a timer or a reply, appears once it is
 drawn, so poll `/snap?q=` for it. `card-host` registers **no** host
 services, so a Mail-style app gets `no service answers "mail" on this device`
-there. `card-host` also refuses sealed attested/signed releases: test and
+there. `card-host` also refuses sealed releases: test and
 capture editable source before release.
 
 **In the shells.** The OctoSense desktop shell and the phone's Home run apps
@@ -503,8 +504,9 @@ publishes it, publish its release pack into a local catalog with a throwaway
 trust anchor, then set `OCTOSENSE_HUB_CATALOG=legacy` and point
 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` at that mirror using a fresh
 app-data directory. The shell's store then installs and opens the app
-([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)); this
-rehearsal is unverified with a GitHub-attested release.
+([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
+**Unverified:** a rehearsal with a GitHub-attested release; the recorded run
+used a key-signed test app.
 
 **On a phone, today** ([QUICKSTART §9](docs/QUICKSTART.md#9-run-it-on-an-octosense-phone)):
 
@@ -513,7 +515,7 @@ rehearsal is unverified with a GitHub-attested release.
   only the anchor compiled into the build; the `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR`
   overrides are environment variables the Android launcher does not set.
   Installing from a local catalog on a device is unsupported and unverified.
-- The closest path is the desktop rehearsal above.
+- The closest you can get is the desktop rehearsal above.
 - `card-host`'s remote bridge is compiled out on Android, so phone testing
   does not use `tools/octo`.
 - After Hub admission, only a compatible host can install the app. Released
@@ -565,7 +567,7 @@ approves the exact candidate, and the Hub publishes its catalog entry.
 
 [docs/PUBLISHING.md](docs/PUBLISHING.md) covers the local gate, screenshots and
 review answers. `tools/octo publish-github <app-directory>` installs the
-publishing workflow (`new` also copies it). After review, commit tested source
+release workflow (`new` also copies it). After review, commit tested source
 and push a new `v<manifest.version>` tag. GitHub Actions prepares, attests,
 verifies and packs the release using its native identity. App Hub accepts
 only GitHub-attested releases
@@ -577,14 +579,15 @@ A GitHub release supplies verifiable bytes; it is not a new App Hub submission
 channel or automatic approval. See App Hub's
 [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md).
 Until App Hub first publishes the app, post each new release on the same
-issue, with its tag, full commit SHA and workflow-run link; after publication,
-open a new issue for each new version. Routine updates use new versions/tags
+issue as a comment with its tag, full commit SHA and workflow-run link, and
+update the issue title and Version field; after publication, open a new issue
+for each new version. Routine updates use new versions/tags
 from the same repository/owner/workflow. Never move a released tag or
 hand-edit the Hub's admitted catalog/artifacts.
 
 This path requires contract 1.8.0 / `publisher-github-v1`. Real GitHub releases
 and native Store install/update checks passed with an isolated test catalog
-([historical evidence](docs/PUBLISHING.md#36-publisher-key--human)). Current
+([historical evidence](docs/PUBLISHING.md#36-github-publisher-identity--human)). Current
 public-catalog sample installation and update passed on macOS; see the
 [compatible shell guide](#compatible-shell-download) for the RC status and limits.
 

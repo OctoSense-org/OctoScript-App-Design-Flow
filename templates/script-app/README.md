@@ -77,8 +77,8 @@ push a new `v<manifest.version>` tag. GitHub prepares, attests, verifies and pac
 the release; App Hub accepts only GitHub-attested releases, so you need no
 signing key. Add the successful release to the issue; administrator approval
 still controls catalog publication. Until App Hub first publishes the app, post
-each newer release on the same issue; after publication, open a new issue for
-each new version. Routine updates use new versions/tags under the same
+each new release on the same issue and update the issue title and Version
+field; after publication, open a new issue for each new version. Routine updates use new versions/tags under the same
 repository/owner/workflow identity.
 
 This path requires `publisher-github-v1` / contract 1.8.0 and a compatible

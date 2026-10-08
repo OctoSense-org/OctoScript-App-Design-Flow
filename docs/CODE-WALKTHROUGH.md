@@ -126,8 +126,9 @@ supplies no private signing key; GitHub supplies the job/OIDC identity.
 
 `publisher-github-v1` needs contract 1.8.0 and a compatible Store verifier.
 Real GitHub proof and native Store install/update checks passed with an isolated
-test catalog ([evidence](PUBLISHING.md#36-publisher-key--human)); shipped-shell
-and phone installation remain unverified, and a compatible release is pending.
+test catalog ([evidence](PUBLISHING.md#36-github-publisher-identity--human)).
+OctoSense desktop 0.1.0-rc.1 installs and updates the public GitHub-attested
+samples on macOS; phone installation remains unverified.
 Opening an App Hub issue expresses publication intent and can happen first;
 the workflow provides verifiable bytes for that issue. Hub checks, administrator
 approval and authenticated catalog publication remain separate steps.

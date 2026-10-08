@@ -587,7 +587,7 @@ def cmd_publish_github(args):
     print("Review and commit this workflow with the tested app in its public GitHub repository.")
     print("Then push a NEW tag v<manifest.version>. GitHub checks and attests the app and creates its release assets.")
     print("Add the successful release link and review evidence to the submission issue for maintainer review.")
-    print("Until the app is first published, post each new release on that issue; afterwards, open a new issue per version.")
+    print("Until the app is first published, post each new release on that issue and update its title and Version field; after publication, open a new issue per version.")
     print("Installing this workflow does not push, release, submit, or approve the app.")
     return 0
 

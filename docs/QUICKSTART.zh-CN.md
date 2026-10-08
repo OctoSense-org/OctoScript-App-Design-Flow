@@ -345,9 +345,9 @@ tools/octo publish-github ~/apps/my-app
 tools/octo package-help
 ```
 
-评审 `.github/workflows/publish-app.yml`，与已测试应用一起 commit，再推送新的 `v<manifest.version>` tag。GitHub Actions 会准备、证明、验证和打包，无需 `publisher.key` 或开发者签名 secret。把成功的工作流和确切的 Release pack 附到提交 issue。在 App Hub 首次发布应用之前，每个新 Release 都发在这个 issue 中；发布之后，每个新版本都开新 issue。安装工作流、创建 GitHub Release 都不会自动提交或批准应用。日常更新使用同一身份下的新版本/新 tag。
+评审 `.github/workflows/publish-app.yml`，与已测试应用一起 commit，再推送新的 `v<manifest.version>` tag。GitHub Actions 会准备、证明、验证和打包。App Hub 只接受带 GitHub 证明的 Release，所以无需 `publisher.key` 或开发者签名 secret。把成功的工作流和确切的 Release pack 附到提交 issue。在 App Hub 首次发布应用之前，每个新 Release 都以评论的形式发在这个 issue 中，并更新 issue 标题和 Version 字段；发布之后，每个新版本都开新 issue。安装工作流、创建 GitHub Release 都不会自动提交或批准应用。日常更新使用同一身份下的新版本/新 tag。
 
-此路径需要契约 1.8.0 / `publisher-github-v1`。真实的 Release 及原生 Store 的安装、更新检查已在隔离的测试签名目录中通过（[历史证据](PUBLISHING.zh-CN.md#36-发布者密钥human)）。当前公开的 macOS 示例也通过了原生安装、更新及 RC 重新打开检查；见[下载状态与平台限制](../README.zh-CN.md#下载兼容-shell)。旧宿主和 `card-host` 会拒绝已封存的 Release。本地商店演练（[PUBLISHING §4](PUBLISHING.zh-CN.md#4-在本地演练商店流程)）是可选的，而且尚未用带 GitHub 证明的 Release 验证过。
+此路径需要契约 1.8.0 / `publisher-github-v1`。真实的 Release 及原生 Store 的安装、更新检查已在隔离的测试签名目录中通过（[历史证据](PUBLISHING.zh-CN.md#36-github-发布者身份human)）。当前公开的 macOS 示例也通过了原生安装、更新及 RC 重新打开检查；见[下载状态与平台限制](../README.zh-CN.md#下载兼容-shell)。旧宿主和 `card-host` 会拒绝已封存的 Release。本地商店演练（[PUBLISHING §4](PUBLISHING.zh-CN.md#4-在本地演练商店流程)）是可选的，而且尚未用带 GitHub 证明的 Release 验证过。
 
 ## 故障排查
 
@@ -382,6 +382,7 @@ tools/octo package-help
 | `check`：`[refused] assets: … contains https://…`（普通许可 `.txt` 或 `.md` 文件） | 从 App Hub #146 或更新版本重新构建 `hub`。普通文档 URL 可以通过检查；保留要求提供的许可声明。Agent 指引与结构化资源引用仍须单独检查。 |
 | `check`：`[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | 当前 `hub` 接受内置 `Inter.ttf`、`LXGWWenKaiRegular.ttf`、`LXGWWenKaiBold.ttf` 的确切路径（§7）；请重建旧版准入工具。其他字体要随应用打包并使用相对路径，例如 `assets/Body.ttf`。`desktop-v0.1.0-beta.2` 仍早于打包字体加载功能；这个版本请使用不设 `font_src` 的纯 L0 角色套件。 |
 | `hub: the bundle exceeds the size limit`，没有报告 | 应用包超过了 8 MiB。压缩或删除图片和字体。 |
+| `card-host: refused: card-host --stamp refuses publisher signing metadata; use an unsigned development copy` | `tools/octo run` 会传入 `--stamp`，所以 `card-host` 在检查证明之前就会拒绝已封存的 Release。请改为运行可编辑源码。 |
 | `card-host: refused: this host has no GitHub publisher verifier` | `card-host` 不运行已封存的 Release。请测试未签名的可编辑源码；准入之后，在兼容宿主（例如 [RC1 发行版](../README.zh-CN.md#下载兼容-shell)）中测试这个 Release。 |
 | `hub scan … --packet build/review.json` 输出 `hub: build/review.json: No such file or directory (os error 2)` | `hub` 不会创建审核包所在的目录。先运行 `mkdir -p build`。 |
 | `hub check --help` 输出 `hub: No such file or directory (os error 2)` | 你的 `hub` 比 App Hub 当前的 `main` 旧；在当前 `main` 中，`--help` 会输出用法。重新构建（§2），或不带参数运行 `hub`。 |

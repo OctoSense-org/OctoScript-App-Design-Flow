@@ -73,7 +73,7 @@ runs, and tie the final evidence to the tested source.
 
 ## Hand-off
 
-Continue with [docs/PUBLISHING.md §3.6](../../docs/PUBLISHING.md#36-publisher-key--human).
+Continue with [docs/PUBLISHING.md §3.6](../../docs/PUBLISHING.md#36-github-publisher-identity--human).
 Open the App Hub submission issue to request publication; provide the
 repository, version/commit, screenshots and permissions. It can precede the
 release. `tools/octo publish-github "$A"` installs the tag workflow (`new`

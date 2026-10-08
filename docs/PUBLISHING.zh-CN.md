@@ -16,7 +16,7 @@
 | Release 来源证明、打 tag、提交 issue、审核人员检查什么、常见拒绝原因 | App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md) |
 
 - 在 [QUICKSTART](QUICKSTART.zh-CN.md) 的 §1–6 都走通之后，从这里开始：应用已能在 `card-host` 中运行，你也测试过它的交互。
-- **HUMAN** 标出需要用户授权的把关节点：发布者身份与隐私文本、声明的平台、发布 tag 和提交。到了这些节点，Agent 停下、汇报，然后等待。
+- **HUMAN** 标出需要用户授权的把关节点：发布者身份与隐私文本、声明的平台、Release 的 tag 和提交。到了这些节点，Agent 停下、汇报，然后等待。
 
 ## 1. 发布的是什么
 
@@ -25,7 +25,7 @@
 ```text
 my-app/
   AGENTS.md  README.md  .gitignore        不提交
-  .github/workflows/publish-app.yml       发布工作流；不放进应用包
+  .github/workflows/publish-app.yml       Release 工作流；不放进应用包
   .gitattributes                         由 tools/octo new 复制：bundle/** -text，让 Git 永不改写应用包
   build/review.json                      不提交（hub scan 的输出）
   .local-state/                          不提交（card-host 的 jail）
@@ -60,7 +60,7 @@ export B="$APP/bundle"
 编辑 `$B/manifest.json`：
 
 - `id`：确定最终值，最后一段不能是保留名（[QUICKSTART §3](QUICKSTART.zh-CN.md#3-创建应用)）。
-- `version`：每次提交都用新值（`0.1.0`，然后是 `0.1.1`……）。签名目录中已有的版本，准入检查会拒绝；发布 tag 也使用同一个版本号。
+- `version`：每次提交都用新值（`0.1.0`，然后是 `0.1.1`……）。签名目录中已有的版本，准入检查会拒绝；Release 的 tag 也使用同一个版本号。
 - `capabilities`：只列出应用已实现的功能用到的能力（[CAPABILITIES](CAPABILITIES.zh-CN.md)）。
 - `network.hosts`：程序用到的每个主机，写纯主机名（`api.example.com`）。
 - `integrity` 留给 `hub stamp` 填写。
@@ -132,7 +132,7 @@ hub: the bundle was refused
   [refused] version: version 0.1.0 of org.octosense.samples.githubnotes is already published; publish a new version
 ```
 
-`tools/octo check` 会在检查之前为未签名的应用包重新写入摘要，所以即使你 commit 的摘要已经过时，它也会通过。每次 commit 之前，把它作为最后一步运行。tag 工作流另行生成并验证封存的发布 pack（§3.7）；源码检查不能代替发布者证明验证。
+`tools/octo check` 会在检查之前为未签名的应用包重新写入摘要，所以即使你 commit 的摘要已经过时，它也会通过。每次 commit 之前，把它作为最后一步运行。tag 工作流另行生成并验证已封存的 Release pack（§3.7）；源码检查不能代替发布者证明验证。
 
 ### 3.5 回答审核问题
 
@@ -247,7 +247,7 @@ OCTOSENSE_HUB_CATALOG=legacy OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" \
 已在 macOS 上用上文的测试应用 Test Notes（用密钥签名）验证：应用的交互、存储以及向已声明主机发出的请求，表现都与在 `card-host` 中一致。
 
 - 用 `<text>` 绘制的 `icon.svg` 在商店中显示为空白图块。请像模板那样，用形状和路径绘制图标。
-- 声明了 `auth` 的应用需要从 OctoSense `main` 构建的 Shell或 [RC1 发行版](../README.zh-CN.md#下载兼容-shell)；当前带 GitHub 证明的应用使用 RC1。beta.1 的商店会拒绝这个能力。你在这里构建的 Shell 没有提供商注册信息，要由你自己提供，而且注册信息绝不放进应用。提供方式有两种：在 `cargo` 编译 Shell 时设置构建变量，例如 `OCTOSENSE_GITHUB_CLIENT_ID`（[配置发行版本](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#配置发行版本维护者)）；或者写入 `$OCTOSENSE_APP_DATA/.host/oauth/clients.json`（这里是 `$APP/build/desktop-apps/.host/oauth/clients.json`），它会取代编译进去的那组注册信息（[高级运维覆盖配置](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#高级运维覆盖配置)）。接入真实提供商后的实际使用大多未验证（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。
+- 声明了 `auth` 的应用需要从 OctoSense `main` 构建的 Shell 或 [RC1 发行版](../README.zh-CN.md#下载兼容-shell)；当前带 GitHub 证明的应用使用 RC1。beta.1 的商店会拒绝这个能力。你在这里构建的 Shell 没有提供商注册信息，要由你自己提供，而且注册信息绝不放进应用。提供方式有两种：在 `cargo` 编译 Shell 时设置构建变量，例如 `OCTOSENSE_GITHUB_CLIENT_ID`（[配置发行版本](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#配置发行版本维护者)）；或者写入 `$OCTOSENSE_APP_DATA/.host/oauth/clients.json`（这里是 `$APP/build/desktop-apps/.host/oauth/clients.json`），它会取代编译进去的那组注册信息（[高级运维覆盖配置](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#高级运维覆盖配置)）。接入真实提供商后的实际使用大多未验证（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。
 - 这只是用你自己的信任锚做的演练。标准构建只信任 App Hub 的信任锚。
 
 ### 4.3 可选：用独立商店安装
@@ -290,16 +290,16 @@ App Hub 的独立商店 `appstore` 不需要 Shell 也能从同一个镜像安�
 
 | 把关节点 | Agent 为什么停下 |
 | --- | --- |
-| GitHub 发布者身份与发布工作流（3.6、3.7） | 发布绑定公开仓库、所有者、工作流、tag 和 commit；由人授权以这个身份发布。 |
+| GitHub 发布者身份与 Release 工作流（3.6、3.7） | Release 绑定公开仓库、所有者、工作流、tag 和 commit；由人授权以这个身份发布。 |
 | 发布者名称、支持联系方式、隐私政策文本（3.2） | 这些法律声明和个人声明只有发布者本人才能作出。 |
 | 声明的平台（3.2） | 每个平台声明都要对应一次由人执行或记录的实际运行；Agent 无法为此担保。 |
-| 为发布打 tag（3.8） | tag 标识审核人员检查的确切字节，永不移动。 |
+| 为 Release 打 tag（3.6） | tag 标识审核人员检查的确切字节，永不移动。 |
 | 开提交 issue（3.8） | 这是以发布者的名义行事。 |
 | 在 OctoSense-App-Hub 中批准提交或合并 | 只有 App Hub 管理员能批准提交，也只有 App Hub 维护者能合并。 |
 
 ## 6. 检查表（复制后从上到下执行）
 
-`tools/octo package-help` 会输出一个简短版本；这里的版本多了 `--hidden`、`.DS_Store` 和发布证明检查。
+`tools/octo package-help` 会输出一个简短版本；这里的版本多了 `--hidden`、`.DS_Store` 和 Release 证明检查。
 
 ```text
 [ ] tools/octo doctor                                   -> hub 和 card-host 均为 [ok]
@@ -321,7 +321,7 @@ App Hub 的独立商店 `appstore` 不需要 Shell 也能从同一个镜像安�
 [ ] GitHub 工作流成功；publisher-verify 和 publisher-pack 验证带证明的 Release pack 通过
 [ ] Release pack、规范化清单和 receipt 齐全；兼容宿主安装单独验证，或明确标记待验证
 [ ] HUMAN：提交 issue 表达发布意图，附仓库/版本/commit、截图和权限（可提前开）
-[ ] 在同一 issue 补充成功的工作流和确切的 Release pack；首次发布之前，每个新 Release 都以评论发在这里
+[ ] 在同一 issue 补充成功的工作流和确切的 Release pack；首次发布之前，每个新 Release 都以评论发在这里，并更新 issue 标题和 Version 字段
 [ ] Hub 检查、管理员批准和签名目录发布另行执行；发布之后，每个新版本都开新 issue
 [ ] 汇报：验证了什么、在哪个平台上验证、哪些没有验证
 ```

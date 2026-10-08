@@ -47,7 +47,7 @@ script-app/
 
 `new` 还会从开发工具集中经过评审的 Release 工作流模板安装 `.github/workflows/publish-app.yml`；它位于 `bundle/` 之外，不是上面列出的模板源文件。已有应用可运行 `tools/octo publish-github <app-directory>`，命令不会推送或提交。
 
-开 App Hub issue 来请求发布，附仓库/版本/commit、截图和权限。审阅并 commit 已测试源码和工作流，再推送新的 `v<manifest.version>` tag。GitHub 会准备、证明、验证和打包这个 Release；App Hub 只接受带 GitHub 证明的 Release，所以你不需要签名密钥。把成功的 Release 补充到 issue；发布到签名目录仍需管理员批准。在 App Hub 首次发布应用之前，每个新的 Release 都发在同一个 issue 中；发布之后，每个新版本都开新 issue。日常更新使用同一仓库、所有者和工作流身份下的新版本/新 tag。
+开 App Hub issue 来请求发布，附仓库/版本/commit、截图和权限。审阅并 commit 已测试源码和工作流，再推送新的 `v<manifest.version>` tag。GitHub 会准备、证明、验证和打包这个 Release；App Hub 只接受带 GitHub 证明的 Release，所以你不需要签名密钥。把成功的 Release 补充到 issue；发布到签名目录仍需管理员批准。在 App Hub 首次发布应用之前，每个新的 Release 都发在同一个 issue 中，并更新 issue 标题和 Version 字段；发布之后，每个新版本都开新 issue。日常更新使用同一仓库、所有者和工作流身份下的新版本/新 tag。
 
 此路径需要 `publisher-github-v1` / 契约 1.8.0，以及兼容宿主：OctoSense 桌面版 0.1.0-rc.1 可以在 macOS 上安装带 GitHub 证明的应用。证据与限制见 [PUBLISHING](../../docs/PUBLISHING.zh-CN.md)。
 

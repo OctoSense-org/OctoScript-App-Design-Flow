@@ -220,8 +220,8 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   compatible host are required. Public-catalog sample install/update checks
   passed on macOS, with a final RC reopen; isolated phone fixtures have
   separate evidence. None proves your app or provider effects. See the
-  [RC download status](README.md#compatible-shell-download).
-  See [PUBLISHING §3.6](docs/PUBLISHING.md#36-publisher-key--human).
+  [RC download status](README.md#compatible-shell-download) and
+  [PUBLISHING §3.6](docs/PUBLISHING.md#36-github-publisher-identity--human).
 - **An issue requests publication.** Include repository, version/commit,
   screenshots and permissions; it may precede the release. Attach the
   successful workflow and exact release pack when ready. A reviewer, not a
@@ -230,8 +230,9 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   its signed catalog. Never claim that pushing a tag automatically submits or
   approves an app.
 - **One issue until first publication.** Until App Hub first publishes the
-  app, post each new release on the same issue, with its tag, full commit SHA
-  and workflow-run link; after publication, each new version gets a new issue.
+  app, post each new release on the same issue as a comment with its tag, full
+  commit SHA and workflow-run link, and update the issue title and Version
+  field; after publication, each new version gets a new issue.
 - **No `script` in a Glance tool.** An agent tool that publishes Glance
   cards accepts `template` with `initial`, or L0 `source` with `data`, and
   never `script`. OctoSense runs a script card under the app's own policy.

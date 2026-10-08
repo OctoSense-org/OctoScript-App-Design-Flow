@@ -37,7 +37,7 @@ OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home�
 
 | 服务 | 前提 | 可用的构建 |
 | --- | --- | --- |
-| `auth`、`github`、`gcalendar`、`gmail` | GitHub 和 Google 的提供商注册信息。beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取注册信息，这个文件由宿主的运维人员提供；RC1 及之后的构建可以把注册信息编译进去，但公开的 RC1 安装包不含任何注册信息（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。 | RC1 及之后的构建（Windows 和 Linux 无法批准受保护的写操作），以及 desktop-v0.1.0-beta.2 发布版（macOS，Apple 芯片）。尚不支持：在 Android 上登录 Google。 |
+| `auth`、`github`、`gcalendar`、`gmail` | GitHub 和 Google 的提供商注册信息。beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取注册信息，这个文件由宿主的运维人员提供；RC1 及之后的构建可以把注册信息编译进去，但公开的 RC1 安装包不含任何注册信息（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。 | RC1 及之后的构建（Windows 和 Linux 无法批准受保护的写操作），以及 desktop-v0.1.0-beta.2 发行版（macOS，Apple 芯片）。尚不支持：在 Android 上登录 Google。 |
 | 使用 `backend` 提供商的 `auth` | 应用后端的注册信息：来自已准入签名应用包的 `backend` 块（[后端指南](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）；应用包没有声明时，来自运维人员配置的 `<apps root>/.host/oauth/backends.json`。 | RC1 及之后的构建；beta.2 没有后端登录。macOS 和 Android 9 及以上版本使用宿主的 WebView 登录，Windows 和 Linux 使用系统浏览器（未验证）。iOS 不支持。 |
 | `octos`、`model` | 用户在 AI providers 应用中添加的 AI 提供商。 | 所有标准构建；`octos` 仅限托管内核的 Shell。 |
 | `mail` | 用户在 Mail 的面板上登录的账户。 | 所有标准构建。 |
@@ -79,7 +79,7 @@ mail.sheet.submit is for the host's sheet, not an app
 
 面板只出现在前台应用之上。来自信息流中速览卡片或 Agent 工具的调用无法弹出面板，所以服务会拒绝这类调用，并用一句话提示用户打开应用，例如 Mail 会返回 `Signing in needs Mail open: open Mail to add an account.` 这句话。
 
-带 `from_sheet` 标记的调用只能证明它出自面板中的程序，不能证明用户按下了什么。所以，必须由用户本人发起的发送或保存要经过原生控件：它在按下和点击时都检查 Makepad 的 `trusted_user_input()`。Gmail 的发送审阅界面在所有版本上都这样做；GitHub 和 Calendar 的保存在 RC1 中也这样做，那里的 `sheet.save` 调用会得到 `Saving requires a physical activation of the native host review. Script and agent requests cannot approve it.` 这句话。在 Windows 和 Linux 上，RC1 根本无法批准这类保存：受保护的写操作会拒绝执行。在 desktop-v0.1.0-beta.2 上，GitHub 和 Calendar 的服务仍接受来自面板的 `sheet.save`，不做这项检查。
+带 `from_sheet` 标记的调用只能证明它出自面板中的程序，不能证明用户按下了什么。所以，必须由用户本人发起的发送或保存要经过原生控件：它在按下和点击时都检查 Makepad 的 `trusted_user_input()`。Gmail 的发送审阅界面在所有版本上都这样做；GitHub 和 Calendar 的保存在 RC1 中也这样做，那里的 `sheet.save` 调用会得到 `Saving requires a physical activation of the native host review. Script and agent requests cannot approve it.` 这句话。在 Windows 和 Linux 上，RC1 既不能批准这类保存，也不能批准 Gmail 发送：受保护的写操作会拒绝执行。在 desktop-v0.1.0-beta.2 上，GitHub 和 Calendar 的服务仍接受来自面板的 `sheet.save`，不做这项检查。
 
 ## 密钥归宿主所有
 

@@ -81,10 +81,10 @@ Supporting code, not flows:
    | 9 | Prepare release (**HUMAN** for public actions) | `tools/octo publish-github "$APP_REPO"`; review/commit tested source and workflow, then push a new `v<manifest.version>` tag | GitHub `publisher-verify` and `publisher-pack` succeed; attach release/pack/digest to the issue |
    | 10 | Hub review | Hub checks the exact candidate; administrator reviews and approves it | Authenticated catalog publication completes; a GitHub release alone is not approval |
 
-   `card-host` refuses sealed releases, so test/capture editable source first.
-   The new workflow needs contract 1.8.0 / `publisher-github-v1`; live publishing
-   and compatible-host installation remain unverified, with a compatible
-   release pending. These are pass conditions, not claimed test results.
+   `card-host` refuses sealed releases, so test and capture the editable source
+   first. The release workflow needs contract 1.8.0 / `publisher-github-v1`, and
+   installing a release needs a compatible host, such as OctoSense desktop
+   0.1.0-rc.1 on macOS. The table lists pass conditions, not test results.
    This repository's [docs/PUBLISHING.md](../docs/PUBLISHING.md) covers the flow. App Hub's
    [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md)
    covers the submission issue and review, and its

@@ -564,7 +564,7 @@ What exists today:
   ([PUBLISHING §4](PUBLISHING.md#4-rehearse-the-store-path-locally)). The
   OctoSense desktop shell reads `OCTOSENSE_HUB` and `OCTOSENSE_HUB_ANCHOR`
   too; its store installs your app from that catalog and opens it in the
-  shell's Card runner. **Unverified** with a GitHub-attested release.
+  shell's Card runner. **Unverified:** a rehearsal with a GitHub-attested release.
 - **First-party apps** reach a phone as system apps: a bundle in
   [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps),
   listed in the shell's `system-apps.json` (OctoSense `phone/system-apps.json`
@@ -599,16 +599,18 @@ tools/octo package-help
 
 Review and commit `.github/workflows/publish-app.yml` with the tested app, then
 push a new `v<manifest.version>` tag. GitHub Actions prepares, attests, verifies
-and packs it; no `publisher.key` or developer signing secret is required.
+and packs it. App Hub accepts only GitHub-attested releases, so no
+`publisher.key` or developer signing secret is required.
 Attach the successful workflow and exact release pack to the submission issue.
-Until App Hub first publishes the app, post each new release on that issue;
-after publication, open a new issue for each new version. Neither installing
+Until App Hub first publishes the app, post each new release on that issue as
+a comment and update the issue title and Version field; after publication,
+open a new issue for each new version. Neither installing
 the workflow nor creating a GitHub release submits or approves the app.
 Routine updates use new versions/tags from the same identity.
 
 This path needs contract 1.8.0 / `publisher-github-v1`. Real publishing and native
 Store install/update checks passed with an isolated test catalog
-([historical evidence](PUBLISHING.md#36-publisher-key--human)). Current public
+([historical evidence](PUBLISHING.md#36-github-publisher-identity--human)). Current public
 macOS samples also passed native install/update and RC reopen checks; see
 [download status and platform limits](../README.md#compatible-shell-download).
 Older hosts and `card-host` refuse the sealed release. The local store
@@ -648,6 +650,7 @@ is optional and unverified with a GitHub-attested release.
 | `check`: `[refused] assets: … contains https://…` in an ordinary license `.txt` or `.md` file | Rebuild `hub` from App Hub #146 or later. Plain documentation URLs are accepted; retain required license notices. Agent guidance and structured resource references still have separate checks. |
 | `check`: `[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | Current `hub` accepts the exact built-in `Inter.ttf`, `LXGWWenKaiRegular.ttf` and `LXGWWenKaiBold.ttf` paths (§7). Rebuild an older gate. For other fonts, bundle a font file and use a relative path such as `assets/Body.ttf`. `desktop-v0.1.0-beta.2` still predates bundled-font loading; use the plain L0 role kit without `font_src` on that release. |
 | `hub: the bundle exceeds the size limit`, with no report | The bundle is over 8 MiB. Shrink or drop images and fonts. |
+| `card-host: refused: card-host --stamp refuses publisher signing metadata; use an unsigned development copy` | `tools/octo run` passes `--stamp`, so `card-host` refuses a sealed release before it checks the proof. Run the editable source instead. |
 | `card-host: refused: this host has no GitHub publisher verifier` | `card-host` does not run a sealed release. Test the editable, unsigned source; test the admitted release in a compatible host, such as the [RC1 release](../README.md#compatible-shell-download). |
 | `hub scan … --packet build/review.json` prints `hub: build/review.json: No such file or directory (os error 2)` | `hub` does not create the packet's directory. Run `mkdir -p build` first. |
 | `hub check --help` prints `hub: No such file or directory (os error 2)` | Your `hub` predates App Hub's current `main`, where `--help` prints the usage. Rebuild it (§2), or run `hub` with no arguments. |

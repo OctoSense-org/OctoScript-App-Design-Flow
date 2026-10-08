@@ -60,7 +60,7 @@ Follow these rules:
   pack it. The tag source and sealed release pack are different artifacts.
 - Opening the App Hub issue is the request to publish; provide repository,
   version/commit, screenshots and permissions, then add the verified release
-  pack when ready. Until App Hub first publishes the app, post each newer
+  pack when ready. Until App Hub first publishes the app, post each new
   release on the same issue and update its title and Version field; after
   publication, open a new issue for each new version. A release alone does
   not submit or approve the app.

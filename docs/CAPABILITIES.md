@@ -253,7 +253,7 @@ Live provider sign-in is not established by the synthetic backend checks.
 ### Limits
 
 - **Builds.** Use [desktop RC1](../README.md#compatible-shell-download) for
-  current GitHub-proven apps. Historical desktop-v0.1.0-beta.2 (macOS, Apple silicon) serves
+  current GitHub-attested apps. Historical desktop-v0.1.0-beta.2 (macOS, Apple silicon) serves
   `auth`, `github`, `gcalendar` and `gmail`. The beta.1 stores
   (desktop-v0.1.0-beta.1 and home-v0.1.0-beta.1) list such apps but refuse to
   install them, because their contract does not know `auth`. No released phone

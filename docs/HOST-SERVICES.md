@@ -62,7 +62,7 @@ Some services work only after setup, and not every build has them:
 
 | Service | Needs | Builds |
 | --- | --- | --- |
-| `auth`, `github`, `gcalendar`, `gmail` | GitHub and Google registrations. Beta.2 reads them only from `<apps root>/.host/oauth/clients.json`, which its operator supplies; RC1 and later builds can compile them in, but the public RC1 packages include none ([CAPABILITIES § Limits](CAPABILITIES.md#limits)). | RC1 and later builds, where Windows and Linux cannot approve protected writes, and the desktop-v0.1.0-beta.2 release (macOS, Apple silicon). Not yet: Google sign-in on Android. |
+| `auth`, `github`, `gcalendar`, `gmail` | GitHub and Google registrations. Beta.2 reads them only from `<apps root>/.host/oauth/clients.json`, which its operator supplies; RC1 and later builds can compile them in, but the public RC1 packages include none ([CAPABILITIES § Limits](CAPABILITIES.md#limits)). | RC1 and later builds (on Windows and Linux they cannot approve protected writes), and the desktop-v0.1.0-beta.2 release (macOS, Apple silicon). Not yet: Google sign-in on Android. |
 | `auth` with the `backend` provider | The app's backend registration: the `backend` block of the admitted signed bundle ([backend guide](HOST-API-V1.md#4-connect-the-apps-backend)), or, when the bundle declares none, the operator's `<apps root>/.host/oauth/backends.json`. | RC1 and later builds; beta.2 has no backend sign-in. The login uses a host WebView on macOS and on Android 9 or later, and the system browser on Windows and Linux (unverified). Not on iOS. |
 | `octos`, `model` | An AI provider the person adds in the AI providers app. | Every standard build; `octos` only where the shell hosts the kernel. |
 | `mail` | An account the person signs in to on Mail's sheet. | Every standard build. |
@@ -139,8 +139,8 @@ person goes through a native control that checks Makepad's
 works this way on every build. GitHub and Calendar saves do in RC1, where a
 `sheet.save` call gets
 `Saving requires a physical activation of the native host review. Script and agent requests cannot approve it.`
-On Windows and Linux, RC1 cannot approve these saves at all: protected writes
-fail closed. On desktop-v0.1.0-beta.2, the GitHub and Calendar services still
+On Windows and Linux, RC1 approves neither these saves nor a Gmail send:
+protected writes fail closed. On desktop-v0.1.0-beta.2, the GitHub and Calendar services still
 accept `sheet.save` from their sheet without that check.
 
 ## Secrets are the host's

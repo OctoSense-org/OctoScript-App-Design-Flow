@@ -464,7 +464,7 @@ under `store-data/my-test-notes/bundle`; **OPEN** does not show the app.
 | GitHub publisher identity and release workflow (3.6, 3.7) | The release binds the public repository, owner, workflow, tag and commit; the person authorizes publication under that identity. |
 | Publisher name, support contact, privacy policy text (3.2) | Legal and personal statements only the publisher can make. |
 | Platforms claimed (3.2) | A platform claim must match a run that a person did or recorded; an agent cannot vouch for one. |
-| Tagging the release (3.8) | The tag names the exact bytes reviewers check; it never moves. |
+| Tagging the release (3.6) | The tag names the exact bytes reviewers check; it never moves. |
 | Opening the submission issue (3.8) | It acts under the publisher's name. |
 | Approving a submission or merging in OctoSense-App-Hub | Only an App Hub admin approves a submission, and only App Hub's maintainers merge. |
 
@@ -493,7 +493,7 @@ under `store-data/my-test-notes/bundle`; **OPEN** does not show the app.
 [ ] GitHub workflow succeeds; publisher-verify and publisher-pack pass on the attested release
 [ ] release pack, canonical manifest and receipt exist; compatible-host installation separately verified or marked pending
 [ ] HUMAN: submission issue requests publication; attach repo/version/commit, screenshots and permissions (may open earlier)
-[ ] Add the successful workflow and exact release pack to that issue; until first publication, post each new release there as a comment
+[ ] Add the successful workflow and exact release pack to that issue; until first publication, post each new release there as a comment and update the issue title and Version field
 [ ] Hub checks, admin approval and catalog publication are separate; after publication, each new version gets a new issue
 [ ] report: what was verified, on which platform, and what was not
 ```
