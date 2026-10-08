@@ -316,11 +316,11 @@ my-notes 0.1.0 — PASSED
 
 开发可编辑源码期间，出现未签名警告是正常的。在人工填写发布者字段之前，占位提示会一直存在。
 
-要检查版本是否已经发布过，加上 App Hub 的签名目录：`tools/octo check <bundle> --catalog <workspace>/OctoSense-App-Hub/catalog.json`。如果版本号已经用过，准入检查会拒绝并输出 `[refused] version: version 0.1.0 of <id> is already published; publish a new version`。
+要检查版本是否已经发布过，加上 App Hub 经过认证的签名目录：`tools/octo check <bundle> --catalog <workspace>/OctoSense-App-Hub/catalog-v2.json`。如果版本号已经用过，准入检查会拒绝并输出 `[refused] version: version 0.1.0 of <id> is already published; publish a new version`。请对照 `catalog-v2.json` 检查，而不是旧格式的 `catalog.json`：只通过 GitHub 发布的版本不会出现在后者中。
 
 `check` 会先为未签名的应用包重新写入摘要。如果你在最后一次 `check` 之后又修改了应用包，却没有重新运行就 commit，commit 中的摘要就是过期的：审核人员直接运行 `hub check` 时，会以 `[refused] digest` 拒绝它。每次源码 commit 之前，都把 `tools/octo check` 作为最后一步。GitHub 工作流会另行生成并验证封存的 release pack（§10）；可编辑的 tag 源码不包含这个证明。
 
-App Hub 的 [`hub` 命令](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#hub-命令)一节列出了所有 `hub` 命令，以及每个命令由谁运行、用在提交的哪一步。
+App Hub 的 [`hub` 命令参考](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#hub-命令)列出了所有 `hub` 命令，以及每个命令由谁运行、用在提交的哪一步。
 
 ## 9. 在 OctoSense 手机上运行
 
@@ -330,7 +330,7 @@ App Hub 的 [`hub` 命令](https://github.com/OctoSense-org/OctoSense-App-Hub/bl
 - **桌面端的可选旧格式测试路径：** 用你自己的一次性信任锚把应用发布到本地签名目录，显式设置 `OCTOSENSE_HUB_CATALOG=legacy` 并使用新的应用数据目录，再用 App Hub 的商店安装；这个商店运行的安装代码与手机上的相同（[PUBLISHING §4](PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。OctoSense 桌面端 Shell 同样读取 `OCTOSENSE_HUB` 和 `OCTOSENSE_HUB_ANCHOR`；它的商店会从这个签名目录安装你的应用，并在 Shell 的 Card runner 中打开。
 - **第一方应用**作为系统应用进入手机：应用包位于 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)，列在 Shell 的 `system-apps.json` 中（手机上是 OctoSense 的 `phone/system-apps.json`），由 App Hub 的 `crates/app-hub-app/build.rs` 打包，再经过 Home 或 ROM 构建。这条路径用于 OctoSense 维护的 `os.*` 应用，不用于商店应用。
 - **连接账户的应用**（`auth`）无法安装到手机上：目前没有任何已发布的手机版本接受 `auth` 能力。
-- **Hub 准入之后**，只有兼容宿主才能安装应用。已发布手机版本不支持 `auth` 和 `publisher-github-v1`；目录可见不等于运行时兼容。
+- **Hub 准入之后**，只有兼容宿主才能安装应用。已发布手机版本不支持 `auth` 和 `publisher-github-v1`；出现在签名目录中，不等于宿主能运行这个应用。
 
 Android 版 `card-host` 不编译远程控制桥。在手机上，请用 OctoSense 测试构建中的 App Studio 工具操作应用（[MODEL-VALIDATION](MODEL-VALIDATION.zh-CN.md#选择测试方式)），而不是 `tools/octo`。
 
@@ -345,7 +345,7 @@ tools/octo publish-github ~/apps/my-app
 tools/octo package-help
 ```
 
-审阅 `.github/workflows/publish-app.yml`，与已测试应用一起 commit，再推送新的 `v<manifest.version>` tag。GitHub Actions 会准备、证明、验证和打包，无需 `publisher.key` 或开发者签名 secret。把成功工作流和确切的 release pack 附到提交 issue。安装工作流、创建 GitHub release 都不会自动提交或批准应用。日常更新使用同一身份下的新版本/新 tag。
+评审 `.github/workflows/publish-app.yml`，与已测试应用一起 commit，再推送新的 `v<manifest.version>` tag。GitHub Actions 会准备、证明、验证和打包，无需 `publisher.key` 或开发者签名 secret。把成功工作流和确切的 release pack 附到提交 issue。安装工作流、创建 GitHub release 都不会自动提交或批准应用。日常更新使用同一身份下的新版本/新 tag。
 
 此路径需要契约 1.8.0 / `publisher-github-v1`。真实的 Release 及原生 Store 的安装、更新检查已在隔离的测试签名目录中通过（[历史证据](PUBLISHING.zh-CN.md#36-发布者密钥human)）。当前公开的 macOS 示例也通过了原生安装、更新及 RC 重新打开检查；见[下载状态与平台限制](../README.zh-CN.md#下载兼容-shell)。旧宿主和 `card-host` 会拒绝封存的 Release 包。本地 Ed25519 商店演练是可选兼容路径，不是发布的必需步骤。
 

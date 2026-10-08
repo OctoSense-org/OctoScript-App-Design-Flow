@@ -527,10 +527,13 @@ my-notes 0.1.0 — PASSED
 The unsigned warning is expected while developing editable source. The
 placeholder note stays until a person writes the publisher fields.
 
-To catch a version that is already published, add App Hub's catalog:
-`tools/octo check <bundle> --catalog <workspace>/OctoSense-App-Hub/catalog.json`.
+To catch a version that is already published, add App Hub's authenticated
+catalog:
+`tools/octo check <bundle> --catalog <workspace>/OctoSense-App-Hub/catalog-v2.json`.
 A reused version is refused with
 `[refused] version: version 0.1.0 of <id> is already published; publish a new version`.
+Check against `catalog-v2.json`, not the legacy `catalog.json`, which lacks
+versions published only through GitHub.
 
 `check` restamps an unsigned bundle first. If you edit the bundle after your
 last `check` and commit without running it again, the committed digest is
@@ -539,8 +542,8 @@ Run `tools/octo check` as the last step before each source commit. The GitHub
 workflow separately prepares and verifies the sealed release pack (§10); its
 proof is not present in the editable tag source.
 
-App Hub's [The `hub` command](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#the-hub-command) lists every
-`hub` command, with who runs it and in which submission step.
+App Hub's [`hub` command reference](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#the-hub-command) lists
+every `hub` command, with who runs it and in which submission step.
 
 ## 9. Run it on an OctoSense phone
 
@@ -570,8 +573,9 @@ What exists today:
   not for store apps.
 - **Connected-account apps** (`auth`) cannot be installed on a phone: no
   released phone build accepts the `auth` capability.
-- **After publication** your app appears in every phone's store from the
-  signed catalog.
+- **After the Hub admits your app**, only a compatible host can install it.
+  No released phone build supports `auth` or `publisher-github-v1`; a catalog
+  listing does not mean a host can run the app.
 
 `card-host`'s remote bridge is compiled out on Android. On a phone, drive the
 app with the App Studio tools of an OctoSense test build
@@ -583,8 +587,8 @@ app with the App Studio tools of an OctoSense test build
 **Open an App Hub submission issue to request publication.** Include the app
 repository, version/commit, screenshots and permissions. It can precede the
 release; add verified release artifacts when ready. A reviewer then checks the
-exact release and posts problems in the issue, an App Hub admin approves it,
-and the Hub publishes it in the catalog.
+exact release and posts any problems in the issue. An App Hub admin approves
+the submission, and the Hub publishes the app in its signed catalog.
 
 [PUBLISHING](PUBLISHING.md) covers the full process. After testing source:
 

@@ -10,10 +10,10 @@ without a developer signing key. See §3.6 for the current implementation limits
 **Opening an App Hub submission issue is the request to publish.** Include the
 repository, version/commit, screenshots and requested permissions. You can open
 it before the release is ready; add the tag, workflow result and release pack
-when available. A reviewer runs the gate on the exact release and posts
-missing items or refusals in the issue, an App Hub admin approves the exact
-candidate, and the Hub publishes the catalog entry. Creating a GitHub release
-alone does not submit or approve an app.
+when available. A reviewer runs the gate on the exact release and reports
+missing items or refusals in the issue. An App Hub admin then approves the
+exact candidate, and the Hub publishes its catalog entry. Creating a GitHub
+release alone does not submit or approve an app.
 
 Two App Hub documents own the rest:
 
@@ -174,8 +174,8 @@ ceiling. An app gets it when it declares `storage` without
 save anything.
 
 To check the version against the published catalog, add
-`--catalog <App Hub checkout>/catalog.json` to either command. A version that
-is already published is refused:
+`--catalog <App Hub checkout>/catalog-v2.json` to either command. A version
+that is already published is refused:
 
 ```text
   [refused] version: version 0.1.0 of org.octosense.samples.githubnotes is already published; publish a new version
@@ -295,8 +295,8 @@ for the current issue fields.
 
 A reviewer verifies the publisher proof and bundle, runs the gate and posts
 any refusals in the issue. An App Hub admin then approves the exact release,
-and the Hub publishes it in its signed catalog. Only after that does a
-compatible Store offer it.
+and the Hub publishes it in its signed catalog. No OctoSense release offers it
+yet; see §3.6.
 If changes are needed, publish a new version/tag; do not replace old bytes.
 
 Manual Ed25519 signing remains an **optional compatibility path** for older
@@ -474,7 +474,7 @@ under `store-data/my-test-notes/bundle`; **OPEN** does not show the app.
 [ ] curl -s 127.0.0.1:8141/quit                         -> {"ok":1}
 [ ] find "$B" -name .DS_Store -delete                    -> only known file types in bundle/
 [ ] tools/octo check "$B"                               -> "— PASSED" (only the unsigned warning)
-[ ] tools/octo check "$B" --catalog <App Hub catalog.json>   -> no version or continuity refusal
+[ ] tools/octo check "$B" --catalog <App Hub catalog-v2.json>   -> no version or continuity refusal
 [ ] mkdir -p "$APP/build"; hub scan "$B" --packet "$APP/build/review.json"   -> 7 questions answered in writing (8 with tools.json, AGENT.md or skills)
 [ ] git -C "$APP" check-attr text -- "$B/manifest.json"   -> "text: unset" (QUICKSTART §3)
 [ ] git status: only app sources and reviewed workflow; no secrets, .local-state or build/
