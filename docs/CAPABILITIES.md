@@ -60,12 +60,13 @@ the gate warns about each script that calls `fs.*` and about a `camera` grant:
 | `images` | Pictures (`Image{src: http_resource(url)}`) from any public `https://` host, beyond `network.hosts`: a feed reader's thumbnails. It does not widen `net.http_request`. | Pictures load only from listed hosts. |
 | `web` | `WebReader` opens any public `https://` page in the system web view. The page has no way back into the app. The view opens on macOS, iOS and Android. | `WebReader.open` works only for listed hosts and refuses others: ``refused <url>: not on this app's host list, and no `web` grant``. |
 
-On Linux and Windows, a shell built from OctoSense `main` answers `open` with
-`false` and the error
+On Linux and Windows, a shell built from OctoSense `main` returns `false` from
+`open`, and `error()` answers
 `Embedded web pages are unavailable on this platform; this host has no native WebReader adapter`.
-No release has a Linux or Windows build: `desktop-v0.1.0-beta.2` ships for
-macOS only. On Linux and Windows, `card-host` returns `true` from `open`, shows
-no page and logs `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`.
+There, `card-host` and the Linux and Windows builds of `desktop-v0.1.0-beta.1`
+return `true` from `open`, show no page and log
+`Not implemented on this platform: CxOsOp::SpawnSystemBrowser`.
+`desktop-v0.1.0-beta.2` ships for macOS only.
 
 The runtime and the gate refuse these:
 

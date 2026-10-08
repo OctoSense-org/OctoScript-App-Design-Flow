@@ -49,7 +49,7 @@
 | `images` | 任何公开 `https://` 主机上的图片（`Image{src: http_resource(url)}`），不限于 `network.hosts`，例如 RSS 阅读器的缩略图。`net.http_request` 的访问范围不会因此扩大。 | 只能加载已列出主机上的图片。 |
 | `web` | `WebReader` 可以在系统的网页视图中打开任何公开的 `https://` 网页。网页无法反过来访问应用。这个视图可以在 macOS、iOS 和 Android 上打开。 | `WebReader.open` 只能打开已列出主机上的网页，其他一律拒绝：``refused <url>: not on this app's host list, and no `web` grant``。 |
 
-在 Linux 和 Windows 上，用 OctoSense `main` 构建的 Shell 会让 `open` 返回 `false`，并报告 `Embedded web pages are unavailable on this platform; this host has no native WebReader adapter`。目前没有任何发布版本提供 Linux 或 Windows 构建：`desktop-v0.1.0-beta.2` 只有 macOS 版本。在 Linux 和 Windows 上，`card-host` 会让 `open` 返回 `true`，但不显示网页，日志中显示 `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`。
+在 Linux 和 Windows 上，用 OctoSense `main` 构建的 Shell 会让 `open` 返回 `false`，`error()` 返回 `Embedded web pages are unavailable on this platform; this host has no native WebReader adapter`。在这两个平台上，`card-host` 和 `desktop-v0.1.0-beta.1` 的 Linux、Windows 版本会让 `open` 返回 `true`，但不显示网页，日志中显示 `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`。`desktop-v0.1.0-beta.2` 只有 macOS 版本。
 
 运行时和准入检查会拒绝以下情况：
 
