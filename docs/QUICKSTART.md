@@ -615,7 +615,7 @@ macOS samples also passed native install/update and RC reopen checks; see
 [download status and platform limits](../README.md#compatible-shell-download).
 Older hosts and `card-host` refuse the sealed release. The local store
 rehearsal ([PUBLISHING §4](PUBLISHING.md#4-rehearse-the-store-path-locally))
-is optional and unverified with a GitHub-attested release.
+is optional and has not yet been run with a GitHub-attested release.
 
 ## Troubleshooting
 

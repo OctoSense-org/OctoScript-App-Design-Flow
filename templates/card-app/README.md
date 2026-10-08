@@ -26,7 +26,7 @@ Chinese, falls back to LXGW WenKai, Makepad's built-in Chinese font. The built-i
 fonts a kit may name are `makepad_widgets:resources/Inter.ttf`,
 `makepad_widgets:resources/LXGWWenKaiRegular.ttf` and
 `makepad_widgets:resources/LXGWWenKaiBold.ttf`
-([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
+([App Hub PUBLISHING § Fonts](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#fonts)).
 Check the text with `MAKEPAD_SYSTEM_FONTS=0`, so that a system font cannot
 hide a missing glyph.
 
