@@ -130,9 +130,9 @@ needs no AI service or API key.
   WebAssembly module in `bundle/fns/` and request `wasm`; a bundle never
   carries a native library. Only OctoSense `main` built with the `wasm-lab`
   feature (in no release yet) runs functions, and `card-host` answers every
-  call with `no service answers "wasm" on this device`. A store app running
-  its functions is unverified; report it as such. Follow
-  [docs/RUST.md](docs/RUST.md).
+  call with `no service answers "wasm" on this device`. Report the app's
+  functions as unverified: no store-installed app has run its functions yet.
+  Follow [docs/RUST.md](docs/RUST.md).
 - **Only needed capabilities.** Map each capability to something a screen
   does ([docs/CAPABILITIES.md](docs/CAPABILITIES.md)), and remove the rest.
 - **No placeholder screenshots.** Capture the real app in a real state with

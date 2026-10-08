@@ -12,7 +12,7 @@ OctoSense `main`（尚未进入任何发布版本）还实现了 Host API v1：�
 
 ## 哪个 Shell 提供哪项服务
 
-OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home（`phone/`）。两者的标准构建都注册了下表中的全部服务。`crates/shell/src/apps.rs` 中的 `register_host_services` 注册面向应用的服务；`crates/ai-host/src/lib.rs` 注册 `llm`、`model` 和 `octos`。App Hub 的 `card-host` 不注册任何服务，只响应用于发现宿主 API 的 `runtime`，这个能力族由 App Hub 的分发器自己处理。
+OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home（`phone/`）。除 `wasm` 外，两者的标准构建都注册了下表中的全部服务。`crates/shell/src/apps.rs` 中的 `register_host_services` 注册面向应用的服务；`crates/ai-host/src/lib.rs` 注册 `llm`、`model` 和 `octos`。App Hub 的 `card-host` 不注册任何服务，只响应用于发现宿主 API 的 `runtime`，这个能力族由 App Hub 的分发器自己处理。
 
 | 能力族 | 谁可以调用 | 服务代码 |
 | --- | --- | --- |

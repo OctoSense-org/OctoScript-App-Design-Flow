@@ -2,10 +2,10 @@
 
 English | [简体中文](RUST.zh-CN.md)
 
-A store app's bundle holds no native code, but it can carry your Rust as a
-**Wasm function**: a Rust function compiled to a WebAssembly module (a
-`.wasm` file) in the bundle's `fns/` folder. An OctoSense shell built with
-the `wasm-lab` feature runs the function in a sandbox where it sees only its
+A store app's bundle holds no native code, but it can carry your Rust code as
+**Wasm functions**: Rust functions that a WebAssembly module (a `.wasm` file
+in the bundle's `fns/` folder) exports by name. An OctoSense shell built with
+the `wasm-lab` feature runs each function in a sandbox where it sees only its
 input; no release includes that feature yet. For the device, the network,
 files or native code, use another route.
 
@@ -16,7 +16,7 @@ marked **unverified**. No shell with `wasm-lab` was built for this guide.
 
 | You need | Route | Read |
 | --- | --- | --- |
-| Pure computation: parsing, scoring, crypto, image math | A Wasm function | [Write a function](#write-a-function) |
+| Pure computation: parsing, scoring, crypto, image processing | A Wasm function | [Write a function](#write-a-function) |
 | The camera, the microphone or the location | Host APIs: the `camera`, `microphone` and `location` capabilities, their permission methods and `location.get` | [HOST-API-V1 §3](HOST-API-V1.md#3-request-device-access-in-the-foreground) |
 | The network | Splash's `net`, to the hosts in `network.hosts`. A function cannot reach the network: fetch the data in Splash, then pass it to the function. | [SCRIPT-API § Network](SCRIPT-API.md#network) |
 | Files | The app's own storage, through `fs.*` in Splash. Pass the contents to the function: text as a string, other data as JSON. | [SCRIPT-API § Storage](SCRIPT-API.md#storage-fs) |
@@ -38,8 +38,8 @@ service.
 App Hub's gate (`hub check`) admits the `wasm` capability from app contract
 1.7, with at most 8 modules per bundle ([Build it](#build-it)).
 
-**Unverified:** a store-installed app running its functions. Only Wasm Lab,
-a system app, has run functions on a device.
+**Unverified:** no store-installed app has run its functions yet. Only Wasm
+Lab, a system app, has run functions on a device.
 
 ## How a call runs
 
@@ -60,7 +60,8 @@ own memory. Data kept in a `static`, such as a cache, therefore survives from
 one call to the next. A **trap** aborts the function on a panic, a stack
 overflow or memory over the 256 MiB cap. A trap or the 2 s deadline ends the
 call with an error; the shell keeps running. The service then gives that
-module a fresh instance before the next call.
+module a fresh instance before the next call, so its `static` data starts
+over.
 
 ## Write a function
 
@@ -83,8 +84,10 @@ on `serde_json`.
 
 ### A minimal example
 
-Keep the Rust crate beside `bundle/`. Only the built module goes into the
-bundle:
+These steps add functions to an app that `tools/octo new` made in
+`~/apps/my-app` ([QUICKSTART §3](QUICKSTART.md#3-create-an-app)); the
+examples give it the id `dev.example.texttools`. Keep the Rust crate beside
+`bundle/`. Only the built module goes into the bundle:
 
 ```text
 ~/apps/my-app/
@@ -305,8 +308,8 @@ Run these commands from `~/apps/my-app`.
    ```
 
    A successful build ends with ``Finished `release` profile [optimized] target(s) in …``.
-   If it fails in `getrandom`, a dependency needs OS randomness: drop that
-   dependency, or turn off the feature that pulls in `getrandom`
+   If it fails while compiling `getrandom`, a dependency needs OS randomness:
+   drop that dependency, or turn off the feature that pulls in `getrandom`
    ([What the sandbox forbids](#what-the-sandbox-forbids)).
 
 3. Copy the module into the bundle. Cargo names the file after the package,
@@ -342,8 +345,9 @@ Built with Rust 1.97, the example's module is 372,358 bytes with these
 settings, and 430,973 bytes with Cargo's default release profile.
 
 `target/` is in the `.gitignore` that `tools/octo new` writes, so the build
-output stays out of Git. Commit `bundle/fns/my_functions.wasm` with the
-crate's source.
+output stays out of Git. Commit `bundle/fns/my_functions.wasm` with
+`functions/` and the copied `octosense-guest/`, which the crate needs to
+build.
 
 ## Declare and call it
 
@@ -422,8 +426,11 @@ limit holds at least 256 KiB of binary data (**unverified**).
 
 ### Call it from an agent tool
 
-Add this entry to the `tools` array of `bundle/tools.json`. Its
-`host_method` maps the tool to the `rank` function:
+Shipping `tools.json` gives the app its own agent, so declare the `agent`
+block as well
+([AI-SERVICES § An app's own agent](AI-SERVICES.md#an-apps-own-agent)). Add
+this entry to the `tools` array of `bundle/tools.json`. Its `host_method`
+maps the tool to the `rank` function:
 
 ```json
 {
@@ -472,15 +479,15 @@ bare list. The agent receives `{"ok": true, "data": <output>}`, or
 `{"ok": false, "error": {"kind": "app_error", "message": <error>}}`.
 
 The gate's refusal names the rule it applies, such as
-`host_method "wasm.rank" requires the declared "wasm" service capability`.
+`[refused] tools: texttools.rank: host_method "wasm.rank" requires the declared "wasm" service capability`.
 
 ### Check what loaded
 
 Call `wasm.functions` with `{}` to learn whether the host runs functions,
 and which ones loaded. Where no `wasm` service runs, the call fails with
-`no service answers "wasm" on this device`; `runtime.list` and
-`runtime.describe` do not describe the `wasm` methods. `wasm.functions`
-answers with:
+`no service answers "wasm" on this device`. `runtime.list` and
+`runtime.describe` do not list the `wasm` methods. `wasm.functions` answers
+with:
 
 | Field | Holds |
 | --- | --- |
@@ -511,18 +518,21 @@ call.
 
 ## Test it
 
+Steps 3 to 9 test the functions in a shell built with `wasm-lab`, so they
+are **unverified**.
+
 1. Run the app in `card-host` with `tools/octo run`
    ([QUICKSTART §4](QUICKSTART.md#4-run-it-on-the-desktop)). `card-host`
-   admits the bundle but answers every call with
-   `no service answers "wasm" on this device` (**unverified**), so use it to
-   check the layout and what the app shows without its functions.
+   admits the bundle but has no `wasm` service, so every call answers
+   `no service answers "wasm" on this device`. Use it to check the layout
+   and what the app shows without its functions.
 2. Set up the OctoSense clone from [A minimal example](#a-minimal-example),
    step 1, as
    [PUBLISHING §4.2](PUBLISHING.md#42-install-and-open-the-app-in-the-desktop-shell)
    shows.
 3. Build and start the desktop shell with `wasm-lab` and
    `desktop/system-apps-wasm-lab.json`, which lists the default system apps
-   plus Wasm Lab (**unverified**):
+   plus Wasm Lab:
 
    ```sh
    cd <workspace>/OctoSense
@@ -542,12 +552,12 @@ call.
 7. Quit the shell, and start it again with the command in
    [PUBLISHING §4.2](PUBLISHING.md#42-install-and-open-the-app-in-the-desktop-shell)
    plus `--features wasm-lab`.
-8. Install and open your app from **App Hub** in the dock (**unverified**: no
-   store-installed app has run its functions yet).
+8. Install and open your app from **App Hub** in the dock.
 9. After you install a new version, restart the shell: a running shell keeps
    the app's old functions.
 
-Wasm Lab's agent tools also need the octos kernel, staged as the
+Agent tools, Wasm Lab's or your app's, also need the octos kernel, staged
+as the
 [desktop README](https://github.com/OctoSense-org/OctoSense/blob/main/desktop/README.md#build-and-run)
 describes, and an AI provider. Home, the phone shell, has the same
 `wasm-lab` feature and a `phone/system-apps-wasm-lab.json` file; build it as
@@ -565,7 +575,7 @@ records the design. These items are open:
 | A CPU and memory budget per app | Not yet. The limits apply per call and per instance, so an app can keep one core busy with back-to-back calls, or use 256 MiB in each of its 8 modules. A call that App Hub has timed out still runs in the app's worker. |
 | Compiling modules ahead of time for phones | Not yet. The first call compiles each module: ADR 0011 measured 27–33 ms on a desktop and 378–421 ms on a mid-range Android phone, and 5–11 ms for later loads from the cache on that phone. |
 | Agent tools with a live model | Unverified. OctoSense's tests call Wasm Lab's tools through the shell's tool executor, without a model. |
-| iOS | Not yet. iOS allows no JIT compiler, so Wasmtime would have to use its Pulley interpreter, about 17 times slower than Cranelift. A store app's functions cannot be compiled ahead of time there. |
+| iOS | Not yet. iOS allows no JIT for apps, so Wasmtime would have to use its Pulley interpreter, about 17 times slower than Cranelift. iOS also allows no downloaded native code, so a store app's functions cannot be compiled ahead of time there either. |
 | OpenHarmony | Unverified. Its JIT policy is unknown. |
 | Updating an app while the shell runs | Not yet. The shell keeps the old functions until it restarts. |
 | Typed interfaces (the component model and WIT), host imports such as a clock or randomness, and deterministic limits (fuel) | Not yet decided. Any host import beyond `octo.log` would be a new capability. |
@@ -578,6 +588,7 @@ records the design. These items are open:
 - App Hub's [PUBLISHING § Findings](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#findings)
   and [§ Map a tool to a shared service](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#map-a-tool-to-a-shared-service-host_method):
   the gate's rules for `fns/` and `wasm.<function>`.
-- App Hub's [SUBMITTING § What the Hub cannot do yet](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#what-the-hub-cannot-do-yet).
+- App Hub's [SUBMITTING § What the Hub cannot do yet](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#what-the-hub-cannot-do-yet):
+  what a store app cannot do yet, native Rust code included.
 - [Wasm Lab](https://github.com/OctoSense-org/OctoSense/tree/main/apps/wasmlab):
   the reference app, its guest crate and its `build.sh`.

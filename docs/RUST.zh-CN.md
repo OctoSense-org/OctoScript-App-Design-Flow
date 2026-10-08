@@ -4,15 +4,15 @@
 
 未注明中文版的链接指向英文文档。
 
-商店应用的应用包不能带原生代码，但可以把你的 Rust 代码做成 **Wasm 函数**带上：把 Rust 函数编译成 WebAssembly 模块（一个 `.wasm` 文件），放进应用包的 `fns/` 文件夹。启用 `wasm-lab` 特性构建的 OctoSense Shell 会在沙盒中运行这个函数，函数只能看到自己的输入；目前还没有任何发布版本包含这项特性。设备、网络、文件或原生代码，请改走别的路径。
+商店应用的应用包不能带原生代码，但可以把你的 Rust 代码做成 **Wasm 函数**带上：Rust 函数编译进 WebAssembly 模块（一个 `.wasm` 文件，放在应用包的 `fns/` 文件夹中），由模块按名称导出。启用 `wasm-lab` 特性构建的 OctoSense Shell 会在沙盒中运行每个函数，函数只能看到自己的输入；目前还没有任何发布版本包含这项特性。设备、网络、文件或原生代码，请改用其他途径。
 
 每条命令都在 macOS（Apple 芯片）上运行过，标注为**未验证**的除外。编写本文时没有构建启用 `wasm-lab` 的 Shell。
 
-## 选择路径
+## 选择途径
 
-| 你需要 | 路径 | 参阅 |
+| 你需要 | 途径 | 参阅 |
 | --- | --- | --- |
-| 纯计算：解析、打分、密码学运算、图像运算 | Wasm 函数 | [编写函数](#编写函数) |
+| 纯计算：解析、打分、密码学运算、图像处理 | Wasm 函数 | [编写函数](#编写函数) |
 | 相机、麦克风或位置 | 宿主 API：`camera`、`microphone` 和 `location` 能力及其权限方法，以及 `location.get` | [HOST-API-V1 §3](HOST-API-V1.zh-CN.md#3-在前台申请设备访问) |
 | 网络 | Splash 的 `net`，只能访问 `network.hosts` 中的主机。函数访问不了网络：先在 Splash 中取回数据，再传给函数。 | [SCRIPT-API § Network](SCRIPT-API.md#network) |
 | 文件 | 应用自己的存储，在 Splash 中通过 `fs.*` 读写。把内容传给函数：文本作为字符串传，其他数据作为 JSON 传。 | [SCRIPT-API § Storage](SCRIPT-API.md#storage-fs) |
@@ -31,7 +31,7 @@
 
 App Hub 的准入检查（`hub check`）从应用契约 1.7 起接受 `wasm` 能力，每个应用包最多带 8 个模块（见[构建](#构建)）。
 
-**未验证**：从商店安装的应用运行自己的函数。目前只有系统应用 Wasm Lab 在设备上运行过函数。
+**未验证**：还没有从商店安装的应用运行过自己的函数。目前只有系统应用 Wasm Lab 在设备上运行过函数。
 
 ## 一次调用的过程
 
@@ -40,7 +40,7 @@ App Hub 的准入检查（`hub check`）从应用契约 1.7 起接受 `wasm` 能
 3. 服务把参数以字节形式传给函数。函数在该应用专属的工作线程上运行，所以一个慢函数只会拖慢它自己的应用。同一个应用的调用按顺序逐个执行。
 4. 脚本的回调从 `r.data` 拿到输出，或从 `r.error` 拿到错误。
 
-两次调用之间，每个模块保留一个**实例**，即拥有独立内存的运行副本。因此，存放在 `static` 中的数据（例如缓存）会从一次调用保留到下一次。**陷阱**（trap）指函数因 panic、栈溢出或内存超出 256 MiB 上限而中止。发生陷阱或超过 2 秒截止时间时，只有这次调用以错误结束，Shell 照常运行。随后，服务会在下次调用前为该模块换上一个新实例。
+两次调用之间，每个模块保留一个**实例**，即拥有独立内存的运行副本。因此，存放在 `static` 中的数据（例如缓存）会从一次调用保留到下一次。**陷阱**（trap）指函数因 panic、栈溢出或内存超出 256 MiB 上限而中止。发生陷阱或超过 2 秒截止时间时，只有这次调用以错误结束，Shell 照常运行。随后，服务会在下次调用前为该模块换上一个新实例，`static` 中的数据也随之重置。
 
 ## 编写函数
 
@@ -48,7 +48,7 @@ App Hub 的准入检查（`hub check`）从应用契约 1.7 起接受 `wasm` 能
 
 `octosense-guest` 是客体（guest，即模块内部的 Rust 代码）一侧的辅助 crate，替你实现 [ABI](#abi)。它不在 crates.io 上，请从 OctoSense 仓库的 [`apps/wasmlab/guest/octosense-guest`](https://github.com/OctoSense-org/OctoSense/tree/main/apps/wasmlab/guest/octosense-guest) 复制。它采用 Apache-2.0 许可，只依赖 `serde_json`。
 
-| 内容 | 作用 |
+| 项目 | 作用 |
 | --- | --- |
 | `octosense_guest::abi!()` | 导出 `octo_alloc` 和 `octo_free`。每个 crate 调用一次。 |
 | `octosense_guest::export!(f)` | 以 `f` 为名导出 `fn f(&[u8]) -> Result<Vec<u8>, String>`：字节进，字节出。 |
@@ -58,7 +58,7 @@ App Hub 的准入检查（`hub check`）从应用契约 1.7 起接受 `wasm` 能
 
 ### 最小示例
 
-把 Rust crate 放在 `bundle/` 旁边，只有构建出的模块进入应用包：
+下面的步骤为 `tools/octo new` 在 `~/apps/my-app` 中创建的应用添加函数（见 [QUICKSTART §3](QUICKSTART.zh-CN.md#3-创建应用)），示例中应用的 id 是 `dev.example.texttools`。把 Rust crate 放在 `bundle/` 旁边，只有构建出的模块进入应用包：
 
 ```text
 ~/apps/my-app/
@@ -207,8 +207,8 @@ App Hub 还为每个宿主服务请求设了上限。来自脚本的调用会先
 
 | 上限 | 数值 | 调用超出时 |
 | --- | --- | --- |
-| 脚本请求的参数 | 1 MiB JSON | `the request's arguments exceed 1 MiB` |
-| 返回结果 | 4 MiB JSON | `the service's answer exceeds 4 MiB` |
+| 脚本请求的参数 | 1 MiB 的 JSON | `the request's arguments exceed 1 MiB` |
+| 返回结果 | 4 MiB 的 JSON | `the service's answer exceeds 4 MiB` |
 | 等待结果的时间，包括排在本应用先前调用之后的排队时间 | 60 秒 | `the host service timed out` |
 | 每个应用同时等待的调用 | 32 个 | `too many host requests are waiting; try again when some have answered` |
 
@@ -257,7 +257,7 @@ Shell 分四步完成一次调用：
    cargo build --manifest-path functions/Cargo.toml --release --target wasm32-unknown-unknown
    ```
 
-   构建成功时，最后一行是 ``Finished `release` profile [optimized] target(s) in …``。如果构建在 `getrandom` 处失败，说明某个依赖需要系统随机数：去掉这个依赖，或者关闭引入 `getrandom` 的特性（见[沙盒禁止的操作](#沙盒禁止的操作)）。
+   构建成功时，最后一行是 ``Finished `release` profile [optimized] target(s) in …``。如果构建在编译 `getrandom` 时失败，说明某个依赖需要系统随机数：去掉这个依赖，或者关闭引入 `getrandom` 的特性（见[沙盒禁止的操作](#沙盒禁止的操作)）。
 
 3. 把模块复制进应用包。Cargo 用包名给文件命名，并把 `-` 换成 `_`：
 
@@ -288,7 +288,7 @@ Shell 分四步完成一次调用：
 
 用 Rust 1.97 构建时，示例模块在这些设置下是 372,358 字节，在 Cargo 默认的 release profile 下是 430,973 字节。
 
-`tools/octo new` 写入的 `.gitignore` 已包含 `target/`，所以构建输出不会进入 Git。把 `bundle/fns/my_functions.wasm` 和 crate 的源码一起 commit。
+`tools/octo new` 写入的 `.gitignore` 已包含 `target/`，所以构建输出不会进入 Git。把 `bundle/fns/my_functions.wasm` 和 `functions/`、复制来的 `octosense-guest/` 一起 commit，构建 crate 需要它们。
 
 ## 声明并调用
 
@@ -358,7 +358,7 @@ host.request("wasm.md_to_html", "# Hello", fn(r){
 
 ### 从 Agent 工具调用
 
-在 `bundle/tools.json` 的 `tools` 数组中加入下面这一项。它的 `host_method` 把工具映射到 `rank` 函数：
+附带 `tools.json` 的应用会得到自己的 Agent，因此还要声明 `agent` 块（见 [AI-SERVICES § 应用自己的 Agent](AI-SERVICES.zh-CN.md#应用自己的-agent)）。在 `bundle/tools.json` 的 `tools` 数组中加入下面这一项。它的 `host_method` 把工具映射到 `rank` 函数：
 
 ```json
 {
@@ -396,13 +396,13 @@ host.request("wasm.md_to_html", "# Hello", fn(r){
 | `private_data` | 必须为 `true` | 不要求：函数只看得到自己的参数 |
 | 能力 | 该方法的能力族 | `wasm` |
 
-工具的参数是 JSON 对象，因此要用 `export_json!` 实现函数。函数也要返回对象，并声明对象类型的 `output_schema`，因为 OctoSense 的 Agent 内核 octos 只接受对象 schema。所以 `rank` 返回 `{"ranked": […]}`，而不是单独一个列表。Agent 收到的是 `{"ok": true, "data": <output>}`，或 `{"ok": false, "error": {"kind": "app_error", "message": <error>}}`。
+工具的参数是 JSON 对象，因此要用 `export_json!` 实现函数。函数也要返回对象，并声明对象类型的 `output_schema`，因为 OctoSense 的 Agent 内核 octos 只接受对象 schema。`rank` 因此返回 `{"ranked": […]}`，而不是单独一个列表。Agent 收到的是 `{"ok": true, "data": <output>}`，或 `{"ok": false, "error": {"kind": "app_error", "message": <error>}}`。
 
-准入检查拒绝时会说明依据的规则，例如 `host_method "wasm.rank" requires the declared "wasm" service capability`。
+准入检查拒绝时会说明依据的规则，例如 `[refused] tools: texttools.rank: host_method "wasm.rank" requires the declared "wasm" service capability`。
 
 ### 查看加载结果
 
-用 `{}` 调用 `wasm.functions`，可以知道宿主能不能运行函数，以及加载了哪些函数。在没有 `wasm` 服务的宿主上，这次调用会返回 `no service answers "wasm" on this device`；`runtime.list` 和 `runtime.describe` 不描述 `wasm` 的方法。`wasm.functions` 的返回结果包含：
+用 `{}` 调用 `wasm.functions`，可以知道宿主能不能运行函数，以及加载了哪些函数。在没有 `wasm` 服务的宿主上，这次调用会返回 `no service answers "wasm" on this device`。`runtime.list` 和 `runtime.describe` 不会列出 `wasm` 的方法。`wasm.functions` 的返回结果包含：
 
 | 字段 | 内容 |
 | --- | --- |
@@ -431,9 +431,11 @@ host.request("wasm.md_to_html", "# Hello", fn(r){
 
 ## 测试
 
-1. 用 `tools/octo run` 在 `card-host` 中运行应用（见 [QUICKSTART §4](QUICKSTART.zh-CN.md#4-在桌面上运行)）。`card-host` 会准入应用包，但每次调用都返回 `no service answers "wasm" on this device`（**未验证**），所以用它检查布局，以及缺少函数时应用显示什么。
+第 3 到第 9 步在启用 `wasm-lab` 构建的 Shell 中测试函数，因此都**未验证**。
+
+1. 用 `tools/octo run` 在 `card-host` 中运行应用（见 [QUICKSTART §4](QUICKSTART.zh-CN.md#4-在桌面上运行)）。`card-host` 会接受应用包，但它没有 `wasm` 服务，每次调用都返回 `no service answers "wasm" on this device`。用它检查布局，以及缺少函数时应用显示什么。
 2. 按 [PUBLISHING §4.2](PUBLISHING.zh-CN.md#42-在桌面端-shell-中安装并打开应用) 的说明，准备好[最小示例](#最小示例)第 1 步克隆的 OctoSense。
-3. 以 `wasm-lab` 特性构建并启动桌面端 Shell，系统应用改用 `desktop/system-apps-wasm-lab.json`，即默认的系统应用加上 Wasm Lab（**未验证**）：
+3. 以 `wasm-lab` 特性构建并启动桌面端 Shell，系统应用改用 `desktop/system-apps-wasm-lab.json`，即默认的系统应用加上 Wasm Lab：
 
    ```sh
    cd <workspace>/OctoSense
@@ -445,10 +447,10 @@ host.request("wasm.md_to_html", "# Hello", fn(r){
 5. 点击 **Misbehave** 下的每个按钮。死循环、无休止的内存分配、panic 和失控递归都以错误结束，下一次调用照常返回结果。
 6. 按 [PUBLISHING §4.1](PUBLISHING.zh-CN.md#41-发布到本地镜像) 的说明，把你自己的应用发布到本地镜像。
 7. 退出 Shell，再用 [PUBLISHING §4.2](PUBLISHING.zh-CN.md#42-在桌面端-shell-中安装并打开应用) 中的命令加上 `--features wasm-lab` 重新启动它。
-8. 从 dock 中的 **App Hub** 安装并打开你的应用（**未验证**：还没有从商店安装的应用运行过自己的函数）。
+8. 从 dock 中的 **App Hub** 安装并打开你的应用。
 9. 安装新版本后重启 Shell：正在运行的 Shell 会继续使用应用的旧函数。
 
-Wasm Lab 的 Agent 工具还需要 octos 内核（按[桌面端 README](https://github.com/OctoSense-org/OctoSense/blob/main/desktop/README.zh-CN.md#构建与运行) 的说明部署）和一个 AI 提供商。手机 Shell（即 Home）同样有 `wasm-lab` 特性和 `phone/system-apps-wasm-lab.json` 文件；构建方法见 OctoSense 的[手机端 README](https://github.com/OctoSense-org/OctoSense/blob/main/phone/README.zh-CN.md)（**未验证**）。
+Agent 工具（无论是 Wasm Lab 的还是你的应用的）还需要 octos 内核（按[桌面端 README](https://github.com/OctoSense-org/OctoSense/blob/main/desktop/README.zh-CN.md#构建与运行) 的说明部署）和一个 AI 提供商。手机 Shell（即 Home）同样有 `wasm-lab` 特性和 `phone/system-apps-wasm-lab.json` 文件；构建方法见 OctoSense 的[手机端 README](https://github.com/OctoSense-org/OctoSense/blob/main/phone/README.zh-CN.md)（**未验证**）。
 
 ## 未决事项
 
@@ -459,7 +461,7 @@ OctoSense 的 [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/do
 | 每个应用的 CPU 和内存预算 | 尚未实现。上限按调用、按实例计算，所以一个应用可以用连续调用占满一个核心，也可以在它的 8 个模块中各用 256 MiB。App Hub 已判定超时的调用，仍会在该应用的工作线程里继续运行。 |
 | 为手机预先编译模块 | 尚未实现。第一次调用会编译每个模块：ADR 0011 在桌面上测得 27–33 毫秒，在中端 Android 手机上测得 378–421 毫秒；之后在同一部手机上从缓存加载需要 5–11 毫秒。 |
 | 用真实模型调用 Agent 工具 | 未验证。OctoSense 的测试通过 Shell 的工具执行器调用 Wasm Lab 的工具，没有用到模型。 |
-| iOS | 尚未实现。iOS 不允许 JIT 编译，Wasmtime 将只能改用自带的 Pulley 解释器，速度约为 Cranelift 的 1/17。在 iOS 上，商店应用的函数无法预先编译。 |
+| iOS | 尚未实现。iOS 不允许应用使用 JIT，Wasmtime 将只能改用自带的 Pulley 解释器，速度约为 Cranelift 的 1/17。iOS 也不允许应用下载原生代码，因此商店应用的函数在 iOS 上同样无法预先编译。 |
 | OpenHarmony | 未验证。它的 JIT 策略未知。 |
 | Shell 运行期间更新应用 | 尚未实现。Shell 重启之前，一直使用旧函数。 |
 | 带类型的接口（组件模型和 WIT）、时钟或随机数之类的宿主导入，以及确定性的限制（fuel） | 尚未决定。`octo.log` 之外的任何宿主导入都会是一项新能力。 |
@@ -469,5 +471,5 @@ OctoSense 的 [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/do
 - [HOST-API-V1](HOST-API-V1.zh-CN.md)：设备权限和 `location.get`。
 - [CAPABILITIES § 宿主服务](CAPABILITIES.zh-CN.md#宿主服务)：`wasm` 与其他宿主服务。
 - App Hub 的 [PUBLISHING § 检查结果](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#检查结果)和 [§ 把工具映射到共享服务](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#把工具映射到共享服务host_method)：准入检查对 `fns/` 和 `wasm.<function>` 的规则。
-- App Hub 的 [SUBMITTING § Hub 目前做不到的事](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#hub-目前做不到的事)。
+- App Hub 的 [SUBMITTING § Hub 目前做不到的事](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#hub-目前做不到的事)：商店应用目前做不到的事，包括附带原生 Rust 代码。
 - [Wasm Lab](https://github.com/OctoSense-org/OctoSense/tree/main/apps/wasmlab)：参考应用，含它的客体 crate 和 `build.sh`。

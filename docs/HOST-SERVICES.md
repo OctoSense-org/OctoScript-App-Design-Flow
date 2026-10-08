@@ -20,11 +20,11 @@ tools. [Host API v1](HOST-API-V1.md) shows how to use them.
 
 ## Which shell serves which service
 
-Both OctoSense shells register every service below in their standard builds:
-the desktop (`desktop/`) and Home, the phone shell (`phone/`).
-`register_host_services` in `crates/shell/src/apps.rs` registers the
-app-facing services; `crates/ai-host/src/lib.rs` registers `llm`, `model` and
-`octos`. App Hub's `card-host` registers none; it answers only `runtime`
+Both OctoSense shells register every service below except `wasm` in their
+standard builds: the desktop (`desktop/`) and Home, the phone shell
+(`phone/`). `register_host_services` in `crates/shell/src/apps.rs` registers
+the app-facing services; `crates/ai-host/src/lib.rs` registers `llm`, `model`
+and `octos`. App Hub's `card-host` registers none; it answers only `runtime`
 discovery, which App Hub's dispatcher handles itself.
 
 | Family | Who may call it | Service code |
