@@ -56,7 +56,7 @@ App Flow 带着你（或编码 Agent）从一个想法（一段文字需求、�
 
 ## 连接账户的应用：GitHub、Gmail 和 Google Calendar
 
-公开 App Hub 签名目录 **13** 提供以下带 GitHub 证明的 **0.2.1** 版本。请搜索新的确切 ID；历史 `org.octosense.samples.*` ID 及本地数据不会迁移。App Hub 正在撤回那批较早的、用密钥签名的条目。
+公开 App Hub 签名目录 **14** 提供以下带 GitHub 证明的 **0.2.1** 版本。请搜索新的确切 ID；历史 `org.octosense.samples.*` ID 及本地数据不会迁移。App Hub 已在签名目录第 14 版撤回那批较早的、用密钥签名的条目。
 
 | 应用 | 应用 ID | 源码 |
 | --- | --- | --- |

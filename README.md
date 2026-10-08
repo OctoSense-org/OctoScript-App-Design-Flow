@@ -75,10 +75,10 @@ organizers. What a contestant needs from here:
 
 ## Connected apps: GitHub, Gmail and Google Calendar
 
-Public App Hub catalog **13** offers the following GitHub-attested **0.2.1**
+Public App Hub catalog **14** offers the following GitHub-attested **0.2.1**
 releases. Search their exact fresh IDs; historical `org.octosense.samples.*`
-IDs and local data are not migrated. App Hub is withdrawing those older
-key-signed entries.
+IDs and local data are not migrated. App Hub withdrew those older key-signed
+entries in catalog sequence 14.
 
 | App | App id | Source |
 | --- | --- | --- |
