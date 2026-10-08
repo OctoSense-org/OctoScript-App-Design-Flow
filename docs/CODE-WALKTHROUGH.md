@@ -63,7 +63,7 @@ responsibility.
 that is, or ends in, a name in `RESERVED_NAMES` (kept in step with App Hub's
 contract, which stays the authority), and an `os.*` id without `--system`.
 Its argument parser requires at least one `--platform`. `cmd_new` then
-copies the template and contributor instructions, writes the id, name and
+copies the template, contributor instructions and publishing workflow, writes the id, name and
 version into the manifest and the deduplicated platforms into the listing,
 and stamps when `hub` is available. The platforms are a claim to test, not
 evidence. Complete the listing, artwork and screenshots before submitting
@@ -98,13 +98,39 @@ frame. Open the PNG and look at it.
 `cmd_check` calls `hub stamp` for unsigned bundles. If stamping fails, it
 prints that command's output, returns its failure status and skips the gate.
 Otherwise it runs `hub check`, forwards extra gate flags and returns the
-gate's exit status. A signed manifest skips stamping. The command also
+gate's exit status. A manifest with a legacy signature or `integrity.github`
+skips stamping. The command also
 prints progress lines and listing-placeholder notes. App Hub owns admission
 policy; this Python command handles the development sequence.
 
-Because `check` restamps first, a pass does not prove that the digest
-committed in your repository is current. Before you submit, run `hub check`
-on a fresh clone of the tag.
+Because `check` restamps editable source first, a pass does not prove that its
+committed digest is current. Check before each source commit. The GitHub release
+pack is sealed separately; a source check does not verify that publisher proof.
+
+### Trace `tools/octo publish-github`
+
+`cmd_publish_github` requires an editable app directory with `bundle/manifest.json`.
+`publisher_workflow` reads `tools/publisher-toolchain.json` and requires an exact
+reviewed App Hub commit; no pin means refusal, not a fallback to moving `main`.
+`install_publisher_workflow` writes `.github/workflows/publish-app.yml` atomically,
+refuses symlink paths and requires `--replace` for different existing content.
+`cmd_new` uses the same installer. Neither command pushes or submits anything.
+
+The template in `tools/publish-app.template.yml` runs on a new `v*` tag in a
+public GitHub repository. Its prepare job builds the pinned native `hub` and
+runs `publisher-prepare` to check/bind source and emit the canonical manifest
+outside `bundle/`. The publishing job uses `actions/attest`, attaches the proof,
+then runs `publisher-verify` and `publisher-pack` without restamping. Its release
+contains the sealed pack, canonical manifest and release receipt. The developer
+supplies no private signing key; GitHub supplies the job/OIDC identity.
+
+`publisher-github-v1` needs contract 1.8.0 and a compatible Store verifier.
+Real GitHub proof and native Store install/update checks passed with an isolated
+test catalog ([evidence](PUBLISHING.md#36-publisher-key--human)); shipped-shell
+and phone installation remain unverified, and a compatible release is pending.
+Opening an App Hub issue expresses publication intent and can happen first;
+the workflow provides verifiable bytes for that issue. Hub checks, administrator
+approval and authenticated catalog publication remain separate steps.
 
 ## 4. Run a contained script app
 
@@ -163,7 +189,7 @@ tools/octo check ~/apps/walkthrough/bundle
 ```
 
 `run` stamps the manifest by default. Test with `card-host` on an unsigned
-copy; test signing and installation through
+copy; the optional legacy signing/install compatibility path is
 [the store rehearsal](PUBLISHING.md#4-rehearse-the-store-path-locally).
 
 The same host accepts an L0 `page.card` bundle with its data and kit. The
@@ -210,7 +236,7 @@ service for a single model request. `llm` manages provider configuration
 for system apps.
 
 To test your app in the desktop shell before public submission, follow
-[the local signed-catalog rehearsal](PUBLISHING.md#4-rehearse-the-store-path-locally).
+[the optional legacy signed-catalog rehearsal](PUBLISHING.md#4-rehearse-the-store-path-locally).
 The standalone store installs bundles; the full shell launches their app
 clients. Phone catalog configuration belongs to the Home build; see
 [the phone limitations](QUICKSTART.md#9-run-it-on-an-octosense-phone).
@@ -408,10 +434,13 @@ All app flows converge on the same delivery sequence in
 3. Restamp and check the completed bundle; only the unsigned warning may
    remain. Complete the `hub scan` review packet in
    [PUBLISHING](PUBLISHING.md).
-4. **HUMAN:** the key holder signs using a private key stored outside the
-   repository, then checks the signature with the publisher's public key.
-5. **HUMAN:** approve submission of the exact version and open the App Hub
-   issue. A maintainer repeats the gate and review before publishing.
+4. **HUMAN:** open the App Hub issue to request publication (it may happen
+   earlier), with repo/version/commit, screenshots and permissions.
+5. Install/review the GitHub publishing workflow, commit tested source and
+   push a new matching version tag with the person's authorization. The
+   workflow attests and verifies the release without a developer key. Add
+   that exact pack and workflow result to the issue; Hub checks and
+   administrator approval still precede catalog publication.
 
 The image and kit flows also have human checkpoints for paid generation or
 licensed assets and semantic/visual approval. Preserve the source inputs

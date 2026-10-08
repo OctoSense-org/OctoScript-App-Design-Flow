@@ -64,4 +64,23 @@ accident:
   when it creates the app, and the gate refuses them in an id you change
   later.
 
+## Publishing the finished app
+
+`new` also installs `.github/workflows/publish-app.yml` from the harness's
+reviewed publishing template; that workflow is outside `bundle/` and is not
+shown as a template source file above. For an existing app, run
+`tools/octo publish-github <app-directory>`. It does not push or submit anything.
+
+Open an App Hub issue to request publication, with repo/version/commit,
+screenshots and permissions. Review/commit tested source and the workflow, then
+push a new `v<manifest.version>` tag. GitHub prepares, attests, verifies and packs
+the release without a developer signing key. Add the successful release to the
+issue; administrator approval still controls catalog publication. Routine
+updates use new versions/tags under the same repository/owner/workflow identity.
+
+This path requires `publisher-github-v1` / contract 1.8.0. Live publishing and
+compatible-host installation remain unverified, with a compatible host release
+pending. See [PUBLISHING](../../docs/PUBLISHING.md); manual Ed25519 is optional
+compatibility only.
+
 Next: [docs/QUICKSTART.md](../../docs/QUICKSTART.md).

@@ -4,7 +4,9 @@
 
 未注明中文版的链接指向英文文档。
 
-把能运行的脚本应用做成待签名的应用包：清单和商店信息已定稿，截图都是实际截取的，准入检查已通过、审核问题已作答，商店流程也已在你自己的机器上演练过。编码 Agent 可以从头到尾执行这些步骤，并正好停在必须由人操作的地方。
+让能运行的脚本应用通过本地检查，进入 GitHub 证明和 App Hub 审核流程。先完成清单、商店信息、真实截图和审核答案；tag 工作流再生成并验证封存的发布包，无需开发者签名密钥。当前实现限制见 §3.6。
+
+**开 App Hub 提交 issue，才是请求发布。** 填写仓库、版本/commit、截图和请求的权限；可以在 release 准备好之前开 issue，之后补充 tag、工作流结果和 release pack。Hub 检查报告缺项或拒绝原因，管理员批准确切的候选版本后，Hub 才发布目录条目。创建 GitHub release 本身不会提交或批准应用。
 
 其余内容由 App Hub 的两份文档负责：
 
@@ -14,7 +16,7 @@
 | 签名、打 tag、提交 issue、审核人员检查什么、常见拒绝原因 | App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md) |
 
 - 在 [QUICKSTART](QUICKSTART.zh-CN.md) 的 §1–6 都走通之后，从这里开始：应用已能在 `card-host` 中运行，你也测试过它的交互。
-- **HUMAN** 标出 Agent 不能自行越过的把关节点：私钥、发布者身份与隐私文本、声明的平台、发布 tag 和提交。到了这些节点，Agent 停下、汇报，然后等待。
+- **HUMAN** 标出需要用户授权的把关节点：发布者身份与隐私文本、声明的平台、发布 tag 和提交。到了这些节点，Agent 停下、汇报，然后等待。
 
 ## 1. 发布的是什么
 
@@ -23,6 +25,7 @@
 ```text
 my-app/
   AGENTS.md  README.md  .gitignore        不提交
+  .github/workflows/publish-app.yml       发布工作流；不放进应用包
   .gitattributes                         由 tools/octo new 复制：bundle/** -text，让 Git 永不改写应用包
   build/review.json                      不提交（hub scan 的输出）
   .local-state/                          不提交（card-host 的 jail）
@@ -129,7 +132,7 @@ hub: the bundle was refused
   [refused] version: version 0.1.0 of org.octosense.samples.githubnotes is already published; publish a new version
 ```
 
-`tools/octo check` 会在检查之前为未签名的应用包重新写入摘要，所以即使你 commit 的摘要已经过时，它也会通过。每次 commit 之前，把它作为最后一步运行。最终检查在发布 tag 的全新克隆上进行（§3.8）。
+`tools/octo check` 会在检查之前为未签名的应用包重新写入摘要，所以即使你 commit 的摘要已经过时，它也会通过。每次 commit 之前，把它作为最后一步运行。tag 工作流另行生成并验证封存的发布 pack（§3.7）；源码检查不能代替发布者证明验证。
 
 ### 3.5 回答审核问题
 
@@ -143,45 +146,94 @@ wrote the review packet to …/build/review.json
 no --reviewer given; the packet holds 7 questions for one
 ```
 
-审核包中有清单、商店信息、授权、程序、Agent 文件（如有）和问题。审核包不含截图，请自己把截图附到 issue 中。问题共 7 个；应用包附带 `tools.json`、`AGENT.md` 或 skills 时，还有关于 Agent 文件的第 8 个问题。逐题书面作答，例如写在 `$APP/review/ANSWERS.md` 中；审核人员问的也是这些问题（[SUBMITTING §8](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#8-审核检查什么)）。扫描已签名的应用包时，`hub scan` 需要 `--publisher-key <publisher-id>=<hex public key>`。
+审核包中有清单、商店信息、授权、程序、Agent 文件（如有）和问题。审核包不含截图，请自己把截图附到 issue 中。问题共 7 个；应用包附带 `tools.json`、`AGENT.md` 或 skills 时，还有关于 Agent 文件的第 8 个问题。逐题书面作答，例如写在 `$APP/review/ANSWERS.md` 中；审核人员问的也是这些问题（[SUBMITTING §8](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#8-审核检查什么)）。对可编辑源码回答审核问题。仅在可选的旧版 Ed25519 路径中，扫描已签名应用包的 `hub scan` 需要 `--publisher-key <publisher-id>=<hex public key>`。
 
-### 3.6 发布者密钥（HUMAN）
+<a id="36-发布者密钥human"></a>
 
-发布者密钥是一把 Ed25519 密钥，在所有版本中标识同一个发布者：用另一把密钥签名的更新，App Hub 会拒绝。密钥由应用的所有者创建并保管。除非所有者在本次会话中明确要求这样做，否则 Agent 绝不创建、复制、上传或输出私钥。
+### 3.6 GitHub 发布者身份（HUMAN）
 
-`hub keygen <key-file>` 以十六进制写入私钥，并输出公钥；`hub pubkey <key-file>` 可以再次输出公钥。把密钥放在所有仓库之外：
+新应用默认使用自己的公开 GitHub 仓库和 GitHub Actions 证明。开发者无需生成
+`publisher.key`，也无需添加仓库签名 secret。用自己的账户发布前，请审阅发布者
+信息和工作流。
+
+**可用状态：** 此路径需要应用契约 1.8.0 和 `publisher-github-v1`。
+两个真实 GitHub release 已通过证明验证，以及原生 Store 的安装、启动校验、更新、
+撤回和篡改拒绝检查（[验收记录](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/reviews/github-publisher-v1/acceptance.json)）。
+这些 Store 检查使用隔离的测试目录；测试应用没有提交或获准进入 Hub。
+已发行 Shell 和手机中的安装仍未验证，兼容的 OctoSense 宿主版本尚待发布。
+旧宿主会拒绝这个要求。`publisher-toolchain.json` 必须指定经过评审的不可变
+App Hub commit；安装命令会拒绝缺失或浮动的版本。
+
+对已有的可编辑应用目录，在 Design Flow 中安装工作流：
 
 ```sh
-"$HUB" keygen <key-file>
+tools/octo publish-github "$APP"
 ```
 
-`keygen` 从不覆盖已有文件。如果该路径上已经有文件或符号链接，它会停下并报错 `hub: cannot create new signing key "<key-file>": File exists (os error 17)`；请换一个路径，并且绝不要删除已经用来发布过的密钥。在 macOS 和 Linux 上，它以 0600 权限创建文件，只有你能读取。在 Windows 上，请把密钥放在只有你能读取的文件夹中。比 App Hub 当前 `main` 旧的 `hub` 会不加询问地直接覆盖，并沿用你的默认权限；请先重新构建 `hub`。
+`tools/octo new` 也会安装 `.github/workflows/publish-app.yml`。命令只写入这个文件，
+不会推送、发布、提交或批准应用。除非显式加上 `--replace`，否则不会覆盖不同的
+已有工作流。无需开发者签名 secret；工作流使用 GitHub 的短期任务令牌和 OIDC
+权限生成证明并创建 release。
 
-发布者 id 和签名命令见 [SUBMITTING §5](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#5-生成最终字节)，`publisher.json` 包含哪些内容见 [SUBMITTING §1](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#1-安排仓库结构)；完整参考见 App Hub 的 [签名](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#签名) 一节。
+仓库保留已测试、未签名的 `bundle/` 源码。审阅并 commit 工作流、源码、真实截图
+和 `.gitattributes`，存放在公开应用仓库。为该 commit 创建并推送一个**新**的
+`v<manifest.version>` tag，例如清单版本为 `0.1.0` 时使用 `v0.1.0`。
+绝不要移动或重建已发布的 tag。
 
-### 3.7 为最终字节签名（HUMAN）
+<a id="37-为最终字节签名human"></a>
 
-签名放在最后。签名覆盖清单，而清单中的摘要覆盖其他所有文件。应用包签名之后：
+### 3.7 在 GitHub Actions 中证明最终字节
 
-- 任何改动都会让摘要对不上，而只重新写入摘要又会让签名失效，所以要由人重新写入摘要并重新签名；
-- `card-host` 会拒绝这个应用包，所以截图和测试都要在签名之前完成；
-- `tools/octo check` 不再为它重新写入摘要；除非你传入 `--publisher-key <publisher-id>=<hex public key>`，否则它会拒绝这个应用包。
+推送 tag 后，工作流用固定版本的 App Hub 工具依次执行：
 
-命令及其输出见 [SUBMITTING §5](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#5-生成最终字节)。
+1. `hub publisher-prepare` 检查应用包，绑定仓库名称、不可变的仓库/所有者 ID、
+   工作流路径、tag 和 commit，并在 `bundle/` 之外写入规范化清单。
+2. GitHub 的 `actions/attest` 为该清单生成证明。原生验证器检查 GitHub 托管的
+   tag-push 工作流身份及源码 commit。
+3. `hub publisher-attach` 把证明嵌入 `integrity.github.attestation`，随后
+   `hub publisher-verify` 验证它。
+4. `hub publisher-pack` 再次验证，不重新写入摘要，产出 `app.bundle.pack.json`。
+   release 还包含 `octosense-app-manifest.json` 和 `release-receipt.json`。
+
+这些是工作流阶段，不是本地生成密钥的步骤。附有证明的应用包已经封存，不能再
+修改、重新写入摘要或删除证明。`card-host` 没有发布者证明验证器，不能运行它。
+发布前测试可编辑源码，准入后在兼容的 Store 宿主中测试发布包。tag 的源码归档
+和附有证明的 release pack 是不同产物；仅检查源码不能验证已发布的证明。
+
+日常更新时，修改并测试源码、递增 `manifest.version`，再从同一个仓库、所有者和
+工作流身份推送匹配的新 tag。准入检查会验证身份连续性。release receipt 记录
+发布输入和 pack 摘要，不代表 App Hub 已批准应用。
 
 ### 3.8 提交（HUMAN）
 
-由人 commit 已签名的应用包，为这个 commit 打 tag，在 tag 的全新克隆上运行 `hub check`（不重新写入摘要），然后在 OctoSense-App-Hub 开一个 `Submit <app id> <version>` issue。App Hub 的 SUBMITTING 逐一说明了这些步骤：[§6 冻结并验证发布](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#6-冻结并验证发布)和 [§7 开提交 issue](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#7-开提交-issue)，包括 issue 需要填写的每个字段。
+向 OctoSense-App-Hub 开 `Submit <app id> <version>` issue，表达发布意图。
+提供仓库、版本/commit、截图、请求的权限和审核答案。可以先开 issue，再准备 release。
+工作流成功后，在同一 issue 补充 release URL、tag、工作流运行和确切的 pack/摘要；
+Hub 准入之前需要这些经过验证的字节。当前 issue 字段见 App Hub 的
+[SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md)。
 
-- 绝不要移动或重建 tag。要修改任何内容，请发布新版本。
-- 绝不要开 pull request 修改 App Hub 的 `catalog.json`、`index/` 或 `artifacts/`。只有用 App Hub 签名目录密钥运行的 `hub publish` 才能写入它们，而且签名目录只要不是这把密钥签的，所有商店都会拒绝。
-- Agent 可以起草 issue 正文，例如写到 `build/SUBMISSION.md` 中。除非确实有人做了并明确告知，否则 Agent 绝不声称已经提交、已经审核或已经批准。
+- 创建 GitHub release 不会自动获得 App Hub 准入。
+- 不要在 pull request 中手改 Hub 的目录、索引或已准入产物。受保护的审核和发布
+  工作流会准入确切的应用包。
+- Agent 可以准备工作流，并在 `build/SUBMISSION.md` 起草 issue；不能声称尚未
+  观察到的发布、审核或批准已经发生。对外部操作遵循用户的授权。
 
 ### 3.9 App Hub 接下来做什么
 
-维护者会对你的 tag 中的确切字节运行准入检查和扫描，然后把应用包发布到新的签名目录，或者回复需要修复的问题。之后的流程以及如何发布修复，见 [SUBMITTING §9](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#9-提交之后)。
+Hub 验证发布者证明和应用包，执行准入检查与审核，通过其经过身份验证的目录
+准入确切版本，或者返回具体拒绝原因。之后兼容的 Store 才会提供该应用。
+需要修改时发布新版本和新 tag，不要替换旧字节。
+
+手动 Ed25519 签名仍是旧工作流的**可选兼容路径**，不是新 GitHub 发布流程的一步。
+下节保留旧本地演练的命令和记录；已有参考版本及其签名保持原样。
 
 ## 4. 在本地演练商店流程
+
+**可选的旧格式兼容演练。** 本节命令和历史结果使用 Ed25519 发布者/目录密钥，
+不是 GitHub 发布的必需步骤，也不能验证 `publisher-github-v1`。请使用专门准备的
+旧格式测试包，绝不要为附有 GitHub 证明的发布包重新写入摘要。
+此旧格式镜像需显式设置 `OCTOSENSE_HUB_CATALOG=legacy`，并使用新的应用数据目录。
+已经缓存 v2 的应用库拒绝降级到旧格式；不会离线转换。
 
 在自己的机器上走一遍完整的发布和安装流程，用你自己的信任锚签名（以一把一次性根密钥代替 App Hub 的根密钥），看看设备上会发生什么。演练还会运行应用的宿主服务，这是 `card-host` 做不到的。镜像及其密钥放在 `build/` 下，绝不要放进 `bundle/`。
 
@@ -214,7 +266,7 @@ cd OctoSense && python3 tools/setup.py --cache ..
 
 ```sh
 cd <workspace>/OctoSense
-OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" \
+OCTOSENSE_HUB_CATALOG=legacy OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" \
   OCTOSENSE_HOME="$APP/build/desktop-home" OCTOSENSE_APP_DATA="$APP/build/desktop-apps" \
   MAKEPAD_REMOTE=8399 cargo run --release -p octosense
 ```
@@ -262,7 +314,7 @@ App Hub 的独立商店 `appstore` 不需要 Shell 也能从同一个镜像安�
 4. 在商店中打开镜像：
 
    ```sh
-   OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" OCTOSENSE_APP_DATA="$APP/build/store-data" \
+   OCTOSENSE_HUB_CATALOG=legacy OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" OCTOSENSE_APP_DATA="$APP/build/store-data" \
      MAKEPAD_REMOTE=8143 <second-workspace>/OctoSense-App-Hub/target/release/appstore
    ```
 
@@ -272,7 +324,7 @@ App Hub 的独立商店 `appstore` 不需要 Shell 也能从同一个镜像安�
 
 | 把关节点 | Agent 为什么停下 |
 | --- | --- |
-| 创建、保管或使用发布者密钥（3.6、3.7） | 它代表发布者的身份；丢失之后，任何更新都无法发布。 |
+| GitHub 发布者身份与发布工作流（3.6、3.7） | 发布绑定公开仓库、所有者、工作流、tag 和 commit；由人授权以这个身份发布。 |
 | 发布者名称、支持联系方式、隐私政策文本（3.2） | 这些法律声明和个人声明只有发布者本人才能作出。 |
 | 声明的平台（3.2） | 每个平台声明都要对应一次由人执行或记录的实际运行；Agent 无法为此担保。 |
 | 为发布打 tag（3.8） | tag 标识审核人员检查的确切字节，永不移动。 |
@@ -281,7 +333,7 @@ App Hub 的独立商店 `appstore` 不需要 Shell 也能从同一个镜像安�
 
 ## 6. 检查表（复制后从上到下执行）
 
-`tools/octo package-help` 会输出一个简短版本；这里的版本多了 `--hidden`、`.DS_Store` 和全新克隆这几步。
+`tools/octo package-help` 会输出一个简短版本；这里的版本多了 `--hidden`、`.DS_Store` 和发布证明检查。
 
 ```text
 [ ] tools/octo doctor                                   -> hub 和 card-host 均为 [ok]
@@ -297,9 +349,12 @@ App Hub 的独立商店 `appstore` 不需要 Shell 也能从同一个镜像安�
 [ ] tools/octo check "$B" --catalog <App Hub catalog.json>   -> 没有 version 或 continuity 拒绝
 [ ] mkdir -p "$APP/build"; hub scan "$B" --packet "$APP/build/review.json"   -> 7 个问题都已书面作答（附带 tools.json、AGENT.md 或 skills 时为 8 个）
 [ ] git -C "$APP" check-attr text -- "$B/manifest.json"   -> "text: unset"（QUICKSTART §3）
-[ ] git status 中只有 bundle/ 和应用源码，没有密钥、.local-state 或 build/
-[ ] HUMAN：最后签名；hub check --publisher-key <publisher-id>=<hex public key> -> PASSED（App Hub SUBMITTING §5）
-[ ] HUMAN：commit，打 tag v<version>，在 tag 的全新克隆上直接运行 hub check（SUBMITTING §6）
-[ ] HUMAN：在 OctoSense-App-Hub 开 issue "Submit <app id> <version>"（SUBMITTING §7）
+[ ] git status 中只有应用源码和已审阅的工作流，没有 secret、.local-state 或 build/
+[ ] tools/octo publish-github "$APP" -> 已审阅 .github/workflows/publish-app.yml；无需开发者密钥
+[ ] HUMAN：commit 已测试源码和工作流，再推送新的 v<manifest.version> tag
+[ ] GitHub 工作流成功；publisher-verify 和 publisher-pack 验证带证明的发布包通过
+[ ] release pack、规范化清单和 receipt 齐全；兼容宿主安装单独验证，或明确标记待验证
+[ ] HUMAN：提交 issue 表达发布意图，附仓库/版本/commit、截图和权限（可提前开）
+[ ] 在同一 issue 补充成功工作流和确切 release pack；Hub 检查、管理员批准、目录发布另行执行
 [ ] 汇报：验证了什么、在哪个平台上验证、哪些没有验证
 ```

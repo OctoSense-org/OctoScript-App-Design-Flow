@@ -314,27 +314,47 @@ my-notes 0.1.0 — PASSED
   grants: capabilities {"storage"}, hosts {}, storage 16777216 bytes, agent none
 ```
 
-在人工为应用包签名之前，出现未签名警告是正常的。在人工填写发布者字段之前，占位提示会一直存在。
+开发可编辑源码期间，出现未签名警告是正常的。在人工填写发布者字段之前，占位提示会一直存在。
 
 要检查版本是否已经发布过，加上 App Hub 的签名目录：`tools/octo check <bundle> --catalog <workspace>/OctoSense-App-Hub/catalog.json`。如果版本号已经用过，准入检查会拒绝并输出 `[refused] version: version 0.1.0 of <id> is already published; publish a new version`。
 
-`check` 会先为未签名的应用包重新写入摘要。如果你在最后一次 `check` 之后又修改了应用包，却没有重新运行就 commit，commit 中的摘要就是过期的：审核人员直接运行 `hub check` 时，会以 `[refused] digest` 拒绝它。每次 commit 之前，都把 `tools/octo check` 作为最后一步；提交之前，在发布 tag 的全新克隆上直接运行 `hub check`（[SUBMITTING §6](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#6-冻结并验证发布)）。
+`check` 会先为未签名的应用包重新写入摘要。如果你在最后一次 `check` 之后又修改了应用包，却没有重新运行就 commit，commit 中的摘要就是过期的：审核人员直接运行 `hub check` 时，会以 `[refused] digest` 拒绝它。每次源码 commit 之前，都把 `tools/octo check` 作为最后一步。GitHub 工作流会另行生成并验证封存的 release pack（§10）；可编辑的 tag 源码不包含这个证明。
 
 ## 9. 在 OctoSense 手机上运行
 
 目前的情况：
 
 - **无法把任意应用包侧载到普通 OctoSense 手机上。** 手机商店读取内置的 Hub 地址（`DEFAULT_HUB`，即 `raw.githubusercontent.com/OctoSense-org/OctoSense-App-Hub/main/`），并且只信任编译进构建的信任锚（App Hub 的根公钥）。`OCTOSENSE_HUB` 和 `OCTOSENSE_HUB_ANCHOR`（镜像目录或 URL，及其信任锚）是环境变量，Android 启动器不会设置它们；也没有找到在设备上设置它们的选项。**在设备上未验证。**
-- **最接近真实情况的路径在桌面端：** 用你自己的一次性信任锚把应用发布到本地签名目录，再用 App Hub 的商店安装；这个商店运行的安装代码与手机上的相同（[PUBLISHING §4](PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。OctoSense 桌面端 Shell 同样读取 `OCTOSENSE_HUB` 和 `OCTOSENSE_HUB_ANCHOR`；它的商店会从这个签名目录安装你的应用，并在 Shell 的 Card runner 中打开。
+- **桌面端的可选旧格式测试路径：** 用你自己的一次性信任锚把应用发布到本地签名目录，显式设置 `OCTOSENSE_HUB_CATALOG=legacy` 并使用新的应用数据目录，再用 App Hub 的商店安装；这个商店运行的安装代码与手机上的相同（[PUBLISHING §4](PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。OctoSense 桌面端 Shell 同样读取 `OCTOSENSE_HUB` 和 `OCTOSENSE_HUB_ANCHOR`；它的商店会从这个签名目录安装你的应用，并在 Shell 的 Card runner 中打开。
 - **第一方应用**作为系统应用进入手机：应用包位于 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)，列在 Shell 的 `system-apps.json` 中（手机上是 OctoSense 的 `phone/system-apps.json`），由 App Hub 的 `crates/app-hub-app/build.rs` 打包，再经过 Home 或 ROM 构建。这条路径用于 OctoSense 维护的 `os.*` 应用，不用于商店应用。
 - **连接账户的应用**（`auth`）无法安装到手机上：目前没有任何已发布的手机版本接受 `auth` 能力。
-- **发布之后**，你的应用会通过签名目录出现在每台手机的商店中。
+- **Hub 准入之后**，只有兼容宿主才能安装应用。已发布手机版本不支持 `auth` 和 `publisher-github-v1`；目录可见不等于运行时兼容。
 
 Android 版 `card-host` 不编译远程控制桥。在手机上，请用 OctoSense 测试构建中的 App Studio 工具操作应用（[MODEL-VALIDATION](MODEL-VALIDATION.zh-CN.md#选择测试方式)），而不是 `tools/octo`。
 
 ## 10. 发布
 
-[PUBLISHING](PUBLISHING.zh-CN.md) 介绍如何把应用包从这里推进到待签名状态：定稿清单和商店信息、截取真实截图、通过准入检查、回答审核问题，以及本地商店演练。之后由人工按照[向 App Hub 提交应用](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md)签名、打 tag 并提交。`tools/octo package-help` 会输出检查表。
+**开 App Hub 提交 issue 来请求发布。** 填写应用仓库、版本/commit、截图和权限。
+可以先开 issue，再补充经过验证的 release 产物。Hub 检查和管理员批准之后，目录才会提供应用。
+
+完整流程见 [PUBLISHING](PUBLISHING.zh-CN.md)。测试源码后执行：
+
+```sh
+tools/octo publish-github ~/apps/my-app
+tools/octo package-help
+```
+
+审阅 `.github/workflows/publish-app.yml`，与已测试应用一起 commit，再推送新的
+`v<manifest.version>` tag。GitHub Actions 会准备、证明、验证和打包，无需
+`publisher.key` 或开发者签名 secret。把成功工作流和确切的 release pack 附到
+提交 issue。安装工作流、创建 GitHub release 都不会自动提交或批准应用。
+日常更新使用同一身份下的新版本/新 tag。
+
+此路径需要契约 1.8.0 / `publisher-github-v1`。真实发布及原生 Store 的安装、更新
+检查已在隔离测试目录中通过（[证据](PUBLISHING.zh-CN.md#36-发布者密钥human)）。
+已发行 Shell 和手机中的安装仍未验证，兼容宿主版本尚待发布。
+旧宿主和 `card-host` 会拒绝封存的发布包。
+本地 Ed25519 商店演练是可选兼容路径，不是发布的必需步骤。
 
 ## 故障排查
 
@@ -365,12 +385,12 @@ Android 版 `card-host` 不编译远程控制桥。在手机上，请用 OctoSen
 | `check`：`[refused] listing: listing names no platforms` | 商店信息的 `platforms` 为空，原始模板就是这样。在 `listing.json` 中列出你测试过的平台，或用 `tools/octo new … --platform …` 创建应用（§3）。 |
 | `check`：`[refused] identity: app id "…" ends in "…", which is reserved: …` | 修改 id 的最后一段（§3）。同样的检查结果还会在 `policy` 下再出现一次。 |
 | `check`：`[refused] contents: .DS_Store has extension "", which a bundle may not hold` | 删除这个文件：`find <bundle> -name .DS_Store -delete`。其他扩展名未知的文件也必须移出 `bundle/`。 |
-| `check`：`[refused] digest: the bundle hashes to …, the manifest claims …` | 上次写入摘要之后，字节发生了变化。未签名的应用包：再运行一次 `tools/octo check`。已签名的应用包：由人工重新写入摘要并签名。只在全新克隆上出现时：检出时转换了换行符（commit `new` 写入的 `.gitattributes`，见 §3），或者 commit 中的摘要已过期（§8）。 |
+| `check`：`[refused] digest: the bundle hashes to …, the manifest claims …` | 上次写入摘要之后，字节发生了变化。未签名的应用包：再运行一次 `tools/octo check`。已封存的发布包：修复可编辑源码并生成新版本/新 tag，不要重新写入发布包的摘要。只在全新克隆上出现时：检出时转换了换行符（commit `new` 写入的 `.gitattributes`，见 §3），或者 commit 中的摘要已过期（§8）。 |
 | `check`：`[refused] assets: … contains https://…`（普通许可 `.txt` 或 `.md` 文件） | 从 App Hub #146 或更新版本重新构建 `hub`。普通文档 URL 可以通过检查；保留要求提供的许可声明。Agent 指引与结构化资源引用仍须单独检查。 |
 | `check`：`[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | 当前 `hub` 接受内置 `Inter.ttf`、`LXGWWenKaiRegular.ttf`、`LXGWWenKaiBold.ttf` 的确切路径（§7）；请重建旧版准入工具。其他字体要随应用打包并使用相对路径，例如 `assets/Body.ttf`。`desktop-v0.1.0-beta.2` 仍早于打包字体加载功能；这个版本请使用不设 `font_src` 的纯 L0 角色套件。 |
 | `hub: the bundle exceeds the size limit`，没有报告 | 应用包超过了 8 MiB。压缩或删除图片和字体。 |
-| 对已签名的应用包运行 `check` 或 `hub scan`：`publisher key "…" is not registered with this hub` | 传入发布者公钥：`tools/octo check <bundle> --publisher-key <publisher-id>=<hex public key>`（`hub scan` 也可以用同一个参数）。 |
-| `card-host: refused: no signature verifier is installed` | `card-host` 不运行已签名的应用包；请用未签名的副本测试，最后再签名。 |
+| 可选旧版 Ed25519 路径，对已签名应用包运行 `check` 或 `hub scan`：`publisher key "…" is not registered with this hub` | 传入发布者公钥：`tools/octo check <bundle> --publisher-key <publisher-id>=<hex public key>`（`hub scan` 也可以用同一个参数）。 |
+| `card-host: refused: no signature verifier is installed` | `card-host` 不运行封存的证明/签名发布包；先测试未签名的可编辑源码，准入后再用兼容 Store 宿主运行发布包。 |
 | `hub scan … --packet build/review.json` 输出 `hub: build/review.json: No such file or directory (os error 2)` | `hub` 不会创建审核包所在的目录。先运行 `mkdir -p build`。 |
 | `hub check --help` 输出 `hub: No such file or directory (os error 2)` | 你的 `hub` 比 App Hub 当前的 `main` 旧；在当前 `main` 中，`--help` 会输出用法。重新构建（§2），或不带参数运行 `hub`。 |
 | 准入检查的其他拒绝 | 见 App Hub 的[常见拒绝原因及修复](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#常见拒绝原因及修复)。 |

@@ -523,7 +523,7 @@ my-notes 0.1.0 — PASSED
   grants: capabilities {"storage"}, hosts {}, storage 16777216 bytes, agent none
 ```
 
-The unsigned warning is expected until a person signs the bundle. The
+The unsigned warning is expected while developing editable source. The
 placeholder note stays until a person writes the publisher fields.
 
 To catch a version that is already published, add App Hub's catalog:
@@ -534,9 +534,9 @@ A reused version is refused with
 `check` restamps an unsigned bundle first. If you edit the bundle after your
 last `check` and commit without running it again, the committed digest is
 stale, and a reviewer's plain `hub check` refuses it with `[refused] digest`.
-Run `tools/octo check` as the last step before every commit; before you
-submit, run plain `hub check` on a fresh clone of your release tag
-([SUBMITTING §6](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#6-freeze-and-verify-the-release)).
+Run `tools/octo check` as the last step before each source commit. The GitHub
+workflow separately prepares and verifies the sealed release pack (§10); its
+proof is not present in the editable tag source.
 
 ## 9. Run it on an OctoSense phone
 
@@ -550,8 +550,9 @@ What exists today:
   `OCTOSENSE_HUB_ANCHOR` (a mirror directory or URL, and its anchor) are
   environment variables, which the Android launcher does not set; no
   on-device setting for them was found. **Unverified on a device.**
-- **The closest real path is on the desktop:** publish into a local catalog
-  with your own throwaway anchor and install it with App Hub's store,
+- **An optional legacy test path is on the desktop:** publish into a local catalog
+  with your own throwaway anchor, explicitly set `OCTOSENSE_HUB_CATALOG=legacy`
+  with a fresh app-data directory, and install it with App Hub's store,
   which runs the same install code as a phone
   ([PUBLISHING §4](PUBLISHING.md#4-rehearse-the-store-path-locally)). The
   OctoSense desktop shell reads `OCTOSENSE_HUB` and `OCTOSENSE_HUB_ANCHOR`
@@ -575,12 +576,31 @@ app with the App Studio tools of an OctoSense test build
 
 ## 10. Publish
 
-[PUBLISHING](PUBLISHING.md) takes the bundle from here to ready-to-sign:
-final manifest and listing, real screenshots, a passing gate, the review
-questions, and a local rehearsal of the store path. A person then signs,
-tags and submits it, following App Hub's
-[Submit an app to the App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md).
-`tools/octo package-help` prints the checklist.
+**Open an App Hub submission issue to request publication.** Include the app
+repository, version/commit, screenshots and permissions. It can precede the
+release; add verified release artifacts when ready. Hub checks and administrator
+approval are required before the catalog offers the app.
+
+[PUBLISHING](PUBLISHING.md) covers the full process. After testing source:
+
+```sh
+tools/octo publish-github ~/apps/my-app
+tools/octo package-help
+```
+
+Review and commit `.github/workflows/publish-app.yml` with the tested app, then
+push a new `v<manifest.version>` tag. GitHub Actions prepares, attests, verifies
+and packs it; no `publisher.key` or developer signing secret is required.
+Attach the successful workflow and exact release pack to the submission issue.
+Neither installing the workflow nor creating a GitHub release submits or
+approves the app. Routine updates use new versions/tags from the same identity.
+
+This path needs contract 1.8.0 / `publisher-github-v1`. Real publishing and native
+Store install/update checks passed with an isolated test catalog
+([evidence](PUBLISHING.md#36-publisher-key--human)). Shipped-shell and phone
+installation remain unverified; a compatible host release is pending.
+Older hosts and `card-host` refuse the sealed release. The local Ed25519 store
+rehearsal is optional compatibility, not a required publishing step.
 
 ## Troubleshooting
 
@@ -615,8 +635,8 @@ tags and submits it, following App Hub's
 | `check`: `[refused] assets: … contains https://…` in an ordinary license `.txt` or `.md` file | Rebuild `hub` from App Hub #146 or later. Plain documentation URLs are accepted; retain required license notices. Agent guidance and structured resource references still have separate checks. |
 | `check`: `[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | Current `hub` accepts the exact built-in `Inter.ttf`, `LXGWWenKaiRegular.ttf` and `LXGWWenKaiBold.ttf` paths (§7). Rebuild an older gate. For other fonts, bundle a font file and use a relative path such as `assets/Body.ttf`. `desktop-v0.1.0-beta.2` still predates bundled-font loading; use the plain L0 role kit without `font_src` on that release. |
 | `hub: the bundle exceeds the size limit`, with no report | The bundle is over 8 MiB. Shrink or drop images and fonts. |
-| `check` or `hub scan` on a signed bundle: `publisher key "…" is not registered with this hub` | Pass the publisher's public key: `tools/octo check <bundle> --publisher-key <publisher-id>=<hex public key>` (the same flag works for `hub scan`). |
-| `card-host: refused: no signature verifier is installed` | `card-host` does not run signed bundles; test the unsigned copy and sign last. |
+| Optional legacy Ed25519 `check` or `hub scan` on a signed bundle: `publisher key "…" is not registered with this hub` | Pass the publisher's public key: `tools/octo check <bundle> --publisher-key <publisher-id>=<hex public key>` (the same flag works for `hub scan`). |
+| `card-host: refused: no signature verifier is installed` | `card-host` does not run sealed attested/signed releases; test editable unsigned source, then use a compatible Store host for the admitted release. |
 | `hub scan … --packet build/review.json` prints `hub: build/review.json: No such file or directory (os error 2)` | `hub` does not create the packet's directory. Run `mkdir -p build` first. |
 | `hub check --help` prints `hub: No such file or directory (os error 2)` | Your `hub` predates App Hub's current `main`, where `--help` prints the usage. Rebuild it (§2), or run `hub` with no arguments. |
 | Any other gate refusal | App Hub's [Common refusals and how to fix them](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#common-refusals-and-how-to-fix-them). |

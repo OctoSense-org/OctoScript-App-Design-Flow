@@ -10,6 +10,7 @@ exactly what `hub check` prints and exits with its status.
     tools/octo run <bundle> [--port N] [--hidden] [--system] [--detach] [--no-stamp] [--app-data DIR]
     tools/octo shot <port> <out.png>
     tools/octo check <bundle> [hub check flags ...]
+    tools/octo publish-github <app-directory> [--replace]
     tools/octo package-help
 
 Binaries are found, in order, from $OCTO_HUB / $OCTO_CARD_HOST, then
@@ -27,6 +28,7 @@ import signal
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 import urllib.error
 import urllib.request
@@ -45,6 +47,57 @@ RESERVED_NAMES = frozenset({
 })
 PLATFORMS = ("android", "ios", "macos", "windows", "linux", "openharmony", "web")
 PNG_MAGIC = b"\x89PNG\r\n\x1a\n"
+
+
+def sealed_release(manifest):
+    integrity = manifest.get("integrity") or {}
+    # Typed unsigned manifests may contain signature:null. Any non-null
+    # signature, GitHub field or declared GitHub seal must remain untouched.
+    return (integrity.get("signature") is not None or "github" in integrity
+            or "publisher-github-v1" in (manifest.get("requires") or []))
+
+
+def publisher_workflow():
+    """Use the reviewed immutable Hub toolchain, never a moving branch."""
+    config = json.loads((REPO / "tools/publisher-toolchain.json").read_text())
+    revision = config.get("revision")
+    if (config.get("schema") != 1
+            or config.get("repository") != "OctoSense-org/OctoSense-App-Hub"
+            or not isinstance(revision, str)
+            or re.fullmatch(r"[0-9a-f]{40}", revision) is None):
+        raise ValueError("GitHub publishing needs a reviewed immutable App Hub toolchain revision")
+    template = (REPO / "tools/publish-app.template.yml").read_text()
+    if template.count("__HUB_REVISION__") != 1:
+        raise ValueError("GitHub publishing workflow template is invalid")
+    return template.replace("__HUB_REVISION__", revision)
+
+
+def install_publisher_workflow(app, content, replace=False):
+    """Never follow an app's workflow symlinks or overwrite custom automation."""
+    folder = app / ".github" / "workflows"
+    target = folder / "publish-app.yml"
+    for path in (app / ".github", folder, target):
+        if path.is_symlink():
+            raise ValueError("Refusing a symlink in the publishing workflow path")
+    if target.exists():
+        if target.is_file() and target.read_text() == content:
+            return False
+        if not replace:
+            raise ValueError(".github/workflows/publish-app.yml already exists; review it before using --replace")
+        if not target.is_file():
+            raise ValueError(".github/workflows/publish-app.yml is not a regular file")
+    folder.mkdir(parents=True, exist_ok=True)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", newline="\n", dir=folder, delete=False) as stream:
+            temporary = Path(stream.name)
+            stream.write(content)
+        temporary.chmod(0o644)
+        os.replace(temporary, target)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+    return True
 
 
 # --------------------------------------------------------------------- finding
@@ -197,6 +250,11 @@ def cmd_new(args):
     if app_id in RESERVED_NAMES or namespace in RESERVED_NAMES:
         die(f"id {app_id!r} uses reserved native/host namespace {namespace!r}; choose an app-specific name")
     name = args.name or "My Notes"
+    # Resolve the release tooling before creating a partially usable project.
+    try:
+        workflow = publisher_workflow()
+    except (OSError, ValueError) as error:
+        die(str(error))
 
     dest.mkdir(parents=True, exist_ok=True)
     shutil.copytree(TEMPLATE / "bundle", dest / "bundle")
@@ -221,6 +279,7 @@ def cmd_new(args):
     main = dest / "bundle" / "main.splash"
     if args.name:
         main.write_text(main.read_text().replace('text: "My Notes"', "text: " + json.dumps(name), 1))
+    install_publisher_workflow(dest, workflow)
 
     hub, _, _ = find_binary("hub", "OCTO_HUB")
     if hub:
@@ -348,6 +407,12 @@ def cmd_run(args):
     bundle = Path(args.bundle).expanduser().resolve()
     if not (bundle / "manifest.json").is_file():
         die(f"{bundle} has no manifest.json; pass the bundle directory (…/bundle)")
+    try:
+        manifest = json.loads((bundle / "manifest.json").read_text())
+        if sealed_release(manifest):
+            die("card-host cannot run a sealed release. Use the editable source bundle or install the release in a compatible OctoSense host.")
+    except (OSError, ValueError) as error:
+        die(str(error))
     card_host = need("card-host", "OCTO_CARD_HOST")
     # card-host would start anyway, without a bridge, and every curl would
     # silently drive whatever already holds the port (#119).
@@ -471,9 +536,9 @@ def cmd_check(args, extra):
         die(f"{bundle} has no manifest.json")
     hub = need("hub", "OCTO_HUB")
     manifest = json.loads((bundle / "manifest.json").read_text())
-    signed = bool((manifest.get("integrity") or {}).get("signature"))
+    signed = sealed_release(manifest)
     if signed:
-        print("octo: the manifest is signed; not restamping (a restamp would invalidate the signature).")
+        print("octo: the manifest carries signing metadata; checking the exact bytes without restamping.")
     else:
         r = subprocess.run([str(hub), "stamp", str(bundle)], capture_output=True, text=True)
         if r.returncode != 0:
@@ -501,6 +566,31 @@ def cmd_check(args, extra):
     return r.returncode
 
 
+# -------------------------------------------------------------- publish-github
+def cmd_publish_github(args):
+    app = Path(args.dir).expanduser().resolve()
+    manifest_path = app / "bundle" / "manifest.json"
+    if not manifest_path.is_file():
+        die("Expected an app directory containing bundle/manifest.json")
+    try:
+        manifest = json.loads(manifest_path.read_text())
+        if sealed_release(manifest):
+            die("Use the editable source repository, not a sealed release bundle")
+        workflow = publisher_workflow()
+        changed = install_publisher_workflow(app, workflow, args.replace)
+    except (OSError, ValueError) as error:
+        die(str(error))
+    print(("installed" if changed else "already current") + ": .github/workflows/publish-app.yml")
+    print("No publisher key or repository signing secret is required.")
+    print("Request Hub publication by opening an issue on OctoSense-org/OctoSense-App-Hub;")
+    print("include the repository, version/commit, screenshots and requested permissions.")
+    print("Review and commit this workflow with the tested app in its public GitHub repository.")
+    print("Then push a NEW tag v<manifest.version>. GitHub checks and attests the app and creates its release assets.")
+    print("Add the successful release link and review evidence to the submission issue for maintainer review.")
+    print("Installing this workflow does not push, release, submit, or approve the app.")
+    return 0
+
+
 # ---------------------------------------------------------------- package-help
 CHECKLIST = """\
 Publish checklist (full text: docs/PUBLISHING.md). Run top to bottom; stop at HUMAN.
@@ -518,15 +608,22 @@ Publish checklist (full text: docs/PUBLISHING.md). Run top to bottom; stop at HU
      curl -s 127.0.0.1:8141/quit
   7. tools/octo check $B                                # stamps, then gate: PASSED
   8. hub scan $B --packet build/review.json             # answer its questions
-  9. HUMAN: create/hold the publisher key outside the repo
-       hub keygen /secure/path/publisher.key   (once)
-       hub sign-manifest $B --key /secure/path/publisher.key --key-id <publisher-id>
-       hub check $B --publisher-key <publisher-id>=$(hub pubkey /secure/path/publisher.key)
-     Any edit after signing: restamp and sign again.
- 10. HUMAN: tag the commit and open an issue "Submit <id> <version>" on
-     OctoSense-org/OctoSense-App-Hub (docs/PUBLISHING.md 3.8). Never edit its
-     catalog.json/index/artifacts. Never claim it was submitted or approved
-     unless a person did it.
+  9. HUMAN: request publication by opening an issue "Submit <id> <version>"
+     on OctoSense-org/OctoSense-App-Hub, with repository, version/commit,
+     screenshots and permissions. The issue can open before the release is ready.
+ 10. tools/octo publish-github <app-directory>          # install release workflow
+     HUMAN: review the app, permissions, screenshots and workflow, then commit.
+     Push a NEW v<manifest.version> tag in the app's public GitHub repository.
+     GitHub checks, attests and packs the release without a publisher key.
+     Do not modify/restamp its sealed release asset. Edit the development
+     bundle instead and release a new version with a new tag.
+ 11. After the workflow passes, add the release link and review evidence to
+     the submission issue.
+     A maintainer reviews the exact bytes before catalog admission. Never edit
+     its catalog/index/artifacts or claim release equals Hub approval.
+
+The sealed app requires a host supporting publisher-github-v1. Keep legacy
+key-based publication only when deliberately targeting the older protocol.
 """
 
 
@@ -578,6 +675,10 @@ def main():
     c.add_argument("--catalog", metavar="PATH", help="forward the catalog path to hub check")
     c.add_argument("--publisher-key", action="append", default=[], metavar="KEY", help="forward a trusted publisher key to hub check (repeatable)")
 
+    g = sub.add_parser("publish-github", help="install the GitHub release workflow; no separate developer signing key")
+    g.add_argument("dir", help="app repository directory containing bundle/manifest.json")
+    g.add_argument("--replace", action="store_true", help="replace an existing publishing workflow after reviewing it")
+
     sub.add_parser("package-help", help="print the publish checklist")
 
     args, extra = p.parse_known_args()
@@ -588,6 +689,7 @@ def main():
         "new": cmd_new,
         "run": cmd_run,
         "shot": cmd_shot,
+        "publish-github": cmd_publish_github,
         "package-help": cmd_package_help,
     }
     if args.cmd == "check":

@@ -287,12 +287,14 @@ lacks, the reason is
 `this host does not implement required APIs: <method>@<version>` instead.
 Test such an app this way:
 
-1. Check the final signed bundle with `hub` built from App Hub `main`:
-   `hub check <bundle> --publisher-key <publisher-id>=<hex public key>`
-   prints a line that ends in `— PASSED`.
-2. Install it from a local mirror in an OctoSense desktop shell built from
-   `main`, as [PUBLISHING §4](PUBLISHING.md#4-rehearse-the-store-path-locally)
-   shows.
+1. Check editable source with `hub check <bundle> --allow-unsigned` after
+   stamping. Use the GitHub publishing workflow for the final release proof
+   ([PUBLISHING §3.6](PUBLISHING.md#36-publisher-key--human)); it needs no developer key.
+2. Test host services in a compatible OctoSense shell. The
+   [local mirror rehearsal](PUBLISHING.md#4-rehearse-the-store-path-locally)
+   is an optional legacy compatibility route for pre-publication tests, not
+   verification of GitHub-attested releases. `publisher-github-v1` needs a
+   compatible Store verifier; its released-host installation is still pending.
 3. Exercise discovery and the fallback for a missing API, account changes,
    permission denial and revocation, a tool call while the app is closed, and
    the native review of a backend write.
