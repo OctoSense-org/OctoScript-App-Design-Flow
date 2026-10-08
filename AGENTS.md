@@ -126,6 +126,13 @@ needs no AI service or API key.
   reference apps show the pattern
   ([examples/connected-apps](examples/connected-apps/README.md)): keep a
   manual path and a clear missing-service state, as they do.
+- **Your own Rust code runs only as a Wasm function.** Compile it to a
+  WebAssembly module in `bundle/fns/` and request `wasm`; a bundle never
+  carries a native library. Only OctoSense `main` built with the `wasm-lab`
+  feature (in no release yet) runs functions, and `card-host` answers every
+  call with `no service answers "wasm" on this device`. A store app running
+  its functions is unverified; report it as such. Follow
+  [docs/RUST.md](docs/RUST.md).
 - **Only needed capabilities.** Map each capability to something a screen
   does ([docs/CAPABILITIES.md](docs/CAPABILITIES.md)), and remove the rest.
 - **No placeholder screenshots.** Capture the real app in a real state with
@@ -138,7 +145,8 @@ needs no AI service or API key.
   file (`main.splash`, or `page.card` with `kit/`), artwork and screenshots go
   in `bundle/`. An app with its own agent adds `tools.json`, `AGENT.md`,
   `skills/` and the `.splash` Glance templates its tools publish
-  ([An app's own agent](docs/AI-SERVICES.md#an-apps-own-agent)). Notes, keys,
+  ([An app's own agent](docs/AI-SERVICES.md#an-apps-own-agent)). An app with
+  Wasm functions adds `fns/*.wasm` ([docs/RUST.md](docs/RUST.md)). Notes, keys,
   logs, review packets and `.local-state/` stay out.
 - **Run headless.** Start apps with `tools/octo run … --hidden`, so you never
   take over the person's screen. This is Makepad's hidden-window mode: the app

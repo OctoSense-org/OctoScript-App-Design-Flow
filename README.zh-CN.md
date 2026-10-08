@@ -327,6 +327,7 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 | [docs/SCRIPT-API.md](docs/SCRIPT-API.md) | Splash 语言及隔离应用可调用的全部 API |
 | [docs/CAPABILITIES.zh-CN.md](docs/CAPABILITIES.zh-CN.md)（[English](docs/CAPABILITIES.md)） | 每项能力：解锁什么、用户看到什么、规则 |
 | [docs/HOST-SERVICES.zh-CN.md](docs/HOST-SERVICES.zh-CN.md)（[English](docs/HOST-SERVICES.md)） | `host.request`、面板、“密钥归宿主所有”、新增宿主服务 |
+| [docs/RUST.zh-CN.md](docs/RUST.zh-CN.md)（[English](docs/RUST.md)） | 应用自己的 Rust 代码：Wasm 函数，以及设备 API、网络、文件和原生代码各走哪条路 |
 | [docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)（[English](docs/AI-SERVICES.md)） | OctoSense 的助手（octos）：应用目前能用什么、应用 Agent 及其工具、速览卡片和卡片内对话（`sys.chat`） |
 | [docs/MODEL-VALIDATION.zh-CN.md](docs/MODEL-VALIDATION.zh-CN.md)（[English](docs/MODEL-VALIDATION.md)） | 检查编码 Agent 做出的应用：原生输入与截图、评审循环、修复 |
 | [docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md)（[English](docs/PUBLISHING.md)） | 从能运行的应用到待签名的应用包：定稿清单和商店信息、截图、准入检查、本地商店演练和人工把关节点 |
