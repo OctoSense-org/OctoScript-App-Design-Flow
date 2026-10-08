@@ -6,7 +6,8 @@ The development harness for [OctoSense](https://github.com/OctoSense-org) apps.
 It takes you, or a coding agent, from an idea (a text brief, a generated UX
 image) to a contained app bundle that passes the
 [OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) gate
-and is ready for a person to sign and submit.
+and is ready for a GitHub-attested release and App Hub review, without a
+separate developer signing key.
 
 It holds the rules for agents ([AGENTS.md](AGENTS.md)), step-by-step design
 flows ([flows/](flows/README.md)), the developer docs ([docs/](docs/)), a
@@ -57,7 +58,7 @@ organizers. What a contestant needs from here:
 | **AI in the app** | Building an app needs no AI service, and `card-host` serves none, so make the app complete without one. See [AI in your app](#ai-in-your-app). |
 | **Reference apps** | The three published [connected apps](#connected-apps-github-gmail-and-google-calendar). |
 | **Demo** | The app in `card-host` (`tools/octo run`, driven over the remote bridge) and real screenshots from `tools/octo shot`. To show it inside OctoSense, with its host services, run the OctoSense desktop shell against a local catalog ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)). |
-| **Submit to the App Hub** | Prepare the bundle with [docs/PUBLISHING.md](docs/PUBLISHING.md); then a person signs, tags and opens the issue as App Hub's [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md) describes. A contest entry is not automatically an App Hub submission; the hackathon page says what the event needs. |
+| **Submit to the App Hub** | Prepare the bundle with [docs/PUBLISHING.md](docs/PUBLISHING.md); then open the submission issue to request publication and attach a GitHub-attested release, as App Hub's [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md) describes. A contest entry is not automatically an App Hub submission; the hackathon page says what the event needs. |
 | **Test headless** | `tools/octo run … --hidden`: the window never appears, so an agent can test your app (and several apps at once, one `--port` each) without taking over your screen. See [Headless testing](#headless-testing-many-apps-no-screen). |
 | **Check what your agent built** | [docs/MODEL-VALIDATION.md](docs/MODEL-VALIDATION.md): drive and capture the app natively, repair failures, and tie the evidence to the final source. |
 | **Agentic app references** | [Email Action and Meeting Planner](examples/agentic-hackathon/README.md): fake email/calendar data, real app-agent entry points, a labeled offline fallback, review-before-action and native interaction tests. |
@@ -121,10 +122,11 @@ Read these in order:
    `tools/octo`; use only documented APIs (or ones you can cite from the
    runtime source or a system app).
 4. [docs/PUBLISHING.md](docs/PUBLISHING.md): finalize the bundle, capture
-   screenshots and pass the gate. A person then signs and submits it with
+   screenshots and pass the gate. Request publication with an issue and attach
+   the verified GitHub release, following
    App Hub's [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md).
 
-The human checkpoints (publisher keys and signing, publisher identity and
+The human checkpoints (release workflow, publisher identity and
 privacy text, platform claims, paid image generation, visual approval, the
 release tag, submission) are listed in [AGENTS.md](AGENTS.md#how-to-work);
 [flows/README.md](flows/README.md#every-flow-follows-the-same-contract)
@@ -158,6 +160,7 @@ Use `main` of each repository.
 | The gate (`hub`) | App Hub `main`, app contract 1.7 (the manifest rules `hub` enforces), which admits the connected-account capabilities `auth`, `github`, `gmail` and `gcalendar`, the [Host API v1](docs/HOST-API-V1.md) declarations and the `wasm` capability. |
 | `card-host` | App Hub `main`. It runs one bundle and serves no host services except `runtime` discovery. Build it as the [Quick path](#quick-path) shows. |
 | The shells | OctoSense `main`; its latest desktop release is `desktop-v0.1.0-beta.2`. The desktop shell and the phone's Home run system and store apps; the desktop also serves connected accounts and app agents' host-service tools. |
+| GitHub publishing | Working-branch implementation: contract 1.8.0 / `publisher-github-v1`, no developer key. Live attestation and compatible-host installation remain unverified; compatible release pending. |
 | Submission | An issue on OctoSense-App-Hub, as App Hub's [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md) describes. |
 | Installing your own bundle on a phone | Not supported. See [Running an app](#running-an-app). |
 
@@ -257,11 +260,12 @@ Run `tools/octo <command> -h` for flags.
 
 | Command | Does |
 | --- | --- |
+| `publish-github <app-directory> [--replace]` | Install the reviewed `.github/workflows/publish-app.yml`; no push, release or submission. `new` also copies it. A new matching version tag triggers GitHub attestation and release assets; no developer signing secret. |
 | `doctor` | Checks Python, looks for the App Hub checkout and cargo, finds `hub` and `card-host` (rejecting GitHub's unrelated `hub` CLI), checks the template, and prints how to fix what is missing. |
 | `new <dir> --platform PLATFORM [--id ID] [--name NAME] [--system]` | Copies `templates/script-app` (`bundle/`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.gitignore`), sets id, name and version `0.1.0`, writes the `--platform` values into the listing, and stamps the bundle. `--platform` is required; repeat it for each platform you will test on. Ids are `[a-z0-9.-]{1,64}`; `os.*` needs `--system`. It refuses a reserved id, or one whose last segment is reserved, before it creates any file ([What an app is](#what-an-app-is)). |
 | `run <bundle> [--port N] [--hidden] [--detach] [--system] [--no-stamp] [--app-data DIR] [--static PREFIX=DIR]` | Runs `card-host --bundle … --app-data … --allow-unsigned --stamp` with `MAKEPAD_REMOTE=<port>` (default 8141). Refuses a port that is already taken. `--detach` returns once the app is admitted, its bridge listens and the first frame is drawn. The app's jail (its private data directory) is `<app>/.local-state/<id>/`. |
 | `shot <port> <out.png> [--settle S]` | Saves a PNG of the running window (`GET /g?raw=1`) once the app's widgets exist and two frames in a row match (at most `--settle`, 2 s by default). |
-| `check <bundle> [hub check flags]` | `hub stamp`, then `hub check --allow-unsigned`; exits nonzero on a refusal. Passes other flags, such as `--catalog` or `--publisher-key`, to `hub check`. Does not restamp a signed manifest. A failed stamp returns its status at once and skips the gate. |
+| `check <bundle> [hub check flags]` | `hub stamp`, then `hub check --allow-unsigned`; exits nonzero on a refusal. Passes other flags, such as `--catalog` or `--publisher-key`, to `hub check`. Does not restamp a manifest with a legacy signature or `integrity.github`. A failed stamp returns its status at once and skips the gate. |
 | `package-help` | Prints the publish checklist. |
 
 `doctor` prints every place it looks for `hub` and `card-host`;
@@ -315,7 +319,8 @@ my-app/                     the app's own Git repository
 | `capabilities` | The permissions the app asks for. |
 | `network.hosts` | Bare host names; needs `net`. |
 | `storage`, `compute`, `agent` | Optional requests, clamped to the host's ceilings; `hub check` prints the result as its `grants:` line. `storage.accounts: true` gives each account its own data folder and agent, instead of one shared `device` folder; `storage.agent_workspace` sets what the agent may read: its account's folder (the default) or nothing. |
-| `integrity.bundle_blake3` | Written by `hub stamp`; `hub sign-manifest` adds the signature. |
+| `integrity.github` | The repository/owner/workflow/tag/commit identity and GitHub attestation, added by the new publisher workflow (`publisher-github-v1`, compatible host pending). |
+| `integrity.bundle_blake3` | Written by `hub stamp` during development; the GitHub workflow prepares the final digest and attestation. Legacy Ed25519 signing remains optional. |
 
 For every field, see App Hub's
 [The manifest](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-manifest).
@@ -449,18 +454,18 @@ Widgets built by `on_render` are listed in `/snap` and `/d` like any other;
 content an app adds later, from a timer or a reply, appears once it is
 drawn, so poll `/snap?q=` for it. `card-host` registers **no** host
 services, so a Mail-style app gets `no service answers "mail" on this device`
-there. `card-host` also refuses signed manifests: take screenshots before
-signing.
+there. `card-host` also refuses sealed attested/signed releases: test and
+capture editable source before release.
 
 **In the shells.** The OctoSense desktop shell and the phone's Home run apps
 with App Hub's Card runner (the `card` module in App Hub's
 `crates/appstore`), not with `card-host`; the Card runner applies the same
 manifest policy. System apps are packed into the shell build from
 OctoSense's `apps/`; store apps are installed from the App Hub store out of
-the signed catalog. To try your own app in the desktop shell before it is
-published, publish it into a local catalog with a throwaway trust anchor (a
-test root key) and point the desktop shell's `OCTOSENSE_HUB` /
-`OCTOSENSE_HUB_ANCHOR` at it; the shell's store installs and opens the app
+the authenticated catalog. For an optional legacy rehearsal before submission,
+publish a test bundle into a local catalog with a throwaway trust anchor,
+then point `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` at that mirror. The
+shell's store installs and opens the test app
 ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
 
 **On a phone, today** ([QUICKSTART §9](docs/QUICKSTART.md#9-run-it-on-an-octosense-phone)):
@@ -473,9 +478,9 @@ test root key) and point the desktop shell's `OCTOSENSE_HUB` /
 - The closest verified path is the desktop rehearsal above.
 - `card-host`'s remote bridge is compiled out on Android, so phone testing
   does not use `tools/octo`.
-- After publication, the app appears in every phone's store from the signed
-  catalog, unless it declares `auth`: no released phone build accepts that
-  capability.
+- After Hub admission, only a compatible host can install the app. Released
+  phone builds lack both `auth` and `publisher-github-v1`; catalog visibility
+  does not establish runtime compatibility.
 
 ## Headless testing: many apps, no screen
 
@@ -514,31 +519,29 @@ an earlier App Hub and Makepad.
 
 ## Publishing
 
-Publishing has two halves, owned by two repositories:
+**Open a submission issue to ask the App Hub to publish your app.** Include
+its repository, version/commit, screenshots and requested permissions. The
+issue can precede the release: Hub checks report missing items or refusals,
+and an administrator approves the exact candidate before catalog publication.
 
-1. **Here.** [docs/PUBLISHING.md](docs/PUBLISHING.md) takes a working app to
-   a bundle that is ready to sign: the final manifest and listing (no
-   placeholders; the publisher fields are the publisher's to write), real
-   screenshots from `tools/octo shot`, `tools/octo check` passing with only
-   the unsigned warning, and the `hub scan` questions answered in writing.
-   There are seven questions, or eight when the bundle ships `tools.json`,
-   `AGENT.md` or skills. `tools/octo package-help` prints the checklist.
-2. **App Hub.** [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md)
-   is the step-by-step submission a person follows: sign last, commit and
-   tag, run `hub check` on a fresh clone of the tag without restamping, and
-   open a `Submit <app id> <version>` issue.
-   [PUBLISHING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md)
-   is the reference for every gate rule and field.
+[docs/PUBLISHING.md](docs/PUBLISHING.md) covers the local gate, screenshots and
+review answers. `tools/octo publish-github <app-directory>` installs the
+publishing workflow (`new` also copies it). After review, commit tested source
+and push a new `v<manifest.version>` tag. GitHub Actions prepares, attests,
+verifies and packs the release using its native identity; developers do not
+create `publisher.key` or store a signing secret.
 
-A maintainer re-runs the gate and the scan on the exact bytes of your tag
-and runs `hub publish`, which copies the bundle into App Hub and signs a new
-catalog.
+Attach the successful workflow and exact release pack to the submission issue.
+A GitHub release supplies verifiable bytes; it is not a new App Hub submission
+channel or automatic approval. See App Hub's
+[SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md).
+Routine updates use new versions/tags from the same repository/owner/workflow.
+Never move a released tag or hand-edit the Hub's admitted catalog/artifacts.
 
-- Never open a pull request that edits App Hub's `catalog.json`, `index/` or
-  `artifacts/`: only `hub publish` with App Hub's catalog key writes them.
-- Never move a release tag. To change a published app, release a new version.
-- The gate does not judge screenshots, listing text or the privacy policy; a
-  reviewer does.
+This working-branch path requires contract 1.8.0 / `publisher-github-v1`.
+Live publisher attestation and compatible-host installation remain unverified;
+a compatible host release is pending. Manual Ed25519 signing is optional
+compatibility, and old reference releases remain unchanged.
 
 ## Repository layout
 
@@ -552,7 +555,7 @@ catalog.
 | [docs/HOST-SERVICES.md](docs/HOST-SERVICES.md) | `host.request`, sheets, "secrets are the host's", adding a service |
 | [docs/AI-SERVICES.md](docs/AI-SERVICES.md) ([简体中文](docs/AI-SERVICES.zh-CN.md)) | OctoSense's assistant (octos): what an app can use today, app agents and their tools, Glance cards and in-card chat (`sys.chat`) |
 | [docs/MODEL-VALIDATION.md](docs/MODEL-VALIDATION.md) ([简体中文](docs/MODEL-VALIDATION.zh-CN.md)) | Checking what a coding agent built: native input and capture, review loops, repair |
-| [docs/PUBLISHING.md](docs/PUBLISHING.md) | From a working app to a bundle ready to sign: final manifest and listing, screenshots, the gate, the local store rehearsal and the human checkpoints |
+| [docs/PUBLISHING.md](docs/PUBLISHING.md) | From a working app to a publication issue and GitHub-attested release: final listing, screenshots, gate/review, workflow and Hub approval |
 | [docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md) | How `tools/octo`, App Hub and the OctoSense shell connect, traced through one request |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | One meaning per term |
 | [docs/NATIVE-WORKSPACE.md](docs/NATIVE-WORKSPACE.md), [docs/l0/](docs/l0/) | Sibling-source setup for the native runtime; L0 card examples |

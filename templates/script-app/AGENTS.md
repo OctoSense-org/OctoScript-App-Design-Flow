@@ -13,7 +13,7 @@ and do not invent requirements or APIs:
 - The language and every API an app may use: [SCRIPT-API](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/SCRIPT-API.md)
 - Capabilities: [CAPABILITIES](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/CAPABILITIES.md)
 - Final bundle, screenshots and human checkpoints: [PUBLISHING](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/PUBLISHING.md)
-- Signing and the submission issue: App Hub's [SUBMITTING](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md)
+- Publisher proof and the submission issue: App Hub's [SUBMITTING](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md)
 
 Set `OCTO=<path to OctoScript-App-Design-Flow>/tools/octo`, then run this loop
 from this directory. The CLI lives in the harness repository, not here; on
@@ -45,12 +45,26 @@ Follow these rules:
   structured resources retain their host/resource checks.
 - Capture screenshots from the unsigned bundle with `$OCTO shot`, and look at
   each one; never use a placeholder.
-- Restamp after every edit (`$OCTO check` does it). Sign last; any edit
-  after signing needs a new stamp and a new signature.
+- Restamp editable unsigned source after every edit (`$OCTO check` does it).
+  Never edit or restamp a sealed attested/signed release. Test and capture
+  screenshots before the publishing workflow seals the bundle.
 - Keys, `.local-state/`, `build/` and review packets never enter `bundle/` or Git.
 - Keep `.gitattributes` (`bundle/** -text`) committed: the digest covers every
   byte, and a line-ending conversion breaks it.
-- Stop at human steps: publisher key, publisher details, platform claims, tag,
-  submission.
+- Review `.github/workflows/publish-app.yml` before releasing.
+  `$OCTO publish-github .` installs it for an existing app; `new` copies it too.
+  No developer key or repository signing secret is required. Push a new
+  `v<manifest.version>` tag of tested source to prepare, attest, verify and
+  pack it. The tag source and sealed release pack are different artifacts.
+- Opening the App Hub issue is the request to publish; provide repository,
+  version/commit, screenshots and permissions, then add the verified release
+  pack when ready. A release alone does not submit or approve the app.
+- Stop at human steps: publisher details, workflow review, platform claims,
+  tag and submission, unless already authorized in this session. Respect
+  actual approval; never fabricate it. Manual Ed25519 keys are only an
+  optional compatibility path, never a default setup step.
+- `publisher-github-v1` needs contract 1.8.0 and a compatible Store host;
+  older hosts and `card-host` refuse the sealed release. Live publishing and
+  compatible-host installation remain unverified in this implementation.
 
 Add this app's own requirements, data sources and tests below.

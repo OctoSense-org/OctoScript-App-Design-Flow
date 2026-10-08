@@ -47,9 +47,10 @@ Supporting code, not flows:
    - **Semantic and visual review.** A person (or a reviewer they name)
      checks the mapping against the source image and approves screenshots.
      A passing script is not a visual approval.
-   - **Signing with private keys.** Only the key holder runs `hub keygen` or
-     `hub sign-manifest`. Keys never enter the repository, the bundle, a
-     prompt or a log.
+   - **Publisher identity and release workflow.** Review the GitHub repository,
+     workflow and release tag before publication. New GitHub apps and routine
+     updates need no developer signing key. Manual Ed25519 signing is optional
+     compatibility; its private keys never enter a repo, bundle, prompt or log.
    - **Release and submission.** Tagging the release and opening the
      `Submit <app id> <version>` issue on OctoSense-App-Hub
      ([SUBMITTING §7](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#7-open-the-submission-issue))
@@ -64,8 +65,6 @@ Supporting code, not flows:
      ([QUICKSTART §2](../docs/QUICKSTART.md#2-build-hub-and-card-host)).
    - `APP_REPO`: the absolute path of the app's repository, which holds
      `bundle/`.
-   - `APP_SIGNING_KEY` and `APP_PUBLISHER_ID`: the publisher's key file and
-     publisher id. Only the publisher sets them.
 
    If the build fails with `no variant … TextInputStateQuery`, see [The `card-host` build fails on `TextInputStateQuery`](../docs/QUICKSTART.md#the-card-host-build-fails-on-textinputstatequery).
 
@@ -78,14 +77,17 @@ Supporting code, not flows:
    | 5 | Screenshot | in a second terminal, from this repository: `tools/octo shot 8141 "$APP_REPO/bundle/screenshots/01-main.png"`, then `curl -sS 127.0.0.1:8141/quit`. `shot` waits for the app's widgets and a settled frame. | the PNG shows the app, not an error frame (**HUMAN** review) |
    | 6 | Restamp and check | `"$HUB_BIN" stamp "$APP_REPO/bundle" && "$HUB_BIN" check "$APP_REPO/bundle" --allow-unsigned` | only the unsigned warning remains |
    | 7 | Review questions | `mkdir -p "$APP_REPO/build" && "$HUB_BIN" scan "$APP_REPO/bundle" --packet "$APP_REPO/build/review.json"` | the packet is written and its questions are answered in writing: seven, or eight when the bundle ships `tools.json`, `AGENT.md` or skills |
-   | 8 | Sign (**HUMAN**) | `"$HUB_BIN" sign-manifest "$APP_REPO/bundle" --key "$APP_SIGNING_KEY" --key-id "$APP_PUBLISHER_ID"`, last, after every other change | `"$HUB_BIN" check "$APP_REPO/bundle" --publisher-key "$APP_PUBLISHER_ID=$("$HUB_BIN" pubkey "$APP_SIGNING_KEY")"` passes |
-   | 9 | Release and submit (**HUMAN**) | commit, tag, run `hub check` on a fresh clone of the tag, then open a `Submit <app id> <version>` issue ([SUBMITTING §6–7](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#6-freeze-and-verify-the-release)) | `hub check` passes on the fresh clone, and the issue is open |
+   | 8 | Request publication (**HUMAN**, may happen earlier) | Open `Submit <app id> <version>` on App Hub with repo/version/commit, screenshots and permissions | The issue records the request; missing release artifacts can be added later |
+   | 9 | Prepare release (**HUMAN** for public actions) | `tools/octo publish-github "$APP_REPO"`; review/commit tested source and workflow, then push a new `v<manifest.version>` tag | GitHub `publisher-verify` and `publisher-pack` succeed; attach release/pack/digest to the issue |
+   | 10 | Hub review | Hub checks the exact candidate; administrator reviews and approves it | Authenticated catalog publication completes; a GitHub release alone is not approval |
 
-   `card-host` refuses signed manifests, so take screenshots before signing.
-   This repository's [docs/PUBLISHING.md](../docs/PUBLISHING.md) walks steps
-   1–7 for script apps. App Hub's
+   `card-host` refuses sealed releases, so test/capture editable source first.
+   The new workflow needs contract 1.8.0 / `publisher-github-v1`; live publishing
+   and compatible-host installation remain unverified, with a compatible
+   release pending. These are pass conditions, not claimed test results.
+   This repository's [docs/PUBLISHING.md](../docs/PUBLISHING.md) covers the flow. App Hub's
    [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md)
-   covers signing and submission, and its
+   covers the submission issue and review, and its
    [PUBLISHING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md)
    is the reference for every gate rule.
 5. **Purchased assets stay private.** Never share purchased design assets or

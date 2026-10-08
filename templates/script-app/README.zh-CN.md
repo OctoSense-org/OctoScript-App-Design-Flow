@@ -43,4 +43,19 @@ script-app/
 - `platforms` 是空列表，准入检查会拒绝空列表（`listing names no platforms`）。`tools/octo new` 必须指定 `--platform`，并写入你传入的平台；每个平台写一次。传入平台只是声明，不是测试：发布之前，只保留你实际运行过的平台，并由人确认这一声明。在 Mac 上运行 `card-host` 测试的是 `macos`，不是 Android。
 - 如果修改 id，它的最后一段不能是 App Hub 的保留名（`notes`、`weather`、`terminal` 等）。`tools/octo new` 创建应用时会拒绝保留名；之后改过的 id 若用了保留名，准入检查会拒绝。
 
+## 发布完成的应用
+
+`new` 还会从开发工具集中经过评审的发布模板安装 `.github/workflows/publish-app.yml`；
+它位于 `bundle/` 之外，不是上面列出的模板源文件。已有应用可运行
+`tools/octo publish-github <app-directory>`，命令不会推送或提交。
+
+开 App Hub issue 来请求发布，附仓库/版本/commit、截图和权限。审阅并 commit
+已测试源码和工作流，再推送新的 `v<manifest.version>` tag。GitHub 会准备、证明、
+验证和打包，无需开发者签名密钥。把成功的 release 补充到 issue；目录发布仍需
+管理员批准。日常更新使用同一仓库、所有者和工作流身份下的新版本/新 tag。
+
+此路径需要 `publisher-github-v1` / 契约 1.8.0。真实发布和兼容宿主安装尚未验证，
+兼容宿主版本尚待发布。见 [PUBLISHING](../../docs/PUBLISHING.zh-CN.md)；手动 Ed25519
+只保留为可选兼容路径。
+
 下一步：[docs/QUICKSTART.zh-CN.md](../../docs/QUICKSTART.zh-CN.md)。

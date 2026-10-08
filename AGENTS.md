@@ -42,11 +42,12 @@ needs no AI service or API key.
    ends with [docs/PUBLISHING.md](docs/PUBLISHING.md) (final bundle,
    screenshots, human checkpoints), then App Hub's
    [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md)
-   (signing, tag and issue, done by a person).
+   (the submission issue, release provenance and Hub review). Opening the
+   issue is the request to publish; a tag/release is not automatic submission.
 3. Follow the flow's steps **in order and exactly**. Each step has a pass
    condition; do not start the next step until it holds.
 4. **Stop at every human checkpoint** (steps marked **HUMAN**, or rows whose
-   "Human?" column says yes): publisher keys and signing, publisher identity
+   "Human?" column says yes): GitHub release workflow, publisher identity
    and privacy text, platform claims, paid image generation, visual approval,
    the release tag, submission. Report and wait. Never fabricate an approval,
    a review result, a submission or a person's answer.
@@ -132,8 +133,9 @@ needs no AI service or API key.
   `tools/octo shot`, then open each PNG and look at it. Never draw, generate,
   redraw from `/snap`, crop from another app, or copy a screenshot to make
   the gate pass.
-- **Restamp after every edit.** `tools/octo check` and `tools/octo run` stamp
-  for you.
+- **Restamp editable source after every edit.** `tools/octo check` and
+  `tools/octo run` stamp unsigned source for you. Never restamp or strip the
+  proof from a sealed GitHub-attested or legacy signed release.
 - **Keep the bundle clean.** Only `manifest.json`, `listing.json`, the entry
   file (`main.splash`, or `page.card` with `kit/`), artwork and screenshots go
   in `bundle/`. An app with its own agent adds `tools.json`, `AGENT.md`,
@@ -198,18 +200,25 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   Confirm it with
   `git check-attr text -- <path to bundle>/manifest.json`, which prints a
   line ending in `text: unset` ([QUICKSTART §3](docs/QUICKSTART.md#3-create-an-app)).
-- **Sign last, and never edit after signing.** Capture screenshots and run
-  `card-host` on the unsigned bundle; `card-host` refuses a signed one. Only
-  a person signs. Any edit after signing needs a new stamp and a new
-  signature.
-- **Never move a tag.** Tag the commit that holds the final signed bundle,
-  `v` plus the manifest's `version` (`v0.1.0`). To change anything after
-  that, release a new version under a new tag.
-- **Run the final check from a fresh clone.** `tools/octo check` restamps an
-  unsigned bundle, so it passes a working copy whose committed digest is
-  stale. Clone the tag into a new directory and run `hub check` there without
-  restamping, as a reviewer does
-  ([SUBMITTING §6](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#6-freeze-and-verify-the-release)).
+- **Use GitHub publishing for a new app.** `tools/octo publish-github <app>`
+  installs the tag workflow; `new` also copies it. No developer signing key
+  or signing secret is required. Review the workflow and test unsigned source
+  before release. Manual Ed25519 signing is optional compatibility only.
+- **Never move a tag.** Commit tested editable source and the workflow, then
+  use `v` plus the manifest's version (`v0.1.0`). The workflow prepares,
+  attests, verifies and packs the release; do not commit its sealed output
+  back over the editable source. Every later release needs a new version/tag.
+- **Verify the release artifact separately.** A source gate pass is not
+  publisher-proof verification. The workflow must pass `publisher-verify`
+  and `publisher-pack`; no restamping after attestation. `card-host` refuses
+  sealed releases. Contract 1.8.0 / `publisher-github-v1` support and a
+  compatible host are required; live publishing and installation remain
+  unverified until separately exercised. See [PUBLISHING §3.6](docs/PUBLISHING.md#36-publisher-key--human).
+- **An issue requests publication.** Include repository, version/commit,
+  screenshots and permissions; it may precede the release. Attach the
+  successful workflow and exact release pack when ready. The Hub checks it,
+  an administrator approves, and the authenticated catalog publishes it.
+  Never claim that pushing a tag automatically submits or approves an app.
 - **No `script` in a Glance tool.** An agent tool that publishes Glance
   cards accepts `template` with `initial`, or L0 `source` with `data`, and
   never `script`. OctoSense runs a script card under the app's own policy.

@@ -74,8 +74,14 @@ runs, and tie the final evidence to the tested source.
 ## Hand-off
 
 Continue with [docs/PUBLISHING.md §3.6](../../docs/PUBLISHING.md#36-publisher-key--human).
-The publisher key, signing, the release tag and the submission are **HUMAN**
-steps, which App Hub's
-[SUBMITTING §5–7](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#5-produce-the-final-bytes)
-describes. An agent drafts the submission text; a person signs, tags and
-submits.
+Open the App Hub submission issue to request publication; provide the
+repository, version/commit, screenshots and permissions. It can precede the
+release. `tools/octo publish-github "$A"` installs the tag workflow (`new`
+already copies it); review/commit tested source and push a new version tag.
+GitHub produces the attested release without a developer key. Add its successful
+workflow and exact pack to the issue. Hub checks and administrator approval
+control catalog publication, as App Hub's
+[SUBMITTING](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md)
+describes. Workflow review, public release and submission are **HUMAN** steps
+unless already authorized. Live keyless publishing and compatible-host
+installation remain unverified; see the publishing guide's status.
