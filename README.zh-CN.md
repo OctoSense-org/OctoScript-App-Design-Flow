@@ -221,7 +221,7 @@ tools/octo package-help
 | `check <bundle> [hub check flags]` | 先 `hub stamp`，再 `hub check --allow-unsigned`；检查不通过时以非零退出码退出。其他参数（如 `--catalog`、`--publisher-key`）原样传给 `hub check`。不会为含旧版签名或 `integrity.github` 的清单重新写入摘要。写入摘要失败时，立即返回其退出码，不运行准入检查。 |
 | `package-help` | 输出发布检查表。 |
 
-`doctor` 会列出它查找 `hub` 和 `card-host` 的每个位置；查找顺序（包括 Windows 上的 `.exe` 文件名）见 [QUICKSTART §2](docs/QUICKSTART.zh-CN.md#2-构建-hub-和-card-host)。
+`doctor` 会列出它查找 `hub` 和 `card-host` 的每个位置；查找顺序（包括 Windows 上的 `.exe` 文件名）见 [QUICKSTART §2](docs/QUICKSTART.zh-CN.md#2-构建-hub-和-card-host)。App Hub 的 [`hub` 命令参考](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#hub-命令)列出了所有 `hub` 命令（包括 `tools/octo` 封装的那些），以及每个命令由谁运行、用在提交的哪一步。
 
 ## 设计流程
 
@@ -346,25 +346,13 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 
 ## 发布
 
-**开提交 issue，向 App Hub 表达发布应用的意图。** 提供仓库、版本/commit、截图
-和请求的权限。可以先开 issue 再准备 release：Hub 检查报告缺项或拒绝原因，
-管理员批准确切的候选版本后，才发布目录条目。
+**开提交 issue，请 App Hub 发布你的应用。** 提供仓库、版本/commit、截图和请求的权限。可以先开 issue，再准备 release。审核人员对确切的 release 运行准入检查，并在 issue 中反馈缺项或拒绝原因；随后由 App Hub 管理员批准确切的候选版本，再由 Hub 发布它的签名目录条目。
 
-[docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md) 讲解本地准入检查、截图和审核答案。
-`tools/octo publish-github <app-directory>` 安装发布工作流（`new` 也会复制它）。
-审阅后 commit 已测试源码，再推送新的 `v<manifest.version>` tag。GitHub Actions
-使用原生身份依次准备、证明、验证和打包，无需开发者创建 `publisher.key` 或保管签名 secret。
+[docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md) 讲解本地准入检查、截图和审核答案。`tools/octo publish-github <app-directory>` 安装发布工作流（`new` 也会复制它）。评审后 commit 已测试源码，再推送新的 `v<manifest.version>` tag。GitHub Actions 使用原生身份依次准备、证明、验证和打包，无需开发者创建 `publisher.key` 或保管签名 secret。
 
-把成功的工作流和确切的 release pack 附到同一提交 issue。GitHub release 提供
-可验证的字节，不是新的 App Hub 提交渠道，也不会自动获批。见 App Hub 的
-[SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md)。
-日常更新使用同一仓库、所有者和工作流下的新版本/新 tag。不要移动已发布 tag，
-也不要手改 Hub 已准入的目录和产物。
+把成功的工作流和确切的 release pack 附到同一个提交 issue。GitHub release 提供可验证的字节，不是新的 App Hub 提交渠道，也不会自动获批。见 App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md)。日常更新使用同一仓库、所有者和工作流下的新版本/新 tag。不要移动已发布 tag，也不要手改 Hub 已准入的签名目录和产物。
 
-此路径需要契约 1.8.0 / `publisher-github-v1`。真实 GitHub 发布及原生 Store 的安装、
-更新检查已在隔离测试目录中通过（[历史证据](docs/PUBLISHING.zh-CN.md#36-发布者密钥human)）。
-当前公开目录示例已在 macOS 完成安装与更新；RC 状态及限制见[兼容 Shell 指南](#下载兼容-shell)。
-手动 Ed25519 签名仅是可选兼容路径，旧参考版本保持原样。
+此路径需要契约 1.8.0 / `publisher-github-v1`。真实的 GitHub Release 及原生 Store 的安装、更新检查已在隔离的测试签名目录中通过（[历史证据](docs/PUBLISHING.zh-CN.md#36-发布者密钥human)）。当前公开签名目录中的示例已在 macOS 完成安装与更新；RC 状态及限制见[兼容 Shell 指南](#下载兼容-shell)。手动 Ed25519 签名仅是可选兼容路径，旧参考版本保持原样。
 
 ## 仓库结构
 

@@ -32,7 +32,9 @@ patch around it here.
 
 `tools/octo` is this repository's own Python CLI around App Hub's `hub` and
 `card-host`. It is unrelated to octos (the agent kernel inside OctoSense) and
-needs no AI service or API key.
+needs no AI service or API key. For `hub` itself, run `hub help` and use only
+the commands it lists; App Hub's [`hub` command reference](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#the-hub-command)
+says who runs each one and when.
 
 1. Set up the workspace once, as [QUICKSTART §1–2](docs/QUICKSTART.md#1-prerequisites)
    shows, and build `hub` and `card-host` from current App Hub `main`. Then
@@ -220,9 +222,12 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   See [PUBLISHING §3.6](docs/PUBLISHING.md#36-publisher-key--human).
 - **An issue requests publication.** Include repository, version/commit,
   screenshots and permissions; it may precede the release. Attach the
-  successful workflow and exact release pack when ready. The Hub checks it,
-  an administrator approves, and the authenticated catalog publishes it.
-  Never claim that pushing a tag automatically submits or approves an app.
+  successful workflow and exact release pack when ready. A reviewer, not a
+  bot, runs the gate on the exact release and posts problems in the issue;
+  an App Hub admin approves the submission; the Hub then publishes the entry
+  in its signed
+  catalog. Never claim that pushing a tag automatically submits or approves
+  an app.
 - **No `script` in a Glance tool.** An agent tool that publishes Glance
   cards accepts `template` with `initial`, or L0 `source` with `data`, and
   never `script`. OctoSense runs a script card under the app's own policy.

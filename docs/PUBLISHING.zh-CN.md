@@ -6,7 +6,7 @@
 
 让能运行的脚本应用通过本地检查，进入 GitHub 证明和 App Hub 审核流程。先完成清单、商店信息、真实截图和审核答案；tag 工作流再生成并验证封存的发布包，无需开发者签名密钥。当前实现限制见 §3.6。
 
-**开 App Hub 提交 issue，才是请求发布。** 填写仓库、版本/commit、截图和请求的权限；可以在 release 准备好之前开 issue，之后补充 tag、工作流结果和 release pack。Hub 检查报告缺项或拒绝原因，管理员批准确切的候选版本后，Hub 才发布目录条目。创建 GitHub release 本身不会提交或批准应用。
+**开 App Hub 提交 issue，才是请求发布。** 填写仓库、版本/commit、截图和请求的权限；可以在 release 准备好之前开 issue，之后补充 tag、工作流结果和 release pack。审核人员对确切的 release 运行准入检查，并在 issue 中反馈缺项或拒绝原因；App Hub 管理员批准确切的候选版本后，Hub 才发布签名目录条目。创建 GitHub release 本身不会提交或批准应用。
 
 其余内容由 App Hub 的两份文档负责：
 
@@ -126,7 +126,7 @@ hub: the bundle was refused
 
 对照应用在界面上实际做的事检查 `grants:` 行；如果授权超出所需，就从清单中删减。`storage 16777216 bytes` 是商店应用的 16 MiB 存储上限。应用声明了 `storage` 但没有设置 `storage.max_bytes` 时，得到的就是这个上限；没有声明 `storage` 的应用得到 `storage none`，什么都存不了。
 
-要对照已发布的签名目录检查版本，给上面任一条检查命令加上 `--catalog <App Hub checkout>/catalog.json`。准入检查会拒绝已经发布过的版本：
+要对照已发布的签名目录检查版本，给上面任一条检查命令加上 `--catalog <App Hub checkout>/catalog-v2.json`。准入检查会拒绝已经发布过的版本：
 
 ```text
   [refused] version: version 0.1.0 of org.octosense.samples.githubnotes is already published; publish a new version
@@ -213,19 +213,15 @@ Hub 准入之前需要这些经过验证的字节。当前 issue 字段见 App H
 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md)。
 
 - 创建 GitHub release 不会自动获得 App Hub 准入。
-- 不要在 pull request 中手改 Hub 的目录、索引或已准入产物。受保护的审核和发布
-  工作流会准入确切的应用包。
+- 不要在 pull request 中手改 Hub 的签名目录、索引或已准入产物。受保护的审核和发布工作流会准入确切的应用包。
 - Agent 可以准备工作流，并在 `build/SUBMISSION.md` 起草 issue；不能声称尚未
   观察到的发布、审核或批准已经发生。对外部操作遵循用户的授权。
 
 ### 3.9 App Hub 接下来做什么
 
-Hub 验证发布者证明和应用包，执行准入检查与审核，通过其经过身份验证的目录
-准入确切版本，或者返回具体拒绝原因。之后兼容的 Store 才会提供该应用。
-需要修改时发布新版本和新 tag，不要替换旧字节。
+审核人员验证发布者证明和应用包，运行准入检查，并在 issue 中反馈拒绝原因。随后由 App Hub 管理员批准确切的版本，再由 Hub 把它发布到签名目录。目前还没有任何 OctoSense 发布版提供它；见 §3.6。需要修改时发布新版本和新 tag，不要替换旧字节。
 
-手动 Ed25519 签名仍是旧工作流的**可选兼容路径**，不是新 GitHub 发布流程的一步。
-下节保留旧本地演练的命令和记录；已有参考版本及其签名保持原样。
+手动 Ed25519 签名仍是旧工作流的**可选兼容路径**，不是新 GitHub 发布流程的一步。下节保留旧本地演练的命令和记录；已有参考版本及其签名保持原样。
 
 ## 4. 在本地演练商店流程
 
@@ -329,7 +325,7 @@ App Hub 的独立商店 `appstore` 不需要 Shell 也能从同一个镜像安�
 | 声明的平台（3.2） | 每个平台声明都要对应一次由人执行或记录的实际运行；Agent 无法为此担保。 |
 | 为发布打 tag（3.8） | tag 标识审核人员检查的确切字节，永不移动。 |
 | 开提交 issue（3.8） | 这是以发布者的名义行事。 |
-| 在 OctoSense-App-Hub 中批准或合并 | 只能由 App Hub 的审核人员和维护者操作。 |
+| 在 OctoSense-App-Hub 中批准提交或合并 | 只有 App Hub 管理员能批准提交，也只有 App Hub 维护者能合并。 |
 
 ## 6. 检查表（复制后从上到下执行）
 
@@ -346,10 +342,10 @@ App Hub 的独立商店 `appstore` 不需要 Shell 也能从同一个镜像安�
 [ ] curl -s 127.0.0.1:8141/quit                         -> {"ok":1}
 [ ] find "$B" -name .DS_Store -delete                    -> bundle/ 中只剩准入检查认识的文件类型
 [ ] tools/octo check "$B"                               -> "— PASSED"（只有未签名警告）
-[ ] tools/octo check "$B" --catalog <App Hub catalog.json>   -> 没有 version 或 continuity 拒绝
+[ ] tools/octo check "$B" --catalog <App Hub catalog-v2.json>   -> 没有 version 或 continuity 拒绝
 [ ] mkdir -p "$APP/build"; hub scan "$B" --packet "$APP/build/review.json"   -> 7 个问题都已书面作答（附带 tools.json、AGENT.md 或 skills 时为 8 个）
 [ ] git -C "$APP" check-attr text -- "$B/manifest.json"   -> "text: unset"（QUICKSTART §3）
-[ ] git status 中只有应用源码和已审阅的工作流，没有 secret、.local-state 或 build/
+[ ] git status 中只有应用源码和已评审的工作流，没有 secret、.local-state 或 build/
 [ ] tools/octo publish-github "$APP" -> 已审阅 .github/workflows/publish-app.yml；无需开发者密钥
 [ ] HUMAN：commit 已测试源码和工作流，再推送新的 v<manifest.version> tag
 [ ] GitHub 工作流成功；publisher-verify 和 publisher-pack 验证带证明的发布包通过
