@@ -464,7 +464,8 @@ manifest policy. System apps are packed into the shell build from
 OctoSense's `apps/`; store apps are installed from the App Hub store out of
 the authenticated catalog. For an optional legacy rehearsal before submission,
 publish a test bundle into a local catalog with a throwaway trust anchor,
-then point `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` at that mirror. The
+then set `OCTOSENSE_HUB_CATALOG=legacy` and point `OCTOSENSE_HUB` /
+`OCTOSENSE_HUB_ANCHOR` at that mirror using a fresh app-data directory. The
 shell's store installs and opens the test app
 ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
 

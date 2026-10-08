@@ -551,7 +551,8 @@ What exists today:
   environment variables, which the Android launcher does not set; no
   on-device setting for them was found. **Unverified on a device.**
 - **An optional legacy test path is on the desktop:** publish into a local catalog
-  with your own throwaway anchor and install it with App Hub's store,
+  with your own throwaway anchor, explicitly set `OCTOSENSE_HUB_CATALOG=legacy`
+  with a fresh app-data directory, and install it with App Hub's store,
   which runs the same install code as a phone
   ([PUBLISHING §4](PUBLISHING.md#4-rehearse-the-store-path-locally)). The
   OctoSense desktop shell reads `OCTOSENSE_HUB` and `OCTOSENSE_HUB_ANCHOR`

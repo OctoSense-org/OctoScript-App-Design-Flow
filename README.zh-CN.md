@@ -279,7 +279,7 @@ OctoSense 每个 Shell 运行一个 octos Agent 内核，由用户在系统应�
 
 `on_render` 生成的控件与其他控件一样出现在 `/snap` 和 `/d` 中；应用稍后才添加的内容（来自定时器或响应）在绘制后才出现，请轮询 `/snap?q=` 等待它。`card-host` **不**注册任何宿主服务，所以类似 Mail 的应用在其中会得到 `no service answers "mail" on this device`。`card-host` 还会拒绝封存的证明/签名发布包：请在发布前测试可编辑源码并截图。
 
-**在 Shell 中。** OctoSense 桌面端 Shell 和手机 Home 通过 App Hub 的 Card runner（App Hub `crates/appstore` 中的 `card` 模块）运行应用，而不是 `card-host`；Card runner 执行同一套清单策略。系统应用从 OctoSense 的 `apps/` 打包进 Shell 构建；商店应用从 App Hub 商店根据签名目录安装。想在发布前在桌面端 Shell 中试用自己的应用：用一次性信任锚（一把测试用根密钥）把它发布到本地签名目录，再把桌面端 Shell 的 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 指向该目录；Shell 的商店即可安装并打开该应用（[PUBLISHING §4](docs/PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。
+**在 Shell 中。** OctoSense 桌面端 Shell 和手机 Home 通过 App Hub 的 Card runner（App Hub `crates/appstore` 中的 `card` 模块）运行应用，而不是 `card-host`；Card runner 执行同一套清单策略。系统应用从 OctoSense 的 `apps/` 打包进 Shell 构建；商店应用从 App Hub 商店根据签名目录安装。想在发布前在桌面端 Shell 中试用自己的应用：用一次性信任锚（一把测试用根密钥）把它发布到本地签名目录，使用新的应用数据目录，显式设置 `OCTOSENSE_HUB_CATALOG=legacy`，再把 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 指向该镜像；Shell 的商店即可安装并打开该应用（[PUBLISHING §4](docs/PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。
 
 **目前在手机上**（[QUICKSTART §9](docs/QUICKSTART.zh-CN.md#9-在-octosense-手机上运行)）：
 

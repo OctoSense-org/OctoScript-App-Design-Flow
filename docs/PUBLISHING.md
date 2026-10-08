@@ -302,7 +302,9 @@ and their signatures are unchanged.
 in this section use Ed25519 publisher/catalog keys. They are not required by
 the GitHub publishing path and do not validate `publisher-github-v1`. Use an
 explicitly prepared legacy test bundle for this rehearsal, never restamp a
-GitHub-attested release.
+GitHub-attested release. Use `OCTOSENSE_HUB_CATALOG=legacy` explicitly for
+this old-format mirror and a fresh app-data directory. A library that already
+cached v2 refuses a legacy downgrade; it is not converted offline.
 
 Run the whole publish-and-install path on your own machine, signed with your
 own trust anchor (a throwaway root key in place of App Hub's), to see what a
@@ -352,7 +354,7 @@ cd OctoSense && python3 tools/setup.py --cache ..
 
 ```sh
 cd <workspace>/OctoSense
-OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" \
+OCTOSENSE_HUB_CATALOG=legacy OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" \
   OCTOSENSE_HOME="$APP/build/desktop-home" OCTOSENSE_APP_DATA="$APP/build/desktop-apps" \
   MAKEPAD_REMOTE=8399 cargo run --release -p octosense
 ```
@@ -426,7 +428,7 @@ tree, and build the store in a second workspace:
 4. Open the mirror in the store:
 
    ```sh
-   OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" OCTOSENSE_APP_DATA="$APP/build/store-data" \
+   OCTOSENSE_HUB_CATALOG=legacy OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" OCTOSENSE_APP_DATA="$APP/build/store-data" \
      MAKEPAD_REMOTE=8143 <second-workspace>/OctoSense-App-Hub/target/release/appstore
    ```
 

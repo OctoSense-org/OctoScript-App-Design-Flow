@@ -229,6 +229,8 @@ Hub 验证发布者证明和应用包，执行准入检查与审核，通过其�
 **可选的旧格式兼容演练。** 本节命令和历史结果使用 Ed25519 发布者/目录密钥，
 不是 GitHub 发布的必需步骤，也不能验证 `publisher-github-v1`。请使用专门准备的
 旧格式测试包，绝不要为附有 GitHub 证明的发布包重新写入摘要。
+此旧格式镜像需显式设置 `OCTOSENSE_HUB_CATALOG=legacy`，并使用新的应用数据目录。
+已经缓存 v2 的应用库拒绝降级到旧格式；不会离线转换。
 
 在自己的机器上走一遍完整的发布和安装流程，用你自己的信任锚签名（以一把一次性根密钥代替 App Hub 的根密钥），看看设备上会发生什么。演练还会运行应用的宿主服务，这是 `card-host` 做不到的。镜像及其密钥放在 `build/` 下，绝不要放进 `bundle/`。
 
@@ -261,7 +263,7 @@ cd OctoSense && python3 tools/setup.py --cache ..
 
 ```sh
 cd <workspace>/OctoSense
-OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" \
+OCTOSENSE_HUB_CATALOG=legacy OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" \
   OCTOSENSE_HOME="$APP/build/desktop-home" OCTOSENSE_APP_DATA="$APP/build/desktop-apps" \
   MAKEPAD_REMOTE=8399 cargo run --release -p octosense
 ```
@@ -309,7 +311,7 @@ App Hub 的独立商店 `appstore` 不需要 Shell 也能从同一个镜像安�
 4. 在商店中打开镜像：
 
    ```sh
-   OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" OCTOSENSE_APP_DATA="$APP/build/store-data" \
+   OCTOSENSE_HUB_CATALOG=legacy OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" OCTOSENSE_APP_DATA="$APP/build/store-data" \
      MAKEPAD_REMOTE=8143 <second-workspace>/OctoSense-App-Hub/target/release/appstore
    ```
 

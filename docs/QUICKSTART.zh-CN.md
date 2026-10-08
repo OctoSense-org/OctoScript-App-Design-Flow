@@ -325,7 +325,7 @@ my-notes 0.1.0 — PASSED
 目前的情况：
 
 - **无法把任意应用包侧载到普通 OctoSense 手机上。** 手机商店读取内置的 Hub 地址（`DEFAULT_HUB`，即 `raw.githubusercontent.com/OctoSense-org/OctoSense-App-Hub/main/`），并且只信任编译进构建的信任锚（App Hub 的根公钥）。`OCTOSENSE_HUB` 和 `OCTOSENSE_HUB_ANCHOR`（镜像目录或 URL，及其信任锚）是环境变量，Android 启动器不会设置它们；也没有找到在设备上设置它们的选项。**在设备上未验证。**
-- **桌面端的可选旧格式测试路径：** 用你自己的一次性信任锚把应用发布到本地签名目录，再用 App Hub 的商店安装；这个商店运行的安装代码与手机上的相同（[PUBLISHING §4](PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。OctoSense 桌面端 Shell 同样读取 `OCTOSENSE_HUB` 和 `OCTOSENSE_HUB_ANCHOR`；它的商店会从这个签名目录安装你的应用，并在 Shell 的 Card runner 中打开。
+- **桌面端的可选旧格式测试路径：** 用你自己的一次性信任锚把应用发布到本地签名目录，显式设置 `OCTOSENSE_HUB_CATALOG=legacy` 并使用新的应用数据目录，再用 App Hub 的商店安装；这个商店运行的安装代码与手机上的相同（[PUBLISHING §4](PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。OctoSense 桌面端 Shell 同样读取 `OCTOSENSE_HUB` 和 `OCTOSENSE_HUB_ANCHOR`；它的商店会从这个签名目录安装你的应用，并在 Shell 的 Card runner 中打开。
 - **第一方应用**作为系统应用进入手机：应用包位于 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)，列在 Shell 的 `system-apps.json` 中（手机上是 OctoSense 的 `phone/system-apps.json`），由 App Hub 的 `crates/app-hub-app/build.rs` 打包，再经过 Home 或 ROM 构建。这条路径用于 OctoSense 维护的 `os.*` 应用，不用于商店应用。
 - **连接账户的应用**（`auth`）无法安装到手机上：目前没有任何已发布的手机版本接受 `auth` 能力。
 - **Hub 准入之后**，只有兼容宿主才能安装应用。已发布手机版本不支持 `auth` 和 `publisher-github-v1`；目录可见不等于运行时兼容。
