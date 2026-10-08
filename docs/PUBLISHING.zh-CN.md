@@ -213,8 +213,7 @@ Hub 准入之前需要这些经过验证的字节。当前 issue 字段见 App H
 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md)。
 
 - 创建 GitHub release 不会自动获得 App Hub 准入。
-- 不要在 pull request 中手改 Hub 的签名目录、索引或已准入产物。受保护的审核和发布
-  工作流会准入确切的应用包。
+- 不要在 pull request 中手改 Hub 的签名目录、索引或已准入产物。受保护的审核和发布工作流会准入确切的应用包。
 - Agent 可以准备工作流，并在 `build/SUBMISSION.md` 起草 issue；不能声称尚未
   观察到的发布、审核或批准已经发生。对外部操作遵循用户的授权。
 
@@ -346,7 +345,7 @@ App Hub 的独立商店 `appstore` 不需要 Shell 也能从同一个镜像安�
 [ ] tools/octo check "$B" --catalog <App Hub catalog-v2.json>   -> 没有 version 或 continuity 拒绝
 [ ] mkdir -p "$APP/build"; hub scan "$B" --packet "$APP/build/review.json"   -> 7 个问题都已书面作答（附带 tools.json、AGENT.md 或 skills 时为 8 个）
 [ ] git -C "$APP" check-attr text -- "$B/manifest.json"   -> "text: unset"（QUICKSTART §3）
-[ ] git status 中只有应用源码和已审阅的工作流，没有 secret、.local-state 或 build/
+[ ] git status 中只有应用源码和已评审的工作流，没有 secret、.local-state 或 build/
 [ ] tools/octo publish-github "$APP" -> 已审阅 .github/workflows/publish-app.yml；无需开发者密钥
 [ ] HUMAN：commit 已测试源码和工作流，再推送新的 v<manifest.version> tag
 [ ] GitHub 工作流成功；publisher-verify 和 publisher-pack 验证带证明的发布包通过
