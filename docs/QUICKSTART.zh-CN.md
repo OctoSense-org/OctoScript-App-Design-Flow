@@ -52,7 +52,7 @@ python3 tools/setup-native.py --check   # 通过时以退出码 0 退出，并�
 
 `setup-native.py` 需要运行 20 到 30 秒。如果之后 `--check` 失败，运行 `python3 tools/setup-native.py --update`，把没有本地改动的同级仓库切换到锁定的版本。
 
-App Hub 和本仓库都请使用 `main`。运行时为 OctoScript-Makepad `704a3ad7`，它锁定了 Makepad `68d1f4ec` 和 OctoScript `2e37d9e6`。
+App Hub 和本仓库都请使用 `main`。运行时为 OctoScript-Makepad `33dea2f1`，它锁定了 Makepad `32d6415f` 和 OctoScript `2e37d9e6`。
 
 ## 2. 构建 `hub` 和 `card-host`
 

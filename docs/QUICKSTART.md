@@ -68,7 +68,7 @@ python3 tools/setup-native.py --check   # pass: exits 0 and prints the pinned re
 the locked revisions.
 
 Use `main` of App Hub and of this repository. The runtime is
-OctoScript-Makepad `704a3ad7`, which pins Makepad `68d1f4ec` and OctoScript
+OctoScript-Makepad `33dea2f1`, which pins Makepad `32d6415f` and OctoScript
 `2e37d9e6`.
 
 ## 2. Build `hub` and `card-host`
