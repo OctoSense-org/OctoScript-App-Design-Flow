@@ -5,21 +5,21 @@
 This directory is one OctoSense script app. `bundle/` is the app and the only
 thing submitted to the App Hub; everything else stays outside it.
 
-Follow the Design Flow docs (the harness), and do not invent requirements or
+Follow the App Flow docs (the harness), and do not invent requirements or
 APIs:
 
-- Build, run and test: [QUICKSTART](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/QUICKSTART.md)
-- The language and every API an app may use: [SCRIPT-API](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/SCRIPT-API.md)
-- Capabilities: [CAPABILITIES](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/CAPABILITIES.md)
-- Final bundle, screenshots and human checkpoints: [PUBLISHING](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/PUBLISHING.md)
+- Build, run and test: [QUICKSTART](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/QUICKSTART.md)
+- The language and every API an app may use: [SCRIPT-API](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/SCRIPT-API.md)
+- Capabilities: [CAPABILITIES](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/CAPABILITIES.md)
+- Final bundle, screenshots and human checkpoints: [PUBLISHING](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/PUBLISHING.md)
 - Signing and the submission issue: App Hub's [SUBMITTING](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md)
 
 `card-host` has no `MarkdownEditor`, so it can't show this app's editor. Run
 this edit-and-check loop with OctoSense's test host instead, with
-`OCTO=<path to OctoScript-App-Design-Flow>/tools/octo`:
+`OCTO=<path to OctoSense-App-Flow>/tools/octo`:
 
 1. Edit `bundle/main.splash`.
-2. In an OctoSense checkout next to the App Design Flow repository, build the
+2. In an OctoSense checkout next to the App Flow repository, build the
    test hosts once:
 
    ```sh
@@ -32,7 +32,7 @@ this edit-and-check loop with OctoSense's test host instead, with
 
    ```sh
    python3 tools/connected-e2e/notes.py \
-     --bundle ../OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle
+     --bundle ../OctoSense-App-Flow/examples/connected-apps/github-notes/bundle
    ```
 
    It ends with

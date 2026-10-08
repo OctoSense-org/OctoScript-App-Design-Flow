@@ -1,7 +1,7 @@
 # Check the host before changing card source
 
 Read the actual OctoSense checkout and its runtime pins, or the exact source
-revision behind the installed build. App Design Flow's standalone renderer and
+revision behind the installed build. App Flow's standalone renderer and
 a phone build may expose different capabilities. Route host changes to their
 own repository; preserve the generated program instead of rewriting it around
 a host layout defect. Continue only work already authorized in that repository.
@@ -46,8 +46,8 @@ separates rendering/local actions from business integration and does not sign of
 The test counts, device, old source limits and scores are not future acceptance gates.
 
 Android authors corrected their own sources in the
-[template archive](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/pull/146):
-[DeepSeek receipts](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/3d07d3a96626b5ff6dffdcb0d391b6de0a483728/examples/android-a2app-card-templates/continuations/deepseek/workspace-ux-20261005/provenance.json)
-and [MiniMax receipts](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/3d07d3a96626b5ff6dffdcb0d391b6de0a483728/examples/android-a2app-card-templates/continuations/minimax/workspace-ux-20261005/provenance.json)
+[template archive](https://github.com/OctoSense-org/OctoSense-App-Flow/pull/146):
+[DeepSeek receipts](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/3d07d3a96626b5ff6dffdcb0d391b6de0a483728/examples/android-a2app-card-templates/continuations/deepseek/workspace-ux-20261005/provenance.json)
+and [MiniMax receipts](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/3d07d3a96626b5ff6dffdcb0d391b6de0a483728/examples/android-a2app-card-templates/continuations/minimax/workspace-ux-20261005/provenance.json)
 show hashes and successful mutations. Use comparable provenance when requested;
 these collections are examples, not mandatory dependencies or published apps.

@@ -48,7 +48,7 @@ calendar's history. Don't copy this sync strategy; see
 
 ## Check the UI locally
 
-From the App Design Flow root, run (verified on macOS):
+From the App Flow root, run (verified on macOS):
 
 ```sh
 tools/octo doctor
@@ -78,14 +78,14 @@ states, not Google API results.
 ## Run signed integration acceptance
 
 Build the companion OctoSense fixture host, then run the verifiers from the App
-Design Flow root:
+Flow root:
 
 ```sh
 # In ../OctoSense:
 cargo build --locked --release -p octosense-shell \
   --features mobile-apps,acceptance-fixtures \
   --example connected-app-host --example connected-inbox-e2e --example connected-install
-# From the App Design Flow root:
+# From the App Flow root:
 python3 examples/connected-apps/google-calendar/scripts/verify-installed.py \
   --host ../OctoSense/target/release/examples/connected-app-host
 python3 examples/connected-apps/google-calendar/scripts/verify-shell.py \

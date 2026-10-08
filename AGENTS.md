@@ -3,7 +3,7 @@
 `CLAUDE.md` and `GEMINI.md` only import this file, so every coding agent reads
 the same rules.
 
-You are in **OctoScript App Design Flow**: the harness for building an
+You are in **OctoSense App Flow**: the harness for building an
 OctoSense app and taking it to the OctoSense App Hub. Read this file first,
 then the one flow you are following. For architecture or documentation work
 on this repository, read [docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md),

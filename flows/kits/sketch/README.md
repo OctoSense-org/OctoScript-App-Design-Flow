@@ -324,7 +324,7 @@ Install the Python dependencies in `flows/kits/sketch/.venv` from `requirements.
 Set `SKETCHTOOL` to Sketch.app's native CLI and `CARGO_MAKEPAD` to the patched
 release Studio bridge. The bridge must forward WidgetSnapshot. Use the dev
 Studio viewport-persistence and backing-allocation fixes recorded in the
-[Taskplan report](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/taskplan-native-parity-2026-09-05.md).
+[Taskplan report](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/taskplan-native-parity-2026-09-05.md).
 
 Prepare the shared runtime with `python3 tools/setup-native.py` (see
 [NATIVE-WORKSPACE.md](../../../docs/NATIVE-WORKSPACE.md)). Start Studio with a
@@ -406,20 +406,20 @@ shared changes; focused evidence does not establish whole-kit acceptance.
 
 Camo's 246 mobile templates passed the native structure, composition and visual
 gates on 2026-09-06. Studio build 63 inspected 29,929 nodes; all screenshot pairs
-score 9–10/10. The [Camo report](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/camo-native-parity-2026-09-05.md)
+score 9–10/10. The [Camo report](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/camo-native-parity-2026-09-05.md)
 links the full comparison gallery, repair evidence and fixed-artboard scope.
 
 Atro's 150-artboard native run passed its configured fixed-layout structural
 and visual gates: 3,009 text nodes, 279 Buttons, 48 Inputs, 3,935 SVG widgets and
 919 Image instances, alongside native surfaces and selection controls. Its
 saved templates also pass the native composition audit. See the
-[Atro report](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/atro-native-parity-2026-09-05.md) and the current
+[Atro report](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/atro-native-parity-2026-09-05.md) and the current
 generated `acceptance.json` for scope and freshness.
 
 Taskplan's 79-artboard run passed its configured native structural and visual
 gates: 1,952 text nodes, 97 inputs, seven toggles, 4,012 image nodes and 8,672
 container nodes. Containers include composed controls. See the
-[full report](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/taskplan-native-parity-2026-09-05.md).
+[full report](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/taskplan-native-parity-2026-09-05.md).
 That historical result predates the enforced native-first composition gate and
 subsequent shared runtime changes; it is not a current acceptance result.
 
@@ -446,7 +446,7 @@ bindings must be present in Studio, control state and interactions must work,
 and the measured scroll canvas must contain the resulting composition. Flowing
 app layouts are intentional adaptations and do not inherit an artboard parity
 pass. Before/after captures, per-element differences, source mappings and the
-validation script are in [`docs/reviews/theme-phone-evidence/components/`](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/tree/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/theme-phone-evidence/components) (removed here; kept in history).
+validation script are in [`docs/reviews/theme-phone-evidence/components/`](https://github.com/OctoSense-org/OctoSense-App-Flow/tree/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/theme-phone-evidence/components) (removed here; kept in history).
 
 Page structure is a separate adaptation step. Six authored L0 recipes now live
 in `Octoscript-Makepad/components/l0/pages/`: Weather dashboard/forecast, Stocks
@@ -456,5 +456,5 @@ the app's source/state/event declarations. The bundled selector can choose
 component inspection plus topology checks (section order, column bounds, item
 counts, scrolling, and actions); a color-only change cannot satisfy this gate.
 The phone comparison and per-element repair evidence are in
-[`docs/reviews/theme-phone-evidence/structures/`](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/tree/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/theme-phone-evidence/structures) (removed here; kept in history). This is an explicit authored
+[`docs/reviews/theme-phone-evidence/structures/`](https://github.com/OctoSense-org/OctoSense-App-Flow/tree/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/theme-phone-evidence/structures) (removed here; kept in history). This is an explicit authored
 recipe layer, not automatic page generation for every ported theme.

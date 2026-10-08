@@ -148,7 +148,7 @@ cargo build --locked --release -p octosense-shell \
   --features mobile-apps,acceptance-fixtures \
   --example connected-app-host --example connected-install
 python3 tools/connected-e2e/notes.py \
-  --bundle ../OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle
+  --bundle ../OctoSense-App-Flow/examples/connected-apps/github-notes/bundle
 ```
 
 The driver ends with

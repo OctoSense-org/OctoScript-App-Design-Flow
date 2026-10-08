@@ -4,7 +4,7 @@
 
 **Email Action DS** 和 **Meeting Planner DS** 的卡片、交互代码及图标由
 DeepSeek V4 Flash 在 OnePlus 6 的系统 Agent 中生成。它读取 Card Studio skill
-和 App Design Flow 文档，自行调用 Studio 渲染、检查控件、注入输入、查看截图并修复。
+和 App Flow 文档，自行调用 Studio 渲染、检查控件、注入输入、查看截图并修复。
 Codex 提供需求和缺陷反馈，负责打包与独立验证，没有修改生成的卡片、Splash 或图标源码。
 上一级原有示例保留原来的作者归属，不算 DeepSeek 生成。
 

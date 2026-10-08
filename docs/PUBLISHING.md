@@ -228,7 +228,7 @@ your app's UX or provider effects.
 Older hosts refuse this requirement. `publisher-toolchain.json` must name a
 reviewed, immutable App Hub revision; the installer refuses a missing or moving pin.
 
-For an existing editable app directory, install the workflow from Design Flow:
+For an existing editable app directory, install the workflow from App Flow:
 
 ```sh
 tools/octo publish-github "$APP"

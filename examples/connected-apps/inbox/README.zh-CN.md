@@ -47,7 +47,7 @@ beta.2 没有内置的提供商注册信息，所以宿主管理员需要按[宿
 
 ## 开发与验证
 
-在 App Design Flow 根目录运行：
+在 App Flow 根目录运行：
 
 ```sh
 tools/octo doctor

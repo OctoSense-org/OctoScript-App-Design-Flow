@@ -8,7 +8,7 @@ carry alternate Makepad branches or compatibility patches.
 
 ```text
 <workspace>/                  # this repository's parent, or $OCTOSENSE_WORKSPACE
-  OctoScript-App-Design-Flow/ # this repository
+  OctoSense-App-Flow/         # this repository
     native-runtime.lock.json
     flows/  examples/  tools/
   octoscript-makepad/         # shared UI framework; runtime.json owns engine pins

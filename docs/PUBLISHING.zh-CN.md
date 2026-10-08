@@ -164,7 +164,7 @@ no --reviewer given; the packet holds 7 questions for one
 旧宿主会拒绝这个要求。`publisher-toolchain.json` 必须指定经过评审的不可变
 App Hub commit；安装命令会拒绝缺失或浮动的版本。
 
-对已有的可编辑应用目录，在 Design Flow 中安装工作流：
+对已有的可编辑应用目录，在 App Flow 中安装工作流：
 
 ```sh
 tools/octo publish-github "$APP"
