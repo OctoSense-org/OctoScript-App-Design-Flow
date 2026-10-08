@@ -5,6 +5,11 @@ import importlib.machinery
 import importlib.util
 import io
 import json
+import hashlib
+import os
+import subprocess
+import sys
+import textwrap
 from pathlib import Path
 import tempfile
 import unittest
@@ -126,6 +131,33 @@ class PublishingSetup(unittest.TestCase):
                 self.assertEqual(run.call_count, 2)
                 self.assertEqual(run.call_args_list[0].args[0][1], 'stamp')
                 self.assertIn('--allow-unsigned', run.call_args_list[1].args[0])
+
+    def test_release_receipt_does_not_invent_submission_status(self):
+        # Execute the generated workflow's actual receipt writer. An issue may
+        # already exist before this tag; the job has no authority to infer it.
+        workflow = octo.publisher_workflow()
+        writer = workflow.split("- name: Write the submission receipt", 1)[1]
+        script = writer.split("python3 - <<'PY'\n", 1)[1].split("          PY\n", 1)[0]
+        with tempfile.TemporaryDirectory() as temp:
+            prepared = Path(temp) / 'prepared'
+            (prepared / 'bundle').mkdir(parents=True)
+            manifest = prepared / 'bundle/manifest.json'
+            manifest.write_text(json.dumps({'id': 'dev.example.quicknotes', 'version': '0.2.1'}))
+            pack = prepared / 'app.bundle.pack.json'
+            pack.write_bytes(b'{"synthetic":"already sealed elsewhere"}\n')
+            original = manifest.read_bytes(), pack.read_bytes()
+            env = dict(os.environ, RUNNER_TEMP=temp, GITHUB_REPOSITORY='example/quicknotes',
+                       GITHUB_SHA='a' * 40, GITHUB_REF_NAME='v0.2.1', GITHUB_RUN_ID='123')
+            subprocess.run([sys.executable, '-c', textwrap.dedent(script)], env=env, check=True)
+            receipt = json.loads((prepared / 'release-receipt.json').read_text())
+            self.assertEqual(receipt['hub_admission'], 'not granted by this workflow')
+            self.assertEqual(receipt['pack_sha256'], hashlib.sha256(original[1]).hexdigest())
+            self.assertEqual(receipt['commit'], 'a' * 40)
+            notes = (prepared / 'SUBMISSION.md').read_text()
+            self.assertIn('Open or update your submission issue', notes)
+            self.assertIn('A maintainer still needs to review and admit', notes)
+            self.assertNotIn('not submitted', notes)
+            self.assertEqual((manifest.read_bytes(), pack.read_bytes()), original)
 
     def test_toolchain_ref_cannot_be_mutable_or_inject_workflow(self):
         with tempfile.TemporaryDirectory() as temp:

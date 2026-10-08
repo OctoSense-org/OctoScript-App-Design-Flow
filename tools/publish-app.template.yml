@@ -128,12 +128,12 @@ jobs:
               'commit': os.environ['GITHUB_SHA'], 'tag': os.environ['GITHUB_REF_NAME'],
               'run': os.environ['GITHUB_RUN_ID'],
               'pack_sha256': hashlib.sha256((root / 'app.bundle.pack.json').read_bytes()).hexdigest(),
-              'hub_admission': 'not submitted',
+              'hub_admission': 'not granted by this workflow',
           }
           (root / 'release-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
           (root / 'SUBMISSION.md').write_text(
               'This release was checked and sealed by the OctoSense publishing workflow.\n\n'
-              'Submit this release link and app review evidence at '
+              'Open or update your submission issue with this release link and app review evidence at '
               'https://github.com/OctoSense-org/OctoSense-App-Hub/issues. '
               'A maintainer still needs to review and admit the exact app files.\n\n'
               'Download `app.bundle.pack.json` for the sealed app; the repository keeps '
