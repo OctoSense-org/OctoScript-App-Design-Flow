@@ -58,12 +58,13 @@ the gate warns about each script that calls `fs.*` and about a `camera` grant:
 | --- | --- | --- |
 | `net` | `net.http_request` and `net.web_socket`, to exactly the hosts in `network.hosts`. A host is a bare, exact, lowercase name: no scheme, path, port or wildcard. | No `net` in the script at all: `variable net not found in scope`. The same holds for `net` with an empty host list. |
 | `images` | Pictures (`Image{src: http_resource(url)}`) from any public `https://` host, beyond `network.hosts`: a feed reader's thumbnails. It does not widen `net.http_request`. | Pictures load only from listed hosts. |
-| `web` | `WebReader` opens any public `https://` page in the system web view. The page has no way back into the app. The view opens on macOS, iOS and Android. | `WebReader.open` works only for listed hosts and refuses others: ``refused <url>: not on this app's host list, and no `web` grant``. |
+| `web` | `WebReader` opens any public `https://` page in the system web view. The page has no way back into the app. Availability follows the [host and platform limits](../README.md#compatible-shell-download). | `WebReader.open` works only for listed hosts and refuses others: ``refused <url>: not on this app's host list, and no `web` grant``. |
 
-On Linux and Windows, a shell built from OctoSense `main` returns `false` from
-`open`, and `error()` answers
-`Embedded web pages are unavailable on this platform; this host has no native WebReader adapter`.
-There, `card-host` and the Linux and Windows builds of `desktop-v0.1.0-beta.1`
+Desktop RC1 embeds ordinary pages on Windows with WebView2 and on Linux
+X11/XWayland with GTK 3/WebKitGTK. These engines are not bundled; native
+Wayland embedding and Windows/Linux embedded backend sign-in are unsupported
+([requirements](../README.md#compatible-shell-download)). Historically,
+`card-host` and the Linux and Windows builds of `desktop-v0.1.0-beta.1`
 return `true` from `open`, show no page and log
 `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`.
 `desktop-v0.1.0-beta.2` ships for macOS only.
@@ -102,8 +103,8 @@ this app was not granted "mail", which "mail.accounts" needs
 | `gcalendar` | Google Calendar reads and sync, and writes the person approves on a host sheet. Needs `auth`. |
 | `gmail` | Gmail reads, versioned reply drafts, sending after the person approves it in the host's send review, and new-mail events for the app's agent. Needs `auth`. |
 | `glance` | `glance.publish`, `glance.withdraw` and `glance.list`: cards on the Glance screen that open only this app. See [AI-SERVICES § Publishing to the Glance screen](AI-SERVICES.md#publishing-to-the-glance-screen). |
-| `model` | `model.complete` and `model.budget`: one-shot model calls on the person's own AI providers, checked against the app's JSON Schema, within a daily budget. See [one-shot calls](AI-SERVICES.md#one-shot-model-calls-model). [Media and embeddings](AI-SERVICES.md#media-and-embeddings-model) use the same capability in OctoSense #368, merged into `main`; compatible release pending; beta.2 and `card-host` do not serve them. Provider entitlement and live validation are separate. |
-| `runtime` | `runtime.list` and `runtime.describe`: the host APIs this build implements, with no account data. Builds from OctoSense `main` and `card-host` answer them; desktop-v0.1.0-beta.2 refuses the capability. See [HOST-API-V1 §2](HOST-API-V1.md#2-discover-before-offering-an-optional-feature). |
+| `model` | `model.complete` and `model.budget`: one-shot model calls on the person's own AI providers, checked against the app's JSON Schema, within a daily budget. See [one-shot calls](AI-SERVICES.md#one-shot-model-calls-model). [Media and embeddings](AI-SERVICES.md#media-and-embeddings-model) use the same capability in OctoSense #368, included in [desktop RC1](../README.md#compatible-shell-download); beta.2 and `card-host` do not serve them. Provider entitlement and live validation are separate. |
+| `runtime` | `runtime.list` and `runtime.describe`: the host APIs this build implements, with no account data. Desktop RC1 and `card-host` answer them; desktop-v0.1.0-beta.2 refuses the capability. See [HOST-API-V1 §2](HOST-API-V1.md#2-discover-before-offering-an-optional-feature). |
 | `wasm` | The app's own functions: WebAssembly modules in the bundle's `fns/` (at most 8), which the host's `wasm` service runs in a sandbox with a deadline and a memory cap. A function gets only its input and reaches no file, network, clock or other app. An agent tool can run one with `host_method: "wasm.<function>"`. The store says "Run its own sandboxed functions on this device". No release serves it; OctoSense serves it only in builds with its `wasm-lab` feature. To write, build and call a function, see [RUST](RUST.md). |
 
 Apart from `runtime`, none of these services runs in `card-host`. There
@@ -194,8 +195,9 @@ shell holds the provider credentials; the app holds only a connection handle.
 4. Have the person approve every write. `github.review_save` and
    `gcalendar.review_save` freeze the change and show it on a host sheet,
    where the person approves it. On desktop-v0.1.0-beta.2, that sheet does not
-   check for a physical press. OctoSense `main` requires a physical press on
-   its native **Approve & Save** control, but no release has it yet.
+   check for a physical press. Desktop RC1 requires a physical press on
+   its native **Approve & Save** control; protected writes remain unsupported
+   and fail closed on Windows/Linux.
    `gmail.draft.review` opens the host's send review, which needs a physical
    press on every build: no script, agent or remote click can send mail.
 
@@ -206,9 +208,9 @@ summarizes them.
 
 ### Sign in to your own backend
 
-On OctoSense `main`, the host can sign the person in to the app's own
-backend and call the backend's declared operations. No release has this yet:
-`desktop-v0.1.0-beta.2` predates it.
+In [desktop RC1](../README.md#compatible-shell-download), the host can sign the
+person in to the app's own backend and call its declared operations, within
+the documented platform limits. Historical `desktop-v0.1.0-beta.2` predates it.
 
 1. Declare `auth` and `storage.accounts: true`, and register the backend in
    one of two ways:
@@ -244,27 +246,30 @@ Without a registration, `auth.connect` answers
 The backend must offer an OAuth authorization-code flow with S256 PKCE and a
 `/me` endpoint, all on one HTTPS origin. OctoSense's
 [developer backend contract](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.md#developer-backend-contract)
-gives the details. iOS has no backend sign-in, and Windows and Linux are
-unverified.
+gives the details. iOS has no backend sign-in. Windows/Linux use the
+external browser; embedded sign-in and protected writes are unsupported.
+Live provider sign-in is not established by the synthetic backend checks.
 
 ### Limits
 
-- **Builds.** OctoSense desktop-v0.1.0-beta.2 (macOS, Apple silicon) serves
+- **Builds.** Use [desktop RC1](../README.md#compatible-shell-download) for
+  current GitHub-proven apps. Historical desktop-v0.1.0-beta.2 (macOS, Apple silicon) serves
   `auth`, `github`, `gcalendar` and `gmail`. The beta.1 stores
   (desktop-v0.1.0-beta.1 and home-v0.1.0-beta.1) list such apps but refuse to
   install them, because their contract does not know `auth`. No released phone
   build installs them.
-- **Provider registrations.** Beta.2 reads the GitHub and Google
+- **Provider registrations.** Public RC1 packages contain no Google/GitHub
+  registrations; the host distributor/operator must supply them. Beta.2 reads the GitHub and Google
   registrations only from `<apps root>/.host/oauth/clients.json`, and its
   downloads contain none, so whoever runs beta.2 supplies that file. A build
-  from OctoSense `main` can compile a distributor's registrations in instead;
+  of RC1 can compile a distributor's registrations in instead;
   there, `clients.json` is an optional operator override that replaces the
   whole compiled-in set
   ([OctoSense: configure a release](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.md#configure-a-release-maintainers),
   [advanced operator override](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.md#advanced-operator-override)).
 - **Calendar sync.** On desktop-v0.1.0-beta.2, `gcalendar.refresh` syncs the
   whole calendar and returns it oldest first, and `gcalendar.sync` returns
-  Google's raw event pages. OctoSense `main` (not in any release yet) syncs
+  Google's raw event pages. OctoSense desktop RC1 syncs
   only from 30 days before today to 366 days after, with recurring events
   expanded, and returns that range as `window: {time_min, time_max}`. It
   refuses `gcalendar.sync` with
@@ -277,9 +282,9 @@ unverified.
   ([current delivery boundary](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.md#current-delivery-boundary)).
 - **Not yet:** Google sign-in on Android. `auth.connect` answers
   `Google authorization needs the Android host adapter; desktop login is not supported on this device`.
-- **Not yet in a release:** sign-in to an app's own backend and calls to
-  its operations ([above](#sign-in-to-your-own-backend)). Only builds from
-  OctoSense `main` have them.
+- **Backend platform limits:** RC1 supports the host-run paths
+  [above](#sign-in-to-your-own-backend); Windows/Linux embedded login and
+  protected writes remain unavailable.
 
 ## Exact service names
 

@@ -47,9 +47,9 @@
 | --- | --- | --- |
 | `net` | `net.http_request` 和 `net.web_socket`，只能访问 `network.hosts` 中列出的主机。主机必须写成精确的小写纯主机名：不带协议、路径、端口或通配符。 | 脚本中根本没有 `net`：`variable net not found in scope`。申请了 `net` 但主机列表为空时也是如此。 |
 | `images` | 任何公开 `https://` 主机上的图片（`Image{src: http_resource(url)}`），不限于 `network.hosts`，例如 RSS 阅读器的缩略图。`net.http_request` 的访问范围不会因此扩大。 | 只能加载已列出主机上的图片。 |
-| `web` | `WebReader` 可以在系统的网页视图中打开任何公开的 `https://` 网页。网页无法反过来访问应用。这个视图可以在 macOS、iOS 和 Android 上打开。 | `WebReader.open` 只能打开已列出主机上的网页，其他一律拒绝：``refused <url>: not on this app's host list, and no `web` grant``。 |
+| `web` | `WebReader` 可以在系统的网页视图中打开任何公开的 `https://` 网页。网页无法反过来访问应用。可用性取决于[宿主与平台限制](../README.zh-CN.md#下载兼容-shell)。 | `WebReader.open` 只能打开已列出主机上的网页，其他一律拒绝：``refused <url>: not on this app's host list, and no `web` grant``。 |
 
-在 Linux 和 Windows 上，用 OctoSense `main` 构建的 Shell 会让 `open` 返回 `false`，`error()` 返回 `Embedded web pages are unavailable on this platform; this host has no native WebReader adapter`。在这两个平台上，`card-host` 和 `desktop-v0.1.0-beta.1` 的 Linux、Windows 版本会让 `open` 返回 `true`，但不显示网页，日志中显示 `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`。`desktop-v0.1.0-beta.2` 只有 macOS 版本。
+桌面 RC1 在 Windows 上使用 WebView2、在 Linux X11/XWayland 上使用 GTK 3/WebKitGTK 内嵌普通网页。这些引擎不随包附带；原生 Wayland 内嵌及 Windows/Linux 嵌入式后端登录仍不支持（[运行条件](../README.zh-CN.md#下载兼容-shell)）。历史版本中，`card-host` 和 `desktop-v0.1.0-beta.1` 的 Linux、Windows 版本会让 `open` 返回 `true`，但不显示网页，日志中显示 `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`。`desktop-v0.1.0-beta.2` 只有 macOS 版本。
 
 运行时和准入检查会拒绝以下情况：
 
@@ -80,8 +80,8 @@ this app was not granted "mail", which "mail.accounts" needs
 | `gcalendar` | 读取和同步 Google Calendar；写入要经用户在宿主面板上批准。需要 `auth`。 |
 | `gmail` | 读取 Gmail，使用带版本号的回复草稿，经用户在宿主的审阅界面上批准后发送邮件，并为应用 Agent 提供新邮件事件。需要 `auth`。 |
 | `glance` | `glance.publish`、`glance.withdraw` 和 `glance.list`：在速览栏上发布卡片，这些卡片只会打开本应用。见 [AI-SERVICES § 发布到速览栏](AI-SERVICES.zh-CN.md#发布到速览栏)。 |
-| `model` | `model.complete` 和 `model.budget`：通过用户自己的 AI 提供商进行一次性模型调用，结果按应用的 JSON Schema 校验，并受每日预算限制。见[一次性调用](AI-SERVICES.zh-CN.md#一次性模型调用model)。OctoSense #368 中的[媒体与嵌入向量](AI-SERVICES.zh-CN.md#媒体与嵌入向量model) 使用同一能力，已合入 `main`，尚待兼容版本发布；beta.2 和 `card-host` 不提供这些方法。提供商权益与真实调用验证需单独确认。 |
-| `runtime` | `runtime.list` 和 `runtime.describe`：当前构建实现了哪些宿主 API，不含任何账户数据。用 OctoSense `main` 构建的版本和 `card-host` 都会响应；desktop-v0.1.0-beta.2 拒绝这项能力。见 [HOST-API-V1 §2](HOST-API-V1.zh-CN.md#2-提供可选功能前先查询)。 |
+| `model` | `model.complete` 和 `model.budget`：通过用户自己的 AI 提供商进行一次性模型调用，结果按应用的 JSON Schema 校验，并受每日预算限制。见[一次性调用](AI-SERVICES.zh-CN.md#一次性模型调用model)。OctoSense #368 中的[媒体与嵌入向量](AI-SERVICES.zh-CN.md#媒体与嵌入向量model) 使用同一能力，已包含在[桌面 RC1](../README.zh-CN.md#下载兼容-shell) 中；beta.2 和 `card-host` 不提供这些方法。提供商权益与真实调用验证需单独确认。 |
+| `runtime` | `runtime.list` 和 `runtime.describe`：当前构建实现了哪些宿主 API，不含任何账户数据。桌面 RC1 和 `card-host` 都会响应；desktop-v0.1.0-beta.2 拒绝这项能力。见 [HOST-API-V1 §2](HOST-API-V1.zh-CN.md#2-提供可选功能前先查询)。 |
 | `wasm` | 应用自带的函数：应用包 `fns/` 中的 WebAssembly 模块（最多 8 个），由宿主的 `wasm` 服务在沙盒中运行，有截止时间和内存上限。函数只拿到自己的输入，接触不到文件、网络、时钟或其他应用。Agent 工具可以用 `host_method: "wasm.<function>"` 运行其中一个函数。商店显示的说明是“Run its own sandboxed functions on this device”。目前没有任何发布版本提供这项服务；OctoSense 只在启用了 `wasm-lab` 构建特性的版本中提供。函数的编写、构建和调用方法见 [RUST](RUST.zh-CN.md)。 |
 
 除 `runtime` 外，这些服务都不在 `card-host` 中运行，在那里每次调用都返回 `no service answers "<family>" on this device`。请在 OctoSense Shell 中测试它们。
@@ -157,13 +157,13 @@ this app was not granted "mail", which "mail.accounts" needs
 
    每个方法的参数和返回值见 OctoSense 的 [`crates/oauth-service/README.zh-CN.md`](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#应用接口)。
 
-4. 让用户批准每一次写入。`github.review_save` 和 `gcalendar.review_save` 会冻结改动并显示在宿主面板上，由用户在那里批准。在 desktop-v0.1.0-beta.2 上，这个面板不检查是否为亲手点按；OctoSense `main` 要求在原生 **Approve & Save** 控件上亲手点按，但还没有发布版本包含这项改动。`gmail.draft.review` 打开宿主的审阅界面，在所有版本上，用户都要在上面亲手点按才能发送：脚本、Agent 和远程点击都无法发送邮件。
+4. 让用户批准每一次写入。`github.review_save` 和 `gcalendar.review_save` 会冻结改动并显示在宿主面板上，由用户在那里批准。在 desktop-v0.1.0-beta.2 上，这个面板不检查是否为亲手点按；桌面 RC1 要求在原生 **Approve & Save** 控件上亲手点按；Windows/Linux 的受保护写操作仍不支持，会拒绝执行。`gmail.draft.review` 打开宿主的审阅界面，在所有版本上，用户都要在上面亲手点按才能发送：脚本、Agent 和远程点击都无法发送邮件。
 
 三个[连接账户的参考应用](../examples/connected-apps/README.zh-CN.md)已在 App Hub 签名目录中发布，用的正是这套做法。App Hub 的[提交指南](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#三个参考应用)概述了这三个应用。
 
 ### 登录应用自己的后端
 
-在 OctoSense `main` 上，宿主可以让用户登录应用自己的后端，并调用后端已声明的操作。目前还没有任何发布版本包含这项功能：`desktop-v0.1.0-beta.2` 的发布早于它。
+在[桌面 RC1](../README.zh-CN.md#下载兼容-shell) 中，宿主可以在已记录的平台限制内让用户登录应用自己的后端，并调用后端已声明的操作。历史 `desktop-v0.1.0-beta.2` 的发布早于这项功能。
 
 1. 声明 `auth` 和 `storage.accounts: true`，并用以下两种方式之一注册后端：
    - 在清单的 `backend` 块中声明后端，并在 `requires` 中加入 `backend-api-v1`，写法见 [HOST-API-V1 §4](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)。宿主从已准入的签名应用包中读取这项声明。
@@ -180,16 +180,16 @@ this app was not granted "mail", which "mail.accounts" needs
 3. 用 `{connection: <handle>}` 调用 `auth.backend.me`。它返回 `{connection, backend_id, identity: {sub, label}}`，即后端验证过的身份。
 4. 用 `auth.backend.request` 调用已声明的操作（[HOST-API-V1 §4](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）。写操作要等用户在宿主面板上亲手点按批准后才会执行。
 
-没有注册时，`auth.connect` 会返回 `This app's backend sign-in is unavailable. Contact the app's distributor.` 这句话。后端必须在同一个 HTTPS 源上提供使用 S256 PKCE 的 OAuth 授权码流程和 `/me` 端点。详情见 OctoSense 的[开发者后端契约](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#开发者后端接口约定)。iOS 不支持后端登录；Windows 和 Linux 上未验证。
+没有注册时，`auth.connect` 会返回 `This app's backend sign-in is unavailable. Contact the app's distributor.` 这句话。后端必须在同一个 HTTPS 源上提供使用 S256 PKCE 的 OAuth 授权码流程和 `/me` 端点。详情见 OctoSense 的[开发者后端契约](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#开发者后端接口约定)。iOS 不支持后端登录。Windows/Linux 使用外部浏览器；嵌入式登录和受保护的写操作仍不支持。合成后端检查不代表真实提供商登录通过验证。
 
 ### 限制
 
-- **版本。** OctoSense desktop-v0.1.0-beta.2（macOS，Apple 芯片）提供 `auth`、`github`、`gcalendar` 和 `gmail`。beta.1 的商店（desktop-v0.1.0-beta.1 和 home-v0.1.0-beta.1）会列出这类应用，但拒绝安装，因为它们的契约不认识 `auth`。目前没有任何已发布的手机版本能安装这类应用。
-- **提供商注册信息。** beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取 GitHub 和 Google 的注册信息，而它的下载包中没有任何注册信息，所以运行 beta.2 的人要自己提供这个文件。用 OctoSense `main` 构建时，可以改为把分发者的注册信息编译进去；此时 `clients.json` 是可选的运维人员覆盖配置，会替换编译进去的全部注册信息（[OctoSense：配置发布版本](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#配置发行版本维护者)、[运维人员高级覆盖配置](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#高级运维覆盖配置)）。
-- **日历同步。** 在 desktop-v0.1.0-beta.2 上，`gcalendar.refresh` 同步整个日历，并从最早的日程开始返回；`gcalendar.sync` 返回 Google 的原始日程分页。OctoSense `main`（尚未进入任何发布版本）只同步从今天之前 30 天到之后 366 天的日程，并展开重复日程，还会以 `window: {time_min, time_max}` 返回这个范围。它会拒绝 `gcalendar.sync`，并返回 `Use gcalendar.refresh for the bounded agenda; raw history synchronization is not exposed`。
+- **版本。** 当前带 GitHub 证明的应用使用[桌面 RC1](../README.zh-CN.md#下载兼容-shell)。历史 OctoSense desktop-v0.1.0-beta.2（macOS，Apple 芯片）提供 `auth`、`github`、`gcalendar` 和 `gmail`。beta.1 的商店（desktop-v0.1.0-beta.1 和 home-v0.1.0-beta.1）会列出这类应用，但拒绝安装，因为它们的契约不认识 `auth`。目前没有任何已发布的手机版本能安装这类应用。
+- **提供商注册信息。** 公开 RC1 包不附带 Google/GitHub 注册信息，需要宿主发行方或运维人员提供。beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取 GitHub 和 Google 的注册信息，而它的下载包中没有任何注册信息，所以运行 beta.2 的人要自己提供这个文件。构建 RC1 时，可以改为把分发者的注册信息编译进去；此时 `clients.json` 是可选的运维人员覆盖配置，会替换编译进去的全部注册信息（[OctoSense：配置发布版本](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#配置发行版本维护者)、[运维人员高级覆盖配置](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#高级运维覆盖配置)）。
+- **日历同步。** 在 desktop-v0.1.0-beta.2 上，`gcalendar.refresh` 同步整个日历，并从最早的日程开始返回；`gcalendar.sync` 返回 Google 的原始日程分页。OctoSense 桌面 RC1 只同步从今天之前 30 天到之后 366 天的日程，并展开重复日程，还会以 `window: {time_min, time_max}` 返回这个范围。它会拒绝 `gcalendar.sync`，并返回 `Use gcalendar.refresh for the bounded agenda; raw history synchronization is not exposed`。
 - **未验证**：真实 GitHub 和 Google 服务上的大部分实际使用，包括写入仓库和发送 Gmail。OctoSense `main` 记录了两次 macOS 上的检查：一是通过原生宿主、仅验证身份的 GitHub 和 Google 登录（Google 用的是测试账户）；二是一次手动的 Google Calendar 会话，列出了日历并保存了一个日程（[当前交付边界](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#当前交付边界)）。
 - **尚不支持**：在 Android 上登录 Google。`auth.connect` 返回 `Google authorization needs the Android host adapter; desktop login is not supported on this device`。
-- **尚未进入发布版本**：登录应用自己的后端，以及调用它的操作（[见上文](#登录应用自己的后端)）。只有用 OctoSense `main` 构建的版本支持。
+- **后端平台限制**：RC1 支持[上文](#登录应用自己的后端)的宿主登录流程；Windows/Linux 的嵌入式登录和受保护的写操作仍不可用。
 
 ## 精确服务名
 

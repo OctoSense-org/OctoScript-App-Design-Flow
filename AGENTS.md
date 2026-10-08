@@ -73,8 +73,8 @@ needs no AI service or API key.
   form, and no API key or token in the bundle or in the app's storage. The
   gate refuses only password and one-time-code fields; a key kept anywhere
   else is still a secret the app holds. Accounts go through a host service's
-  sheet ([docs/HOST-SERVICES.md](docs/HOST-SERVICES.md)). Beta.2 has no backend
-  sign-in. OctoSense `main` (in no release yet) signs the person in to the
+  sheet ([docs/HOST-SERVICES.md](docs/HOST-SERVICES.md)). Use the [compatible RC1 release](README.md#compatible-shell-download),
+  within its platform limits, to sign the person in to the
   app's own backend: the bundle declares it in a signed `backend` block, or
   the host's operator registers it
   ([the backend guide](docs/HOST-API-V1.md#4-connect-the-apps-backend)).
@@ -88,51 +88,43 @@ needs no AI service or API key.
   device a store app can call `model.complete`, and `octos.*` once the person
   allows its agent. Released hosts offer `model.complete` and `model.budget`.
   Image, speech, video and embedding methods are implemented in
-  [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368), merged into `main`; compatible release pending; neither beta.2 nor
+  [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368), included in the RC1 release; neither beta.2 nor
   `card-host` provides them. Follow the [media guide](docs/AI-SERVICES.md#media-and-embeddings-model)
   and its source-pinned API reference. A configured chat provider is not
   proof of media entitlement; live paid providers and device execution remain
   unverified. `llm` is for system apps only. Never put a model key in an app. Read
   [docs/AI-SERVICES.md](docs/AI-SERVICES.md) before adding an AI feature, and
   report each one as unverified until exercised on its actual host.
-- **Connected accounts and host-service tools need `desktop-v0.1.0-beta.2`
-  or a build from OctoSense `main`.**
-  App Hub's contract 1.5 admits `auth`, `github`, `gmail` and `gcalendar`.
-  OctoSense serves them from `desktop-v0.1.0-beta.2` on. On that build:
-  - the host runs the OAuth sign-in and gives the app a connection handle,
-    never a token. Beta.2 has no built-in provider registrations, so the
-    host's operator supplies them in `oauth/clients.json`;
-  - a store app's `tools.json` tools run only with
-    `implemented_by: "host-service"` and a `host_method` from App Hub's
-    reviewed list: reads of `github`, `gcalendar` and `gmail`, Gmail drafts
-    and events, and `glance`. A tool without `host_method` calls the service
-    named after the app's namespace (`summary` for `dev.example.summary`); no
-    capability grants that service, so the call answers `not_granted`. The
-    shell refuses
-    `implemented_by: "app"`, so no tool runs the app's own code. The
-    capability, risk, private-data and account checks still apply;
-  - admitted `AGENT.md` and skill text is per-turn guidance, not an
-    executable kernel skill.
+- **Connected accounts, GitHub-proven apps and Host API v1 need the compatible
+  RC1 release.** Read [download status](README.md#compatible-shell-download)
+  for package checksums and platform prerequisites. Contract 1.8.0 admits the public
+  publisher proof; beta.2 cannot install the new apps or consume the v2 catalog.
+  - The host runs OAuth sign-in and returns app-bound connection handles,
+    never tokens. The RC contains no public provider registrations; the host
+    distributor/operator must supply them. The current connected samples are
+    macOS-only. Linux/Windows implement external-browser backend login and
+    declared reads, without live sign-in acceptance here; embedded backend
+    login and protected writes are unsupported and fail closed. Android Google
+    authorization remains unavailable.
+  - A granted `implemented_by: "host-service"` tool maps to a reviewed
+    `host_method`. Capability, risk, private-data and account checks still apply.
+  - `implemented_by: "app"` requires `script-tools-v1`; the shell invokes the
+    app's `app_tool` handler in its existing full-app isolate. A closed app
+    returns `app_not_running` ([host API guide](docs/HOST-API-V1.md)).
+  - Admitted `AGENT.md` and skills are per-turn guidance, not executable
+    kernel skills. Shipping tools offers an agent, not permission to run it
+    without the person's consent.
+  - `card-host` refuses sealed releases and apps requiring `host-api-v1`,
+    `backend-api-v1` or `script-tools-v1`; use the compatible shell. A gate
+    pass does not prove login, a model call or an external write. Keep a manual
+    path and an honest missing-service state.
 
-  OctoSense `main` (in no release yet) also runs `implemented_by: "app"`
-  tools. The manifest must declare `requires: ["script-tools-v1"]`, and the
-  shell calls the app's `app_tool` handler while the full app is open; a call
-  to a closed app answers `app_not_running`
-  ([docs/HOST-API-V1.md](docs/HOST-API-V1.md#5-implement-a-declared-app-tool)).
-  `card-host` refuses an app that requires `host-api-v1`, `backend-api-v1` or
-  `script-tools-v1`; test such an app in a shell built from OctoSense `main`.
-
-  `card-host`, beta.1 builds and older shells provide none of this, and a
-  gate pass does not prove a provider connection. The three published
-  reference apps show the pattern
-  ([examples/connected-apps](examples/connected-apps/README.md)): keep a
-  manual path and a clear missing-service state, as they do.
 - **Your own Rust code runs only as a Wasm function.** Compile it to a
   WebAssembly module in `bundle/fns/` and request `wasm`; a bundle never
-  carries a native library. Only OctoSense `main` built with the `wasm-lab`
-  feature (in no release yet) runs functions, and `card-host` answers every
-  call with `no service answers "wasm" on this device`. Report the app's
-  functions as unverified: no store-installed app has run its functions yet.
+  carries a native library. Only an OctoSense build with `wasm-lab` runs functions; standard RC
+  desktop packages leave it off. `card-host` answers every call with
+  `no service answers "wasm" on this device`. An isolated Wasm fixture is
+  not evidence that your app's functions work; test its exact bundle and host.
   Follow [docs/RUST.md](docs/RUST.md).
 - **Only needed capabilities.** Map each capability to something a screen
   does ([docs/CAPABILITIES.md](docs/CAPABILITIES.md)), and remove the rest.
@@ -199,7 +191,8 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   A script app may bundle a font and load it with
   `FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`. Check text with
   `MAKEPAD_SYSTEM_FONTS=0`, so a system font cannot hide a missing glyph.
-  Font loading in a shell built from OctoSense `main` is unverified.
+  The compatible RC includes the bundled-font path and CJK fallback fixes;
+  still inspect your exact app on every claimed platform.
 - **Keep the bytes exact.** The digest covers every byte of every file, so a
   line-ending conversion breaks it. Commit the `.gitattributes` that
   `tools/octo new` writes (`bundle/** -text`), so that a Windows checkout
@@ -220,9 +213,10 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   publisher-proof verification. The workflow must pass `publisher-verify`
   and `publisher-pack`; no restamping after attestation. `card-host` refuses
   sealed releases. Contract 1.8.0 / `publisher-github-v1` support and a
-  compatible host are required. Real GitHub publishing and native Store
-  install/update checks passed with an isolated test catalog; shipped-shell
-  and phone installation remain unverified, and a compatible release is pending.
+  compatible host are required. Public-catalog sample install/update checks
+  passed on macOS, with a final RC reopen; isolated phone fixtures have
+  separate evidence. None proves your app or provider effects. See the
+  [RC download status](README.md#compatible-shell-download).
   See [PUBLISHING §3.6](docs/PUBLISHING.md#36-publisher-key--human).
 - **An issue requests publication.** Include repository, version/commit,
   screenshots and permissions; it may precede the release. Attach the
@@ -233,8 +227,8 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   cards accepts `template` with `initial`, or L0 `source` with `data`, and
   never `script`. OctoSense runs a script card under the app's own policy.
   On `desktop-v0.1.0-beta.2`, an agent tool can publish one, so a
-  prompt-injected turn could publish arbitrary Splash code. OctoSense `main`
-  refuses `script` from agent tools, but no release has that check yet.
+  prompt-injected turn could publish arbitrary Splash code. The compatible RC
+  refuses `script` from agent tools.
 - **Shipping `tools.json` gives the app an agent.** With or without an
   `agent` block, App Hub admits the tools as the app's agent and OctoSense
   offers an `Ask <app>` panel for it. Declare the `agent` block and say so in
@@ -251,8 +245,7 @@ Hand off only when all of these hold:
    `listing.json` and inspected.
 3. You have driven every interaction in the brief natively in `card-host`
    (click, type and tap through the remote bridge) and observed its effect.
-   For an app that `card-host` refuses, use a shell built from OctoSense
-   `main` ([docs/HOST-API-V1.md](docs/HOST-API-V1.md#before-publishing)).
+   For an app that `card-host` refuses, use the compatible RC1 release ([docs/HOST-API-V1.md](docs/HOST-API-V1.md#before-publishing)).
 4. You have exercised the empty, error and restart states.
 5. The `hub scan` packet is written outside the bundle and its questions are
    answered: seven, or eight when the bundle ships `tools.json`, `AGENT.md`

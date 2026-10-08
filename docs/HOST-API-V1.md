@@ -15,7 +15,7 @@ follows:
 
 | Build | Host API v1 |
 | --- | --- |
-| OctoSense `main` (in no release yet) | Implements every API on this page, within the platform limits each section gives. |
+| [RC1 release `933abbcf`](../README.md#compatible-shell-download) | Implements every API on this page, within the platform limits each section gives. |
 | `desktop-v0.1.0-beta.2` | Refuses the app: its contract, 1.5, knows none of the `requires` markers below. For what beta.2 serves, see [Host services](HOST-SERVICES.md). |
 | `card-host`, which `tools/octo run` starts | Refuses the app ([Before publishing](#before-publishing)). For an app that requests `runtime` without the markers, it answers `runtime.list` and `runtime.describe`. |
 
@@ -194,9 +194,13 @@ declaration, or withdrawing the app, invalidates access; a rollback does not
 revive revoked connections. Installing, updating or removing the app revokes
 its backend handles, so the app must call `auth.connect` again after every
 update, even one that keeps the declaration. On macOS and Android 9 or later,
-the host shows the backend's sign-in page in a web view it owns; device
-acceptance is still pending. On Windows and Linux, the host opens the system
-browser instead (unverified).
+the host shows the backend's sign-in page in its own WebView. Linux/Windows
+use the external-browser route and advertise `auth.backend.request@1` for
+declared reads. Embedded backend login and protected writes remain unsupported
+and fail closed there; ordinary WebReader support does not change that boundary.
+Live Linux/Windows backend sign-in is not validated here. Test your exact login,
+callback and protected-write flow; publishing acceptance does not prove backend
+authentication.
 
 ## 5. Implement a declared app tool
 
@@ -296,7 +300,8 @@ Test such an app this way:
    [local mirror rehearsal](PUBLISHING.md#4-rehearse-the-store-path-locally)
    is an optional legacy compatibility route for pre-publication tests, not
    verification of GitHub-attested releases. `publisher-github-v1` needs a
-   compatible Store verifier; its released-host installation is still pending.
+   compatible Store verifier. Use the [RC1 release](../README.md#compatible-shell-download);
+   its download status and public sample acceptance are recorded there.
 3. Exercise discovery and the fallback for a missing API, account changes,
    permission denial and revocation, a tool call while the app is closed, and
    the native review of a backend write.
