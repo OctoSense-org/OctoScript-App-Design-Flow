@@ -125,7 +125,9 @@ contains the sealed pack, canonical manifest and release receipt. The developer
 supplies no private signing key; GitHub supplies the job/OIDC identity.
 
 `publisher-github-v1` needs contract 1.8.0 and a compatible Store verifier.
-Live proof and installation remain unverified; a compatible release is pending.
+Real GitHub proof and native Store install/update checks passed with an isolated
+test catalog ([evidence](PUBLISHING.md#36-publisher-key--human)); shipped-shell
+and phone installation remain unverified, and a compatible release is pending.
 Opening an App Hub issue expresses publication intent and can happen first;
 the workflow provides verifiable bytes for that issue. Hub checks, administrator
 approval and authenticated catalog publication remain separate steps.

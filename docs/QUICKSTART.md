@@ -595,8 +595,10 @@ Attach the successful workflow and exact release pack to the submission issue.
 Neither installing the workflow nor creating a GitHub release submits or
 approves the app. Routine updates use new versions/tags from the same identity.
 
-This working-branch path needs contract 1.8.0 / `publisher-github-v1`; a compatible
-host release is pending, and live publishing/installation remain unverified.
+This path needs contract 1.8.0 / `publisher-github-v1`. Real publishing and native
+Store install/update checks passed with an isolated test catalog
+([evidence](PUBLISHING.md#36-publisher-key--human)). Shipped-shell and phone
+installation remain unverified; a compatible host release is pending.
 Older hosts and `card-host` refuse the sealed release. The local Ed25519 store
 rehearsal is optional compatibility, not a required publishing step.
 

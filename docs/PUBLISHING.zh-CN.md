@@ -156,10 +156,13 @@ no --reviewer given; the packet holds 7 questions for one
 `publisher.key`，也无需添加仓库签名 secret。用自己的账户发布前，请审阅发布者
 信息和工作流。
 
-**可用状态：** 此路径正在实现，使用应用契约 1.8.0 和 `publisher-github-v1`。
-真实 GitHub 发布者证明及其安装尚未验证，兼容的 OctoSense 宿主版本尚待发布。
-旧宿主会拒绝这个要求。`publisher-toolchain.json` 尚未指定经过评审的不可变
-App Hub commit 时，安装命令会拒绝继续，不会改用浮动版本。
+**可用状态：** 此路径需要应用契约 1.8.0 和 `publisher-github-v1`。
+两个真实 GitHub release 已通过证明验证，以及原生 Store 的安装、启动校验、更新、
+撤回和篡改拒绝检查（[验收记录](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/reviews/github-publisher-v1/acceptance.json)）。
+这些 Store 检查使用隔离的测试目录；测试应用没有提交或获准进入 Hub。
+已发行 Shell 和手机中的安装仍未验证，兼容的 OctoSense 宿主版本尚待发布。
+旧宿主会拒绝这个要求。`publisher-toolchain.json` 必须指定经过评审的不可变
+App Hub commit；安装命令会拒绝缺失或浮动的版本。
 
 对已有的可编辑应用目录，在 Design Flow 中安装工作流：
 

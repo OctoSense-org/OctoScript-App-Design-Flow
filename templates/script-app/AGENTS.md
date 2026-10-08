@@ -64,7 +64,9 @@ Follow these rules:
   actual approval; never fabricate it. Manual Ed25519 keys are only an
   optional compatibility path, never a default setup step.
 - `publisher-github-v1` needs contract 1.8.0 and a compatible Store host;
-  older hosts and `card-host` refuse the sealed release. Live publishing and
-  compatible-host installation remain unverified in this implementation.
+  older hosts and `card-host` refuse the sealed release. Real GitHub publishing
+  and native Store install/update checks passed with an isolated test catalog.
+  Shipped-shell and phone installation remain unverified; a compatible release
+  is pending. Follow the linked publishing guide for current evidence.
 
 Add this app's own requirements, data sources and tests below.

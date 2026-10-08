@@ -350,8 +350,10 @@ tools/octo package-help
 提交 issue。安装工作流、创建 GitHub release 都不会自动提交或批准应用。
 日常更新使用同一身份下的新版本/新 tag。
 
-此工作分支路径需要契约 1.8.0 / `publisher-github-v1`；兼容宿主版本尚待发布，
-真实发布与安装尚未验证。旧宿主和 `card-host` 会拒绝封存的发布包。
+此路径需要契约 1.8.0 / `publisher-github-v1`。真实发布及原生 Store 的安装、更新
+检查已在隔离测试目录中通过（[证据](PUBLISHING.zh-CN.md#36-发布者密钥human)）。
+已发行 Shell 和手机中的安装仍未验证，兼容宿主版本尚待发布。
+旧宿主和 `card-host` 会拒绝封存的发布包。
 本地 Ed25519 商店演练是可选兼容路径，不是发布的必需步骤。
 
 ## 故障排查

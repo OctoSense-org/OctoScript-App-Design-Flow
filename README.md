@@ -160,7 +160,7 @@ Use `main` of each repository.
 | The gate (`hub`) | App Hub `main`, app contract 1.7 (the manifest rules `hub` enforces), which admits the connected-account capabilities `auth`, `github`, `gmail` and `gcalendar`, the [Host API v1](docs/HOST-API-V1.md) declarations and the `wasm` capability. |
 | `card-host` | App Hub `main`. It runs one bundle and serves no host services except `runtime` discovery. Build it as the [Quick path](#quick-path) shows. |
 | The shells | OctoSense `main`; its latest desktop release is `desktop-v0.1.0-beta.2`. The desktop shell and the phone's Home run system and store apps; the desktop also serves connected accounts and app agents' host-service tools. |
-| GitHub publishing | Working-branch implementation: contract 1.8.0 / `publisher-github-v1`, no developer key. Live attestation and compatible-host installation remain unverified; compatible release pending. |
+| GitHub publishing | Contract 1.8.0 / `publisher-github-v1`, no developer key. Real releases and native Store install/update checks passed with an isolated test catalog; shipped-shell and phone installation remain unverified, compatible release pending. |
 | Submission | An issue on OctoSense-App-Hub, as App Hub's [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md) describes. |
 | Installing your own bundle on a phone | Not supported. See [Running an app](#running-an-app). |
 
@@ -539,9 +539,11 @@ channel or automatic approval. See App Hub's
 Routine updates use new versions/tags from the same repository/owner/workflow.
 Never move a released tag or hand-edit the Hub's admitted catalog/artifacts.
 
-This working-branch path requires contract 1.8.0 / `publisher-github-v1`.
-Live publisher attestation and compatible-host installation remain unverified;
-a compatible host release is pending. Manual Ed25519 signing is optional
+This path requires contract 1.8.0 / `publisher-github-v1`. Real GitHub releases
+and native Store install/update checks passed with an isolated test catalog
+([evidence](docs/PUBLISHING.md#36-publisher-key--human)). Shipped-shell and phone
+installation remain unverified; a compatible host release is pending.
+Manual Ed25519 signing is optional
 compatibility, and old reference releases remain unchanged.
 
 ## Repository layout

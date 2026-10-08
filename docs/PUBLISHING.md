@@ -215,11 +215,15 @@ Actions attestation. You do not generate `publisher.key` or add a signing
 secret to the repository. Review the publisher details and the workflow before
 releasing under your account.
 
-**Availability:** this path is being implemented with app contract 1.8.0 and
-`publisher-github-v1`. Live publisher attestation and installation of such a
-release remain unverified; a compatible OctoSense host release is pending.
-Older hosts refuse this requirement. The installer fails closed until its
-`publisher-toolchain.json` names a reviewed, immutable App Hub revision.
+**Availability:** this path requires app contract 1.8.0 and
+`publisher-github-v1`. Two real GitHub releases passed attestation and the native
+Store's install, verified-launch, update, withdrawal and tamper checks
+([acceptance receipt](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/reviews/github-publisher-v1/acceptance.json)).
+Those Store checks used an isolated test catalog; the fixture has no Hub
+submission or admission. Installation in the shipped shell and on a phone
+remains unverified, and a compatible OctoSense host release is pending.
+Older hosts refuse this requirement. `publisher-toolchain.json` must name a
+reviewed, immutable App Hub revision; the installer refuses a missing or moving pin.
 
 For an existing editable app directory, install the workflow from Design Flow:
 

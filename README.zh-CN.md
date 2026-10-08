@@ -98,7 +98,7 @@ App Hub 签名目录中有三个应用通过宿主使用用户的 GitHub 或 Goo
 | 准入检查（`hub`） | App Hub `main`，应用契约 1.7（即 `hub` 执行的清单规则），准入连接账户所需的 `auth`、`github`、`gmail` 和 `gcalendar` 能力、[Host API v1](docs/HOST-API-V1.zh-CN.md) 的各项声明，以及 `wasm` 能力。 |
 | `card-host` | App Hub `main`。它运行单个应用包，除了用于发现宿主 API 的 `runtime`，不提供任何宿主服务。构建方法见[快速上手](#快速上手)。 |
 | Shell | OctoSense `main`；桌面端最新的发布版本是 `desktop-v0.1.0-beta.2`。桌面端 Shell 和手机 Home 运行系统应用与商店应用；桌面端还支持已连接账户，并为应用 Agent 提供宿主服务工具。 |
-| GitHub 发布 | 工作分支中的实现：应用契约 1.8.0 / `publisher-github-v1`，无需开发者密钥。真实证明和兼容宿主安装尚未验证，兼容版本尚待发布。 |
+| GitHub 发布 | 应用契约 1.8.0 / `publisher-github-v1`，无需开发者密钥。真实发布及原生 Store 的安装、更新检查已在隔离测试目录中通过；已发行 Shell 和手机中的安装仍未验证，兼容版本尚待发布。 |
 | 提交途径 | 在 OctoSense-App-Hub 开 issue，见 App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md)。 |
 | 在手机上安装自己的应用包 | 不支持。见[运行应用](#运行应用)。 |
 
@@ -324,8 +324,10 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 日常更新使用同一仓库、所有者和工作流下的新版本/新 tag。不要移动已发布 tag，
 也不要手改 Hub 已准入的目录和产物。
 
-此工作分支路径需要契约 1.8.0 / `publisher-github-v1`。真实发布证明和兼容宿主安装
-尚未验证，兼容宿主版本尚待发布。手动 Ed25519 签名仅是可选兼容路径，旧参考版本保持原样。
+此路径需要契约 1.8.0 / `publisher-github-v1`。真实 GitHub 发布及原生 Store 的安装、
+更新检查已在隔离测试目录中通过（[证据](docs/PUBLISHING.zh-CN.md#36-发布者密钥human)）。
+已发行 Shell 和手机中的安装仍未验证，兼容宿主版本尚待发布。
+手动 Ed25519 签名仅是可选兼容路径，旧参考版本保持原样。
 
 ## 仓库结构
 

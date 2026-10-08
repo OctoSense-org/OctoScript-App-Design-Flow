@@ -212,8 +212,10 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   publisher-proof verification. The workflow must pass `publisher-verify`
   and `publisher-pack`; no restamping after attestation. `card-host` refuses
   sealed releases. Contract 1.8.0 / `publisher-github-v1` support and a
-  compatible host are required; live publishing and installation remain
-  unverified until separately exercised. See [PUBLISHING §3.6](docs/PUBLISHING.md#36-publisher-key--human).
+  compatible host are required. Real GitHub publishing and native Store
+  install/update checks passed with an isolated test catalog; shipped-shell
+  and phone installation remain unverified, and a compatible release is pending.
+  See [PUBLISHING §3.6](docs/PUBLISHING.md#36-publisher-key--human).
 - **An issue requests publication.** Include repository, version/commit,
   screenshots and permissions; it may precede the release. Attach the
   successful workflow and exact release pack when ready. The Hub checks it,
