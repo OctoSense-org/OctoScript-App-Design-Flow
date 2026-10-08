@@ -6,9 +6,9 @@
 
 **设计、构建、测试并提交 OctoSense 应用的 Agent 流程。**
 
-App Flow（原名 OctoScript App Design Flow）负责制作应用，[OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 负责发布应用。App Flow 是一套命令行工具包，包含 Agent 流程、模板和指南，不是图形界面 IDE。App Hub 的 [`card-studio`](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/DEVELOPMENT.zh-CN.md#发布前检查卡片card-studio) 是另一个工具，用来渲染卡片并辅助评审。
+App Flow（原名 OctoScript App Design Flow）负责制作 [OctoSense](https://github.com/OctoSense-org) 应用，[OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 负责发布应用。App Flow 不是图形界面 IDE，而是基于命令行的开发工具集，包含 Agent 流程、模板和指南。App Hub 的 [`card-studio`](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/DEVELOPMENT.zh-CN.md#发布前检查卡片card-studio) 是另一个独立工具，用来渲染卡片并辅助评审。
 
-[OctoSense](https://github.com/OctoSense-org) 应用的开发工具集。它带着你（或编码 Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到一个隔离运行的应用包：通过 [OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 的准入检查，准备生成 GitHub 发布证明并接受 App Hub 审核，无需单独的开发者签名密钥。
+App Flow 带着你（或编码 Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到一个隔离运行的应用包：通过 [OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 的准入检查，准备生成 GitHub 发布证明并接受 App Hub 审核，无需单独的开发者签名密钥。
 
 仓库包含：给 Agent 的规则（[AGENTS.md](AGENTS.md)）、分步骤的设计流程（[flows/](flows/README.zh-CN.md)）、开发者文档（[docs/](docs/)）、可直接运行的应用模板（[templates/script-app](templates/script-app/README.zh-CN.md)）、完整示例（[examples/](examples/README.zh-CN.md)），以及 `tools/octo`：一个小型命令行工具，封装 App Hub 的 `card-host` 和 `hub` 程序。`tools/octo` 从不决定准入：`check` 先为未签名的应用包写入摘要（stamp），再原样转交 `hub check` 的输出和退出码。
 

@@ -4,15 +4,15 @@ English | [简体中文](README.zh-CN.md)
 
 **Agentic flows that design, build, test and submit OctoSense apps.**
 
-App Flow (formerly OctoScript App Design Flow) is where an app gets made, and
-[OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) is
-where it gets published. App Flow is a command-line kit with agent flows,
-templates and guides, not a GUI IDE. App Hub's
+App Flow (formerly OctoScript App Design Flow) makes
+[OctoSense](https://github.com/OctoSense-org) apps, and
+[OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub)
+publishes them. App Flow is a development harness: a command-line kit with
+agent flows, templates and guides, not a GUI IDE. App Hub's
 [`card-studio`](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/DEVELOPMENT.md#inspect-a-card-before-you-publish-card-studio)
-is a different tool, a card render and critique helper.
+is a separate tool that helps you render and critique a card.
 
-The development harness for [OctoSense](https://github.com/OctoSense-org) apps.
-It takes you, or a coding agent, from an idea (a text brief, a generated UX
+App Flow takes you, or a coding agent, from an idea (a text brief, a generated UX
 image) to a contained app bundle that passes the
 [OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) gate
 and is ready for a GitHub-attested release and App Hub review, without a
