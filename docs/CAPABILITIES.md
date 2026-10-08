@@ -67,9 +67,9 @@ an error. Each view is a fresh private session, and the shell checks every
 navigation again: without `web`, the page stays on the document the app
 opened, and no page reaches a local-file, external-app, credentialed or
 malformed URL. The shell also denies permission requests, downloads and
-pop-ups. `desktop-v0.1.0-beta.2` has no web view on Linux or Windows, and
-`card-host` there returns `true` from `open`, shows no page and logs
-`Not implemented on this platform: CxOsOp::SpawnSystemBrowser`.
+pop-ups. No release has these views yet: `desktop-v0.1.0-beta.2` ships for
+macOS only. On Linux and Windows, `card-host` returns `true` from `open`, shows
+no page and logs `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`.
 
 The runtime and the gate refuse these:
 
