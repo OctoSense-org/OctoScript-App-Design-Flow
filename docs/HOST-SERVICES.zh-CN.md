@@ -27,6 +27,7 @@ OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home�
 | `news` | 仅限系统应用 | `apps/news/host-service` |
 | `calendar` | 仅限 Calendar（`os.calendar`） | `apps/calendar/host-service` |
 | `photos`、`youtube` | 仅限对应系统应用的 `notify` | `crates/shell/src/glance_notice.rs` |
+| `wasm` | 获得 `wasm` 授权的应用，仅限启用 `wasm-lab` 特性的构建；尚无任何发布版本提供（见[运行自己的 Rust 代码](RUST.zh-CN.md)） | `crates/shell/src/wasm_service.rs` |
 
 对于没有自己服务的其他系统应用，例如 Maps 和 Camera，`glance_notice.rs` 也会响应它们的 `<namespace>.notify`。
 

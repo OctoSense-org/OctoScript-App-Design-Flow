@@ -40,6 +40,7 @@ discovery, which App Hub's dispatcher handles itself.
 | `news` | System apps only | `apps/news/host-service` |
 | `calendar` | Calendar (`os.calendar`) only | `apps/calendar/host-service` |
 | `photos`, `youtube` | Only the matching system app's `notify` | `crates/shell/src/glance_notice.rs` |
+| `wasm` | Apps granted `wasm`, only in builds with the `wasm-lab` feature; no release serves it ([Run your own Rust code](RUST.md)) | `crates/shell/src/wasm_service.rs` |
 
 `glance_notice.rs` also answers `<namespace>.notify` for every other system
 app without a service of its own, such as Maps and Camera.
