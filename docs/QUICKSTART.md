@@ -402,7 +402,7 @@ and `storage.accounts: true`, as the reference apps do; to identify the
 person without reading their data, `auth` alone is enough. The host runs the
 sign-in and gives the app a connection handle, never a token. These services
 run in a compatible OctoSense shell. Use the
-[RC candidate](../README.md#compatible-shell-download) for current public apps.
+[RC1 release](../README.md#compatible-shell-download) for current public apps.
 It has no public provider registrations: the distributor/operator supplies them,
 for example in `oauth/clients.json`
 ([CAPABILITIES § Limits](CAPABILITIES.md#limits)). `card-host` answers
@@ -417,14 +417,14 @@ Build the app to be complete without them. [AI-SERVICES](AI-SERVICES.md)
 lists what exists and what is planned, with a verified call that handles
 "unavailable".
 
-**Host API v1.** The [RC candidate](../README.md#compatible-shell-download) lets an app discover
+**Host API v1.** The [RC1 release](../README.md#compatible-shell-download) lets an app discover
 host APIs, request device permissions, call its own backend and implement
 agent tools in Splash ([HOST-API-V1](HOST-API-V1.md)). Such an app lists
 `host-api-v1`, `backend-api-v1` or `script-tools-v1` in `requires`.
 `card-host` refuses an app that lists any of them, so `tools/octo run` cannot
 run it: `run` prints `admitted`, but the window shows
 `card-host refused this bundle` and the API the host lacks. Test such an app
-in the compatible RC candidate, within its platform limits
+in the compatible RC1 release, within its platform limits
 ([HOST-API-V1 § Before publishing](HOST-API-V1.md#before-publishing)).
 `desktop-v0.1.0-beta.2` refuses it too.
 
@@ -628,7 +628,7 @@ rehearsal is optional compatibility, not a required publishing step.
 | `variable net not found in scope` | The manifest lacks `net` or has no `network.hosts` (§6). |
 | `this app may not reach <url>` | The host is not in `network.hosts` (exact, lowercase). |
 | `no service answers "…" on this device` | Expected in `card-host`, which serves no host services except `runtime` discovery; try the app in an OctoSense shell ([HOST-SERVICES](HOST-SERVICES.md)). |
-| `run` prints `admitted`, but the window shows `card-host refused this bundle` and a reason such as `app <id> needs a host implementing …@1` or `this host does not implement required APIs: …` | The manifest's `requires` lists `host-api-v1`, `backend-api-v1` or `script-tools-v1`, and `card-host` lacks the APIs they require. Test the app in the compatible RC candidate, within its platform limits ([HOST-API-V1 § Before publishing](HOST-API-V1.md#before-publishing)). |
+| `run` prints `admitted`, but the window shows `card-host refused this bundle` and a reason such as `app <id> needs a host implementing …@1` or `this host does not implement required APIs: …` | The manifest's `requires` lists `host-api-v1`, `backend-api-v1` or `script-tools-v1`, and `card-host` lacks the APIs they require. Test the app in the compatible RC1 release, within its platform limits ([HOST-API-V1 § Before publishing](HOST-API-V1.md#before-publishing)). |
 | `check`: `screenshots/01-main.png is named by the listing but is not in the bundle` | Capture a real screenshot (§8); never a placeholder. |
 | `check`: `[refused] listing: listing names no platforms` | The listing's `platforms` is empty, as in the raw template. List the platforms you tested in `listing.json`, or create the app with `tools/octo new … --platform …` (§3). |
 | `check`: `[refused] identity: app id "…" ends in "…", which is reserved: …` | Change the id's last segment (§3). The same finding repeats under `policy`. |

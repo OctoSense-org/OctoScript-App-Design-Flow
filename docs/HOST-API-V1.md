@@ -15,7 +15,7 @@ follows:
 
 | Build | Host API v1 |
 | --- | --- |
-| [RC candidate `933abbcf`](../README.md#compatible-shell-download) | Implements every API on this page, within the platform limits each section gives. |
+| [RC1 release `933abbcf`](../README.md#compatible-shell-download) | Implements every API on this page, within the platform limits each section gives. |
 | `desktop-v0.1.0-beta.2` | Refuses the app: its contract, 1.5, knows none of the `requires` markers below. For what beta.2 serves, see [Host services](HOST-SERVICES.md). |
 | `card-host`, which `tools/octo run` starts | Refuses the app ([Before publishing](#before-publishing)). For an app that requests `runtime` without the markers, it answers `runtime.list` and `runtime.describe`. |
 
@@ -300,7 +300,7 @@ Test such an app this way:
    [local mirror rehearsal](PUBLISHING.md#4-rehearse-the-store-path-locally)
    is an optional legacy compatibility route for pre-publication tests, not
    verification of GitHub-attested releases. `publisher-github-v1` needs a
-   compatible Store verifier. Use the [RC candidate](../README.md#compatible-shell-download);
+   compatible Store verifier. Use the [RC1 release](../README.md#compatible-shell-download);
    its download status and public sample acceptance are recorded there.
 3. Exercise discovery and the fallback for a missing API, account changes,
    permission denial and revocation, a tool call while the app is closed, and

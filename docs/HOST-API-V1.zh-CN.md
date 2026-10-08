@@ -10,7 +10,7 @@ Host API v1 让应用发现并调用编译进宿主的 Rust 服务，也让应�
 
 | 构建 | Host API v1 |
 | --- | --- |
-| [RC 候选版 `933abbcf`](../README.zh-CN.md#下载兼容-shell) | 实现本页的全部 API，平台限制见各节。 |
+| [RC1 发行版 `933abbcf`](../README.zh-CN.md#下载兼容-shell) | 实现本页的全部 API，平台限制见各节。 |
 | `desktop-v0.1.0-beta.2` | 拒绝该应用：它的契约是 1.5，不认识下文 `requires` 中的任何标记。beta.2 提供哪些服务，见[宿主服务](HOST-SERVICES.zh-CN.md)。 |
 | `tools/octo run` 启动的 `card-host` | 拒绝该应用（见[发布前](#发布前)）。应用申请了 `runtime` 但没有声明这些标记时，它会响应 `runtime.list` 和 `runtime.describe`。 |
 
@@ -186,7 +186,7 @@ app_tools.dispatch@1
 拒绝原因会写出宿主缺少的 API；对 `host-api-v1` 来说是 `app_policy.device_consent@1`。如果 `host_api.required` 列出了宿主缺少的方法，原因则是 `this host does not implement required APIs: <method>@<version>`。请改用以下方式测试这类应用：
 
 1. 写入摘要后，用 `hub check <bundle> --allow-unsigned` 检查可编辑源码。最终发布证明使用 GitHub 工作流（[PUBLISHING §3.6](PUBLISHING.zh-CN.md#36-发布者密钥human)），无需开发者密钥。
-2. 在兼容的 OctoSense Shell 中测试宿主服务。[本地镜像演练](PUBLISHING.zh-CN.md#4-在本地演练商店流程) 是发布前测试的可选旧格式兼容路径，不能验证 GitHub 证明的发布包。`publisher-github-v1` 需要兼容 Store 验证器，请使用 [RC 候选版](../README.zh-CN.md#下载兼容-shell)；下载状态和公开示例验收范围见该节。
+2. 在兼容的 OctoSense Shell 中测试宿主服务。[本地镜像演练](PUBLISHING.zh-CN.md#4-在本地演练商店流程) 是发布前测试的可选旧格式兼容路径，不能验证 GitHub 证明的发布包。`publisher-github-v1` 需要兼容 Store 验证器，请使用 [RC1 发行版](../README.zh-CN.md#下载兼容-shell)；下载状态和公开示例验收范围见该节。
 3. 逐项测试：API 发现与缺少 API 时的降级、账户切换、拒绝和撤销权限、应用关闭时调用工具，以及后端写操作的原生审阅。
 4. 在 `listing.json` 中只列出实际测试过的平台。
 

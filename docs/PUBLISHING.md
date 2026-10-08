@@ -220,8 +220,10 @@ releasing under your account.
 Store's install, verified-launch, update, withdrawal and tamper checks
 ([acceptance receipt](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/reviews/github-publisher-v1/acceptance.json)).
 Those Store checks used an isolated test catalog; the fixture has no Hub
-submission or admission. Installation in the shipped shell and on a phone
-remains unverified, and a compatible OctoSense host release is pending.
+submission or admission. [Desktop RC1](../README.md#compatible-shell-download)
+is now available. Public sample installation/update on macOS and isolated
+phone-fixture acceptance have separate release evidence; those do not prove
+your app's UX or provider effects.
 Older hosts refuse this requirement. `publisher-toolchain.json` must name a
 reviewed, immutable App Hub revision; the installer refuses a missing or moving pin.
 
@@ -379,7 +381,8 @@ declared host behave as in `card-host`.
 - An `icon.svg` drawn with `<text>` showed as a blank tile in the store.
   Draw icons with shapes and paths, as the template does.
 - An app that declares `auth` needs a shell built from OctoSense `main`
-  (`desktop-v0.1.0-beta.2` or later); a beta.1 store refuses the capability.
+  or the [RC1 release](../README.md#compatible-shell-download); use RC1 for
+  current GitHub-proven apps. A beta.1 store refuses the capability.
   The shell you build here has no provider registrations until you supply
   them, and they never go in the app. Either set the build variables, such as
   `OCTOSENSE_GITHUB_CLIENT_ID`, when `cargo` compiles the shell

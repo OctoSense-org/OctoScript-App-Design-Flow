@@ -73,7 +73,7 @@ needs no AI service or API key.
   form, and no API key or token in the bundle or in the app's storage. The
   gate refuses only password and one-time-code fields; a key kept anywhere
   else is still a secret the app holds. Accounts go through a host service's
-  sheet ([docs/HOST-SERVICES.md](docs/HOST-SERVICES.md)). Use the [compatible RC candidate](README.md#compatible-shell-download),
+  sheet ([docs/HOST-SERVICES.md](docs/HOST-SERVICES.md)). Use the [compatible RC1 release](README.md#compatible-shell-download),
   within its platform limits, to sign the person in to the
   app's own backend: the bundle declares it in a signed `backend` block, or
   the host's operator registers it
@@ -88,7 +88,7 @@ needs no AI service or API key.
   device a store app can call `model.complete`, and `octos.*` once the person
   allows its agent. Released hosts offer `model.complete` and `model.budget`.
   Image, speech, video and embedding methods are implemented in
-  [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368), included in the RC candidate; neither beta.2 nor
+  [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368), included in the RC1 release; neither beta.2 nor
   `card-host` provides them. Follow the [media guide](docs/AI-SERVICES.md#media-and-embeddings-model)
   and its source-pinned API reference. A configured chat provider is not
   proof of media entitlement; live paid providers and device execution remain
@@ -96,8 +96,8 @@ needs no AI service or API key.
   [docs/AI-SERVICES.md](docs/AI-SERVICES.md) before adding an AI feature, and
   report each one as unverified until exercised on its actual host.
 - **Connected accounts, GitHub-proven apps and Host API v1 need the compatible
-  RC candidate.** Read [download status](README.md#compatible-shell-download)
-  before promising an available package. Contract 1.8.0 admits the public
+  RC1 release.** Read [download status](README.md#compatible-shell-download)
+  for package checksums and platform prerequisites. Contract 1.8.0 admits the public
   publisher proof; beta.2 cannot install the new apps or consume the v2 catalog.
   - The host runs OAuth sign-in and returns app-bound connection handles,
     never tokens. The RC contains no public provider registrations; the host
@@ -245,7 +245,7 @@ Hand off only when all of these hold:
    `listing.json` and inspected.
 3. You have driven every interaction in the brief natively in `card-host`
    (click, type and tap through the remote bridge) and observed its effect.
-   For an app that `card-host` refuses, use the compatible RC candidate ([docs/HOST-API-V1.md](docs/HOST-API-V1.md#before-publishing)).
+   For an app that `card-host` refuses, use the compatible RC1 release ([docs/HOST-API-V1.md](docs/HOST-API-V1.md#before-publishing)).
 4. You have exercised the empty, error and restart states.
 5. The `hub scan` packet is written outside the bundle and its questions are
    answered: seven, or eight when the bundle ships `tools.json`, `AGENT.md`

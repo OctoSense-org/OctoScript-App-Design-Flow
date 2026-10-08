@@ -160,7 +160,7 @@ no --reviewer given; the packet holds 7 questions for one
 两个真实 GitHub release 已通过证明验证，以及原生 Store 的安装、启动校验、更新、
 撤回和篡改拒绝检查（[验收记录](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/reviews/github-publisher-v1/acceptance.json)）。
 这些 Store 检查使用隔离的测试目录；测试应用没有提交或获准进入 Hub。
-已发行 Shell 和手机中的安装仍未验证，兼容的 OctoSense 宿主版本尚待发布。
+[桌面 RC1](../README.zh-CN.md#下载兼容-shell)现已发布。macOS 公开示例安装/更新及隔离手机测试应用的验收另有发行证据；这些不代表你的应用 UX 或提供商效果通过验证。
 旧宿主会拒绝这个要求。`publisher-toolchain.json` 必须指定经过评审的不可变
 App Hub commit；安装命令会拒绝缺失或浮动的版本。
 
@@ -281,7 +281,7 @@ OCTOSENSE_HUB_CATALOG=legacy OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" \
 已在 macOS 上验证：应用的交互、存储以及向已声明主机发出的请求，表现都与在 `card-host` 中一致。
 
 - 用 `<text>` 绘制的 `icon.svg` 在商店中显示为空白图块。请像模板那样，用形状和路径绘制图标。
-- 声明了 `auth` 的应用需要从 OctoSense `main` 构建的 Shell（`desktop-v0.1.0-beta.2` 或更新版本）；beta.1 的商店会拒绝这个能力。你在这里构建的 Shell 没有提供商注册信息，要由你自己提供，而且注册信息绝不放进应用。提供方式有两种：在 `cargo` 编译 Shell 时设置构建变量，例如 `OCTOSENSE_GITHUB_CLIENT_ID`（[配置发行版本](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#配置发行版本维护者)）；或者写入 `$OCTOSENSE_APP_DATA/.host/oauth/clients.json`（这里是 `$APP/build/desktop-apps/.host/oauth/clients.json`），它会取代编译进去的那组注册信息（[高级运维覆盖配置](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#高级运维覆盖配置)）。接入真实提供商后的实际使用大多未验证（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。
+- 声明了 `auth` 的应用需要从 OctoSense `main` 构建的 Shell或 [RC1 发行版](../README.zh-CN.md#下载兼容-shell)；当前带 GitHub 证明的应用使用 RC1。beta.1 的商店会拒绝这个能力。你在这里构建的 Shell 没有提供商注册信息，要由你自己提供，而且注册信息绝不放进应用。提供方式有两种：在 `cargo` 编译 Shell 时设置构建变量，例如 `OCTOSENSE_GITHUB_CLIENT_ID`（[配置发行版本](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#配置发行版本维护者)）；或者写入 `$OCTOSENSE_APP_DATA/.host/oauth/clients.json`（这里是 `$APP/build/desktop-apps/.host/oauth/clients.json`），它会取代编译进去的那组注册信息（[高级运维覆盖配置](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#高级运维覆盖配置)）。接入真实提供商后的实际使用大多未验证（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。
 - 这只是用你自己的信任锚做的演练。标准构建只信任 App Hub 的信任锚。
 
 ### 4.3 可选：用独立商店安装
