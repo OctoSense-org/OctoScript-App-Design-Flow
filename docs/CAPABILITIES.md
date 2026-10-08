@@ -58,16 +58,12 @@ the gate warns about each script that calls `fs.*` and about a `camera` grant:
 | --- | --- | --- |
 | `net` | `net.http_request` and `net.web_socket`, to exactly the hosts in `network.hosts`. A host is a bare, exact, lowercase name: no scheme, path, port or wildcard. | No `net` in the script at all: `variable net not found in scope`. The same holds for `net` with an empty host list. |
 | `images` | Pictures (`Image{src: http_resource(url)}`) from any public `https://` host, beyond `network.hosts`: a feed reader's thumbnails. It does not widen `net.http_request`. | Pictures load only from listed hosts. |
-| `web` | `WebReader` opens any public `https://` page in the system web view. The page has no way back into the app. The view opens on macOS, iOS and Android; a shell built from OctoSense `main` also opens it on Linux, under X11 or XWayland, and on Windows. | `WebReader.open` works only for listed hosts and refuses others: ``refused <url>: not on this app's host list, and no `web` grant``. |
+| `web` | `WebReader` opens any public `https://` page in the system web view. The page has no way back into the app. The view opens on macOS, iOS and Android. | `WebReader.open` works only for listed hosts and refuses others: ``refused <url>: not on this app's host list, and no `web` grant``. |
 
-On Linux and Windows, OctoSense `main` uses the WebKitGTK 4.1 or 4.0 installed
-on Linux, or the Microsoft Edge WebView2 Runtime installed on Windows, and
-ships neither. Without that engine, or under native Wayland, the view reports
-an error. Each view is a fresh private session, and the shell checks every
-navigation again: without `web`, the page stays on the document the app
-opened, and no page reaches a local-file, external-app, credentialed or
-malformed URL. The shell also denies permission requests, downloads and
-pop-ups. No release has these views yet: `desktop-v0.1.0-beta.2` ships for
+On Linux and Windows, a shell built from OctoSense `main` answers `open` with
+`false` and the error
+`Embedded web pages are unavailable on this platform; this host has no native WebReader adapter`.
+No release has a Linux or Windows build: `desktop-v0.1.0-beta.2` ships for
 macOS only. On Linux and Windows, `card-host` returns `true` from `open`, shows
 no page and logs `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`.
 

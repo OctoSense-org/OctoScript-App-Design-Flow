@@ -192,8 +192,7 @@ its backend handles, so the app must call `auth.connect` again after every
 update, even one that keeps the declaration. On macOS and Android 9 or later,
 the host shows the backend's sign-in page in a web view it owns; device
 acceptance is still pending. On Windows and Linux, the host opens the system
-browser instead (unverified); OctoSense `main` embeds web pages there only for
-`WebReader`.
+browser instead (unverified).
 
 ## 5. Implement a declared app tool
 

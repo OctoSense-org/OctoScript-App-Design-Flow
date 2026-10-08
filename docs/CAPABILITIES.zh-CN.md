@@ -47,9 +47,9 @@
 | --- | --- | --- |
 | `net` | `net.http_request` 和 `net.web_socket`，只能访问 `network.hosts` 中列出的主机。主机必须写成精确的小写纯主机名：不带协议、路径、端口或通配符。 | 脚本中根本没有 `net`：`variable net not found in scope`。申请了 `net` 但主机列表为空时也是如此。 |
 | `images` | 任何公开 `https://` 主机上的图片（`Image{src: http_resource(url)}`），不限于 `network.hosts`，例如 RSS 阅读器的缩略图。`net.http_request` 的访问范围不会因此扩大。 | 只能加载已列出主机上的图片。 |
-| `web` | `WebReader` 可以在系统的网页视图中打开任何公开的 `https://` 网页。网页无法反过来访问应用。这个视图可以在 macOS、iOS 和 Android 上打开；用 OctoSense `main` 构建的 Shell 还能在 Linux（X11 或 XWayland）和 Windows 上打开。 | `WebReader.open` 只能打开已列出主机上的网页，其他一律拒绝：``refused <url>: not on this app's host list, and no `web` grant``。 |
+| `web` | `WebReader` 可以在系统的网页视图中打开任何公开的 `https://` 网页。网页无法反过来访问应用。这个视图可以在 macOS、iOS 和 Android 上打开。 | `WebReader.open` 只能打开已列出主机上的网页，其他一律拒绝：``refused <url>: not on this app's host list, and no `web` grant``。 |
 
-在 Linux 和 Windows 上，OctoSense `main` 使用系统中已安装的引擎：Linux 上是 WebKitGTK 4.1 或 4.0，Windows 上是 Microsoft Edge WebView2 Runtime，Shell 自身不附带任何一种。没有安装引擎或在原生 Wayland 下，视图会报告错误。每个视图都是全新的私密会话，Shell 会重新检查每一次导航：没有 `web` 时，网页只能停留在应用打开的文档上；任何网页都不能转到本地文件、外部应用协议、带凭据的 URL 或格式错误的地址。Shell 也不允许网页申请权限、下载文件或弹出窗口。目前还没有发布版本包含这些视图：`desktop-v0.1.0-beta.2` 只有 macOS 版本。在 Linux 和 Windows 上，`card-host` 会让 `open` 返回 `true`，但不显示网页，日志中显示 `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`。
+在 Linux 和 Windows 上，用 OctoSense `main` 构建的 Shell 会让 `open` 返回 `false`，并报告 `Embedded web pages are unavailable on this platform; this host has no native WebReader adapter`。目前没有任何发布版本提供 Linux 或 Windows 构建：`desktop-v0.1.0-beta.2` 只有 macOS 版本。在 Linux 和 Windows 上，`card-host` 会让 `open` 返回 `true`，但不显示网页，日志中显示 `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`。
 
 运行时和准入检查会拒绝以下情况：
 
