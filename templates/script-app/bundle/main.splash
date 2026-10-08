@@ -29,7 +29,7 @@ start_timeout(0.05, || load())
 let ink = #x1c1c1e
 let secondary = #x8e8e93
 SolidView{width: Fill height: Fill flow: Down padding: 16 spacing: 12 draw_bg.color: #xffffff
-    Label{text: "My Notes" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 28}}
+    Label{width: Fill height: Fit text: "My Notes" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 28}}
     View{width: Fill height: Fit flow: Right spacing: 8 align: Align{y: 0.5}
         entry := TextInput{width: Fill height: 40 empty_text: "Write a note"
             draw_bg +: {color: #xf2f2f7 color_hover: #xf2f2f7 color_focus: #xf2f2f7 color_empty: #xf2f2f7 border_radius: 10.0}
