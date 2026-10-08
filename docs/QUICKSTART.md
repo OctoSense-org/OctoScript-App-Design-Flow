@@ -17,8 +17,15 @@ Quoted output is real, with local paths and process ids shortened to `…`.
 | Platform | State |
 | --- | --- |
 | macOS on Apple silicon | Verified: every command on this page. |
-| Windows | Unverified on current `main` ([App Hub#41](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/41) tracks it), except the `tools/test_*.py` tests that CI runs there. Run `tools/octo` through Python (§2), and keep Git away from the bundle's line endings (§3). |
-| Linux | Unverified, except the `tools/test_*.py` tests that CI runs there. Frame capture (`/g`, `tools/octo shot`) is reported to time out under software rendering (llvmpipe, WSL). |
+| Windows | Native `hub`/`card-host` builds and contract, policy, CLI and modal-input tests pass in App Hub CI. Design Flow's `tools/test_*.py` tests also run there. The complete create/run/capture sequence remains unverified on the current pins. Run `tools/octo` through Python (§2), and preserve bundle line endings (§3). |
+| Linux | The same App Hub build/test suite passes on Ubuntu 24.04; Design Flow's `tools/test_*.py` tests also run there. Native app interaction and frame capture remain unverified here. Capture (`/g`, `tools/octo shot`) has been reported to time out under software rendering (llvmpipe, WSL). |
+
+The Windows and Linux build/test results are from [App Hub CI run 37724164489](https://github.com/OctoSense-org/OctoSense-App-Hub/actions/runs/37724164489),
+at `582a6ed`, merged by [App Hub #146](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/146)
+as `8885c375`. They use plain Makepad at the pinned revision. The macOS job
+in that run is queued; local macOS release builds and native bundled-font
+captures passed. These results do not establish a provider login, an app's
+UX, or every command on this page on Windows/Linux.
 
 You need:
 
@@ -105,7 +112,7 @@ ready: tools/octo new <dir> --platform <target> && tools/octo run <dir>/bundle
 When something is missing, it prints a `[fail]` line, every place it looked,
 and the commands that fix it.
 
-**Windows (unverified).** Windows does not run the script by its shebang, so
+**Windows.** Windows does not run the script by its shebang, so
 run every `tools/octo` command through Python. In each directory above,
 `tools/octo` looks for `hub.exe` and `card-host.exe` before the names without
 `.exe`:
@@ -116,12 +123,12 @@ python tools/octo doctor
 
 If the binaries live elsewhere, set `$env:OCTO_HUB` and
 `$env:OCTO_CARD_HOST` to their full paths. CI tests this search on Windows;
-the commands themselves are unverified there. An open issue,
+the complete walkthrough remains unverified there. The community report,
 [App Hub#41](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/41),
 reports a native Windows 11 build (Rust and MSVC, no WSL) at an earlier
 revision: `hub` and `card-host` built, `hub stamp` and `hub check` ran, and
-`card-host --remote` served `/g` captures. The maintainers have not verified
-it on current `main`.
+`card-host --remote` served `/g` captures. Current CI now verifies native
+tool builds and their tests (§1); it does not rerun that graphical capture.
 
 ## 3. Create an app
 
@@ -457,10 +464,13 @@ in an OctoSense shell built from `main`
   loads it from the bundle's own asset server, with no network grant. A
   bundled font counts toward the 8 MiB limit, so bundle a subset of a large
   CJK font. Text the font lacks, such as Chinese, falls back to LXGW WenKai,
-  Makepad's built-in Chinese font. The only built-in font a kit may name
-  is `makepad_widgets:resources/Inter.ttf`; the gate refuses any other,
-  LXGW WenKai included
-  ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
+  Makepad's built-in Chinese font. A kit may name exactly three shipped
+  fonts under `makepad_widgets:resources/`: `Inter.ttf`,
+  `LXGWWenKaiRegular.ttf` and `LXGWWenKaiBold.ttf`. A single `$token`
+  reference resolving to a supported string is accepted; arbitrary objects,
+  nested token references and other crate-resource paths are refused. The regular and bold CJK
+  paths were rendered in native macOS `card-host` with system fallback
+  disabled in [App Hub #146](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/146).
 - **Fonts on `desktop-v0.1.0-beta.2`.** This release predates bundled-font
   loading: it installs an app with a bundled font, but its cards do not load
   the font. For Chinese text there, build the card from the plain L0 role kit
@@ -469,8 +479,10 @@ in an OctoSense shell built from `main`
 - **Fonts in a script app.** Bundle the file, such as `bundle/fonts/X.ttf`,
   and load it in `main.splash` as a member of a `TextStyle`'s `FontFamily`:
   `FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`. Keep the font's
-  license outside `bundle/`: the gate refuses a URL inside a bundled `.txt` or
-  `.md` file.
+  license in the bundle when its terms require it, using a supported
+  extension such as `fonts/OFL.txt`. Plain documentation's attribution URLs
+  are accepted and add no network grant. Agent guidance and structured
+  resources retain their normal host/resource checks.
 - **Missing glyphs.** Test the app with `MAKEPAD_SYSTEM_FONTS=0`
   (`MAKEPAD_SYSTEM_FONTS=0 tools/octo run …`). Without it, a macOS system font
   fills in the glyphs your fonts lack and hides the problem. **Unverified:**
@@ -600,8 +612,8 @@ tags and submits it, following App Hub's
 | `check`: `[refused] identity: app id "…" ends in "…", which is reserved: …` | Change the id's last segment (§3). The same finding repeats under `policy`. |
 | `check`: `[refused] contents: .DS_Store has extension "", which a bundle may not hold` | Delete the file: `find <bundle> -name .DS_Store -delete`. Any other file without a known extension must leave `bundle/` too. |
 | `check`: `[refused] digest: the bundle hashes to …, the manifest claims …` | The bytes changed after the last stamp. Unsigned: run `tools/octo check` again. Signed: a person stamps and signs again. On a fresh clone only: the checkout converted line endings (commit the `.gitattributes` that `new` wrote, §3), or the commit holds a stale digest (§8). |
-| `check`: `[refused] assets: … contains https://…` in a `.txt` or `.md` file | Bundled text may not hold URLs; remove them, or keep the file outside `bundle/`. |
-| `check`: `[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | A kit's `font_src` may name only one built-in font, `Inter.ttf`. For another font, bundle the font file and name it with a bundle-relative path, such as `assets/Body.ttf`; Chinese text falls back to LXGW WenKai. `desktop-v0.1.0-beta.2` does not load a bundled font: there, use the plain L0 role kit with no `font_src` (§7). |
+| `check`: `[refused] assets: … contains https://…` in an ordinary license `.txt` or `.md` file | Rebuild `hub` from App Hub #146 or later. Plain documentation URLs are accepted; retain required license notices. Agent guidance and structured resource references still have separate checks. |
+| `check`: `[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | Current `hub` accepts the exact built-in `Inter.ttf`, `LXGWWenKaiRegular.ttf` and `LXGWWenKaiBold.ttf` paths (§7). Rebuild an older gate. For other fonts, bundle a font file and use a relative path such as `assets/Body.ttf`. `desktop-v0.1.0-beta.2` still predates bundled-font loading; use the plain L0 role kit without `font_src` on that release. |
 | `hub: the bundle exceeds the size limit`, with no report | The bundle is over 8 MiB. Shrink or drop images and fonts. |
 | `check` or `hub scan` on a signed bundle: `publisher key "…" is not registered with this hub` | Pass the publisher's public key: `tools/octo check <bundle> --publisher-key <publisher-id>=<hex public key>` (the same flag works for `hub scan`). |
 | `card-host: refused: no signature verifier is installed` | `card-host` does not run signed bundles; test the unsigned copy and sign last. |

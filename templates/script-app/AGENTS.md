@@ -40,7 +40,9 @@ Follow these rules:
 - Keep the id's last segment, after its final `.`, off App Hub's reserved
   names (`notes`, `weather`, `terminal` and others); the gate refuses them.
 - Put only files the gate accepts in `bundle/`: no `.DS_Store`, no file
-  without an extension, no URL in a bundled `.txt` or `.md` file, 8 MiB at most.
+  without an extension, 8 MiB at most. Plain `.txt`/`.md` license and
+  attribution URLs are allowed; keep required notices. Agent guidance and
+  structured resources retain their host/resource checks.
 - Capture screenshots from the unsigned bundle with `$OCTO shot`, and look at
   each one; never use a placeholder.
 - Restamp after every edit (`$OCTO check` does it). Sign last; any edit

@@ -16,8 +16,10 @@
 | 平台 | 状态 |
 | --- | --- |
 | Apple 芯片上的 macOS | 已验证：本页所有命令都在这个平台上运行过。 |
-| Windows | 在当前 `main` 上未验证（由 [App Hub#41](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/41) 跟踪），CI 在该平台上运行的 `tools/test_*.py` 测试除外。通过 Python 运行 `tools/octo`（§2），并且不要让 Git 改动应用包的换行符（§3）。 |
-| Linux | 未验证，CI 在该平台上运行的 `tools/test_*.py` 测试除外。有报告称，在软件渲染（llvmpipe、WSL）下截帧（`/g`、`tools/octo shot`）会超时。 |
+| Windows | App Hub CI 已通过原生 `hub`、`card-host` 构建及 contract、policy、CLI、模态输入测试。Design Flow 的 `tools/test_*.py` 也在该平台运行。当前固定版本上的完整创建、运行、截图流程仍未验证。通过 Python 运行 `tools/octo`（§2），并保留应用包的原始换行符（§3）。 |
+| Linux | 同一套 App Hub 构建与测试已在 Ubuntu 24.04 通过；Design Flow 的 `tools/test_*.py` 也在该平台运行。这里尚未验证原生应用交互与截帧。有报告称，在软件渲染（llvmpipe、WSL）下截帧（`/g`、`tools/octo shot`）会超时。 |
+
+Windows、Linux 构建与测试结果来自 [App Hub CI 37724164489](https://github.com/OctoSense-org/OctoSense-App-Hub/actions/runs/37724164489)，对应 `582a6ed`，由 [App Hub #146](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/146) 合并为 `8885c375`，使用固定版本的普通 Makepad。该次 CI 的 macOS 任务仍在排队；本地 macOS release 构建与原生打包字体截图已通过。这些结果不能证明提供商登录、应用 UX，或本页每条命令都已在 Windows、Linux 上运行。
 
 你需要：
 
@@ -80,13 +82,13 @@ ready: tools/octo new <dir> --platform <target> && tools/octo run <dir>/bundle
 
 有缺失项时，它输出一行 `[fail]`、查找过的每个位置，以及修复用的命令。
 
-**Windows（未验证）。** Windows 不会按 shebang 运行这个脚本，所以每条 `tools/octo` 命令都要通过 Python 运行。在上面列出的每个目录中，`tools/octo` 都先查找 `hub.exe` 和 `card-host.exe`，再查找不带 `.exe` 的文件名：
+**Windows。** Windows 不会按 shebang 运行这个脚本，所以每条 `tools/octo` 命令都要通过 Python 运行。在上面列出的每个目录中，`tools/octo` 都先查找 `hub.exe` 和 `card-host.exe`，再查找不带 `.exe` 的文件名：
 
 ```powershell
 python tools/octo doctor
 ```
 
-如果程序在别的位置，把 `$env:OCTO_HUB` 和 `$env:OCTO_CARD_HOST` 设为它们的完整路径。CI 会在 Windows 上测试这套查找逻辑；命令本身在 Windows 上未验证。社区用户在尚未关闭的 [App Hub#41](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/41) 中报告，曾在较早的版本上验证过 Windows 11 原生构建（Rust 和 MSVC，不用 WSL）：`hub` 和 `card-host` 能构建，`hub stamp` 和 `hub check` 能运行，`card-host --remote` 能响应 `/g` 截帧；维护者尚未在当前 `main` 上验证。
+如果程序在别的位置，把 `$env:OCTO_HUB` 和 `$env:OCTO_CARD_HOST` 设为它们的完整路径。CI 会在 Windows 上测试这套查找逻辑；完整指南在该平台仍未验证。社区用户在 [App Hub#41](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/41) 中报告，曾在较早的版本上验证过 Windows 11 原生构建（Rust 和 MSVC，不用 WSL）：`hub` 和 `card-host` 能构建，`hub stamp` 和 `hub check` 能运行，`card-host --remote` 能响应 `/g` 截帧。当前 CI 已验证原生工具构建及其测试（§1），但没有重跑该图形截帧。
 
 ## 3. 创建应用
 
@@ -277,9 +279,9 @@ fn tip_20_percent() {
 - **保留 id。** `tools/octo new` 只检查它创建时用的 id。如果之后把 id 改成 `com.example.notes`，准入检查会拒绝它，因为最后一段 `notes` 是保留名（§3）。
 - **`.DS_Store`。** Finder 会把它写进你打开过的文件夹，而准入检查会拒绝任何扩展名未知的文件。检查之前先删除它：`find ~/apps/my-app/bundle -name .DS_Store -delete`。
 - **换行符。** 如果 Git 检出时转换了换行符，字节就会改变，摘要随之失效。请 commit `new` 写入的 `.gitattributes`（§3）。
-- **卡片中的字体。** 要使用自己的字体，把 `.ttf` 或 `.otf` 文件放进应用包，并在套件的 `font_src` 中用相对于应用包的路径引用它，例如 `"font_src": "assets/Body.ttf"`。`card-host` 从应用包自己的素材服务加载它，不需要网络权限。打包的字体计入 8 MiB 上限，所以较大的中日韩字体请只打包所需的子集。字体中没有的字形（例如中文）会改用 Makepad 内置的中文字体霞鹜文楷（LXGW WenKai）。套件只能引用一种内置字体 `makepad_widgets:resources/Inter.ttf`；准入检查会拒绝其他内置字体，霞鹜文楷也不例外（[App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)）。
+- **卡片中的字体。** 要使用自己的字体，把 `.ttf` 或 `.otf` 文件放进应用包，并在套件的 `font_src` 中用相对于应用包的路径引用它，例如 `"font_src": "assets/Body.ttf"`。`card-host` 从应用包自己的素材服务加载它，不需要网络权限。打包的字体计入 8 MiB 上限，所以较大的中日韩字体请只打包所需的子集。字体中没有的字形（例如中文）会改用 Makepad 内置的中文字体霞鹜文楷（LXGW WenKai）。套件可以引用 `makepad_widgets:resources/` 下三种确切的内置字体：`Inter.ttf`、`LXGWWenKaiRegular.ttf`、`LXGWWenKaiBold.ttf`。单层 `$token` 引用可以解析为受支持的字符串；任意对象、嵌套 token 引用及其他 crate 资源路径仍被拒绝。[App Hub #146](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/146) 已在禁用系统字体回退的 macOS 原生 `card-host` 中验证两种霞鹜文楷字重的绘制。
 - **`desktop-v0.1.0-beta.2` 上的字体。** 这个版本早于打包字体的加载功能：它会安装带打包字体的应用，但卡片不会加载这些字体。要在这个版本上显示中文，请用纯 L0 角色套件（`Surface`、`TextTitle`、`TextBody` 等）组合卡片，并且不设 `font_src`；中文由霞鹜文楷显示。
-- **脚本应用中的字体。** 把字体文件放进应用包，例如 `bundle/fonts/X.ttf`，然后在 `main.splash` 中把它作为 `TextStyle` 的 `FontFamily` 成员加载：`FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`。字体的许可证要放在 `bundle/` 之外：准入检查会拒绝含有 URL 的应用包内 `.txt` 或 `.md` 文件。
+- **脚本应用中的字体。** 把字体文件放进应用包，例如 `bundle/fonts/X.ttf`，然后在 `main.splash` 中把它作为 `TextStyle` 的 `FontFamily` 成员加载：`FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`。许可条款要求随字体提供许可证时，请保留在应用包中，使用受支持的扩展名，例如 `fonts/OFL.txt`。普通文档中的署名 URL 可以通过检查，不会增加网络权限。Agent 指引与结构化资源仍须通过原有的主机、资源检查。
 - **缺失的字形。** 用 `MAKEPAD_SYSTEM_FONTS=0` 测试应用（`MAKEPAD_SYSTEM_FONTS=0 tools/octo run …`）。不设这个变量时，macOS 的系统字体会补上你的字体缺少的字形，把问题掩盖起来。**未验证**：在没有中日韩系统字体的 Linux 上，同样的文字是否会显示为方框，以及字体在用 OctoSense `main` 构建的 Shell 中的表现。
 - **大小。** 应用包不能超过 8 MiB（8,388,608 字节）。
 
@@ -364,8 +366,8 @@ Android 版 `card-host` 不编译远程控制桥。在手机上，请用 OctoSen
 | `check`：`[refused] identity: app id "…" ends in "…", which is reserved: …` | 修改 id 的最后一段（§3）。同样的检查结果还会在 `policy` 下再出现一次。 |
 | `check`：`[refused] contents: .DS_Store has extension "", which a bundle may not hold` | 删除这个文件：`find <bundle> -name .DS_Store -delete`。其他扩展名未知的文件也必须移出 `bundle/`。 |
 | `check`：`[refused] digest: the bundle hashes to …, the manifest claims …` | 上次写入摘要之后，字节发生了变化。未签名的应用包：再运行一次 `tools/octo check`。已签名的应用包：由人工重新写入摘要并签名。只在全新克隆上出现时：检出时转换了换行符（commit `new` 写入的 `.gitattributes`，见 §3），或者 commit 中的摘要已过期（§8）。 |
-| `check`：`[refused] assets: … contains https://…`（`.txt` 或 `.md` 文件） | 应用包中的文本文件不能包含 URL；删掉这些 URL，或把文件放在 `bundle/` 之外。 |
-| `check`：`[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | 套件的 `font_src` 只能引用一种内置字体 `Inter.ttf`。要用其他字体，请把字体文件放进应用包，并用相对于应用包的路径引用，例如 `assets/Body.ttf`；中文会改用霞鹜文楷显示。`desktop-v0.1.0-beta.2` 不加载打包的字体：在这个版本上请用不设 `font_src` 的纯 L0 角色套件（§7）。 |
+| `check`：`[refused] assets: … contains https://…`（普通许可 `.txt` 或 `.md` 文件） | 从 App Hub #146 或更新版本重新构建 `hub`。普通文档 URL 可以通过检查；保留要求提供的许可声明。Agent 指引与结构化资源引用仍须单独检查。 |
+| `check`：`[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | 当前 `hub` 接受内置 `Inter.ttf`、`LXGWWenKaiRegular.ttf`、`LXGWWenKaiBold.ttf` 的确切路径（§7）；请重建旧版准入工具。其他字体要随应用打包并使用相对路径，例如 `assets/Body.ttf`。`desktop-v0.1.0-beta.2` 仍早于打包字体加载功能；这个版本请使用不设 `font_src` 的纯 L0 角色套件。 |
 | `hub: the bundle exceeds the size limit`，没有报告 | 应用包超过了 8 MiB。压缩或删除图片和字体。 |
 | 对已签名的应用包运行 `check` 或 `hub scan`：`publisher key "…" is not registered with this hub` | 传入发布者公钥：`tools/octo check <bundle> --publisher-key <publisher-id>=<hex public key>`（`hub scan` 也可以用同一个参数）。 |
 | `card-host: refused: no signature verifier is installed` | `card-host` 不运行已签名的应用包；请用未签名的副本测试，最后再签名。 |
