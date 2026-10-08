@@ -87,7 +87,7 @@ needs no AI service or API key.
   device a store app can call `model.complete`, and `octos.*` once the person
   allows its agent. Released hosts offer `model.complete` and `model.budget`.
   Image, speech, video and embedding methods are implemented in
-  [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368), pending integration and release; neither beta.2 nor
+  [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368), merged into `main`; compatible release pending; neither beta.2 nor
   `card-host` provides them. Follow the [media guide](docs/AI-SERVICES.md#media-and-embeddings-model)
   and its source-pinned API reference. A configured chat provider is not
   proof of media entitlement; live paid providers and device execution remain

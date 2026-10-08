@@ -4,7 +4,7 @@
 
 未注明中文版的链接指向英文文档。
 
-用本仓库开发的脚本应用，可以通过三种方式在 OctoSense 设备上使用 AI：宿主模型调用（`model`）、与设备助手对话（`octos.*`），以及在应用包中声明一个应用自己的 Agent。下文区分**可用**（已在所列仓库的 `main` 上，可按描述使用）、**已在 PR 中实现**（尚待集成与发布）和**尚未支持**。
+用本仓库开发的脚本应用，可以通过三种方式在 OctoSense 设备上使用 AI：宿主模型调用（`model`）、与设备助手对话（`octos.*`），以及在应用包中声明一个应用自己的 Agent。下文区分**可用**（已在所列仓库的 `main` 上，可按描述使用）、**已合入源码**（尚待兼容版本发布）和**尚未支持**。
 
 标为 **✓ 已运行**的命令，是在 macOS（Apple 芯片）上用 App Hub `main` 构建的 `hub` 和 `card-host` 运行的。其余内容读自代码，没有在 OctoSense Shell 中运行过。Shell 如何实现这些功能，见 OctoSense 的 [`docs/ai-services.zh-CN.md`](https://github.com/OctoSense-org/OctoSense/blob/main/docs/ai-services.zh-CN.md) 和 [`docs/architecture.zh-CN.md`](https://github.com/OctoSense-org/OctoSense/blob/main/docs/architecture.zh-CN.md)。
 
@@ -40,7 +40,7 @@
 | 你想要 | 目前的结果 | 详见 |
 | --- | --- | --- |
 | 进行一次性模型调用（`model`） | 在 OctoSense Shell 中**可用**：按 schema 校验的调用，由用户自己的 AI 提供商回答，有每日预算。`card-host` 返回 `no service answers "model" on this device`（**✓ 已运行**）。 | [一次性模型调用](#一次性模型调用model) |
-| 生成图片、语音、视频或嵌入向量（`model`） | **已在 [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368) 中实现**，尚待集成与发布。需要兼容的 Shell 和已配置且具有权益的提供商；beta.2 与 `card-host` 不提供。真实付费提供商及设备使用仍为**未验证**。 | [媒体与嵌入向量](#媒体与嵌入向量model) |
+| 生成图片、语音、视频或嵌入向量（`model`） | **已在 [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368) 中实现**，已合入 `main`，尚待兼容版本发布。需要兼容的 Shell 和已配置且具有权益的提供商；beta.2 与 `card-host` 不提供。真实付费提供商及设备使用仍为**未验证**。 | [媒体与嵌入向量](#媒体与嵌入向量model) |
 | 在自己的界面中与助手对话（`octos.*`） | 在托管内核的 Shell 中**可用**（iOS 除外）。第一次调用返回 `Waiting for the person to allow this app's agent (OctoSense asks the first time)`，同时 Shell 询问用户；之后应用与自己的 peer 对话。`card-host` 返回 `no service answers "octos" on this device`（**✓ 已运行**）。 | [最小调用示例](#最小调用示例与不可用状态) |
 | 给应用一个自己的 Agent（`agent`、`tools.json`、`AGENT.md`、`skills/`） | **可用**：用户允许后，Agent 得到一个 peer、一个“Ask &lt;app&gt;”对话栏、`ask_user_question`、对账户文件夹的读取工具（仅 Unix）、已授权的宿主服务工具，并把 `AGENT.md` 和技能作为每个回合的指导。没有 `agent` 块的 `tools.json` 同样会让应用拥有一个 Agent。 | [应用自己的 Agent](#应用自己的-agent) |
 | 运行由应用脚本实现的工具（`implemented_by: "app"`） | **尚未进入发布版本**：在 OctoSense `main` 上，清单声明了 `requires: ["script-tools-v1"]` 时，工具在打开的应用中运行；应用关闭时，调用返回 `app_not_running`。`desktop-v0.1.0-beta.2` 拒绝执行。 | [应用的工具](#应用的工具与-peer-工具)、[HOST-API-V1 §5](HOST-API-V1.zh-CN.md#5-实现声明的应用工具) |
@@ -246,9 +246,9 @@ host.request("model.complete", {
 
 ## 媒体与嵌入向量（`model`）
 
-**已在 [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368) 中实现，尚待集成与发布。** 本节对应源码版本
-`95155ec0`，不表示 beta.2、`card-host` 或已发布安装包提供这些方法。
-[媒体 API 参考](https://github.com/OctoSense-org/OctoSense/blob/95155ec035bd13c20de671689dc9e1aea0c8c698/apps/ai-providers/host-service/MEDIA.zh-CN.md)是参数、输出、提供商路由、额度和任务
+**已在 [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368) 中实现，已合入 `main`，尚待兼容版本发布。** 本节对应源码版本
+`ccb62ab2`，不表示 beta.2、`card-host` 或已发布安装包提供这些方法。
+[媒体 API 参考](https://github.com/OctoSense-org/OctoSense/blob/ccb62ab2f995abb2c273a33fc1c139f47c73aa07/apps/ai-providers/host-service/MEDIA.zh-CN.md)是参数、输出、提供商路由、额度和任务
 生命周期的唯一详细定义；请按该参考实现，不要自创提供商参数。
 
 - 授予 `model`，按该参考声明需要的 API 版本及 `host-api-v1`，并用

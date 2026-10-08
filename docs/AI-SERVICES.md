@@ -6,7 +6,7 @@ A script app built here can use AI on an OctoSense device in three ways:
 host model calls (`model`), a conversation with the device's assistant
 (`octos.*`), and an agent of its own, declared in its bundle. The status labels
 below distinguish **available** (on the named repository's `main`, as
-described), **implemented in a PR** (pending integration/release), and **not yet**.
+described), **merged source** (compatible release pending), and **not yet**.
 
 Commands marked **✓ run** were run on macOS (Apple silicon) with `hub` and
 `card-host` built from App Hub `main`. Everything else was read in the code;
@@ -57,7 +57,7 @@ decline, and a device may have no kernel (iOS) or no provider.
 | You want to | What happens today | More |
 | --- | --- | --- |
 | Make one-shot model calls (`model`) | **available** in the OctoSense shells: a schema-checked call answered by the person's own AI providers, within a daily budget. `card-host` answers `no service answers "model" on this device` (**✓ run**). | [One-shot model calls](#one-shot-model-calls-model) |
-| Generate images, speech, video or embeddings (`model`) | **Implemented in [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368)**, pending integration/release. Requires a compatible shell and an entitled configured provider; absent from beta.2 and `card-host`. Live paid-provider/device use is **unverified**. | [Media and embeddings](#media-and-embeddings-model) |
+| Generate images, speech, video or embeddings (`model`) | **Merged into `main` via [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368)**; compatible release pending. Requires a compatible shell and an entitled configured provider; absent from beta.2 and `card-host`. Live paid-provider/device use is **unverified**. | [Media and embeddings](#media-and-embeddings-model) |
 | Talk to the assistant from your screens (`octos.*`) | **available** where the shell hosts a kernel (not iOS). The first call is refused with `Waiting for the person to allow this app's agent (OctoSense asks the first time)` while the shell asks; after that, the app talks to its own peer. `card-host` answers `no service answers "octos" on this device` (**✓ run**). | [A minimal call](#a-minimal-call-and-handling-unavailable) |
 | Give the app its own agent (`agent`, `tools.json`, `AGENT.md`, `skills/`) | **available**: once the person allows it, the agent gets a peer, an "Ask &lt;app&gt;" panel, `ask_user_question`, read tools over the account folder (Unix only), its granted host-service tools, and `AGENT.md` and skills as guidance for each turn. A `tools.json` without an `agent` block also gives the app an agent. | [An app's own agent](#an-apps-own-agent) |
 | Run a tool the app's script implements (`implemented_by: "app"`) | **not yet in a release**: on OctoSense `main`, the tool runs in the open app when the manifest declares `requires: ["script-tools-v1"]`, and a call to a closed app answers `app_not_running`. `desktop-v0.1.0-beta.2` refuses it. | [The app's tools](#the-apps-tools-and-peer-tools), [HOST-API-V1 §5](HOST-API-V1.md#5-implement-a-declared-app-tool) |
@@ -478,10 +478,10 @@ host.request("model.complete", {
 
 ## Media and embeddings (`model`)
 
-**Implemented in [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368), pending integration and release.**
-This section describes source revision `95155ec0`; it does not claim these
+**Merged into `main` via [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368); compatible release pending.**
+This section describes source revision `ccb62ab2`; it does not claim these
 methods exist in beta.2, `card-host`, or a released package. The owning
-[media API reference](https://github.com/OctoSense-org/OctoSense/blob/95155ec035bd13c20de671689dc9e1aea0c8c698/apps/ai-providers/host-service/MEDIA.md) defines exact arguments, outputs, provider
+[media API reference](https://github.com/OctoSense-org/OctoSense/blob/ccb62ab2f995abb2c273a33fc1c139f47c73aa07/apps/ai-providers/host-service/MEDIA.md) defines exact arguments, outputs, provider
 routes, quotas and job lifetime; use it rather than inventing provider parameters.
 
 - Grant `model`, declare the needed API versions and `host-api-v1` as shown
