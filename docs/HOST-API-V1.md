@@ -126,9 +126,10 @@ advertise these device methods: `status` reports
 
 ## 4. Connect the app's backend
 
-In the manifest, request `auth`, set `storage.accounts: true`, list
-`backend-api-v1` and `host-api-v1` in `requires`, and describe the backend in
-a `backend` block. This fragment shows those fields:
+Describe the backend in the manifest's `backend` block. A manifest with that
+block must also request `auth`, set `storage.accounts: true` and list
+`backend-api-v1` in `requires`. This fragment also declares a `host_api`
+block, so it lists `host-api-v1` too:
 
 ```json
 {
@@ -187,7 +188,8 @@ its backend handles, so the app must call `auth.connect` again after every
 update, even one that keeps the declaration. On macOS and Android 9 or later,
 the host shows the backend's sign-in page in a web view it owns; device
 acceptance is still pending. On Windows and Linux, the host opens the system
-browser.
+browser instead (unverified); OctoSense `main` embeds web pages there only for
+`WebReader`.
 
 ## 5. Implement a declared app tool
 

@@ -77,7 +77,7 @@ host.request("runtime.describe", {method: "location.get"}, fn(r){
 
 ## 4. 连接应用自己的后端
 
-在清单中申请 `auth`，设置 `storage.accounts: true`，在 `requires` 中列出 `backend-api-v1` 和 `host-api-v1`，并在 `backend` 块中描述后端。下面的片段列出了这些字段：
+在清单的 `backend` 块中描述后端。带有这个块的清单还必须申请 `auth`、设置 `storage.accounts: true`，并在 `requires` 中列出 `backend-api-v1`。下面的片段还声明了 `host_api` 块，所以也列出了 `host-api-v1`：
 
 ```json
 {
@@ -118,7 +118,7 @@ host.request("auth.backend.request", {
 
 `body` 是可选的 JSON，用于已声明的写操作。应用不能自行指定 URL、方法或 Authorization 请求头，也不能使用其他应用的连接。GET 操作可以在后台运行。写操作只能在前台执行：宿主先在原生面板上展示确切且不可更改的请求，用户亲手点按批准后才会发送；合成输入不能代替批准。批准之前取消，什么都不会发送；批准之后，关闭面板也撤销不了已经发出的请求。
 
-宿主会重新检查已准入的声明。修改或删除声明、撤回应用，都会使访问失效；回滚不会恢复已撤销的连接。应用安装、更新或卸载时，宿主会撤销它的后端句柄，所以每次更新后应用都要重新调用 `auth.connect`，即使更新保留了相同的声明。在 macOS 和 Android 9 及以上版本上，宿主在自己的 WebView 中显示后端的登录页，设备验收尚未完成；在 Windows 和 Linux 上，宿主打开系统浏览器。
+宿主会重新检查已准入的声明。修改或删除声明、撤回应用，都会使访问失效；回滚不会恢复已撤销的连接。应用安装、更新或卸载时，宿主会撤销它的后端句柄，所以每次更新后应用都要重新调用 `auth.connect`，即使更新保留了相同的声明。在 macOS 和 Android 9 及以上版本上，宿主在自己的 WebView 中显示后端的登录页，设备验收尚未完成；在 Windows 和 Linux 上，宿主改为打开系统浏览器（未验证）。OctoSense `main` 在这两个平台上嵌入的网页视图只供 `WebReader` 使用。
 
 ## 5. 实现声明的应用工具
 
