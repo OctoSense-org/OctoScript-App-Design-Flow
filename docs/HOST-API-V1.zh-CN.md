@@ -71,7 +71,7 @@ host.request("runtime.describe", {method: "location.get"}, fn(r){
 
 响应分别报告三种状态：`app_policy_granted`（清单授予了该能力）、`app_consent`（用户已为本应用授权）和 `os_permission`（系统授予 Shell 的权限）。撤销应用的授权，不会撤销系统授予 Shell 的权限，也不影响其他应用的授权。
 
-在声明了 `host-api-v1` 的应用中，`CameraPreview`、`sys.request_location`、`sys.gps` 和地图控件的 GPS 读取同样要通过这道授权关口。Shell 每次启动后，这道关口会一直拒绝访问，直到应用调用某个权限方法；这次调用会加载应用已保存的授权。请在应用打开时先调用 `<family>.permission.status`，再启动 `CameraPreview` 或读取 GPS。`sys.request_location` 可能弹出提示，所以只在前台调用；后台代码可以用从不弹出提示的 `sys.gps`，或在应用获得授权后用 `location.get`。
+在声明了 `host-api-v1` 的应用中，`CameraPreview`、`sys.request_location`、`sys.gps` 和地图控件的 GPS 读取同样要通过这道授权关口。Shell 每次启动后，这道关口会一直拒绝相应的访问，直到应用调用对应能力的权限方法；这次调用会加载应用为该能力保存的授权。请在应用打开时，先调用 `camera.permission.status` 再启动 `CameraPreview`，先调用 `location.permission.status` 再读取 GPS。`sys.request_location` 可能弹出提示，所以只在前台调用；后台代码可以用从不弹出提示的 `sys.gps`，或在应用获得授权后用 `location.get`。
 
 `location.get` 目前只支持 Android，返回 `latitude`、`longitude`、`accuracy_m`、`source: "last_known"`、`timestamp: null` 和 `freshness: "unknown"`。它不保证位置是最新的，也不提供后台定位。这些权限方法不提供新的拍摄、文件选择或日历 API；只调用宿主注册了的方法。在 Windows、Linux 和 iOS 上，宿主不声明这些设备方法：`status` 返回 `os_permission: "unsupported"`，其他方法以 `unsupported_platform` 失败。
 

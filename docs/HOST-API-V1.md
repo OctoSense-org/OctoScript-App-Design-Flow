@@ -113,10 +113,11 @@ consent changes neither the shell's OS grant nor other apps' consent.
 
 In an app that declares `host-api-v1`, the same consent check covers
 `CameraPreview`, `sys.request_location`, `sys.gps` and GPS reads by map
-widgets. After the shell starts, the host refuses this access until the app
-calls a permission method, which loads the app's saved consent. Call
-`<family>.permission.status` when the app opens, before you start
-`CameraPreview` or read GPS. `sys.request_location` can prompt, so call it
+widgets. After the shell starts, the host refuses each of these until the app
+calls that capability's permission method, which loads the app's saved
+consent for it. When the app opens, call `camera.permission.status` before
+you start `CameraPreview`, and `location.permission.status` before you read
+GPS. `sys.request_location` can prompt, so call it
 only in the foreground; background code can use `sys.gps`, which never
 prompts, or `location.get` once the app is authorized.
 
