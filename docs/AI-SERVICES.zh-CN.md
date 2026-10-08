@@ -4,7 +4,7 @@
 
 未注明中文版的链接指向英文文档。
 
-用本仓库开发的脚本应用，可以通过三种方式在 OctoSense 设备上使用 AI：一次性模型调用（`model`）、与设备助手对话（`octos.*`），以及在应用包中声明一个应用自己的 Agent。下文的每项功能都标为**可用**（已在所列仓库的 `main` 上，可按描述使用）或**尚未支持**。
+用本仓库开发的脚本应用，可以通过三种方式在 OctoSense 设备上使用 AI：宿主模型调用（`model`）、与设备助手对话（`octos.*`），以及在应用包中声明一个应用自己的 Agent。下文区分**可用**（已在所列仓库的 `main` 上，可按描述使用）、**已合入源码**（尚待兼容版本发布）和**尚未支持**。
 
 标为 **✓ 已运行**的命令，是在 macOS（Apple 芯片）上用 App Hub `main` 构建的 `hub` 和 `card-host` 运行的。其余内容读自代码，没有在 OctoSense Shell 中运行过。Shell 如何实现这些功能，见 OctoSense 的 [`docs/ai-services.zh-CN.md`](https://github.com/OctoSense-org/OctoSense/blob/main/docs/ai-services.zh-CN.md) 和 [`docs/architecture.zh-CN.md`](https://github.com/OctoSense-org/OctoSense/blob/main/docs/architecture.zh-CN.md)。
 
@@ -21,6 +21,7 @@
 - [错误](#错误)
 - [测试](#测试)
 - [一次性模型调用（`model`）](#一次性模型调用model)
+- [媒体与嵌入向量（`model`）](#媒体与嵌入向量model)
 - [应用自己的 Agent](#应用自己的-agent)
 - [应用的工具与 peer 工具](#应用的工具与-peer-工具)
 - [系统工具箱](#系统工具箱)
@@ -39,6 +40,7 @@
 | 你想要 | 目前的结果 | 详见 |
 | --- | --- | --- |
 | 进行一次性模型调用（`model`） | 在 OctoSense Shell 中**可用**：按 schema 校验的调用，由用户自己的 AI 提供商回答，有每日预算。`card-host` 返回 `no service answers "model" on this device`（**✓ 已运行**）。 | [一次性模型调用](#一次性模型调用model) |
+| 生成图片、语音、视频或嵌入向量（`model`） | **已在 [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368) 中实现**，已合入 `main`，尚待兼容版本发布。需要兼容的 Shell 和已配置且具有权益的提供商；beta.2 与 `card-host` 不提供。真实付费提供商及设备使用仍为**未验证**。 | [媒体与嵌入向量](#媒体与嵌入向量model) |
 | 在自己的界面中与助手对话（`octos.*`） | 在托管内核的 Shell 中**可用**（iOS 除外）。第一次调用返回 `Waiting for the person to allow this app's agent (OctoSense asks the first time)`，同时 Shell 询问用户；之后应用与自己的 peer 对话。`card-host` 返回 `no service answers "octos" on this device`（**✓ 已运行**）。 | [最小调用示例](#最小调用示例与不可用状态) |
 | 给应用一个自己的 Agent（`agent`、`tools.json`、`AGENT.md`、`skills/`） | **可用**：用户允许后，Agent 得到一个 peer、一个“Ask &lt;app&gt;”对话栏、`ask_user_question`、对账户文件夹的读取工具（仅 Unix）、已授权的宿主服务工具，并把 `AGENT.md` 和技能作为每个回合的指导。没有 `agent` 块的 `tools.json` 同样会让应用拥有一个 Agent。 | [应用自己的 Agent](#应用自己的-agent) |
 | 运行由应用脚本实现的工具（`implemented_by: "app"`） | **尚未进入发布版本**：在 OctoSense `main` 上，清单声明了 `requires: ["script-tools-v1"]` 时，工具在打开的应用中运行；应用关闭时，调用返回 `app_not_running`。`desktop-v0.1.0-beta.2` 拒绝执行。 | [应用的工具](#应用的工具与-peer-工具)、[HOST-API-V1 §5](HOST-API-V1.zh-CN.md#5-实现声明的应用工具) |
@@ -241,6 +243,33 @@ host.request("model.complete", {
     show_title(r.data.output.title)
 })
 ```
+
+## 媒体与嵌入向量（`model`）
+
+**已在 [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368) 中实现，已合入 `main`，尚待兼容版本发布。** 本节对应源码版本
+`ccb62ab2`，不表示 beta.2、`card-host` 或已发布安装包提供这些方法。
+[媒体 API 参考](https://github.com/OctoSense-org/OctoSense/blob/ccb62ab2f995abb2c273a33fc1c139f47c73aa07/apps/ai-providers/host-service/MEDIA.zh-CN.md)是参数、输出、提供商路由、额度和任务
+生命周期的唯一详细定义；请按该参考实现，不要自创提供商参数。
+
+- 授予 `model`，按该参考声明需要的 API 版本及 `host-api-v1`，并用
+  `runtime.describe` 检查可选方法。`model.capabilities` 报告已配置路由是否可用。
+  方法已实现、路由已配置、提供商账户已有权益是三项不同的检查；`host.has`
+  只证明应用获得了能力授权。
+- `model.image`、`model.audio`、`model.embeddings` 返回有大小上限的图片、MP3
+  或向量数据。`model.video` 创建作用域内的异步任务，`model.video.status` 查询
+  状态，`model.video.cancel` 请求取消。视频句柄绑定应用、账户和当前宿主进程；
+  已在远端运行的任务可能拒绝取消。请如实显示结果，不要盲目重试可能已计费的提交。
+  应用仍须实现自己的渲染、播放界面，以及服务不可用和额度错误的处理。
+- 提供商与凭据由宿主管理。当前适配器通过 OpenAI 提供图片、语音和嵌入向量，
+  通过 MiniMax 提供图片、语音和 H3 视频。DeepSeek 聊天配置或 MiniMax M Plan
+  订阅都不证明媒体 API 权益。应用中绝不能收集密钥。
+- [App Hub #147](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/147)
+  准入 `tools.json` 中的七个媒体别名。所属应用仍须声明 `model` 和
+  `private_data: true`；生成、向量和取消至少需要 `act` 风险，能力查询和状态为
+  `read`。别名通过准入后，仍须宿主实现对应方法才能执行。
+- **验证边界：**服务已有合成提供商协议测试和本地回环 HTTP 传输测试；真实付费
+  提供商、生成媒体的 UX 和手机执行仍为**未验证**。准入通过或已配置聊天账户，
+  都不等于媒体功能端到端验收通过。
 
 ## 应用自己的 Agent
 

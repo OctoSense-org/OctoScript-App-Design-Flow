@@ -80,7 +80,7 @@ this app was not granted "mail", which "mail.accounts" needs
 | `gcalendar` | 读取和同步 Google Calendar；写入要经用户在宿主面板上批准。需要 `auth`。 |
 | `gmail` | 读取 Gmail，使用带版本号的回复草稿，经用户在宿主的审阅界面上批准后发送邮件，并为应用 Agent 提供新邮件事件。需要 `auth`。 |
 | `glance` | `glance.publish`、`glance.withdraw` 和 `glance.list`：在速览栏上发布卡片，这些卡片只会打开本应用。见 [AI-SERVICES § 发布到速览栏](AI-SERVICES.zh-CN.md#发布到速览栏)。 |
-| `model` | `model.complete` 和 `model.budget`：通过用户自己的 AI 提供商进行一次性模型调用，结果按应用的 JSON Schema 校验，并受每日预算限制。见 [AI-SERVICES § 一次性模型调用](AI-SERVICES.zh-CN.md#一次性模型调用model)。 |
+| `model` | `model.complete` 和 `model.budget`：通过用户自己的 AI 提供商进行一次性模型调用，结果按应用的 JSON Schema 校验，并受每日预算限制。见[一次性调用](AI-SERVICES.zh-CN.md#一次性模型调用model)。OctoSense #368 中的[媒体与嵌入向量](AI-SERVICES.zh-CN.md#媒体与嵌入向量model) 使用同一能力，已合入 `main`，尚待兼容版本发布；beta.2 和 `card-host` 不提供这些方法。提供商权益与真实调用验证需单独确认。 |
 | `runtime` | `runtime.list` 和 `runtime.describe`：当前构建实现了哪些宿主 API，不含任何账户数据。用 OctoSense `main` 构建的版本和 `card-host` 都会响应；desktop-v0.1.0-beta.2 拒绝这项能力。见 [HOST-API-V1 §2](HOST-API-V1.zh-CN.md#2-提供可选功能前先查询)。 |
 | `wasm` | 应用自带的函数：应用包 `fns/` 中的 WebAssembly 模块（最多 8 个），由宿主的 `wasm` 服务在沙盒中运行，有截止时间和内存上限。函数只拿到自己的输入，接触不到文件、网络、时钟或其他应用。Agent 工具可以用 `host_method: "wasm.<function>"` 运行其中一个函数。商店显示的说明是“Run its own sandboxed functions on this device”。目前没有任何发布版本提供这项服务；OctoSense 只在启用了 `wasm-lab` 构建特性的版本中提供。 |
 

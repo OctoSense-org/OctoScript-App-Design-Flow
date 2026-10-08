@@ -3,10 +3,10 @@
 English | [简体中文](AI-SERVICES.zh-CN.md)
 
 A script app built here can use AI on an OctoSense device in three ways:
-one-shot model calls (`model`), a conversation with the device's assistant
-(`octos.*`), and an agent of its own, declared in its bundle. Each feature
-below is marked **available** (on `main` of the repository named, and usable
-as described) or **not yet**.
+host model calls (`model`), a conversation with the device's assistant
+(`octos.*`), and an agent of its own, declared in its bundle. The status labels
+below distinguish **available** (on the named repository's `main`, as
+described), **merged source** (compatible release pending), and **not yet**.
 
 Commands marked **✓ run** were run on macOS (Apple silicon) with `hub` and
 `card-host` built from App Hub `main`. Everything else was read in the code;
@@ -32,6 +32,7 @@ and [`docs/architecture.md`](https://github.com/OctoSense-org/OctoSense/blob/mai
 - [Errors](#errors)
 - [Test it](#test-it)
 - [One-shot model calls (`model`)](#one-shot-model-calls-model)
+- [Media and embeddings (`model`)](#media-and-embeddings-model)
 - [An app's own agent](#an-apps-own-agent)
 - [The app's tools and peer tools](#the-apps-tools-and-peer-tools)
 - [The system toolbox](#the-system-toolbox)
@@ -56,6 +57,7 @@ decline, and a device may have no kernel (iOS) or no provider.
 | You want to | What happens today | More |
 | --- | --- | --- |
 | Make one-shot model calls (`model`) | **available** in the OctoSense shells: a schema-checked call answered by the person's own AI providers, within a daily budget. `card-host` answers `no service answers "model" on this device` (**✓ run**). | [One-shot model calls](#one-shot-model-calls-model) |
+| Generate images, speech, video or embeddings (`model`) | **Merged into `main` via [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368)**; compatible release pending. Requires a compatible shell and an entitled configured provider; absent from beta.2 and `card-host`. Live paid-provider/device use is **unverified**. | [Media and embeddings](#media-and-embeddings-model) |
 | Talk to the assistant from your screens (`octos.*`) | **available** where the shell hosts a kernel (not iOS). The first call is refused with `Waiting for the person to allow this app's agent (OctoSense asks the first time)` while the shell asks; after that, the app talks to its own peer. `card-host` answers `no service answers "octos" on this device` (**✓ run**). | [A minimal call](#a-minimal-call-and-handling-unavailable) |
 | Give the app its own agent (`agent`, `tools.json`, `AGENT.md`, `skills/`) | **available**: once the person allows it, the agent gets a peer, an "Ask &lt;app&gt;" panel, `ask_user_question`, read tools over the account folder (Unix only), its granted host-service tools, and `AGENT.md` and skills as guidance for each turn. A `tools.json` without an `agent` block also gives the app an agent. | [An app's own agent](#an-apps-own-agent) |
 | Run a tool the app's script implements (`implemented_by: "app"`) | **not yet in a release**: on OctoSense `main`, the tool runs in the open app when the manifest declares `requires: ["script-tools-v1"]`, and a call to a closed app answers `app_not_running`. `desktop-v0.1.0-beta.2` refuses it. | [The app's tools](#the-apps-tools-and-peer-tools), [HOST-API-V1 §5](HOST-API-V1.md#5-implement-a-declared-app-tool) |
@@ -473,6 +475,40 @@ host.request("model.complete", {
     show_title(r.data.output.title)
 })
 ```
+
+## Media and embeddings (`model`)
+
+**Merged into `main` via [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368); compatible release pending.**
+This section describes source revision `ccb62ab2`; it does not claim these
+methods exist in beta.2, `card-host`, or a released package. The owning
+[media API reference](https://github.com/OctoSense-org/OctoSense/blob/ccb62ab2f995abb2c273a33fc1c139f47c73aa07/apps/ai-providers/host-service/MEDIA.md) defines exact arguments, outputs, provider
+routes, quotas and job lifetime; use it rather than inventing provider parameters.
+
+- Grant `model`, declare the needed API versions and `host-api-v1` as shown
+  in that reference, and use `runtime.describe` to check optional methods.
+  `model.capabilities` reports configured route availability. An implemented
+  method, a configured route and provider account entitlement are three
+  separate checks; `host.has` proves only the app's capability grant.
+- `model.image`, `model.audio` and `model.embeddings` return bounded image,
+  MP3 or vector data. `model.video` starts a scoped asynchronous job;
+  `model.video.status` polls it and `model.video.cancel` requests cancellation.
+  Video handles belong to the app/account and current host process; a running
+  remote job may refuse cancellation. Show that result honestly and do not
+  blindly retry a possibly billable submission. Apps still need their own
+  rendering/playback UI and handling for unavailable service or quota errors.
+- Providers and credentials remain host-owned. Current adapters use OpenAI
+  for images, speech and embeddings, and MiniMax for images, speech and H3
+  video. A DeepSeek chat configuration or MiniMax M Plan subscription does
+  not establish media API entitlement. Never collect a key in the app.
+- [App Hub #147](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/147)
+  admits the seven media aliases in `tools.json`. The owning app still needs
+  `model` and `private_data: true`; generation, embeddings and cancellation
+  require at least `act` risk, while capabilities and status are `read`.
+  An admitted alias needs the matching host implementation before it runs.
+- **Validation boundary:** the service has synthetic provider-protocol tests
+  and a loopback HTTP transport test. Live paid providers, generated-media
+  UX and phone execution remain **unverified**. A passing gate or configured
+  chat account is not end-to-end media acceptance.
 
 ## An app's own agent
 
