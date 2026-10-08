@@ -182,7 +182,9 @@ network allowlist and declared capabilities. It has the host-request
 transport but **registers no services**, so no host service (`mail.*`,
 `auth.*`, `gmail.*`, `model.complete`, `octos.*`, `glance.*`) can be tested
 end to end there. Every call answers
-`no service answers "<family>" on this device`.
+`no service answers "<family>" on this device`, except `runtime.list` and
+`runtime.describe`: App Hub's dispatcher answers the `runtime` family itself
+(`crates/appstore/src/services.rs`).
 
 The shell uses App Hub's `CardModule`, plus its own registered Rust services.
 A script call follows this route:
@@ -271,9 +273,12 @@ An app's `tools.json` describes APIs for model callers. The shell runs a tool
 with `implemented_by: "host-service"` on the host service its `host_method`
 names, or else on the service of its namespace, when the app is granted that
 family. A system app's own namespace counts as granted; a store app's
-namespace grants nothing, so a store app's tools run through a `host_method`
-from App Hub's reviewed list. A tool with `implemented_by: "app"` has no
-executor, and the shell refuses it.
+namespace grants nothing, so a store app's host-service tools run through a
+`host_method` from App Hub's reviewed list. A tool with
+`implemented_by: "app"` runs only on OctoSense `main`: `ScriptAppExecutor` in
+`crates/shell/src/host_tools/script_apps.rs` submits it to App Hub's
+`script_tools` queue, and the open full app's signed `app_tool` handler
+answers it. `desktop-v0.1.0-beta.2` has no executor for it and refuses it.
 `AGENT.md` and skills are loaded as guidance for each turn. `background` and
 `triggers.events` are honored for two events: Mail's `mail.messages.new` and
 the Gmail service's `<namespace>.new_message`. Not yet: schedules, and model

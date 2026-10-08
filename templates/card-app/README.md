@@ -18,15 +18,21 @@ gate refuses it even after `hub stamp`, with `entry` and `listing` refusals. Add
 flow's `page.card` and `kit/` and a real capture, and replace its placeholder
 `platforms` with the platforms you tested.
 
-For CJK text, use the plain L0 role kit (`Surface`, `TextTitle`, `TextBody`,
-…) and set no `font_src`: it draws Chinese with the built-in LXGW WenKai. A
-kit's `font_src` may name only one built-in font,
-`makepad_widgets:resources/Inter.ttf`, which has no CJK glyphs. A `.ttf` or
-`.otf` file in the bundle, named by `font_src`, passes the gate but does not
-load in `card-host` today, so do not ship one
+To use a font of your own, put the `.ttf` or `.otf` file in the bundle and
+name it in `font_src` with a bundle-relative path, such as
+`"font_src": "assets/Body.ttf"`. A bundled font counts toward the 8 MiB
+limit, so bundle a subset of a large CJK font. Text the font lacks, such as
+Chinese, falls back to LXGW WenKai, Makepad's built-in Chinese font. The only
+built-in font a kit may name is `makepad_widgets:resources/Inter.ttf`
 ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
 Check the text with `MAKEPAD_SYSTEM_FONTS=0`, so that a system font cannot
 hide a missing glyph.
+
+`desktop-v0.1.0-beta.2` predates this font loading: it installs an app with a
+bundled font, but its cards do not load the font. For Chinese text there,
+build the card from the plain L0 role kit (`Surface`, `TextTitle`,
+`TextBody`, …) and set no `font_src`; LXGW WenKai draws the Chinese text.
+Font loading in a shell built from OctoSense `main` is unverified.
 
 For an app with its own logic, state and requests, use the
 [script-app template](../script-app/README.md) instead.

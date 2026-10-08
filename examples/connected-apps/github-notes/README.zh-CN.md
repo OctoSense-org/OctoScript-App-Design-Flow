@@ -4,7 +4,7 @@
 
 普通 App Hub 应用包 `org.octosense.samples.githubnotes` 提供本地 Markdown 草稿和经宿主确认的 GitHub 提交。它只申请 `storage`、`auth` 和 `github`，从不接收提供商令牌，也不直接联网。连接 GitHub 不会创建 OctoSense 云账户。
 
-0.1.1 版已从 [ymote/octosense-github-notes](https://github.com/ymote/octosense-github-notes) 发布到 App Hub，它声明了 0.1.0 中缺少的可选 Agent。本目录是未签名的开发副本。它的 `manifest.json` 中版本仍是 0.1.0，也没有签名，但声明了同一个 Agent，附带同样的 [AGENT.md](bundle/AGENT.md)。`listing.json` 的发布者字段是占位内容，版本说明也不同，描述中还没有像发布版那样说明 **Ask GitHub Notes**。其余文件与已发布的 0.1.1 一致。[参考应用指南](../README.zh-CN.md)说明了应用的构成，以及复用前需要修改什么。
+0.1.1 版已从 [ymote/octosense-github-notes](https://github.com/ymote/octosense-github-notes) 发布到 App Hub，它声明了 0.1.0 中缺少的可选 Agent。本目录是 0.1.1 的未签名开发副本，Agent 和 [AGENT.md](bundle/AGENT.md) 都与发布版相同。它的 `listing.json` 中发布者字段是占位内容，`manifest.json` 没有签名；其余文件都与发布版一致。[参考应用指南](../README.zh-CN.md)说明了应用的构成，以及复用前需要修改什么。
 
 编辑器采用 Rinx 的布局。Rinx 是 OctoSense 自带的文章编辑器：顶部是纯图标的标题栏和格式按钮，桌面端提供原文/分栏/预览，手机端在底部显示格式工具栏。样式面板还能打开富文本块编辑。编辑器基于 Rinx v1.1.0 组件，保留精确的 Markdown、富文本选择、撤销/重做、代码、表格和公式渲染，以及本地恢复。它不包含 Rinx 的 Matrix 发布功能，也不包含图片选择和上传。远程图片 URL 保留为 Markdown，本示例不下载图片。
 

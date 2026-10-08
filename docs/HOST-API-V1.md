@@ -2,26 +2,36 @@
 
 English | [简体中文](HOST-API-V1.zh-CN.md)
 
-**Implementation guide, not a released-host promise.** These changes target the
-1.6 App Hub contract and a compatible OctoSense, runner and Makepad build.
-Contract 1.6.0 is published; compatible host artifacts and phone acceptance are pending. An older host
-must reject an app that requires these features. For the earlier release
-behavior, see [Host services](HOST-SERVICES.md).
+Host API v1 lets an app discover and call the Rust services compiled into its
+host, and lets the app's agent call Splash functions that the app declares as
+tools. It loads no custom Rust library, Wasm or JIT code, and it does not
+expose every OS API.
 
-An app can call Rust services compiled into its host, plus its own declared
-Splash functions through the script-tool ABI. This work does not load custom
-Rust libraries, Wasm or JIT code, or expose every OS API.
+App Hub contract 1.6 or later, published on crates.io, defines the
+declarations on this page. Each build treats an app that declares them as
+follows:
 
-For a runnable source example, use OctoSense's
-[native Host API Lab](https://github.com/OctoSense-org/OctoSense/tree/feat/host-api-contract/tools/fixtures/host-api-lab).
-It has passed on macOS with signed installation, an app-owned Splash tool,
-a real Rust/OS permission-status call, live UI updates and permission refusals.
-It is a development acceptance fixture, not a public App Hub release or a
-real-model/peer-consent test. Its README includes the exact build and run commands.
+| Build | Host API v1 |
+| --- | --- |
+| OctoSense `main` (in no release yet) | Implements every API on this page, within the platform limits each section gives. |
+| `desktop-v0.1.0-beta.2` | Refuses the app: its contract, 1.5, knows none of the `requires` markers below. For what beta.2 serves, see [Host services](HOST-SERVICES.md). |
+| `card-host`, which `tools/octo run` starts | Refuses the app ([Before publishing](#before-publishing)). For an app that requests `runtime` without the markers, it answers `runtime.list` and `runtime.describe`. |
+
+**Unverified:** a physical permission approval, camera capture, the Android
+runtime, Linux and Windows device services, consent to the app's agent, and
+live-model runs.
+
+For a runnable example, see OctoSense's
+[Host API Lab](https://github.com/OctoSense-org/OctoSense/blob/main/tools/fixtures/host-api-lab/README.md),
+a development fixture whose README gives the build and run commands. On macOS
+it passed these checks: signed installation, an app-owned Splash tool, a real
+OS permission-status call (`camera.permission.status`), live UI updates and
+permission refusals. It is not a published App Hub app, and it tests neither a
+live model nor consent to the app's agent.
 
 ## 1. Declare what the app needs
 
-The following is a **manifest fragment**, not a complete publishable bundle:
+This **manifest fragment** is not a complete manifest:
 
 ```json
 {
@@ -36,19 +46,21 @@ The following is a **manifest fragment**, not a complete publishable bundle:
 
 | Field or marker | Meaning |
 | --- | --- |
-| `host-api-v1` | Enables `host_api` requirements and the new device-consent policy; requires `app_policy.device_consent@1`. |
-| `host_api.required` | Every entry must exist with this exact ABI major on this platform, or installation/launch fails. Version 2 does not satisfy version 1. |
-| `host_api.optional` | Missing entries permit installation; the app must provide a fallback. |
-| `script-tools-v1` | Requires the `app_tools.dispatch@1` runtime ABI for `implemented_by: "app"` tools. |
-| `backend-api-v1` | Enables signed backend registration and requires `auth.backend.request@1`. |
+| `host-api-v1` | Enables the `host_api` block and the device-consent policy in [§3](#3-request-device-access-in-the-foreground). The host must implement `app_policy.device_consent@1`. |
+| `host_api.required` | The host must implement each method at exactly this ABI major version on this platform, or installation or launch fails. Version 2 does not satisfy version 1. |
+| `host_api.optional` | The app installs even if the host lacks these methods; the app must provide a fallback. |
+| `script-tools-v1` | Enables `implemented_by: "app"` tools ([§5](#5-implement-a-declared-app-tool)). The host must implement the `app_tools.dispatch@1` runtime ABI. |
+| `backend-api-v1` | Enables the `backend` block ([§4](#4-connect-the-apps-backend)). The host must implement `auth.backend.request@1`. |
 
-Markers and ABI versions do not grant capabilities. Keep the existing app
-identity, capabilities, account, network, signing and publication requirements.
-An ABI version describes a method's contract, not an OctoSense release number.
+Markers (the values in `requires`) and ABI versions grant no capability. The
+usual rules for identity, capabilities, accounts, network access, signing and
+publication still apply. An ABI version describes a method's contract, not an
+OctoSense release number.
 
 ## 2. Discover before offering an optional feature
 
-With the `runtime` capability:
+With the `runtime` capability, ask whether the host implements a method before
+you offer the feature that uses it:
 
 ```splash
 host.request("runtime.describe", {method: "location.get"}, fn(r){
@@ -69,11 +81,13 @@ takes `{method: "…"}`; service responses include `implemented`, `supported`,
 **Available, configured and permitted are separate.** Use the service's account
 or status methods to check setup. A discovered API can still refuse a call for
 missing configuration, account, app consent or OS permission. Some older
-services have no descriptor; discovery is not an exhaustive historical list.
+services have no descriptor, so discovery does not list every method a host
+serves.
 
 `app_tools.dispatch` is a runtime ABI, not a callable service. Its description
-has `kind: "runtime-abi"` and `callable_via_host_request: false`. Use the hook in
-section 5; do not send `host.request("app_tools.dispatch", ...)`.
+has `kind: "runtime-abi"` and `callable_via_host_request: false`. Use the hook
+in [§5](#5-implement-a-declared-app-tool); do not send
+`host.request("app_tools.dispatch", …)`.
 
 ## 3. Request device access in the foreground
 
@@ -81,24 +95,47 @@ section 5; do not send `host.request("app_tools.dispatch", ...)`.
 provide `status`, `request` and `revoke`, each with `{}` arguments, on Android
 and macOS. These methods require `host-api-v1` and the corresponding capability.
 
-A permission request first obtains this app's native consent, then the OS grant
-if needed. The app cannot approve its own sheet. An agent can read status, but
-cannot approve consent or turn a background request into a foreground one.
-Responses distinguish `app_policy_granted`, `app_consent` and `os_permission`.
-Revoking app consent does not revoke the OS package's grant or other apps'
-consent. Opted-in apps' device widgets and GPS helpers use this gate too.
+A permission request first asks the person to consent for this app on a native
+sheet, then asks the OS for its permission if needed. Consent covers one app
+across its accounts. The app cannot approve its own sheet. A request from an
+agent or a background card fails with
+`<method> is unavailable to agents/background surfaces`. A request still
+waiting when the shell goes to the background fails with
+`authorization_required`, as does `location.get` until the person grants the
+app location access. An agent can
+read status, revoke the app's consent and read the location once the app is
+authorized, but it cannot approve consent.
+
+A response reports three states separately: `app_policy_granted` (the
+manifest grants the capability), `app_consent` (the person consented for this
+app) and `os_permission` (the OS grant to the shell). Revoking the app's
+consent changes neither the shell's OS grant nor other apps' consent.
+
+In an app that declares `host-api-v1`, the same consent check covers
+`CameraPreview`, `sys.request_location`, `sys.gps` and GPS reads by map
+widgets. After the shell starts, the host refuses each of these until the app
+calls that capability's permission method, which loads the app's saved
+consent for it. When the app opens, call `camera.permission.status` before
+you start `CameraPreview`, and `location.permission.status` before you read
+GPS. `sys.request_location` can prompt, so call it
+only in the foreground; background code can use `sys.gps`, which never
+prompts, or `location.get` once the app is authorized.
 
 `location.get` currently works only on Android. It returns `latitude`,
 `longitude`, `accuracy_m`, `source: "last_known"`, `timestamp: null` and
-`freshness: "unknown"`. It does not guarantee a fresh fix or background location.
-A permission API is not a new capture, picker or calendar API; use only methods
-actually registered by the host. The adapter does not advertise these device
-methods for Windows, Linux or iOS.
+`freshness: "unknown"`. It does not guarantee a fresh fix or background
+location. The permission methods add no capture, picker or calendar API; call
+only methods the host registers. On Windows, Linux and iOS, the host does not
+advertise these device methods: `status` reports
+`os_permission: "unsupported"`, and the other methods fail with
+`unsupported_platform`.
 
 ## 4. Connect the app's backend
 
-Add `auth`, `storage.accounts: true`, `backend-api-v1` and `host-api-v1` to the
-manifest, plus a signed `backend` declaration. For example, this is a fragment:
+Describe the backend in the manifest's `backend` block. A manifest with that
+block must also request `auth`, set `storage.accounts: true` and list
+`backend-api-v1` in `requires`. This fragment also declares a `host_api`
+block, so it lists `host-api-v1` too:
 
 ```json
 {
@@ -122,14 +159,14 @@ manifest, plus a signed `backend` declaration. For example, this is a fragment:
 }
 ```
 
-The backend implements public-client PKCE authorization, token exchange,
-identity and logout. Its website owns registration/login; the app does not
-collect passwords. Endpoints share one HTTPS origin on port 443. Named
-operations fix the method, path and permitted query keys. The host supplies
-app identity and keeps tokens in its vault.
+The backend must implement public-client PKCE authorization, token exchange,
+an identity endpoint and logout. People register and sign in on the backend's
+own website; the app never collects a password. Endpoints share one HTTPS
+origin on port 443. Named operations fix the method, path and permitted query
+keys. The host supplies app identity and keeps tokens in its vault.
 
 Call `auth.connect` with `{provider: "backend", scopes: ["app.session"]}`.
-Use the returned app-owned connection with:
+Then pass the connection it returns to `auth.backend.request`:
 
 ```splash
 host.request("auth.backend.request", {
@@ -142,37 +179,37 @@ host.request("auth.backend.request", {
 })
 ```
 
-`body` is optional JSON for declared writes. The app cannot supply an arbitrary
-URL, method, Authorization header or another app's connection. GET operations
-may run in the background. Mutations require foreground native review of the
-exact immutable request and a physical approval; synthetic input cannot approve.
-Cancelling before approval sends nothing. Once approved, a network operation
-cannot be undone by cancelling the UI.
+`body` is optional JSON for declared writes. The app cannot supply an
+arbitrary URL, method, Authorization header or another app's connection. A GET
+operation may run in the background. A write runs only in the foreground,
+after the host shows the exact, unchangeable request on a native sheet and the
+person approves it with a physical press; synthetic input cannot approve it.
+Cancelling before approval sends nothing; after approval, closing the sheet
+cannot undo the request.
 
-The host rechecks the admitted declaration. Changing/removing it or withdrawing
-the app invalidates access; a rollback does not revive revoked connections.
-Installation, update and removal notifications revoke existing backend handles;
-even an update that keeps the same declaration requires reconnecting.
-Embedded backend login is implemented for macOS/Android, with device acceptance
-still pending. Windows/Linux retain a separate external-browser authentication
-path; embedded `WebReader` is unsupported and must fail visibly. Google Android
-sign-in remains unsupported. Google/GitHub also need provider registrations in
-the host; ordinary app users do not register a developer client themselves.
+The host rechecks the admitted declaration. Changing or removing the
+declaration, or withdrawing the app, invalidates access; a rollback does not
+revive revoked connections. Installing, updating or removing the app revokes
+its backend handles, so the app must call `auth.connect` again after every
+update, even one that keeps the declaration. On macOS and Android 9 or later,
+the host shows the backend's sign-in page in a web view it owns; device
+acceptance is still pending. On Windows and Linux, the host opens the system
+browser instead (unverified).
 
 ## 5. Implement a declared app tool
 
-Use `script-tools-v1`. Declare the tool in signed `tools.json`, including JSON
-input/result schemas. This minimal declaration returns state from the app's
-existing UI VM. For an app with manifest ID `dev.example.notebook`, the tool
-prefix is `notebook`, its final ID segment. `notes` is reserved for a native app
-and cannot be an installed app's tool namespace:
+List `script-tools-v1` in `requires`, and declare each tool in `tools.json`
+with its input and output schemas. A tool's namespace is the last segment of
+the app's id, `notebook` for `dev.example.notebook`; it cannot be a reserved
+name such as `notes`, which belongs to a native app. This declaration adds one
+tool that reads the app's current state:
 
 ```json
 {
   "schema": 1,
   "tools": [{
     "name": "notebook.current",
-    "description": "Read the text currently open in Notes",
+    "description": "Read the text currently open in the notebook",
     "implemented_by": "app",
     "risk": "read",
     "input_schema": {"type": "object", "additionalProperties": false},
@@ -198,37 +235,68 @@ fn app_tool(name, call_id) {
         mod.app_tools.fail(call_id, "Unknown tool")
     }
 }
-// The UI reads/edits current_text in this same VM.
+// The UI reads and edits current_text in this same VM.
 ```
 
 `request` contains `args` and host-stamped
 `context: {app, account, caller, call_id}`. For asynchronous work,
 `mod.app_tools.active(call_id)` checks whether a result is still wanted.
-`complete` validates the result schema; `fail` returns an error string.
-This hook is Splash code; a purely declarative L0 card cannot define it.
+`complete` checks the result against `output_schema`; `fail` returns an error
+string. This hook is Splash code; a purely declarative L0 card cannot define
+it.
 
-The tool relay authenticates callers and permissions, then queues the hook for
-the owning full-app VM on the UI thread. Tokio tasks wait for its result; they
-do not own or move the VM. The hook shares UI state and the app's storage jail.
-Glance creates no second tool owner; multiple owners are rejected. A closed app
-returns `app_not_running`, with no hidden background or cold start.
+The host checks the caller and its permissions, then runs the hook on the UI
+thread, in the VM of the full app that owns the tool, so the hook shares the
+UI's state and the app's storage jail. Only the full app owns its tools: a
+Glance card does not, and the host refuses a second owner. A call while the
+app is closed answers `app_not_running`; the host never starts the app to
+answer it.
 
-Calls have 1 MiB input/result limits, at most 16 pending per app and 128 per
-process, at most 60 seconds, and VM instruction/memory limits. Closing the app,
-changing accounts or cancelling invalidates replies; cancellation cannot undo
-an already-emitted host request. Tool turns cannot prompt for consent. Use host
-confirmation for consequential tools; this ABI does not implement
-`confirm: "app"` proof. Existing `implemented_by: "host-service"` tools continue
-using their registered Rust service.
+A call runs within these limits:
+
+| Limit | Value |
+| --- | --- |
+| Input and result | 1 MiB each |
+| Pending calls | 16 per app, 128 per process |
+| Time | 60 seconds per call |
+| VM | The app's instruction and memory limits |
+
+Closing the app, switching accounts or cancelling the call discards the reply,
+but cancelling cannot undo a host request the hook already sent. A tool call
+cannot show a consent sheet. For a tool with consequences, keep the default
+`confirm: "host"`; this ABI refuses `confirm: "app"`.
+`implemented_by: "host-service"` tools still call their Rust service.
 
 ## Before publishing
 
-Check the final signed bundle with compatible App Hub tooling. Then test on the
-actual supported OctoSense release: discovery and missing-service fallback,
-account changes, permission denial/revocation, closed-app tool calls and native
-write review. `card-host` does not acquire OctoSense's services merely because
-it can render the app. Publish only platforms you exercised. Source checks and
-VM unit tests do not establish a OnePlus 6 or live-model pass.
+`card-host` implements none of the runtime APIs that these markers require, so
+`tools/octo run` cannot run an app whose `requires` lists `host-api-v1`,
+`backend-api-v1` or `script-tools-v1`. `run` still prints `admitted` and
+`ready: first frame drawn`, but the window shows a refusal instead of the app,
+and `/snap` lists its labels. For an app that requires only `script-tools-v1`:
+
+```text
+card-host refused this bundle
+app dev.example.notebook needs a host implementing
+app_tools.dispatch@1
+```
+
+The reason names the API the host lacks; for `host-api-v1` it is
+`app_policy.device_consent@1`. If `host_api.required` lists a method the host
+lacks, the reason is
+`this host does not implement required APIs: <method>@<version>` instead.
+Test such an app this way:
+
+1. Check the final signed bundle with `hub` built from App Hub `main`:
+   `hub check <bundle> --publisher-key <publisher-id>=<hex public key>`
+   prints a line that ends in `— PASSED`.
+2. Install it from a local mirror in an OctoSense desktop shell built from
+   `main`, as [PUBLISHING §4](PUBLISHING.md#4-rehearse-the-store-path-locally)
+   shows.
+3. Exercise discovery and the fallback for a missing API, account changes,
+   permission denial and revocation, a tool call while the app is closed, and
+   the native review of a backend write.
+4. In `listing.json`, list only the platforms you tested.
 
 See [ADR 0012](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0012-app-host-api-discovery.md),
 [the script tool implementation](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/crates/appstore/src/script_tools.rs),

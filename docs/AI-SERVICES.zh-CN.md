@@ -34,14 +34,14 @@
 
 ## 简短回答
 
-**在 OctoSense 设备上，商店应用可以进行一次性模型调用（`model`），并在用户允许其 Agent 后与助手对话（`octos.*`）。** `tools/octo run` 使用的 App Hub `card-host` 不提供任何宿主服务，所以在那里两者都返回 `no service answers "…" on this device`。无论如何都请把应用做成不依赖 AI 也完整可用：用户可能拒绝，设备也可能没有内核（iOS）或没有提供商。
+**在 OctoSense 设备上，商店应用可以进行一次性模型调用（`model`），并在用户允许其 Agent 后与助手对话（`octos.*`）。** `tools/octo run` 使用的 App Hub `card-host` 除了用于发现宿主 API 的 `runtime`，不提供任何宿主服务，所以在那里两者都返回 `no service answers "…" on this device`。无论如何都请把应用做成不依赖 AI 也完整可用：用户可能拒绝，设备也可能没有内核（iOS）或没有提供商。
 
 | 你想要 | 目前的结果 | 详见 |
 | --- | --- | --- |
 | 进行一次性模型调用（`model`） | 在 OctoSense Shell 中**可用**：按 schema 校验的调用，由用户自己的 AI 提供商回答，有每日预算。`card-host` 返回 `no service answers "model" on this device`（**✓ 已运行**）。 | [一次性模型调用](#一次性模型调用model) |
 | 在自己的界面中与助手对话（`octos.*`） | 在托管内核的 Shell 中**可用**（iOS 除外）。第一次调用返回 `Waiting for the person to allow this app's agent (OctoSense asks the first time)`，同时 Shell 询问用户；之后应用与自己的 peer 对话。`card-host` 返回 `no service answers "octos" on this device`（**✓ 已运行**）。 | [最小调用示例](#最小调用示例与不可用状态) |
 | 给应用一个自己的 Agent（`agent`、`tools.json`、`AGENT.md`、`skills/`） | **可用**：用户允许后，Agent 得到一个 peer、一个“Ask &lt;app&gt;”对话栏、`ask_user_question`、对账户文件夹的读取工具（仅 Unix）、已授权的宿主服务工具，并把 `AGENT.md` 和技能作为每个回合的指导。没有 `agent` 块的 `tools.json` 同样会让应用拥有一个 Agent。 | [应用自己的 Agent](#应用自己的-agent) |
-| 运行由应用脚本实现的工具（`implemented_by: "app"`） | **尚未支持**：准入检查接受它，但 Shell 拒绝执行。 | [应用的工具](#应用的工具与-peer-工具) |
+| 运行由应用脚本实现的工具（`implemented_by: "app"`） | **尚未进入发布版本**：在 OctoSense `main` 上，清单声明了 `requires: ["script-tools-v1"]` 时，工具在打开的应用中运行；应用关闭时，调用返回 `app_not_running`。`desktop-v0.1.0-beta.2` 拒绝执行。 | [应用的工具](#应用的工具与-peer-工具)、[HOST-API-V1 §5](HOST-API-V1.zh-CN.md#5-实现声明的应用工具) |
 | 用事件唤醒 Agent | Gmail 服务的 `<namespace>.new_message` **可用**；其他事件**尚未支持**。 | [清单中的 `agent`](#清单中的-agent) |
 | 按定时唤醒 Agent，或根据 `needs` 挑选模型 | **尚未支持** | [清单中的 `agent`](#清单中的-agent) |
 | 发布速览卡片（`glance`） | **可用**：L0、脚本和模板卡片，可附带通知。在 OctoSense `main` 上（尚未进入任何发布版本），Agent 的工具只能发布模板卡片和 L0 卡片。 | [发布到速览栏](#发布到速览栏) |
@@ -194,8 +194,8 @@ fn ask(){
 
 测试时要注意两处版本差异：
 
-- `tools/octo check` 运行的是本仓库旁边的 App Hub 检出（`main`）。OctoSense Shell 锁定自己的一个 App Hub commit（见 OctoSense 的 `Cargo.toml` 和 `native-apps.json`），它可能落后于 App Hub `main`。两者都从同一个 crate 取得清单规则：`octosense-app-contract`（[ADR 0005](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0005-app-contract.md)），App Hub 要求 1.5 版（2026-10-07 已发布到 crates.io，OctoSense `main` 使用的就是这个版本）。默认 `schema_minor`（0）的清单仍会拒绝未知字段（**✓ 已运行**：``hub: manifest is not valid: unknown field `future_field`, expected one of `schema`, `id`, … `requires`, `schema_minor` ``），所以不要使用 Shell 锁定版本不认识的字段。
-- 为本仓库构建的 `card-host` 和 `card-studio`（都是 App Hub 的工具）使用 [`native-runtime.lock.json`](../native-runtime.lock.json) 锁定的运行时：OctoScript-Makepad `33dea2f1`，它锁定 OctoScript `2e37d9e6`，与 Shell 使用的版本相同。这个运行时能检查 `sys.digest`、文本槽中的 `model-copy`、`sys.chat` 和 `ChatEntry`。
+- `tools/octo check` 运行的是本仓库旁边的 App Hub 检出（`main`）。OctoSense Shell 锁定自己的一个 App Hub commit（见 OctoSense 的 `Cargo.toml` 和 `native-apps.json`），它可能落后于 App Hub `main`。两者都从同一个 crate 取得清单规则：`octosense-app-contract`（[ADR 0005](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0005-app-contract.md)），App Hub 要求 1.7 版，该版本已发布到 crates.io。OctoSense `main` 从 crates.io 解析到的是 1.6.0；Host API v1 需要 1.6 或更高版本。默认 `schema_minor`（0）的清单仍会拒绝未知字段（**✓ 已运行**：``hub: manifest is not valid: unknown field `future_field`, expected one of `schema`, `id`, … `requires`, `schema_minor` ``），所以不要使用 Shell 锁定版本不认识的字段。
+- 为本仓库构建的 `card-host` 和 `card-studio`（都是 App Hub 的工具）使用 [`native-runtime.lock.json`](../native-runtime.lock.json) 锁定的运行时：OctoScript-Makepad `33dea2f1`，它锁定 OctoScript `2e37d9e6`。这个运行时能检查 `sys.digest`、文本槽中的 `model-copy`、`sys.chat` 和 `ChatEntry`。Shell 使用的 OctoScript 版本与此相同，但 `desktop-v0.1.0-beta.2` 锁定的是较早的 OctoScript-Makepad `aa80f72c`，它不加载卡片打包的字体。
 
 OctoSense 自己的测试为模型、工具箱、应用 peer 和内核准备了替身，见它的[架构导读 § 11. 测试](https://github.com/OctoSense-org/OctoSense/blob/main/docs/architecture-walkthrough.zh-CN.md#11-测试)。应用包无法换用这些替身。
 
@@ -259,7 +259,7 @@ Shell 在脚本应用的 peer（`card.<app id>`）上注册的内容，读自 Oc
 | `ask_user_question`（octos 内核工具） | `agent.tools: ["ask_user_question"]` | **有** | **有**（每个有 Agent 的系统应用） |
 | `files.list`、`files.read`、`files.search`（只读，无需审批） | Agent 有工作区的每个 peer，限 Unix 平台 | **有**：只限它的账户文件夹，每次读取 128 KiB，每次列出 500 项，每次搜索 100 条匹配 | **有** |
 | 它自己 `tools.json` 中 `implemented_by: "host-service"` 的工具 | 在工具的 `host_method` 所属能力族、或其命名空间对应的宿主服务上，以应用的身份运行，就像它自己调用 `host.request` 一样；该能力族必须已授予，或者是系统应用自己的命名空间 | 通过 `host_method` 调用已授予的 `github`、`gcalendar`、`gmail` 或 `glance` 时**有**。没有 `host_method` 时，工具调用其命名空间对应的服务，而没有任何能力能授予它：`dev.example.summary` 中的 `summary.list` 返回 `not_granted`，即 `dev.example.summary was not granted the summary service`。调用 `github`、`gcalendar` 或 `gmail` 还需要一个当前连接的账户，否则返回 `Connect this app account first` | **有**：News（`news.list`、`news.read`、`news.notify`）、Mail（12 个工具，例如 `mail.peek` 和 `mail.propose_reply`）、Calendar（`calendar.events`、`add_event`、`update_event`、`remove_event`、`notify`、`agenda`），以及 `photos.notify`、`maps.notify`、`youtube.notify`、`camera.notify` |
-| 它自己 `tools.json` 中 `implemented_by: "app"` 的工具 | 本应在应用的脚本中运行 | 拒绝执行（`app_tool_unavailable`）：`<tool> declares a script implementation, but this host does not support script tool dispatch` | 同左 |
+| 它自己 `tools.json` 中 `implemented_by: "app"` 的工具 | 打开的完整应用中的 `app_tool` 处理函数 | 仅限 OctoSense `main`，且清单声明了 `requires: ["script-tools-v1"]`；应用关闭时，调用返回 `app_not_running`。`desktop-v0.1.0-beta.2` 拒绝执行（`app_tool_unavailable`）：`<tool> declares a script implementation, but this host does not support script tool dispatch` | 同左 |
 | 通用宿主工具 `ledger.read`、`ledger.write`、`net.fetch`、`storage.read`、`storage.write`、`card.render` | `agent.tools` | 准入检查接受，但没有任何 Shell 实现它们 | 同左 |
 | 其他应用可共享的工具（`mail.send`） | `agent.tools` 中带点的名称 | 准入检查（`hub check`）拒绝：`app <id> requests tool "mail.send", which this host does not offer contained apps`（**✓ 已运行**） | 由 Shell 自己的策略授予；例如 Mail 保留 `calendar.events`、`calendar.add_event` 和 `calendar.notify` |
 | 系统工具箱的工具 | `research` / `crawl` 能力 | **尚未支持** | 在启用 `toolbox-peers` 时（见[下文](#系统工具箱)）；没有系统应用声明 `research` |
@@ -404,7 +404,7 @@ Shell 把已准入、经过摘要校验的 `AGENT.md` 和技能文字作为应�
 
 - `name` 的形式是 `<namespace>.<tool>`；命名空间是**应用 id 的最后一段**（`dev.example.summary` → `summary`，`os.news` → `news`）。
 - `input_schema` 和 `output_schema` 都必须提供（准入检查拒绝缺少 `output_schema` 的工具：``tools.json is not valid: missing field `output_schema` ``，**✓ 已运行**）。它们使用 JSON Schema 的一个子集（`type title description properties required items enum const default minimum maximum minLength maxLength minItems maxItems additionalProperties format pattern`）；输入必须是对象。最多 64 个工具，描述最长 1024 个字符。
-- `implemented_by`：`host-service`（持有数据、网络或密钥的原生代码）或 `app`（应用自己的脚本）。Shell 以应用的身份在宿主服务上运行 `host-service` 工具，就像应用自己调用 `host.request` 一样，从不经由面板（`may_prompt: false`）。服务是工具的 `host_method` 指定的那个，没有时是它命名空间对应的那个（`news.list` → `news`）。该能力族必须已授予，或者是系统应用自己的命名空间（`os.calendar` → `calendar`）；否则返回 `<app> was not granted the <family> service`。商店应用的命名空间（例如 `summary`）不是能力，所以它的工具只能通过 `host_method` 运行。准入检查接受 `app` 工具，但 Shell 拒绝对它的每次调用：`<tool> declares a script implementation, but this host does not support script tool dispatch`（OctoSense `crates/shell/src/host_tools/script_apps.rs`）。
+- `implemented_by`：`host-service`（持有数据、网络或密钥的原生代码）或 `app`（应用自己的脚本）。Shell 以应用的身份在宿主服务上运行 `host-service` 工具，就像应用自己调用 `host.request` 一样，从不经由面板（`may_prompt: false`）。服务是工具的 `host_method` 指定的那个，没有时是它命名空间对应的那个（`news.list` → `news`）。该能力族必须已授予，或者是系统应用自己的命名空间（`os.calendar` → `calendar`）；否则返回 `<app> was not granted the <family> service`。商店应用的命名空间（例如 `summary`）不是能力，所以它的宿主服务工具只能通过 `host_method` 运行。准入检查接受 `app` 工具。`desktop-v0.1.0-beta.2` 拒绝对它的每次调用：`<tool> declares a script implementation, but this host does not support script tool dispatch`。OctoSense `main` 则在打开的完整应用中运行它，前提是清单声明了 `requires: ["script-tools-v1"]`（[HOST-API-V1 §5](HOST-API-V1.zh-CN.md#5-实现声明的应用工具)；OctoSense `crates/shell/src/host_tools/script_apps.rs`）。
 - `host_method` 把普通应用的工具映射到一个经过 App Hub 审核的共享服务方法，例如上面的 `summary.card.publish` → `glance.publish`。App Hub 只接受 `SHARED_HOST_METHODS`（`crates/app-policy/src/agent.rs`）中的方法：`github`、`gcalendar` 和 `gmail` 的读取方法，`gmail.draft.open`、`gmail.draft.edit`、`gmail.event.decide`，以及 `glance.publish`、`glance.withdraw` 和 `glance.list`。这样的工具必须申请该方法的能力、声明 `private_data: true`，并且风险不低于该方法的要求。提供商写入、宿主确认面板上的批准和账户变更都不能作为别名。对 `github`、`gcalendar` 和 `gmail`，Shell 会把应用当前连接的账户加入参数。
 - 发布速览卡片的 Agent 工具只应接受 `template` + `initial`（如上），或 L0 的 `source` + `data`，不要接受 `script`：脚本卡片按应用自己的策略运行，回合一旦受输入误导，就可能发布任意代码。`desktop-v0.1.0-beta.2` 会发布工具接受的任何卡片；OctoSense `main` 则拒绝 Agent 工具传来的 `script`（见[谁可以发布](#谁可以发布)）。
 - `background`、`shareable`、`private_data`、`confirm`、`outward`、`auto_approvable`：见[审批：`risk` 与 `confirm`](#审批risk-与-confirm)。
@@ -431,7 +431,7 @@ Shell 通过 octos 的 peer 工具协议把这些工具注册到应用的 peer�
 | `confirm: "host"`（默认） | 由 Shell 的审批面板询问 | 调用作为一条审批请求，在 Shell 的面板上等待 |
 | `confirm: "app"` | 应用自己的确认面板是唯一的确认 | 调用作为一条审批请求，在 Shell 的面板上等待 |
 
-商店应用尚未支持 `confirm: "app"`：准入检查只允许 `implemented_by: "app"` 的工具（或原生模块的工具）使用它，而 Shell 拒绝执行这类工具。宿主服务工具写了它，准入检查会拒绝（**✓ 已运行**）：`[refused] tools: summary.card.publish says confirm "app" but is implemented by the host service: …`。
+商店应用尚未支持 `confirm: "app"`：准入检查只允许 `implemented_by: "app"` 的工具（或原生模块的工具）使用它。`desktop-v0.1.0-beta.2` 拒绝执行这类工具；OctoSense `main` 则拒绝需要应用自己确认的脚本工具调用：`Script tools require host confirmation; confirm: app is not supported by this ABI`。宿主服务工具写了它，准入检查会拒绝（**✓ 已运行**）：`[refused] tools: summary.card.publish says confirm "app" but is implemented by the host service: …`。
 
 后台工具应只做读取，以及用户在任何内容离开设备之前确认过的写入：后台回合处理的是不可信的输入，例如收到的邮件。
 

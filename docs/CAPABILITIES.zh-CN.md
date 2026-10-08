@@ -15,7 +15,7 @@
 "network": { "hosts": ["api.open-meteo.com"] }
 ```
 
-- **列表是封闭的。** App Hub `crates/app-contract/src/manifest.rs` 中的 `KNOWN_CAPABILITIES` 共有 103 个名称：25 个大类能力（例如 `storage` 和 `glance`）和 78 个精确服务名（例如 `octos.turn.start`）。准入检查会拒绝其他任何名称（例如 `contacts`），也会拒绝单独的前缀（例如 `octos.`）：
+- **列表是封闭的。** App Hub `crates/app-contract/src/manifest.rs` 中的 `KNOWN_CAPABILITIES` 共有 105 个名称：27 个大类能力（例如 `storage` 和 `glance`）和 78 个精确服务名（例如 `octos.turn.start`）。准入检查会拒绝其他任何名称（例如 `contacts`），也会拒绝单独的前缀（例如 `octos.`）：
 
   ```text
   [refused] policy: app dev.example.myapp requests unknown capability "contacts"
@@ -47,7 +47,9 @@
 | --- | --- | --- |
 | `net` | `net.http_request` 和 `net.web_socket`，只能访问 `network.hosts` 中列出的主机。主机必须写成精确的小写纯主机名：不带协议、路径、端口或通配符。 | 脚本中根本没有 `net`：`variable net not found in scope`。申请了 `net` 但主机列表为空时也是如此。 |
 | `images` | 任何公开 `https://` 主机上的图片（`Image{src: http_resource(url)}`），不限于 `network.hosts`，例如 RSS 阅读器的缩略图。`net.http_request` 的访问范围不会因此扩大。 | 只能加载已列出主机上的图片。 |
-| `web` | `WebReader` 可以在系统的网页视图中打开任何公开的 `https://` 网页。网页无法反过来访问应用。这个视图只能在 macOS、iOS 和 Android 上打开。Windows、Linux 和 OpenHarmony 版本没有对应的处理程序：`open` 返回 `true`，但不会出现网页，日志中显示 `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`。 | `WebReader.open` 只能打开已列出主机上的网页，其他一律拒绝：``refused <url>: not on this app's host list, and no `web` grant``。 |
+| `web` | `WebReader` 可以在系统的网页视图中打开任何公开的 `https://` 网页。网页无法反过来访问应用。这个视图可以在 macOS、iOS 和 Android 上打开。 | `WebReader.open` 只能打开已列出主机上的网页，其他一律拒绝：``refused <url>: not on this app's host list, and no `web` grant``。 |
+
+在 Linux 和 Windows 上，用 OctoSense `main` 构建的 Shell 会让 `open` 返回 `false`，`error()` 返回 `Embedded web pages are unavailable on this platform; this host has no native WebReader adapter`。在这两个平台上，`card-host` 和 `desktop-v0.1.0-beta.1` 的 Linux、Windows 版本会让 `open` 返回 `true`，但不显示网页，日志中显示 `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`。`desktop-v0.1.0-beta.2` 只有 macOS 版本。
 
 运行时和准入检查会拒绝以下情况：
 
@@ -79,8 +81,10 @@ this app was not granted "mail", which "mail.accounts" needs
 | `gmail` | 读取 Gmail，使用带版本号的回复草稿，经用户在宿主的审阅界面上批准后发送邮件，并为应用 Agent 提供新邮件事件。需要 `auth`。 |
 | `glance` | `glance.publish`、`glance.withdraw` 和 `glance.list`：在速览栏上发布卡片，这些卡片只会打开本应用。见 [AI-SERVICES § 发布到速览栏](AI-SERVICES.zh-CN.md#发布到速览栏)。 |
 | `model` | `model.complete` 和 `model.budget`：通过用户自己的 AI 提供商进行一次性模型调用，结果按应用的 JSON Schema 校验，并受每日预算限制。见 [AI-SERVICES § 一次性模型调用](AI-SERVICES.zh-CN.md#一次性模型调用model)。 |
+| `runtime` | `runtime.list` 和 `runtime.describe`：当前构建实现了哪些宿主 API，不含任何账户数据。用 OctoSense `main` 构建的版本和 `card-host` 都会响应；desktop-v0.1.0-beta.2 拒绝这项能力。见 [HOST-API-V1 §2](HOST-API-V1.zh-CN.md#2-提供可选功能前先查询)。 |
+| `wasm` | 应用自带的函数：应用包 `fns/` 中的 WebAssembly 模块（最多 8 个），由宿主的 `wasm` 服务在沙盒中运行，有截止时间和内存上限。函数只拿到自己的输入，接触不到文件、网络、时钟或其他应用。Agent 工具可以用 `host_method: "wasm.<function>"` 运行其中一个函数。商店显示的说明是“Run its own sandboxed functions on this device”。目前没有任何发布版本提供这项服务；OctoSense 只在启用了 `wasm-lab` 构建特性的版本中提供。 |
 
-这些服务都不在 `card-host` 中运行，在那里每次调用都返回 `no service answers "<family>" on this device`。请在 OctoSense Shell 中测试它们。
+除 `runtime` 外，这些服务都不在 `card-host` 中运行，在那里每次调用都返回 `no service answers "<family>" on this device`。请在 OctoSense Shell 中测试它们。
 
 ## 商店应用用不上的能力
 
@@ -146,7 +150,7 @@ this app was not granted "mail", which "mail.accounts" needs
 
    | 服务 | 方法 |
    | --- | --- |
-   | `auth` | `connect`、`accounts`、`active`、`select`、`disconnect`；在 OctoSense `main` 上还有 `backend.me`（[见下文](#登录应用自己的后端)） |
+   | `auth` | `connect`、`accounts`、`active`、`select`、`disconnect`；在 OctoSense `main` 上还有 `backend.me` 和 `backend.request`（[见下文](#登录应用自己的后端)） |
    | `github` | `repositories`、`files`、`read`、`review_save` |
    | `gcalendar` | `calendars`、`cached`、`refresh`、`get`、`prepare`、`review_save`；`sync` 仅在 desktop-v0.1.0-beta.2 上可用（[限制](#限制)） |
    | `gmail` | `labels`、`messages`、`message`、`draft.open`、`draft.get`、`draft.edit`、`draft.review`、`events.status`、`event.status`、`event.decide` |
@@ -159,9 +163,11 @@ this app was not granted "mail", which "mail.accounts" needs
 
 ### 登录应用自己的后端
 
-在 OctoSense `main` 上，宿主可以让用户登录应用自己的后端。目前还没有任何发布版本包含这项功能：`desktop-v0.1.0-beta.2` 的发布早于它。
+在 OctoSense `main` 上，宿主可以让用户登录应用自己的后端，并调用后端已声明的操作。目前还没有任何发布版本包含这项功能：`desktop-v0.1.0-beta.2` 的发布早于它。
 
-1. 声明 `auth` 和 `storage.accounts: true`。
+1. 声明 `auth` 和 `storage.accounts: true`，并用以下两种方式之一注册后端：
+   - 在清单的 `backend` 块中声明后端，并在 `requires` 中加入 `backend-api-v1`，写法见 [HOST-API-V1 §4](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)。宿主从已准入的签名应用包中读取这项声明。
+   - 请宿主的运维人员在 `<apps root>/.host/oauth/backends.json` 中注册。只有应用包没有声明 `backend` 时，宿主才读取这个文件。
 2. 用 `backend` 提供商及其唯一的权限连接：
 
    ```splash
@@ -172,8 +178,9 @@ this app was not granted "mail", which "mail.accounts" needs
 
    在 macOS 和 Android 9 及更高版本上，宿主在自己的 WebView 中打开后端的登录页，用户在那里注册或登录；应用无法打开或读取这个页面。在 macOS 上，`presentation: "browser"` 会改用系统浏览器；在 Windows 和 Linux 上，只支持浏览器方式。
 3. 用 `{connection: <handle>}` 调用 `auth.backend.me`。它返回 `{connection, backend_id, identity: {sub, label}}`，即后端验证过的身份。
+4. 用 `auth.backend.request` 调用已声明的操作（[HOST-API-V1 §4](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）。写操作要等用户在宿主面板上亲手点按批准后才会执行。
 
-较早的源码构建从运维人员配置的 `<apps root>/.host/oauth/backends.json` 读取各应用的后端注册。兼容 Host API v1 的源码构建还接受已准入签名包 `backend` 块中的公开注册信息和具名业务操作；所需清单标记、账户存储和调用约定见[后端指南](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)。没有应用包声明时仍支持运维配置。合约 1.6.0 已发布，兼容宿主安装包尚待发布；beta.2 不支持这两种后端方式。没有注册时，`auth.connect` 会返回 `This app's backend sign-in is unavailable. Contact the app's distributor.` 这句话。后端必须在同一个 HTTPS 源上提供使用 S256 PKCE 的 OAuth 授权码流程和 `/me` 端点。详情见 OctoSense 的[开发者后端契约](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#开发者后端接口约定)。iOS 不支持后端登录；Windows 和 Linux 上未验证。
+没有注册时，`auth.connect` 会返回 `This app's backend sign-in is unavailable. Contact the app's distributor.` 这句话。后端必须在同一个 HTTPS 源上提供使用 S256 PKCE 的 OAuth 授权码流程和 `/me` 端点。详情见 OctoSense 的[开发者后端契约](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#开发者后端接口约定)。iOS 不支持后端登录；Windows 和 Linux 上未验证。
 
 ### 限制
 
@@ -182,11 +189,11 @@ this app was not granted "mail", which "mail.accounts" needs
 - **日历同步。** 在 desktop-v0.1.0-beta.2 上，`gcalendar.refresh` 同步整个日历，并从最早的日程开始返回；`gcalendar.sync` 返回 Google 的原始日程分页。OctoSense `main`（尚未进入任何发布版本）只同步从今天之前 30 天到之后 366 天的日程，并展开重复日程，还会以 `window: {time_min, time_max}` 返回这个范围。它会拒绝 `gcalendar.sync`，并返回 `Use gcalendar.refresh for the bounded agenda; raw history synchronization is not exposed`。
 - **未验证**：真实 GitHub 和 Google 服务上的大部分实际使用，包括写入仓库和发送 Gmail。OctoSense `main` 记录了两次 macOS 上的检查：一是通过原生宿主、仅验证身份的 GitHub 和 Google 登录（Google 用的是测试账户）；二是一次手动的 Google Calendar 会话，列出了日历并保存了一个日程（[当前交付边界](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#当前交付边界)）。
 - **尚不支持**：在 Android 上登录 Google。`auth.connect` 返回 `Google authorization needs the Android host adapter; desktop login is not supported on this device`。
-- **尚未进入发布版本**：登录应用自己的后端（[见上文](#登录应用自己的后端)）。签名应用包可在兼容 Host API v1 的源码构建中声明自己的后端（[后端指南](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）；兼容宿主尚待发布。
+- **尚未进入发布版本**：登录应用自己的后端，以及调用它的操作（[见上文](#登录应用自己的后端)）。只有用 OctoSense `main` 构建的版本支持。
 
 ## 精确服务名
 
-除了 25 个大类能力，`KNOWN_CAPABILITIES` 还有 78 个精确服务名。每个名称都是一项单独的授权；前缀不授予任何能力。
+除了 27 个大类能力，`KNOWN_CAPABILITIES` 还有 78 个精确服务名。每个名称都是一项单独的授权；前缀不授予任何能力。
 
 | 名称 | 授予什么 | 由谁提供 |
 | --- | --- | --- |

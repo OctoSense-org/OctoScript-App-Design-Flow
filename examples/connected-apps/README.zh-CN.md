@@ -16,10 +16,10 @@
 
 App Hub 签名目录第 10 版为每个应用收录了 0.1.0 和 0.1.1 两个版本，发布者都是 `ymote`，状态都是 `offered`。商店显示最新的 0.1.1。每个版本都从各自仓库的对应标签（`v0.1.0`、`v0.1.1`）发布。本指南以 0.1.0 中的三个问题为教训，0.1.1 对它们作了处理（见[不要照搬的做法](#不要照搬的做法)）。
 
-本目录是与已发布 `v0.1.1` 源码同步的未签名开发副本。Calendar 已包含日程日期范围状态，Notes 已说明助手行为，Inbox 的 Agent 通知只使用模板。
-清单版本为 `0.1.1`，能力、存储和 Agent 声明与发布版一致，摘要重新计算，但不包含发布签名。
-商店文案与发布版一致；发布者、支持地址和隐私字段保留占位内容，供开发者替换。签名工具还可能展开清单中省略的默认字段。没有复制发布者密钥或发布身份。
-下文的历史验证仍对应原始源码和验证日期；这次源码同步不代表新增了提供商或设备验收。
+这里的各个目录是已发布 0.1.1 的未签名开发副本。除两个文件外，其余文件都与发布版逐字节相同：
+
+- `listing.json`：发布者名称、支持 URL 和隐私政策 URL 是占位内容，供你替换。商店信息的其余内容与发布版一致。
+- `manifest.json`：没有签名；由于 `listing.json` 不同，摘要也不同。已发布的清单还写出了 `hub sign-manifest` 补全的默认值，例如 `"network": {"hosts": []}` 和 `"tier": "standard"`。GitHub Notes 的副本则写明了默认值 `"background": false`，而已发布的清单省略了这一项。每个副本声明的版本、能力、存储和 Agent 都与发布版相同。
 
 ## 运行这些应用
 
@@ -27,7 +27,7 @@ App Hub 签名目录第 10 版为每个应用收录了 0.1.0 和 0.1.1 两个版
 
 | 条件 | 原因 |
 | --- | --- |
-| macOS（Apple 芯片）上的 [OctoSense desktop-v0.1.0-beta.2](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-beta.2) | 从这个版本起，App Hub 合约（1.5）准入 `auth`、`github`、`gmail`、`gcalendar`，Shell 也提供这些服务。它还带有 GitHub Notes 使用的 `MarkdownEditor` 控件。 |
+| macOS（Apple 芯片）上的 [OctoSense desktop-v0.1.0-beta.2](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-beta.2) | 从这个版本起，App Hub 契约（1.5）准入 `auth`、`github`、`gmail`、`gcalendar`，Shell 也提供这些服务。它还带有 GitHub Notes 使用的 `MarkdownEditor` 控件。 |
 | 宿主 `<apps root>/.host/oauth/clients.json` 中的提供商注册信息 | OAuth 客户端归宿主所有，不归应用。beta.2 只从这个文件读取注册信息，下载包里也没有内置。用 OctoSense `main` 构建时，可以改为把注册信息编译进去。 |
 | 启用设备授权流程的 GitHub OAuth 应用 | GitHub Notes 用它登录。 |
 | 启用 Gmail 和 Calendar API 的 Google 桌面 OAuth 客户端，并配置好同意界面和测试用户 | Inbox Assistant 和 Google Calendar 用它登录。 |
@@ -350,7 +350,7 @@ GitHub Notes 0.1.0 没有声明 `agent` 块，却附带了 `tools.json`。`hub c
 
 Google Calendar 通过 `gcalendar.refresh` 刷新。在 desktop-v0.1.0-beta.2 上，这会同步整个日历：宿主向 Google 请求全部日程，不设起始日期，并把快照按从旧到新排序。应用显示前 100 个日程，所以有多年历史的日历打开后显示的是最早的条目。大型日历一旦触及宿主上限就会同步失败：100 页、25,000 个日程、16 MiB 缓存，或每次刷新 35 秒。`googlecalendar.cached` 和 `googlecalendar.refresh` 工具会把整个快照交给模型。0.1.0 也没有告诉用户日程覆盖哪段日期。
 
-- **0.1.1 的改动：** 宿主报告同步窗口时，状态行显示 `past 30 days / next 366 days`；不报告时显示 `date range unavailable`。所选日程在同步后消失时，应用会提示它可能在显示的日期范围之外，而不是说它已不在日历中。本仓库的副本还没有这项改动。
+- **0.1.1 的改动：** 宿主报告同步窗口时，状态行显示 `past 30 days / next 366 days`；不报告时显示 `date range unavailable`。所选日程在同步后消失时，应用会提示它可能在显示的日期范围之外，而不是说它已不在日历中。本仓库的副本也有这项改动。
 - **OctoSense `main`：** 宿主只同步一个固定窗口：按 UTC 日界，从今天之前 30 天到之后 366 天，并把重复日程展开为单次日程。上限不变。
 - **desktop-v0.1.0-beta.2：** 宿主仍同步整个日历，从最早的日程开始排列，也不报告窗口，所以 0.1.1 显示 `date range unavailable`。
 
@@ -368,9 +368,9 @@ Inbox Assistant 的 `inbox.draft_edit` 设为 `background: true`，并接受 `to
 
 ```console
 $ hub check bundle --allow-unsigned --catalog <App Hub checkout>/catalog.json
-org.octosense.samples.githubnotes 0.1.0 — REFUSED
+org.octosense.samples.githubnotes 0.1.1 — REFUSED
   [warning] publisher-signature: unsigned: accountability rests on the hub alone
-  [refused] version: version 0.1.0 of org.octosense.samples.githubnotes is already published; publish a new version
+  [refused] version: version 0.1.1 of org.octosense.samples.githubnotes is already published; publish a new version
   [refused] continuity: org.octosense.samples.githubnotes is already published by "ymote"; an update must carry that key
   grants: capabilities {"auth", "github", "storage"}, hosts {}, storage 4194304 bytes, agent read-only
 hub: the bundle was refused
@@ -406,7 +406,7 @@ hub: the bundle was refused
    `hub stamp` 把应用包 64 个字符的 BLAKE3 摘要写入 `integrity.bundle_blake3`，并把它打印出来。检查通过时只有未签名警告：
 
    ```text
-   com.example.mynotes 0.1.0 — PASSED
+   com.example.mynotes 0.1.1 — PASSED
      [warning] publisher-signature: unsigned: accountability rests on the hub alone
      grants: capabilities {"auth", "github", "storage"}, hosts {}, storage 4194304 bytes, agent read-only
    ```

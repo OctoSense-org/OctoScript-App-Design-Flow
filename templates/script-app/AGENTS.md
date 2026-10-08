@@ -46,6 +46,8 @@ Follow these rules:
 - Restamp after every edit (`$OCTO check` does it). Sign last; any edit
   after signing needs a new stamp and a new signature.
 - Keys, `.local-state/`, `build/` and review packets never enter `bundle/` or Git.
+- Keep `.gitattributes` (`bundle/** -text`) committed: the digest covers every
+  byte, and a line-ending conversion breaks it.
 - Stop at human steps: publisher key, publisher details, platform claims, tag,
   submission.
 

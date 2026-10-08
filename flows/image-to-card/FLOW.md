@@ -202,7 +202,12 @@ verifier, so it refuses any signed manifest. Next:
   allowing other built-in fonts. In a trial packaging of `examples/aircon`
   scene `aircon-01`, `card-host` rendered the artwork and Latin text
   but drew CJK text as missing glyphs; a bundled font subset referenced as
-  `assets/fonts/...` did not change that. Check text in the screenshot.
+  `assets/fonts/...` did not change that.
+  On a later runtime, OctoScript-Makepad `704a3ad7`, `card-host` loads a
+  bundle-relative `font_src` and falls back to LXGW WenKai, Makepad's
+  built-in Chinese font; `desktop-v0.1.0-beta.2` does not load a bundled
+  font, and font loading in a shell built from OctoSense `main` is
+  unverified. Check text in the screenshot.
 - **Artboard.** The native image adapter supports `[406, 776]` only.
 - **Evidence.** A passing stage is not visual approval. Studio-backed
   `capture`/`gate` and instrument screenshots are separate evidence; neither

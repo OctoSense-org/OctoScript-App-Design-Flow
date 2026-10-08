@@ -6,7 +6,7 @@
 
 首次启动显示明确标注为虚构的收件箱，无需账户即可编辑，但不能发送邮件。在配置好的 OctoSense 宿主上，**Connect Google** 会打开共享 OAuth 服务；应用只获得绑定账户的句柄，不获得密码、授权码、访问令牌或刷新令牌。
 
-0.1.1 版已从 [ymote/octosense-inbox-assistant](https://github.com/ymote/octosense-inbox-assistant) 发布到 App Hub。它的 `inbox.notify` 工具只接受应用包内的速览卡片模板，`AGENT.md` 和分拣技能也写明了这一点。本目录是未签名的开发副本，工具、`AGENT.md` 和技能都与之相同。`manifest.json` 中的版本仍是 0.1.0，也没有签名；`listing.json` 的发布者字段是占位内容，副标题、描述和版本说明也不同。其余文件与已发布的 0.1.1 一致。[参考应用指南](../README.zh-CN.md)说明了应用的构成，以及复用前需要修改什么。
+0.1.1 版已从 [ymote/octosense-inbox-assistant](https://github.com/ymote/octosense-inbox-assistant) 发布到 App Hub。它的 `inbox.notify` 工具只接受应用包内的速览卡片模板，`AGENT.md` 和分拣技能也写明了这一点。本目录是 0.1.1 的未签名开发副本：`listing.json` 中发布者字段是占位内容，`manifest.json` 没有签名；其余文件都与发布版一致。[参考应用指南](../README.zh-CN.md)说明了应用的构成，以及复用前需要修改什么。
 
 ## 已实现的功能
 

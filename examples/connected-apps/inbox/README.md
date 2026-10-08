@@ -16,12 +16,10 @@ Version 0.1.1 is published in App Hub from
 [ymote/octosense-inbox-assistant](https://github.com/ymote/octosense-inbox-assistant).
 Its `inbox.notify` tool accepts only the bundled Glance template, and its
 `AGENT.md` and triage skill say so. This directory is the unsigned development
-copy and has the same tool, `AGENT.md` and skill. Its `manifest.json` still
-says version 0.1.0 and has no signature, and its `listing.json` has
-placeholder publisher fields and its own subtitle, description and release
-notes. The other files match the published 0.1.1. The
-[reference app guide](../README.md) explains how the app is built and what to
-change before you reuse it.
+copy of 0.1.1. Its `listing.json` has placeholder publisher fields, and its
+`manifest.json` has no signature; every other file matches the published
+release. The [reference app guide](../README.md) explains how the app is
+built and what to change before you reuse it.
 
 ## What is implemented
 
