@@ -539,6 +539,9 @@ Run `tools/octo check` as the last step before each source commit. The GitHub
 workflow separately prepares and verifies the sealed release pack (§10); its
 proof is not present in the editable tag source.
 
+App Hub's [The `hub` command](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#the-hub-command) lists every
+`hub` command, with who runs it and in which submission step.
+
 ## 9. Run it on an OctoSense phone
 
 What exists today:
@@ -579,8 +582,9 @@ app with the App Studio tools of an OctoSense test build
 
 **Open an App Hub submission issue to request publication.** Include the app
 repository, version/commit, screenshots and permissions. It can precede the
-release; add verified release artifacts when ready. Hub checks and administrator
-approval are required before the catalog offers the app.
+release; add verified release artifacts when ready. A reviewer then checks the
+exact release and posts problems in the issue, an App Hub admin approves it,
+and the Hub publishes it in the catalog.
 
 [PUBLISHING](PUBLISHING.md) covers the full process. After testing source:
 

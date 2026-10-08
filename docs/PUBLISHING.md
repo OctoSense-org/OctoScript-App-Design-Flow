@@ -10,9 +10,10 @@ without a developer signing key. See §3.6 for the current implementation limits
 **Opening an App Hub submission issue is the request to publish.** Include the
 repository, version/commit, screenshots and requested permissions. You can open
 it before the release is ready; add the tag, workflow result and release pack
-when available. Hub checks report missing items or refusals, an administrator
-approves the exact candidate, and the Hub publishes the catalog entry. Creating
-a GitHub release alone does not submit or approve an app.
+when available. A reviewer runs the gate on the exact release and posts
+missing items or refusals in the issue, an App Hub admin approves the exact
+candidate, and the Hub publishes the catalog entry. Creating a GitHub release
+alone does not submit or approve an app.
 
 Two App Hub documents own the rest:
 
@@ -292,9 +293,10 @@ for the current issue fields.
 
 ### 3.9 What the App Hub does next
 
-The Hub verifies the publisher proof and bundle, runs admission and review,
-and either admits the exact release through its authenticated catalog or
-returns concrete refusals. Only after that does a compatible Store offer it.
+A reviewer verifies the publisher proof and bundle, runs the gate and posts
+any refusals in the issue. An App Hub admin then approves the exact release,
+and the Hub publishes it in its signed catalog. Only after that does a
+compatible Store offer it.
 If changes are needed, publish a new version/tag; do not replace old bytes.
 
 Manual Ed25519 signing remains an **optional compatibility path** for older
@@ -454,7 +456,7 @@ under `store-data/my-test-notes/bundle`; **OPEN** does not show the app.
 | Platforms claimed (3.2) | A platform claim must match a run that a person did or recorded; an agent cannot vouch for one. |
 | Tagging the release (3.8) | The tag names the exact bytes reviewers check; it never moves. |
 | Opening the submission issue (3.8) | It acts under the publisher's name. |
-| Approving or merging in OctoSense-App-Hub | App Hub's reviewers and maintainers only. |
+| Approving a submission or merging in OctoSense-App-Hub | Only an App Hub admin approves a submission, and only App Hub's maintainers merge. |
 
 ## 6. Checklist (copy, then run top to bottom)
 

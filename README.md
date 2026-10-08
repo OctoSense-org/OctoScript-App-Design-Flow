@@ -295,7 +295,10 @@ Run `tools/octo <command> -h` for flags.
 
 `doctor` prints every place it looks for `hub` and `card-host`;
 [QUICKSTART §2](docs/QUICKSTART.md#2-build-hub-and-card-host) lists the
-order, including the `.exe` names on Windows.
+order, including the `.exe` names on Windows. App Hub's
+[The `hub` command](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#the-hub-command) lists every `hub`
+command, including the ones `tools/octo` wraps, with who runs it and in which
+submission step.
 
 ## Design flows
 
@@ -546,8 +549,9 @@ an earlier App Hub and Makepad.
 
 **Open a submission issue to ask the App Hub to publish your app.** Include
 its repository, version/commit, screenshots and requested permissions. The
-issue can precede the release: Hub checks report missing items or refusals,
-and an administrator approves the exact candidate before catalog publication.
+issue can precede the release. A reviewer runs the gate on the exact release
+and posts missing items or refusals in the issue; an App Hub admin then
+approves the exact candidate, and the Hub publishes its catalog entry.
 
 [docs/PUBLISHING.md](docs/PUBLISHING.md) covers the local gate, screenshots and
 review answers. `tools/octo publish-github <app-directory>` installs the

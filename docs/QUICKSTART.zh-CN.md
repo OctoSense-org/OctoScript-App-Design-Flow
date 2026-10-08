@@ -320,6 +320,8 @@ my-notes 0.1.0 — PASSED
 
 `check` 会先为未签名的应用包重新写入摘要。如果你在最后一次 `check` 之后又修改了应用包，却没有重新运行就 commit，commit 中的摘要就是过期的：审核人员直接运行 `hub check` 时，会以 `[refused] digest` 拒绝它。每次源码 commit 之前，都把 `tools/octo check` 作为最后一步。GitHub 工作流会另行生成并验证封存的 release pack（§10）；可编辑的 tag 源码不包含这个证明。
 
+App Hub 的 [`hub` 命令](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#hub-命令)一节列出了所有 `hub` 命令，以及每个命令由谁运行、用在提交的哪一步。
+
 ## 9. 在 OctoSense 手机上运行
 
 目前的情况：
@@ -334,8 +336,7 @@ Android 版 `card-host` 不编译远程控制桥。在手机上，请用 OctoSen
 
 ## 10. 发布
 
-**开 App Hub 提交 issue 来请求发布。** 填写应用仓库、版本/commit、截图和权限。
-可以先开 issue，再补充经过验证的 release 产物。Hub 检查和管理员批准之后，目录才会提供应用。
+**开 App Hub 提交 issue 来请求发布。** 填写应用仓库、版本/commit、截图和权限。可以先开 issue，再补充经过验证的 release 产物。之后由审核人员检查确切的 release，并在 issue 中反馈问题；App Hub 管理员批准后，再由 Hub 把应用发布到签名目录。
 
 完整流程见 [PUBLISHING](PUBLISHING.zh-CN.md)。测试源码后执行：
 
@@ -344,17 +345,9 @@ tools/octo publish-github ~/apps/my-app
 tools/octo package-help
 ```
 
-审阅 `.github/workflows/publish-app.yml`，与已测试应用一起 commit，再推送新的
-`v<manifest.version>` tag。GitHub Actions 会准备、证明、验证和打包，无需
-`publisher.key` 或开发者签名 secret。把成功工作流和确切的 release pack 附到
-提交 issue。安装工作流、创建 GitHub release 都不会自动提交或批准应用。
-日常更新使用同一身份下的新版本/新 tag。
+审阅 `.github/workflows/publish-app.yml`，与已测试应用一起 commit，再推送新的 `v<manifest.version>` tag。GitHub Actions 会准备、证明、验证和打包，无需 `publisher.key` 或开发者签名 secret。把成功工作流和确切的 release pack 附到提交 issue。安装工作流、创建 GitHub release 都不会自动提交或批准应用。日常更新使用同一身份下的新版本/新 tag。
 
-此路径需要契约 1.8.0 / `publisher-github-v1`。真实发布及原生 Store 的安装、更新
-检查已在隔离测试目录中通过（[历史证据](PUBLISHING.zh-CN.md#36-发布者密钥human)）。
-当前公开 macOS 示例也通过原生安装、更新及 RC 重新打开检查；见[下载状态与平台限制](../README.zh-CN.md#下载兼容-shell)。
-旧宿主和 `card-host` 会拒绝封存的发布包。
-本地 Ed25519 商店演练是可选兼容路径，不是发布的必需步骤。
+此路径需要契约 1.8.0 / `publisher-github-v1`。真实的 Release 及原生 Store 的安装、更新检查已在隔离的测试签名目录中通过（[历史证据](PUBLISHING.zh-CN.md#36-发布者密钥human)）。当前公开的 macOS 示例也通过了原生安装、更新及 RC 重新打开检查；见[下载状态与平台限制](../README.zh-CN.md#下载兼容-shell)。旧宿主和 `card-host` 会拒绝封存的 Release 包。本地 Ed25519 商店演练是可选兼容路径，不是发布的必需步骤。
 
 ## 故障排查
 
