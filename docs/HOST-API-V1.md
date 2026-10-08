@@ -20,6 +20,14 @@ this page. Each build treats an app that declares them as follows:
 runtime, Linux and Windows device services, consent to the app's agent, and
 live-model runs.
 
+For a runnable example, see OctoSense's
+[Host API Lab](https://github.com/OctoSense-org/OctoSense/blob/main/tools/fixtures/host-api-lab/README.md),
+a development fixture whose README gives the build and run commands. On macOS
+it passed these checks: signed installation, an app-owned Splash tool, a real
+OS permission-status call (`camera.permission.status`), live UI updates and
+permission refusals. It is not a published App Hub app, and it tests neither a
+live model nor consent to the app's agent.
+
 ## 1. Declare what the app needs
 
 This **manifest fragment** is not a complete manifest:

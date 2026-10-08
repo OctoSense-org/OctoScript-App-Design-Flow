@@ -16,6 +16,8 @@ Host API v1 让应用发现并调用编译进宿主的 Rust 服务，也让应�
 
 **未验证**：亲手点按批准权限、相机拍摄、Android 运行时、Linux 和 Windows 上的设备服务、对应用 Agent 的授权，以及真实模型运行。
 
+可运行的示例见 OctoSense 的 [Host API Lab](https://github.com/OctoSense-org/OctoSense/blob/main/tools/fixtures/host-api-lab/README.zh-CN.md)：一个开发用的测试示例，README 中有构建和运行命令。在 macOS 上，它通过了这些检查：签名安装、应用自己的 Splash 工具、真实的系统权限状态调用（`camera.permission.status`）、界面实时更新，以及权限不足时的拒绝。它不是已发布的 App Hub 应用，既不测试真实模型运行，也不测试对应用 Agent 的授权。
+
 ## 1. 声明应用的要求
 
 下面是**清单片段**，不是完整的清单：
