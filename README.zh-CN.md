@@ -39,8 +39,8 @@
 | --- | --- |
 | **起步** | 下面的[快速上手](#快速上手)：每一步都是 shell 命令。 |
 | **机器** | 完整指南已在 Apple 芯片上的 macOS 上运行。App Hub 的 Windows、Linux CI 也已通过原生工具构建及 contract、policy、CLI、模态输入测试；这些平台上的原生应用交互需要单独验证。Linux 软件渲染下的截帧仍未验证。见[平台证据](docs/QUICKSTART.zh-CN.md#1-前置条件)与[快速上手](#快速上手)。 |
-| **应用能做什么** | 使用自己的存储；向已声明的主机发 HTTPS 请求；显示图片和网页；使用相机和设备定位；通过宿主的 `mail` 服务收发邮件；发布速览卡片；调用 `model.complete`；在 `desktop-v0.1.0-beta.2` 中通过宿主使用用户的 GitHub、Gmail 或 Google Calendar 账户。能力见 [docs/CAPABILITIES.zh-CN.md](docs/CAPABILITIES.zh-CN.md)，语言与全部 API 见 [docs/SCRIPT-API.md](docs/SCRIPT-API.md)。 |
-| **应用不能做什么** | 持有密码、API key 或令牌，即使存放在自己的存储里也不行。在已发布的版本中让用户登录应用自己的后端：只有 OctoSense `main` 提供由宿主运行的后端登录，后端在应用的清单中声明，或由宿主的运维人员注册（[CAPABILITIES](docs/CAPABILITIES.zh-CN.md#登录应用自己的后端)、[App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)）。在 beta.2 或 `card-host` 上生成媒体或计算嵌入向量：这些服务需要 [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368) 的实现，已合入 `main`，尚待兼容版本发布（[媒体指南](docs/AI-SERVICES.zh-CN.md#媒体与嵌入向量model)）。自创能力或宿主服务（这需要修改 App Hub 和 Shell），使用只供系统应用的 `llm`、`news`、`calendar` 能力或 `os.*` id，或附带原生代码。 |
+| **应用能做什么** | 使用自己的存储；向已声明的主机发 HTTPS 请求；显示图片和网页；使用相机和设备定位；通过宿主的 `mail` 服务收发邮件；发布速览卡片；调用 `model.complete`；在兼容 RC 候选版中通过宿主使用用户的 GitHub、Gmail 或 Google Calendar 账户。能力见 [docs/CAPABILITIES.zh-CN.md](docs/CAPABILITIES.zh-CN.md)，语言与全部 API 见 [docs/SCRIPT-API.md](docs/SCRIPT-API.md)。 |
+| **应用不能做什么** | 持有密码、API key 或令牌，即使存放在自己的存储里也不行。通过应用自己收集秘密的任意表单登录：兼容 RC 在支持的平台上提供宿主运行的后端登录，后端在应用的清单中声明，或由宿主的运维人员注册（[CAPABILITIES](docs/CAPABILITIES.zh-CN.md#登录应用自己的后端)、[App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)）。在 beta.2 或 `card-host` 上生成媒体或计算嵌入向量：这些服务需要 [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368) 的实现，已包含在 RC 候选版中，[下载状态](#下载兼容-shell)（[媒体指南](docs/AI-SERVICES.zh-CN.md#媒体与嵌入向量model)）。自创能力或宿主服务（这需要修改 App Hub 和 Shell），使用只供系统应用的 `llm`、`news`、`calendar` 能力或 `os.*` id，或附带原生代码。 |
 | **应用中的 AI** | 开发应用不需要任何 AI 服务，`card-host` 也不提供 AI 服务，所以应用不依赖 AI 也要完整可用。见[应用中的 AI](#应用中的-ai)。 |
 | **参考应用** | 三个已发布的[连接账户的应用](#连接账户的应用githubgmail-和-google-calendar)。 |
 | **演示** | 在 `card-host` 中运行应用（`tools/octo run`，通过远程控制桥操作），并用 `tools/octo shot` 截取真实截图。要在 OctoSense 内连同宿主服务一起展示，让 OctoSense 桌面端 Shell 读取本地签名目录（[PUBLISHING §4](docs/PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。 |
@@ -52,21 +52,50 @@
 
 ## 连接账户的应用：GitHub、Gmail 和 Google Calendar
 
-App Hub 签名目录中有三个应用通过宿主使用用户的 GitHub 或 Google 账户，不需要 OctoSense 账户。它们是提交时的参考应用：每个都通过了准入检查和审核，签名目录提供各自的 0.1.1 版。
+公开 App Hub 签名目录 **13** 提供以下带 GitHub 证明的 **0.2.1** 版本。
+请搜索新的确切 ID；历史 `org.octosense.samples.*` ID 及本地数据不会迁移。
 
-| 应用 | 应用 id | 源码 |
+| 应用 | 应用 ID | 源码 |
 | --- | --- | --- |
-| GitHub Notes | `org.octosense.samples.githubnotes` | [ymote/octosense-github-notes](https://github.com/ymote/octosense-github-notes) |
-| Inbox Assistant | `org.octosense.samples.inbox` | [ymote/octosense-inbox-assistant](https://github.com/ymote/octosense-inbox-assistant) |
-| Google Calendar | `org.octosense.samples.googlecalendar` | [ymote/octosense-google-calendar](https://github.com/ymote/octosense-google-calendar) |
+| GitHub Notes | `io.github.ymote.githubnotes` | [ymote/octosense-github-notes](https://github.com/ymote/octosense-github-notes/releases/tag/v0.2.1) |
+| Inbox Assistant | `io.github.ymote.inboxassistant` | [ymote/octosense-inbox-assistant](https://github.com/ymote/octosense-inbox-assistant/releases/tag/v0.2.1) |
+| Google Calendar | `io.github.ymote.googlecalendar` | [ymote/octosense-google-calendar](https://github.com/ymote/octosense-google-calendar/releases/tag/v0.2.1) |
 
-它们的结构（能力、工具、Agent、速览卡片、受保护的写操作）见 [examples/connected-apps](examples/connected-apps/README.zh-CN.md)；它们如何提交，见 App Hub 的 [三个参考应用](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#三个参考应用)。
+三者都**只声明 macOS**。目录还提供静态
+[Camera Card Demo 1.1.1](https://github.com/ymote/camera-card/releases/tag/v1.1.1)，
+ID 为 `io.github.ymote.cameracard`，同样仅限 macOS，不执行拍照。
+[连接账户示例](examples/connected-apps/README.zh-CN.md)解释架构；当前发布字节
+以上方公开仓库为准。
 
-- 它们运行在 OctoSense 桌面端 Shell 中，需要 `desktop-v0.1.0-beta.2` 或更新版本（OctoSense `main`）。
-- 登录需要提供商注册信息。在 `desktop-v0.1.0-beta.2` 上，宿主只从 `oauth/clients.json` 读取注册信息，而下载包里没有这个文件，所以要由宿主的运维人员提供。用 OctoSense `main` 构建时，可以改为把分发者的注册信息编译进去。在真实提供商上的实际使用大多尚未验证（[CAPABILITIES § 限制](docs/CAPABILITIES.zh-CN.md#限制)）。
-- 发送和保存都要用户在宿主中确认。用 Gmail 发信需要在宿主的审阅界面上亲手点按。在 `desktop-v0.1.0-beta.2` 上，保存到 GitHub 或 Calendar 需要在宿主**面板**上确认（面板是宿主覆盖在应用之上的界面），面板不检查是否为亲手点按。OctoSense `main` 对这类保存同样要求亲手点按，但还没有发布版本包含这项改动。
-- 尚不支持：在 Android 上登录 Google，以及在手机上安装其中任何一个。`desktop-v0.1.0-beta.1` 的商店和所有已发布的手机版本都拒绝 `auth` 能力。
-- `card-host` 不支持已连接账户，也没有 GitHub Notes 使用的原生 Markdown 编辑器。
+### 下载兼容 Shell
+
+带 GitHub 证明的 Release、公开 v2 目录和 Host API v1 使用
+**desktop-v0.1.0-rc.1**，源码 `933abbcf`。
+[下载页](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-rc.1)的 **RC 文件仍待发布**，标签本身不等于可下载的构建。
+在此之前，可按固定源码的[环境准备指南](https://github.com/OctoSense-org/OctoSense/blob/933abbcf2737e652acd9cae2a4c9ffc16bfdaec6/README.zh-CN.md#环境准备)构建。
+计划提供 macOS Apple 芯片、Windows x64 和 Linux x86_64 包；请核对实际文件、
+SHA256SUMS、签名状态及平台说明，不要假定该预发行包已签名或公证。
+
+这些示例使用 Mac：**App Hub → Search → 确切应用 ID → Get → Install → Open**。
+Install 前审阅权限；**Library** 提供重新打开和兼容更新。保留目录、来源及
+信任锚的默认设置，不需要开发者密钥或 OctoSense 云端账户。Beta.2 无法使用
+这些发布者证明或公开 v2 目录。
+
+RC **没有公开 GitHub/Google OAuth 注册信息**。本地草稿及未连接账户状态可用；
+登录需要宿主发行方或运维人员提供注册信息
+（[配置](https://github.com/OctoSense-org/OctoSense/blob/933abbcf2737e652acd9cae2a4c9ffc16bfdaec6/crates/oauth-service/README.zh-CN.md)）。普通用户不应需要
+Google 开发者账户。安装成功不代表真实登录、Gmail 发送、GitHub commit 或日历写入
+已验证；这些受保护的写操作在支持的平台上需要亲手确认。Linux/Windows 已实现
+外部浏览器后端登录和清单声明的后端读取，这里未验收真实登录。嵌入式后端登录
+和受保护的写操作仍不支持，会拒绝执行。Android Google 授权仍不可用。
+普通嵌入网页与登录是不同的流程；Linux 需要 GTK 3/WebKitGTK 和 X11/XWayland，
+Windows 需要 WebView2。这些引擎不随包附带
+（[浏览器要求](https://github.com/OctoSense-org/OctoSense/blob/933abbcf2737e652acd9cae2a4c9ffc16bfdaec6/docs/desktop-embedded-browser.zh-CN.md)）。`card-host` 没有连接账户服务或原生 Markdown 编辑器。
+
+macOS 上的原生公开目录安装及 0.2.0 → 0.2.1 更新保留了本地草稿，之后三者都在
+`933abbcf` RC 候选版中重新打开。这验证本地 UI 和发布流程，不代表提供商效果或
+其他操作系统通过验证。[目录审核](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/3842c5ec503a8e9124cbbe99655556ffe24c41e1/catalog-candidates/ymote-github-samples-updates/independent-review.json)
+记录 Release 身份及范围；历史证据保持原样。
 
 ## Agent 从这里开始
 
@@ -95,10 +124,10 @@ App Hub 签名目录中有三个应用通过宿主使用用户的 GitHub 或 Goo
 
 | 部分 | 状态 |
 | --- | --- |
-| 准入检查（`hub`） | App Hub `main`，应用契约 1.7（即 `hub` 执行的清单规则），准入连接账户所需的 `auth`、`github`、`gmail` 和 `gcalendar` 能力、[Host API v1](docs/HOST-API-V1.zh-CN.md) 的各项声明，以及 `wasm` 能力。 |
+| 准入检查（`hub`） | App Hub `main`，应用契约 1.8.0（即 `hub` 执行的清单规则），准入连接账户所需的 `auth`、`github`、`gmail` 和 `gcalendar` 能力、[Host API v1](docs/HOST-API-V1.zh-CN.md) 的各项声明，以及 `wasm` 能力。 |
 | `card-host` | App Hub `main`。它运行单个应用包，除了用于发现宿主 API 的 `runtime`，不提供任何宿主服务。构建方法见[快速上手](#快速上手)。 |
-| Shell | OctoSense `main`；桌面端最新的发布版本是 `desktop-v0.1.0-beta.2`。桌面端 Shell 和手机 Home 运行系统应用与商店应用；桌面端还支持已连接账户，并为应用 Agent 提供宿主服务工具。 |
-| GitHub 发布 | 应用契约 1.8.0 / `publisher-github-v1`，无需开发者密钥。真实发布及原生 Store 的安装、更新检查已在隔离测试目录中通过；已发行 Shell 和手机中的安装仍未验证，兼容版本尚待发布。 |
+| Shell | [RC 候选版，源码 `933abbcf`](#下载兼容-shell)；下载发布状态见该节。桌面端 Shell 和手机 Home 运行系统应用与商店应用；桌面端还支持已连接账户，并为应用 Agent 提供宿主服务工具。 |
+| GitHub 发布 | 应用契约 1.8.0 / `publisher-github-v1`，无需开发者密钥。真实发布及公开目录 macOS 安装/更新检查已通过；见 [RC 下载状态](#下载兼容-shell)。隔离手机测试示例不代表仅声明 macOS 的应用可在手机运行。 |
 | 提交途径 | 在 OctoSense-App-Hub 开 issue，见 App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md)。 |
 | 在手机上安装自己的应用包 | 不支持。见[运行应用](#运行应用)。 |
 
@@ -225,7 +254,7 @@ my-app/                     应用自己的 Git 仓库
 | `capabilities` | 应用申请的能力。 |
 | `network.hosts` | 纯主机名；需要 `net`。 |
 | `storage`、`compute`、`agent` | 可选的申请项，宿主会把它们限制在上限以内；`hub check` 把结果输出为 `grants:` 行。`storage.accounts: true` 为每个账户分别提供数据文件夹和 Agent，而不是共用一个 `device` 文件夹；`storage.agent_workspace` 决定 Agent 能读什么：它所属账户的文件夹（默认）或者什么都不读。 |
-| `integrity.github` | 新发布工作流加入的仓库/所有者/工作流/tag/commit 身份和 GitHub 证明（`publisher-github-v1`，兼容宿主待发布）。 |
+| `integrity.github` | 新发布工作流加入的仓库/所有者/工作流/tag/commit 身份和 GitHub 证明（`publisher-github-v1`，需要兼容 RC 候选版）。 |
 | `integrity.bundle_blake3` | 开发时由 `hub stamp` 写入；GitHub 工作流准备最终摘要和证明。旧版 Ed25519 签名仍是可选路径。 |
 
 全部字段见 App Hub 的 [清单](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#清单)。
@@ -248,19 +277,19 @@ my-app/                     应用自己的 Git 仓库
 
 ## 应用中的 AI
 
-OctoSense 每个 Shell 运行一个 octos Agent 内核，由用户在系统应用 AI providers 中配置；应用永远拿不到密钥。内核上运行着**系统 Agent**（Shell 自己的助手，用户在系统对话中与它交谈），以及每个有 Agent 的应用各自的**应用 Agent**。在 `desktop-v0.1.0-beta.2` 和 OctoSense `main` 上，应用可以做到下表各项：
+OctoSense 每个 Shell 运行一个 octos Agent 内核，由用户在系统应用 AI providers 中配置；应用永远拿不到密钥。内核上运行着**系统 Agent**（Shell 自己的助手，用户在系统对话中与它交谈），以及每个有 Agent 的应用各自的**应用 Agent**。在兼容 RC 候选版上，应用可在授权及平台限制内做到下表各项：
 
 | 应用可以 | 方式 | 在 `card-host` 中 |
 | --- | --- | --- |
 | 一次性调用模型，结果按 schema 校验 | `model` 能力，`host.request("model.complete", …)`，受每日预算限制，`model.budget` 报告预算 | `no service answers "model"` |
 | 在自己的界面上与助手对话 | 4 个 `octos.*` 能力；用户须先在首次使用时弹出的面板上允许该应用的 Agent | `no service answers "octos"` |
-| 拥有自己的 Agent：用户可以直接与它对话（Shell 的 `Ask <app>` 窗格、卡片内对话、应用自己的界面），系统 Agent 也可以把任务交给它 | `agent` 块加 `tools.json`：标为 `implemented_by: "host-service"` 的工具通过 App Hub 审核通过的 `host_method`，在 `github`、`gcalendar`、`gmail` 或 `glance` 上运行；仅在 OctoSense `main` 上，标为 `implemented_by: "app"` 的工具会在应用打开时运行应用自己的 Splash 处理函数（[HOST-API-V1 §5](docs/HOST-API-V1.zh-CN.md#5-实现声明的应用工具)）；`AGENT.md` 和 skills 作为每轮对话的指引加载 | 只能用 `hub check` 检查 |
+| 拥有自己的 Agent：用户可以直接与它对话（Shell 的 `Ask <app>` 窗格、卡片内对话、应用自己的界面），系统 Agent 也可以把任务交给它 | `agent` 块加 `tools.json`：标为 `implemented_by: "host-service"` 的工具通过 App Hub 审核通过的 `host_method`，在 `github`、`gcalendar`、`gmail` 或 `glance` 上运行；在 RC 候选版上，标为 `implemented_by: "app"` 的工具会在应用打开时运行应用自己的 Splash 处理函数（[HOST-API-V1 §5](docs/HOST-API-V1.zh-CN.md#5-实现声明的应用工具)）；`AGENT.md` 和 skills 作为每轮对话的指引加载 | 只能用 `hub check` 检查 |
 | 向速览栏发布卡片，卡片内可与应用 Agent 对话，模型写的文字标为 AI 撰写 | `glance` 能力，`glance.publish`（L0 `sys.chat`、`model-copy`） | `no service answers "glance"` |
 | 收到新邮件时让 Agent 在后台运行 | `agent.background: true` 和 `agent.triggers.events: ["<namespace>.new_message"]`，再加 `auth` 和 `gmail`，Inbox Assistant 就是这样做的 | 不支持 |
 
-图片、语音、视频和嵌入向量已在 [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368) 中实现，已合入 `main`，尚待兼容版本发布。beta.2 与 `card-host` 不提供这些方法；需要兼容的 Shell，以及宿主中已配置且具有相应权益的提供商。真实付费提供商和设备验证仍为**未验证**。发现方法、应用 Agent 别名及固定源码版本的 API 参考见[媒体与嵌入向量](docs/AI-SERVICES.zh-CN.md#媒体与嵌入向量model)。
+图片、语音、视频和嵌入向量已在 [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368) 中实现，已包含在 RC 候选版中，[下载状态](#下载兼容-shell)。beta.2 与 `card-host` 不提供这些方法；需要兼容的 Shell，以及宿主中已配置且具有相应权益的提供商。真实付费提供商和设备验证仍为**未验证**。发现方法、应用 Agent 别名及固定源码版本的 API 参考见[媒体与嵌入向量](docs/AI-SERVICES.zh-CN.md#媒体与嵌入向量model)。
 
-运行应用自身代码的 Agent 工具只在 OctoSense `main` 上可用，尚未进入任何发布版本：清单必须声明 `requires: ["script-tools-v1"]`，而且只有应用打开时工具才会运行。`desktop-v0.1.0-beta.2` 拒绝 `implemented_by: "app"`，在这个版本上，宿主服务工具只能调用已有的宿主服务方法。`llm` 只为系统应用管理 AI 提供商。附带 `tools.json` 的应用包即使没有 `agent` 块也会有应用 Agent，请在商店信息中写明。添加 AI 功能之前，请先读 [docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)：其中有一个经过验证、能处理“不可用”状态的调用。
+运行应用自身代码的 Agent 工具在兼容 RC 候选版上可用：清单必须声明 `requires: ["script-tools-v1"]`，而且只有应用打开时工具才会运行。`desktop-v0.1.0-beta.2` 拒绝 `implemented_by: "app"`，在这个版本上，宿主服务工具只能调用已有的宿主服务方法。`llm` 只为系统应用管理 AI 提供商。附带 `tools.json` 的应用包即使没有 `agent` 块也会有应用 Agent，请在商店信息中写明。添加 AI 功能之前，请先读 [docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)：其中有一个经过验证、能处理“不可用”状态的调用。
 
 ## 运行应用
 
@@ -325,8 +354,8 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 也不要手改 Hub 已准入的目录和产物。
 
 此路径需要契约 1.8.0 / `publisher-github-v1`。真实 GitHub 发布及原生 Store 的安装、
-更新检查已在隔离测试目录中通过（[证据](docs/PUBLISHING.zh-CN.md#36-发布者密钥human)）。
-已发行 Shell 和手机中的安装仍未验证，兼容宿主版本尚待发布。
+更新检查已在隔离测试目录中通过（[历史证据](docs/PUBLISHING.zh-CN.md#36-发布者密钥human)）。
+当前公开目录示例已在 macOS 完成安装与更新；RC 状态及限制见[兼容 Shell 指南](#下载兼容-shell)。
 手动 Ed25519 签名仅是可选兼容路径，旧参考版本保持原样。
 
 ## 仓库结构
