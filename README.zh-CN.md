@@ -38,7 +38,7 @@
 | 主题 | 要点 |
 | --- | --- |
 | **起步** | 下面的[快速上手](#快速上手)：每一步都是 shell 命令。 |
-| **机器** | 已验证的平台是 Apple 芯片上的 macOS。在 Windows 和 Linux 上，CI 只运行 `tools/test_*.py` 中的测试，其余都未验证；有报告称在 Linux 的软件渲染下截帧会超时。前置条件和 Windows 设置见[快速上手](#快速上手)。 |
+| **机器** | 完整指南已在 Apple 芯片上的 macOS 上运行。App Hub 的 Windows、Linux CI 也已通过原生工具构建及 contract、policy、CLI、模态输入测试；这些平台上的原生应用交互需要单独验证。Linux 软件渲染下的截帧仍未验证。见[平台证据](docs/QUICKSTART.zh-CN.md#1-前置条件)与[快速上手](#快速上手)。 |
 | **应用能做什么** | 使用自己的存储；向已声明的主机发 HTTPS 请求；显示图片和网页；使用相机和设备定位；通过宿主的 `mail` 服务收发邮件；发布速览卡片；调用 `model.complete`；在 `desktop-v0.1.0-beta.2` 中通过宿主使用用户的 GitHub、Gmail 或 Google Calendar 账户。能力见 [docs/CAPABILITIES.zh-CN.md](docs/CAPABILITIES.zh-CN.md)，语言与全部 API 见 [docs/SCRIPT-API.md](docs/SCRIPT-API.md)。 |
 | **应用不能做什么** | 持有密码、API key 或令牌，即使存放在自己的存储里也不行。在已发布的版本中让用户登录应用自己的后端：只有 OctoSense `main` 提供由宿主运行的后端登录，后端在应用的清单中声明，或由宿主的运维人员注册（[CAPABILITIES](docs/CAPABILITIES.zh-CN.md#登录应用自己的后端)、[App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)）。生成图片、音频或视频，或计算嵌入向量：`model.image`、`model.audio`、`model.video` 和 `model.embeddings` 都不存在（[App Hub#85](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/85)–[#88](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/88)）。自创能力或宿主服务（这需要修改 App Hub 和 Shell），使用只供系统应用的 `llm`、`news`、`calendar` 能力或 `os.*` id，或附带原生代码。 |
 | **应用中的 AI** | 开发应用不需要任何 AI 服务，`card-host` 也不提供 AI 服务，所以应用不依赖 AI 也要完整可用。见[应用中的 AI](#应用中的-ai)。 |
@@ -159,7 +159,7 @@ tools/octo package-help
 
 如果构建失败并提示 `no variant … TextInputStateQuery`，请看 QUICKSTART 的排错条目 [构建 `card-host` 时报 `TextInputStateQuery` 错误](docs/QUICKSTART.zh-CN.md#构建-card-host-时报-textinputstatequery-错误)。
 
-在 Windows 上，每条 `tools/octo` 命令都写成 `python tools/octo …`。它在与 macOS 相同的位置查找 `hub.exe` 和 `card-host.exe`（[QUICKSTART §2](docs/QUICKSTART.zh-CN.md#2-构建-hub-和-card-host)）。这条路径的其余步骤在 Windows 上未验证。
+在 Windows 上，每条 `tools/octo` 命令都写成 `python tools/octo …`。它在与 macOS 相同的位置查找 `hub.exe` 和 `card-host.exe`（[QUICKSTART §2](docs/QUICKSTART.zh-CN.md#2-构建-hub-和-card-host)）。原生工具构建与 CLI 测试已通过 Windows CI；当前固定版本上的完整创建、运行、截图流程仍未验证。
 
 预期结果：
 
@@ -239,7 +239,7 @@ my-app/                     应用自己的 Git 仓库
 
 - **应用中不得有密钥或密码。** 不得有密码、PIN 或一次性验证码输入框，不得有登录表单，应用包和应用的存储中都不得有 API key 或令牌。准入检查会拒绝 `is_password: true` 以及密码、验证码类型的输入，运行时也会让这类输入框失效。登录在宿主自有的**面板**上完成：面板是宿主服务覆盖在应用之上的界面，专门用来输入只有用户本人才能填写的内容。
 - **声明每一个主机。** `.splash` 文件只能调用 `network.hosts` 中列出的 `https://` 主机；`images` 和 `web` 让应用可以显示任何公开 `https://` 主机上的图片和网页，但 `net` 仍然只能访问列出的主机。`http://`、`file://` 和 `../` 一律拒绝。
-- **只放应用包文件。** 允许的扩展名为 `.card .json .l0 .octoscript .splash .svg .png .jpg .jpeg .webp .ttf .otf .txt .md`；申请了 `wasm` 的应用还可以带上最多 8 个 WebAssembly 模块，路径为 `fns/<name>.wasm`。其他文件一律拒绝，包括 macOS 的 `.DS_Store`。准入检查还会拒绝其他脚本、压缩包、二进制文件、符号链接，以及打包的 `.txt`、`.md` 文件中的 URL。
+- **只放应用包文件。** 允许的扩展名为 `.card .json .l0 .octoscript .splash .svg .png .jpg .jpeg .webp .ttf .otf .txt .md`；申请了 `wasm` 的应用还可以带上最多 8 个 WebAssembly 模块，路径为 `fns/<name>.wasm`。其他文件一律拒绝，包括 macOS 的 `.DS_Store`。准入检查还会拒绝其他脚本、压缩包、二进制文件和符号链接。普通 `.txt`、`.md` 文档可以包含署名或许可 URL；Agent 指引与结构化资源仍须通过原有的主机、资源检查。
 - **特权操作交给宿主服务。** 应用调用 `host.request("<family>.<method>", args, fn(r){…})`，其中的能力族（family）必须已获授予。Mail 是完整示例（`mail.accounts`、`mail.add_account`、`mail.list`、`mail.send` 等）：服务弹出自己的面板收集密码，并把密码存进平台的密钥存储，位于任何应用的 jail 之外。`<family>.sheet.*` 方法只接受来自面板的调用。新增宿主服务要修改 Shell，而不是应用包，详见 [docs/HOST-SERVICES.zh-CN.md](docs/HOST-SERVICES.zh-CN.md)。
 - **商店应用与系统应用。** `os.` 开头的 id 保留给系统应用：准入检查会拒绝，任何商店也不会安装。系统应用（[OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) 中的 News、Photos、Maps、Camera、Mail、AI providers）的应用包结构与商店应用相同，但随 Shell 一起发布，上限也更高（例如存储为 64 MiB 而不是 16 MiB）。`tools/octo new --system` 和 `tools/octo run --system` 用于开发系统应用；App Hub 没有接收它们的提交途径。其余都是商店应用，只通过 App Hub 签名目录分发。
 

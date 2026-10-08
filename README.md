@@ -51,7 +51,7 @@ organizers. What a contestant needs from here:
 | Topic | What to know |
 | --- | --- |
 | **Start** | The [Quick path](#quick-path) below: every step is a shell command. |
-| **Machine** | macOS on Apple silicon is the verified platform. On Windows and Linux, CI runs only the `tools/test_*.py` tests; the rest is unverified, and on Linux, frame capture is reported to time out under software rendering. For prerequisites and Windows setup, see the [Quick path](#quick-path). |
+| **Machine** | The complete guide was run on Apple silicon macOS. App Hub's Windows and Linux CI also passes the native tools build and contract, policy, CLI and modal-input tests; native app interaction on those platforms is a separate check. Linux software-rendered frame capture remains unverified. See [platform evidence](docs/QUICKSTART.md#1-prerequisites) and the [Quick path](#quick-path). |
 | **What an app can do** | Keep its own storage; make HTTPS requests to hosts it declares; show pictures and web pages; use the camera and the device's location; read and send mail through the host's `mail` service; publish Glance cards; call `model.complete`; and, in `desktop-v0.1.0-beta.2`, use a person's GitHub, Gmail or Google Calendar account through the host. [docs/CAPABILITIES.md](docs/CAPABILITIES.md) lists the capabilities; [docs/SCRIPT-API.md](docs/SCRIPT-API.md) covers the language and every API. |
 | **What it cannot do** | Hold a password, API key or token, even in its own storage. Sign people in to its own backend on a released build: only OctoSense `main` has the host-run backend sign-in, with the backend declared in the app's manifest or registered by the host's operator ([CAPABILITIES](docs/CAPABILITIES.md#sign-in-to-your-own-backend), [App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)). Generate images, audio or video, or compute embeddings: `model.image`, `model.audio`, `model.video` and `model.embeddings` do not exist ([App Hub#85](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/85)–[#88](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/88)). Add a capability or host service (an App Hub and shell change), use the system-app-only `llm`, `news` and `calendar` capabilities or an `os.*` id, or ship native code. |
 | **AI in the app** | Building an app needs no AI service, and `card-host` serves none, so make the app complete without one. See [AI in your app](#ai-in-your-app). |
@@ -225,8 +225,9 @@ If the build fails with `no variant … TextInputStateQuery`, see [QUICKSTART §
 
 On Windows, run each `tools/octo` command as `python tools/octo …`. It finds
 `hub.exe` and `card-host.exe` in the same places as on macOS
-([QUICKSTART §2](docs/QUICKSTART.md#2-build-hub-and-card-host)). The rest of
-this path is unverified on Windows.
+([QUICKSTART §2](docs/QUICKSTART.md#2-build-hub-and-card-host)). The native
+tools build and CLI tests pass on Windows CI; the complete create/run/capture
+sequence remains unverified there on the current pins.
 
 What to expect:
 
@@ -371,7 +372,9 @@ lists every check.
   and an app that requests `wasm` may also carry up to 8 WebAssembly modules
   at `fns/<name>.wasm`. Any other file is refused, including macOS
   `.DS_Store`. The gate also refuses other scripts, archives, binaries,
-  symlinks, and URLs inside bundled `.txt` or `.md` files.
+  symlinks. Plain `.txt`/`.md` documentation may contain attribution or
+  license URLs; agent guidance and structured resources still undergo their
+  normal host/resource checks.
 - **Host services for anything privileged.** An app calls
   `host.request("<family>.<method>", args, fn(r){…})`, and the family must be
   a granted capability. Mail is the worked example (`mail.accounts`,

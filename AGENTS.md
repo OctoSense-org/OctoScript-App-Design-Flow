@@ -164,17 +164,21 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
 - **Only known file types in `bundle/`.** The gate refuses a file whose
   extension it does not know, including macOS `.DS_Store` and any file
   without an extension: `[refused] contents: .DS_Store has extension "",
-  which a bundle may not hold`. Delete it, then stamp. It also refuses a URL
-  inside a bundled `.txt` or `.md` file, such as a font license.
+  which a bundle may not hold`. Delete it, then stamp. Plain `.txt`/`.md`
+  documentation may contain license/attribution URLs; keep required font
+  notices in the bundle. Agent guidance and structured resources retain
+  their normal host/resource checks.
 - **Name a card's own font with a bundle-relative path.** Put the `.ttf` or
   `.otf` file in the bundle and set `font_src` to its path, such as
   `"font_src": "assets/Body.ttf"`; `card-host` loads it from the bundle's
   asset server. A bundled font counts toward the 8 MiB limit, so bundle a
   subset of a large CJK font. Text the font lacks, such as Chinese, falls
-  back to LXGW WenKai, Makepad's built-in Chinese font. The only built-in
-  font a kit may name is `makepad_widgets:resources/Inter.ttf`; the gate
-  refuses any other
-  ([App Hub#75](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/75)).
+  back to LXGW WenKai, Makepad's built-in Chinese font. A kit may name
+  exactly `Inter.ttf`, `LXGWWenKaiRegular.ttf` or `LXGWWenKaiBold.ttf` under
+  `makepad_widgets:resources/`. A single `$token` reference resolving to a
+  supported string is accepted; arbitrary objects, nested token references
+  and other crate paths remain refused. Rebuild older gates from App Hub
+  #146 or later.
   `desktop-v0.1.0-beta.2` predates this font loading: it installs an app
   with a bundled font, but its cards do not load the font. For Chinese text
   there, build the card from the plain L0 role kit and set no `font_src`;
