@@ -132,6 +132,13 @@ says who runs each one and when.
   Follow [docs/RUST.md](docs/RUST.md).
 - **Only needed capabilities.** Map each capability to something a screen
   does ([docs/CAPABILITIES.md](docs/CAPABILITIES.md)), and remove the rest.
+- **Check that a family serves store apps before you build on it.** The gate
+  admitting a capability does not mean a shell answers your app: `llm`,
+  `news`, the engine services and `calendar` answer only system apps,
+  `clipboard` is served by nothing, `matrix.*` only inside Rinx, and `mail`
+  cannot send on RC1. Check [docs/HOST-API-FAMILIES.md](docs/HOST-API-FAMILIES.md),
+  and `runtime.describe` for optional methods, before writing a screen around
+  a call.
 - **No placeholder screenshots.** Capture the real app in a real state with
   `tools/octo shot`, then open each PNG and look at it. Never draw, generate,
   redraw from `/snap`, crop from another app, or copy a screenshot to make

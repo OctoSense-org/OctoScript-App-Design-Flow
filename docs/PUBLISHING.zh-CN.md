@@ -61,7 +61,7 @@ export B="$APP/bundle"
 
 - `id`：确定最终值，最后一段不能是保留名（[QUICKSTART §3](QUICKSTART.zh-CN.md#3-创建应用)）。
 - `version`：每次提交都用新值（`0.1.0`，然后是 `0.1.1`……）。签名目录中已有的版本，准入检查会拒绝；Release 的 tag 也使用同一个版本号。
-- `capabilities`：只列出应用已实现的功能用到的能力（[CAPABILITIES](CAPABILITIES.zh-CN.md)）。
+- `capabilities`：只列出应用已实现的功能用到的能力（[CAPABILITIES](CAPABILITIES.zh-CN.md)），并且只列出会在你声明的平台上响应商店应用的能力族（[HOST-API-FAMILIES](HOST-API-FAMILIES.zh-CN.md)）。
 - `network.hosts`：程序用到的每个主机，写纯主机名（`api.example.com`）。
 - `integrity` 留给 `hub stamp` 填写。
 

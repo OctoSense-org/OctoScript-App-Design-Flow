@@ -12,6 +12,7 @@ and do not invent requirements or APIs:
 - Build, run and test: [QUICKSTART](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/QUICKSTART.md)
 - The language and every API an app may use: [SCRIPT-API](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/SCRIPT-API.md)
 - Capabilities: [CAPABILITIES](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/CAPABILITIES.md)
+- Which host API families serve store apps, where and since when: [HOST-API-FAMILIES](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/HOST-API-FAMILIES.md); a capability the gate admits can still answer only system apps.
 - Final bundle, screenshots and human checkpoints: [PUBLISHING](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/PUBLISHING.md)
 - Publisher proof and the submission issue: App Hub's [SUBMITTING](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md)
 
@@ -35,6 +36,7 @@ Follow these rules:
 
 - Ask only for capabilities a screen uses; declare every `https://` host in
   `network.hosts`; never use `http://`.
+- Before building on a host API, check that its family serves store apps on your platforms ([HOST-API-FAMILIES](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/HOST-API-FAMILIES.md)): `llm`, `news` and `calendar` answer only system apps, `clipboard` fails, and `mail` cannot send on RC1.
 - Never collect or store a password, PIN, one-time code, API key or token;
   accounts go through a host service.
 - Keep the id's last segment, after its final `.`, off App Hub's reserved

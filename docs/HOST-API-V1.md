@@ -85,7 +85,9 @@ takes `{method: "…"}`; service responses include `implemented`, `supported`,
 or status methods to check setup. A discovered API can still refuse a call for
 missing configuration, account, app consent or OS permission. Some older
 services have no descriptor, so discovery does not list every method a host
-serves.
+serves. Which families answer a store app at all, on which platforms and since
+which release, is [HOST-API-FAMILIES](HOST-API-FAMILIES.md); discovery tells
+you what this host implements, not what it will serve your app.
 
 `app_tools.dispatch` is a runtime ABI, not a callable service. Its description
 has `kind: "runtime-abi"` and `callable_via_host_request: false`. Use the hook

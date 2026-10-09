@@ -59,7 +59,7 @@ host.request("runtime.describe", {method: "location.get"}, fn(r){
 
 `runtime.list` 接收 `{}`，返回 `schema`、`platform`、`methods` 和 `runtime_features`。服务方法的描述包含 schema、能力、ABI 版本、平台和 `agent_access` 策略。`runtime.describe` 接收 `{method: "…"}`；对服务方法，响应包含 `implemented`、`supported`、`configured: null` 和 `authorization: "checked-on-call"`。
 
-**可用、已配置和已授权是三回事。** 用服务自己的账户或状态方法检查配置。已发现的 API 仍可能因缺少配置、账户、应用授权或系统权限而拒绝调用。部分旧服务没有描述，所以发现结果不会列出宿主提供的全部方法。
+**可用、已配置和已授权是三回事。** 用服务自己的账户或状态方法检查配置。已发现的 API 仍可能因缺少配置、账户、应用授权或系统权限而拒绝调用。部分旧服务没有描述，所以发现结果不会列出宿主提供的全部方法。哪些能力族会响应商店应用、支持哪些平台、从哪个版本开始，见 [HOST-API-FAMILIES](HOST-API-FAMILIES.zh-CN.md)；发现结果说明这台宿主实现了什么，不等于它会为你的应用提供什么。
 
 `app_tools.dispatch` 是运行时 ABI，不是可以调用的服务。它的描述带有 `kind: "runtime-abi"` 和 `callable_via_host_request: false`。请使用[第 5 节](#5-实现声明的应用工具)的钩子，不要发送 `host.request("app_tools.dispatch", …)`。
 
