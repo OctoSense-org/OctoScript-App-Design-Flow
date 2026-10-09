@@ -113,8 +113,8 @@ in an OctoSense shell.
 
 ## Capabilities a store app gains nothing from
 
-The gate admits these names, but no shell serves them to a store app. Do not
-request them.
+No shell serves these names to a store app. The gate admits all but the
+engine names, which it refuses. Do not request them.
 
 | Capability | What happens |
 | --- | --- |

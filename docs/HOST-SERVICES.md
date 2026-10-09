@@ -54,8 +54,8 @@ The per-family summary, with platforms and since-versions, is
 app without a service of its own, such as Maps and Camera.
 
 No OctoSense shell serves `prompt`, `ledger.read`, `clipboard`, `matrix.*`
-or `palpo.*` to an installed app; `maps.*` and `ai-providers.*` are those
-system apps' own. Rinx, a Matrix client that OctoSense ships as a native
+or `palpo.*` to an installed app; `maps.*` and `ai-providers.*` belong to
+those system apps alone. Rinx, a Matrix client that OctoSense ships as a native
 app, serves `octos.*` and `matrix.*` through its own host to bundles a person
 imports into it as mini-apps, which is not the App Hub install path. Request
 `matrix.*` only for a Rinx mini-app.

@@ -31,7 +31,7 @@
 | --- | --- | --- |
 | `storage` | 应用自己的存储 jail，即按应用 ID 划分的私有数据目录：[`fs.*`](SCRIPT-API.md#storage-fs)、相机拍摄的内容，以及控件读取的本地文件（例如地图数据包）。 | 没有 jail。每个 `fs.*` 调用都报错 `storage not available in this context`，拍摄的内容不会保存，控件也读不到任何本地文件。 |
 | `camera` | `CameraPreview`：预览、拍照和录像。拍摄的内容以 `DCIM/IMG_<ms>.jpg` 和 `DCIM/VID_<ms>.mp4` 存入 jail，所以还要申请 `storage`。RC1 在 Android 和 macOS 上提供。 | `CameraPreview` 拒绝运行：`this app was not granted the camera`。无论是否申请，都仍要经过操作系统自己的相机授权。 |
-| `microphone` | 相机录像中的声音。只有同时申请 `camera` 才有用。 | 录像没有声音。RC1 在 Android 和 macOS 上提供。 |
+| `microphone` | 相机录像中的声音。只有同时申请 `camera` 才有用。RC1 在 Android 和 macOS 上提供。 | 录像没有声音。 |
 | `library` | 每次拍摄的内容还会提供给系统相册，其他应用可以在相册中看到。 | 拍摄的内容只留在应用的 jail 中。 |
 | `location` | 设备位置：`sys.gps(...)`，以及 `MapView` 的跟随视角。仍要经过操作系统的定位授权。RC1 在 Android 和 macOS 上提供；`location.get` 仅限 Android。 | `sys.gps("ok")` 读出 0，表示没有定位结果。 |
 
@@ -88,7 +88,7 @@ this app was not granted "mail", which "mail.accounts" needs
 
 ## 商店应用用不上的能力
 
-准入检查接受这些名称，但没有任何 Shell 向商店应用提供它们。不要申请这些能力。
+没有任何 Shell 向商店应用提供这些名称。准入检查接受其中除引擎名称以外的所有名称，引擎名称则直接拒绝。不要申请这些能力。
 
 | 能力 | 实际情况 |
 | --- | --- |
@@ -201,7 +201,7 @@ this app was not granted "mail", which "mail.accounts" needs
 | 名称 | 授予什么 | 由谁提供 |
 | --- | --- | --- |
 | `octos.session.open`、`octos.session.history`、`octos.turn.start`、`octos.turn.interrupt` | 应用与设备助手的专属对话。见 [AI-SERVICES](AI-SERVICES.zh-CN.md#助手相关能力)。 | 运行 octos 内核的 OctoSense Shell，前提是用户已允许该应用的 Agent。在此之前，调用会返回 `Waiting for the person to allow this app's agent (OctoSense asks the first time)`。Matrix 客户端 Rinx 也向以迷你应用形式导入其中的应用包提供这些服务。 |
-| `matrix.*`（45 个名称，例如 `matrix.read_messages`） | 每个名称对应用户 Matrix 账户上的一项操作。 | 任何 OctoSense Shell 都不提供。只有 Rinx 应用通过自己的宿主，向用户导入其中的小程序提供 `matrix.*`；这不属于 App Hub 的安装途径。 |
+| `matrix.*`（45 个名称，例如 `matrix.read_messages`） | 每个名称对应用户 Matrix 账户上的一项操作。 | 任何 OctoSense Shell 都不提供。只有 Rinx 应用通过自己的宿主，向用户导入其中的迷你应用提供 `matrix.*`；这不属于 App Hub 的安装途径。 |
 | `palpo.*`（29 个名称，例如 `palpo.inbox.list`） | 每个名称对应一项操作，在 Matrix 服务器 Palpo 上针对用户的账户执行。 | 没有任何 OctoSense Shell 提供。不要申请。 |
 
 ## 存储、计算与 Agent 上限

@@ -2,7 +2,7 @@
  "source": "App Hub issue #172, the host-API family table and its addendum (https://github.com/OctoSense-org/OctoSense-App-Hub/issues/172#issuecomment-6073188277, https://github.com/OctoSense-org/OctoSense-App-Hub/issues/172#issuecomment-6073269227)",
  "checked_against": [
   "desktop-v0.1.0-rc.1 (933abbcf)",
-  "OctoSense main a90e7c62 (2026-10-09)"
+  "OctoSense main c0e67f17 (2026-10-09 UTC)"
  ],
  "families": [
   {

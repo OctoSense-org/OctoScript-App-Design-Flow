@@ -34,7 +34,7 @@ OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home�
 
 对于没有自己服务的其他系统应用，例如 Maps 和 Camera，`glance_notice.rs` 也会响应它们的 `<namespace>.notify`。
 
-没有任何 OctoSense Shell 向已安装的应用提供 `prompt`、`ledger.read`、`clipboard`、`matrix.*` 或 `palpo.*`；`maps.*` 和 `ai-providers.*` 是对应系统应用自己的服务。Rinx 是 OctoSense 作为原生应用随附的 Matrix 客户端，它通过自己的宿主，向用户导入其中的小程序提供 `octos.*` 和 `matrix.*`；这种导入方式不属于 App Hub 的安装途径。只有开发 Rinx 小程序时才申请 `matrix.*`。
+没有任何 OctoSense Shell 向已安装的应用提供 `prompt`、`ledger.read`、`clipboard`、`matrix.*` 或 `palpo.*`；`maps.*` 和 `ai-providers.*` 是对应系统应用自己的服务。Rinx 是 OctoSense 作为原生应用随附的 Matrix 客户端，它通过自己的宿主，向用户导入其中的迷你应用提供 `octos.*` 和 `matrix.*`；这种导入方式不属于 App Hub 的安装途径。只有开发 Rinx 迷你应用时才申请 `matrix.*`。`research` 和 `crawl` 为应用的 Agent 授予工具箱中的工具，它们不是 `host.request` 的能力族（[AI-SERVICES § 系统工具箱](AI-SERVICES.zh-CN.md#系统工具箱)）。
 
 有些服务要先完成配置才能使用，而且并非每个构建都有：
 

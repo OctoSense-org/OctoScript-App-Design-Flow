@@ -2,7 +2,7 @@
 
 [English](RUNTIME-TYPES.md) | 简体中文
 
-OctoSense 桌面版 0.1.0-rc.1 所带运行时——makepad `32d6415f`（控件预置、draw、脚本标准库）和 Octoscript-Makepad `33dea2f1`——中脚本可以解析的全部类型名，按命名空间列出，只有名称。**能解析不等于受支持的 API**：[SCRIPT-API](SCRIPT-API.md) 记录了商店应用应当使用的控件和方法及其授权与限制；只出现在本页的类型可能没有文档、仅限系统应用或尚未完成。`makepad/libs/*` 未收录，因为发行的运行时并不链接它。
+脚本在 OctoSense 桌面版 0.1.0-rc.1 所带运行时（makepad `32d6415f`：widgets prelude、draw、脚本标准库；Octoscript-Makepad `33dea2f1`）中可以解析的全部类型名，按命名空间列出，只有名称。**能解析不等于受支持的 API**：[SCRIPT-API](SCRIPT-API.md) 记录了商店应用应当使用的控件和方法及其授权与限制；只出现在本页的类型可能没有文档、仅限系统应用或尚未完成。`makepad/libs/*` 未收录，因为发行的运行时并不链接它。
 
 由 `tools/gen_runtime_types.py` 从锁定的源码生成；App Hub 的 `card-host` 锁定版本变动时请重新生成。不要手工修改。
 
