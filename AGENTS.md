@@ -123,9 +123,11 @@ says who runs each one and when.
 
 - **Your own Rust code runs only as a Wasm function.** Compile it to a
   WebAssembly module in `bundle/fns/` and request `wasm`; a bundle never
-  carries a native library. Only an OctoSense build with `wasm-lab` runs functions; standard RC
-  desktop packages leave it off. `card-host` answers every call with
-  `no service answers "wasm" on this device`. An isolated Wasm fixture is
+  carries a native library. Standard OctoSense builds from `main` run
+  functions on macOS, Linux and Android; no release does yet, and builds
+  for Windows, iOS and OpenHarmony leave the runtime out. Every call gets a
+  fresh instance, so no state survives between calls. `card-host` answers
+  every call with `no service answers "wasm" on this device`. An isolated Wasm fixture is
   not evidence that your app's functions work; test its exact bundle and host.
   Follow [docs/RUST.md](docs/RUST.md).
 - **Only needed capabilities.** Map each capability to something a screen

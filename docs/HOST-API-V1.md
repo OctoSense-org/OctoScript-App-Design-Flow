@@ -6,8 +6,9 @@ Host API v1 lets an app discover and call the Rust services compiled into its
 host, and lets the app's agent call Splash functions that the app declares as
 tools. It loads no native code from the app, and it does not expose every OS
 API. To run your own Rust code, compile it to WebAssembly and request the
-`wasm` capability, which only OctoSense builds with the `wasm-lab` feature
-serve ([Run your own Rust code](RUST.md)).
+`wasm` capability, which OctoSense `main`'s standard builds serve on macOS,
+Linux and Android; no release serves it yet
+([Run your own Rust code](RUST.md)).
 
 App Hub contract 1.6 or later, published on crates.io, defines the
 declarations on this page. Each build treats an app that declares them as

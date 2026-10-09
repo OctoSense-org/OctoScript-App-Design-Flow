@@ -4,9 +4,9 @@
 
 未注明中文版的链接指向英文文档。
 
-商店应用的应用包不能带原生代码，但可以把你的 Rust 代码做成 **Wasm 函数**带上：Rust 函数编译进 WebAssembly 模块（一个 `.wasm` 文件，放在应用包的 `fns/` 文件夹中），由模块按名称导出。启用 `wasm-lab` 特性构建的 OctoSense Shell 会在沙盒中运行每个函数，函数只能看到自己的输入；目前还没有任何发布版本包含这项特性。设备、网络、文件或原生代码，请改用其他途径。
+商店应用的应用包不能带原生代码，但可以把你的 Rust 代码做成 **Wasm 函数**带上：Rust 函数编译进 WebAssembly 模块（一个 `.wasm` 文件，放在应用包的 `fns/` 文件夹中），由模块按名称导出。OctoSense 的 `wasm` 服务会在沙盒中运行每个函数，函数只能看到自己的输入。OctoSense `main` 在 macOS、Linux 和 Android 上的每个标准桌面端和 Home 构建都包含这项服务，属于有限支持；目前还没有任何发布版本包含它。设备、网络、文件或原生代码，请改用其他途径。
 
-每条命令都在 macOS（Apple 芯片）上运行过，标注为**未验证**的除外。编写本文时没有构建启用 `wasm-lab` 的 Shell。
+每条命令都在 macOS（Apple 芯片）上运行过，标注为**未验证**的除外。编写本文时没有构建能运行函数的 Shell。
 
 ## 选择途径
 
@@ -20,14 +20,16 @@
 
 ## 函数在哪里运行
 
-函数由 Shell 的 `wasm` 宿主服务运行。只有启用了 `wasm-lab` 的构建才包含这项服务；`wasm-lab` 是 OctoSense 的 Cargo 特性，默认关闭。
+函数由 Shell 的 `wasm` 宿主服务运行。OctoSense 的 [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.zh-CN.md) 已接受这项服务，属于有限支持：OctoSense 的 Cargo 特性 `wasm-functions` 默认开启，让 macOS、Linux 和 Android 上的每个标准桌面端和 Home 构建都包含这项服务。`wasm-lab` 是这项特性以前的名字，仍保留为别名。Windows（尚未检查）、iOS（不允许应用生成代码）和 OpenHarmony（策略未知）的构建不包含这个运行时。
 
 | 构建 | 是否接受申请 `wasm` 的应用 | 是否运行它的函数 |
 | --- | --- | --- |
 | `desktop-v0.1.0-beta.2` | 否。它的应用契约是 1.5，会拒绝这项能力：`app <id> requests unknown capability "wasm"`。 | 否 |
-| OctoSense `main` 的默认构建（尚未进入任何发布版本） | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
-| 启用 `wasm-lab` 构建的 OctoSense `main`（尚未进入任何发布版本） | 是 | 是 |
+| OctoSense `main` 面向 macOS、Linux 或 Android 的默认构建（特性 `wasm-functions`，旧名 `wasm-lab`；尚未进入任何发布版本） | 是 | 是 |
+| OctoSense `main` 面向 Windows、iOS 或 OpenHarmony 的构建（尚未进入任何发布版本） | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
 | 基于 App Hub `main` 构建的 `card-host` | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
+
+目前还没有任何发布版本包含这项服务：`desktop-v0.1.0-beta.2`、桌面端 RC1 和 `home-v0.1.0-beta.1` 都不包含。OctoSense [#400](https://github.com/OctoSense-org/OctoSense/pull/400) 之后从 `main` 构建的第一批桌面端和 Home 发布版本会包含它。
 
 App Hub 的准入检查（`hub check`）从应用契约 1.7 起接受 `wasm` 能力，每个应用包最多带 8 个模块（见[构建](#构建)）。
 
@@ -37,10 +39,12 @@ App Hub 的准入检查（`hub check`）从应用契约 1.7 起接受 `wasm` 能
 
 1. 应用的脚本调用 `host.request("wasm.<function>", args, fn(r){…})`，或者应用的 Agent 调用映射到 `wasm.<function>` 的工具。
 2. 应用第一次调用时，`wasm` 服务从该应用自己的应用包中加载全部模块（`fns/*.wasm`），绝不加载其他应用的模块。Shell 的 WebAssembly 运行时 Wasmtime 用自带的 Cranelift 编译器编译每个模块，或者直接从 Shell 的磁盘缓存中取出编译好的代码。
-3. 服务把参数以字节形式传给函数。函数在该应用专属的工作线程上运行，所以一个慢函数只会拖慢它自己的应用。同一个应用的调用按顺序逐个执行。
+3. 服务把参数以字节形式传给函数。函数在该应用专属的工作线程上运行，所以一个慢函数只会拖慢它自己的应用。同一个应用的调用按顺序逐个执行。工作线程空闲 5 秒后退出；应用的下一次调用会启动新的工作线程，重新加载模块。
 4. 脚本的回调从 `r.data` 拿到输出，或从 `r.error` 拿到错误。
 
-两次调用之间，每个模块保留一个**实例**，即拥有独立内存的运行副本。因此，存放在 `static` 中的数据（例如缓存）会从一次调用保留到下一次。**陷阱**（trap）指函数因 panic、栈溢出或内存超出 256 MiB 上限而中止。发生陷阱或超过 2 秒截止时间时，只有这次调用以错误结束，Shell 照常运行。随后，服务会在下次调用前为该模块换上一个新实例，`static` 中的数据也随之重置。
+每次调用都使用一个全新的**实例**，即拥有独立内存的模块运行副本。任何数据都不会从一次调用保留到下一次：`static`、内存中的缓存，以及写进模块线性内存的其他任何数据，到下一次调用时都已不在。只有编译好的代码会被复用。请把状态保存在脚本中，每次调用时把函数需要的数据传给它。**陷阱**（trap）指函数因 panic、栈溢出或内存超出 256 MiB 上限而中止。发生陷阱或超过 2 秒截止时间时，只有这次调用以错误结束，Shell 照常运行。
+
+应用更新、授权变化或签名撤回之后，服务会丢弃编译好的代码，以及正在运行的那次调用的结果。那次调用返回 `wasm app admission changed; retry from the current app`，下一次调用会加载新的模块，Shell 不需要重启。
 
 ## 编写函数
 
@@ -203,16 +207,27 @@ App Hub 的准入检查（`hub check`）从应用契约 1.7 起接受 `wasm` 能
 | 模块大小 | 8 MiB | `<file>: the module is <n> bytes, over the limit` |
 | 日志 | 每次调用 64 行，每行截断到 1,024 字节 | 多出的行会丢弃。 |
 
-App Hub 还为每个宿主服务请求设了上限。来自脚本的调用会先碰到这些上限，然后才轮到 16 MiB 的上限：
+`wasm` 服务还为每个请求设了自己的上限：
+
+| 上限 | 数值 | 请求超出时 |
+| --- | --- | --- |
+| 序列化后的输入 | 每个请求 1 MiB | `wasm input exceeds 1 MiB` |
+| 排队的请求 | 每个应用 4 个 | `wasm app queue is full; try again later` |
+| 同时运行函数的应用 | 4 个 | `wasm workers are busy; try again later` |
+| 所有应用合计缓冲的输入 | 16 MiB | `wasm input queue is full; try again later` |
+| 一个请求的时间，包括排队和加载 | 10 秒，即服务自己的超时时间（App Hub 的默认值是 60 秒） | `the host service timed out` |
+
+队列已满或没有空闲的工作线程时，请求会立即失败，不会等待。同一个应用的调用在它专属的工作线程上按顺序逐个执行，工作线程空闲 5 秒后退出。
+
+App Hub 为宿主服务请求设的通用上限同样适用，不过 `wasm` 服务自己的上限更严。来自脚本的调用会先碰到这些上限，然后才轮到运行时 16 MiB 的上限：
 
 | 上限 | 数值 | 调用超出时 |
 | --- | --- | --- |
 | 脚本请求的参数 | 1 MiB 的 JSON | `the request's arguments exceed 1 MiB` |
 | 返回结果 | 4 MiB 的 JSON | `the service's answer exceeds 4 MiB` |
-| 等待结果的时间，包括排在本应用先前调用之后的排队时间 | 60 秒 | `the host service timed out` |
 | 每个应用同时等待的调用 | 32 个 | `too many host requests are waiting; try again when some have answered` |
 
-来源：OctoSense `crates/wasm-host/src/lib.rs` 中的 `Limits::default()`（`wasm` 服务使用这组上限），以及 App Hub 的 `crates/appstore/src/services.rs`。
+来源：OctoSense `crates/wasm-host/src/lib.rs` 中的 `Limits::default()`（`wasm` 服务使用这组上限）、OctoSense `crates/shell/src/wasm_service.rs` 中的常量，以及 App Hub 的 `crates/appstore/src/services.rs`。
 
 ### ABI
 
@@ -272,10 +287,11 @@ Shell 分四步完成一次调用：
 | --- | --- |
 | 路径 | `fns/<name>.wasm`，直接放在 `fns/` 下 |
 | 名称 | 1 到 64 个字符，取自 `[a-z0-9_-]` |
+| 文件头 | 前 8 个字节：WebAssembly 核心模块，版本 1 |
 | 模块数 | 每个应用包最多 8 个 |
 | 应用包大小 | 文件合计 8 MiB（8,388,608 字节），不计 `manifest.json` |
 
-此外，函数名在应用的所有模块中必须唯一：两个模块导出同名函数时，`wasm` 服务会拒绝加载。
+准入检查不读取模块的导入和导出，由 Shell 在加载模块时检查，所以通过准入检查的模块仍可能加载失败（见[应用看到的错误](#应用看到的错误)）。此外，函数名在应用的所有模块中必须唯一：两个模块导出同名函数时，`wasm` 服务会拒绝加载。
 
 示例沿用 Wasm Lab 的 release profile：
 
@@ -407,8 +423,10 @@ host.request("wasm.md_to_html", "# Hello", fn(r){
 | 字段 | 内容 |
 | --- | --- |
 | `functions` | 应用的函数名。 |
-| `modules` | 每个模块文件一项：`file`、`bytes`、`load_ms`、`from_cache`（编译好的代码是否来自缓存）、`memory_bytes`，以及 `renewed`（陷阱或超时后换上的新实例数）。 |
+| `modules` | 每个模块文件一项：`file`、`bytes`、`load_ms`、`from_cache`（编译好的代码是否来自缓存）、`memory_bytes`（单次调用用到的最大内存，仅为高水位记录）、`invocations`（目前为止的调用次数）、`renewed`（等于 `invocations - 1`：第一次之后的每次调用都换上了新实例），以及 `instance_policy`（`"fresh-per-call"`）。 |
 | `stats` | 每个已调用过的函数一项：`calls`、`errors`、`mean_us` 和 `max_us`。 |
+
+这些计数从应用的工作线程启动时开始。工作线程空闲 5 秒后退出，计数从下一个工作线程重新开始。
 
 不要把函数命名为 `functions`：`wasm.functions` 永远不会调用它。
 
@@ -417,7 +435,7 @@ host.request("wasm.md_to_html", "# Hello", fn(r){
 | `r.error` | 原因 | 修复方法 |
 | --- | --- | --- |
 | `this app was not granted "wasm", which "wasm.rank" needs` | 清单没有申请 `wasm`。 | 在 `capabilities` 中加入 `wasm`。 |
-| `no service answers "wasm" on this device` | 宿主没有 `wasm` 服务：`card-host`，或未启用 `wasm-lab` 的 OctoSense 构建。 | 在启用了 `wasm-lab` 的 Shell 中测试（见[测试](#测试)）。 |
+| `no service answers "wasm" on this device` | 宿主没有 `wasm` 服务：`card-host`、发布版本，或面向 Windows、iOS 或 OpenHarmony 的 OctoSense 构建。 | 在 macOS 或 Linux 上从 OctoSense `main` 构建的桌面端 Shell 中测试（见[测试](#测试)）。 |
 | `<app id> has no function "rank"` | 没有模块导出这个名称。 | 与 `wasm.functions` 列出的名称核对。 |
 | `<app id>'s bundle has no fns directory` | 应用申请了 `wasm`，却没有带模块。 | 加入 `fns/<name>.wasm`。 |
 | `<file>: the module imports <name>; only octo.log is provided` | 某个依赖导入了 WASI 或 `wasm-bindgen` 的函数。 | 为 `wasm32-unknown-unknown` 构建，并去掉这个依赖。 |
@@ -426,31 +444,39 @@ host.request("wasm.md_to_html", "# Hello", fn(r){
 | `the input is not what rank takes: <reason>` | 参数与函数的输入类型不符。 | 修正参数或类型。 |
 | 函数自己的错误文本，例如 `the query is empty` | 函数返回了 `Err`。 | 在脚本中处理。 |
 | `the call ran past its deadline`、`the function trapped: …` | 调用超出了[上限](#上限)，或触犯了[沙盒的限制](#沙盒禁止的操作)。 | 如果是 panic，到 Shell 的日志中查看 `panic: …` 一行；如果超时，减少每次调用的工作量。 |
+| `wasm input exceeds 1 MiB` | 请求序列化后的输入超过 1 MiB。 | 每次调用少传一些输入。 |
+| `wasm app queue is full; try again later` | 该应用已有 4 个请求在排队。 | 减少同时发出的请求，例如在上一个请求的回调中再发下一个。 |
+| `wasm workers are busy; try again later` | 已有 4 个其他应用占用了工作线程；工作线程空闲 5 秒后才会退出。 | 稍后重试。 |
+| `wasm input queue is full; try again later` | 所有应用的请求合计已缓冲 16 MiB 输入。 | 稍后重试。 |
+| `wasm app admission changed; retry from the current app` | 调用运行期间，应用被更新、授权发生变化或被撤回。 | 重新调用。应用更新之后，下一次调用会加载新的模块。 |
+| `the host service timed out` | 请求连同排队和加载用时超过 10 秒。 | 减少每次调用的工作量，并减少排队的调用。 |
 
 服务会一并加载一个应用的全部模块。只要有一个模块加载失败，每次调用都返回这个模块的错误；下次调用时，服务会重新加载。
 
 ## 测试
 
-第 3 到第 9 步在启用 `wasm-lab` 构建的 Shell 中测试函数，因此都**未验证**。
+第 3 到第 9 步在能运行函数的 Shell 中测试函数，因此都**未验证**。
 
 1. 用 `tools/octo run` 在 `card-host` 中运行应用（见 [QUICKSTART §4](QUICKSTART.zh-CN.md#4-在桌面上运行)）。`card-host` 会接受应用包，但它没有 `wasm` 服务，每次调用都返回 `no service answers "wasm" on this device`。用它检查布局，以及缺少函数时应用显示什么。
 2. 按 [PUBLISHING §4.2](PUBLISHING.zh-CN.md#42-在桌面端-shell-中安装并打开应用) 的说明，准备好[最小示例](#最小示例)第 1 步克隆的 OctoSense。
-3. 以 `wasm-lab` 特性构建并启动桌面端 Shell，系统应用改用 `desktop/system-apps-wasm-lab.json`，即默认的系统应用加上 Wasm Lab：
+3. 构建并启动桌面端 Shell，系统应用改用 `desktop/system-apps-wasm-lab.json`，即默认的系统应用加上 Wasm Lab。默认构建在 macOS 和 Linux 上已包含 `wasm` 服务，不再需要 `--features wasm-lab`：
 
    ```sh
    cd <workspace>/OctoSense
    OCTOSENSE_SYSTEM_APPS="$PWD/desktop/system-apps-wasm-lab.json" \
-     cargo run --release -p octosense --features wasm-lab
+     cargo run --release -p octosense
    ```
 
-4. 从 dock 或 **Apps** 菜单打开 **Wasm Lab**。每张卡片调用一个函数，显示结果和往返耗时。模块加载时，Shell 的日志会出现类似这样的一行：`wasm os.wasmlab: wasmlab.wasm (433 KiB) compiled in … ms: find_slots, fuzzy_rank, md_to_html, rogue, text_diff`。
+   OctoSense 用 `OCTOSENSE_SYSTEM_APPS=$PWD/desktop/system-apps-wasm-lab.json cargo build --locked -p octosense` 检查过不加任何特性的默认构建，再用 `--test-action launch-wasmlab` 运行了 Wasm Lab（见 [OctoSense 中的 WebAssembly § Wasm Lab](https://github.com/OctoSense-org/OctoSense/blob/main/docs/wasm.zh-CN.md#wasm-lab)）。
+
+4. 从 dock 或 **Apps** 菜单打开 **Wasm Lab**。每张卡片调用一个函数，显示结果和往返耗时。模块加载时，Shell 的日志会出现类似这样的一行：`wasm os.wasmlab: wasmlab.wasm (433 KiB) compiled in … ms: find_slots, fuzzy_rank, md_to_html, rogue, text_diff`。Wasm Lab 打开时会发出五个请求，比服务为每个应用排队的上限多一个，所以冷启动时它的 Markdown 卡片会显示 `wasm app queue is full; try again later`。
 5. 点击 **Misbehave** 下的每个按钮。死循环、无休止的内存分配、panic 和失控递归都以错误结束，下一次调用照常返回结果。
 6. 按 [PUBLISHING §4.1](PUBLISHING.zh-CN.md#41-发布到本地镜像) 的说明，把你自己的应用发布到本地镜像。
-7. 退出 Shell，再用 [PUBLISHING §4.2](PUBLISHING.zh-CN.md#42-在桌面端-shell-中安装并打开应用) 中的命令加上 `--features wasm-lab` 重新启动它。
+7. 退出 Shell，再用 [PUBLISHING §4.2](PUBLISHING.zh-CN.md#42-在桌面端-shell-中安装并打开应用) 中的命令重新启动它。
 8. 从 dock 中的 **App Hub** 安装并打开你的应用。
-9. 安装新版本后重启 Shell：正在运行的 Shell 会继续使用应用的旧函数。
+9. 在 Shell 运行期间安装新版本，然后再调用一次函数：不必重启，下一次调用就会加载新的模块。更新时正在运行的调用会返回 `wasm app admission changed; retry from the current app`。
 
-Agent 工具（无论是 Wasm Lab 的还是你的应用的）还需要 octos 内核（按[桌面端 README](https://github.com/OctoSense-org/OctoSense/blob/main/desktop/README.zh-CN.md#构建与运行) 的说明部署）和一个 AI 提供商。手机 Shell（即 Home）同样有 `wasm-lab` 特性和 `phone/system-apps-wasm-lab.json` 文件；构建方法见 OctoSense 的[手机端 README](https://github.com/OctoSense-org/OctoSense/blob/main/phone/README.zh-CN.md)（**未验证**）。
+Agent 工具（无论是 Wasm Lab 的还是你的应用的）还需要 octos 内核（按[桌面端 README](https://github.com/OctoSense-org/OctoSense/blob/main/desktop/README.zh-CN.md#构建与运行) 的说明部署）和一个 AI 提供商。手机 Shell（即 Home）的默认构建在 Android 上同样运行这项服务，也有 `phone/system-apps-wasm-lab.json` 文件；构建方法见 OctoSense 的[手机端 README](https://github.com/OctoSense-org/OctoSense/blob/main/phone/README.zh-CN.md)（**未验证**）。
 
 ## 未决事项
 
@@ -458,16 +484,17 @@ OctoSense 的 [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/do
 
 | 事项 | 状态 |
 | --- | --- |
-| 每个应用的 CPU 和内存预算 | 尚未实现。上限按调用、按实例计算，所以一个应用可以用连续调用占满一个核心，也可以在它的 8 个模块中各用 256 MiB。App Hub 已判定超时的调用，仍会在该应用的工作线程里继续运行。 |
+| 每个应用的 CPU 预算 | 尚未实现。上限按调用计算，所以一个应用可以用连续调用占满一个核心。 |
 | 为手机预先编译模块 | 尚未实现。第一次调用会编译每个模块：ADR 0011 在桌面上测得 27–33 毫秒，在中端 Android 手机上测得 378–421 毫秒；之后在同一部手机上从缓存加载需要 5–11 毫秒。 |
 | 用真实模型调用 Agent 工具 | 未验证。OctoSense 的测试通过 Shell 的工具执行器调用 Wasm Lab 的工具，没有用到模型。 |
-| iOS | 尚未实现。iOS 不允许应用使用 JIT，Wasmtime 将只能改用自带的 Pulley 解释器，速度约为 Cranelift 的 1/17。iOS 也不允许应用下载原生代码，因此商店应用的函数在 iOS 上同样无法预先编译。 |
-| OpenHarmony | 未验证。它的 JIT 策略未知。 |
-| Shell 运行期间更新应用 | 尚未实现。Shell 重启之前，一直使用旧函数。 |
+| Windows | 尚未实现。在 Windows 上检查过之前，Windows 构建不包含这个运行时。 |
+| iOS | 尚未实现。iOS 构建不包含这个运行时。iOS 不允许应用使用 JIT，Wasmtime 将只能改用自带的 Pulley 解释器，速度约为 Cranelift 的 1/17。iOS 也不允许应用下载原生代码，因此商店应用的函数在 iOS 上同样无法预先编译。 |
+| OpenHarmony | 尚未实现。它的 JIT 策略未知，因此 OpenHarmony 构建不包含这个运行时。 |
 | 带类型的接口（组件模型和 WIT）、时钟或随机数之类的宿主导入，以及确定性的限制（fuel） | 尚未决定。`octo.log` 之外的任何宿主导入都会是一项新能力。 |
 
 ## 另请参阅
 
+- OctoSense 的 [OctoSense 中的 WebAssembly](https://github.com/OctoSense-org/OctoSense/blob/main/docs/wasm.zh-CN.md)：`wasm` 服务在 `main` 上如何工作，包括它的上限、平台和测试。
 - [HOST-API-V1](HOST-API-V1.zh-CN.md)：设备权限和 `location.get`。
 - [CAPABILITIES § 宿主服务](CAPABILITIES.zh-CN.md#宿主服务)：`wasm` 与其他宿主服务。
 - App Hub 的 [PUBLISHING § 检查结果](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#检查结果)和 [§ 把工具映射到共享服务](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#把工具映射到共享服务host_method)：准入检查对 `fns/` 和 `wasm.<function>` 的规则。
