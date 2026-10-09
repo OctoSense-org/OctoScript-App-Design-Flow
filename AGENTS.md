@@ -14,7 +14,8 @@ when you review this repository's documentation.
 ## What this repository is, and is not
 
 This repository holds the flows (`flows/*/FLOW.md`), the developer docs
-(`docs/`), `tools/octo`, the template (`templates/script-app/`) and the
+(`docs/`), `tools/octo`, the templates (`templates/script-app/`,
+`templates/rust-component/`), the Rust component SDK (`sdk/rust/`) and the
 worked examples (`examples/`). Change anything else where it lives:
 
 | To change | Go to |
@@ -121,15 +122,24 @@ says who runs each one and when.
     pass does not prove login, a model call or an external write. Keep a manual
     path and an honest missing-service state.
 
-- **Your own Rust code runs only as a Wasm function.** Compile it to a
-  WebAssembly module in `bundle/fns/` and request `wasm`; a bundle never
-  carries a native library. Standard OctoSense builds from `main` run
-  functions on macOS, Linux and Android; no release does yet, and builds
-  for Windows, iOS and OpenHarmony leave the runtime out. Every call gets a
-  fresh instance, so no state survives between calls. `card-host` answers
-  every call with `no service answers "wasm" on this device`. An isolated Wasm fixture is
-  not evidence that your app's functions work; test its exact bundle and host.
+- **Your own Rust code runs only as WebAssembly.** It goes in `bundle/fns/`
+  with the `wasm` capability; a bundle never carries a native library.
   Follow [docs/RUST.md](docs/RUST.md).
+  - A **core module** (OctoSense ADR 0011) is what runs today. Standard
+    OctoSense builds from `main` run modules on macOS, Linux and Android;
+    no release does yet, and builds for Windows, iOS and OpenHarmony leave
+    the runtime out. Every call gets a fresh instance, so no state survives
+    between calls.
+  - A **component** (ADR 0014) is ordinary Rust built with this
+    repository's SDK: `tools/octo wasm new`, then `tools/octo wasm build`,
+    which also adds `requires: ["wasm-components-v1"]` (and `storage` for
+    files). No OctoSense build loads components yet, and App Hub `main`
+    refuses them until App Hub #186 merges: say so, and report calling one
+    from an app as unverified.
+  - `card-host` answers every call with
+    `no service answers "wasm" on this device`. An isolated Wasm fixture is
+    not evidence that your app's functions work; test its exact bundle and
+    host.
 - **Only needed capabilities.** Map each capability to something a screen
   does ([docs/CAPABILITIES.md](docs/CAPABILITIES.md)), and remove the rest.
 - **No placeholder screenshots.** Capture the real app in a real state with
@@ -144,8 +154,9 @@ says who runs each one and when.
   in `bundle/`. An app with its own agent adds `tools.json`, `AGENT.md`,
   `skills/` and the `.splash` Glance templates its tools publish
   ([An app's own agent](docs/AI-SERVICES.md#an-apps-own-agent)). An app with
-  Wasm functions adds `fns/*.wasm` ([docs/RUST.md](docs/RUST.md)). Notes, keys,
-  logs, review packets and `.local-state/` stay out.
+  Wasm functions adds `fns/*.wasm` ([docs/RUST.md](docs/RUST.md)); the Rust
+  crates that build them stay outside `bundle/`, in `components/`. Notes,
+  keys, logs, review packets and `.local-state/` stay out.
 - **Run headless.** Start apps with `tools/octo run … --hidden`, so you never
   take over the person's screen. This is Makepad's hidden-window mode: the app
   still needs a graphical session, but its window is never shown or focused,

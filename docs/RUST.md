@@ -2,28 +2,420 @@
 
 English | [简体中文](RUST.zh-CN.md)
 
-A store app's bundle holds no native code, but it can carry your Rust code as
-**Wasm functions**: Rust functions that a WebAssembly module (a `.wasm` file
-in the bundle's `fns/` folder) exports by name. OctoSense's `wasm` service runs
-each function in a sandbox where it sees only its input. Every standard
-desktop and Home build of OctoSense `main` includes the service on macOS,
-Linux and Android, with limited support; no release includes it yet. For the
-device, the network, files or native code, use another route.
+A store app's bundle holds no native code, but it can carry your Rust code
+as WebAssembly in its `fns/` folder. The shell's `wasm` service runs that code
+in a sandbox, and the app's script calls it by name. There are two kinds:
 
-Every command on this page was run on macOS (Apple silicon) unless it is
-marked **unverified**. No shell that runs functions was built for this guide.
+- A **component** ([ADR 0014](https://github.com/OctoSense-org/OctoSense/pull/436),
+  proposed): you write ordinary Rust with this repository's SDK, and
+  `tools/octo wasm build` turns it into `fns/<name>.wasm`. The script calls
+  each `pub fn` as `wasm.<function>` with JSON, so there is no WIT and no glue
+  code to write. A component keeps its state between calls, and it has a
+  clock and random numbers. With the `storage` capability, it also has the
+  app's own files.
+- A **core module** ([ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.md)):
+  functions over bytes or JSON, written with a copied guest crate, and with
+  nothing but their input. [Core modules](#core-modules-adr-0011) at the end
+  of this page covers them.
+
+**No OctoSense build runs components yet.** The SDK and `tools/octo wasm`
+are ready, and their tests run every component in Wasmtime 49 with WASI 0.2,
+the runtime OctoSense uses. Running one in a shell needs ADR 0014's phase 2,
+which is not merged, and App Hub's gate needs
+[App Hub #186](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/186),
+which is in review. So calling a component from an app is **unverified**.
+Today, only core modules run in an app.
+
+| | Core module (ADR 0011) | Component (ADR 0014) |
+| --- | --- | --- |
+| Write and build it | Copy OctoSense's guest crate; `cargo build --target wasm32-unknown-unknown` | `tools/octo wasm new`, then `tools/octo wasm build` (this page) |
+| What it reaches | Its input only | The clock, random numbers and, with `storage`, the app's storage folder; no network |
+| Between calls | Starts fresh every call | Keeps its state |
+| The manifest | `wasm` | `wasm`, and `requires: ["wasm-components-v1"]`; `storage` for files |
+| App Hub's gate (`hub check`) | Admits it from app contract 1.7 | `main` refuses it. With `requires: ["wasm-components-v1"]`, even `hub stamp` answers `app <id> needs a newer host: wasm-components-v1`; without it, the gate finds `not a WebAssembly core module (magic and version 1)`. App Hub #186, in review, admits it. |
+| OctoSense `main` (macOS, Linux and Android) | Runs it | Does not load it. [OctoSense #436](https://github.com/OctoSense-org/OctoSense/pull/436) (in review) adds the runtime; loading components in the `wasm` service is phase 2, not merged. |
+| `card-host` | Admits the app; every call answers `no service answers "wasm" on this device` | Has no `wasm` service either. **Unverified:** built from App Hub `main`, it runs the same manifest check as `hub`, so it should refuse the app with `app <id> needs a newer host: wasm-components-v1`. |
+| Releases | None runs it | None runs it |
+
+Every command on this page was run on macOS (Apple silicon) with Rust
+1.97.1, unless it is marked **unverified**. The examples use an app that
+`tools/octo new` made in `~/apps/my-app`
+([QUICKSTART §3](QUICKSTART.md#3-create-an-app)), with the id
+`dev.example.texttools`.
 
 ## Choose a route
 
 | You need | Route | Read |
 | --- | --- | --- |
-| Pure computation: parsing, scoring, crypto, image processing | A Wasm function | [Write a function](#write-a-function) |
+| Computation with crates.io crates: parsing, formats, scoring, crypto, image processing | A component | [Write a component](#write-a-component) |
+| Pure computation in an app that must run today | A core module | [Core modules](#core-modules-adr-0011) |
 | The camera, the microphone or the location | Host APIs: the `camera`, `microphone` and `location` capabilities, their permission methods and `location.get` | [HOST-API-V1 §3](HOST-API-V1.md#3-request-device-access-in-the-foreground) |
-| The network | Splash's `net`, to the hosts in `network.hosts`. A function cannot reach the network: fetch the data in Splash, then pass it to the function. | [SCRIPT-API § Network](SCRIPT-API.md#network) |
-| Files | The app's own storage, through `fs.*` in Splash. Pass the contents to the function: text as a string, other data as JSON. | [SCRIPT-API § Storage](SCRIPT-API.md#storage-fs) |
+| The network | Splash's `net`, to the hosts in `network.hosts`. Neither kind of function reaches the network: fetch the data in Splash, then pass it in. | [SCRIPT-API § Network](SCRIPT-API.md#network) |
+| Files | The app's own storage, through `fs.*` in Splash, or through `std::fs` in a component when the app has `storage`. | [SCRIPT-API § Storage](SCRIPT-API.md#storage-fs) |
 | A native library, threads or OS calls | Not available to a store app. App Hub's gate refuses native libraries, and native code ships only inside a shell release. | App Hub's [delivery paths](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/DEVELOPMENT.md#choose-a-delivery-path) |
 
-## Where functions run
+## Write a component
+
+### 1. Set up Rust
+
+Components need Rust 1.85 or newer: Rust builds components for
+`wasm32-wasip2` since 1.82, and `wit-bindgen`, which the SDK uses, needs
+1.85. Add the target, then let `tools/octo` check the toolchain. Run these
+from your App Flow checkout:
+
+```sh
+rustup target add wasm32-wasip2
+tools/octo wasm doctor
+```
+
+On a machine that already has the target, `rustup` prints
+`info: component rust-std for target wasm32-wasip2 is up to date`, and
+`doctor` prints:
+
+```text
+octo wasm doctor
+  [ok]   cargo: /Users/<you>/.cargo/bin/cargo
+  [ok]   rustc 1.97.1 (8bab26f4f 2026-07-14)
+  [ok]   target wasm32-wasip2 is installed
+  [info] no crate checked: pass --crate DIR, or run it in an app directory with components/<name>/
+```
+
+Installing the target on a machine without it is **unverified** here.
+
+### 2. Create the crate
+
+```sh
+tools/octo wasm new text-tools --app ~/apps/my-app
+```
+
+It prints `created …/my-app/components/text-tools` and writes a crate from
+[templates/rust-component](../templates/rust-component/). Only the built
+component goes into the bundle:
+
+```text
+~/apps/my-app/
+  bundle/
+    fns/text-tools.wasm      the component, after `tools/octo wasm build`
+  components/text-tools/     your crate; not in the bundle
+    Cargo.toml
+    src/lib.rs
+    .gitignore               /target/
+```
+
+The name, here `text-tools`, is the crate's and the file's: 1 to 64
+characters of `[a-z0-9_-]`, starting with a letter. Without `--app`, the
+command uses the current directory, which must hold `bundle/manifest.json`.
+
+The crate gets the SDK, `octosense-component`, in one of two ways. A comment
+in its `Cargo.toml` says which, and why:
+
+| `--sdk` | `Cargo.toml` gets | When |
+| --- | --- | --- |
+| `auto` (the default) | The git form when it can, the path form otherwise | — |
+| `git` | `octosense-component = { git = "https://github.com/OctoSense-org/OctoSense-App-Flow", rev = "<commit>" }`, where the commit is the newest one on App Flow's `main` (as last fetched) that your checkout has and that contains the SDK | It builds the same on any machine, so commit it with the app. To move to a newer SDK, change `rev`, then run `cargo update -p octosense-component`. |
+| `path` | `octosense-component = { path = "<your App Flow checkout>/sdk/rust/octosense-component" }`, relative when the two share a folder | It needs no network and follows your checkout, but another machine needs App Flow in the same place. An absolute path names your machine, so keep it out of a public repository. |
+
+The SDK is not on crates.io yet; ADR 0014 publishes it there once a
+maintainer approves. Until this repository's `main` has the SDK, `auto`
+writes the path form and says
+`App Flow's main (origin/main, as last fetched) does not have the SDK yet`.
+The git form was tested only against a local repository, so building with it
+is **unverified**.
+
+The crate has its own `[workspace]`, so a Cargo workspace around your app
+does not claim it, and the release profile is set for size
+(`opt-level = "s"`, `lto`, `strip`).
+
+### 3. Write the functions
+
+Put `#[octosense_component::export]` on an inline module. Every `pub fn` in
+it becomes a function the app's script can call; every other item stays
+ordinary Rust, and the rest of the crate, with any dependency, is yours. This
+is the template's `src/lib.rs` without its comments:
+
+```rust
+#[octosense_component::export]
+pub mod functions {
+    pub struct Counts {
+        pub words: u32,
+        pub lines: u32,
+    }
+
+    pub fn greet(name: &str) -> String {
+        format!("Hello, {name}!")
+    }
+
+    pub fn count(text: &str) -> Counts {
+        Counts {
+            words: text.split_whitespace().count() as u32,
+            lines: text.lines().count() as u32,
+        }
+    }
+
+    pub fn parse_number(text: &str) -> Result<f64, String> {
+        text.trim()
+            .parse()
+            .map_err(|_| format!("{text:?} is not a number"))
+    }
+}
+```
+
+The macro writes the component's WIT world from these signatures, generates
+the `wit-bindgen` glue, and converts between your types and the generated
+ones. A `pub struct` with named fields becomes a WIT record, a `pub enum` of
+unit variants a WIT enum, and any other `pub enum` (each variant holding
+nothing or one value) a WIT variant. [Types](#types) lists what a function may
+take and return.
+
+Names keep your Rust spelling in the script. WIT spells `parse_number` and a
+field `word_count` in kebab case (`parse-number`, `word-count`), and ADR
+0014's phase 2 calls `wasm.parse_number` and returns `word_count`. The kebab
+spellings are accepted on the way in too.
+
+A type the macro cannot map fails the build with what to use instead. For
+example, a `HashMap` parameter fails with
+`maps and sets are not WIT types: use Vec<(K, V)>, Vec<T> or a pub struct`.
+It also refuses `usize`, references other than a `&str` or `&[u8]`
+parameter, generic and `async` functions, recursive types, two items with
+one WIT name, and a function named `functions`, which `wasm.functions`
+already is.
+
+Two more things the SDK gives a function:
+
+- `octosense_component::log(line)` writes a line to stderr, which ADR 0014
+  makes one of the app's log lines; `println!` and `eprintln!` work the same.
+- A `static`, such as a cache in a `Mutex` or an `AtomicU64`, lives as long as
+  the component's instance, so it is still there at the next call
+  ([State](#state)).
+
+Test the functions natively, from `~/apps/my-app`:
+
+```sh
+cargo test --manifest-path components/text-tools/Cargo.toml
+```
+
+The output includes `test tests::counts_words_and_lines ... ok` and
+`test tests::a_bad_number_is_an_error ... ok`.
+
+### 4. Build it into the bundle
+
+```sh
+tools/octo wasm build --app ~/apps/my-app
+```
+
+For each crate in `components/` (or each `--crate DIR`), it:
+
+1. runs `cargo build --release --target wasm32-wasip2`;
+2. reads the component's imports, and stops without changing the bundle if
+   one is outside `wasi:cli`, `wasi:clocks`, `wasi:filesystem`, `wasi:io` and
+   `wasi:random`, the WASI packages the `wasm` service gives a component;
+3. copies it to `bundle/fns/<name>.wasm`;
+4. adds `wasm` to the manifest's `capabilities` and `wasm-components-v1` to
+   its `requires`, and `storage` when a component imports
+   `wasi:filesystem`, saying what it changed;
+5. warns about what the gate or the service would refuse later: more than 8
+   files in `fns/`, two files exporting one function name, a bundle over
+   8 MiB;
+6. stamps the bundle when it finds `hub`.
+
+For the template, after Cargo's own output, it prints:
+
+```text
+wrote bundle/fns/text-tools.wasm: 81,959 bytes, a component that reaches the clock, but no files, network or other app
+  wasm.count(text: string) -> record { words: u32, lines: u32 }
+  wasm.greet(name: string) -> string
+  wasm.parse_number(text: string) -> result<f64, string>
+bundle/manifest.json:
+  added "wasm" to capabilities: the app runs its own sandboxed functions
+  added "wasm-components-v1" to requires: a host that runs only core modules refuses the app at install, instead of failing at its first call
+```
+
+The template's functions never read the time, but its component imports
+`wasi:clocks/monotonic-clock`, as every component built with Rust's standard
+library here does.
+
+A function that opens a socket builds, but `tools/octo wasm build` refuses
+the component. With `std::net::TcpStream::connect(addr)` in a function, it
+prints:
+
+```text
+octo: text-tools imports what no host gives a component, so the wasm service would refuse to load it and App Hub's gate refuses the bundle:
+  wasi:sockets/network@0.2.9, wasi:sockets/instance-network@0.2.9, wasi:sockets/udp@0.2.9, wasi:sockets/udp-create-socket@0.2.9, wasi:sockets/tcp@0.2.9, wasi:sockets/tcp-create-socket@0.2.9, wasi:sockets/ip-name-lookup@0.2.9:
+    network sockets (std::net, or a crate such as tokio's net, reqwest or ureq): a component has no network. Fetch in the app's script with `net`, then pass the data in.
+```
+
+To see what a built file holds, run `tools/octo wasm info`, here from
+`~/apps/my-app`:
+
+```sh
+tools/octo wasm info bundle/fns/text-tools.wasm
+```
+
+It prints the file's kind, what it reaches, every import and every function
+with its WIT signature, and what the manifest needs. It asks App Hub's
+`hub component-info` when the `hub` it finds has that command (App Hub #186),
+and otherwise reads the file itself. Both give the same answer for the SDK's
+examples and the template; `--json` prints it as `hub component-info` does.
+
+### 5. Call it from the app
+
+**Unverified:** no shell runs components yet; this follows ADR 0014.
+
+```splash
+host.request("wasm.count", {text: "one two\nthree"}, fn(r){
+    if r.is_ok { words = r.data.words } else { status = r.error }
+})
+
+host.request("wasm.parse_number", "2.5", fn(r){
+    if r.is_ok { value = r.data } else { status = r.error }
+})
+```
+
+The arguments are an object keyed by the parameter names, an array in
+parameter order, or, for a function of one parameter, the value itself. The
+result arrives in `r.data` as JSON ([Types](#types)), and an `Err` in
+`r.error`: `wasm.parse_number` with `"two"` fails with
+`"two" is not a number`. `wasm.functions` lists each function with its WIT
+signature.
+
+An agent tool maps to a component's function as to a module's, with
+`host_method: "wasm.<function>"`
+([Call it from an agent tool](#call-it-from-an-agent-tool)); that is
+**unverified** for components.
+
+### 6. Test it
+
+- Test the logic natively with `cargo test`, as in step 3.
+- `tools/octo run` starts the app in `card-host`, which has no `wasm`
+  service, so every call answers `no service answers "wasm" on this device`.
+  Use it for the layout and for what the app shows without its functions.
+  Whether App Hub `main`'s `card-host` admits the manifest at all is
+  **unverified** (see the table at the top).
+- `tools/octo check` runs App Hub's gate. With App Hub `main`'s `hub`, it
+  stops at the stamp: `hub: app dev.example.texttools needs a newer host: wasm-components-v1`.
+  With App Hub #186's, the gate admits the component and tells the reviewer
+  what it reaches ([What the gate checks](#what-the-gate-checks)).
+- Running the app's functions in OctoSense needs ADR 0014's phase 2, and is
+  **unverified**. Once it lands, test as for a module
+  ([Test it](#test-it), steps 2 to 9).
+
+The SDK's own tests build its examples and the template with plain cargo for
+`wasm32-wasip2`, load them in Wasmtime 49 with WASI 0.2 as ADR 0014's
+runtime does, and call every function. Run them from `sdk/rust/`:
+
+```sh
+cargo test --locked --workspace
+```
+
+The output includes `test every_type_mapping_crosses_both_ways ... ok`,
+`test the_exports_run_with_an_unmodified_crate_files_and_a_clock ... ok` and
+`test the_template_octo_wasm_new_writes_runs_as_a_component ... ok`. CI runs
+them on Ubuntu, with the `tools/` tests, which build a new crate with
+`tools/octo wasm new` and `tools/octo wasm build`.
+
+## What a component can use
+
+### Types
+
+What a function may take and return, its WIT type, and its JSON in the
+script (ADR 0014):
+
+| Rust | WIT | JSON in the script |
+| --- | --- | --- |
+| `bool` | `bool` | `true` or `false` |
+| `u8`, `u16`, `u32`, `u64`, `i8`, `i16`, `i32`, `i64` | `u8` … `u64`, `s8` … `s64` | A number, range-checked |
+| `f32`, `f64` | `f32`, `f64` | A number |
+| `char` | `char` | A string of one character |
+| `String`; a parameter may be `&str` | `string` | A string |
+| `Vec<u8>`; a parameter may be `&[u8]` | `list<u8>` | Base64 text; an array of numbers is accepted too |
+| `Vec<T>` | `list<T>` | An array |
+| `Option<T>` | `option<T>` | `null` or the value |
+| A tuple, such as `(u32, String)` | `tuple<u32, string>` | An array |
+| A `pub struct` with named fields | `record` | An object keyed by the field names |
+| A `pub enum` of unit variants | `enum` | The variant's name, such as `"short"` |
+| Any other `pub enum` | `variant` | `"case"`, or `{"case": value}` for a variant with a value |
+| `Result<T, String>`, `Result<(), String>` | `result<T, string>`, `result<_, string>` | The value; an `Err` is the call's error |
+| No return value | No result | `null` |
+
+The macro refuses `usize` and `isize` (use `u32`/`u64` or `i32`/`i64`),
+maps and sets (use `Vec<(K, V)>`, `Vec<T>` or a `pub struct`), `Box`, `Rc`,
+`Arc` and `Cow`, and an error type other than `String` (map it with
+`.map_err(|e| e.to_string())`).
+
+### What it reaches
+
+ADR 0014 gives a component the WASI 0.2 interfaces below, each scoped to the
+app. The SDK's tests use the same set in Wasmtime 49; inside the shell it is
+**unverified** until phase 2 lands.
+
+| | A component |
+| --- | --- |
+| The clock and random numbers | Yes: `std::time`, and random numbers through crates such as `getrandom` 0.4, which the SDK's tests call |
+| Files | Only with `storage`: the app's storage folder is `/`, read and write, through `std::fs`; nothing else of the device's files. Without `storage`, it has no folder. |
+| stdout and stderr | They become the app's log lines |
+| The environment, arguments and stdin | Empty |
+| The network | No. `wasi:sockets` is refused. Outgoing HTTP to the hosts in `network.hosts` is phase 3. |
+| Threads | No: `wasm32-wasip2` has none |
+| Host services, other apps | No. An `octosense:host` import with the same checks as `host.request` is phase 3. |
+
+### State
+
+One instance of each component lives for as long as the app's worker, so a
+`static` (a parsed document, a cache, a model) is still there at the next
+call. A trap or a deadline ends the instance, and the next call starts a new
+one. An app update, a changed grant or a withdrawal discards it, as for
+modules (ADR 0014). The SDK's tests show a `static` counter kept between two
+calls on one instance; how long the shell keeps the instance is
+**unverified** until phase 2 lands. Keep what must survive in the app's
+storage.
+
+### What cannot build or run
+
+`tools/octo wasm doctor --crate components/<name>` reads the crate's
+dependencies with `cargo metadata --filter-platform wasm32-wasip2` and names
+the ones it knows cannot build or run in a component. When a build fails,
+`tools/octo wasm build` prints the same findings. For the template, it
+reports `none of the 3 crates it links is known not to build or run in a component`.
+
+| The crate | Why | Instead |
+| --- | --- | --- |
+| C libraries: `openssl-sys`, `libsqlite3-sys`, and crates that compile C with `cc` or `cmake` | They need a C compiler for WASI, such as wasi-sdk's clang | A pure-Rust crate or feature: RustCrypto's `sha2`, `hmac` or `aes-gcm` for cryptography; files in the app's storage, or the script's storage, for data |
+| The network: `reqwest`, `hyper`, `ureq`, `curl`, `mio`, `socket2`, `tungstenite`, `native-tls` | A component has no sockets | Fetch with `net` in Splash, then pass the data in |
+| Threads: `rayon` | `wasm32-wasip2` has no threads | Plain iterators, or the crate without its parallel feature |
+| `tokio` with `rt-multi-thread`, `net`, `fs`, `process` or `signal` | They need threads, the network or the device | Plain functions: a component's functions are ordinary calls, with no async runtime |
+| JavaScript bindings: `wasm-bindgen`, `js-sys`, `web-sys` | A component has no JavaScript | The crate without its `js` or `wasm-bindgen` feature |
+| Native code: `pyo3`, `jni`, `libloading`; Unix calls: `nix` | Neither exists in WASI | — |
+
+The list is what `tools/octo` knows, not every crate that fails. A
+dependency that builds can still import what no host gives; step 4 catches
+that.
+
+### What the gate checks
+
+These findings come from App Hub #186, in review. App Hub `main` refuses a
+bundle that requires `wasm-components-v1` before any check runs. With #186,
+`tools/octo check` on the example app prints, besides its other findings:
+
+```text
+  [warning] functions (fns/text-tools.wasm): fns/text-tools.wasm is a component that reaches the clock, but no files, network or other app
+```
+
+| Finding | Fix |
+| --- | --- |
+| `[refused] functions: fns/text-tools.wasm is a WebAssembly component; the manifest must require wasm-components-v1` | Add it to `requires`, or run `tools/octo wasm build`. |
+| `[refused] functions: fns/markdown.wasm imports wasi:filesystem, the app's own files, which needs the storage capability` | Add `storage`, or drop the file access. |
+| `[refused] contents-invalid (fns/netprobe.wasm): the component imports wasi:sockets/network@0.2.9; a component may import only wasi:cli, wasi:clocks, wasi:filesystem, wasi:io and wasi:random` | Remove what opens the network ([What cannot build or run](#what-cannot-build-or-run)). |
+
+The rules for every file in `fns/` (its name, at most 8 files, the 8 MiB
+bundle) are the same as for modules ([Build it](#build-it)).
+
+## Core modules (ADR 0011)
+
+A core module is what OctoSense `main` runs today: a WebAssembly core module,
+not a component, whose functions take and return bytes or JSON and reach
+nothing but their input. The rest of this section is the guide to them.
+
+### Where functions run
 
 The shell's `wasm` host service runs the functions. OctoSense's
 [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.md)
@@ -54,7 +446,7 @@ yet. On a device, Wasm Lab (a system app) has, and so has OctoSense's phone
 acceptance app: a signed test app, installed through normal store admission
 on a OnePlus 6.
 
-## How a call runs
+### How a call runs
 
 1. The app's script calls `host.request("wasm.<function>", args, fn(r){…})`,
    or the app's agent calls a tool mapped to `wasm.<function>`.
@@ -83,9 +475,9 @@ discards the compiled code and the answer of a call that was running. That
 call answers `wasm app admission changed; retry from the current app`, and
 the next call loads the new modules, with no restart of the shell.
 
-## Write a function
+### Write a function
 
-### The guest crate
+#### The guest crate
 
 `octosense-guest` is a helper crate for the guest, the Rust code inside the
 module. It implements [the ABI](#the-abi) for you. It is not on crates.io.
@@ -102,7 +494,7 @@ on `serde_json`.
 | `octosense_guest::log(line)` | Writes `line` to the shell's log, as `wasm <app id>: <line>`. A native build prints it to stderr. |
 | A panic hook, which `export!` and `export_json!` install | Logs the panic's message, as a `panic: …` line, before the call traps. |
 
-### A minimal example
+#### A minimal example
 
 These steps add functions to an app that `tools/octo new` made in
 `~/apps/my-app` ([QUICKSTART §3](QUICKSTART.md#3-create-an-app)); the
@@ -233,7 +625,7 @@ examples give it the id `dev.example.texttools`. Keep the Rust crate beside
 
    The output includes `test tests::the_earliest_match_comes_first ... ok`.
 
-### What the sandbox forbids
+#### What the sandbox forbids
 
 A function reaches nothing but its own memory and `octo.log`. Rust's
 standard library still compiles for `wasm32-unknown-unknown`, but the calls
@@ -250,7 +642,7 @@ below fail or do nothing:
 | Prints with `println!` or `eprintln!` | Writes nothing. | Call `octosense_guest::log`. |
 | Imports a host function, such as WASI's or `wasm-bindgen`'s | The module does not load: `the module imports <name>; only octo.log is provided`. | Build for `wasm32-unknown-unknown` and drop the dependency that adds the import. |
 
-### Limits
+#### Limits
 
 | Limit | Value | When a function exceeds it |
 | --- | --- | --- |
@@ -290,7 +682,7 @@ which the `wasm` service uses, the constants in OctoSense's
 `crates/shell/src/wasm_service.rs`, and `crates/appstore/src/services.rs` in
 App Hub.
 
-### The ABI
+#### The ABI
 
 The guest crate implements this ABI. Read it to write a module without the
 crate, or to debug one. A module is a WebAssembly core module, not a
@@ -319,7 +711,7 @@ shell ignores exports of other types. A module that lacks `memory`,
 `octo_alloc` or `octo_free`, or imports anything besides `octo.log`, does not
 load.
 
-## Build it
+### Build it
 
 Run these commands from `~/apps/my-app`.
 
@@ -361,7 +753,7 @@ The gate holds the bundle to these rules:
 | --- | --- |
 | Path | `fns/<name>.wasm`, directly in `fns/` |
 | Name | 1 to 64 characters of `[a-z0-9_-]` |
-| Header | The first 8 bytes: a WebAssembly core module, version 1 |
+| Header | The first 8 bytes: a WebAssembly core module, version 1 (App Hub #186 also admits a component) |
 | Modules | At most 8 per bundle |
 | Bundle size | 8 MiB (8,388,608 bytes) of files, not counting `manifest.json` |
 
@@ -388,9 +780,9 @@ output stays out of Git. Commit `bundle/fns/my_functions.wasm` with
 `functions/` and the copied `octosense-guest/`, which the crate needs to
 build.
 
-## Declare and call it
+### Declare and call it
 
-### Declare the capability
+#### Declare the capability
 
 1. Request `wasm` in `bundle/manifest.json`:
 
@@ -398,8 +790,10 @@ build.
    "capabilities": ["wasm"]
    ```
 
-   `wasm` needs no `requires` marker; it is an ordinary capability. The
-   store shows the person "Run its own sandboxed functions on this device".
+   For core modules, `wasm` needs no `requires` marker; it is an ordinary
+   capability. (A component also needs `wasm-components-v1`:
+   [Build it into the bundle](#4-build-it-into-the-bundle).) The store shows
+   the person "Run its own sandboxed functions on this device".
 
 2. Stamp and check the bundle, from your App Flow checkout:
 
@@ -426,11 +820,11 @@ build.
    | `[refused] functions: the bundle carries 9 WebAssembly modules, over the 8 it may` | Put the functions in 8 modules or fewer. |
    | `[refused] contents-invalid (fns/MyFunctions.wasm): a function module is named fns/<name>.wasm, the name [a-z0-9_-] and at most 64 characters` | Rename the file, and keep it directly in `fns/`. |
    | `[refused] contents-invalid (lib/x.wasm): a WebAssembly module belongs in fns/, as fns/<name>.wasm` | Move the file into `fns/`. |
-   | `[refused] contents-invalid (fns/x.wasm): not a WebAssembly core module (magic and version 1)` | Ship a core module built for `wasm32-unknown-unknown`, not a component. |
+   | `[refused] contents-invalid (fns/x.wasm): not a WebAssembly core module (magic and version 1)` | Ship a core module built for `wasm32-unknown-unknown`. A component needs a gate with App Hub #186 ([What the gate checks](#what-the-gate-checks)). |
    | `[warning] functions: the bundle declares the wasm capability but carries no fns/*.wasm` | Copy the module into `bundle/fns/` ([Build it](#build-it), step 3). |
    | `hub: the bundle exceeds the size limit` | Bring the bundle's files under 8 MiB. |
 
-### Call it from Splash
+#### Call it from Splash
 
 Call `wasm.<function>`, where `<function>` is the exported name:
 
@@ -463,7 +857,7 @@ byte list. It arrives as a JSON array of numbers, which `export_json!` reads
 into a `Vec<u8>`. Each byte takes up to 4 characters, so the 1 MiB argument
 limit holds at least 256 KiB of binary data (**unverified**).
 
-### Call it from an agent tool
+#### Call it from an agent tool
 
 Shipping `tools.json` gives the app its own agent, so declare the `agent`
 block as well
@@ -520,7 +914,7 @@ bare list. The agent receives `{"ok": true, "data": <output>}`, or
 The gate's refusal names the rule it applies, such as
 `[refused] tools: texttools.rank: host_method "wasm.rank" requires the declared "wasm" service capability`.
 
-### Check what loaded
+#### Check what loaded
 
 Call `wasm.functions` with `{}` to learn whether the host runs functions,
 and which ones loaded. Where no `wasm` service runs, the call fails with
@@ -539,7 +933,7 @@ seconds, and the counts start again with the next one.
 
 Do not name a function `functions`: `wasm.functions` never calls it.
 
-### Errors the app sees
+#### Errors the app sees
 
 | `r.error` | Cause | Fix |
 | --- | --- | --- |
@@ -564,7 +958,7 @@ The service loads an app's modules together. While any module fails to load,
 every call answers that module's error. The service tries again on the next
 call.
 
-## Test it
+### Test it
 
 Steps 3 to 9 test the functions in a shell that runs them, so they are
 **unverified**.
@@ -623,23 +1017,36 @@ describes (**unverified**).
 ## Open items
 
 OctoSense's [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.md)
-records the design. These items are open:
+records the design for modules, and
+[ADR 0014](https://github.com/OctoSense-org/OctoSense/pull/436) the design for
+components, with its phases. These items are open:
 
 | Item | Status |
 | --- | --- |
+| Components in a shell (ADR 0014, phase 2) | Not merged: the `wasm` service loading components from `fns/`, one instance per app, the storage grant and its quota, and a larger input limit than a module's. Until it lands, no app's component runs. |
+| App Hub's gate for components | [App Hub #186](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/186), in review: it admits components under `wasm-components-v1` and adds `hub component-info`. |
+| The SDK on crates.io | Not yet. ADR 0014 publishes it there with a maintainer's approval; until then, a crate depends on it by a git commit or a path. |
+| Outgoing HTTP and host services from a component (phase 3) | Not yet: `wasi:http` limited to `network.hosts`, and an `octosense:host` import with `host.request`'s checks. |
+| Compiling at install time, so a phone skips the first compile (phase 3) | Not yet, for modules or components. A module's first call compiles it: ADR 0011 measured 27–33 ms on a desktop and 378–421 ms on a mid-range Android phone, and 5–11 ms for later loads from the cache on that phone. |
+| Shared components in App Hub's catalog (phase 4) | Not yet. |
 | A CPU budget per app | Not yet. The limits apply per call, so an app can keep one core busy with back-to-back calls. |
-| Compiling modules ahead of time for phones | Not yet. The first call compiles each module: ADR 0011 measured 27–33 ms on a desktop and 378–421 ms on a mid-range Android phone, and 5–11 ms for later loads from the cache on that phone. |
 | Agent tools with a live model | Unverified. OctoSense's tests call Wasm Lab's tools through the shell's tool executor, without a model. |
 | Windows | Not yet. Builds for Windows leave the runtime out until it has been checked there. |
-| iOS | Not yet. Builds for iOS leave the runtime out. iOS allows no JIT for apps, so Wasmtime would have to use its Pulley interpreter, about 17 times slower than Cranelift. iOS also allows no downloaded native code, so a store app's functions cannot be compiled ahead of time there either. |
-| OpenHarmony | Not yet. Its JIT policy is unknown, so builds for OpenHarmony leave the runtime out. |
-| Typed interfaces (the component model and WIT), host imports such as a clock or randomness, and deterministic limits (fuel) | Not yet decided. Any host import beyond `octo.log` would be a new capability. |
+| iOS | Not yet. Builds for iOS leave the runtime out. iOS allows no JIT for apps, so Wasmtime would have to use its Pulley interpreter, about 17 times slower than Cranelift; ADR 0014 plans that for phase 3. iOS also allows no downloaded native code, so a store app's functions cannot be compiled ahead of time there either. |
+| OpenHarmony | Not yet. Its JIT policy is unknown, so builds for OpenHarmony leave the runtime out; ADR 0014 plans Pulley there too until it is known. |
+| Deterministic limits (fuel) | Not decided. |
 
 ## See also
 
 - OctoSense's [WebAssembly in OctoSense](https://github.com/OctoSense-org/OctoSense/blob/main/docs/wasm.md):
   how the `wasm` service works on `main`, with its limits, platforms and
   tests.
+- OctoSense's ADR 0014, in [OctoSense #436](https://github.com/OctoSense-org/OctoSense/pull/436):
+  components, their WASI subset, the JSON mapping and the phases.
+- This repository's SDK, [sdk/rust/](../sdk/rust/README.md): the
+  `octosense-component` crate and its macro, the examples and their
+  end-to-end tests. `tools/octo wasm` reads WebAssembly with
+  [tools/wasm_component.py](../tools/wasm_component.py).
 - [HOST-API-V1](HOST-API-V1.md): device permissions and `location.get`.
 - [CAPABILITIES § Host services](CAPABILITIES.md#host-services): `wasm`
   beside the other host services.
@@ -649,4 +1056,4 @@ records the design. These items are open:
 - App Hub's [SUBMITTING § What the Hub cannot do yet](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#what-the-hub-cannot-do-yet):
   what a store app cannot do yet, native Rust code included.
 - [Wasm Lab](https://github.com/OctoSense-org/OctoSense/tree/main/apps/wasmlab):
-  the reference app, its guest crate and its `build.sh`.
+  the reference app for modules, its guest crate and its `build.sh`.
