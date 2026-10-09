@@ -75,14 +75,14 @@ organizers. What a contestant needs from here:
 
 ## Connected apps: GitHub, Gmail and Google Calendar
 
-Public App Hub catalog **14** offers the following GitHub-attested **0.2.1**
-releases. Search their exact fresh IDs; historical `org.octosense.samples.*`
+Public App Hub catalog **15** offers the following GitHub-attested releases
+(GitHub Notes at **0.2.2**, the others at **0.2.1**). Search their exact fresh IDs; historical `org.octosense.samples.*`
 IDs and local data are not migrated. App Hub withdrew those older key-signed
 entries in catalog sequence 14.
 
 | App | App id | Source |
 | --- | --- | --- |
-| GitHub Notes | `io.github.ymote.githubnotes` | [ymote/octosense-github-notes](https://github.com/ymote/octosense-github-notes/releases/tag/v0.2.1) |
+| GitHub Notes | `io.github.ymote.githubnotes` | [ymote/octosense-github-notes](https://github.com/ymote/octosense-github-notes/releases/tag/v0.2.2) |
 | Inbox Assistant | `io.github.ymote.inboxassistant` | [ymote/octosense-inbox-assistant](https://github.com/ymote/octosense-inbox-assistant/releases/tag/v0.2.1) |
 | Google Calendar | `io.github.ymote.googlecalendar` | [ymote/octosense-google-calendar](https://github.com/ymote/octosense-google-calendar/releases/tag/v0.2.1) |
 

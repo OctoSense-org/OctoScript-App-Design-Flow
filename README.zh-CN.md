@@ -56,11 +56,11 @@ App Flow 带着你（或编码 Agent）从一个想法（一段文字需求、�
 
 ## 连接账户的应用：GitHub、Gmail 和 Google Calendar
 
-公开 App Hub 签名目录 **14** 提供以下带 GitHub 证明的 **0.2.1** 版本。请搜索新的确切 ID；历史 `org.octosense.samples.*` ID 及本地数据不会迁移。App Hub 已在签名目录第 14 版撤回那批较早的、用密钥签名的条目。
+公开 App Hub 签名目录 **15** 提供以下带 GitHub 证明的版本（GitHub Notes 为 **0.2.2**，其余为 **0.2.1**）。请搜索新的确切 ID；历史 `org.octosense.samples.*` ID 及本地数据不会迁移。App Hub 已在签名目录第 14 版撤回那批较早的、用密钥签名的条目。
 
 | 应用 | 应用 ID | 源码 |
 | --- | --- | --- |
-| GitHub Notes | `io.github.ymote.githubnotes` | [ymote/octosense-github-notes](https://github.com/ymote/octosense-github-notes/releases/tag/v0.2.1) |
+| GitHub Notes | `io.github.ymote.githubnotes` | [ymote/octosense-github-notes](https://github.com/ymote/octosense-github-notes/releases/tag/v0.2.2) |
 | Inbox Assistant | `io.github.ymote.inboxassistant` | [ymote/octosense-inbox-assistant](https://github.com/ymote/octosense-inbox-assistant/releases/tag/v0.2.1) |
 | Google Calendar | `io.github.ymote.googlecalendar` | [ymote/octosense-google-calendar](https://github.com/ymote/octosense-google-calendar/releases/tag/v0.2.1) |
 
