@@ -22,11 +22,12 @@ curl -s http://127.0.0.1:8197/quit
 tools/octo check examples/api-migration-lab/bundle
 ```
 
-自动原生输入与重启验证（替换构建产物路径；输出目录必须不存在）：
+使用配套 OctoSense `app-tool-acceptance` 的自动原生输入与重启验证
+（也可用 `--card-host` 指定预览宿主；替换路径，输出目录必须不存在）：
 
 ```sh
 python3 examples/api-migration-lab/verify-native.py \
-  --card-host /path/to/card-host --hub /path/to/hub \
+  --host /path/to/app-tool-acceptance --hub /path/to/hub \
   --output /tmp/api-migration-lab-evidence
 ```
 
@@ -36,12 +37,13 @@ python3 examples/api-migration-lab/verify-native.py \
 
 ## 证据与限制
 
-macOS 原生行为检查已通过：启动内容、空输入拒绝、编辑、保存、两种服务错误和
-精确重启恢复；缓存 `card-host` 的身份见 [validation.json](validation.json)。
-提交的[截图](bundle/screenshots/01-main.png)是实际重启后捕获，关闭系统字体后已目视检查。
-该旧宿主更早的截图存在重绘不完整帧，不作为视觉验收证据。
-本记录不声明长时间 UX 测试或性能评分。
+在 OctoSense `77b7c6b5` 的当前运行时 `app-tool-acceptance` 上，macOS 原生检查
+已通过：加载状态、空输入拒绝、编辑、保存、两种服务错误和精确重启恢复。
+二进制、源码、驱动和图片哈希见 [validation.json](validation.json)。关闭系统字体后，
+三张原生 Metal 图均已检查：中英文、输入框、操作和状态可见，重绘完整。
+提交的[截图](bundle/screenshots/01-main.png)是实际重启后的捕获。
+不声明长时间 UX 测试或性能评分。
 
-`card-host` 真实返回没有 `model`、`glance` 服务。成功推理、实际 Glance 发布/撤回、
-摘要展开、公开发行与手机平台均**未验证**，应在配置好的兼容 OctoSense shell 中另测。
-这是未签名示例，不是 App Hub 上架申请，也不隐含人的发布或视觉批准。
+预览程序没有注册模型或 Glance 服务，返回真实的服务缺失结果。成功推理、实际
+Glance 发布/撤回、摘要展开、公开发行与手机平台均**未验证**，应在配置好的兼容
+OctoSense shell 中另测。这是未签名示例，不是 App Hub 上架申请，也不隐含人的发布或视觉批准。

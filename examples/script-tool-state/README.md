@@ -31,7 +31,7 @@ verifies ephemeral signed admission, binds the actual script tools, and waits
 until the instrument has observed the loaded UI before dispatching. It checks
 the exact result and visible state, edits through real input, restarts and
 reads the retained value through the tool. It also requires wrong-account,
-undeclared-tool, invalid-input and closed-app refusals.
+undeclared-tool, invalid-input and unregistered-owner refusals.
 
 All signing keys live only in memory; no public publisher identity is
 created. All app state is synthetic and isolated. Native calls enter after
@@ -41,6 +41,13 @@ execution. The driver records failures and stops only its own hidden native
 processes. See `result.json` in the chosen evidence directory; screenshots
 must still be inspected.
 
-**Validation status:** native runner build and fixture acceptance are pending
-in this change. Do not count the preview or a declaration check as tool
-execution. This is a development example, not a published app.
+**Validated on macOS:** the release runner at OctoSense `77b7c6b5` passed the
+signed gate, actual tool dispatch, exact state/output, manual Unicode edit,
+restart persistence and all four refusal checks. All four native Metal
+screenshots were inspected; content and controls are fully rendered with
+system fonts disabled. See [validation.json](validation.json).
+
+Two private mutations also failed as required: renaming the hook to
+`on_agent_tool` returned `app_handler_missing`; removing `script-tools-v1`
+was rejected when binding the tools. No contestant repository was modified.
+This remains a development example, not a published app or a model/phone test.

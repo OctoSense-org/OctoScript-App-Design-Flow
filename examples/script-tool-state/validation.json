@@ -1,0 +1,102 @@
+{
+  "result": "pass",
+  "verified": [
+    "real signed admission",
+    "actual app_tool request/complete dispatch",
+    "exact structured result",
+    "tool mutation visible in native UI",
+    "manual UI edit shares same state",
+    "process restart retains exact Unicode state",
+    "invalid input refused",
+    "wrong account refused",
+    "undeclared tool refused",
+    "closed app endpoint refused"
+  ],
+  "not_verified": [
+    "real model",
+    "agent consent and peer relay",
+    "public catalog installation",
+    "phone",
+    "other operating systems"
+  ],
+  "binary_sha256": "e24b9934c1b4df762f63bf16ebab428fc91504e05a9948d74dc6f708bc8b18d6",
+  "source_sha256": "4e4195f8ee49dd2f54a9e96a387277b6dd34a55113c0cef69d1bcb0dad9ec513",
+  "driver_sha256": "eca5b3c376a84f63d22b12152c0645536d2e29e7f4f58c60454c7e1c237c59f5",
+  "tool": {
+    "actual": {
+      "Ok": {
+        "revision": 1,
+        "topics": "Space weather and community science"
+      }
+    },
+    "app": "org.octosense.examples.toolstate",
+    "args": {
+      "topics": "Space weather and community science"
+    },
+    "bundle_digest": "464b47bec946dcb1d36310fe7c71cfbd54da5161731c18365f2b5ab0311f1776",
+    "closed_app": "app_not_running: open this app before calling its script tools",
+    "expected": {
+      "revision": 1,
+      "topics": "Space weather and community science"
+    },
+    "not_verified": [
+      "model reasoning",
+      "peer relay and human agent consent",
+      "public catalog installation",
+      "device/platform approval"
+    ],
+    "refusals": {
+      "invalid_arguments": "invalid_arguments: $: topics is required",
+      "undeclared_tool": "tool_not_declared: the running bundle does not implement this tool",
+      "wrong_account": "account_scope: app account changed"
+    },
+    "result": "pass",
+    "schema": 1,
+    "signed_admission": true,
+    "tool": "toolstate.set_preferences"
+  },
+  "restart": {
+    "actual": {
+      "Ok": {
+        "revision": 2,
+        "topics": "Community gardens and music. 社区。"
+      }
+    },
+    "app": "org.octosense.examples.toolstate",
+    "args": {},
+    "bundle_digest": "464b47bec946dcb1d36310fe7c71cfbd54da5161731c18365f2b5ab0311f1776",
+    "closed_app": "app_not_running: open this app before calling its script tools",
+    "expected": {
+      "revision": 2,
+      "topics": "Community gardens and music. 社区。"
+    },
+    "not_verified": [
+      "model reasoning",
+      "peer relay and human agent consent",
+      "public catalog installation",
+      "device/platform approval"
+    ],
+    "refusals": {
+      "invalid_arguments": "invalid_arguments: $: unexpected is not a declared field",
+      "undeclared_tool": "tool_not_declared: the running bundle does not implement this tool",
+      "wrong_account": "account_scope: app account changed"
+    },
+    "result": "pass",
+    "schema": 1,
+    "signed_admission": true,
+    "tool": "toolstate.preferences"
+  },
+  "screenshots_sha256": {
+    "03-manual.png": "469ece1e69a3edd06cb967ff4b834f57f0cf1cd7faa2ddb92d022d209fe2669e",
+    "01-preview.png": "b8e451741ff59beb51c42c0d0b8dc4080baf43db186e8c126c61cb074e98a85d",
+    "04-restart.png": "1571d2b06b8760b04dd77fafe8d68047bde3825182c6a4a1b8159e3a6c3ef0fb",
+    "02-tool.png": "c162116d57bcb47ccbd45431c529e3f8e3b7fa1c232c65d0668c084e6a0b1eea"
+  },
+  "host_source": "77b7c6b5",
+  "runtime_tree": "9121e900f18d5d6f22840ed330c1d7931231509a",
+  "visual_review": "All native Metal screenshots inspected: readable English/Chinese text, visible inputs/actions/status, complete repaint.",
+  "negative_controls": {
+    "legacy_on_agent_tool": "rejected with app_handler_missing",
+    "missing_script_tools_v1": "rejected at bind: Script tool apps must declare requires: [\"script-tools-v1\"]"
+  }
+}

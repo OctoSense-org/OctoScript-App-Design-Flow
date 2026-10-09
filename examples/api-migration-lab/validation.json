@@ -15,14 +15,16 @@
     "phone",
     "agent tools"
   ],
-  "binary_sha256": "c6da88e9405df98bd2d0e916688b3ba6877f83d3e428fae43008cafe526a8c99",
+  "runner": "app-tool-acceptance preview (real SDK; no live services)",
+  "binary_sha256": "e24b9934c1b4df762f63bf16ebab428fc91504e05a9948d74dc6f708bc8b18d6",
   "source_sha256": "5375fa45c0e47b244557b4e44a9e43a736f3579a3db6fc079deeb397b9dc4cd6",
-  "driver_sha256": "9c94eab61d5507dd102915f0b9c6bdf4a41c34c6537b5d866eacbf0c2af896ec",
+  "driver_sha256": "9315697a6a47c6f8f1baa3a237a27e7718f6d07cf901b05882cb5b39577d5cbd",
   "screenshots_sha256": {
-    "03-restart.png": "7dde3c46e84ee53aa1d1402ac8f1343c37dca60b7d1553441c3d034e58787051",
-    "01-editor.png": "05bae84e8cf24f7e5cde67d578ba2536efde25f83c4265e2e2597b2be2f25a85",
-    "02-unavailable.png": "dbae03eb7eb78a2076c0ebf00b17509e3a7652ffb7bf11f9b28764db990bb07d"
+    "03-restart.png": "63ec3a0b345c6e857e712461df35446c25c99777ef46fb95d5219d48cbfc01c3",
+    "01-editor.png": "690cc18b854c882eea5b1e3f7c4340593e0401df6237ad381a7969639c876f8c",
+    "02-unavailable.png": "94d174a601ab80fa107f7cb4ae2ca45a51c0110291681f7858f6c1c924e02b4e"
   },
-  "visual_review": "Post-restart screenshot inspected; earlier captures on cached host had incomplete repaint frames and are not visual pass evidence.",
-  "source_base": "OctoScript-App-Design-Flow a90e7c620b31c75d6e71664f666430a6a10dc8dd"
+  "host_source": "77b7c6b5",
+  "runtime_tree": "9121e900f18d5d6f22840ed330c1d7931231509a",
+  "visual_review": "All native Metal screenshots inspected: readable English/Chinese text, visible inputs/actions/status, complete repaint."
 }

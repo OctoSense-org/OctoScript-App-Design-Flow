@@ -25,12 +25,14 @@ curl -s http://127.0.0.1:8197/quit
 tools/octo check examples/api-migration-lab/bundle
 ```
 
-Automated native input and restart validation (supply your built binary paths;
-the output directory must not exist):
+Automated native input and restart validation with the companion OctoSense
+`app-tool-acceptance` example (or use `--card-host` for a preview host):
+Supply your built binary paths;
+the output directory must not exist:
 
 ```sh
 python3 examples/api-migration-lab/verify-native.py \
-  --card-host /path/to/card-host --hub /path/to/hub \
+  --host /path/to/app-tool-acceptance --hub /path/to/hub \
   --output /tmp/api-migration-lab-evidence
 ```
 
@@ -43,16 +45,18 @@ It neither contacts a model nor accesses any normal application profile.
 
 ## Evidence and limits
 
-Native macOS behavior checks passed with the cached `card-host` identified
-in [validation.json](validation.json): populated startup, empty-input refusal,
-editing, saving, both service-error paths and exact restart persistence.
+Native macOS checks passed on the current-runtime `app-tool-acceptance`
+example at OctoSense `77b7c6b5`: loaded state, empty-input refusal, editing,
+saving, both service-error paths and exact restart persistence. See
+[validation.json](validation.json) for binary, source, driver and image hashes.
+All three native Metal captures were inspected with system fonts disabled:
+English/Chinese text, inputs, actions and status are visible and fully painted.
 The committed [screenshot](bundle/screenshots/01-main.png) is the real
-post-restart native capture, inspected with system fonts disabled. Earlier
-captures from this older host contained incomplete repaint frames; those are
-not visual acceptance evidence. No UI-soak or performance score is claimed.
+post-restart capture. No UI-soak or performance score is claimed.
 
-`card-host` answers that no service serves `model` or `glance`. Successful
-inference, actual Glance publication/withdrawal, summary expansion, a public
-release and every phone platform remain **unverified**. Use a configured
-compatible OctoSense shell for those checks. This unsigned example is not an
-App Hub submission; no human publishing or visual approval is implied.
+The preview runner deliberately registers no model or Glance service; it
+returns the real unavailable-service reply. Successful inference, actual
+Glance publication/withdrawal, summary expansion, a public release and every
+phone platform remain **unverified**. Use a configured compatible OctoSense
+shell for those checks. This unsigned example is not an App Hub submission;
+no human publishing or visual approval is implied.

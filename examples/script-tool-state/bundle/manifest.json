@@ -14,7 +14,7 @@
   ],
   "id": "org.octosense.examples.toolstate",
   "integrity": {
-    "bundle_blake3": "d255e2905836337d7679de3d0159f31865fb9dbc6c334ae38a1882564cbb77c6"
+    "bundle_blake3": "464b47bec946dcb1d36310fe7c71cfbd54da5161731c18365f2b5ab0311f1776"
   },
   "name": "Script Tool State",
   "requires": [
