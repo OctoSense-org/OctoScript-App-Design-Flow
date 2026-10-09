@@ -109,8 +109,8 @@ Mail 在 macOS 和 iOS 上把密码存进钥匙串。在 Android 和其他平台
 | `mail.list` | `{account, folder?, offset?, limit?}` | `{folder, total, messages: [{id, sender, address, subject, preview, time, unread}]}` |
 | `mail.message` | `{account, folder?, message}` | `{id, sender, address, subject, body, html, attachments, date, time}` |
 | `mail.mark_read` | `{account, folder?, message}` | `{}` |
-| `mail.review_send` | `{account, to, subject, body, compose_id?, expected_revision?, folder?, message?}` | 只有 Mail 应用本身（`os.mail`）可以调用；其他应用得到的是 `Only Mail owns reply drafts`。对 Mail，它返回 `{review_required: true, compose_id, draft_id, revision}` 并打开宿主的审阅界面；用户在那里批准之前，什么都不会发出。 |
-| `mail.send` | – | 一律拒绝：`approval_required: use mail.review_send with Mail open, or open the reply card, then use the host's Approve & Send control. mail.send cannot authorize delivery.` 这段提示指向的方法只有 Mail 可以调用（[OctoSense #409](https://github.com/OctoSense-org/OctoSense/issues/409)）：在 rc.1 上，商店应用没有发送路径。请读取已授权的账户并发出通知；发送由用户在 Mail 应用中完成。 |
+| `mail.review_send` | `{account, to, subject, body, compose_id?, expected_revision?, folder?, message?}` | 只有 Mail 应用本身（`os.mail`）可以调用；其他应用得到的是 `Only Mail owns reply drafts`。对 Mail 的调用，它返回 `{review_required: true, compose_id, draft_id, revision}` 并打开宿主的审阅界面；用户在那里批准之前，什么都不会发出。 |
+| `mail.send` | – | 一律拒绝：`approval_required: use mail.review_send with Mail open, or open the reply card, then use the host's Approve & Send control. mail.send cannot authorize delivery.` 这段提示指向的方法只有 Mail 可以调用（[OctoSense #409](https://github.com/OctoSense-org/OctoSense/issues/409)）：在 RC1 上，商店应用没有发送路径。请读取已授权的账户并发出通知；发送由用户在 Mail 应用中完成。 |
 | `mail.notify` | `{title, body, card_id?, priority?}`（title 1–80 个字符，body 1–600 个字符） | Mail 的通知卡片出现在速览栏上并发出通知后，返回 `{card_id, replaced, expires_at}`。Mail 的 Agent 以工具的形式调用它。 |
 | `mail.sheet.submit` | 登录字段 | 仅限面板 |
 | `mail.sheet.cancel` | – | 仅限面板 |
