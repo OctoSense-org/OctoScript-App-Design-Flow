@@ -643,9 +643,10 @@ def cmd_package_help(args):
 # ------------------------------------------------------------------------ wasm
 # The app's own Rust code as WebAssembly components (OctoSense ADR 0014):
 # `wasm new` writes a crate from templates/rust-component, `wasm build` builds
-# it into bundle/fns/ and declares what the manifest needs, `wasm doctor`
-# checks the toolchain and a crate's dependencies, and `wasm info` says what a
-# function file imports and exports.
+# it into bundle/fns/, records in it the crates it is built from and declares
+# what the manifest needs, `wasm doctor` checks the toolchain and a crate's
+# dependencies, and `wasm info` says what a function file imports, exports and
+# is built from.
 COMPONENT_TEMPLATE = REPO / "templates" / "rust-component"
 SDK_CRATE = REPO / "sdk" / "rust" / "octosense-component"
 SDK_GIT = "https://github.com/OctoSense-org/OctoSense-App-Flow"
@@ -704,6 +705,32 @@ THREAD_CRATES = {
     "rayon-core": "starts threads, which wasm32-wasip2 does not have.",
 }
 TOKIO_FEATURES = ("rt-multi-thread", "net", "fs", "process", "signal")
+
+# What OctoSense already does for a store app, which a component would
+# otherwise ship a crate for. OctoSense links such crates natively, but a
+# component cannot call native code: an app reaches them only through Splash's
+# widgets and functions, and through the host services it is granted. Each
+# entry names the crates, what the app uses instead and when the crate is still
+# worth shipping, and the doc section that says a store app may use it. Engine
+# services such as `photo`, `pdf` or `word` are for system apps, so they are
+# not here. `wasm doctor` prints an info finding for each direct dependency
+# listed.
+OCTOSENSE_PROVIDES = (
+    (("pulldown-cmark", "comrak", "markdown"),
+     "OctoSense renders Markdown itself: Splash's Markdown widget shows it, tables included. "
+     "Ship the crate only to produce HTML or to read Markdown as data.",
+     "docs/SCRIPT-API.md#widgets-available-to-an-app"),
+    (("feed-rs", "rss", "atom_syndication"),
+     "the app's script reads RSS and Atom feeds itself: `text.parse_feed(style)` gives each item's title, link, "
+     "source, publication time, summary and image. Ship the crate only for what parse_feed does not read.",
+     "docs/SCRIPT-API.md#data-and-strings"),
+    (("async-openai", "genai", "ollama-rs", "openai-api-rs"),
+     "OctoSense asks the person's own AI providers for the app: `model.complete`, with the `model` capability, "
+     "answers one-shot, schema-checked requests within a daily budget, and the app never sees a key. "
+     "Never put a provider key in an app.",
+     "docs/AI-SERVICES.md#one-shot-model-calls-model"),
+)
+PROVIDED_CRATES = {name: (hint, doc) for names, hint, doc in OCTOSENSE_PROVIDES for name in names}
 
 
 def cargo_path():
@@ -876,17 +903,10 @@ def dependency_findings(cargo, crate):
     else:
         findings.append(("info", "does not use octosense-component, so the crate writes its own WIT and bindings"))
     # What the component links: the root's normal dependencies, and theirs.
-    # Build and dev dependencies, and proc macros, run on this machine.
+    # Build and dev dependencies, and proc macros, run on this machine. The
+    # same walk lists the crates `wasm build` records in the component.
     nodes = {node["id"]: node for node in meta["resolve"]["nodes"]}
-    linked, todo = set(), [root["id"]]
-    while todo:
-        node = nodes.get(todo.pop())
-        if node is None or node["id"] in linked or any(
-                "proc-macro" in t["kind"] for t in packages.get(node["id"], {}).get("targets", [])):
-            continue
-        linked.add(node["id"])
-        todo += [d["pkg"] for d in node.get("deps", [])
-                 if any(k.get("kind") is None for k in d.get("dep_kinds", [{"kind": None}]))]
+    linked = wasm_component.linked_packages(meta, root["id"])
     problems = []
     for node in (nodes[i] for i in sorted(linked) if i != root["id"]):
         package = packages.get(node["id"])
@@ -912,6 +932,14 @@ def dependency_findings(cargo, crate):
     findings += sorted(set(problems), key=lambda f: (f[0] != "fail", f[1]))
     if not problems:
         findings.append(("ok", f"none of the {len(linked) - 1} crates it links is known not to build or run in a component"))
+    # What OctoSense already provides, for the crate's own normal dependencies.
+    direct = sorted({(packages[d["pkg"]]["name"], packages[d["pkg"]]["version"])
+                     for d in nodes.get(root["id"], {}).get("deps", [])
+                     if d["pkg"] in packages and any(k.get("kind") is None for k in d.get("dep_kinds", [{"kind": None}]))})
+    for name, version in direct:
+        if name in PROVIDED_CRATES:
+            hint, doc = PROVIDED_CRATES[name]
+            findings.append(("info", f"{name} {version}: {hint} ({doc})"))
     return findings
 
 
@@ -972,9 +1000,10 @@ def cargo_package(cargo, crate):
 
 
 def build_component(cargo, crate):
-    """Builds one crate for wasm32-wasip2 and reads the component it made.
-    Dies, before anything in the bundle changes, when the build fails or the
-    component imports what no host gives it."""
+    """Builds one crate for wasm32-wasip2, reads the component it made and
+    records in it the crates it is built from (its `octosense-crates`
+    section). Dies, before anything in the bundle changes, when the build
+    fails or the component imports what no host gives it."""
     package = cargo_package(cargo, crate)
     name = package["name"]
     if not COMPONENT_NAME_RE.match(name):
@@ -1018,7 +1047,21 @@ def build_component(cargo, crate):
             + f"\n`tools/octo wasm doctor --crate {crate}` names the dependencies that usually bring these in.")
     if not info["exports"]:
         die(f"{name} exports no function: put #[octosense_component::export] on a module of pub fns")
-    return {"crate": crate, "name": name, "data": data, "info": info}
+    # The crates it is built from, for App Hub's reviewers: the release
+    # workflow records the same list, so it writes the same bytes.
+    try:
+        inventory = wasm_component.crate_inventory(cargo, crate)
+    except wasm_component.CrateListError as error:
+        die(f"{name}: {error}")
+    data = wasm_component.with_crates(data, inventory)
+    return {"crate": crate, "name": name, "data": data, "info": info, "crates": inventory["crates"]}
+
+
+def crates_line(crates):
+    """`built from 3 crates`: how many the crate list names, the component's own aside."""
+    if not crates:
+        return "built from no crate but its own"
+    return f"built from {len(crates)} crate{'' if len(crates) == 1 else 's'}"
 
 
 def script_call(export, kind="component"):
@@ -1096,6 +1139,7 @@ def cmd_wasm_build(args):
               f"a component that reaches {wasm_component.reach(imports)}")
         for export in b["info"]["exports"]:
             print(f"  {script_call(export)}")
+        print(f"  {crates_line(b['crates'])} (tools/octo wasm info lists them)")
     files = next((b["name"] for b in built if wasm_component.uses_files(b["info"]["imports"])), None)
     notes = component_manifest_changes(manifest, files)
     if notes:
@@ -1144,6 +1188,19 @@ def component_info_hub():
     return hub if "component-info" in out.stdout + out.stderr else None
 
 
+def print_crates(crates, unreadable=None):
+    """The crate list `wasm info` prints: what App Hub's reviewers see."""
+    if unreadable:
+        print(f"crates: unreadable, {unreadable}")
+    elif crates is None:
+        print(f"crates: not recorded; `tools/octo wasm build` and the release workflow record them "
+              f"in an {wasm_component.CRATES_SECTION} section")
+    else:
+        print(f"{crates_line(crates)}, as its {wasm_component.CRATES_SECTION} section lists them:")
+        for crate in crates:
+            print(f"  {crate.get('name')} {crate.get('version')}, {crate.get('source')}")
+
+
 def cmd_wasm_info(args):
     path = Path(args.file).expanduser()
     try:
@@ -1163,8 +1220,19 @@ def cmd_wasm_info(args):
         except wasm_component.ReadError as error:
             die(f"{path}: {error}")
         reader = "octo's own reader (no hub with component-info found)"
+    # The crates it is built from, as its octosense-crates section lists them:
+    # octo reads them itself, whichever reader answered the rest.
+    unreadable = None
+    try:
+        listed = wasm_component.recorded_crates(data)
+    except wasm_component.ReadError as error:
+        listed, unreadable = None, str(error)
+    crates = listed["crates"] if listed else None
     if args.json:
+        info["crates"] = crates
         print(json.dumps(info, indent=2))
+        if unreadable:
+            print(f"octo: {path}: {unreadable}", file=sys.stderr)
         return 0
     kind = info.get("kind")
     imports, exports = info.get("imports") or [], info.get("exports") or []
@@ -1178,6 +1246,7 @@ def cmd_wasm_info(args):
         print(f"functions ({len(exports)}), each called from the app's script as wasm.<name>:")
         for export in exports:
             print(f"  {script_call(export)}")
+        print_crates(crates, unreadable)
         if refused:
             print("refused: no host loads it, and App Hub's gate refuses a bundle with it, for these imports:")
             print("\n".join(refusal_lines(refused)))
@@ -1197,6 +1266,8 @@ def cmd_wasm_info(args):
         others = [e for e in exports if e not in callable_]
         if others:
             print("other exports: " + ", ".join(script_call(e, kind="module")[len("wasm."):] for e in others))
+        if crates is not None or unreadable:
+            print_crates(crates, unreadable)
     if info.get("unresolved"):
         print(f"note: {info['unresolved']}; `hub component-info` reads every type")
     return 0
@@ -1269,14 +1340,18 @@ def main():
     wn.add_argument("--sdk", choices=("auto", "git", "path"), default="auto",
                     help="depend on the SDK by a git commit on App Flow's main, or by path from this checkout "
                          "(default auto: the commit when this checkout has one with the SDK, else the path)")
-    wb = wsub.add_parser("build", help="build the component crates for wasm32-wasip2 into bundle/fns/ and update the manifest")
+    wb = wsub.add_parser("build", help="build the component crates for wasm32-wasip2 into bundle/fns/, with the crates "
+                                       "each is built from, and update the manifest")
     wb.add_argument("--app", metavar="DIR", help="the app's directory, which holds bundle/ (default: the current directory)")
     wb.add_argument("--crate", action="append", metavar="DIR", help="a crate to build (repeatable; default: every <app>/components/*/)")
-    wd = wsub.add_parser("doctor", help="check Rust, the wasm32-wasip2 target and a crate's dependencies")
+    wd = wsub.add_parser("doctor", help="check Rust, the wasm32-wasip2 target and a crate's dependencies, "
+                                        "and name what OctoSense already provides")
     wd.add_argument("--crate", action="append", metavar="DIR", help="a crate to check (repeatable; default: every ./components/*/)")
-    wi = wsub.add_parser("info", help="what a function file is, imports and exports (hub component-info, or octo's reader)")
+    wi = wsub.add_parser("info", help="what a function file is, imports, exports and is built from "
+                                      "(hub component-info, or octo's reader)")
     wi.add_argument("file")
-    wi.add_argument("--json", action="store_true", help="print the answer as JSON, as hub component-info does")
+    wi.add_argument("--json", action="store_true",
+                    help="print the answer as JSON, as hub component-info does, with the crate list as \"crates\"")
 
     args, extra = p.parse_known_args()
     if args.cmd != "check" and extra:

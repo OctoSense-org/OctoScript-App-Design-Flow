@@ -150,18 +150,20 @@ tools/octo wasm build --app ~/apps/my-app
 
 1. 运行 `cargo build --release --target wasm32-wasip2`；
 2. 读取组件的导入，如果有导入不属于 `wasi:cli`、`wasi:clocks`、`wasi:filesystem`、`wasi:io` 和 `wasi:random` 这几个 `wasm` 服务提供给组件的 WASI 包，就停下来，不改动应用包；
-3. 把它复制到 `bundle/fns/<name>.wasm`；
-4. 在清单的 `capabilities` 中加入 `wasm`、在 `requires` 中加入 `wasm-components-v1`，组件导入 `wasi:filesystem` 时再加入 `storage`，并说明改了什么；
-5. 对准入检查或服务之后会拒绝的情况发出警告：`fns/` 中超过 8 个文件、两个文件导出同名函数、应用包超过 8 MiB；
-6. 找到 `hub` 时为应用包写入摘要。
+3. 在组件中记录构建它所用的 crate（见[构建所用的 crate](#构建所用的-crate)）；
+4. 把它复制到 `bundle/fns/<name>.wasm`；
+5. 在清单的 `capabilities` 中加入 `wasm`、在 `requires` 中加入 `wasm-components-v1`，组件导入 `wasi:filesystem` 时再加入 `storage`，并说明改了什么；
+6. 对准入检查或服务之后会拒绝的情况发出警告：`fns/` 中超过 8 个文件、两个文件导出同名函数、应用包超过 8 MiB；
+7. 找到 `hub` 时为应用包写入摘要。
 
 对模板，在 Cargo 自己的输出之后，它输出：
 
 ```text
-wrote bundle/fns/text-tools.wasm: 81,959 bytes, a component that reaches the clock, but no files, network or other app
+wrote bundle/fns/text-tools.wasm: 82,346 bytes, a component that reaches the clock, but no files, network or other app
   wasm.count(text: string) -> record { words: u32, lines: u32 }
   wasm.greet(name: string) -> string
   wasm.parse_number(text: string) -> result<f64, string>
+  built from 3 crates (tools/octo wasm info lists them)
 bundle/manifest.json:
   added "wasm" to capabilities: the app runs its own sandboxed functions
   added "wasm-components-v1" to requires: a host that runs only core modules refuses the app at install, instead of failing at its first call
@@ -183,7 +185,7 @@ octo: text-tools imports what no host gives a component, so the wasm service wou
 tools/octo wasm info bundle/fns/text-tools.wasm
 ```
 
-它输出文件的种类、能访问什么、每个导入、每个函数及其 WIT 签名，以及清单需要什么。如果它找到的 `hub` 有 `hub component-info` 命令（App Hub #186），就交给这条命令；否则自己读取文件。对 SDK 的示例和模板，两者给出相同的答案；`--json` 以 `hub component-info` 的格式输出。
+它输出文件的种类、能访问什么、每个导入、每个函数及其 WIT 签名、构建它所用的 crate，以及清单需要什么。如果它找到的 `hub` 有 `hub component-info` 命令（App Hub #186），就交给这条命令；否则自己读取文件。对 SDK 的示例和模板，两者给出相同的答案；`--json` 以 `hub component-info` 的格式输出，并把 crate 清单放在 `"crates"` 中，这份清单总是由 octo 自己从文件中读取。
 
 ### 5. 在应用中调用
 
@@ -221,7 +223,8 @@ cargo test --locked --workspace
 ### 7. 发布
 
 `tools/octo publish-github` 安装的发布工作流会自己构建 `components/` 中的每个 crate：从打了标签的提交出发，
-使用它固定的 Rust（1.97.1），并在 GitHub 为应用包出具证明之前把每个组件写入 `bundle/fns/<name>.wasm`。
+使用它固定的 Rust（1.97.1），像 `tools/octo wasm build` 一样记录每个组件构建所用的 crate，并在 GitHub
+为应用包出具证明之前把每个组件写入 `bundle/fns/<name>.wasm`。
 这样发布版携带的是由它所指明的源码构建的二进制文件，你不必提交 `fns/*.wasm`：`tools/octo wasm build`
 为你自己的运行生成它们，发布时会替换它们。对每个 crate：
 
@@ -230,9 +233,13 @@ cargo test --locked --workspace
 - 通过 git 依赖 SDK（`--sdk git`），因为路径指向的是你的机器。使用路径时发布会停止：
   `::error::app/components/<name> takes the SDK from a local path, which the release cannot build; depend on OctoSense App Flow by git (tools/octo wasm new --sdk git)`。
 
-使用同一个 Rust 时，发布构建出的就是你构建的结果：对模板生成的 crate，以路径依赖 SDK 运行的
-`tools/octo wasm build` 与以 git 依赖 SDK 运行的工作流步骤写出了逐字节相同的文件（111,634 字节）。这一步
-是在 macOS 上用工作流自己的脚本运行的；在 GitHub 上运行发布**未验证**。发布带组件的应用还需要本仓库的
+使用同一个 Rust、同一个 crate 和同一份 `Cargo.lock` 时，发布写出的就是你写出的文件，crate 清单也相同。
+对以 git（App Flow 的某个提交）依赖 SDK 的模板 crate，`tools/octo wasm build` 写出了
+`bundle/fns/text-tools.wasm`（82,438 字节），随后在 macOS 上用工作流自己的脚本运行的工作流步骤输出
+`unchanged: bundle/fns/text-tools.wasm, 82,438 bytes built from app/components/text-tools and the 3 crates its octosense-crates section lists`。
+以路径依赖 SDK 时，cargo 构建出逐字节相同的组件，但 crate 清单把 SDK 的来源记为 `path`，而不是
+`git+https://github.com/OctoSense-org/OctoSense-App-Flow#<commit>`，因此文件在这一处与发布的不同
+（82,346 字节）。在 GitHub 上运行发布**未验证**。发布带组件的应用还需要本仓库的
 发布工具链（`tools/publisher-toolchain.json`）指向接受组件的 App Hub 修订版（App Hub #186）；它现在指向的
 修订版会拒绝组件。
 
@@ -293,6 +300,49 @@ ADR 0014 给组件提供下列 WASI 0.2 接口，每一项都限定在应用的�
 | 原生代码：`pyo3`、`jni`、`libloading`；Unix 调用：`nix` | WASI 中都不存在 | — |
 
 这份列表是 `tools/octo` 所知道的，并非所有会失败的 crate。能通过编译的依赖仍可能导入宿主不提供的接口，第 4 步会发现这种情况。
+
+### OctoSense 已经提供的功能
+
+OctoSense 以原生方式链接了许多 crate，例如 Makepad 的 Markdown 控件和 Markdown 编辑器所用的 `pulldown-cmark`；但组件无法调用原生代码，应用只能通过 Splash 的控件和函数，以及授予它的宿主服务用到它们。对于 OctoSense 已经替商店应用完成其常见用途的直接依赖，`tools/octo wasm doctor` 会输出一行 `info`，它不会让检查失败：
+
+| crate | 应用改用什么 | 何时仍值得带上该 crate | 依据 |
+| --- | --- | --- | --- |
+| `pulldown-cmark`、`comrak`、`markdown` | Splash 的 `Markdown` 控件，它渲染 Markdown，包括表格 | 只在生成 HTML，或把 Markdown 当作数据读取时 | [SCRIPT-API § Widgets](SCRIPT-API.md#widgets-available-to-an-app) |
+| `feed-rs`、`rss`、`atom_syndication` | 脚本中的 `text.parse_feed(style)`：每个 RSS 或 Atom 条目的标题、链接、来源、发布时间、摘要和图片 | 只在需要 `parse_feed` 不读取的内容时 | [SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings) |
+| `async-openai`、`genai`、`ollama-rs`、`openai-api-rs` | `model.complete`（需要 `model` 能力）：在每日预算内，向用户自己的 AI 提供商发出一次性、按 schema 校验的请求 | 绝不带着提供商密钥：应用不持有任何密钥 | [AI-SERVICES § 一次性模型调用](AI-SERVICES.zh-CN.md#一次性模型调用model) |
+
+对 SDK 的 `markdown-tools` 示例（它把 Markdown 转成 HTML），`tools/octo wasm doctor --crate sdk/rust/examples/markdown-tools` 在 `[ok]` 行之后输出：
+
+```text
+  [info] pulldown-cmark 0.13.4: OctoSense renders Markdown itself: Splash's Markdown widget shows it, tables included. Ship the crate only to produce HTML or to read Markdown as data. (docs/SCRIPT-API.md#widgets-available-to-an-app)
+```
+
+这张表只收录本仓库文档说明商店应用可以使用的功能。`photo`、`pdf`、`word` 等引擎服务只供系统应用使用，因此 `doctor` 一个也不推荐。会打开网络连接的 crate（例如 `reqwest` 或 `ureq`）属于失败而不是提示：`doctor` 会说明应在应用脚本中用 `net` 取回数据，再传进去（见[无法构建或运行的依赖](#无法构建或运行的依赖)）。
+
+### 构建所用的 crate
+
+`tools/octo wasm build` 在每个组件中记录构建它所用的 crate，发布工作流也记录同样的清单（见[7. 发布](#7-发布)）。App Hub 的准入检查将把这份清单展示给审核者，并对照 [RustSec 安全公告数据库](https://rustsec.org/)检查它。App Hub 这一侧仍在评审中，因此在这里属于**未验证**。
+
+清单列出组件链接了其代码的每个包：即 crate 的普通依赖在 `wasm32-wasip2` 上能到达的包（由 `cargo metadata --filter-platform wasm32-wasip2` 解析），不包括 crate 自身。构建依赖和开发依赖在构建机器上运行，过程宏也是如此，因此清单中既没有过程宏，也没有只被过程宏使用的 crate。模板的清单是 `bitflags`、`octosense-component` 和 `wit-bindgen`，不包括 `syn`、`wit-parser` 以及 SDK 和 `wit-bindgen` 的宏用来生成代码的其他 crate。每一项包含：
+
+| 字段 | 内容 |
+| --- | --- |
+| `name`、`version` | 包的名称和版本 |
+| `source` | `crates.io`；git 依赖为 `git+<url>#<commit>`，去掉 `?rev=` 或 `?branch=`；本地依赖（例如用 `--sdk path` 引入的 SDK）为 `path`；其他注册表则照 Cargo 写出的来源原样记录 |
+| `checksum` | 注册表包在 crate 的 `Cargo.lock` 中的 SHA-256。git 和路径包没有。 |
+
+这份清单是文件末尾一个名为 `octosense-crates` 的 WebAssembly 自定义段。它的内容是 `{"schema": 1, "crates": [...]}` 的 UTF-8 JSON，键已排序、不含空格，crate 按名称和版本排序。再次构建会替换它，因此一个文件只有一份。Wasmtime 49 加载带这个段的组件，并像以前一样运行它：SDK 的端到端测试在一个带清单的 `markdown-tools` 组件上通过了（在 `sdk/rust/` 中运行 `OCTOSENSE_COMPONENT_WASM=<file> cargo test --locked -p octosense-component-e2e`）。由于目前还没有运行组件的 Shell，Shell 的 `wasm` 服务能否加载它属于**未验证**。
+
+`tools/octo wasm info` 输出这份清单。对以路径依赖 SDK 构建的模板：
+
+```text
+built from 3 crates, as its octosense-crates section lists them:
+  bitflags 2.13.2, crates.io
+  octosense-component 0.1.0, path
+  wit-bindgen 0.62.0, crates.io
+```
+
+带 `--json` 时，`"crates"` 中是各项内容，包括校验和。用其他方式构建的文件会显示 `crates: not recorded`。
 
 ### 准入检查查看什么
 
@@ -782,6 +832,7 @@ OctoSense 的 [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/do
 | --- | --- |
 | 在 Shell 中运行组件（ADR 0014 第 2 阶段） | 尚未合并：`wasm` 服务从 `fns/` 加载组件、每个应用一个实例、存储授权及其配额，以及比模块更大的输入上限。在它合并之前，任何应用的组件都不会运行。 |
 | App Hub 对组件的准入检查 | [App Hub #186](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/186) 正在评审：它在 `wasm-components-v1` 下接受组件，并新增 `hub component-info`。 |
+| App Hub 对 crate 清单的使用 | App Hub 中正在评审：准入检查把组件的 `octosense-crates` 清单展示给审核者，并对照 RustSec 安全公告数据库检查它（见[构建所用的 crate](#构建所用的-crate)）。 |
 | 把 SDK 发布到 crates.io | 尚未实现。ADR 0014 会在维护者批准后发布；在此之前，crate 通过 git 提交或路径依赖它。 |
 | 组件的出站 HTTP 和宿主服务（第 3 阶段） | 尚未实现：受 `network.hosts` 约束的 `wasi:http`，以及检查与 `host.request` 相同的 `octosense:host` 导入。 |
 | 安装时编译，让手机跳过首次编译（第 3 阶段） | 模块和组件都尚未实现。模块的第一次调用会编译它：ADR 0011 在桌面上测得 27–33 毫秒，在中端 Android 手机上测得 378–421 毫秒；之后在同一部手机上从缓存加载需要 5–11 毫秒。 |
