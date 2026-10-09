@@ -185,7 +185,7 @@ app_tools.dispatch@1
 
 拒绝原因会写出宿主缺少的 API；对 `host-api-v1` 来说是 `app_policy.device_consent@1`。如果 `host_api.required` 列出了宿主缺少的方法，原因则是 `this host does not implement required APIs: <method>@<version>`。请改用以下方式测试这类应用：
 
-1. 写入摘要后，用 `hub check <bundle> --allow-unsigned` 检查可编辑源码。最终发布证明使用 GitHub 工作流（[PUBLISHING §3.6](PUBLISHING.zh-CN.md#36-发布者密钥human)），无需开发者密钥。
+1. 写入摘要后，用 `hub check <bundle> --allow-unsigned` 检查可编辑源码。最终发布证明使用 GitHub 工作流（[PUBLISHING §3.6](PUBLISHING.zh-CN.md#36-github-发布者身份human)），无需开发者密钥。
 2. 在兼容的 OctoSense Shell 中测试宿主服务。[本地镜像演练](PUBLISHING.zh-CN.md#4-在本地演练商店流程) 是发布前测试的可选旧格式兼容路径，不能验证 GitHub 证明的发布包。`publisher-github-v1` 需要兼容 Store 验证器，请使用 [RC1 发行版](../README.zh-CN.md#下载兼容-shell)；下载状态和公开示例验收范围见该节。
 3. 逐项测试：API 发现与缺少 API 时的降级、账户切换、拒绝和撤销权限、应用关闭时调用工具，以及后端写操作的原生审阅。
 4. 在 `listing.json` 中只列出实际测试过的平台。

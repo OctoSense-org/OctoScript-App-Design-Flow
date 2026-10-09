@@ -221,7 +221,7 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   passed on macOS, with a final RC reopen; isolated phone fixtures have
   separate evidence. None proves your app or provider effects. See the
   [RC download status](README.md#compatible-shell-download).
-  See [PUBLISHING §3.6](docs/PUBLISHING.md#36-publisher-key--human).
+  See [PUBLISHING §3.6](docs/PUBLISHING.md#36-github-publisher-identity--human).
 - **An issue requests publication.** Include repository, version/commit,
   screenshots and permissions; it may precede the release. Attach the
   successful workflow and exact release pack when ready. A reviewer, not a
