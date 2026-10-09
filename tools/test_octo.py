@@ -430,3 +430,39 @@ class WasmCommands(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class ReleaseBuildsComponents(unittest.TestCase):
+    """The release workflow's step that builds components/ from the tagged
+    commit (tools/publish-app.template.yml): its refusals, which need no
+    compiler. tools/ tests build a real component elsewhere."""
+
+    def step(self):
+        text = (HERE / 'publish-app.template.yml').read_text()
+        block = text[text.index("      - name: Build the app's Rust components"):]
+        body = block[block.index("python3 - <<'PY'\n") + len("python3 - <<'PY'\n"):block.index('\n          PY\n')]
+        return '\n'.join(line[10:] if line.startswith(' ' * 10) else line for line in body.splitlines()) + '\n'
+
+    def run_step(self, sdk_line, lock=False):
+        with tempfile.TemporaryDirectory() as tmp:
+            crate = Path(tmp) / 'app' / 'components' / 'text-tools'
+            (crate / 'src').mkdir(parents=True)
+            (crate / 'src' / 'lib.rs').write_text('')
+            (crate / 'Cargo.toml').write_text(
+                '[package]\nname = "text-tools"\nversion = "0.1.0"\nedition = "2024"\n\n'
+                '[lib]\ncrate-type = ["cdylib", "rlib"]\n\n[dependencies]\n' + sdk_line + '\n\n[workspace]\n')
+            if lock:
+                (crate / 'Cargo.lock').write_text('version = 4\n')
+            (Path(tmp) / 'step.py').write_text(self.step())
+            return subprocess.run(['python3', 'step.py'], cwd=tmp, capture_output=True, text=True)
+
+    def test_a_local_sdk_path_stops_the_release(self):
+        run = self.run_step('octosense-component = { path = "/somewhere/on/my/mac/sdk/rust/octosense-component" }')
+        self.assertNotEqual(run.returncode, 0)
+        self.assertIn('takes the SDK from a local path', run.stdout + run.stderr)
+
+    @unittest.skipUnless(shutil.which('cargo'), 'needs cargo')
+    def test_a_crate_without_its_lockfile_stops_the_release(self):
+        run = self.run_step('octosense-component = { git = "https://github.com/OctoSense-org/OctoSense-App-Flow", rev = "' + '0' * 40 + '" }')
+        self.assertNotEqual(run.returncode, 0)
+        self.assertIn('has no Cargo.lock', run.stdout + run.stderr)
