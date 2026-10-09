@@ -193,8 +193,8 @@ which the `mail` capability grants:
 | `mail.list` | `{account, folder?, offset?, limit?}` | `{folder, total, messages: [{id, sender, address, subject, preview, time, unread}]}` |
 | `mail.message` | `{account, folder?, message}` | `{id, sender, address, subject, body, html, attachments, date, time}` |
 | `mail.mark_read` | `{account, folder?, message}` | `{}` |
-| `mail.review_send` | `{account, to, subject, body, compose_id?, expected_revision?, folder?, message?}` | `{review_required: true, compose_id, draft_id, revision}`. The host opens its review; nothing is sent until the person approves there. Needs Mail in the foreground. |
-| `mail.send` | – | Always refused: `approval_required: use mail.review_send with Mail open, or open the reply card, then use the host's Approve & Send control. mail.send cannot authorize delivery.` |
+| `mail.review_send` | `{account, to, subject, body, compose_id?, expected_revision?, folder?, message?}` | Only the Mail app itself (`os.mail`) may call it; any other app gets `Only Mail owns reply drafts`. For Mail it answers `{review_required: true, compose_id, draft_id, revision}` and opens the host's review; nothing is sent until the person approves there. |
+| `mail.send` | – | Always refused: `approval_required: use mail.review_send with Mail open, or open the reply card, then use the host's Approve & Send control. mail.send cannot authorize delivery.` That text names a method only Mail may call ([OctoSense #409](https://github.com/OctoSense-org/OctoSense/issues/409)): a store app has no send path on rc.1. Read the granted accounts and notify; the person sends from the Mail app. |
 | `mail.notify` | `{title, body, card_id?, priority?}` (title 1–80, body 1–600 characters) | `{card_id, replaced, expires_at}` once Mail's notice card is on the Glance screen, with a notification. Mail's agent calls it as a tool. |
 | `mail.sheet.submit` | sign-in fields | sheet only |
 | `mail.sheet.cancel` | – | sheet only |
