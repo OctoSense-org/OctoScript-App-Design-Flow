@@ -1,0 +1,14 @@
+{
+  "capabilities": [
+    "storage",
+    "model",
+    "glance"
+  ],
+  "id": "org.octosense.examples.apiclinic",
+  "integrity": {
+    "bundle_blake3": "d435106fbfd5efa3098ddf8bc251377b5dc6676e0c52af11dd77ea627bceaa5a"
+  },
+  "name": "API Migration Lab",
+  "schema": 1,
+  "version": "0.1.0"
+}

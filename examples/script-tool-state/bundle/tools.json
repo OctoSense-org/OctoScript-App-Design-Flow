@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "tools": [
+    {
+      "name": "toolstate.preferences",
+      "description": "Read the exact saved topics and revision.",
+      "implemented_by": "app",
+      "risk": "read",
+      "private_data": true,
+      "shareable": false,
+      "background": false,
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "topics": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "topics",
+          "revision"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "toolstate.set_preferences",
+      "description": "Change this app’s local topics only when explicitly requested. Never claims a model or remote effect.",
+      "implemented_by": "app",
+      "risk": "act",
+      "private_data": true,
+      "shareable": false,
+      "background": false,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "topics": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        "required": [
+          "topics"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "topics": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "topics",
+          "revision"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

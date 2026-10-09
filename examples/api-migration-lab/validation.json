@@ -1,0 +1,30 @@
+{
+  "result": "pass",
+  "verified": [
+    "populated first frame",
+    "empty note and summary refusal",
+    "native multiline Unicode editing",
+    "local save",
+    "real missing-model fallback preserves draft",
+    "real missing-Glance fallback preserves draft",
+    "exact note and summary survive process restart"
+  ],
+  "not_verified": [
+    "model/provider calls",
+    "Glance publication and expansion",
+    "phone",
+    "agent tools"
+  ],
+  "runner": "app-tool-acceptance preview (real SDK; no live services)",
+  "binary_sha256": "e24b9934c1b4df762f63bf16ebab428fc91504e05a9948d74dc6f708bc8b18d6",
+  "source_sha256": "5375fa45c0e47b244557b4e44a9e43a736f3579a3db6fc079deeb397b9dc4cd6",
+  "driver_sha256": "9315697a6a47c6f8f1baa3a237a27e7718f6d07cf901b05882cb5b39577d5cbd",
+  "screenshots_sha256": {
+    "03-restart.png": "63ec3a0b345c6e857e712461df35446c25c99777ef46fb95d5219d48cbfc01c3",
+    "01-editor.png": "690cc18b854c882eea5b1e3f7c4340593e0401df6237ad381a7969639c876f8c",
+    "02-unavailable.png": "94d174a601ab80fa107f7cb4ae2ca45a51c0110291681f7858f6c1c924e02b4e"
+  },
+  "host_source": "77b7c6b5",
+  "runtime_tree": "9121e900f18d5d6f22840ed330c1d7931231509a",
+  "visual_review": "All native Metal screenshots inspected: readable English/Chinese text, visible inputs/actions/status, complete repaint."
+}

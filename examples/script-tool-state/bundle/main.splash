@@ -1,0 +1,49 @@
+// The UI and tool share this state in the same full-app isolate.
+let preferences = "Science and local community"
+let revision = 0
+fn show(){ ui.topics.set_text(preferences) ui.revision.set_text("Saved revision: " + revision) }
+fn load(){
+    if fs.exists("preferences.json") {
+        let saved = fs.read("preferences.json").parse_json()
+        if saved != nil { preferences = saved.topics revision = saved.revision }
+    }
+    show()
+    ui.status.set_text("Ready; local preferences loaded.")
+}
+fn apply(topics){
+    let next_revision = revision + 1
+    let error = fs.write("preferences.json", {topics: topics revision: next_revision}.to_json())
+    if error != nil { ui.status.set_text("Could not save: " + error) return false }
+    preferences = topics
+    revision = next_revision
+    show()
+    true
+}
+fn app_tool(name, call_id){
+    let request = mod.app_tools.request(call_id)
+    if name == "toolstate.preferences" {
+        mod.app_tools.complete(call_id, {topics: preferences revision: revision})
+        return
+    }
+    if name == "toolstate.set_preferences" {
+        if !apply(request.args.topics) { mod.app_tools.fail(call_id, "Local preference save failed") return }
+        ui.status.set_text("Updated by app tool; review the exact saved topics above.")
+        mod.app_tools.complete(call_id, {topics: preferences revision: revision})
+        return
+    }
+    mod.app_tools.fail(call_id, "Unknown tool")
+}
+start_timeout(0.05, || load())
+SolidView{width: Fill height: Fill flow: Down padding: 20 spacing: 14 draw_bg.color: #xf8fafc
+    Label{text: "Script Tool State" draw_text.color: #x17243b draw_text.text_style: theme.font_bold{font_size: 24}}
+    Label{width: Fill text: "One saved preference, shared by the UI and this app's assistant tools." draw_text.color: #x475569}
+    topics := TextInput{width: Fill height: 90 is_multiline: true
+            draw_bg +: {color: #xffffff color_hover: #xffffff color_focus: #xffffff color_empty: #xffffff border_radius: 8.0}
+            draw_text +: {color: #x17243b color_hover: #x17243b color_focus: #x17243b color_empty: #x64748b color_empty_hover: #x64748b} empty_text: "Topics you want to follow"}
+    keep := ButtonFlat{height: 44 padding: Inset{left: 14 right: 14}
+            draw_bg +: {color: #xdbeafe color_hover: #xbfdbfe color_down: #x93c5fd color_focus: #xdbeafe border_radius: 8.0}
+            draw_text +: {color: #x17243b color_hover: #x17243b color_down: #x17243b color_focus: #x17243b}
+            text: "Save topics" on_click: || {if apply(ui.topics.text()) {ui.status.set_text("Saved from the editor.")}}}
+    revision := Label{text: "Saved revision: 0" draw_text.color: #x17243b}
+    status := Label{width: Fill text: "The native acceptance caller does not start a model." draw_text.color: #x475569}
+}

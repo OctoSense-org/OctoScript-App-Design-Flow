@@ -30,10 +30,25 @@
 | 能力 | 脚本得到什么 | 未申请时 |
 | --- | --- | --- |
 | `storage` | 应用自己的存储 jail，即按应用 ID 划分的私有数据目录：[`fs.*`](SCRIPT-API.md#storage-fs)、相机拍摄的内容，以及控件读取的本地文件（例如地图数据包）。 | 没有 jail。每个 `fs.*` 调用都报错 `storage not available in this context`，拍摄的内容不会保存，控件也读不到任何本地文件。 |
-| `camera` | `CameraPreview`：预览、拍照和录像。拍摄的内容以 `DCIM/IMG_<ms>.jpg` 和 `DCIM/VID_<ms>.mp4` 存入 jail，所以还要申请 `storage`。 | `CameraPreview` 拒绝运行：`this app was not granted the camera`。无论是否申请，都仍要经过操作系统自己的相机授权。 |
-| `microphone` | 相机录像中的声音。只有同时申请 `camera` 才有用。 | 录像没有声音。 |
+| `camera` | `CameraPreview`：预览，以及随平台而异的拍照／录像能力。拍摄的内容以 `DCIM/IMG_<ms>.jpg` 和 `DCIM/VID_<ms>.mp4` 存入 jail，所以还要申请 `storage`。 | `CameraPreview` 拒绝运行：`this app was not granted the camera`。无论是否申请，都仍要经过操作系统自己的相机授权。 |
+| `microphone` | 在支持相机录像的平台录制声音。尚未发布的 contract 1.10 宿主还提供独立录音，见下文。 | 无法采集麦克风；支持的相机录像不带声音。 |
+| `audio`（尚未发布的 contract 1.10） | 在前台播放有大小限制的本地音频文件；还需要 `storage`。 | 不能调用 `audio.play`。 |
 | `library` | 每次拍摄的内容还会提供给系统相册，其他应用可以在相册中看到。 | 拍摄的内容只留在应用的 jail 中。 |
 | `location` | 设备位置：`sys.gps(...)`，以及 `MapView` 的跟随视角。仍要经过操作系统的定位授权。 | `sys.gps("ok")` 读出 0，表示没有定位结果。 |
+
+**独立音频目前只在开发源码中实现，不是桌面 RC1 功能。** 尚未发布的 contract 1.10
+宿主在 macOS 和 Android 上实现 `microphone.record_start`、`microphone.record_status`、
+`microphone.record_stop` 和 `microphone.record_cancel`。录音需要 `microphone`、`storage`、
+宿主同意以及操作系统授权；它在应用 jail 内创建新的单声道 WAV 文件，最长 30 秒。
+独立的 `audio.play`、`audio.status` 和 `audio.stop` 需要 `audio` 与 `storage`。
+这些方法只能用于前台：离开应用会取消录音或停止播放。它们不提供转写、语音合成、
+系统音频采集或后台音乐流。真实麦克风／扬声器验收仍未完成；编码测试不能证明硬件行为。
+
+在上述兼容源码宿主上，声明 `requires: ["host-api-v1"]`，并在 `host_api.required`
+中列出所需方法，API 主版本为 1。contract 1.10 是 SDK 版本，不是
+`host-api-v1.10` 要求字符串。使用 `runtime.describe` 查询实际可用性；旧版准入器和宿主
+不会因为清单声明了能力就增加这些方法。相机录像仍是另一条路径：当前 OpenHarmony
+录像器支持它，Android 明确拒绝录像，macOS 没有相机录像器。独立音频不会改变这些限制。
 
 未申请 `storage` 时，`hub check` 的 `grants:` 行显示 `storage none`，准入检查还会对每个调用 `fs.*` 的脚本以及 `camera` 授权发出警告：
 

@@ -1,0 +1,25 @@
+{
+  "agent": {
+    "instructions": "AGENT.md",
+    "model": {
+      "needs": [
+        "tool_calling"
+      ]
+    },
+    "profile": "read-only",
+    "tools": []
+  },
+  "capabilities": [
+    "storage"
+  ],
+  "id": "org.octosense.examples.toolstate",
+  "integrity": {
+    "bundle_blake3": "464b47bec946dcb1d36310fe7c71cfbd54da5161731c18365f2b5ab0311f1776"
+  },
+  "name": "Script Tool State",
+  "requires": [
+    "script-tools-v1"
+  ],
+  "schema": 1,
+  "version": "0.1.0"
+}

@@ -1,0 +1,6 @@
+// The host supplies initial, from this app's admitted template publication.
+SolidView{width: Fill height: Fit flow: Down padding: 20 spacing: 12 draw_bg.color: #xf8fafc
+    Label{text: "My reviewed brief" draw_text.color: #x17243b draw_text.text_style: theme.font_bold{font_size: 20}}
+    Label{width: Fill text: initial.summary draw_text.color: #x334155}
+    Label{width: Fill text: "Open the app to revise this saved summary." draw_text.color: #x64748b}
+}

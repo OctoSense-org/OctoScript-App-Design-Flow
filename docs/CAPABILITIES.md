@@ -40,10 +40,30 @@ service.
 | Capability | What the script gets | Without it |
 | --- | --- | --- |
 | `storage` | The app's own storage jail, one directory per app id: [`fs.*`](SCRIPT-API.md#storage-fs), camera captures, and local files a widget reads, such as a map archive. | No jail. Every `fs.*` call errors with `storage not available in this context`, a capture saves nothing, and a widget reads no local file. |
-| `camera` | `CameraPreview`: preview, photo and video. Captures land in the jail as `DCIM/IMG_<ms>.jpg` and `DCIM/VID_<ms>.mp4`, so request `storage` too. | `CameraPreview` refuses: `this app was not granted the camera`. The operating system's own camera prompt applies either way. |
-| `microphone` | Sound in camera videos. Useful only with `camera`. | Videos record without sound. |
+| `camera` | `CameraPreview`: preview and platform-dependent photo/video capture. Captures land in the jail as `DCIM/IMG_<ms>.jpg` and `DCIM/VID_<ms>.mp4`, so request `storage` too. | `CameraPreview` refuses: `this app was not granted the camera`. The operating system's own camera prompt applies either way. |
+| `microphone` | Sound where camera-video recording is supported. The unreleased contract 1.10 host also provides standalone recording; see below. | No microphone input; supported camera videos record without sound. |
+| `audio` (unreleased contract 1.10) | Foreground playback of a bounded local audio file; request `storage` too. | No `audio.play` access. |
 | `library` | Each capture is also offered to the system photo library, where other apps can see it. | Captures stay in the app's jail. |
 | `location` | The device position: `sys.gps(...)` and the follow camera of `MapView`. The operating system's location prompt still applies. | `sys.gps("ok")` reads 0, meaning no fix. |
+
+**Standalone audio is source-only, not a desktop RC1 feature.** The unreleased
+contract 1.10 host implements `microphone.record_start`, `microphone.record_status`,
+`microphone.record_stop` and `microphone.record_cancel` on macOS and Android.
+Recording needs `microphone` plus `storage`, host consent and the OS grant; it
+writes a new mono WAV file, up to 30 seconds, inside the app's jail. The separate
+`audio.play`, `audio.status` and `audio.stop` methods need `audio` plus `storage`.
+All are foreground-only: leaving the app cancels recording or stops playback.
+These methods do not provide transcription, speech synthesis, system-audio capture
+or background music streaming. Real microphone/speaker acceptance remains
+unverified; codec tests do not establish hardware behavior.
+
+On that compatible source host, declare `requires: ["host-api-v1"]` and the exact
+methods in `host_api.required` at API major version 1; contract 1.10 is the SDK
+version, not a `host-api-v1.10` requirement string. Use `runtime.describe` to
+check availability. Earlier gates/hosts do not gain these methods from a
+capability declaration. Camera video remains a separate path: the current
+OpenHarmony recorder supports it, Android explicitly refuses recording, and
+macOS has no camera-video recorder. Standalone audio does not change those limits.
 
 Without `storage`, the `grants:` line of `hub check` says `storage none`, and
 the gate warns about each script that calls `fs.*` and about a `camera` grant:
