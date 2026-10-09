@@ -40,7 +40,7 @@
 
 ### 1. 准备 Rust
 
-组件需要 Rust 1.85 或更新版本：Rust 从 1.82 起能为 `wasm32-wasip2` 构建组件，而 SDK 使用的 `wit-bindgen` 需要 1.85。先添加目标，再让 `tools/octo` 检查工具链。在你的 App Flow 仓库中运行：
+组件需要 Rust 1.88 或更新版本：Rust 从 1.82 起能为 `wasm32-wasip2` 构建组件，而 SDK 使用的 `wit-bindgen` 构建时依赖的 crate（`wit-component`、`wit-parser` 0.259）需要 1.88。先添加目标，再让 `tools/octo` 检查工具链。在你的 App Flow 仓库中运行：
 
 ```sh
 rustup target add wasm32-wasip2
@@ -218,6 +218,24 @@ cargo test --locked --workspace
 ```
 
 输出包含 `test every_type_mapping_crosses_both_ways ... ok`、`test the_exports_run_with_an_unmodified_crate_files_and_a_clock ... ok`、`test the_template_octo_wasm_new_writes_runs_as_a_component ... ok`、`test http_reaches_the_apps_own_hosts_and_nothing_else ... ok`、`test a_component_calls_its_apps_granted_host_services ... ok` 和 `test a_component_imports_http_and_host_services_only_when_it_calls_them ... ok`。CI 在 Ubuntu 上运行它们，同时运行 `tools/` 的测试；这些测试用 `tools/octo wasm new` 和 `tools/octo wasm build` 构建一个新 crate。
+
+### 7. 发布
+
+`tools/octo publish-github` 安装的发布工作流会自己构建 `components/` 中的每个 crate：从打了标签的提交出发，
+使用它固定的 Rust（1.97.1），并在 GitHub 为应用包出具证明之前把每个组件写入 `bundle/fns/<name>.wasm`。
+这样发布版携带的是由它所指明的源码构建的二进制文件，你不必提交 `fns/*.wasm`：`tools/octo wasm build`
+为你自己的运行生成它们，发布时会替换它们。对每个 crate：
+
+- 提交它的 `Cargo.lock`，因为发布时以 `--locked` 构建。没有它时发布会停止：
+  `::error::app/components/<name> has no Cargo.lock: commit it, so the release builds what you tested`。
+- 通过 git 依赖 SDK（`--sdk git`），因为路径指向的是你的机器。使用路径时发布会停止：
+  `::error::app/components/<name> takes the SDK from a local path, which the release cannot build; depend on OctoSense App Flow by git (tools/octo wasm new --sdk git)`。
+
+使用同一个 Rust 时，发布构建出的就是你构建的结果：对模板生成的 crate，以路径依赖 SDK 运行的
+`tools/octo wasm build` 与以 git 依赖 SDK 运行的工作流步骤写出了逐字节相同的文件（111,634 字节）。这一步
+是在 macOS 上用工作流自己的脚本运行的；在 GitHub 上运行发布**未验证**。发布带组件的应用还需要本仓库的
+发布工具链（`tools/publisher-toolchain.json`）指向接受组件的 App Hub 修订版（App Hub #186）；它现在指向的
+修订版会拒绝组件。
 
 ## 组件能用什么
 

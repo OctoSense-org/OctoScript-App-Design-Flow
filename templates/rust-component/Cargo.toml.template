@@ -6,8 +6,9 @@
 name = "{{name}}"
 version = "0.1.0"
 edition = "2024"
-# wit-bindgen, which the SDK's macro uses, needs Rust 1.85.
-rust-version = "1.85"
+# wit-bindgen, which the SDK's macro uses, and the crates it builds with need
+# Rust 1.88.
+rust-version = "1.88"
 publish = false
 
 [lib]

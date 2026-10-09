@@ -65,9 +65,9 @@ Every command on this page was run on macOS (Apple silicon) with Rust
 
 ### 1. Set up Rust
 
-Components need Rust 1.85 or newer: Rust builds components for
-`wasm32-wasip2` since 1.82, and `wit-bindgen`, which the SDK uses, needs
-1.85. Add the target, then let `tools/octo` check the toolchain. Run these
+Components need Rust 1.88 or newer: Rust builds components for
+`wasm32-wasip2` since 1.82, and `wit-bindgen`, which the SDK uses, builds
+with crates (`wit-component`, `wit-parser` 0.259) that need 1.88. Add the target, then let `tools/octo` check the toolchain. Run these
 from your App Flow checkout:
 
 ```sh
@@ -333,6 +333,31 @@ The output includes `test every_type_mapping_crosses_both_ways ... ok`,
 `test a_component_imports_http_and_host_services_only_when_it_calls_them ... ok`.
 CI runs them on Ubuntu, with the `tools/` tests, which build a new crate with
 `tools/octo wasm new` and `tools/octo wasm build`.
+
+### 7. Publish it
+
+The release workflow that `tools/octo publish-github` installs builds every
+crate in `components/` itself, from the tagged commit, with the Rust it pins
+(1.97.1), and writes each component to `bundle/fns/<name>.wasm` before GitHub
+attests the bundle. The release then carries binaries built from the source
+it names, and you need not commit `fns/*.wasm`: `tools/octo wasm build` makes
+them for your own runs, and the release replaces them. For each crate:
+
+- Commit its `Cargo.lock`, since the release builds with `--locked`. Without
+  one it stops:
+  `::error::app/components/<name> has no Cargo.lock: commit it, so the release builds what you tested`.
+- Depend on the SDK by git (`--sdk git`), since a path names your machine.
+  With one it stops:
+  `::error::app/components/<name> takes the SDK from a local path, which the release cannot build; depend on OctoSense App Flow by git (tools/octo wasm new --sdk git)`.
+
+With the same Rust, the release builds what you built: for the template's
+crate, `tools/octo wasm build` with the SDK by path and the workflow's step
+with the SDK by git wrote byte-identical files (111,634 bytes). That step ran
+from the workflow's own script on macOS; a release run on GitHub is
+**unverified**. Publishing an app with components also needs this
+repository's publisher toolchain (`tools/publisher-toolchain.json`) to name
+an App Hub revision that admits them (App Hub #186); the one it names now
+refuses them.
 
 ## What a component can use
 

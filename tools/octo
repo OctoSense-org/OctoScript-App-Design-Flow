@@ -653,8 +653,10 @@ SDK_GIT = "https://github.com/OctoSense-org/OctoSense-App-Flow"
 SDK_REMOTE = re.compile(r"github\.com[:/]OctoSense-org/(OctoSense-App-Flow|OctoScript-App-Design-Flow)(\.git)?/?$", re.I)
 WASM_TARGET = "wasm32-wasip2"
 COMPONENTS_FEATURE = "wasm-components-v1"
-# Rust builds components for wasm32-wasip2 from 1.82; the SDK's wit-bindgen needs 1.85.
-MIN_RUST = (1, 85)
+# Rust builds components for wasm32-wasip2 from 1.82; the SDK's wit-bindgen
+# 0.62 needs 1.85, and the crates it builds with (wit-component, wit-parser
+# 0.259) need 1.88.
+MIN_RUST = (1, 88)
 # A crate's name is also its file's, fns/<name>.wasm: App Hub admits
 # [a-z0-9_-]{1,64}, and Cargo wants a letter first.
 COMPONENT_NAME_RE = re.compile(r"^[a-z][a-z0-9_-]{0,63}$")
@@ -932,8 +934,8 @@ def cmd_wasm_doctor(args):
         report.append(("fail", "rustc not found beside cargo or on PATH"))
     else:
         if toolchain["release"] and toolchain["release"] < MIN_RUST:
-            report.append(("fail", f"{toolchain['version']}: components need Rust 1.85 or newer "
-                                   "(wasm32-wasip2 from 1.82; the SDK's wit-bindgen needs 1.85): rustup update stable"))
+            report.append(("fail", f"{toolchain['version']}: components need Rust 1.88 or newer "
+                                   "(wasm32-wasip2 from 1.82; the SDK's wit-bindgen and its crates need 1.88): rustup update stable"))
         else:
             report.append(("ok", toolchain["version"]))
         if toolchain["target"]:
@@ -1004,7 +1006,7 @@ def build_component(cargo, crate):
         die(f"{name} built no .wasm file: add [lib] crate-type = [\"cdylib\", \"rlib\"] to {crate / 'Cargo.toml'}")
     data = artifact.read_bytes()
     if not data.startswith(wasm_component.COMPONENT_PREAMBLE):
-        die(f"{artifact} is not a WebAssembly component; build it with Rust 1.85 or newer for {WASM_TARGET}")
+        die(f"{artifact} is not a WebAssembly component; build it with Rust 1.88 or newer for {WASM_TARGET}")
     try:
         info = wasm_component.describe(data)
     except wasm_component.ReadError as error:
