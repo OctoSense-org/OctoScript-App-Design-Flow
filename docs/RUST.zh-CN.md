@@ -410,7 +410,7 @@ pub mod functions {
 | `[refused] functions: fns/text-tools.wasm is a WebAssembly component; the manifest must require wasm-components-v1` | 把它加入 `requires`，或运行 `tools/octo wasm build`。 |
 | `[refused] functions: fns/markdown.wasm imports wasi:filesystem, the app's own files, which needs the storage capability` | 加入 `storage`，或去掉文件访问。 |
 | `[refused] functions: fns/api-client.wasm imports wasi:http, which needs the net capability and the hosts it reaches in network.hosts` | 在 `network.hosts` 中列出主机并申请 `net`，或在列出主机后运行 `tools/octo wasm build`（见[网络](#网络)）。 |
-| `[refused] contents-invalid (fns/netprobe.wasm): the component imports wasi:sockets/network@0.2.9; a component may import only wasi:cli, wasi:clocks, wasi:filesystem, wasi:io and wasi:random` | 去掉打开套接字的部分（见[无法构建或运行的依赖](#无法构建或运行的依赖)）。#188 在这条信息中仍只列出这五个包，但它也接受 `wasi:http` 和 `octosense:host`。 |
+| `[refused] contents-invalid (fns/netprobe.wasm): the component imports wasi:sockets/network@0.2.9; a component may import only wasi:cli, wasi:clocks, wasi:filesystem, wasi:http, wasi:io, wasi:random and octosense:host` | 去掉打开套接字的部分（见[无法构建或运行的依赖](#无法构建或运行的依赖)）。 |
 
 `fns/` 中每个文件都要遵守的规则（文件名、最多 8 个文件、应用包 8 MiB）与模块相同（见[构建](#构建)）。
 

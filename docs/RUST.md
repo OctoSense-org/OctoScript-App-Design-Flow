@@ -601,7 +601,7 @@ those two are:
 | `[refused] functions: fns/text-tools.wasm is a WebAssembly component; the manifest must require wasm-components-v1` | Add it to `requires`, or run `tools/octo wasm build`. |
 | `[refused] functions: fns/markdown.wasm imports wasi:filesystem, the app's own files, which needs the storage capability` | Add `storage`, or drop the file access. |
 | `[refused] functions: fns/api-client.wasm imports wasi:http, which needs the net capability and the hosts it reaches in network.hosts` | List the hosts in `network.hosts` and request `net`, or run `tools/octo wasm build` once the hosts are listed ([Network](#network)). |
-| `[refused] contents-invalid (fns/netprobe.wasm): the component imports wasi:sockets/network@0.2.9; a component may import only wasi:cli, wasi:clocks, wasi:filesystem, wasi:io and wasi:random` | Remove what opens sockets ([What cannot build or run](#what-cannot-build-or-run)). #188 still names these five packages in this message, though it admits `wasi:http` and `octosense:host` too. |
+| `[refused] contents-invalid (fns/netprobe.wasm): the component imports wasi:sockets/network@0.2.9; a component may import only wasi:cli, wasi:clocks, wasi:filesystem, wasi:http, wasi:io, wasi:random and octosense:host` | Remove what opens sockets ([What cannot build or run](#what-cannot-build-or-run)). |
 
 The rules for every file in `fns/` (its name, at most 8 files, the 8 MiB
 bundle) are the same as for modules ([Build it](#build-it)).
