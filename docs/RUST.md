@@ -4,13 +4,14 @@ English | [简体中文](RUST.zh-CN.md)
 
 A store app's bundle holds no native code, but it can carry your Rust code as
 **Wasm functions**: Rust functions that a WebAssembly module (a `.wasm` file
-in the bundle's `fns/` folder) exports by name. An OctoSense shell built with
-the `wasm-lab` feature runs each function in a sandbox where it sees only its
-input; no release includes that feature yet. For the device, the network,
-files or native code, use another route.
+in the bundle's `fns/` folder) exports by name. OctoSense's `wasm` service runs
+each function in a sandbox where it sees only its input. Every standard
+desktop and Home build of OctoSense `main` includes the service on macOS,
+Linux and Android, with limited support; no release includes it yet. For the
+device, the network, files or native code, use another route.
 
 Every command on this page was run on macOS (Apple silicon) unless it is
-marked **unverified**. No shell with `wasm-lab` was built for this guide.
+marked **unverified**. No shell that runs functions was built for this guide.
 
 ## Choose a route
 
@@ -24,22 +25,35 @@ marked **unverified**. No shell with `wasm-lab` was built for this guide.
 
 ## Where functions run
 
-The shell's `wasm` host service runs the functions. Only a build with
-`wasm-lab`, an OctoSense Cargo feature that is off by default, includes the
-service.
+The shell's `wasm` host service runs the functions. OctoSense's
+[ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.md)
+accepts the service with limited support: `wasm-functions`, an OctoSense
+Cargo feature that is on by default, includes it in every standard desktop
+and Home build on macOS, Linux and Android. `wasm-lab` is the feature's
+former name and stays as an alias. Builds for Windows (not yet checked), iOS
+(no code generation for apps) and OpenHarmony (policy unknown) leave the
+runtime out.
 
 | Build | Accepts an app that requests `wasm` | Runs its functions |
 | --- | --- | --- |
 | `desktop-v0.1.0-beta.2` | No. Its app contract, 1.5, refuses the capability: `app <id> requests unknown capability "wasm"`. | No |
-| [OctoSense desktop 0.1.0-rc.1](../README.md#compatible-shell-download) and later, default build | Yes | No. Every call answers `no service answers "wasm" on this device`. |
-| OctoSense `main` built with `wasm-lab` (in no release yet) | Yes | Yes |
+| [OctoSense desktop 0.1.0-rc.1](../README.md#compatible-shell-download) default build | Yes | No. Every call answers `no service answers "wasm" on this device`. |
+| OctoSense `main` (in no release yet), default build for macOS, Linux or Android: feature `wasm-functions`, formerly `wasm-lab` | Yes | Yes |
+| OctoSense `main` (in no release yet), build for Windows, iOS or OpenHarmony | Yes | No. Every call answers `no service answers "wasm" on this device`. |
 | `card-host`, built from App Hub `main` | Yes | No. Every call answers `no service answers "wasm" on this device`. |
+
+No release includes the service yet: `desktop-v0.1.0-beta.2`, desktop RC1
+and `home-v0.1.0-beta.1` leave it out. The first desktop and Home releases
+built from `main` after OctoSense
+[#400](https://github.com/OctoSense-org/OctoSense/pull/400) will include it.
 
 App Hub's gate (`hub check`) admits the `wasm` capability from app contract
 1.7, with at most 8 modules per bundle ([Build it](#build-it)).
 
-**Unverified:** no store-installed app has run its functions yet. Only Wasm
-Lab, a system app, has run functions on a device.
+**Unverified:** no app from App Hub's public catalog has run its functions
+yet. On a device, Wasm Lab (a system app) has, and so has OctoSense's phone
+acceptance app: a signed test app, installed through normal store admission
+on a OnePlus 6.
 
 ## How a call runs
 
@@ -51,17 +65,24 @@ Lab, a system app, has run functions on a device.
    compiler, or takes the compiled code from the shell's cache on disk.
 3. The service passes the arguments to the function as bytes. The function
    runs on the app's own worker thread, so a slow function holds up only its
-   own app. One app's calls run one at a time, in order.
+   own app. One app's calls run one at a time, in order. The worker exits
+   after 5 idle seconds; the app's next call starts a new one, which loads
+   the modules again.
 4. The script's callback gets the output in `r.data`, or an error in
    `r.error`.
 
-Between calls, each module keeps one **instance**: a running copy with its
-own memory. Data kept in a `static`, such as a cache, therefore survives from
-one call to the next. A **trap** aborts the function on a panic, a stack
-overflow or memory over the 256 MiB cap. A trap or the 2 s deadline ends the
-call with an error; the shell keeps running. The service then gives that
-module a fresh instance before the next call, so its `static` data starts
-over.
+Every call gets a fresh **instance**: a running copy of the module with its
+own memory. Nothing survives from one call to the next: a `static`, a cache
+in memory or anything else written to the module's linear memory is gone at
+the next call. Only the compiled code is reused. Keep state in the script,
+and pass the function what it needs with each call. A **trap** aborts the
+function on a panic, a stack overflow or memory over the 256 MiB cap. A trap
+or the 2 s deadline ends the call with an error; the shell keeps running.
+
+After an app update, a changed grant or a signed withdrawal, the service
+discards the compiled code and the answer of a call that was running. That
+call answers `wasm app admission changed; retry from the current app`, and
+the next call loads the new modules, with no restart of the shell.
 
 ## Write a function
 
@@ -238,22 +259,37 @@ below fail or do nothing:
 | Memory per instance | 256 MiB | `the function trapped: memory over its cap (…)` |
 | Wasm stack per call | 512 KiB | `the function trapped: wasm trap: call stack exhausted` |
 | Input and output of a call | 16 MiB each | `<n> bytes is over the input/output limit` |
-| Module size | 8 MiB | `<file>: the module is <n> bytes, over the limit` |
+| Module size | 8 MiB | `<file>: module exceeds the size limit` |
 | Log | 64 lines per call, each cut to 1,024 bytes | Further lines are dropped. |
 
-App Hub also limits every host-service request. A call from a script meets
-these caps before the 16 MiB ones:
+The `wasm` service adds its own limits to every request:
+
+| Limit | Value | When a request exceeds it |
+| --- | --- | --- |
+| Serialized input | 1 MiB per request | `wasm input exceeds 1 MiB` |
+| Queued requests | 4 per app | `wasm app queue is full; try again later` |
+| Apps running functions at once | 4 | `wasm workers are busy; try again later` |
+| Buffered input, all apps together | 16 MiB | `wasm input queue is full; try again later` |
+| One request, including queueing and loading | 10 s, the service's timeout (App Hub's default is 60 s) | `the host service timed out` |
+
+A full queue or no free worker fails the request at once instead of making
+it wait. An app's calls run one at a time, in order, on its own worker
+thread, and a worker exits after 5 idle seconds.
+
+App Hub's general limits on host-service requests still apply too, but the
+`wasm` service's own are stricter. A call from a script meets these caps
+before the runtime's 16 MiB ones:
 
 | Limit | Value | When a call exceeds it |
 | --- | --- | --- |
 | A script's arguments | 1 MiB of JSON | `the request's arguments exceed 1 MiB` |
 | The answer | 4 MiB of JSON | `the service's answer exceeds 4 MiB` |
-| Wait for the answer, including time queued behind the app's earlier calls | 60 s | `the host service timed out` |
 | Calls waiting per app | 32 | `too many host requests are waiting; try again when some have answered` |
 
 Source: `Limits::default()` in OctoSense's `crates/wasm-host/src/lib.rs`,
-which the `wasm` service uses, and `crates/appstore/src/services.rs` in App
-Hub.
+which the `wasm` service uses, the constants in OctoSense's
+`crates/shell/src/wasm_service.rs`, and `crates/appstore/src/services.rs` in
+App Hub.
 
 ### The ABI
 
@@ -326,11 +362,15 @@ The gate holds the bundle to these rules:
 | --- | --- |
 | Path | `fns/<name>.wasm`, directly in `fns/` |
 | Name | 1 to 64 characters of `[a-z0-9_-]` |
+| Header | The first 8 bytes: a WebAssembly core module, version 1 |
 | Modules | At most 8 per bundle |
 | Bundle size | 8 MiB (8,388,608 bytes) of files, not counting `manifest.json` |
 
-Each function name must also be unique across the app's modules: the `wasm`
-service refuses to load two modules that export the same name.
+The gate does not read a module's imports or exports. The shell checks them
+when it loads the module, so a module that passes the gate can still fail to
+load ([Errors the app sees](#errors-the-app-sees)). Each function name must
+also be unique across the app's modules: the `wasm` service refuses to load
+two modules that export the same name.
 
 The example uses Wasm Lab's release profile:
 
@@ -492,8 +532,11 @@ with:
 | Field | Holds |
 | --- | --- |
 | `functions` | The names of the app's functions. |
-| `modules` | One entry per module file: `file`, `bytes`, `load_ms`, `from_cache` (whether the compiled code came from the cache), `memory_bytes` and `renewed` (the fresh instances made after traps or deadlines). |
+| `modules` | One entry per module file: `file`, `bytes`, `load_ms`, `from_cache` (whether the compiled code came from the cache), `memory_bytes` (the most memory a call has used: a high-water mark only), `invocations` (the calls so far), `renewed` (`invocations - 1`: every call after the first got a fresh instance) and `instance_policy` (`"fresh-per-call"`). |
 | `stats` | One entry per function called so far: `calls`, `errors`, `mean_us` and `max_us`. |
+
+The counts start when the app's worker starts. A worker exits after 5 idle
+seconds, and the counts start again with the next one.
 
 Do not name a function `functions`: `wasm.functions` never calls it.
 
@@ -502,7 +545,7 @@ Do not name a function `functions`: `wasm.functions` never calls it.
 | `r.error` | Cause | Fix |
 | --- | --- | --- |
 | `this app was not granted "wasm", which "wasm.rank" needs` | The manifest does not request `wasm`. | Add `wasm` to `capabilities`. |
-| `no service answers "wasm" on this device` | The host has no `wasm` service: `card-host`, or an OctoSense build without `wasm-lab`. | Test in a shell built with `wasm-lab` ([Test it](#test-it)). |
+| `no service answers "wasm" on this device` | The host has no `wasm` service: `card-host`, a release, or an OctoSense build for Windows, iOS or OpenHarmony. | Test in a desktop shell built from OctoSense `main` on macOS or Linux ([Test it](#test-it)). |
 | `<app id> has no function "rank"` | No module exports that name. | Compare the name with what `wasm.functions` lists. |
 | `<app id>'s bundle has no fns directory` | The app requests `wasm` but ships no module. | Add `fns/<name>.wasm`. |
 | `<file>: the module imports <name>; only octo.log is provided` | A dependency imports WASI or `wasm-bindgen` functions. | Build for `wasm32-unknown-unknown`, and drop that dependency. |
@@ -511,6 +554,12 @@ Do not name a function `functions`: `wasm.functions` never calls it.
 | `the input is not what rank takes: <reason>` | The arguments do not match the function's input type. | Fix the arguments or the type. |
 | The function's own text, such as `the query is empty` | The function returned `Err`. | Handle it in the script. |
 | `the call ran past its deadline`, `the function trapped: …` | The call broke a [limit](#limits) or [the sandbox](#what-the-sandbox-forbids). | For a panic, read the `panic: …` line in the shell's log. For the deadline, do less work per call. |
+| `wasm input exceeds 1 MiB` | The request's serialized input is over 1 MiB. | Pass less input per call. |
+| `wasm app queue is full; try again later` | The app already has 4 requests queued. | Send fewer requests at once, for example each one from the previous one's callback. |
+| `wasm workers are busy; try again later` | 4 other apps have a worker; a worker exits only after 5 idle seconds. | Try again later. |
+| `wasm input queue is full; try again later` | The requests of all apps already buffer 16 MiB of input. | Try again later. |
+| `wasm app admission changed; retry from the current app` | The app was updated, its grant changed or it was withdrawn while the call ran. | Call again. After an update, the next call loads the new modules. |
+| `the host service timed out` | The request took more than 10 s, including queueing and loading. | Do less work per call, and queue fewer calls. |
 
 The service loads an app's modules together. While any module fails to load,
 every call answers that module's error. The service tries again on the next
@@ -518,8 +567,8 @@ call.
 
 ## Test it
 
-Steps 3 to 9 test the functions in a shell built with `wasm-lab`, so they
-are **unverified**.
+Steps 3 to 9 test the functions in a shell that runs them, so they are
+**unverified**.
 
 1. Run the app in `card-host` with `tools/octo run`
    ([QUICKSTART §4](QUICKSTART.md#4-run-it-on-the-desktop)). `card-host`
@@ -530,15 +579,21 @@ are **unverified**.
    step 1, as
    [PUBLISHING §4.2](PUBLISHING.md#42-install-and-open-the-app-in-the-desktop-shell)
    shows.
-3. Build and start the desktop shell with `wasm-lab` and
+3. Build and start the desktop shell with
    `desktop/system-apps-wasm-lab.json`, which lists the default system apps
-   plus Wasm Lab:
+   plus Wasm Lab. The default build includes the `wasm` service on macOS and
+   Linux, so it needs no `--features wasm-lab`:
 
    ```sh
    cd <workspace>/OctoSense
    OCTOSENSE_SYSTEM_APPS="$PWD/desktop/system-apps-wasm-lab.json" \
-     cargo run --release -p octosense --features wasm-lab
+     cargo run --release -p octosense
    ```
+
+   OctoSense checked its plain default build with
+   `OCTOSENSE_SYSTEM_APPS=$PWD/desktop/system-apps-wasm-lab.json cargo build --locked -p octosense`,
+   then ran Wasm Lab with `--test-action launch-wasmlab`
+   ([WebAssembly in OctoSense § Wasm Lab](https://github.com/OctoSense-org/OctoSense/blob/main/docs/wasm.md#wasm-lab)).
 
 4. Open **Wasm Lab** from the dock or the **Apps** menu. Each card calls one
    function and shows the result and the round trip. When a module loads,
@@ -550,18 +605,19 @@ are **unverified**.
 6. Publish your own app to a local mirror, as
    [PUBLISHING §4.1](PUBLISHING.md#41-publish-into-a-local-mirror) shows.
 7. Quit the shell, and start it again with the command in
-   [PUBLISHING §4.2](PUBLISHING.md#42-install-and-open-the-app-in-the-desktop-shell)
-   plus `--features wasm-lab`.
+   [PUBLISHING §4.2](PUBLISHING.md#42-install-and-open-the-app-in-the-desktop-shell).
 8. Install and open your app from **App Hub** in the dock.
-9. After you install a new version, restart the shell: a running shell keeps
-   the app's old functions.
+9. Install a new version while the shell runs, then call a function again:
+   the next call loads the new modules, with no restart. A call that runs
+   during the update answers
+   `wasm app admission changed; retry from the current app`.
 
 Agent tools, Wasm Lab's or your app's, also need the octos kernel, staged
 as the
 [desktop README](https://github.com/OctoSense-org/OctoSense/blob/main/desktop/README.md#build-and-run)
-describes, and an AI provider. Home, the phone shell, has the same
-`wasm-lab` feature and a `phone/system-apps-wasm-lab.json` file; build it as
-OctoSense's
+describes, and an AI provider. Home, the phone shell, runs the service on
+Android in its default build and has a `phone/system-apps-wasm-lab.json`
+file; build it as OctoSense's
 [phone README](https://github.com/OctoSense-org/OctoSense/blob/main/phone/README.md)
 describes (**unverified**).
 
@@ -572,16 +628,19 @@ records the design. These items are open:
 
 | Item | Status |
 | --- | --- |
-| A CPU and memory budget per app | Not yet. The limits apply per call and per instance, so an app can keep one core busy with back-to-back calls, or use 256 MiB in each of its 8 modules. A call that App Hub has timed out still runs in the app's worker. |
+| A CPU budget per app | Not yet. The limits apply per call, so an app can keep one core busy with back-to-back calls. |
 | Compiling modules ahead of time for phones | Not yet. The first call compiles each module: ADR 0011 measured 27–33 ms on a desktop and 378–421 ms on a mid-range Android phone, and 5–11 ms for later loads from the cache on that phone. |
 | Agent tools with a live model | Unverified. OctoSense's tests call Wasm Lab's tools through the shell's tool executor, without a model. |
-| iOS | Not yet. iOS allows no JIT for apps, so Wasmtime would have to use its Pulley interpreter, about 17 times slower than Cranelift. iOS also allows no downloaded native code, so a store app's functions cannot be compiled ahead of time there either. |
-| OpenHarmony | Unverified. Its JIT policy is unknown. |
-| Updating an app while the shell runs | Not yet. The shell keeps the old functions until it restarts. |
+| Windows | Not yet. Builds for Windows leave the runtime out until it has been checked there. |
+| iOS | Not yet. Builds for iOS leave the runtime out. iOS allows no JIT for apps, so Wasmtime would have to use its Pulley interpreter, about 17 times slower than Cranelift. iOS also allows no downloaded native code, so a store app's functions cannot be compiled ahead of time there either. |
+| OpenHarmony | Not yet. Its JIT policy is unknown, so builds for OpenHarmony leave the runtime out. |
 | Typed interfaces (the component model and WIT), host imports such as a clock or randomness, and deterministic limits (fuel) | Not yet decided. Any host import beyond `octo.log` would be a new capability. |
 
 ## See also
 
+- OctoSense's [WebAssembly in OctoSense](https://github.com/OctoSense-org/OctoSense/blob/main/docs/wasm.md):
+  how the `wasm` service works on `main`, with its limits, platforms and
+  tests.
 - [HOST-API-V1](HOST-API-V1.md): device permissions and `location.get`.
 - [CAPABILITIES § Host services](CAPABILITIES.md#host-services): `wasm`
   beside the other host services.
