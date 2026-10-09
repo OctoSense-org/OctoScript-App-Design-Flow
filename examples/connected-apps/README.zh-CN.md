@@ -28,7 +28,7 @@ App Hub 签名目录第 10 版为每个应用收录了 0.1.0 和 0.1.1 两个版
 | 条件 | 原因 |
 | --- | --- |
 | macOS（Apple 芯片）上的 [OctoSense desktop-v0.1.0-beta.2](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-beta.2) | 从这个版本起，App Hub 契约（1.5）准入 `auth`、`github`、`gmail`、`gcalendar`，Shell 也提供这些服务。它还带有 GitHub Notes 使用的 `MarkdownEditor` 控件。 |
-| 宿主 `<apps root>/.host/oauth/clients.json` 中的提供商注册信息 | OAuth 客户端归宿主所有，不归应用。beta.2 只从这个文件读取注册信息，下载包里也没有内置。用 OctoSense `main` 构建时，可以改为把注册信息编译进去。 |
+| 宿主 `<apps root>/.host/oauth/clients.json` 中的提供商注册信息 | OAuth 客户端归宿主所有，不归应用。beta.2 只从这个文件读取注册信息，下载包里也没有内置。[OctoSense 桌面版 0.1.0-rc.1](../../README.zh-CN.md#下载兼容-shell)（RC1）及之后的构建可以改为把注册信息编译进去，但公开的 RC1 安装包不含任何注册信息。 |
 | 启用设备授权流程的 GitHub OAuth 应用 | GitHub Notes 用它登录。 |
 | 启用 Gmail 和 Calendar API 的 Google 桌面 OAuth 客户端，并配置好同意界面和测试用户 | Inbox Assistant 和 Google Calendar 用它登录。 |
 
@@ -73,7 +73,7 @@ tools/octo run examples/connected-apps/inbox/bundle --port 8141 --hidden --detac
 | 速览卡片 | 无 | 模板文件 `glance-workspace.splash` | `main.splash` 内的 [L0](../../docs/GLOSSARY.md) 卡片源码 |
 | 受保护的写入 | 通过 `github.review_save` 提交到 GitHub | 通过 `gmail.draft.review` 发送 Gmail | 通过 `gcalendar.review_save` 保存日程 |
 | 宿主确认时是否要求亲手点按：desktop-v0.1.0-beta.2 | 否 | 是 | 否 |
-| 宿主确认时是否要求亲手点按：OctoSense `main`（尚未进入任何发布版本） | 是 | 是 | 是 |
+| 宿主确认时是否要求亲手点按：macOS 上的 RC1 | 是 | 是 | 是 |
 
 三个应用遵循相同的规则：
 
@@ -152,7 +152,7 @@ host.request("github.review_save", {connection: frozen.connection, file: {owner:
 宿主只在前台应用之上弹出面板；后台卡片或 Agent 的工具调用会得到 `Open the app to review this change`。确认请求 10 分钟后过期。宿主接受批准的方式因版本而异：
 
 - **desktop-v0.1.0-beta.2：** 只接受来自自身面板的批准，但不检查是否为亲手点按。
-- **OctoSense `main`（尚未进入任何发布版本）：** 只接受用户在原生 **Approve & Save** 控件上亲手点按的批准，使用与 Gmail 发送同类的原生审阅界面。它同样在按下和点击时都检查 Makepad 的 `trusted_user_input()`，每次批准只能用一次。脚本或 Agent 发起的请求会得到 `Saving requires a physical activation of the native host review. Script and agent requests cannot approve it.`
+- **macOS 上的 RC1：** 只接受用户在原生 **Approve & Save** 控件上亲手点按的批准，使用与 Gmail 发送同类的原生审阅界面。它同样在按下和点击时都检查 Makepad 的 `trusted_user_input()`，每次批准只能用一次。脚本或 Agent 发起的请求会得到 `Saving requires a physical activation of the native host review. Script and agent requests cannot approve it.`。在 Windows 和 Linux 上，RC1 不允许保存：受保护的写操作一律拒绝执行。
 
 ### Inbox Assistant
 
@@ -280,7 +280,7 @@ host.request("glance.publish", {card_id: event.card_id title: event.card_title s
 
 点击卡片中的 **Open Calendar** 会启动应用。应用通过 `glance.take_open` 取得路由，打开同一账户、日历和日程。每次同步后，应用重新发布日程有变化的卡片，并撤下日程已不在同步结果中的卡片。
 
-**受保护的写入。** 保存需要两次宿主调用。`gcalendar.prepare` 检查日期、时间和 IANA 时区，拒绝因夏令时切换而跳过或重复的本地时间。随后 `gcalendar.review_save` 打开宿主面板，显示确切的日程。编辑会带上日程的 ETag；如果远端已经修改过这个日程，保存会失败并返回 HTTP 412，不会覆盖远端的修改。批准方式与 GitHub Notes 相同：desktop-v0.1.0-beta.2 的面板不检查是否为亲手点按，OctoSense `main` 则要求亲手点按。
+**受保护的写入。** 保存需要两次宿主调用。`gcalendar.prepare` 检查日期、时间和 IANA 时区，拒绝因夏令时切换而跳过或重复的本地时间。随后 `gcalendar.review_save` 打开宿主面板，显示确切的日程。编辑会带上日程的 ETag；如果远端已经修改过这个日程，保存会失败并返回 HTTP 412，不会覆盖远端的修改。批准方式与 GitHub Notes 相同：desktop-v0.1.0-beta.2 的面板不检查是否为亲手点按，RC1 则要求亲手点按。
 
 ## 哪些可以照搬，哪些不要照搬
 
@@ -297,7 +297,7 @@ host.request("glance.publish", {card_id: event.card_id title: event.card_title s
 
 ### 不要照搬的做法
 
-这四种做法都通过了 App Hub 审核，但各自带有风险或意外。0.1.1 修复了前两种，并为第三种显示日期范围；第四种仍留在 Inbox Assistant 中。宿主一侧的行为因版本而异，所以前三条教训都会分别说明 desktop-v0.1.0-beta.2 和 OctoSense `main`（尚未进入任何发布版本）的情况。
+这四种做法都通过了 App Hub 审核，但各自带有风险或意外。0.1.1 修复了前两种，并为第三种显示日期范围；第四种仍留在 Inbox Assistant 中。宿主一侧的行为因版本而异，所以前三条教训都会分别说明 desktop-v0.1.0-beta.2 和 RC1 的情况。
 
 #### 接受 `script` 的速览卡片工具
 
@@ -313,7 +313,7 @@ Inbox Assistant 0.1.0 的 `inbox.notify` 工具映射到 `glance.publish`，在�
 `script` 卡片是一段 Splash 程序，在速览栏中按应用的策略和权限运行。Agent 的后台对话由新邮件触发，因此一封邮件里的文字就可能引导这轮对话，发布发件人指定的任意程序。
 
 - **0.1.1 的改动：** `inbox.notify` 去掉了 `script`、`source` 和 `data`，改为必须提供 `template`、`initial`、`card_id`、`title`、`summary` 和 `notify`。它的描述写明 `Executable card source is not accepted.`。本仓库的副本与之一致。
-- **OctoSense `main`：** 只要 Agent 工具映射到 `glance.publish`，宿主就拒绝其中的 `script`：`Agents cannot publish executable Splash; choose an admitted template with initial data, or L0 source`。模板卡片必须提供模板名和 `initial` 对象，Agent 提供的 `source` 也必须是有效的 L0。应用自己的脚本仍可以发布 `script` 卡片。
+- **RC1：** 只要 Agent 工具映射到 `glance.publish`，宿主就拒绝其中的 `script`：`Agents cannot publish executable Splash; choose an admitted template with initial data, or L0 source`。模板卡片必须提供模板名和 `initial` 对象，Agent 提供的 `source` 也必须是有效的 L0。应用自己的脚本仍可以发布 `script` 卡片。
 - **desktop-v0.1.0-beta.2：** 宿主没有这项检查，所以像 0.1.0 那样接受 `script` 的 Agent 工具仍能发布这种卡片。
 
 **改用以下做法：** 发布卡片的工具只接受 `template` 和 `initial`，或 L0 `source` 加 `data`，绝不接受 `script`。把 `template` 限定为应用包内的文件，并给 `initial` 定义严格的 schema：
@@ -334,9 +334,9 @@ Inbox Assistant 0.1.0 的 `inbox.notify` 工具映射到 `glance.publish`，在�
 GitHub Notes 0.1.0 没有声明 `agent` 块，却附带了 `tools.json`。`hub check` 报告 `agent none`，但 App Hub 仍把这些工具作为 Agent 包准入。OctoSense 把附带已准入工具的应用都视为 Agent 应用，于是 Shell 为它提供了 **Ask GitHub Notes**，商店显示的却是 `Runs no assistant.`。发布者在打 0.1.0 标签之后才修订隐私政策，补充说明这个 Agent。
 
 - **0.1.1 的改动：** 清单声明了这个只在前台运行的只读 Agent 及其 `AGENT.md`，商店信息的描述也说明了 **Ask GitHub Notes**。三个读取工具没有变化。
-- **OctoSense `main` 和 desktop-v0.1.0-beta.2：** 两者仍会给附带 `tools.json` 的应用配一个 Agent，但商店里的说明不同：
+- **RC1 和 desktop-v0.1.0-beta.2：** 两者仍会给附带 `tools.json` 的应用配一个 Agent，但商店里的说明不同：
 
-| 商店文字 | desktop-v0.1.0-beta.2 | OctoSense `main` |
+| 商店文字 | desktop-v0.1.0-beta.2 | RC1 |
 | --- | --- | --- |
 | 隐私概要，0.1.0 | `Runs no assistant.` | `Offers the host's Ask assistant for its admitted tools, only after you consent. Your conversation and tool results may be sent to your configured AI provider.` 和 `No app-declared background assistant or automatic triggers.` |
 | 隐私概要，0.1.1 | `Runs an assistant limited to this app's own data.` | 相同 |
@@ -351,7 +351,7 @@ GitHub Notes 0.1.0 没有声明 `agent` 块，却附带了 `tools.json`。`hub c
 Google Calendar 通过 `gcalendar.refresh` 刷新。在 desktop-v0.1.0-beta.2 上，这会同步整个日历：宿主向 Google 请求全部日程，不设起始日期，并把快照按从旧到新排序。应用显示前 100 个日程，所以有多年历史的日历打开后显示的是最早的条目。大型日历一旦触及宿主上限就会同步失败：100 页、25,000 个日程、16 MiB 缓存，或每次刷新 35 秒。`googlecalendar.cached` 和 `googlecalendar.refresh` 工具会把整个快照交给模型。0.1.0 也没有告诉用户日程覆盖哪段日期。
 
 - **0.1.1 的改动：** 宿主报告同步窗口时，状态行显示 `past 30 days / next 366 days`；不报告时显示 `date range unavailable`。所选日程在同步后消失时，应用会提示它可能在显示的日期范围之外，而不是说它已不在日历中。本仓库的副本也有这项改动。
-- **OctoSense `main`：** 宿主只同步一个固定窗口：按 UTC 日界，从今天之前 30 天到之后 366 天，并把重复日程展开为单次日程。上限不变。
+- **RC1：** 宿主只同步一个固定窗口：按 UTC 日界，从今天之前 30 天到之后 366 天，并把重复日程展开为单次日程。上限不变。
 - **desktop-v0.1.0-beta.2：** 宿主仍同步整个日历，从最早的日程开始排列，也不报告窗口，所以 0.1.1 显示 `date range unavailable`。
 
 **改用以下做法：** 限定显示的范围和 Agent 读取的范围。按每个日程的开始时间筛选，让日程从今天开始，再向后翻页；给 Agent 提供 `googlecalendar.event` 这类针对单个日程的工具，而不是读取整个日历。

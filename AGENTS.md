@@ -97,7 +97,7 @@ says who runs each one and when.
   unverified. `llm` is for system apps only. Never put a model key in an app. Read
   [docs/AI-SERVICES.md](docs/AI-SERVICES.md) before adding an AI feature, and
   report each one as unverified until exercised on its actual host.
-- **Connected accounts, GitHub-proven apps and Host API v1 need the compatible
+- **Connected accounts, GitHub-attested apps and Host API v1 need the compatible
   RC1 release.** Read [download status](README.md#compatible-shell-download)
   for package checksums and platform prerequisites. Contract 1.8.0 admits the public
   publisher proof; beta.2 cannot install the new apps or consume the v2 catalog.
@@ -205,10 +205,12 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   Confirm it with
   `git check-attr text -- <path to bundle>/manifest.json`, which prints a
   line ending in `text: unset` ([QUICKSTART §3](docs/QUICKSTART.md#3-create-an-app)).
-- **Use GitHub publishing for a new app.** `tools/octo publish-github <app>`
-  installs the tag workflow; `new` also copies it. No developer signing key
-  or signing secret is required. Review the workflow and test unsigned source
-  before release. Manual Ed25519 signing is optional compatibility only.
+- **Use GitHub publishing.** App Hub accepts only GitHub-attested releases.
+  `tools/octo publish-github <app>` installs the tag workflow; `new` also
+  copies it. No signing key or signing secret is required. Review the
+  workflow and test unsigned source before release. Never create a publisher
+  key, sign a manifest or pass `--publisher-key` to publish an app; App Hub
+  reviewers do not approve key-signed releases.
 - **Never move a tag.** Commit tested editable source and the workflow, then
   use `v` plus the manifest's version (`v0.1.0`). The workflow prepares,
   attests, verifies and packs the release; do not commit its sealed output
@@ -220,16 +222,19 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   compatible host are required. Public-catalog sample install/update checks
   passed on macOS, with a final RC reopen; isolated phone fixtures have
   separate evidence. None proves your app or provider effects. See the
-  [RC download status](README.md#compatible-shell-download).
-  See [PUBLISHING §3.6](docs/PUBLISHING.md#36-github-publisher-identity--human).
+  [RC download status](README.md#compatible-shell-download) and
+  [PUBLISHING §3.6](docs/PUBLISHING.md#36-github-publisher-identity--human).
 - **An issue requests publication.** Include repository, version/commit,
   screenshots and permissions; it may precede the release. Attach the
   successful workflow and exact release pack when ready. A reviewer, not a
-  bot, runs the gate on the exact release and posts problems in the issue;
-  an App Hub admin approves the submission; the Hub then publishes the entry
-  in its signed
-  catalog. Never claim that pushing a tag automatically submits or approves
-  an app.
+  bot, runs the gate on the exact release and posts problems in the issue; an
+  App Hub admin approves the submission; the Hub then publishes the entry in
+  its signed catalog. Never claim that pushing a tag automatically submits or
+  approves an app.
+- **One issue until first publication.** Until App Hub first publishes the
+  app, post each new release on the same issue as a comment with its tag, full
+  commit SHA and workflow-run link, and update the issue title and Version
+  field; after publication, each new version gets a new issue.
 - **No `script` in a Glance tool.** An agent tool that publishes Glance
   cards accepts `template` with `initial`, or L0 `source` with `data`, and
   never `script`. OctoSense runs a script card under the app's own policy.

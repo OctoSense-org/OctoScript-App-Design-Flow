@@ -98,7 +98,7 @@ this app was not granted "mail", which "mail.accounts" needs
 | Capability | What the script gets |
 | --- | --- |
 | `mail` | Mail accounts the person signs in to on a host sheet: folders, messages and sync. Sending goes through the host's send review. The methods are in [HOST-SERVICES § Mail](HOST-SERVICES.md#mail-the-worked-example). |
-| `auth` | Connections to GitHub and Google that the person approves on a host sheet, and, on OctoSense `main`, sign-in to the app's own backend. The app receives handles, never tokens. `auth` alone identifies the person but reads none of their data. See [Use a connected account](#use-a-connected-account). |
+| `auth` | Connections to GitHub and Google that the person approves on a host sheet, and, in desktop RC1, sign-in to the app's own backend. The app receives handles, never tokens. `auth` alone identifies the person but reads none of their data. See [Use a connected account](#use-a-connected-account). |
 | `github` | Repository reads, and saves the person approves on a host sheet. Needs `auth`. |
 | `gcalendar` | Google Calendar reads and sync, and writes the person approves on a host sheet. Needs `auth`. |
 | `gmail` | Gmail reads, versioned reply drafts, sending after the person approves it in the host's send review, and new-mail events for the app's agent. Needs `auth`. |
@@ -176,14 +176,14 @@ shell holds the provider credentials; the app holds only a connection handle.
    | `Open the app to connect an account` | The call came from a Glance card or an agent's tool. |
    | `OAuth is not configured. Add provider registrations in the host's oauth/clients.json` | A beta.2 host has no `clients.json` ([Limits](#limits)). |
    | `This provider is not configured in OctoSense` | A beta.2 host's `clients.json` has no registration for the provider. |
-   | `GitHub sign-in is unavailable in this build. Check for an OctoSense update or contact its distributor.` (or `Google sign-in …`) | A build from OctoSense `main` has no registration for the provider ([Limits](#limits)). |
+   | `GitHub sign-in is unavailable in this build. Check for an OctoSense update or contact its distributor.` (or `Google sign-in …`) | A desktop RC1 or later build has no registration for the provider; the public RC1 packages include none ([Limits](#limits)). |
 
 3. Call the provider family. Pass the connection's `handle` as `connection`,
    such as `{connection: <handle> page: 1}` for `github.repositories`.
 
    | Service | Methods |
    | --- | --- |
-   | `auth` | `connect`, `accounts`, `active`, `select`, `disconnect`; on OctoSense `main` also `backend.me` and `backend.request` ([below](#sign-in-to-your-own-backend)) |
+   | `auth` | `connect`, `accounts`, `active`, `select`, `disconnect`; in desktop RC1 also `backend.me` and `backend.request` ([below](#sign-in-to-your-own-backend)) |
    | `github` | `repositories`, `files`, `read`, `review_save` |
    | `gcalendar` | `calendars`, `cached`, `refresh`, `get`, `prepare`, `review_save`; `sync` on desktop-v0.1.0-beta.2 only ([Limits](#limits)) |
    | `gmail` | `labels`, `messages`, `message`, `draft.open`, `draft.get`, `draft.edit`, `draft.review`, `events.status`, `event.status`, `event.decide` |
@@ -253,7 +253,7 @@ Live provider sign-in is not established by the synthetic backend checks.
 ### Limits
 
 - **Builds.** Use [desktop RC1](../README.md#compatible-shell-download) for
-  current GitHub-proven apps. Historical desktop-v0.1.0-beta.2 (macOS, Apple silicon) serves
+  current GitHub-attested apps. Historical desktop-v0.1.0-beta.2 (macOS, Apple silicon) serves
   `auth`, `github`, `gcalendar` and `gmail`. The beta.1 stores
   (desktop-v0.1.0-beta.1 and home-v0.1.0-beta.1) list such apps but refuse to
   install them, because their contract does not know `auth`. No released phone

@@ -75,7 +75,7 @@ this app was not granted "mail", which "mail.accounts" needs
 | 能力 | 脚本得到什么 |
 | --- | --- |
 | `mail` | 用户在宿主面板上登录的邮件账户：文件夹、邮件和同步。发送要经过宿主的审阅界面。方法见 [HOST-SERVICES § Mail](HOST-SERVICES.zh-CN.md#完整示例mail)。 |
-| `auth` | 用户在宿主面板上批准的 GitHub 和 Google 连接；在 OctoSense `main` 上，还能让用户登录应用自己的后端。应用拿到的是连接句柄，绝不是令牌。只申请 `auth` 可以识别用户身份，但读不到用户的任何数据。见[使用已连接账户](#使用已连接账户)。 |
+| `auth` | 用户在宿主面板上批准的 GitHub 和 Google 连接；在桌面 RC1 中，还能让用户登录应用自己的后端。应用拿到的是连接句柄，绝不是令牌。只申请 `auth` 可以识别用户身份，但读不到用户的任何数据。见[使用已连接账户](#使用已连接账户)。 |
 | `github` | 读取仓库；保存要经用户在宿主面板上批准。需要 `auth`。 |
 | `gcalendar` | 读取和同步 Google Calendar；写入要经用户在宿主面板上批准。需要 `auth`。 |
 | `gmail` | 读取 Gmail，使用带版本号的回复草稿，经用户在宿主的审阅界面上批准后发送邮件，并为应用 Agent 提供新邮件事件。需要 `auth`。 |
@@ -144,13 +144,13 @@ this app was not granted "mail", which "mail.accounts" needs
    | `Open the app to connect an account` | 调用来自速览卡片或 Agent 的工具。 |
    | `OAuth is not configured. Add provider registrations in the host's oauth/clients.json` | beta.2 宿主没有 `clients.json`（[限制](#限制)）。 |
    | `This provider is not configured in OctoSense` | beta.2 宿主的 `clients.json` 中没有该提供商的注册信息。 |
-   | `GitHub sign-in is unavailable in this build. Check for an OctoSense update or contact its distributor.`（或 `Google sign-in …`） | 用 OctoSense `main` 构建的版本中没有该提供商的注册信息（[限制](#限制)）。 |
+   | `GitHub sign-in is unavailable in this build. Check for an OctoSense update or contact its distributor.`（或 `Google sign-in …`） | 桌面 RC1 或之后的构建中没有该提供商的注册信息；公开的 RC1 安装包不含任何注册信息（[限制](#限制)）。 |
 
 3. 调用提供商能力族中的方法。把连接的 `handle` 作为 `connection` 传入，例如调用 `github.repositories` 时传入 `{connection: <handle> page: 1}`。
 
    | 服务 | 方法 |
    | --- | --- |
-   | `auth` | `connect`、`accounts`、`active`、`select`、`disconnect`；在 OctoSense `main` 上还有 `backend.me` 和 `backend.request`（[见下文](#登录应用自己的后端)） |
+   | `auth` | `connect`、`accounts`、`active`、`select`、`disconnect`；在桌面 RC1 中还有 `backend.me` 和 `backend.request`（[见下文](#登录应用自己的后端)） |
    | `github` | `repositories`、`files`、`read`、`review_save` |
    | `gcalendar` | `calendars`、`cached`、`refresh`、`get`、`prepare`、`review_save`；`sync` 仅在 desktop-v0.1.0-beta.2 上可用（[限制](#限制)） |
    | `gmail` | `labels`、`messages`、`message`、`draft.open`、`draft.get`、`draft.edit`、`draft.review`、`events.status`、`event.status`、`event.decide` |

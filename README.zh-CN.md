@@ -8,7 +8,7 @@
 
 App Flow（原名 OctoScript App Design Flow）负责制作 [OctoSense](https://github.com/OctoSense-org) 应用，[OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 负责发布应用。App Flow 不是图形界面 IDE，而是基于命令行的开发工具集，包含 Agent 流程、模板和指南。App Hub 的 [`card-studio`](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/DEVELOPMENT.zh-CN.md#发布前检查卡片card-studio) 是另一个独立工具，用来渲染卡片并辅助评审。
 
-App Flow 带着你（或编码 Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到一个隔离运行的应用包：通过 [OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 的准入检查，准备生成 GitHub 发布证明并接受 App Hub 审核，无需单独的开发者签名密钥。
+App Flow 带着你（或编码 Agent）从一个想法（一段文字需求、一张生成的 UX 图）走到一个隔离运行的应用包：通过 [OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 的准入检查，可以生成带 GitHub 证明的 Release 并接受 App Hub 审核，无需单独的开发者签名密钥。
 
 仓库包含：给 Agent 的规则（[AGENTS.md](AGENTS.md)）、分步骤的设计流程（[flows/](flows/README.zh-CN.md)）、开发者文档（[docs/](docs/)）、可直接运行的应用模板（[templates/script-app](templates/script-app/README.zh-CN.md)）、完整示例（[examples/](examples/README.zh-CN.md)），以及 `tools/octo`：一个小型命令行工具，封装 App Hub 的 `card-host` 和 `hub` 程序。`tools/octo` 从不决定准入：`check` 先为未签名的应用包写入摘要（stamp），再原样转交 `hub check` 的输出和退出码。
 
@@ -48,7 +48,7 @@ App Flow 带着你（或编码 Agent）从一个想法（一段文字需求、�
 | **应用中的 AI** | 开发应用不需要任何 AI 服务，`card-host` 也不提供 AI 服务，所以应用不依赖 AI 也要完整可用。见[应用中的 AI](#应用中的-ai)。 |
 | **参考应用** | 三个已发布的[连接账户的应用](#连接账户的应用githubgmail-和-google-calendar)。 |
 | **演示** | 在 `card-host` 中运行应用（`tools/octo run`，通过远程控制桥操作），并用 `tools/octo shot` 截取真实截图。要在 OctoSense 内连同宿主服务一起展示，让 OctoSense 桌面端 Shell 读取本地签名目录（[PUBLISHING §4](docs/PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。 |
-| **提交到 App Hub** | 先按 [docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md) 准备好应用包，再由人工按 App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md) 开 issue 表达发布意图，并附上 GitHub 证明的发布包。参赛作品不等于自动提交到 App Hub；比赛需要什么，以黑客松页面为准。 |
+| **提交到 App Hub** | 先按 [docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md) 准备好应用包，再由人工按 App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md) 开 issue 表达发布意图，并附上带 GitHub 证明的 Release。参赛作品不等于自动提交到 App Hub；比赛需要什么，以黑客松页面为准。 |
 | **无头测试** | `tools/octo run … --hidden`：窗口不会出现，Agent 测试应用时不会占用你的屏幕（也可同时测多个应用，每个用自己的 `--port`）。见[无头测试](#无头测试同时测多个应用不占屏幕)。 |
 | **检查 Agent 做出的应用** | [docs/MODEL-VALIDATION.zh-CN.md](docs/MODEL-VALIDATION.zh-CN.md)：以原生方式操作应用并截图，修复失败之处，并把证据与最终源码对应起来。 |
 | **Agent 应用参考** | [Email Action 与 Meeting Planner](examples/agentic-hackathon/README.zh-CN.md)：虚构邮件/日历、真实应用 Agent 入口、明确标注的离线路径、操作前确认及原生交互测试。 |
@@ -56,25 +56,19 @@ App Flow 带着你（或编码 Agent）从一个想法（一段文字需求、�
 
 ## 连接账户的应用：GitHub、Gmail 和 Google Calendar
 
-公开 App Hub 签名目录 **13** 提供以下带 GitHub 证明的 **0.2.1** 版本。
-请搜索新的确切 ID；历史 `org.octosense.samples.*` ID 及本地数据不会迁移。
+公开 App Hub 签名目录 **15** 提供以下带 GitHub 证明的版本（GitHub Notes 为 **0.2.2**，其余为 **0.2.1**）。请搜索新的确切 ID；历史 `org.octosense.samples.*` ID 及本地数据不会迁移。App Hub 已在签名目录第 14 版撤回那批较早的、用密钥签名的条目。
 
 | 应用 | 应用 ID | 源码 |
 | --- | --- | --- |
-| GitHub Notes | `io.github.ymote.githubnotes` | [ymote/octosense-github-notes](https://github.com/ymote/octosense-github-notes/releases/tag/v0.2.1) |
+| GitHub Notes | `io.github.ymote.githubnotes` | [ymote/octosense-github-notes](https://github.com/ymote/octosense-github-notes/releases/tag/v0.2.2) |
 | Inbox Assistant | `io.github.ymote.inboxassistant` | [ymote/octosense-inbox-assistant](https://github.com/ymote/octosense-inbox-assistant/releases/tag/v0.2.1) |
 | Google Calendar | `io.github.ymote.googlecalendar` | [ymote/octosense-google-calendar](https://github.com/ymote/octosense-google-calendar/releases/tag/v0.2.1) |
 
-三者都**只声明 macOS**。目录还提供静态
-[Camera Card Demo 1.1.1](https://github.com/ymote/camera-card/releases/tag/v1.1.1)，
-ID 为 `io.github.ymote.cameracard`，同样仅限 macOS，不执行拍照。
-[连接账户示例](examples/connected-apps/README.zh-CN.md)解释架构；当前发布字节
-以上方公开仓库为准。
+三者都**只声明 macOS**。签名目录还提供静态 [Camera Card Demo 1.1.1](https://github.com/ymote/camera-card/releases/tag/v1.1.1)，ID 为 `io.github.ymote.cameracard`，同样仅限 macOS，不执行拍照。[连接账户示例](examples/connected-apps/README.zh-CN.md)解释架构；当前的 Release 字节以上方公开仓库为准。
 
 ### 下载兼容 Shell
 
-[**桌面版 0.1.0-rc.1 已发布**](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-rc.1)，源码为 `933abbcf`，
-支持带 GitHub 证明的应用、公开 v2 目录和 Host API v1。
+[**桌面版 0.1.0-rc.1 已发行**](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-rc.1)，源码为 `933abbcf`，支持带 GitHub 证明的应用、公开 v2 签名目录和 Host API v1。
 
 | 平台 | 下载 |
 | --- | --- |
@@ -82,32 +76,13 @@ ID 为 `io.github.ymote.cameracard`，同样仅限 macOS，不执行拍照。
 | Windows x64 | [安装程序](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.1/octosense_0.1.0-rc.1_x64-setup.exe) |
 | Linux x86_64 | [Debian 包](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.1/octosense_0.1.0-rc.1_amd64.deb) 或 [AppImage](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.1/octosense_0.1.0-rc.1_x86_64.AppImage) |
 
-请用 [SHA256SUMS](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.1/SHA256SUMS) 核对下载，并阅读发行说明中的平台要求。
-这些预发行包**没有 Apple Developer ID 签名、公证或 Windows 发布者签名**。
-macOS 包在本机构建并验收，Windows/Linux 包来自标签 CI 打包任务。
-[发行来源记录](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.1/RELEASE-PROVENANCE.json)记载确切文件及签名状态。
-自行构建请按[固定源码的环境准备指南](https://github.com/OctoSense-org/OctoSense/blob/933abbcf2737e652acd9cae2a4c9ffc16bfdaec6/README.zh-CN.md#环境准备)操作。
+请用 [SHA256SUMS](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.1/SHA256SUMS) 核对下载，并阅读发行说明中的平台要求。这些预发行包**没有 Apple Developer ID 签名、公证或 Windows 发布者签名**。macOS 包在本机构建并验收，Windows/Linux 包来自标签 CI 打包任务。[发行来源记录](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.1/RELEASE-PROVENANCE.json)记载确切文件及签名状态。自行构建请按[固定源码的环境准备指南](https://github.com/OctoSense-org/OctoSense/blob/933abbcf2737e652acd9cae2a4c9ffc16bfdaec6/README.zh-CN.md#环境准备)操作。
 
-这些示例使用 Mac：**App Hub → Search → 确切应用 ID → Get → Install → Open**。
-Install 前审阅权限；**Library** 提供重新打开和兼容更新。保留目录、来源及
-信任锚的默认设置，不需要开发者密钥或 OctoSense 云端账户。Beta.2 无法使用
-这些发布者证明或公开 v2 目录。
+这些示例使用 Mac：**App Hub → Search → 确切应用 ID → Get → Install → Open**。Install 前审阅权限；**Library** 提供重新打开和兼容更新。保留签名目录、来源及信任锚的默认设置，不需要开发者密钥或 OctoSense 云端账户。Beta.2 无法使用这些发布者证明或公开 v2 签名目录。
 
-RC **没有公开 GitHub/Google OAuth 注册信息**。本地草稿及未连接账户状态可用；
-登录需要宿主发行方或运维人员提供注册信息
-（[配置](https://github.com/OctoSense-org/OctoSense/blob/933abbcf2737e652acd9cae2a4c9ffc16bfdaec6/crates/oauth-service/README.zh-CN.md)）。普通用户不应需要
-Google 开发者账户。安装成功不代表真实登录、Gmail 发送、GitHub commit 或日历写入
-已验证；这些受保护的写操作在支持的平台上需要亲手确认。Linux/Windows 已实现
-外部浏览器后端登录和清单声明的后端读取，这里未验收真实登录。嵌入式后端登录
-和受保护的写操作仍不支持，会拒绝执行。Android Google 授权仍不可用。
-普通嵌入网页与登录是不同的流程；Linux 需要 GTK 3/WebKitGTK 和 X11/XWayland，
-Windows 需要 WebView2。这些引擎不随包附带
-（[浏览器要求](https://github.com/OctoSense-org/OctoSense/blob/933abbcf2737e652acd9cae2a4c9ffc16bfdaec6/docs/desktop-embedded-browser.zh-CN.md)）。`card-host` 没有连接账户服务或原生 Markdown 编辑器。
+RC **没有公开 GitHub/Google OAuth 注册信息**。本地草稿及未连接账户状态可用；登录需要宿主发行方或运维人员提供注册信息（[配置](https://github.com/OctoSense-org/OctoSense/blob/933abbcf2737e652acd9cae2a4c9ffc16bfdaec6/crates/oauth-service/README.zh-CN.md)）。普通用户不应需要 Google 开发者账户。安装成功不代表真实登录、Gmail 发送、GitHub commit 或日历写入已验证；这些受保护的写操作在支持的平台上需要亲手确认。Linux/Windows 已实现外部浏览器后端登录和清单声明的后端读取，这里未验收真实登录。嵌入式后端登录和受保护的写操作仍不支持，会拒绝执行。Android Google 授权仍不可用。普通嵌入网页与登录是不同的流程；Linux 需要 GTK 3/WebKitGTK 和 X11/XWayland，Windows 需要 WebView2。这些引擎不随包附带（[浏览器要求](https://github.com/OctoSense-org/OctoSense/blob/933abbcf2737e652acd9cae2a4c9ffc16bfdaec6/docs/desktop-embedded-browser.zh-CN.md)）。`card-host` 没有连接账户服务或原生 Markdown 编辑器。
 
-macOS 上的原生公开目录安装及 0.2.0 → 0.2.1 更新保留了本地草稿，之后三者都在
-`933abbcf` RC1 发行版中重新打开。这验证本地 UI 和发布流程，不代表提供商效果或
-其他操作系统通过验证。[目录审核](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/3842c5ec503a8e9124cbbe99655556ffe24c41e1/catalog-candidates/ymote-github-samples-updates/independent-review.json)
-记录 Release 身份及范围；历史证据保持原样。
+macOS 上的原生公开签名目录安装及 0.2.0 → 0.2.1 更新保留了本地草稿，之后三者都在 `933abbcf` RC1 发行版中重新打开。这验证本地 UI 和发布流程，不代表提供商效果或其他操作系统通过验证。[签名目录审核](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/3842c5ec503a8e9124cbbe99655556ffe24c41e1/catalog-candidates/ymote-github-samples-updates/independent-review.json)记录 Release 身份及范围；历史证据保持原样。
 
 ## Agent 从这里开始
 
@@ -120,9 +95,9 @@ macOS 上的原生公开目录安装及 0.2.0 → 0.2.1 更新保留了本地草
 1. [AGENTS.md](AGENTS.md)：规则、完成标准，以及每个必须停下来交给人决定的节点。
 2. [flows/README.zh-CN.md](flows/README.zh-CN.md)：按起点选择设计流程，然后逐步执行该流程的 `FLOW.md`。
 3. [docs/QUICKSTART.zh-CN.md](docs/QUICKSTART.zh-CN.md) 与 [docs/SCRIPT-API.md](docs/SCRIPT-API.md)：用 `tools/octo` 构建并运行应用；只使用有文档的 API（或能在运行时源码、某个系统应用中找到出处的 API）。
-4. [docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md)：定稿应用包、截图、通过准入检查。之后由人工按 App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md) 开提交 issue，并补充经过验证的 GitHub 发布包。
+4. [docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md)：定稿应用包、截图、通过准入检查。之后由人工按 App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md) 开提交 issue，并补充已通过验证、带 GitHub 证明的 Release。
 
-需要人来把关的节点（发布工作流、发布者身份与隐私文本、平台声明、付费图像生成、视觉确认、发布 tag、提交）都列在 [AGENTS.md](AGENTS.md#how-to-work) 中；[flows/README.zh-CN.md](flows/README.zh-CN.md#每个流程都遵循同一份约定) 说明所有流程共有的那些节点。Agent 绝不伪造人的确认、评审结果或提交记录。
+需要人来把关的节点（Release 工作流、发布者身份与隐私文本、平台声明、付费图像生成、视觉确认、Release 的 tag、提交）都列在 [AGENTS.md](AGENTS.md#how-to-work) 中；[flows/README.zh-CN.md](flows/README.zh-CN.md#每个流程都遵循同一份约定) 说明所有流程共有的那些节点。Agent 绝不伪造人的确认、评审结果或提交记录。
 
 ### AppCard UX 技能
 
@@ -217,12 +192,12 @@ tools/octo package-help
 
 | 命令 | 作用 |
 | --- | --- |
-| `publish-github <app-directory> [--replace]` | 安装经过评审的 `.github/workflows/publish-app.yml`，不推送、不发布、不提交。`new` 也会复制它。新的匹配版本 tag 触发 GitHub 证明和 release 产物，无需开发者签名 secret。 |
+| `publish-github <app-directory> [--replace]` | 安装经过评审的 `.github/workflows/publish-app.yml`，不推送、不创建 Release、不提交。`new` 也会复制它。新的匹配版本 tag 触发 GitHub 证明和 Release 产物，无需开发者签名 secret。 |
 | `doctor` | 检查 Python，查找 App Hub 仓库和 cargo，查找 `hub` 与 `card-host`（排除 GitHub 那个同名的 `hub` CLI），检查模板，并输出缺失项的修复方法。 |
 | `new <dir> --platform PLATFORM [--id ID] [--name NAME] [--system]` | 复制 `templates/script-app`（`bundle/`、`AGENTS.md`、`CLAUDE.md`、`GEMINI.md`、`.gitignore`），设置 id、名称和版本 `0.1.0`，把 `--platform` 的值写入商店信息，并为应用包写入摘要。`--platform` 必填，每个要测试的平台写一次。id 格式为 `[a-z0-9.-]{1,64}`；`os.*` 需要 `--system`。id 本身是保留名，或最后一段是保留名时，它在创建任何文件之前就会拒绝（见[应用是什么](#应用是什么)）。 |
 | `run <bundle> [--port N] [--hidden] [--detach] [--system] [--no-stamp] [--app-data DIR] [--static PREFIX=DIR]` | 以 `MAKEPAD_REMOTE=<port>`（默认 8141）运行 `card-host --bundle … --app-data … --allow-unsigned --stamp`。端口已有程序占用时拒绝运行。`--detach` 在应用已准入、远程控制桥开始监听并画出第一帧后返回。应用的 jail（它的私有数据目录）在 `<app>/.local-state/<id>/`。 |
 | `shot <port> <out.png> [--settle S]` | 等应用的控件出现、且连续两帧相同（最多 `--settle`，默认 2 秒）后，保存运行中窗口的 PNG（`GET /g?raw=1`）。 |
-| `check <bundle> [hub check flags]` | 先 `hub stamp`，再 `hub check --allow-unsigned`；检查不通过时以非零退出码退出。其他参数（如 `--catalog`、`--publisher-key`）原样传给 `hub check`。不会为含旧版签名或 `integrity.github` 的清单重新写入摘要。写入摘要失败时，立即返回其退出码，不运行准入检查。 |
+| `check <bundle> [hub check flags]` | 先 `hub stamp`，再 `hub check --allow-unsigned`；检查不通过时以非零退出码退出。其他参数（如 `--catalog`）原样传给 `hub check`。不会为已封存（带有 `integrity.github` 或旧格式签名）的清单重新写入摘要。写入摘要失败时，立即返回其退出码，不运行准入检查。 |
 | `package-help` | 输出发布检查表。 |
 
 `doctor` 会列出它查找 `hub` 和 `card-host` 的每个位置；查找顺序（包括 Windows 上的 `.exe` 文件名）见 [QUICKSTART §2](docs/QUICKSTART.zh-CN.md#2-构建-hub-和-card-host)。App Hub 的 [`hub` 命令参考](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#hub-命令)列出了所有 `hub` 命令（包括 `tools/octo` 封装的那些），以及每个命令由谁运行、用在提交的哪一步。
@@ -237,7 +212,7 @@ tools/octo package-help
 | image-to-card | 一张生成的 UX 图：一个服务流程 8–12 个界面的画面图集，或单个界面 | 原生 L0 卡片（`page.card`、`page.data.json`、`kit/`）、拆分出的服务卡片、一个卡片应用包，可选 WASM | [flows/image-to-card/FLOW.md](flows/image-to-card/FLOW.md) |
 | kits/sketch | 一套有授权的 Sketch 设计套件 | 一个**主题套件**（原生 L0 组件与主题），不是应用；供其他流程使用 | [flows/kits/sketch/FLOW.md](flows/kits/sketch/FLOW.md) |
 
-文字需求请用 script-app：这是 `tools/octo` 从头到尾自动化的唯一路径。图像和 Sketch 流程需要 macOS、Python 3.12、各自的虚拟环境，原生截图还需要 Makepad Studio；各自的 `FLOW.md` 列出了前置条件。所有应用类流程的交接环节相同（写入摘要、检查、在 `card-host` 中运行、截图、签名、提交），详见 [flows/README.zh-CN.md](flows/README.zh-CN.md#每个流程都遵循同一份约定)。
+文字需求请用 script-app：这是 `tools/octo` 从头到尾自动化的唯一路径。图像和 Sketch 流程需要 macOS、Python 3.12、各自的虚拟环境，原生截图还需要 Makepad Studio；各自的 `FLOW.md` 列出了前置条件。所有应用类流程的交接环节相同（写入摘要、检查、在 `card-host` 中运行、截图、生成 Release、提交），详见 [flows/README.zh-CN.md](flows/README.zh-CN.md#每个流程都遵循同一份约定)。
 
 ## 应用是什么
 
@@ -266,8 +241,8 @@ my-app/                     应用自己的 Git 仓库
 | `capabilities` | 应用申请的能力。 |
 | `network.hosts` | 纯主机名；需要 `net`。 |
 | `storage`、`compute`、`agent` | 可选的申请项，宿主会把它们限制在上限以内；`hub check` 把结果输出为 `grants:` 行。`storage.accounts: true` 为每个账户分别提供数据文件夹和 Agent，而不是共用一个 `device` 文件夹；`storage.agent_workspace` 决定 Agent 能读什么：它所属账户的文件夹（默认）或者什么都不读。 |
-| `integrity.github` | 新发布工作流加入的仓库/所有者/工作流/tag/commit 身份和 GitHub 证明（`publisher-github-v1`，需要兼容 RC1 发行版）。 |
-| `integrity.bundle_blake3` | 开发时由 `hub stamp` 写入；GitHub 工作流准备最终摘要和证明。旧版 Ed25519 签名仍是可选路径。 |
+| `integrity.github` | Release 工作流加入的仓库/所有者/工作流/tag/commit 身份和 GitHub 证明（`publisher-github-v1`，需要兼容 RC1 发行版）。 |
+| `integrity.bundle_blake3` | 开发时由 `hub stamp` 写入；GitHub 工作流准备最终摘要和证明。 |
 
 全部字段见 App Hub 的 [清单](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#清单)。
 
@@ -318,14 +293,14 @@ OctoSense 每个 Shell 运行一个 octos Agent 内核，由用户在系统应�
 | `/g?raw=1` | 返回窗口的 PNG（即 `tools/octo shot` 保存的内容） |
 | `/quit`（或 `/gq`：截下所有窗口后退出） | 退出；最后一定要调用 |
 
-`on_render` 生成的控件与其他控件一样出现在 `/snap` 和 `/d` 中；应用稍后才添加的内容（来自定时器或响应）在绘制后才出现，请轮询 `/snap?q=` 等待它。`card-host` **不**注册任何宿主服务，所以类似 Mail 的应用在其中会得到 `no service answers "mail" on this device`。`card-host` 还会拒绝封存的证明/签名发布包：请在发布前测试可编辑源码并截图。
+`on_render` 生成的控件与其他控件一样出现在 `/snap` 和 `/d` 中；应用稍后才添加的内容（来自定时器或响应）在绘制后才出现，请轮询 `/snap?q=` 等待它。`card-host` **不**注册任何宿主服务，所以类似 Mail 的应用在其中会得到 `no service answers "mail" on this device`。`card-host` 还会拒绝已封存的 Release：请在创建 Release 之前测试可编辑源码并截图。
 
-**在 Shell 中。** OctoSense 桌面端 Shell 和手机 Home 通过 App Hub 的 Card runner（App Hub `crates/appstore` 中的 `card` 模块）运行应用，而不是 `card-host`；Card runner 执行同一套清单策略。系统应用从 OctoSense 的 `apps/` 打包进 Shell 构建；商店应用从 App Hub 商店根据签名目录安装。想在发布前在桌面端 Shell 中试用自己的应用：用一次性信任锚（一把测试用根密钥）把它发布到本地签名目录，使用新的应用数据目录，显式设置 `OCTOSENSE_HUB_CATALOG=legacy`，再把 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 指向该镜像；Shell 的商店即可安装并打开该应用（[PUBLISHING §4](docs/PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。
+**在 Shell 中。** OctoSense 桌面端 Shell 和手机 Home 通过 App Hub 的 Card runner（App Hub `crates/appstore` 中的 `card` 模块）运行应用，而不是 `card-host`；Card runner 执行同一套清单策略。系统应用从 OctoSense 的 `apps/` 打包进 Shell 构建；商店应用从 App Hub 商店根据签名目录安装。想在 App Hub 发布之前在桌面端 Shell 中试用应用的某个 Release：用一次性信任锚把它的 Release pack 发布到本地签名目录，设置 `OCTOSENSE_HUB_CATALOG=legacy`，再使用新的应用数据目录，把 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 指向该镜像；之后 Shell 的商店就能安装并打开该应用（[PUBLISHING §4](docs/PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。**未验证**：用带 GitHub 证明的 Release 进行演练；已记录的结果来自一个用密钥签名的测试应用。
 
 **目前在手机上**（[QUICKSTART §9](docs/QUICKSTART.zh-CN.md#9-在-octosense-手机上运行)）：
 
 - 无法把任意应用包侧载到普通 OctoSense 手机上。手机商店读取 App Hub 内置地址上的签名目录，只信任编译进构建的信任锚；`OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 是环境变量，Android 启动器不会设置。在设备上从本地签名目录安装不受支持，也未验证。
-- 最接近的已验证路径是上面的桌面端演练。
+- 最接近的路径是上面的桌面端演练。
 - Android 版 `card-host` 不编译远程控制桥，所以手机测试不使用 `tools/octo`。
 - Hub 准入后，只有兼容宿主才能安装应用。已发布手机版本缺少 `auth` 和 `publisher-github-v1`；目录可见不代表运行时兼容。
 
@@ -350,13 +325,13 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 
 ## 发布
 
-**开提交 issue，请 App Hub 发布你的应用。** 提供仓库、版本/commit、截图和请求的权限。可以先开 issue，再准备 release。审核人员对确切的 release 运行准入检查，并在 issue 中反馈缺项或拒绝原因；随后由 App Hub 管理员批准确切的候选版本，再由 Hub 发布它的签名目录条目。
+**开提交 issue，请 App Hub 发布你的应用。** 提供仓库、版本/commit、截图和请求的权限。可以先开 issue，再准备 Release。审核人员对确切的 Release 运行准入检查，并在 issue 中反馈缺项或拒绝原因；随后由 App Hub 管理员批准确切的候选版本，再由 Hub 发布它的签名目录条目。
 
-[docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md) 讲解本地准入检查、截图和审核答案。`tools/octo publish-github <app-directory>` 安装发布工作流（`new` 也会复制它）。评审后 commit 已测试源码，再推送新的 `v<manifest.version>` tag。GitHub Actions 使用原生身份依次准备、证明、验证和打包，无需开发者创建 `publisher.key` 或保管签名 secret。
+[docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md) 讲解本地准入检查、截图和审核答案。`tools/octo publish-github <app-directory>` 安装 Release 工作流（`new` 也会复制它）。评审后 commit 已测试源码，再推送新的 `v<manifest.version>` tag。GitHub Actions 使用原生身份依次准备、证明、验证和打包。App Hub 只接受带 GitHub 证明的 Release（[ADR 0002](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/adr/0002-github-attested-publisher-identity.zh-CN.md)），所以你无需创建 `publisher.key`，也无需保管签名 secret。
 
-把成功的工作流和确切的 release pack 附到同一个提交 issue。GitHub release 提供可验证的字节，不是新的 App Hub 提交渠道，也不会自动获批。见 App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md)。日常更新使用同一仓库、所有者和工作流下的新版本/新 tag。不要移动已发布 tag，也不要手改 Hub 已准入的签名目录和产物。
+把成功的工作流和确切的 Release pack 附到同一个提交 issue。GitHub Release 提供可验证的字节，不是新的 App Hub 提交渠道，也不会自动获批。见 App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md)。在 App Hub 首次发布应用之前，每个新 Release 都以评论的形式发在同一个 issue 中，写明它的 tag、完整的 commit SHA 和工作流运行链接，并更新 issue 标题和 Version 字段；发布之后，每个新版本都开新 issue。日常更新使用同一仓库、所有者和工作流下的新版本/新 tag。不要移动已用于 Release 的 tag，也不要手改 Hub 已准入的签名目录和产物。
 
-此路径需要契约 1.8.0 / `publisher-github-v1`。真实的 GitHub Release 及原生 Store 的安装、更新检查已在隔离的测试签名目录中通过（[历史证据](docs/PUBLISHING.zh-CN.md#36-发布者密钥human)）。当前公开签名目录中的示例已在 macOS 完成安装与更新；RC 状态及限制见[兼容 Shell 指南](#下载兼容-shell)。手动 Ed25519 签名仅是可选兼容路径，旧参考版本保持原样。
+此路径需要契约 1.8.0 / `publisher-github-v1`。真实的 GitHub Release 及原生 Store 的安装、更新检查已在隔离的测试签名目录中通过（[历史证据](docs/PUBLISHING.zh-CN.md#36-github-发布者身份human)）。当前公开签名目录中的示例已在 macOS 完成安装与更新；RC 状态及限制见[兼容 Shell 指南](#下载兼容-shell)。
 
 ## 仓库结构
 
@@ -371,7 +346,7 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 | [docs/RUST.zh-CN.md](docs/RUST.zh-CN.md)（[English](docs/RUST.md)） | 应用自己的 Rust 代码：Wasm 函数，以及设备 API、网络、文件和原生代码各走哪条路 |
 | [docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)（[English](docs/AI-SERVICES.md)） | OctoSense 的助手（octos）：应用目前能用什么、应用 Agent 及其工具、速览卡片和卡片内对话（`sys.chat`） |
 | [docs/MODEL-VALIDATION.zh-CN.md](docs/MODEL-VALIDATION.zh-CN.md)（[English](docs/MODEL-VALIDATION.md)） | 检查编码 Agent 做出的应用：原生输入与截图、评审循环、修复 |
-| [docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md)（[English](docs/PUBLISHING.md)） | 从能运行的应用到提交 issue 和 GitHub 发布证明：定稿商店信息、截图、准入/审核、工作流与 Hub 批准 |
+| [docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md)（[English](docs/PUBLISHING.md)） | 从能运行的应用到提交 issue 和带 GitHub 证明的 Release：定稿商店信息、截图、准入/审核、工作流与 Hub 批准 |
 | [docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md) | `tools/octo`、App Hub 与 OctoSense Shell 如何衔接，沿一个请求逐层追踪 |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | 每个术语只有一个含义 |
 | [docs/NATIVE-WORKSPACE.md](docs/NATIVE-WORKSPACE.md)、[docs/l0/](docs/l0/) | 原生运行时所需同级仓库的配置；L0 卡片示例 |

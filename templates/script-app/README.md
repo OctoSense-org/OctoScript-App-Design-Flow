@@ -74,13 +74,15 @@ shown as a template source file above. For an existing app, run
 Open an App Hub issue to request publication, with repo/version/commit,
 screenshots and permissions. Review/commit tested source and the workflow, then
 push a new `v<manifest.version>` tag. GitHub prepares, attests, verifies and packs
-the release without a developer signing key. Add the successful release to the
-issue; administrator approval still controls catalog publication. Routine
-updates use new versions/tags under the same repository/owner/workflow identity.
+the release; App Hub accepts only GitHub-attested releases, so you need no
+signing key. Add the successful release to the issue; administrator approval
+still controls catalog publication. Until App Hub first publishes the app, post
+each new release on the same issue and update the issue title and Version
+field; after publication, open a new issue for each new version. Routine updates use new versions/tags under the same
+repository/owner/workflow identity.
 
-This path requires `publisher-github-v1` / contract 1.8.0. Live publishing and
-compatible-host installation remain unverified, with a compatible host release
-pending. See [PUBLISHING](../../docs/PUBLISHING.md); manual Ed25519 is optional
-compatibility only.
+This path requires `publisher-github-v1` / contract 1.8.0 and a compatible
+host: OctoSense desktop 0.1.0-rc.1 installs GitHub-attested apps on macOS.
+[PUBLISHING](../../docs/PUBLISHING.md) has the evidence and limits.
 
 Next: [docs/QUICKSTART.md](../../docs/QUICKSTART.md).

@@ -62,8 +62,9 @@ prompt-injected background turn could publish arbitrary Splash code on
 desktop-v0.1.0-beta.2. In 0.1.1 and this copy, `inbox.notify` requires the
 admitted `glance-workspace.splash` template, `initial.message`, `card_id`,
 `title`, `summary` and `notify`, and its closed schema has no `script`,
-`source` or `data`. OctoSense `main` also refuses `script` from any agent tool
-(not in any release yet). See
+`source` or `data`.
+[OctoSense desktop 0.1.0-rc.1](../../../README.md#compatible-shell-download)
+also refuses `script` from any agent tool. See
 [What to copy, what not to copy](../README.md#what-to-copy-what-not-to-copy).
 
 ## Runtime requirements and limits
