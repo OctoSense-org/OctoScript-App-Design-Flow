@@ -31,6 +31,9 @@ app-facing services; `crates/ai-host/src/lib.rs` registers `llm`, `model`
 and `octos`. App Hub's `card-host` registers none; it answers only `runtime`
 discovery, which App Hub's dispatcher handles itself.
 
+The per-family summary, with platforms and since-versions, is
+[HOST-API-FAMILIES](HOST-API-FAMILIES.md).
+
 | Family | Who may call it | Service code |
 | --- | --- | --- |
 | `mail` | Any app granted `mail` | `apps/mail/host-service` |
@@ -39,22 +42,23 @@ discovery, which App Hub's dispatcher handles itself.
 | `gmail` | Apps granted `gmail`, through a connection made with `auth`. The send review is the shell's. | `crates/oauth-service/src/host_inbox.rs`, `crates/shell/src/connected_review.rs` |
 | `glance` | Any app granted `glance` | `crates/shell/src/glance.rs` |
 | `model` | Any app granted `model`, within a per-app daily budget | `apps/ai-providers/host-service/src/complete/` |
-| `octos` | Apps granted the exact `octos.*` name, once the person allows the app's agent, where the shell hosts the octos kernel | `crates/ai-host/src/contained.rs` |
+| `octos` | Apps granted the exact `octos.*` name, once the person allows the app's agent, where the shell hosts the octos kernel (every platform but iOS) | `crates/ai-host/src/contained.rs` |
 | `llm` | System apps only | `apps/ai-providers/host-service` |
 | `news` | System apps only | `apps/news/host-service` |
 | `calendar` | Calendar (`os.calendar`) only | `apps/calendar/host-service` |
 | `photos`, `youtube` | Only the matching system app's `notify` | `crates/shell/src/glance_notice.rs` |
 | `wasm` | Apps granted `wasm`, in standard builds for macOS, Linux and Android (feature `wasm-functions`, formerly `wasm-lab`); no release serves it yet ([Run your own Rust code](RUST.md)) | `crates/shell/src/wasm_service.rs` |
+| `sheet`, `photo`, `word`, `deck`, `cad`, `light`, `sound`, `design`, `film`, `effect`, `vector`, `pdf` | System apps only: craft engines behind host services ([ADR 0013](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0013-craft-engines-as-pinned-services.md)), on `main` and in no release. Not a capability a store app can declare. | `apps/<engine>/host-service` |
 
 `glance_notice.rs` also answers `<namespace>.notify` for every other system
 app without a service of its own, such as Maps and Camera.
 
 No OctoSense shell serves `prompt`, `ledger.read`, `clipboard`, `matrix.*`
-or `palpo.*` to an installed app. Rinx, a Matrix client that OctoSense ships
-as a native app, serves `octos.*` to bundles a person imports into it as
-mini-apps, which is not the App Hub install path. **Unverified:** it serves
-`matrix.*` to those mini-apps too. Request `matrix.*` only for a Rinx
-mini-app.
+or `palpo.*` to an installed app; `maps.*` and `ai-providers.*` are those
+system apps' own. Rinx, a Matrix client that OctoSense ships as a native
+app, serves `octos.*` and `matrix.*` through its own host to bundles a person
+imports into it as mini-apps, which is not the App Hub install path. Request
+`matrix.*` only for a Rinx mini-app.
 `research` and `crawl` grant toolbox tools to an app's agent; they are not a
 `host.request` family
 ([AI-SERVICES § The system toolbox](AI-SERVICES.md#the-system-toolbox)).

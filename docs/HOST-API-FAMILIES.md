@@ -1,0 +1,46 @@
+# Host API families
+
+English | [简体中文](HOST-API-FAMILIES.zh-CN.md)
+
+Every `host.request` family, with the capability that declares it, who the shells actually serve, on which platforms, and since which release. **Declarable is not served:** the gate admits a capability from the contract's list, but the service decides whom it answers. This page is generated from [`host-api-families.json`](host-api-families.json), a snapshot of the table kept on [App Hub #172](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/172); regenerate it with `tools/gen_host_api_families.py`, never edit it by hand.
+
+Checked against: desktop-v0.1.0-rc.1 (933abbcf); OctoSense main a90e7c62 (2026-10-09).
+
+**In review, in no build you can download:** OctoSense [#402](https://github.com/OctoSense-org/OctoSense/pull/402) (with App Hub [#175](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/175), contract 1.9) adds a `files` family (`files.status/import/export`), `storage.binary_write@1` (`fs.write_bytes`), `location.sample` and native external-link openers. Do not build on them until they ship.
+
+| Family | Declare | Serves | Platforms | Since | Note |
+| --- | --- | --- | --- | --- | --- |
+| `ai-providers` | — | one system app's own service | Android, iOS, OpenHarmony, macOS, Windows, Linux | beta.1 | The system AI providers app's own service. |
+| `auth` | `auth` | store apps | Android, macOS, Windows, Linux | beta.2 | Connections the person approves on a host sheet; backend sign-in on RC1. |
+| `cad` | — | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | `main`, in no release yet | A craft engine behind a host service for system apps (ADR 0013). Not a capability a store app can declare. |
+| `calendar` | `calendar` | one system app's own service | Android, iOS, OpenHarmony, macOS, Windows, Linux | beta.1 | Calendar's own service (`calendar is Calendar's own service`). For the person's Google Calendar, use `gcalendar`. |
+| `camera` | `camera` | store apps | Android, macOS | rc.1 | RC1 on Android and macOS, after the app's own consent and the OS prompt. |
+| `clipboard` | `clipboard` | no shell serves it | — | — | Declarable, and the gate admits it, but no shell serves `clipboard.*` on any release: every call fails. |
+| `deck` | — | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | `main`, in no release yet | A craft engine behind a host service for system apps (ADR 0013). Not a capability a store app can declare. |
+| `design` | — | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | `main`, in no release yet | A craft engine behind a host service for system apps (ADR 0013). Not a capability a store app can declare. |
+| `effect` | — | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | `main`, in no release yet | A craft engine behind a host service for system apps (ADR 0013). Not a capability a store app can declare. |
+| `film` | — | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | `main`, in no release yet | A craft engine behind a host service for system apps (ADR 0013). Not a capability a store app can declare. |
+| `gcalendar` | `gcalendar` | store apps | Android, macOS, Windows, Linux | beta.2 | Through a connection made with `auth`; writes are reviewed by the shell, which RC1 cannot approve on Windows or Linux. |
+| `github` | `github` | store apps | Android, macOS, Windows, Linux | beta.2 | Through a connection made with `auth`; saves are reviewed by the shell, which RC1 cannot approve on Windows or Linux. |
+| `glance` | `glance` | store apps | Android, iOS, OpenHarmony, macOS, Windows, Linux | beta.1 | Cards on the Glance screen that open only this app. |
+| `gmail` | `gmail` | store apps | Android, macOS, Windows, Linux | beta.2 | Through a connection made with `auth`; the send review is the shell's, which RC1 cannot approve on Windows or Linux. |
+| `light` | — | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | `main`, in no release yet | A craft engine behind a host service for system apps (ADR 0013). Not a capability a store app can declare. |
+| `llm` | `llm` | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | beta.1 | Manages the device's AI providers; `llm is for OctoSense's own apps.` Use `model`. |
+| `location` | `location` | store apps | Android, macOS | rc.1 | RC1 on Android and macOS; `location.get` is Android only. |
+| `mail` | `mail` | some methods; see the note | Android, iOS, OpenHarmony, macOS, Windows, Linux | beta.1 | Reads and notifications for the accounts the person connected for the app. A store app has no send path on RC1: `mail.send` answers `approval_required` and the review methods serve only Mail ([OctoSense #409](https://github.com/OctoSense-org/OctoSense/issues/409)). |
+| `maps` | — | one system app's own service | Android, iOS, OpenHarmony, macOS, Windows, Linux | beta.1 | The system Maps app's own service. |
+| `matrix` | `matrix.* (method-level)` | no shell serves it | — | — | Not served by the OctoSense shells. Only the Rinx app serves `matrix.*`, through its own host, to its mini-apps. |
+| `microphone` | `microphone` | store apps | Android, macOS | rc.1 | RC1 on Android and macOS; sound in camera recordings. |
+| `model` | `model` | store apps | Android, iOS, OpenHarmony, macOS, Windows, Linux | beta.1 | One-shot calls within a daily budget; media and embeddings since RC1. |
+| `news` | `news` | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | beta.1 | `The news service serves system apps only.` |
+| `octos` | `octos.session.open`, `octos.session.history`, `octos.turn.start`, `octos.turn.interrupt` | store apps | Android, OpenHarmony, macOS, Windows, Linux | beta.1 | The app's own agent session, once the person allows it. Not on iOS. |
+| `pdf` | — | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | `main`, in no release yet | A craft engine behind a host service for system apps (ADR 0013). Not a capability a store app can declare. |
+| `photo` | — | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | `main`, in no release yet | A craft engine behind a host service for system apps (ADR 0013). Not a capability a store app can declare. |
+| `photos` | `photos` | one system app's own service | Android, iOS, OpenHarmony, macOS, Windows, Linux | beta.1 | Only the system Photos app's `notify`. |
+| `runtime` | `runtime` | store apps | Android, iOS, OpenHarmony, macOS, Windows, Linux, web | rc.1 | `runtime.list` and `runtime.describe`; also answered by `card-host`. |
+| `sheet` | — | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | `main`, in no release yet | A craft engine behind a host service for system apps (ADR 0013). Not a capability a store app can declare. |
+| `sound` | — | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | `main`, in no release yet | A craft engine behind a host service for system apps (ADR 0013). Not a capability a store app can declare. |
+| `vector` | — | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | `main`, in no release yet | A craft engine behind a host service for system apps (ADR 0013). Not a capability a store app can declare. |
+| `wasm` | `wasm` | store apps | Android, macOS, Linux | `main`, in no release yet | Standard builds for macOS, Linux and Android on `main` (feature `wasm-functions`); no release yet ([Run your own Rust code](RUST.md)). |
+| `word` | — | system apps only (`os.*`) | Android, iOS, OpenHarmony, macOS, Windows, Linux | `main`, in no release yet | A craft engine behind a host service for system apps (ADR 0013). Not a capability a store app can declare. |
+| `youtube` | `youtube` | one system app's own service | Android, iOS, OpenHarmony, macOS, Windows, Linux | beta.1 | Only the system YouTube app's `notify`. |

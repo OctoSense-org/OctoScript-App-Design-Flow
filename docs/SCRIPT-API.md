@@ -273,6 +273,10 @@ Registration lines are in the source (`view_ui.rs`, `label.rs`, `button.rs`,
 `map/view.rs`, `glass_panel.rs`, …). `MapView` needs the host built with the
 `maps` feature (`card-host` is).
 
+Every type name the pinned runtime resolves, by namespace, is listed in
+[RUNTIME-TYPES](RUNTIME-TYPES.md); a name there is not by itself a supported
+API.
+
 `card-host` registers `sys.*` (weather, stock, geocode, route, gps, …) with
 `register_agent_module`. Unverified: the OctoSense shells. Every fetch it
 makes is held to `network.hosts`, `sys.gps` reads "no fix" without

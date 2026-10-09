@@ -606,6 +606,8 @@ public-catalog sample installation and update passed on macOS; see the
 | [docs/MODEL-VALIDATION.md](docs/MODEL-VALIDATION.md) ([简体中文](docs/MODEL-VALIDATION.zh-CN.md)) | Checking what a coding agent built: native input and capture, review loops, repair |
 | [docs/PUBLISHING.md](docs/PUBLISHING.md) | From a working app to a publication issue and GitHub-attested release: final listing, screenshots, gate/review, workflow and Hub approval |
 | [docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md) | How `tools/octo`, App Hub and the OctoSense shell connect, traced through one request |
+| [docs/HOST-API-FAMILIES.md](docs/HOST-API-FAMILIES.md) ([简体中文](docs/HOST-API-FAMILIES.zh-CN.md)) | Every `host.request` family: who the shells serve, on which platforms, since which release; generated |
+| [docs/RUNTIME-TYPES.md](docs/RUNTIME-TYPES.md) ([简体中文](docs/RUNTIME-TYPES.zh-CN.md)) | Every type name the pinned runtime resolves, by namespace; generated |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | One meaning per term |
 | [docs/NATIVE-WORKSPACE.md](docs/NATIVE-WORKSPACE.md), [docs/l0/](docs/l0/) | Sibling-source setup for the native runtime; L0 card examples |
 | [templates/script-app/](templates/script-app/README.md) | The runnable template `tools/octo new` copies ("My Notes") |
