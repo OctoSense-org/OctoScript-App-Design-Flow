@@ -12,7 +12,19 @@ top-level import (10) and export (11) sections; each exported function's type
 from the type (7), alias (6) and canon (8) sections that build the component's
 type and function index spaces. A core module's come from its type (1),
 import (2), function (3) and export (7) sections.
+
+It also writes and reads the list of crates a component is built from: a
+custom section named `octosense-crates` at the end of the file, for App Hub's
+gate to show its reviewers and check against the RustSec advisory database.
+`crate_inventory` asks cargo for the list, `with_crates` puts it in the file
+and `recorded_crates` reads it back. The release workflow
+(tools/publish-app.template.yml) writes the same bytes with its own copy of
+these steps.
 """
+import json
+from pathlib import Path
+import re
+import subprocess
 
 COMPONENT_PREAMBLE = b"\0asm\x0d\x00\x01\x00"
 MODULE_PREAMBLE = b"\0asm\x01\x00\x00\x00"
@@ -112,16 +124,24 @@ class Reader:
         return value == 1
 
 
-def sections(data, preamble):
-    """(id, Reader over its contents) for each top-level section."""
+def section_spans(data, preamble):
+    """(id, start, contents' start, end) for each top-level section: its
+    bytes are data[start:end], and its contents data[contents' start:end]."""
     r = Reader(data, len(preamble))
     while not r.done():
+        start = r.pos
         sid = r.byte()
         size = r.u32()
         if size > r.end - r.pos:
             raise ReadError(f"section {sid} runs past the end of the file")
-        yield sid, Reader(data, r.pos, r.pos + size)
+        yield sid, start, r.pos, r.pos + size
         r.pos += size
+
+
+def sections(data, preamble):
+    """(id, Reader over its contents) for each top-level section."""
+    for sid, _, begin, end in section_spans(data, preamble):
+        yield sid, Reader(data, begin, end)
 
 
 def describe(data):
@@ -636,3 +656,180 @@ def reach(imports, hosts=()):
     if len(reaches) == 1:
         return f"{reaches[0]}, but {nothing_else}"
     return f"{', '.join(reaches[:-1])} and {reaches[-1]}, but {nothing_else}"
+
+
+# ----------------------------------------------------------------- crate list
+# The crates a component is built from, in a custom section at the very end of
+# the file: id 0, the size of the rest, the name `octosense-crates`, then the
+# payload. The payload is the UTF-8 JSON of {"schema": 1, "crates": [{"name",
+# "version", "source", "checksum"}, …]}, keys sorted and without spaces, the
+# crates sorted by name and version, for App Hub's gate to show its reviewers
+# and check against the RustSec advisory database. The release workflow
+# (tools/publish-app.template.yml) writes the same bytes with its own copy of
+# these steps, and tools/test_octo.py compares the two.
+CRATES_SECTION = "octosense-crates"
+CRATES_SCHEMA = 1
+CRATES_IO = ("registry+https://github.com/rust-lang/crates.io-index", "sparse+https://index.crates.io/")
+TARGET = "wasm32-wasip2"
+
+
+class CrateListError(ValueError):
+    """cargo could not say which crates a component is built from."""
+
+
+def crate_source(source):
+    """Where a package comes from, as the crate list says it: `crates.io`,
+    `git+<url>#<commit>` (without the URL's ?rev= or ?branch= query), `path`,
+    or another registry's source as cargo writes it."""
+    if source is None:
+        return "path"
+    if source in CRATES_IO:
+        return "crates.io"
+    if source.startswith("git+"):
+        url, mark, commit = source.partition("#")
+        return url.split("?")[0] + mark + commit
+    return source
+
+
+def lock_checksums(lockfile):
+    """{(name, version, crate_source): checksum} from a Cargo.lock's
+    [[package]] tables: registry packages have a checksum, git and path ones
+    none. It reads only the `key = "value"` lines it needs, as Python before
+    3.11 has no TOML reader."""
+    tables, table = [], None
+    text = lockfile.read_text(encoding="utf-8") if lockfile.is_file() else ""
+    for line in text.splitlines():
+        if line.startswith("["):
+            table = {} if line.strip() == "[[package]]" else None
+            if table is not None:
+                tables.append(table)
+        elif table is not None and re.match(r'(name|version|source|checksum) = "[^"]*"$', line):
+            key, value = line.split(" = ", 1)
+            table[key] = value[1:-1]
+    return {(t.get("name"), t.get("version"), crate_source(t.get("source"))): t["checksum"]
+            for t in tables if "checksum" in t}
+
+
+def is_proc_macro(package):
+    """A proc macro runs inside the compiler, so none of its code is in the
+    binary. Any of its targets says so: a build script is a target too."""
+    return any("proc-macro" in target.get("kind", []) for target in package.get("targets", []))
+
+
+def linked_packages(meta, root):
+    """The ids of the packages a component links, from `cargo metadata`
+    filtered to its platform (`meta`): the root package (id `root`) and what
+    its normal dependencies reach. Build and dev dependencies run on the build
+    machine, and so do proc macros: the walk never goes into one, so their own
+    dependencies (syn, quote, wit-parser, …) are not in the list either."""
+    packages = {p["id"]: p for p in meta["packages"]}
+    nodes = {node["id"]: node for node in meta["resolve"]["nodes"]}
+    linked, todo = set(), [root]
+    while todo:
+        node = nodes.get(todo.pop())
+        if node is None or node["id"] in linked or is_proc_macro(packages.get(node["id"], {})):
+            continue
+        linked.add(node["id"])
+        todo += [d["pkg"] for d in node.get("deps", [])
+                 if any(k.get("kind") is None for k in d.get("dep_kinds", [{"kind": None}]))]
+    return linked
+
+
+def root_package(meta, manifest):
+    """The package whose Cargo.toml is `manifest`, or None for a workspace."""
+    manifest = Path(manifest).resolve()
+    return next((p for p in meta["packages"] if Path(p["manifest_path"]).resolve() == manifest), None)
+
+
+def crates_from_metadata(meta, manifest):
+    """The crate list of the package whose Cargo.toml is `manifest`: every
+    package it links but itself, with the checksums from the workspace's
+    Cargo.lock. `meta` is `cargo metadata --filter-platform wasm32-wasip2`."""
+    root = root_package(meta, manifest)
+    if root is None:
+        raise CrateListError(f"{manifest} is a workspace, not a package; pass a component crate's own directory")
+    packages = {p["id"]: p for p in meta["packages"]}
+    checksums = lock_checksums(Path(meta["workspace_root"]) / "Cargo.lock")
+    crates = []
+    for package_id in linked_packages(meta, root["id"]) - {root["id"]}:
+        package = packages[package_id]
+        entry = {"name": package["name"], "version": package["version"], "source": crate_source(package.get("source"))}
+        checksum = checksums.get((entry["name"], entry["version"], entry["source"]))
+        if checksum:
+            entry["checksum"] = checksum
+        crates.append(entry)
+    crates.sort(key=lambda c: (c["name"], c["version"], c["source"]))
+    return {"schema": CRATES_SCHEMA, "crates": crates}
+
+
+def crate_inventory(cargo, crate):
+    """The crate list of the component crate in directory `crate`, once cargo
+    has built it, so that its Cargo.lock is current."""
+    crate = Path(crate).resolve()
+    manifest = crate / "Cargo.toml"
+    cmd = [cargo, "metadata", "--format-version", "1", "--filter-platform", TARGET, "--manifest-path", str(manifest)]
+    r = subprocess.run(cmd, capture_output=True, text=True, cwd=crate)
+    if r.returncode != 0:
+        raise CrateListError("cargo metadata failed: " + ((r.stderr or "").strip().splitlines() or ["no output"])[-1])
+    return crates_from_metadata(json.loads(r.stdout), manifest)
+
+
+def leb128(n):
+    """`n` as an unsigned LEB128 integer, in its shortest form."""
+    out = bytearray()
+    while True:
+        byte, n = n & 0x7F, n >> 7
+        out.append(byte | (0x80 if n else 0))
+        if not n:
+            return bytes(out)
+
+
+def preamble_of(data):
+    for preamble in (COMPONENT_PREAMBLE, MODULE_PREAMBLE):
+        if data.startswith(preamble):
+            return preamble
+    raise ReadError("not a WebAssembly core module or component")
+
+
+def custom_sections(data):
+    """(start, end, name as bytes, payload's start) for each top-level custom
+    section, and only those: one inside a nested core module is not the
+    component's."""
+    for sid, start, begin, end in section_spans(data, preamble_of(data)):
+        if sid == 0:
+            r = Reader(data, begin, end)
+            name = r.take(r.u32())
+            yield start, end, name, r.pos
+
+
+def with_crates(data, inventory):
+    """`data` with `inventory` (crate_inventory's list) in an
+    `octosense-crates` custom section at its very end. A section of that name
+    already there is dropped, so the file never holds two."""
+    name = CRATES_SECTION.encode()
+    drop = [(start, end) for start, end, found, _ in custom_sections(data) if found == name]
+    out, pos = bytearray(), 0
+    for start, end in drop:
+        out += data[pos:start]
+        pos = end
+    out += data[pos:]
+    payload = json.dumps(inventory, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    body = leb128(len(name)) + name + payload
+    return bytes(out) + b"\x00" + leb128(len(body)) + body
+
+
+def recorded_crates(data):
+    """The crate list a file's `octosense-crates` section holds, as a dict
+    ({"schema": 1, "crates": […]}), or None when it has no such section."""
+    found = [data[begin:end] for _, end, name, begin in custom_sections(data) if name == CRATES_SECTION.encode()]
+    if not found:
+        return None
+    if len(found) > 1:
+        raise ReadError(f"it has {len(found)} {CRATES_SECTION} sections, where a component carries one")
+    try:
+        listed = json.loads(found[0].decode("utf-8"))
+    except ValueError:  # UnicodeDecodeError and json.JSONDecodeError are ValueErrors
+        raise ReadError(f"its {CRATES_SECTION} section is not UTF-8 JSON")
+    if not isinstance(listed, dict) or listed.get("schema") != CRATES_SCHEMA or not isinstance(listed.get("crates"), list):
+        raise ReadError(f"its {CRATES_SECTION} section is not a schema {CRATES_SCHEMA} crate list")
+    return listed

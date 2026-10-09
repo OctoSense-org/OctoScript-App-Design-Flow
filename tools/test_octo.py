@@ -157,6 +157,33 @@ ENV, FILES, TCP = 'wasi:cli/environment@0.2.9', 'wasi:filesystem/types@0.2.9', '
 CLOCK, RANDOM = 'wasi:clocks/wall-clock@0.2.9', 'wasi:random/random@0.2.9'
 HTTP, HTTP_TYPES = 'wasi:http/outgoing-handler@0.2.9', 'wasi:http/types@0.2.9'
 HOST_SERVICES = 'octosense:host/services@0.1.0'
+CRATES_IO_INDEX = 'registry+https://github.com/rust-lang/crates.io-index'
+
+
+def custom(name, payload):
+    """A custom section: id 0, its size, then its name and payload."""
+    body = text(name) + payload
+    return b'\x00' + leb(len(body)) + body
+
+
+def release_step_script():
+    """The Python of the release workflow's step that builds components/."""
+    text = (HERE / 'publish-app.template.yml').read_text()
+    block = text[text.index("      - name: Build the app's Rust components"):]
+    body = block[block.index("python3 - <<'PY'\n") + len("python3 - <<'PY'\n"):block.index('\n          PY\n')]
+    return '\n'.join(line[10:] if line.startswith(' ' * 10) else line for line in body.splitlines()) + '\n'
+
+
+def release_step():
+    """The step's functions (crates, with_crates, …), defined without running it."""
+    functions = {'__name__': 'release_step'}
+    exec(compile(release_step_script(), 'publish-app.template.yml', 'exec'), functions)
+    return functions
+
+
+def anchor(heading):
+    """GitHub's anchor for a Markdown heading."""
+    return re.sub(r'[^\w\- ]', '', heading.strip().lower()).replace(' ', '-')
 
 
 def toolchain():
@@ -284,13 +311,24 @@ class WasmCommands(unittest.TestCase):
             octo.main()
         return done.exception.code, out.getvalue(), err.getvalue()
 
+    BINDGEN = {'name': 'wit-bindgen', 'version': '0.62.0', 'source': 'crates.io', 'checksum': 'b1' * 32}
+
     def fake_cargo(self, crate, wasm, name='text-tools'):
-        """subprocess.run as cargo answers for a crate whose build makes `wasm`."""
-        package = {'name': name, 'id': f'path+file://{crate}#0.1.0', 'manifest_path': str(crate / 'Cargo.toml')}
+        """subprocess.run as cargo answers for a crate whose build makes `wasm`
+        and whose one dependency is wit-bindgen, from crates.io."""
+        package = {'name': name, 'version': '0.1.0', 'id': f'path+file://{crate}#0.1.0', 'source': None,
+                   'manifest_path': str(crate / 'Cargo.toml'), 'targets': [{'kind': ['cdylib', 'rlib']}]}
+        bindgen = {'name': 'wit-bindgen', 'version': '0.62.0', 'id': f'{CRATES_IO_INDEX}#wit-bindgen@0.62.0',
+                   'source': CRATES_IO_INDEX, 'manifest_path': '/registry/wit-bindgen/Cargo.toml',
+                   'targets': [{'kind': ['lib']}]}
+        normal = [{'kind': None, 'target': None}]
+        metadata = {'packages': [package, bindgen], 'workspace_root': str(crate), 'resolve': {'root': package['id'], 'nodes': [
+            {'id': package['id'], 'deps': [{'name': 'wit_bindgen', 'pkg': bindgen['id'], 'dep_kinds': normal}]},
+            {'id': bindgen['id'], 'deps': []}]}}
 
         def run(cmd, **kwargs):
             if 'metadata' in cmd:
-                return subprocess.CompletedProcess(cmd, 0, stdout=json.dumps({'packages': [package]}), stderr='')
+                return subprocess.CompletedProcess(cmd, 0, stdout=json.dumps(metadata), stderr='')
             if 'build' in cmd:
                 artifact = {'reason': 'compiler-artifact', 'package_id': package['id'], 'filenames': [str(wasm)]}
                 return subprocess.CompletedProcess(cmd, 0, stdout='\n'.join([json.dumps(artifact), '{"reason":"build-finished","success":true}']))
@@ -301,6 +339,8 @@ class WasmCommands(unittest.TestCase):
         crate = app / 'components/text-tools'
         (crate / 'src').mkdir(parents=True)
         (crate / 'Cargo.toml').write_text('[package]\nname = "text-tools"\n')
+        (crate / 'Cargo.lock').write_text('version = 4\n\n[[package]]\nname = "wit-bindgen"\nversion = "0.62.0"\n'
+                                          f'source = "{CRATES_IO_INDEX}"\nchecksum = "{"b1" * 32}"\n')
         wasm = Path(app) / 'built.wasm'
         wasm.write_bytes(data)
         with patch.object(octo, 'cargo_path', return_value='cargo'), \
@@ -376,7 +416,11 @@ class WasmCommands(unittest.TestCase):
             app = self.app(temp, capabilities=())
             code, out, err = self.build(app, component(ENV, FILES))
             self.assertEqual(code, 0, out + err)
-            self.assertEqual((app / 'bundle/fns/text-tools.wasm').read_bytes(), component(ENV, FILES))
+            # The component as cargo built it, with the crates it is built from.
+            crates = {'schema': 1, 'crates': [self.BINDGEN]}
+            self.assertEqual((app / 'bundle/fns/text-tools.wasm').read_bytes(),
+                             wasm_component.with_crates(component(ENV, FILES), crates))
+            self.assertIn('  built from 1 crate (tools/octo wasm info lists them)', out)
             manifest = json.loads((app / 'bundle/manifest.json').read_text())
             self.assertEqual(manifest['capabilities'], ['wasm', 'storage'])
             self.assertEqual(manifest['requires'], ['wasm-components-v1'])
@@ -468,30 +512,53 @@ class WasmCommands(unittest.TestCase):
                         dependencies=[{'name': 'octosense-component'}]),
                 package('ssl', 'openssl-sys'), package('ray', 'rayon'), package('tok', 'tokio'),
                 package('zstd', 'zstd-sys'), package('cc', 'cc'), package('md', 'pulldown-cmark'),
-                package('wt', 'wasmtime'), package('rq', 'reqwest'),
+                package('wt', 'wasmtime'), package('rq', 'reqwest'), package('feed', 'feed-rs'),
+                package('ai', 'async-openai'),
             ],
-            # The component links md, ssl, ray, tok and, through md, zstd; a
-            # test (wt) and a build script (rq) need the others, on this machine.
+            # The component links md, ssl, ray, tok and, through md, zstd and
+            # feed; a test (wt, ai) and a build script (rq) need the others, on
+            # this machine.
             'resolve': {'root': 'root', 'nodes': [
-                {'id': 'root', 'deps': uses('md', 'ssl', 'ray', 'tok') + uses('wt', kind='dev') + uses('rq', kind='build')},
+                {'id': 'root', 'deps': uses('md', 'ssl', 'ray', 'tok') + uses('wt', 'ai', kind='dev') + uses('rq', kind='build')},
                 {'id': 'ssl', 'deps': build_cc}, {'id': 'ray', 'deps': []},
                 {'id': 'tok', 'deps': [], 'features': ['rt', 'net', 'macros']}, {'id': 'zstd', 'deps': build_cc},
-                {'id': 'cc', 'deps': []}, {'id': 'md', 'deps': uses('zstd')}, {'id': 'wt', 'deps': uses('tok')},
-                {'id': 'rq', 'deps': []},
+                {'id': 'cc', 'deps': []}, {'id': 'md', 'deps': uses('zstd', 'feed')}, {'id': 'wt', 'deps': uses('tok')},
+                {'id': 'rq', 'deps': []}, {'id': 'feed', 'deps': []}, {'id': 'ai', 'deps': []},
             ]},
         }
         done = subprocess.CompletedProcess([], 0, stdout=json.dumps(metadata), stderr='')
         with patch.object(octo.subprocess, 'run', return_value=done) as run:
             findings = octo.dependency_findings('cargo', crate)
         self.assertIn('--filter-platform', run.call_args.args[0])
-        self.assertEqual([level for level, _ in findings], ['ok', 'ok', 'fail', 'warn', 'warn', 'warn'])
+        self.assertEqual([level for level, _ in findings], ['ok', 'ok', 'fail', 'warn', 'warn', 'warn', 'info'])
         self.assertTrue(findings[2][1].startswith('openssl-sys 1.0.0 links OpenSSL'))
+        # What OctoSense already provides: for a direct dependency the
+        # component links (md), not for one of its dependencies' (feed) or a
+        # test's (ai).
+        self.assertEqual(findings[-1][1], 'pulldown-cmark 1.0.0: OctoSense renders Markdown itself: Splash\'s Markdown '
+                         'widget shows it, tables included. Ship the crate only to produce HTML or to read Markdown as '
+                         'data. (docs/SCRIPT-API.md#widgets-available-to-an-app)')
         text = '\n'.join(t for _, t in findings)
         for expected in ('rayon 1.0.0 starts threads', 'tokio 1.0.0 with net', 'zstd-sys 1.0.0 compiles C code'):
             self.assertIn(expected, text)
         self.assertNotIn('openssl-sys 1.0.0 compiles C code', text)
         self.assertNotIn('wasmtime', text)
         self.assertNotIn('reqwest', text)
+        self.assertNotIn('feed-rs', text)
+        self.assertNotIn('async-openai', text)
+
+    def test_what_octosense_provides_cites_a_doc_section_store_apps_may_use(self):
+        named = [name for names, _, _ in octo.OCTOSENSE_PROVIDES for name in names]
+        self.assertEqual(len(named), len(set(named)))
+        self.assertEqual(set(named), set(octo.PROVIDED_CRATES))
+        self.assertFalse(set(named) & (set(octo.BLOCKING_CRATES) | set(octo.THREAD_CRATES)))
+        for names, hint, doc in octo.OCTOSENSE_PROVIDES:
+            with self.subTest(crates=names):
+                path, _, heading = doc.partition('#')
+                source = (HERE.parent / path).read_text(encoding='utf-8')
+                self.assertIn(heading, [anchor(h) for h in re.findall(r'^#+ (.+)$', source, re.M)])
+                # System apps' engine services are not a store app's.
+                self.assertNotRegex(hint, r'\b(photo|pdf|word|llm)\.')
 
     def test_info_reads_a_file_without_a_hub(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -503,8 +570,9 @@ class WasmCommands(unittest.TestCase):
                 self.assertIn("read by octo's own reader", out)
                 self.assertIn('wasm.count_words(text: string) -> record { words: u32 }', out)
                 self.assertIn(f'{TCP}   (refused)', out)
+                self.assertIn('crates: not recorded;', out)
                 code, out, _ = self.octo('wasm', 'info', str(path), '--json')
-                self.assertEqual(json.loads(out), wasm_component.describe(component(ENV, TCP)))
+                self.assertEqual(json.loads(out), dict(wasm_component.describe(component(ENV, TCP)), crates=None))
                 # What a phase 3 component needs, without the app's manifest.
                 path.write_bytes(component(CLOCK, FILES, HTTP, HOST_SERVICES))
                 code, out, _ = self.octo('wasm', 'info', str(path))
@@ -514,6 +582,14 @@ class WasmCommands(unittest.TestCase):
                 self.assertIn('"storage" in capabilities (it imports wasi:filesystem), "net" in capabilities and '
                               'the hosts it reaches in network.hosts (it imports wasi:http), the capability of each '
                               'host service it calls (it imports octosense:host', out)
+                # The crates it is built from, as `wasm build` records them.
+                path.write_bytes(wasm_component.with_crates(component(ENV), CrateList.INVENTORY))
+                code, out, _ = self.octo('wasm', 'info', str(path))
+                self.assertEqual(code, 0)
+                self.assertIn('built from 2 crates, as its octosense-crates section lists them:\n'
+                              '  bitflags 2.13.2, crates.io\n  octosense-component 0.1.0, path\n', out)
+                code, out, _ = self.octo('wasm', 'info', str(path), '--json')
+                self.assertEqual(json.loads(out)['crates'], CrateList.INVENTORY['crates'])
 
     @unittest.skipUnless(toolchain(), 'needs cargo and the wasm32-wasip2 target (rustup target add wasm32-wasip2)')
     def test_new_then_build_with_cargo_makes_a_working_bundle(self):
@@ -531,22 +607,29 @@ class WasmCommands(unittest.TestCase):
             self.assertEqual(wasm_component.refused_imports(info['imports']), [])
             manifest = json.loads((app / 'bundle/manifest.json').read_text())
             self.assertEqual((manifest['capabilities'], manifest['requires']), (['wasm'], ['wasm-components-v1']))
-
-
-if __name__ == '__main__':
-    unittest.main()
+            # It records the crates it links, and not the proc macros (the
+            # SDK's, wit-bindgen's) or what only they use (syn, wit-parser, …),
+            # which run in the compiler.
+            built = (app / 'bundle/fns/text-tools.wasm').read_bytes()
+            crates = wasm_component.recorded_crates(built)['crates']
+            self.assertIn({'name': 'octosense-component', 'version': '0.1.0', 'source': 'path'}, crates)
+            self.assertIn('wit-bindgen', [c['name'] for c in crates])
+            self.assertTrue(all('checksum' in c for c in crates if c['source'] == 'crates.io'))
+            self.assertFalse({'syn', 'quote', 'proc-macro2', 'wit-parser', 'octosense-component-macros',
+                              'wit-bindgen-rust-macro'} & {c['name'] for c in crates})
+            self.assertIn(f'  built from {len(crates)} crates (tools/octo wasm info lists them)', out)
+            # The release workflow's step, on the component cargo built,
+            # writes the same bytes.
+            section = next(s for s in wasm_component.custom_sections(built) if s[2] == b'octosense-crates')
+            step = release_step()
+            with patch.dict(os.environ, {'PATH': os.pathsep.join([str(Path(octo.cargo_path()).parent), os.environ.get('PATH', '')])}):
+                self.assertEqual(step['with_crates'](built[:section[0]], step['crates'](app / 'components/text-tools/Cargo.toml')), built)
 
 
 class ReleaseBuildsComponents(unittest.TestCase):
     """The release workflow's step that builds components/ from the tagged
     commit (tools/publish-app.template.yml): its refusals, which need no
     compiler. tools/ tests build a real component elsewhere."""
-
-    def step(self):
-        text = (HERE / 'publish-app.template.yml').read_text()
-        block = text[text.index("      - name: Build the app's Rust components"):]
-        body = block[block.index("python3 - <<'PY'\n") + len("python3 - <<'PY'\n"):block.index('\n          PY\n')]
-        return '\n'.join(line[10:] if line.startswith(' ' * 10) else line for line in body.splitlines()) + '\n'
 
     def run_step(self, sdk_line, lock=False):
         with tempfile.TemporaryDirectory() as tmp:
@@ -558,7 +641,7 @@ class ReleaseBuildsComponents(unittest.TestCase):
                 '[lib]\ncrate-type = ["cdylib", "rlib"]\n\n[dependencies]\n' + sdk_line + '\n\n[workspace]\n')
             if lock:
                 (crate / 'Cargo.lock').write_text('version = 4\n')
-            (Path(tmp) / 'step.py').write_text(self.step())
+            (Path(tmp) / 'step.py').write_text(release_step_script())
             return subprocess.run(['python3', 'step.py'], cwd=tmp, capture_output=True, text=True)
 
     def test_a_local_sdk_path_stops_the_release(self):
@@ -571,3 +654,130 @@ class ReleaseBuildsComponents(unittest.TestCase):
         run = self.run_step('octosense-component = { git = "https://github.com/OctoSense-org/OctoSense-App-Flow", rev = "' + '0' * 40 + '" }')
         self.assertNotEqual(run.returncode, 0)
         self.assertIn('has no Cargo.lock', run.stdout + run.stderr)
+
+    @unittest.skipUnless(toolchain() and shutil.which('cargo'), 'needs cargo and the wasm32-wasip2 target, on PATH')
+    def test_the_release_records_the_crates_octo_records(self):
+        # A crate `tools/octo wasm new` writes, with the SDK by path: the
+        # step's own refusal of a path is skipped by calling its functions.
+        with tempfile.TemporaryDirectory() as temp:
+            app = WasmCommands.app(self, temp, capabilities=())
+            self.assertEqual(WasmCommands.octo(self, 'wasm', 'new', 'text-tools', '--app', str(app), '--sdk', 'path')[0], 0)
+            crate = app / 'components/text-tools'
+            ours = wasm_component.crate_inventory(shutil.which('cargo'), crate)  # cargo writes Cargo.lock
+            step = release_step()
+            theirs = step['crates'](crate / 'Cargo.toml')  # cargo metadata --locked
+            self.assertEqual(theirs, ours)
+            self.assertIn({'name': 'octosense-component', 'version': '0.1.0', 'source': 'path'}, ours['crates'])
+            self.assertFalse({'syn', 'quote', 'wit-parser', 'octosense-component-macros'} & {c['name'] for c in ours['crates']})
+            # The same bytes, replacing a stale list.
+            stale = wasm_component.with_crates(component(ENV), {'schema': 1, 'crates': []})
+            self.assertEqual(step['with_crates'](stale, theirs), wasm_component.with_crates(stale, ours))
+            self.assertEqual(wasm_component.recorded_crates(step['with_crates'](stale, theirs)), ours)
+
+
+class CrateList(unittest.TestCase):
+    """The crates a component is built from, in its octosense-crates section:
+    octo's tools/wasm_component.py and the release step write the same bytes."""
+    INVENTORY = {'schema': 1, 'crates': [
+        {'name': 'bitflags', 'version': '2.13.2', 'source': 'crates.io', 'checksum': '3d' * 32},
+        {'name': 'octosense-component', 'version': '0.1.0', 'source': 'path'},
+    ]}
+
+    def test_the_list_is_one_custom_section_at_the_very_end(self):
+        bare = component(ENV)
+        payload = ('{"crates":[{"checksum":"' + '3d' * 32 + '","name":"bitflags","source":"crates.io","version":"2.13.2"},'
+                   '{"name":"octosense-component","source":"path","version":"0.1.0"}],"schema":1}').encode()
+        section = custom('octosense-crates', payload)
+        self.assertEqual(wasm_component.with_crates(bare, self.INVENTORY), bare + section)
+        self.assertEqual(wasm_component.recorded_crates(bare + section), self.INVENTORY)
+        self.assertIsNone(wasm_component.recorded_crates(bare))
+        self.assertEqual(wasm_component.describe(bare + section), wasm_component.describe(bare))
+        # One already there is replaced, wherever it is; other custom
+        # sections stay where they are.
+        producers = custom('producers', b'\x00')
+        stale = custom('octosense-crates', b'{"crates":[],"schema":1}')
+        old = bare[:8] + stale + bare[8:] + producers + stale
+        self.assertEqual(wasm_component.with_crates(old, self.INVENTORY), bare + producers + section)
+        step = release_step()
+        for data in (bare, old, bare + section, wasm_component.MODULE_PREAMBLE + producers):
+            with self.subTest(data=data[-12:]):
+                self.assertEqual(step['with_crates'](data, self.INVENTORY), wasm_component.with_crates(data, self.INVENTORY))
+        # A size past 127 takes two bytes.
+        many = {'schema': 1, 'crates': [dict(self.INVENTORY['crates'][1], name=f'crate-{i}') for i in range(9)]}
+        self.assertEqual(step['with_crates'](bare, many), wasm_component.with_crates(bare, many))
+        self.assertEqual(wasm_component.recorded_crates(wasm_component.with_crates(bare, many)), many)
+        # What a reader refuses.
+        for bad in (bare + stale + producers + stale, bare + custom('octosense-crates', b'{nope'),
+                    bare + custom('octosense-crates', b'{"schema":2,"crates":[]}')):
+            with self.subTest(bad=bad[-12:]), self.assertRaises(wasm_component.ReadError):
+                wasm_component.recorded_crates(bad)
+
+    def test_the_list_follows_normal_dependencies_and_never_enters_a_proc_macro(self):
+        sdk = 'git+https://github.com/OctoSense-org/OctoSense-App-Flow?rev=e8f15dd9#e8f15dd9' + '0' * 32
+        flags = 'git+https://github.com/example/bitflags?branch=main#' + 'a' * 40
+        other = 'registry+https://registry.example.com/index'
+        sparse = 'sparse+https://index.crates.io/'
+        normal, dev, build = [{'kind': None, 'target': None}], [{'kind': 'dev', 'target': None}], [{'kind': 'build', 'target': None}]
+        with tempfile.TemporaryDirectory() as temp:
+            crate = Path(temp)
+            (crate / 'Cargo.toml').write_text('[package]\n')
+            packages, nodes = [], []
+
+            def add(id, name, version, source, deps=(), kinds=('lib',)):
+                packages.append({'id': id, 'name': name, 'version': version, 'source': source,
+                                 'manifest_path': str(crate / 'Cargo.toml') if id == 'root' else f'/x/{id}/Cargo.toml',
+                                 'targets': [{'kind': [kind]} for kind in kinds]})
+                nodes.append({'id': id, 'deps': [{'name': d.replace('-', '_'), 'pkg': d, 'dep_kinds': k} for d, k in deps]})
+
+            add('root', 'text-tools', '0.1.0', None, [('bindgen', normal), ('sdk', normal), ('mine', normal),
+                                                       ('macros', normal), ('serde', normal), ('private', normal),
+                                                       ('syn1', normal), ('wasmtime', dev), ('cc', build)], ('cdylib', 'rlib'))
+            add('bindgen', 'wit-bindgen', '0.62.0', CRATES_IO_INDEX)
+            add('sdk', 'octosense-component', '0.1.0', sdk, [('flags', normal)])
+            add('flags', 'bitflags', '2.0.0', flags)
+            add('mine', 'my-lib', '0.1.0', None)
+            # A proc macro with a build script; what only it uses stays out.
+            add('macros', 'my-macros', '0.1.0', CRATES_IO_INDEX, [('syn2', normal), ('itoa', normal)], ('proc-macro', 'custom-build'))
+            add('syn2', 'syn', '2.0.1', CRATES_IO_INDEX, [('ident', normal)])
+            add('ident', 'unicode-ident', '1.0.0', CRATES_IO_INDEX)
+            add('serde', 'serde', '1.0.0', sparse, [('itoa', normal)])
+            add('itoa', 'itoa', '1.0.0', CRATES_IO_INDEX)
+            add('private', 'private', '1.0.0', other)
+            add('syn1', 'syn', '1.0.109', CRATES_IO_INDEX)
+            add('wasmtime', 'wasmtime', '49.0.2', CRATES_IO_INDEX)
+            add('cc', 'cc', '1.0.0', CRATES_IO_INDEX)
+            lock = ['version = 4']
+            for name, version, source, checksum in (
+                    ('itoa', '1.0.0', CRATES_IO_INDEX, '11'), ('serde', '1.0.0', CRATES_IO_INDEX, '22'),
+                    ('syn', '1.0.109', CRATES_IO_INDEX, '33'), ('syn', '2.0.1', CRATES_IO_INDEX, '44'),
+                    ('wit-bindgen', '0.62.0', CRATES_IO_INDEX, '55'), ('private', '1.0.0', other, '66'),
+                    ('octosense-component', '0.1.0', sdk, None), ('bitflags', '2.0.0', flags, None),
+                    ('my-lib', '0.1.0', None, None), ('text-tools', '0.1.0', None, None)):
+                lock += ['', '[[package]]', f'name = "{name}"', f'version = "{version}"']
+                lock += [f'source = "{source}"'] if source else []
+                lock += [f'checksum = "{checksum * 32}"'] if checksum else []
+                lock += ['dependencies = [', ' "x",', ']']
+            lock += ['', '[[patch.unused]]', 'name = "itoa"', 'version = "9.9.9"', 'checksum = "' + '99' * 32 + '"']
+            (crate / 'Cargo.lock').write_text('\n'.join(lock) + '\n')
+            meta = {'packages': packages, 'workspace_root': str(crate), 'resolve': {'root': 'root', 'nodes': nodes}}
+            done = subprocess.CompletedProcess([], 0, stdout=json.dumps(meta), stderr='')
+            with patch.object(subprocess, 'run', return_value=done) as run:
+                ours = wasm_component.crate_inventory('cargo', crate)
+                theirs = release_step()['crates'](crate / 'Cargo.toml')
+        self.assertIn('--filter-platform', run.call_args_list[0].args[0])
+        self.assertEqual(theirs, ours)
+        self.assertEqual(ours, {'schema': 1, 'crates': [
+            {'name': 'bitflags', 'version': '2.0.0', 'source': 'git+https://github.com/example/bitflags#' + 'a' * 40},
+            {'name': 'itoa', 'version': '1.0.0', 'source': 'crates.io', 'checksum': '11' * 32},
+            {'name': 'my-lib', 'version': '0.1.0', 'source': 'path'},
+            {'name': 'octosense-component', 'version': '0.1.0',
+             'source': 'git+https://github.com/OctoSense-org/OctoSense-App-Flow#e8f15dd9' + '0' * 32},
+            {'name': 'private', 'version': '1.0.0', 'source': other, 'checksum': '66' * 32},
+            {'name': 'serde', 'version': '1.0.0', 'source': 'crates.io', 'checksum': '22' * 32},
+            {'name': 'syn', 'version': '1.0.109', 'source': 'crates.io', 'checksum': '33' * 32},
+            {'name': 'wit-bindgen', 'version': '0.62.0', 'source': 'crates.io', 'checksum': '55' * 32},
+        ]})
+
+
+if __name__ == '__main__':
+    unittest.main()

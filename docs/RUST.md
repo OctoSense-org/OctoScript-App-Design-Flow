@@ -217,24 +217,27 @@ For each crate in `components/` (or each `--crate DIR`), it:
    one is outside `wasi:cli`, `wasi:clocks`, `wasi:filesystem`, `wasi:http`,
    `wasi:io`, `wasi:random` and `octosense:host`, the packages the `wasm`
    service gives a component;
-3. copies it to `bundle/fns/<name>.wasm`;
-4. adds `wasm` to the manifest's `capabilities` and `wasm-components-v1` to
+3. records in the component the crates it is built from
+   ([The crates it is built from](#the-crates-it-is-built-from));
+4. copies it to `bundle/fns/<name>.wasm`;
+5. adds `wasm` to the manifest's `capabilities` and `wasm-components-v1` to
    its `requires`, `storage` when a component imports `wasi:filesystem`,
    and `net` when one imports `wasi:http` and `network.hosts` lists a host,
    saying what it changed. It never adds a host ([Network](#network));
-5. warns about what the gate or the service would refuse later: a component
+6. warns about what the gate or the service would refuse later: a component
    that imports `wasi:http` while `network.hosts` is empty, more than 8
    files in `fns/`, two files exporting one function name, a bundle over
    8 MiB;
-6. stamps the bundle when it finds `hub`.
+7. stamps the bundle when it finds `hub`.
 
 For the template, after Cargo's own output, it prints:
 
 ```text
-wrote bundle/fns/text-tools.wasm: 82,093 bytes, a component that reaches the clock, but no files, network or other app
+wrote bundle/fns/text-tools.wasm: 82,969 bytes, a component that reaches the clock, but no files, network or other app
   wasm.count(text: string) -> record { words: u32, lines: u32 }
   wasm.greet(name: string) -> string
   wasm.parse_number(text: string) -> result<f64, string>
+  built from 6 crates (tools/octo wasm info lists them)
 bundle/manifest.json:
   added "wasm" to capabilities: the app runs its own sandboxed functions
   added "wasm-components-v1" to requires: a host that runs only core modules refuses the app at install, instead of failing at its first call
@@ -262,13 +265,14 @@ tools/octo wasm info bundle/fns/text-tools.wasm
 ```
 
 It prints the file's kind, what it reaches, every import and every function
-with its WIT signature, and what the manifest needs. Without the app's
-manifest, it names a component's hosts as "the hosts in the app's
-network.hosts". It asks App Hub's `hub component-info` when the `hub` it
-finds has that command (App Hub #186), and otherwise reads the file itself.
-Both give the same answer for the SDK's examples and the template, and for
-this page's `api-client` and `host-calls` components; `--json` prints it as
-`hub component-info` does.
+with its WIT signature, the crates it is built from, and what the manifest
+needs. Without the app's manifest, it names a component's hosts as "the hosts
+in the app's network.hosts". It asks App Hub's `hub component-info` when the
+`hub` it finds has that command (App Hub #186), and otherwise reads the file
+itself. Both give the same answer for the SDK's examples and the template,
+and for this page's `api-client` and `host-calls` components; `--json` prints
+it as `hub component-info` does, with the crate list as `"crates"`, which octo
+always reads from the file itself.
 
 ### 5. Call it from the app
 
@@ -338,10 +342,11 @@ CI runs them on Ubuntu, with the `tools/` tests, which build a new crate with
 
 The release workflow that `tools/octo publish-github` installs builds every
 crate in `components/` itself, from the tagged commit, with the Rust it pins
-(1.97.1), and writes each component to `bundle/fns/<name>.wasm` before GitHub
-attests the bundle. The release then carries binaries built from the source
-it names, and you need not commit `fns/*.wasm`: `tools/octo wasm build` makes
-them for your own runs, and the release replaces them. For each crate:
+(1.97.1), records the crates each component is built from as `tools/octo wasm
+build` does, and writes each component to `bundle/fns/<name>.wasm` before
+GitHub attests the bundle. The release then carries binaries built from the
+source it names, and you need not commit `fns/*.wasm`: `tools/octo wasm build`
+makes them for your own runs, and the release replaces them. For each crate:
 
 - Commit its `Cargo.lock`, since the release builds with `--locked`. Without
   one it stops:
@@ -350,11 +355,17 @@ them for your own runs, and the release replaces them. For each crate:
   With one it stops:
   `::error::app/components/<name> takes the SDK from a local path, which the release cannot build; depend on OctoSense App Flow by git (tools/octo wasm new --sdk git)`.
 
-With the same Rust, the release builds what you built: for the template's
-crate, `tools/octo wasm build` with the SDK by path and the workflow's step
-with the SDK by git wrote byte-identical files (111,634 bytes). That step ran
-from the workflow's own script on macOS; a release run on GitHub is
-**unverified**. Publishing an app with components also needs this
+With the same Rust, the same crate and the same `Cargo.lock`, the release
+writes what you wrote, crate list included. For the template's crate with the
+SDK by git, at an App Flow commit, `tools/octo wasm build` wrote
+`bundle/fns/text-tools.wasm` (83,061 bytes), and the workflow's step, run
+from its own script on macOS, then printed
+`unchanged: bundle/fns/text-tools.wasm, 83,061 bytes built from app/components/text-tools and the 6 crates its octosense-crates section lists`.
+With the SDK by path, cargo built the same component, byte for byte, but its
+crate list names the SDK's source as `path` instead of
+`git+https://github.com/OctoSense-org/OctoSense-App-Flow#<commit>`, so the
+file differs from the release's there (82,969 bytes). A release run on GitHub
+is **unverified**. Publishing an app with components also needs this
 repository's publisher toolchain (`tools/publisher-toolchain.json`) to name
 an App Hub revision that admits them (App Hub #186); the one it names now
 refuses them.
@@ -491,8 +502,9 @@ With `"network": {"hosts": ["api.example.com"]}` and no `net`, building
 again prints:
 
 ```text
-unchanged bundle/fns/api-client.wasm: 108,058 bytes, a component that reaches the clock and HTTPS to api.example.com, but no files or other app
+unchanged bundle/fns/api-client.wasm: 108,925 bytes, a component that reaches the clock and HTTPS to api.example.com, but no files or other app
   wasm.fetch(url: string) -> result<record { status: u16, body: string }, string>
+  built from 6 crates (tools/octo wasm info lists them)
 bundle/manifest.json:
   added "net" to capabilities: api-client imports wasi:http, and its requests reach only the hosts in network.hosts (api.example.com), as the app's script does
 ```
@@ -575,6 +587,88 @@ reports `none of the 6 crates it links is known not to build or run in a compone
 The list is what `tools/octo` knows, not every crate that fails. A
 dependency that builds can still import what no host gives; step 4 catches
 that.
+
+### What OctoSense already provides
+
+OctoSense links many crates natively, such as `pulldown-cmark` for Makepad's
+Markdown widget and the Markdown editor, but a component cannot call native
+code: an app reaches them only through Splash's widgets and functions and the
+host services it is granted. For a direct dependency whose usual job
+OctoSense already does for a store app, `tools/octo wasm doctor` prints an
+`info` line, which does not fail the check:
+
+| The crate | What the app uses instead | Ship the crate | Source |
+| --- | --- | --- | --- |
+| `pulldown-cmark`, `comrak`, `markdown` | Splash's `Markdown` widget, which renders Markdown, tables included | Only to produce HTML or to read Markdown as data | [SCRIPT-API § Widgets](SCRIPT-API.md#widgets-available-to-an-app) |
+| `feed-rs`, `rss`, `atom_syndication` | `text.parse_feed(style)` in the script: each RSS or Atom item's title, link, source, publication time, summary and image | Only for what `parse_feed` does not read | [SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings) |
+| `async-openai`, `genai`, `ollama-rs`, `openai-api-rs` | `model.complete`, with the `model` capability: one-shot, schema-checked requests to the person's own AI providers, within a daily budget | Never with a provider key: an app holds none | [AI-SERVICES § One-shot model calls](AI-SERVICES.md#one-shot-model-calls-model) |
+
+For the SDK's `markdown-tools` example, which turns Markdown into HTML,
+`tools/octo wasm doctor --crate sdk/rust/examples/markdown-tools` prints,
+after its `[ok]` lines:
+
+```text
+  [info] pulldown-cmark 0.13.4: OctoSense renders Markdown itself: Splash's Markdown widget shows it, tables included. Ship the crate only to produce HTML or to read Markdown as data. (docs/SCRIPT-API.md#widgets-available-to-an-app)
+```
+
+The table holds only what this repository's docs say a store app may use.
+Engine services such as `photo`, `pdf` or `word` are for system apps, so
+`doctor` offers none of them. A crate that opens network sockets, such as
+`reqwest` or `ureq`, is a failure rather than a hint: `doctor` says that a
+component reaches the app's own hosts with `octosense_component::http` instead
+([What cannot build or run](#what-cannot-build-or-run), [Network](#network)).
+
+### The crates it is built from
+
+`tools/octo wasm build` records in each component the crates it is built
+from, and the release workflow records the same list
+([7. Publish it](#7-publish-it)). App Hub's gate is to show the list to the
+reviewers and check it against the
+[RustSec advisory database](https://rustsec.org/). That side is in review in
+App Hub, so it is **unverified** here.
+
+The list names every package whose code the component links: what the
+crate's normal dependencies reach for `wasm32-wasip2`, as
+`cargo metadata --filter-platform wasm32-wasip2` resolves them, without the
+crate itself. Build and dev dependencies run on the build machine, and so do
+proc macros, so neither a proc macro nor what only it uses is in the list.
+The template's list has six crates, `bitflags`, `octosense-component`,
+`wasi` and `wasip2` (for `octosense_component::http`) and two versions of
+`wit-bindgen`, without `syn`, `wit-parser` and the other crates that the SDK's
+and `wit-bindgen`'s macros use to write code. Each entry has:
+
+| Field | What it holds |
+| --- | --- |
+| `name`, `version` | The package's name and version |
+| `source` | `crates.io`; `git+<url>#<commit>` for a git dependency, without its `?rev=` or `?branch=`; `path` for a local one, such as the SDK with `--sdk path`; another registry's source as Cargo writes it |
+| `checksum` | The package's SHA-256 from the crate's `Cargo.lock`, for a registry package. Git and path packages have none. |
+
+The list is a WebAssembly custom section named `octosense-crates` at the very
+end of the file. Its payload is UTF-8 JSON, with sorted keys and no spaces,
+of `{"schema": 1, "crates": [...]}`, the crates sorted by name and version.
+Building again replaces it, so a file holds one. Wasmtime 49 loads a
+component with the section and runs it as before: the SDK's end-to-end tests
+passed on a `markdown-tools` component that carried its list
+(`OCTOSENSE_COMPONENT_WASM=<file> cargo test --locked -p octosense-component-e2e`,
+in `sdk/rust/`).
+Whether the shell's `wasm` service loads one is **unverified**, as no shell
+runs components yet.
+
+`tools/octo wasm info` prints the list. For the template, built with the SDK
+by path:
+
+```text
+built from 6 crates, as its octosense-crates section lists them:
+  bitflags 2.13.2, crates.io
+  octosense-component 0.1.0, path
+  wasi 0.14.7+wasi-0.2.4, crates.io
+  wasip2 1.0.4+wasi-0.2.12, crates.io
+  wit-bindgen 0.57.1, crates.io
+  wit-bindgen 0.62.0, crates.io
+```
+
+With `--json`, `"crates"` holds the entries, checksums included. A file built
+another way says `crates: not recorded`.
 
 ### What the gate checks
 
@@ -1222,6 +1316,7 @@ components, with its phases. These items are open:
 | --- | --- |
 | Components in a shell (ADR 0014, phase 2) | Not merged: the `wasm` service loading components from `fns/`, one instance per app, the storage grant and its quota, and a larger input limit than a module's. Until it lands, no app's component runs. |
 | App Hub's gate for components | [App Hub #186](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/186), in review: it admits components under `wasm-components-v1` and adds `hub component-info`. |
+| App Hub's use of the crate list | In review in App Hub: the gate showing a component's `octosense-crates` list to reviewers and checking it against the RustSec advisory database ([The crates it is built from](#the-crates-it-is-built-from)). |
 | The SDK on crates.io | Not yet. ADR 0014 publishes it there with a maintainer's approval; until then, a crate depends on it by a git commit or a path. |
 | Outgoing HTTP and host services from a component (phase 3) | Not merged: OctoSense's runtime for `wasi:http`, limited to `network.hosts`, and for `octosense:host`, with `host.request`'s checks. [App Hub #188](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/188), in review, admits both imports. The SDK's `http` and `host` modules and `tools/octo wasm` support them; their tests run them in Wasmtime 49 against a local server and fake host services. |
 | Compiling at install time, so a phone skips the first compile (phase 3) | Not yet, for modules or components. A module's first call compiles it: ADR 0011 measured 27–33 ms on a desktop and 378–421 ms on a mid-range Android phone, and 5–11 ms for later loads from the cache on that phone. |
