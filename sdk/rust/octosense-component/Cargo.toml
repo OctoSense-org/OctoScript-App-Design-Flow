@@ -1,0 +1,12 @@
+[package]
+name = "octosense-component"
+description = "Write an OctoSense app component in ordinary Rust: #[export] derives the WIT and the glue."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+octosense-component-macros = { path = "../octosense-component-macros", version = "0.1.0" }
+wit-bindgen = "0.62"

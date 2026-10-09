@@ -1,0 +1,14 @@
+[package]
+name = "type-tour"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "Every type mapping #[export] supports, for the end-to-end tests."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+octosense-component = { path = "../../octosense-component" }
+# Random numbers from WASI, unmodified.
+getrandom = "0.4"

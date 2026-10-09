@@ -1,0 +1,28 @@
+# {{name}}: the app's own functions in ordinary Rust. `tools/octo wasm build`
+# builds this crate for wasm32-wasip2, a WebAssembly component, and copies it
+# into the bundle as fns/{{name}}.wasm; the app's script calls each function
+# as `wasm.<name>` (OctoSense ADR 0014; OctoSense App Flow's docs/RUST.md).
+[package]
+name = "{{name}}"
+version = "0.1.0"
+edition = "2024"
+# wit-bindgen, which the SDK's macro uses, needs Rust 1.85.
+rust-version = "1.85"
+publish = false
+
+[lib]
+# cdylib is the component; rlib lets `cargo test` run the same functions natively.
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+{{sdk}}
+
+[profile.release]
+# Small: a bundle holds at most 8 MiB.
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true
+
+# A workspace of its own, so a Cargo workspace around the app does not claim it.
+[workspace]

@@ -1,0 +1,9 @@
+[package]
+name = "octosense-component-e2e"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dev-dependencies]
+wasmtime = { version = "49.0.2", default-features = false, features = ["cranelift", "runtime", "std", "component-model"] }
+wasmtime-wasi = { version = "49.0.2", default-features = false, features = ["p2"] }

@@ -1,0 +1,33 @@
+# 面向 Rust 的 OctoSense 组件 SDK
+
+[English](README.md) | 简体中文
+
+用普通的 Rust 编写 OctoSense 应用自带的函数，得到一个 WebAssembly 组件，应用的脚本以 `wasm.<function>` 调用它（OctoSense ADR 0014，在 [OctoSense #436](https://github.com/OctoSense-org/OctoSense/pull/436) 中提议）。不需要编写 WIT，也不需要胶水代码。指南见 [docs/RUST.zh-CN.md](../../docs/RUST.zh-CN.md)；`tools/octo wasm new` 用来创建 crate。
+
+```rust
+#[octosense_component::export]
+pub mod functions {
+    pub fn greet(name: &str) -> String {
+        format!("Hello, {name}!")
+    }
+}
+```
+
+| 路径 | 内容 |
+| --- | --- |
+| [octosense-component/](octosense-component/src/lib.rs) | 组件依赖的 crate。它重新导出宏和 `wit-bindgen` 0.62，并提供 `log(line)`。 |
+| [octosense-component-macros/](octosense-component-macros/src/lib.rs) | `#[octosense_component::export]`。它根据模块中的 `pub fn`、`pub struct` 和 `pub enum` 写出 WIT world（名称用 kebab 形式），用 `wit_bindgen::generate!` 生成绑定，并在模块自己的类型与生成的类型之间转换。无法映射的类型会让构建失败，并说明改用什么。 |
+| [examples/markdown-tools/](examples/markdown-tools/src/lib.rs) | 一个未作修改的 crate（`pulldown-cmark`）、一个记录、一个枚举、经由 `std::fs` 访问的文件、时钟和一行日志。 |
+| [examples/type-tour/](examples/type-tour/src/lib.rs) | 双向的每一种类型映射、经由 `getrandom` 获取的随机数，以及在调用之间保留的状态。 |
+| [examples/template/](examples/template/src/lib.rs) | `tools/octo wasm new` 复制的 [templates/rust-component/src/lib.rs](../../templates/rust-component/src/lib.rs)，在这里作为成员构建。 |
+| [e2e/](e2e/tests/components.rs) | 用普通的 cargo 为 `wasm32-wasip2` 构建这三个示例，像 ADR 0014 的运行时一样在 Wasmtime 49 中以 WASI 0.2 加载，并调用每个函数。 |
+
+在本目录中运行测试，需要先安装目标（`rustup target add wasm32-wasip2`）：
+
+```sh
+cargo test --locked --workspace
+```
+
+CI 的 `rust-sdk` 作业在 Ubuntu 上运行它们，并运行 `cargo fmt --all -- --check`。
+
+SDK 尚未发布到 crates.io。ADR 0014 会在维护者批准后发布它；在此之前，crate 通过本仓库的 git 提交或路径依赖它，`tools/octo wasm new` 两种都能写。目前还没有任何 OctoSense 构建运行组件（见 [docs/RUST.zh-CN.md](../../docs/RUST.zh-CN.md)）。
