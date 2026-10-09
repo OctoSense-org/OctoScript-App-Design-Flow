@@ -1,0 +1,28 @@
+{
+  "result": "pass",
+  "verified": [
+    "populated first frame",
+    "empty note and summary refusal",
+    "native multiline Unicode editing",
+    "local save",
+    "real missing-model fallback preserves draft",
+    "real missing-Glance fallback preserves draft",
+    "exact note and summary survive process restart"
+  ],
+  "not_verified": [
+    "model/provider calls",
+    "Glance publication and expansion",
+    "phone",
+    "agent tools"
+  ],
+  "binary_sha256": "c6da88e9405df98bd2d0e916688b3ba6877f83d3e428fae43008cafe526a8c99",
+  "source_sha256": "5375fa45c0e47b244557b4e44a9e43a736f3579a3db6fc079deeb397b9dc4cd6",
+  "driver_sha256": "9c94eab61d5507dd102915f0b9c6bdf4a41c34c6537b5d866eacbf0c2af896ec",
+  "screenshots_sha256": {
+    "03-restart.png": "7dde3c46e84ee53aa1d1402ac8f1343c37dca60b7d1553441c3d034e58787051",
+    "01-editor.png": "05bae84e8cf24f7e5cde67d578ba2536efde25f83c4265e2e2597b2be2f25a85",
+    "02-unavailable.png": "dbae03eb7eb78a2076c0ebf00b17509e3a7652ffb7bf11f9b28764db990bb07d"
+  },
+  "visual_review": "Post-restart screenshot inspected; earlier captures on cached host had incomplete repaint frames and are not visual pass evidence.",
+  "source_base": "OctoScript-App-Design-Flow a90e7c620b31c75d6e71664f666430a6a10dc8dd"
+}

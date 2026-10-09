@@ -32,6 +32,8 @@ OS permission-status call (`camera.permission.status`), live UI updates and
 permission refusals. It is not a published App Hub app, and it tests neither a
 live model nor consent to the app's agent.
 
+For runnable model, Glance and app-tool contract migrations, see [submission migrations](SUBMISSION-API-MIGRATIONS.md).
+
 ## 1. Declare what the app needs
 
 This **manifest fragment** is not a complete manifest:

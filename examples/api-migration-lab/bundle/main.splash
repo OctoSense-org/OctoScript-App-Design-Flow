@@ -1,0 +1,95 @@
+// API Migration Lab: local work remains usable when a host service is absent.
+let note = "Plan a quiet afternoon walk."
+let summary = ""
+let card_id = "brief"
+fn save(){
+    let error = fs.write("draft.json", {note: note summary: summary}.to_json())
+    if error != nil { ui.status.set_text("Could not save locally: " + error) return false }
+    true
+}
+fn load(){
+    if fs.exists("draft.json") {
+        let saved = fs.read("draft.json").parse_json()
+        if saved != nil { note = saved.note summary = saved.summary }
+    }
+    ui.note.set_text(note)
+    ui.summary.set_text(summary)
+}
+fn keep(){
+    note = ui.note.text()
+    summary = ui.summary.text()
+    if !save() { return false }
+    ui.status.set_text("Saved locally; no model was called.")
+    true
+}
+fn generate(){
+    note = ui.note.text()
+    if note == "" { ui.status.set_text("Write a note first.") return }
+    ui.status.set_text("Requesting a summary...")
+    host.request("model.complete", {
+        task: "Summarize the note in one short sentence."
+        input: {note: note}
+        schema: {type: "object" properties: {summary: {type: "string" maxLength: 160}} required: ["summary"] additionalProperties: false}
+        class: "fast"
+    }, fn(r){
+        if !r.is_ok { ui.status.set_text("AI unavailable; edit the summary yourself. " + r.error) return }
+        summary = r.data.output.summary
+        ui.summary.set_text(summary)
+        if !save() { return }
+        ui.status.set_text("AI summary ready; review it before publishing.")
+    })
+}
+fn publish(){
+    if !keep() { return }
+    if summary == "" { ui.status.set_text("Add a summary before publishing.") return }
+    host.request("glance.publish", {
+        card_id: card_id title: "My reviewed brief" summary: summary
+        template: "brief.splash" initial: {summary: summary}
+        notify: false expires: 3600
+        open: {app: "org.octosense.examples.apiclinic"}
+    }, fn(r){
+        if !r.is_ok { ui.status.set_text("Glance unavailable; your summary is saved. " + r.error) return }
+        card_id = r.data.card_id
+        ui.status.set_text("Published card: " + card_id)
+    })
+}
+fn withdraw(){
+    host.request("glance.withdraw", {card_id: card_id}, fn(r){
+        if !r.is_ok { ui.status.set_text("Cannot withdraw: " + r.error) return }
+        ui.status.set_text("Withdrawal checked; local draft kept.")
+    })
+}
+start_timeout(0.05, || load())
+SolidView{width: Fill height: Fill flow: Down padding: 20 spacing: 12 draw_bg.color: #xf8fafc
+    Label{text: "API Migration Lab" draw_text.color: #x17243b draw_text.text_style: theme.font_bold{font_size: 24}}
+    Label{width: Fill text: "Write, review, then publish. AI is optional." draw_text.color: #x475569}
+    ScrollYView{width: Fill height: Fill flow: Down spacing: 12
+        Label{text: "Your note" draw_text.color: #x17243b}
+        note := TextInput{width: Fill height: 90 is_multiline: true
+            draw_bg +: {color: #xffffff color_hover: #xffffff color_focus: #xffffff color_empty: #xffffff border_radius: 8.0}
+            draw_text +: {color: #x17243b color_hover: #x17243b color_focus: #x17243b color_empty: #x64748b color_empty_hover: #x64748b} empty_text: "Write a note"}
+        generate := ButtonFlat{height: 44 padding: Inset{left: 14 right: 14}
+            draw_bg +: {color: #xdbeafe color_hover: #xbfdbfe color_down: #x93c5fd color_focus: #xdbeafe border_radius: 8.0}
+            draw_text +: {color: #x17243b color_hover: #x17243b color_down: #x17243b color_focus: #x17243b}
+            text: "Suggest summary" on_click: || generate()}
+        Label{text: "Reviewed summary" draw_text.color: #x17243b}
+        summary := TextInput{width: Fill height: 90 is_multiline: true
+            draw_bg +: {color: #xffffff color_hover: #xffffff color_focus: #xffffff color_empty: #xffffff border_radius: 8.0}
+            draw_text +: {color: #x17243b color_hover: #x17243b color_focus: #x17243b color_empty: #x64748b color_empty_hover: #x64748b} empty_text: "Or write the summary yourself"}
+        View{width: Fill height: Fit flow: Right spacing: 8
+            keep := ButtonFlat{height: 44 padding: Inset{left: 14 right: 14}
+            draw_bg +: {color: #xdbeafe color_hover: #xbfdbfe color_down: #x93c5fd color_focus: #xdbeafe border_radius: 8.0}
+            draw_text +: {color: #x17243b color_hover: #x17243b color_down: #x17243b color_focus: #x17243b}
+            text: "Save draft" on_click: || keep()}
+            publish := ButtonFlat{height: 44 padding: Inset{left: 14 right: 14}
+            draw_bg +: {color: #xdbeafe color_hover: #xbfdbfe color_down: #x93c5fd color_focus: #xdbeafe border_radius: 8.0}
+            draw_text +: {color: #x17243b color_hover: #x17243b color_down: #x17243b color_focus: #x17243b}
+            text: "Publish card" on_click: || publish()}
+        }
+        withdraw := ButtonFlat{height: 44 padding: Inset{left: 14 right: 14}
+            draw_bg +: {color: #xdbeafe color_hover: #xbfdbfe color_down: #x93c5fd color_focus: #xdbeafe border_radius: 8.0}
+            draw_text +: {color: #x17243b color_hover: #x17243b color_down: #x17243b color_focus: #x17243b}
+            text: "Withdraw card" on_click: || withdraw()}
+        status := Label{width: Fill text: "Ready. Nothing has been sent to a model." draw_text.color: #x475569}
+    }
+}

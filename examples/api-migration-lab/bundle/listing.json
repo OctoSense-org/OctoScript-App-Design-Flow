@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "subtitle": "Source-level API migration example",
+  "description": "Development fixture for local editing and honest unavailable-service behavior. Not a public App Hub release.",
+  "category": "productivity",
+  "keywords": [
+    "developer",
+    "example"
+  ],
+  "screenshots": [
+    "screenshots/01-main.png"
+  ],
+  "icon": "assets/icon.svg",
+  "platforms": [
+    "macos"
+  ],
+  "publisher": {
+    "name": "OctoSense examples",
+    "support": "https://github.com/OctoSense-org/OctoScript-App-Design-Flow/issues",
+    "privacy_policy_url": "https://github.com/OctoSense-org/OctoScript-App-Design-Flow"
+  },
+  "release_notes": "Runnable migration fixture; provider and phone acceptance not claimed.",
+  "age_rating": "all",
+  "license": "Apache-2.0"
+}

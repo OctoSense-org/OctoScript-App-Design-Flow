@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "subtitle": "Source-level API migration example",
+  "description": "Development fixture with an optional assistant whose declared tools read or change this app’s local topics. UI and tools share the saved state. Native tests use synthetic data and no model.",
+  "category": "productivity",
+  "keywords": [
+    "developer",
+    "example"
+  ],
+  "screenshots": [
+    "screenshots/01-main.png"
+  ],
+  "icon": "assets/icon.svg",
+  "platforms": [
+    "macos"
+  ],
+  "publisher": {
+    "name": "OctoSense examples",
+    "support": "https://github.com/OctoSense-org/OctoScript-App-Design-Flow/issues",
+    "privacy_policy_url": "https://github.com/OctoSense-org/OctoScript-App-Design-Flow"
+  },
+  "release_notes": "Runnable migration fixture; provider and phone acceptance not claimed.",
+  "age_rating": "all",
+  "license": "Apache-2.0"
+}
