@@ -49,8 +49,10 @@ built from `main` after OctoSense
 App Hub's gate (`hub check`) admits the `wasm` capability from app contract
 1.7, with at most 8 modules per bundle ([Build it](#build-it)).
 
-**Unverified:** no store-installed app has run its functions yet. Only Wasm
-Lab, a system app, has run functions on a device.
+**Unverified:** no app from App Hub's public catalog has run its functions
+yet. On a device, Wasm Lab (a system app) has, and so has OctoSense's phone
+acceptance app: a signed test app, installed through normal store admission
+on a OnePlus 6.
 
 ## How a call runs
 
@@ -256,7 +258,7 @@ below fail or do nothing:
 | Memory per instance | 256 MiB | `the function trapped: memory over its cap (…)` |
 | Wasm stack per call | 512 KiB | `the function trapped: wasm trap: call stack exhausted` |
 | Input and output of a call | 16 MiB each | `<n> bytes is over the input/output limit` |
-| Module size | 8 MiB | `<file>: the module is <n> bytes, over the limit` |
+| Module size | 8 MiB | `<file>: module exceeds the size limit` |
 | Log | 64 lines per call, each cut to 1,024 bytes | Further lines are dropped. |
 
 The `wasm` service adds its own limits to every request:
@@ -596,9 +598,6 @@ Steps 3 to 9 test the functions in a shell that runs them, so they are
    function and shows the result and the round trip. When a module loads,
    the shell's log shows a line such as
    `wasm os.wasmlab: wasmlab.wasm (433 KiB) compiled in … ms: find_slots, fuzzy_rank, md_to_html, rogue, text_diff`.
-   Wasm Lab sends five requests when it opens, one more than the service
-   queues for an app, so on a cold start its Markdown card shows
-   `wasm app queue is full; try again later`.
 5. Under **Misbehave**, click each button. A loop, endless allocation, a
    panic and runaway recursion each end in an error, and the next call still
    answers.

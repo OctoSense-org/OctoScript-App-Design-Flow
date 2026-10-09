@@ -33,7 +33,7 @@
 
 App Hub 的准入检查（`hub check`）从应用契约 1.7 起接受 `wasm` 能力，每个应用包最多带 8 个模块（见[构建](#构建)）。
 
-**未验证**：还没有从商店安装的应用运行过自己的函数。目前只有系统应用 Wasm Lab 在设备上运行过函数。
+**未验证**：App Hub 公开目录中的应用还没有运行过自己的函数。在设备上运行过函数的有系统应用 Wasm Lab，以及 OctoSense 的手机验收应用：一个经由正常商店准入、安装在 OnePlus 6 上的已签名测试应用。
 
 ## 一次调用的过程
 
@@ -204,7 +204,7 @@ App Hub 的准入检查（`hub check`）从应用契约 1.7 起接受 `wasm` 能
 | 每个实例的内存 | 256 MiB | `the function trapped: memory over its cap (…)` |
 | 每次调用的 Wasm 栈 | 512 KiB | `the function trapped: wasm trap: call stack exhausted` |
 | 每次调用的输入和输出 | 各 16 MiB | `<n> bytes is over the input/output limit` |
-| 模块大小 | 8 MiB | `<file>: the module is <n> bytes, over the limit` |
+| 模块大小 | 8 MiB | `<file>: module exceeds the size limit` |
 | 日志 | 每次调用 64 行，每行截断到 1,024 字节 | 多出的行会丢弃。 |
 
 `wasm` 服务还为每个请求设了自己的上限：
@@ -469,7 +469,7 @@ host.request("wasm.md_to_html", "# Hello", fn(r){
 
    OctoSense 用 `OCTOSENSE_SYSTEM_APPS=$PWD/desktop/system-apps-wasm-lab.json cargo build --locked -p octosense` 检查过不加任何特性的默认构建，再用 `--test-action launch-wasmlab` 运行了 Wasm Lab（见 [OctoSense 中的 WebAssembly § Wasm Lab](https://github.com/OctoSense-org/OctoSense/blob/main/docs/wasm.zh-CN.md#wasm-lab)）。
 
-4. 从 dock 或 **Apps** 菜单打开 **Wasm Lab**。每张卡片调用一个函数，显示结果和往返耗时。模块加载时，Shell 的日志会出现类似这样的一行：`wasm os.wasmlab: wasmlab.wasm (433 KiB) compiled in … ms: find_slots, fuzzy_rank, md_to_html, rogue, text_diff`。Wasm Lab 打开时会发出五个请求，比服务为每个应用排队的上限多一个，所以冷启动时它的 Markdown 卡片会显示 `wasm app queue is full; try again later`。
+4. 从 dock 或 **Apps** 菜单打开 **Wasm Lab**。每张卡片调用一个函数，显示结果和往返耗时。模块加载时，Shell 的日志会出现类似这样的一行：`wasm os.wasmlab: wasmlab.wasm (433 KiB) compiled in … ms: find_slots, fuzzy_rank, md_to_html, rogue, text_diff`。
 5. 点击 **Misbehave** 下的每个按钮。死循环、无休止的内存分配、panic 和失控递归都以错误结束，下一次调用照常返回结果。
 6. 按 [PUBLISHING §4.1](PUBLISHING.zh-CN.md#41-发布到本地镜像) 的说明，把你自己的应用发布到本地镜像。
 7. 退出 Shell，再用 [PUBLISHING §4.2](PUBLISHING.zh-CN.md#42-在桌面端-shell-中安装并打开应用) 中的命令重新启动它。

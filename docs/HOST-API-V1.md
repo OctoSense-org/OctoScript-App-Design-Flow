@@ -296,7 +296,7 @@ Test such an app this way:
 
 1. Check editable source with `hub check <bundle> --allow-unsigned` after
    stamping. Use the GitHub publishing workflow for the final release proof
-   ([PUBLISHING §3.6](PUBLISHING.md#36-publisher-key--human)); it needs no developer key.
+   ([PUBLISHING §3.6](PUBLISHING.md#36-github-publisher-identity--human)); it needs no developer key.
 2. Test host services in a compatible OctoSense shell. The
    [local mirror rehearsal](PUBLISHING.md#4-rehearse-the-store-path-locally)
    is an optional legacy compatibility route for pre-publication tests, not
