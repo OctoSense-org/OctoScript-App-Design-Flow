@@ -71,7 +71,7 @@ Follow these rules:
   actual approval; never fabricate it.
 - `publisher-github-v1` needs contract 1.8.0 and a compatible host; older
   hosts and `card-host` refuse the sealed release. OctoSense desktop
-  0.1.0-rc.1 installs GitHub-attested apps on macOS; no released phone build
-  supports them yet. Follow the linked publishing guide for current evidence.
+  0.1.0-rc.1 and later install GitHub-attested apps (verified on macOS); no
+  released phone build supports them yet. Follow the linked publishing guide for current evidence.
 
 Add this app's own requirements, data sources and tests below.

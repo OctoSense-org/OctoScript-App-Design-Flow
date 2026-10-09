@@ -255,7 +255,7 @@ widget acts.
 | --- | --- | --- |
 | `View`, `SolidView`, `RoundedView` | containers; `SolidView`/`RoundedView` for a filled background | – |
 | `ScrollYView`, `ScrollXView`, `ScrollXYView` | scrolling containers, often with `on_render` | – |
-| `Label`, `LinkLabel` | text (default text color is white: set `draw_text.color`) | – |
+| `Label`, `LinkLabel` | text (default text color is white: set `draw_text.color`); a `LinkLabel` hands its URL to the system browser, on macOS since RC1 and on Windows and Linux since RC2 (native launch unverified), for the app's declared hosts or, with `web`, any public HTTPS page | – |
 | `TextInput` | text entry; give it a numeric `height`, because a `Fill` height inside a `Fit` parent collapses to zero | password and one-time-code fields are refused (see Gotchas) |
 | `Button`, `ButtonFlat`, `ButtonFlatter` | buttons with `text:` and `on_click` | – |
 | `Image` | `src: http_resource(url)`, `fit: ImageFit.CropToFill` | media rule (see Network) |
