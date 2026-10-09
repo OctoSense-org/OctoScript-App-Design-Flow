@@ -5,9 +5,10 @@ English | [简体中文](RUST.zh-CN.md)
 A store app's bundle holds no native code, but it can carry your Rust code as
 **Wasm functions**: Rust functions that a WebAssembly module (a `.wasm` file
 in the bundle's `fns/` folder) exports by name. OctoSense's `wasm` service runs
-each function in a sandbox where it sees only its input. Every standard
-desktop and Home build of OctoSense `main` includes the service on macOS,
-Linux and Android, with limited support; no release includes it yet. For the
+each function in a sandbox where it sees only its input. Desktop 0.1.0-rc.2
+includes the service on macOS and Linux, and every standard desktop and Home
+build of OctoSense `main` includes it on macOS, Linux and Android, with
+limited support; Windows builds and RC1 leave it out. For the
 device, the network, files or native code, use another route.
 
 Every command on this page was run on macOS (Apple silicon) unless it is
@@ -38,7 +39,7 @@ The shell's `wasm` host service runs the functions. OctoSense's
 accepts the service with limited support: `wasm-functions`, an OctoSense
 Cargo feature that is on by default, includes it in every standard desktop
 and Home build on macOS, Linux and Android. `wasm-lab` is the feature's
-former name and stays as an alias. Builds for Windows (not yet checked), iOS
+former name and stays as an alias. Builds for Windows (RC2 leaves it out), iOS
 (no code generation for apps) and OpenHarmony (policy unknown) leave the
 runtime out.
 
@@ -46,14 +47,15 @@ runtime out.
 | --- | --- | --- |
 | `desktop-v0.1.0-beta.2` | No. Its app contract, 1.5, refuses the capability: `app <id> requests unknown capability "wasm"`. | No |
 | [OctoSense desktop 0.1.0-rc.1](../README.md#compatible-shell-download) default build | Yes | No. Every call answers `no service answers "wasm" on this device`. |
-| OctoSense `main` (in no release yet), default build for macOS, Linux or Android: feature `wasm-functions`, formerly `wasm-lab` | Yes | Yes |
-| OctoSense `main` (in no release yet), build for Windows, iOS or OpenHarmony | Yes | No. Every call answers `no service answers "wasm" on this device`. |
+| [OctoSense desktop 0.1.0-rc.2](../README.md#compatible-shell-download) on macOS or Linux | Yes | Yes |
+| OctoSense desktop 0.1.0-rc.2 on Windows | Yes | No. Every call answers `no service answers "wasm" on this device`. |
+| OctoSense `main`, default build for macOS, Linux or Android: feature `wasm-functions`, formerly `wasm-lab` | Yes | Yes |
+| OctoSense `main`, build for Windows, iOS or OpenHarmony | Yes | No. Every call answers `no service answers "wasm" on this device`. |
 | `card-host`, built from App Hub `main` | Yes | No. Every call answers `no service answers "wasm" on this device`. |
 
-No release includes the service yet: `desktop-v0.1.0-beta.2`, desktop RC1
-and `home-v0.1.0-beta.1` leave it out. The first desktop and Home releases
-built from `main` after OctoSense
-[#400](https://github.com/OctoSense-org/OctoSense/pull/400) will include it.
+Desktop 0.1.0-rc.2 is the first release with the service, on macOS and Linux
+(its Windows build leaves it out); `desktop-v0.1.0-beta.2`, desktop RC1 and
+`home-v0.1.0-beta.1` do not include it. No released Home build has it yet.
 
 App Hub's gate (`hub check`) admits the `wasm` capability from app contract
 1.7, with at most 8 modules per bundle ([Build it](#build-it)).

@@ -4,7 +4,7 @@
 
 未注明中文版的链接指向英文文档。
 
-商店应用的应用包不能带原生代码，但可以把你的 Rust 代码做成 **Wasm 函数**带上：Rust 函数编译进 WebAssembly 模块（一个 `.wasm` 文件，放在应用包的 `fns/` 文件夹中），由模块按名称导出。OctoSense 的 `wasm` 服务会在沙盒中运行每个函数，函数只能看到自己的输入。OctoSense `main` 在 macOS、Linux 和 Android 上的每个标准桌面端和 Home 构建都包含这项服务，属于有限支持；目前还没有任何发布版本包含它。设备、网络、文件或原生代码，请改用其他途径。
+商店应用的应用包不能带原生代码，但可以把你的 Rust 代码做成 **Wasm 函数**带上：Rust 函数编译进 WebAssembly 模块（一个 `.wasm` 文件，放在应用包的 `fns/` 文件夹中），由模块按名称导出。OctoSense 的 `wasm` 服务会在沙盒中运行每个函数，函数只能看到自己的输入。桌面版 0.1.0-rc.2 在 macOS 和 Linux 上包含这项服务，OctoSense `main` 在 macOS、Linux 和 Android 上的每个标准桌面端和 Home 构建也都包含，属于有限支持；Windows 构建和 RC1 不包含它。设备、网络、文件或原生代码，请改用其他途径。
 
 每条命令都在 macOS（Apple 芯片）上运行过，标注为**未验证**的除外。编写本文时没有构建能运行函数的 Shell。
 
@@ -23,17 +23,19 @@ Splash 应用能调用的是宿主 API 表面，而不是它背后的 Rust crate
 
 ## 函数在哪里运行
 
-函数由 Shell 的 `wasm` 宿主服务运行。OctoSense 的 [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.zh-CN.md) 已接受这项服务，属于有限支持：OctoSense 的 Cargo 特性 `wasm-functions` 默认开启，让 macOS、Linux 和 Android 上的每个标准桌面端和 Home 构建都包含这项服务。`wasm-lab` 是这项特性以前的名字，仍保留为别名。Windows（尚未检查）、iOS（不允许应用生成代码）和 OpenHarmony（策略未知）的构建不包含这个运行时。
+函数由 Shell 的 `wasm` 宿主服务运行。OctoSense 的 [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.zh-CN.md) 已接受这项服务，属于有限支持：OctoSense 的 Cargo 特性 `wasm-functions` 默认开启，让 macOS、Linux 和 Android 上的每个标准桌面端和 Home 构建都包含这项服务。`wasm-lab` 是这项特性以前的名字，仍保留为别名。Windows（RC2 未包含）、iOS（不允许应用生成代码）和 OpenHarmony（策略未知）的构建不包含这个运行时。
 
 | 构建 | 是否接受申请 `wasm` 的应用 | 是否运行它的函数 |
 | --- | --- | --- |
 | `desktop-v0.1.0-beta.2` | 否。它的应用契约是 1.5，会拒绝这项能力：`app <id> requests unknown capability "wasm"`。 | 否 |
 | [OctoSense 桌面版 0.1.0-rc.1](../README.zh-CN.md#下载兼容-shell) 的默认构建 | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
-| OctoSense `main` 面向 macOS、Linux 或 Android 的默认构建（特性 `wasm-functions`，旧名 `wasm-lab`；尚未进入任何发布版本） | 是 | 是 |
-| OctoSense `main` 面向 Windows、iOS 或 OpenHarmony 的构建（尚未进入任何发布版本） | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
+| [OctoSense 桌面版 0.1.0-rc.2](../README.zh-CN.md#下载兼容-shell)，macOS 或 Linux | 是 | 是 |
+| OctoSense 桌面版 0.1.0-rc.2，Windows | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
+| OctoSense `main` 面向 macOS、Linux 或 Android 的默认构建（特性 `wasm-functions`，旧名 `wasm-lab`） | 是 | 是 |
+| OctoSense `main` 面向 Windows、iOS 或 OpenHarmony 的构建 | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
 | 基于 App Hub `main` 构建的 `card-host` | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
 
-目前还没有任何发布版本包含这项服务：`desktop-v0.1.0-beta.2`、桌面端 RC1 和 `home-v0.1.0-beta.1` 都不包含。OctoSense [#400](https://github.com/OctoSense-org/OctoSense/pull/400) 之后从 `main` 构建的第一批桌面端和 Home 发布版本会包含它。
+桌面版 0.1.0-rc.2 是第一个包含这项服务的发布版本，在 macOS 和 Linux 上提供（其 Windows 构建不包含）；`desktop-v0.1.0-beta.2`、桌面端 RC1 和 `home-v0.1.0-beta.1` 都不包含。目前还没有任何 Home 发布版本包含它。
 
 App Hub 的准入检查（`hub check`）从应用契约 1.7 起接受 `wasm` 能力，每个应用包最多带 8 个模块（见[构建](#构建)）。
 

@@ -224,8 +224,8 @@ Store's install, verified-launch, update, withdrawal and tamper checks
 ([acceptance receipt](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/reviews/github-publisher-v1/acceptance.json)).
 Those Store checks used an isolated test catalog; the fixture has no Hub
 submission or admission.
-[OctoSense desktop 0.1.0-rc.1 (RC1)](../README.md#compatible-shell-download)
-is a compatible host. Public sample installation/update on macOS and isolated
+[OctoSense desktop 0.1.0-rc.1 (RC1) and 0.1.0-rc.2 (RC2)](../README.md#compatible-shell-download)
+are compatible hosts. Public sample installation/update on macOS and isolated
 phone-fixture acceptance have separate release evidence; those do not prove
 your app's UX or provider effects.
 Older hosts refuse this requirement. `publisher-toolchain.json` must name a
@@ -303,7 +303,7 @@ for the current issue fields.
 A reviewer verifies the publisher proof and bundle, runs the gate and posts
 any refusals in the issue. An App Hub admin then approves the exact release,
 and the Hub publishes it in its signed catalog, where a compatible host,
-such as [RC1](../README.md#compatible-shell-download), can install it. If
+such as [RC2](../README.md#compatible-shell-download), can install it. If
 changes are needed, release a new version with a new tag and post it as §3.8
 describes; never replace old bytes.
 
@@ -394,7 +394,7 @@ storage and requests to its declared host behave as in `card-host`.
 - An `icon.svg` drawn with `<text>` showed as a blank tile in the store.
   Draw icons with shapes and paths, as the template does.
 - An app that declares `auth` needs a shell built from OctoSense `main`
-  or the [RC1 release](../README.md#compatible-shell-download); use RC1 for
+  or an [RC release](../README.md#compatible-shell-download); use RC2 for
   current GitHub-attested apps. A beta.1 store refuses the capability.
   The shell you build here has no provider registrations until you supply
   them, and they never go in the app. Either set the build variables, such as

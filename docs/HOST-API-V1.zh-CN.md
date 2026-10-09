@@ -11,6 +11,7 @@ Host API v1 让应用发现并调用编译进宿主的 Rust 服务，也让应�
 | 构建 | Host API v1 |
 | --- | --- |
 | [RC1 发行版 `933abbcf`](../README.zh-CN.md#下载兼容-shell) | 实现本页的全部 API，平台限制见各节。 |
+| [RC2 发行版 `4ccf8e06`](../README.zh-CN.md#下载兼容-shell) | 实现本页的全部 API，以及 RC2 的宿主 OS API（`files.*`、`location.sample`、`device_calendar.*`、`mail.compose` 和 `mail.review_send`、`audio.*`、`microphone.record_*`），平台限制见[宿主 API 能力族](HOST-API-FAMILIES.zh-CN.md)。 |
 | `desktop-v0.1.0-beta.2` | 拒绝该应用：它的契约是 1.5，不认识下文 `requires` 中的任何标记。beta.2 提供哪些服务，见[宿主服务](HOST-SERVICES.zh-CN.md)。 |
 | `tools/octo run` 启动的 `card-host` | 拒绝该应用（见[发布前](#发布前)）。应用申请了 `runtime` 但没有声明这些标记时，它会响应 `runtime.list` 和 `runtime.describe`。 |
 
@@ -73,7 +74,7 @@ host.request("runtime.describe", {method: "location.get"}, fn(r){
 
 在声明了 `host-api-v1` 的应用中，`CameraPreview`、`sys.request_location`、`sys.gps` 和地图控件的 GPS 读取同样要通过这道授权关口。Shell 每次启动后，这道关口会一直拒绝相应的访问，直到应用调用对应能力的权限方法；这次调用会加载应用为该能力保存的授权。请在应用打开时，先调用 `camera.permission.status` 再启动 `CameraPreview`，先调用 `location.permission.status` 再读取 GPS。`sys.request_location` 可能弹出提示，所以只在前台调用；后台代码可以用从不弹出提示的 `sys.gps`，或在应用获得授权后用 `location.get`。
 
-`location.get` 目前只支持 Android，返回 `latitude`、`longitude`、`accuracy_m`、`source: "last_known"`、`timestamp: null` 和 `freshness: "unknown"`。它不保证位置是最新的，也不提供后台定位。这些权限方法不提供新的拍摄、文件选择或日历 API；只调用宿主注册了的方法。在 Windows、Linux 和 iOS 上，宿主不声明这些设备方法：`status` 返回 `os_permission: "unsupported"`，其他方法以 `unsupported_platform` 失败。
+`location.get` 目前只支持 Android，返回 `latitude`、`longitude`、`accuracy_m`、`source: "last_known"`、`timestamp: null` 和 `freshness: "unknown"`。它不保证位置是最新的，也不提供后台定位。从 RC2 起，`location.sample` 会在应用给定的时效、精度和超时范围内（默认时效 5 秒、超时 10 秒）等待一次实时定位结果，在 macOS 和 Android 上为已通过 `location.permission.request` 授权的前台应用提供；`location.sample.cancel` 取消本应用待完成的采样。这些权限方法不提供新的拍摄、文件选择或日历 API；只调用宿主注册了的方法。在 Windows、Linux 和 iOS 上，宿主不声明这些设备方法：`status` 返回 `os_permission: "unsupported"`，其他方法以 `unsupported_platform` 失败。
 
 ## 4. 连接应用自己的后端
 
@@ -186,7 +187,7 @@ app_tools.dispatch@1
 拒绝原因会写出宿主缺少的 API；对 `host-api-v1` 来说是 `app_policy.device_consent@1`。如果 `host_api.required` 列出了宿主缺少的方法，原因则是 `this host does not implement required APIs: <method>@<version>`。请改用以下方式测试这类应用：
 
 1. 写入摘要后，用 `hub check <bundle> --allow-unsigned` 检查可编辑源码。最终的 Release 证明由 GitHub 工作流生成（[PUBLISHING §3.6](PUBLISHING.zh-CN.md#36-github-发布者身份human)），无需开发者密钥。
-2. 在兼容的 OctoSense Shell 中测试宿主服务。[本地镜像演练](PUBLISHING.zh-CN.md#4-在本地演练商店流程)是发布前测试的可选旧格式兼容路径，不能验证带 GitHub 证明的 Release。`publisher-github-v1` 需要兼容 Store 验证器，请使用 [RC1 发行版](../README.zh-CN.md#下载兼容-shell)；下载状态和公开示例验收范围见该节。
+2. 在兼容的 OctoSense Shell 中测试宿主服务。[本地镜像演练](PUBLISHING.zh-CN.md#4-在本地演练商店流程)是发布前测试的可选旧格式兼容路径，不能验证带 GitHub 证明的 Release。`publisher-github-v1` 需要兼容 Store 验证器，请使用 [RC2 发行版](../README.zh-CN.md#下载兼容-shell)；下载状态和公开示例验收范围见该节。
 3. 逐项测试：API 发现与缺少 API 时的降级、账户切换、拒绝和撤销权限、应用关闭时调用工具，以及后端写操作的原生审阅。
 4. 在 `listing.json` 中只列出实际测试过的平台。
 

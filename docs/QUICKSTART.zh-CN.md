@@ -257,11 +257,11 @@ fn tip_20_percent() {
 
 `main.splash` 中提到的每个 `https://` 主机都要列入 `network.hosts`。声明了 `images` 或 `web` 时，准入检查接受任何 `https://` 主机，但在运行时，未列出的主机只能提供图片（`images`）或网页视图中的页面（`web`）；`net` 仍然只能访问列出的主机。纯 `http://` 一律不允许。没有 `storage`，应用就完全没有存储：准入检查的 `grants:` 行会显示 `storage none`。[CAPABILITIES](CAPABILITIES.zh-CN.md) 说明每项能力解锁什么、用户会看到什么；[HOST-SERVICES](HOST-SERVICES.zh-CN.md) 介绍 Mail 等服务。
 
-**已连接账户。** 要使用用户的 GitHub 或 Google 账户，像参考应用那样声明 `auth`、对应提供商的能力族（`github`、`gmail` 或 `gcalendar`）和 `storage.accounts: true`；如果只需识别用户身份、不读取其数据，只声明 `auth` 就够了。登录由宿主完成，宿主给应用的是连接句柄，绝不是令牌。这些服务需要兼容的 OctoSense Shell。当前公开应用使用 [RC1 发行版](../README.zh-CN.md#下载兼容-shell)。它没有公开提供商注册信息，需要发行方或运维人员提供，例如通过 `oauth/clients.json`（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。`card-host` 会返回 `no service answers "…" on this device`。完整示例见 [examples/connected-apps](../examples/connected-apps/README.zh-CN.md)。
+**已连接账户。** 要使用用户的 GitHub 或 Google 账户，像参考应用那样声明 `auth`、对应提供商的能力族（`github`、`gmail` 或 `gcalendar`）和 `storage.accounts: true`；如果只需识别用户身份、不读取其数据，只声明 `auth` 就够了。登录由宿主完成，宿主给应用的是连接句柄，绝不是令牌。这些服务需要兼容的 OctoSense Shell。当前公开应用使用 [RC2 发行版](../README.zh-CN.md#下载兼容-shell)。它没有公开提供商注册信息，需要发行方或运维人员提供，例如通过 `oauth/clients.json`（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。`card-host` 会返回 `no service answers "…" on this device`。完整示例见 [examples/connected-apps](../examples/connected-apps/README.zh-CN.md)。
 
 **AI。** 在 OctoSense 的 Shell 中，隔离运行的应用可以调用 `model.complete`；用户允许该应用的 Agent 之后，还可以调用 4 个 `octos.*` 方法。在 `card-host` 中，这类调用一律返回 `no service answers "…" on this device`。请让应用在没有这些服务时也完整可用。[AI-SERVICES](AI-SERVICES.zh-CN.md) 列出了已有和计划中的功能，并给出一个经过验证、能处理“不可用”状态的调用。
 
-**Host API v1。** [RC1 发行版](../README.zh-CN.md#下载兼容-shell)允许应用发现宿主 API、申请设备权限、调用自己的后端，以及用 Splash 实现 Agent 工具（[HOST-API-V1](HOST-API-V1.zh-CN.md)）。这类应用会在 `requires` 中列出 `host-api-v1`、`backend-api-v1` 或 `script-tools-v1`。`card-host` 会拒绝列出其中任何一项的应用，所以 `tools/octo run` 无法运行它们：`run` 会输出 `admitted`，但窗口显示 `card-host refused this bundle` 和宿主缺少的 API。请在兼容 RC1 发行版中按其平台限制测试这类应用（[HOST-API-V1 § 发布前](HOST-API-V1.zh-CN.md#发布前)）。`desktop-v0.1.0-beta.2` 同样会拒绝它们。
+**Host API v1。** [RC 发行版](../README.zh-CN.md#下载兼容-shell)（RC1 及之后）允许应用发现宿主 API、申请设备权限、调用自己的后端，以及用 Splash 实现 Agent 工具（[HOST-API-V1](HOST-API-V1.zh-CN.md)）。这类应用会在 `requires` 中列出 `host-api-v1`、`backend-api-v1` 或 `script-tools-v1`。`card-host` 会拒绝列出其中任何一项的应用，所以 `tools/octo run` 无法运行它们：`run` 会输出 `admitted`，但窗口显示 `card-host refused this bundle` 和宿主缺少的 API。请在兼容 RC2 发行版中按其平台限制测试这类应用（[HOST-API-V1 § 发布前](HOST-API-V1.zh-CN.md#发布前)）。`desktop-v0.1.0-beta.2` 同样会拒绝它们。
 
 ## 7. 最费时间的坑
 
@@ -284,7 +284,7 @@ fn tip_20_percent() {
 - **卡片中的字体。** 要使用自己的字体，把 `.ttf` 或 `.otf` 文件放进应用包，并在套件的 `font_src` 中用相对于应用包的路径引用它，例如 `"font_src": "assets/Body.ttf"`。`card-host` 从应用包自己的素材服务加载它，不需要网络权限。打包的字体计入 8 MiB 上限，所以较大的中日韩字体请只打包所需的子集。字体中没有的字形（例如中文）会改用 Makepad 内置的中文字体霞鹜文楷（LXGW WenKai）。套件可以引用 `makepad_widgets:resources/` 下三种确切的内置字体：`Inter.ttf`、`LXGWWenKaiRegular.ttf`、`LXGWWenKaiBold.ttf`。单层 `$token` 引用可以解析为受支持的字符串；任意对象、嵌套 token 引用及其他 crate 资源路径，准入检查会拒绝。[App Hub #146](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/146) 已在禁用系统字体回退的 macOS 原生 `card-host` 中验证两种霞鹜文楷字重的绘制。
 - **`desktop-v0.1.0-beta.2` 上的字体。** 这个版本早于打包字体的加载功能：它会安装带打包字体的应用，但卡片不会加载这些字体。要在这个版本上显示中文，请用纯 L0 角色套件（`Surface`、`TextTitle`、`TextBody` 等）组合卡片，并且不设 `font_src`；中文由霞鹜文楷显示。
 - **脚本应用中的字体。** 把字体文件放进应用包，例如 `bundle/fonts/X.ttf`，然后在 `main.splash` 中把它作为 `TextStyle` 的 `FontFamily` 成员加载：`FontMember{res: http_resource("{{assets}}/fonts/X.ttf")}`。许可条款要求随字体提供许可证时，请保留在应用包中，使用受支持的扩展名，例如 `fonts/OFL.txt`。普通文档中的署名 URL 可以通过检查，不会增加网络权限。Agent 指引与结构化资源仍须通过原有的主机、资源检查。
-- **缺失的字形。** 用 `MAKEPAD_SYSTEM_FONTS=0` 测试应用（`MAKEPAD_SYSTEM_FONTS=0 tools/octo run …`）。不设这个变量时，macOS 的系统字体会补上你的字体缺少的字形，把问题掩盖起来。**未验证**：在没有中日韩系统字体的 Linux 上，同样的文字是否会显示为方框，以及字体在 OctoSense 桌面版 0.1.0-rc.1 中的表现。
+- **缺失的字形。** 用 `MAKEPAD_SYSTEM_FONTS=0` 测试应用（`MAKEPAD_SYSTEM_FONTS=0 tools/octo run …`）。不设这个变量时，macOS 的系统字体会补上你的字体缺少的字形，把问题掩盖起来。**未验证**：在没有中日韩系统字体的 Linux 上，同样的文字是否会显示为方框，以及字体在 OctoSense 桌面发行版（0.1.0-rc.1、0.1.0-rc.2）中的表现。
 - **大小。** 应用包不能超过 8 MiB（8,388,608 字节）。
 
 ## 8. 检查应用包
@@ -375,7 +375,7 @@ tools/octo package-help
 | `variable net not found in scope` | 清单缺少 `net`，或没有 `network.hosts`（§6）。 |
 | `this app may not reach <url>` | 该主机不在 `network.hosts` 中（须完全一致，且为小写）。 |
 | `no service answers "…" on this device` | 除了用于发现宿主 API 的 `runtime`，`card-host` 不提供任何宿主服务，出现这条消息是正常的；请在 OctoSense Shell 中试用应用（[HOST-SERVICES](HOST-SERVICES.zh-CN.md)）。 |
-| `run` 输出 `admitted`，但窗口显示 `card-host refused this bundle`，以及 `app <id> needs a host implementing …@1` 或 `this host does not implement required APIs: …` 这样的原因 | 清单的 `requires` 中列有 `host-api-v1`、`backend-api-v1` 或 `script-tools-v1`，而 `card-host` 缺少它们所要求的 API。请在兼容 RC1 发行版中按其平台限制测试应用（[HOST-API-V1 § 发布前](HOST-API-V1.zh-CN.md#发布前)）。 |
+| `run` 输出 `admitted`，但窗口显示 `card-host refused this bundle`，以及 `app <id> needs a host implementing …@1` 或 `this host does not implement required APIs: …` 这样的原因 | 清单的 `requires` 中列有 `host-api-v1`、`backend-api-v1` 或 `script-tools-v1`，而 `card-host` 缺少它们所要求的 API。请在兼容 RC2 发行版中按其平台限制测试应用（[HOST-API-V1 § 发布前](HOST-API-V1.zh-CN.md#发布前)）。 |
 | `check`：`screenshots/01-main.png is named by the listing but is not in the bundle` | 截取真实截图（§8）；绝不要用占位图片。 |
 | `check`：`[refused] listing: listing names no platforms` | 商店信息的 `platforms` 为空，原始模板就是这样。在 `listing.json` 中列出你测试过的平台，或用 `tools/octo new … --platform …` 创建应用（§3）。 |
 | `check`：`[refused] identity: app id "…" ends in "…", which is reserved: …` | 修改 id 的最后一段（§3）。同样的检查结果还会在 `policy` 下再出现一次。 |
@@ -385,7 +385,7 @@ tools/octo package-help
 | `check`：`[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | 当前 `hub` 接受内置 `Inter.ttf`、`LXGWWenKaiRegular.ttf`、`LXGWWenKaiBold.ttf` 的确切路径（§7）；请重建旧版准入工具。其他字体要随应用打包并使用相对路径，例如 `assets/Body.ttf`。`desktop-v0.1.0-beta.2` 仍早于打包字体加载功能；这个版本请使用不设 `font_src` 的纯 L0 角色套件。 |
 | `hub: the bundle exceeds the size limit`，没有报告 | 应用包超过了 8 MiB。压缩或删除图片和字体。 |
 | `card-host: refused: card-host --stamp refuses publisher signing metadata; use an unsigned development copy` | `tools/octo run` 会传入 `--stamp`，所以 `card-host` 在检查证明之前就会拒绝已封存的 Release。请改为运行可编辑源码。 |
-| `card-host: refused: this host has no GitHub publisher verifier` | `card-host` 不运行已封存的 Release。请测试未签名的可编辑源码；准入之后，在兼容宿主（例如 [RC1 发行版](../README.zh-CN.md#下载兼容-shell)）中测试这个 Release。 |
+| `card-host: refused: this host has no GitHub publisher verifier` | `card-host` 不运行已封存的 Release。请测试未签名的可编辑源码；准入之后，在兼容宿主（例如 [RC2 发行版](../README.zh-CN.md#下载兼容-shell)）中测试这个 Release。 |
 | `hub scan … --packet build/review.json` 输出 `hub: build/review.json: No such file or directory (os error 2)` | `hub` 不会创建审核包所在的目录。先运行 `mkdir -p build`。 |
 | `hub check --help` 输出 `hub: No such file or directory (os error 2)` | 你的 `hub` 比 App Hub 当前的 `main` 旧；在当前 `main` 中，`--help` 会输出用法。重新构建（§2），或不带参数运行 `hub`。 |
 | 准入检查的其他拒绝 | 见 App Hub 的[常见拒绝原因及修复](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#常见拒绝原因及修复)。 |

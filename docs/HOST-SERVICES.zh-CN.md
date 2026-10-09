@@ -8,7 +8,7 @@
 
 分发器属于 App Hub（[OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 中的 `crates/appstore/src/services.rs`）。服务属于 OctoSense：[OctoSense](https://github.com/OctoSense-org/OctoSense) 中的 `crates/shell`、`crates/ai-host`、`crates/oauth-service` 和 `apps/*/host-service`。下文未加标注的路径都在 OctoSense 中。
 
-[OctoSense 桌面版 0.1.0-rc.1](../README.zh-CN.md#下载兼容-shell)（RC1）还实现了 Host API v1：版本要求、API 发现、签名的后端操作、设备授权和脚本工具，平台限制见 App Hub 的[宿主 API 兼容性](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/HOST-API.zh-CN.md#限制)。用法见 [Host API v1](HOST-API-V1.zh-CN.md)。`desktop-v0.1.0-beta.2` 没有这些功能。
+[OctoSense 桌面版 0.1.0-rc.1](../README.zh-CN.md#下载兼容-shell)（RC1）及之后的版本还实现了 Host API v1：版本要求、API 发现、签名的后端操作、设备授权和脚本工具，平台限制见 App Hub 的[宿主 API 兼容性](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/HOST-API.zh-CN.md#限制)。用法见 [Host API v1](HOST-API-V1.zh-CN.md)。`desktop-v0.1.0-beta.2` 没有这些功能。
 
 ## 哪个 Shell 提供哪项服务
 
@@ -19,8 +19,8 @@ OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home�
 | 能力族 | 谁可以调用 | 服务代码 |
 | --- | --- | --- |
 | `mail` | 任何获得 `mail` 授权的应用 | `apps/mail/host-service` |
-| `auth` | 任何获得 `auth` 授权的应用。申请数据权限时，还需要对应的能力族（`github`、`gcalendar` 或 `gmail`）；身份权限，以及 RC1 中的后端登录，只需要 `auth`。 | `crates/oauth-service/src/host.rs`、`host_backend.rs` |
-| `github`、`gcalendar` | 获得相应能力族授权的应用，通过 `auth` 建立的连接调用。在 RC1 中，保存前的审阅界面与 `gmail` 一样由 Shell 提供。 | `crates/oauth-service/src/host_api.rs`；在 RC1 中还有 `crates/shell/src/connected_review.rs` |
+| `auth` | 任何获得 `auth` 授权的应用。申请数据权限时，还需要对应的能力族（`github`、`gcalendar` 或 `gmail`）；身份权限，以及 RC1 起的后端登录，只需要 `auth`。 | `crates/oauth-service/src/host.rs`、`host_backend.rs` |
+| `github`、`gcalendar` | 获得相应能力族授权的应用，通过 `auth` 建立的连接调用。从 RC1 起，保存前的审阅界面与 `gmail` 一样由 Shell 提供。 | `crates/oauth-service/src/host_api.rs`；从 RC1 起还有 `crates/shell/src/connected_review.rs` |
 | `gmail` | 获得 `gmail` 授权的应用，通过 `auth` 建立的连接调用。发信前的审阅界面由 Shell 提供。 | `crates/oauth-service/src/host_inbox.rs`、`crates/shell/src/connected_review.rs` |
 | `glance` | 任何获得 `glance` 授权的应用 | `crates/shell/src/glance.rs` |
 | `model` | 任何获得 `model` 授权的应用，受每个应用各自的每日预算限制 | `apps/ai-providers/host-service/src/complete/` |
@@ -29,8 +29,11 @@ OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home�
 | `news` | 仅限系统应用 | `apps/news/host-service` |
 | `calendar` | 仅限 Calendar（`os.calendar`） | `apps/calendar/host-service` |
 | `photos`、`youtube` | 仅限对应系统应用的 `notify` | `crates/shell/src/glance_notice.rs` |
-| `wasm` | 获得 `wasm` 授权的应用，仅限 macOS、Linux 和 Android 上的标准构建（特性 `wasm-functions`，旧名 `wasm-lab`）；尚无任何发布版本提供（见[运行自己的 Rust 代码](RUST.zh-CN.md)） | `crates/shell/src/wasm_service.rs` |
-| `sheet`、`photo`、`word`、`deck`、`cad`、`light`、`sound`、`design`、`film`、`effect`、`vector`、`pdf` | 仅限系统应用：craft 引擎宿主服务（[ADR 0013](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0013-craft-engines-as-pinned-services.zh-CN.md)），在 `main` 上，尚未进入任何发行版。商店应用无法申请这样的能力。 | `apps/<engine>/host-service` |
+| `wasm` | 获得 `wasm` 授权的应用，仅限 macOS、Linux 和 Android 上的标准构建（特性 `wasm-functions`，旧名 `wasm-lab`）；桌面 RC2 在 macOS 和 Linux 上提供，RC1 没有（见[运行自己的 Rust 代码](RUST.zh-CN.md)） | `crates/shell/src/wasm_service.rs` |
+| `files` | 任何获得 `files` 授权的应用（导入、导出和 `pick_photo` 还需要 `storage`）；从 RC2 起，在 macOS、Windows 和 Android 上提供，Linux 需要对话框辅助程序；`share` 仅限 Android | `crates/shell/src/files_service` |
+| `audio` | 任何获得 `audio` 和 `storage` 授权且声明了 `requires: ["host-api-v1"]` 的应用；从 RC2 起，在 macOS 和 Android 上提供，仅限前台 | `crates/shell/src/audio_service` |
+| `device_calendar` | 任何获得 `device_calendar` 授权、声明了 `requires: ["host-api-v1"]` 并取得用户授权和操作系统权限的应用；从 RC2 起，在 macOS 和 Android Home 上提供 | `crates/shell/src/device_calendar` |
+| `sheet`、`photo`、`word`、`deck`、`cad`、`light`、`sound`、`design`、`film`、`effect`、`vector`、`pdf` | 仅限系统应用：craft 引擎宿主服务（[ADR 0013](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0013-craft-engines-as-pinned-services.zh-CN.md)），随桌面 RC2 发行，供系统助手使用。App Hub `main` 现已准入这十二个可申请的能力名称，但 RC2 的准入检查不认识它们，也没有任何商店应用能得到服务。 | `apps/<engine>/host-service` |
 
 对于没有自己服务的其他系统应用，例如 Maps 和 Camera，`glance_notice.rs` 也会响应它们的 `<namespace>.notify`。
 
@@ -41,7 +44,7 @@ OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home�
 | 服务 | 前提 | 可用的构建 |
 | --- | --- | --- |
 | `auth`、`github`、`gcalendar`、`gmail` | GitHub 和 Google 的提供商注册信息。beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取注册信息，这个文件由宿主的运维人员提供；RC1 及之后的构建可以把注册信息编译进去，但公开的 RC1 安装包不含任何注册信息（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。 | RC1 及之后的构建（Windows 和 Linux 无法批准受保护的写操作），以及 desktop-v0.1.0-beta.2 发行版（macOS，Apple 芯片）。尚不支持：在 Android 上登录 Google。 |
-| 使用 `backend` 提供商的 `auth` | 应用后端的注册信息：来自已准入签名应用包的 `backend` 块（[后端指南](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）；应用包没有声明时，来自运维人员配置的 `<apps root>/.host/oauth/backends.json`。 | RC1 及之后的构建；beta.2 没有后端登录。macOS 和 Android 9 及以上版本使用宿主的 WebView 登录，Windows 和 Linux 使用系统浏览器（未验证）。iOS 不支持。 |
+| 使用 `backend` 提供商的 `auth` | 应用后端的注册信息：来自已准入签名应用包的 `backend` 块（[后端指南](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）；应用包没有声明时，来自运维人员配置的 `<apps root>/.host/oauth/backends.json`。 | RC1 及之后的构建；beta.2 没有后端登录。macOS 和 Android 9 及以上版本使用宿主的 WebView 登录，Windows 和 Linux 使用系统浏览器，RC2 补上原生链接打开方式后才可用（Windows 测试程序完成了登录，Linux 未测试）。iOS 不支持。 |
 | `octos`、`model` | 用户在 AI providers 应用中添加的 AI 提供商。 | 所有标准构建；`octos` 仅限托管内核的 Shell。 |
 | `mail` | 用户在 Mail 的面板上登录的账户。 | 所有标准构建。 |
 
@@ -82,7 +85,7 @@ mail.sheet.submit is for the host's sheet, not an app
 
 面板只出现在前台应用之上。来自信息流中速览卡片或 Agent 工具的调用无法弹出面板，所以服务会拒绝这类调用，并用一句话提示用户打开应用，例如 Mail 会返回 `Signing in needs Mail open: open Mail to add an account.` 这句话。
 
-带 `from_sheet` 标记的调用只能证明它出自面板中的程序，不能证明用户按下了什么。所以，必须由用户本人发起的发送或保存要经过原生控件：它在按下和点击时都检查 Makepad 的 `trusted_user_input()`。Gmail 的发送审阅界面在所有版本上都这样做；GitHub 和 Calendar 的保存在 RC1 中也这样做，那里的 `sheet.save` 调用会得到 `Saving requires a physical activation of the native host review. Script and agent requests cannot approve it.` 这句话。在 Windows 和 Linux 上，RC1 既不能批准这类保存，也不能批准 Gmail 发送：受保护的写操作会拒绝执行。在 desktop-v0.1.0-beta.2 上，GitHub 和 Calendar 的服务仍接受来自面板的 `sheet.save`，不做这项检查。
+带 `from_sheet` 标记的调用只能证明它出自面板中的程序，不能证明用户按下了什么。所以，必须由用户本人发起的发送或保存要经过原生控件：它在按下和点击时都检查 Makepad 的 `trusted_user_input()`。Gmail 的发送审阅界面在所有版本上都这样做；GitHub 和 Calendar 的保存从 RC1 起也这样做，那里的 `sheet.save` 调用会得到 `Saving requires a physical activation of the native host review. Script and agent requests cannot approve it.` 这句话。在 Windows 和 Linux 上，没有任何发行版能批准这类保存或 Gmail 发送：受保护的写操作会拒绝执行。在 desktop-v0.1.0-beta.2 上，GitHub 和 Calendar 的服务仍接受来自面板的 `sheet.save`，不做这项检查。
 
 ## 密钥归宿主所有
 
@@ -112,8 +115,10 @@ Mail 在 macOS 和 iOS 上把密码存进钥匙串。在 Android 和其他平台
 | `mail.list` | `{account, folder?, offset?, limit?}` | `{folder, total, messages: [{id, sender, address, subject, preview, time, unread}]}` |
 | `mail.message` | `{account, folder?, message}` | `{id, sender, address, subject, body, html, attachments, date, time}` |
 | `mail.mark_read` | `{account, folder?, message}` | `{}` |
-| `mail.review_send` | `{account, to, subject, body, compose_id?, expected_revision?, folder?, message?}` | 只有 Mail 应用本身（`os.mail`）可以调用；其他应用得到的是 `Only Mail owns reply drafts`。对 Mail 的调用，它返回 `{review_required: true, compose_id, draft_id, revision}` 并打开宿主的审阅界面；用户在那里批准之前，什么都不会发出。 |
-| `mail.send` | – | 一律拒绝：`approval_required: use mail.review_send with Mail open, or open the reply card, then use the host's Approve & Send control. mail.send cannot authorize delivery.` 这段提示指向的方法只有 Mail 可以调用（[OctoSense #409](https://github.com/OctoSense-org/OctoSense/issues/409)）：在 RC1 上，商店应用没有发送路径。请读取已授权的账户并发出通知；发送由用户在 Mail 应用中完成。 |
+| `mail.compose` | `{account, to, subject, body, compose_id?, expected_revision?, folder?, message?}` | 从 RC2 起，任何获得 `mail` 授权的应用都可调用：保存草稿并返回 `compose_id`、`revision` 和状态；不弹出提示，也不发送。请保留 id 和 revision。 |
+| `mail.compose_status` | `{account, compose_id}` | 从 RC2 起：本应用和账户的草稿及其最后一次尝试和回执。结果不确定时，先读它再重试。 |
+| `mail.review_send` | 与 `mail.compose` 相同的字段 | 从 RC2 起，任何获得 `mail` 授权的应用都可在前台调用：打开宿主的原生发送审阅界面；用户在 **Approve & Send** 上亲手点按或取消后，回调才会结束。审阅界面只在 macOS 和 Android 上有；在 Windows 和 Linux 上它会以 `Physical Mail send approval is unavailable on this platform` 失败。真实的 SMTP 投递尚未验证。在 RC1 上只有 Mail 应用本身（`os.mail`）可以调用，其他应用得到的是 `Only Mail owns reply drafts`。 |
+| `mail.send` | 与 `mail.compose` 相同的字段 | 从 RC2 起是兼容入口，打开与 `mail.review_send` 相同的审阅界面；绝不直接走 SMTP。在 RC1 和 beta.2 上，它一律返回 `approval_required: use mail.review_send with Mail open, …`，而这段提示指向的方法商店应用当时无法调用（[OctoSense #409](https://github.com/OctoSense-org/OctoSense/issues/409)）。 |
 | `mail.notify` | `{title, body, card_id?, priority?}`（title 1–80 个字符，body 1–600 个字符） | Mail 的通知卡片出现在速览栏上并发出通知后，返回 `{card_id, replaced, expires_at}`。Mail 的 Agent 以工具的形式调用它。 |
 | `mail.sheet.submit` | 登录字段 | 仅限面板 |
 | `mail.sheet.cancel` | – | 仅限面板 |
