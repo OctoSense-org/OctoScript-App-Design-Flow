@@ -668,16 +668,16 @@ MAX_BUNDLE_BYTES = 8 << 20
 
 # Why a component imports what no host gives it, and what to do instead.
 IMPORT_HINTS = (
-    ("wasi:sockets/", "network sockets (std::net, or a crate such as tokio's net, reqwest or ureq): "
-                      "a component has no network. Fetch in the app's script with `net`, then pass the data in."),
-    ("wasi:http/", "outgoing HTTP, which ADR 0014 adds in phase 3, limited to the manifest's network.hosts. "
-                   "Until then, fetch in the app's script with `net`, then pass the data in."),
+    ("wasi:sockets/", "network sockets (std::net, or a crate such as reqwest, ureq or tokio's net, which open "
+                      "sockets): a component has none. It reaches the app's own hosts over HTTP through wasi:http, "
+                      "with octosense_component::http, once the manifest has `net` and lists them in network.hosts."),
     ("__wbindgen", "JavaScript bindings (wasm-bindgen): turn off the dependency's js or wasm-bindgen feature."),
 )
 
 # Dependencies that cannot work in a component, and what to use instead.
-NETWORK_HINT = ("opens network connections, which a component cannot: it has no sockets, and outgoing "
-                "HTTP waits for ADR 0014's phase 3. Fetch in the app's script with `net`, then pass the data in.")
+NETWORK_HINT = ("opens network sockets, which a component does not have, so it does not work. A component "
+                "reaches the app's own hosts over HTTP through wasi:http, with octosense_component::http, once "
+                "the manifest has `net` and lists them in network.hosts.")
 BLOCKING_CRATES = {
     "openssl-sys": "links OpenSSL, a C library, which does not build for wasm32-wasip2. "
                    "For cryptography use pure-Rust crates such as RustCrypto's sha2, hmac or aes-gcm.",
@@ -838,7 +838,7 @@ def import_hint(name):
     for prefix, hint in IMPORT_HINTS:
         if name.startswith(prefix):
             return hint
-    return "not a WASI interface any host gives a component; drop the dependency that imports it."
+    return "not an interface any host gives a component; drop the dependency that imports it."
 
 
 def refusal_lines(refused):
@@ -1028,8 +1028,24 @@ def script_call(export, kind="component"):
     return f"wasm.{name}({params})" + (f" -> {export['result']}" if export.get("result") else "")
 
 
-def component_manifest_changes(manifest, files):
-    """Adds what a bundle with components needs to `manifest`; returns a note per change."""
+def manifest_hosts(manifest):
+    """The names in the manifest's network.hosts."""
+    network = manifest.get("network")
+    hosts = network.get("hosts") if isinstance(network, dict) else None
+    return [h for h in hosts if isinstance(h, str)] if isinstance(hosts, list) else []
+
+
+def granted_hosts(manifest):
+    """The hosts a component's wasi:http requests may reach: network.hosts,
+    when the manifest has `net` (App Hub's gate and OctoSense's wasm service)."""
+    return manifest_hosts(manifest) if "net" in (manifest.get("capabilities") or []) else []
+
+
+def component_manifest_changes(manifest, files, http=None):
+    """Adds what a bundle with components needs to `manifest`; returns a note
+    per change. `files` and `http` name a component that imports
+    wasi:filesystem or wasi:http. It never adds a host: only the developer
+    knows which hosts a component reaches."""
     notes = []
     capabilities = manifest.setdefault("capabilities", [])
     requires = manifest.setdefault("requires", [])
@@ -1044,6 +1060,11 @@ def component_manifest_changes(manifest, files):
         capabilities.append("storage")
         notes.append(f'added "storage" to capabilities: {files} imports wasi:filesystem, '
                      "and its `/` is the app's storage folder")
+    hosts = manifest_hosts(manifest)
+    if http and hosts and "net" not in capabilities:
+        capabilities.append("net")
+        notes.append(f'added "net" to capabilities: {http} imports wasi:http, and its requests reach '
+                     f"only the hosts in network.hosts ({', '.join(hosts)}), as the app's script does")
     return notes
 
 
@@ -1082,6 +1103,13 @@ def cmd_wasm_build(args):
         if names.count(name) > 1:
             die(f"two crates are both named {name!r}, and each would be fns/{name}.wasm; rename one")
 
+    # What the manifest needs, first, so that each component's line says
+    # what it reaches under the manifest the gate will read.
+    files = next((b["name"] for b in built if wasm_component.uses_files(b["info"]["imports"])), None)
+    http = [b["name"] for b in built if wasm_component.uses_http(b["info"]["imports"])]
+    notes = component_manifest_changes(manifest, files, http[0] if http else None)
+    hosts = granted_hosts(manifest)
+
     fns = bundle / "fns"
     fns.mkdir(exist_ok=True)
     for b in built:
@@ -1091,11 +1119,9 @@ def cmd_wasm_build(args):
             target.write_bytes(b["data"])
         imports = b["info"]["imports"]
         print(f"{'unchanged' if same else 'wrote'} bundle/fns/{target.name}: {len(b['data']):,} bytes, "
-              f"a component that reaches {wasm_component.reach(imports)}")
+              f"a component that reaches {wasm_component.reach(imports, hosts)}")
         for export in b["info"]["exports"]:
             print(f"  {script_call(export)}")
-    files = next((b["name"] for b in built if wasm_component.uses_files(b["info"]["imports"])), None)
-    notes = component_manifest_changes(manifest, files)
     if notes:
         manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
         print("bundle/manifest.json:")
@@ -1103,6 +1129,12 @@ def cmd_wasm_build(args):
             print(f"  {note}")
 
     # What the gate and the service check later, said now.
+    if http and not hosts:
+        one = len(http) == 1
+        print(f"octo: warning: {' and '.join(http)} {'imports' if one else 'import'} wasi:http, but "
+              "the manifest's network.hosts lists no host, so App Hub's gate refuses the bundle and the shell "
+              f"would refuse every request. List the hosts {'it reaches' if one else 'they reach'} in "
+              "network.hosts (bare names, such as \"api.example.com\"), then build again; octo never adds a host.")
     files_in_fns = sorted(fns.glob("*.wasm"))
     if len(files_in_fns) > MAX_FUNCTION_FILES:
         print(f"octo: warning: fns/ holds {len(files_in_fns)} files; App Hub admits at most {MAX_FUNCTION_FILES}")
@@ -1169,7 +1201,10 @@ def cmd_wasm_info(args):
     if kind == "component":
         print(f"{path}: a WebAssembly component (OctoSense ADR 0014), {len(data):,} bytes, read by {reader}")
         refused = wasm_component.refused_imports(imports)
-        print("reaches: " + ("what no host gives a component (refused below)" if refused else wasm_component.reach(imports)))
+        # Without the app's manifest, its hosts are the ones it will list.
+        hosts = ("the hosts in the app's network.hosts",)
+        print("reaches: " + ("what no host gives a component (refused below)" if refused
+                             else wasm_component.reach(imports, hosts)))
         print(f"imports ({len(imports)}):")
         for name in imports:
             print(f"  {name}" + ("   (refused)" if name in refused else ""))
@@ -1183,6 +1218,11 @@ def cmd_wasm_info(args):
             needs = ['"wasm" in capabilities', f'"{COMPONENTS_FEATURE}" in requires']
             if wasm_component.uses_files(imports):
                 needs.append('"storage" in capabilities (it imports wasi:filesystem)')
+            if wasm_component.uses_http(imports):
+                needs.append('"net" in capabilities and the hosts it reaches in network.hosts (it imports wasi:http)')
+            if wasm_component.uses_host_services(imports):
+                needs.append("the capability of each host service it calls (it imports octosense:host, "
+                             "which reaches only the services the app is granted)")
             print("the manifest needs " + ", ".join(needs))
     else:
         print(f"{path}: a WebAssembly core module (OctoSense ADR 0011), {len(data):,} bytes, read by {reader}")

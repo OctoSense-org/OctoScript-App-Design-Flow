@@ -154,6 +154,9 @@ CORE_MODULE = (b'\0asm\x01\0\0\0\x01\x0c\x02\x60\x02\x7f\x7f\x01\x7f\x60\x02\x7f
                b'\x0a\x09\x01\x07\x00\x20\x00\x20\x01\x6a\x0b')
 
 ENV, FILES, TCP = 'wasi:cli/environment@0.2.9', 'wasi:filesystem/types@0.2.9', 'wasi:sockets/tcp@0.2.9'
+CLOCK, RANDOM = 'wasi:clocks/wall-clock@0.2.9', 'wasi:random/random@0.2.9'
+HTTP, HTTP_TYPES = 'wasi:http/outgoing-handler@0.2.9', 'wasi:http/types@0.2.9'
+HOST_SERVICES = 'octosense:host/services@0.1.0'
 
 
 def toolchain():
@@ -180,11 +183,39 @@ class WasmReader(unittest.TestCase):
             ],
         })
         self.assertEqual(wasm_component.refused_imports(info['imports']), [TCP])
-        self.assertEqual(wasm_component.reach([ENV]), 'nothing but its input')
-        self.assertEqual(wasm_component.reach(['wasi:clocks/wall-clock@0.2.9', FILES]),
-                         'the clock and files in its app folder, but no network or other app')
         # A package name is matched whole, as App Hub's gate matches it.
         self.assertEqual(wasm_component.refused_imports(['wasi:clocksmith/x', 'my:pkg/host']), ['wasi:clocksmith/x', 'my:pkg/host'])
+
+    def test_phase_3_admits_http_and_host_services_and_nothing_else(self):
+        imports = ['wasi:io/poll@0.2.9', 'wasi:sockets/network@0.2.9', HTTP_TYPES, 'my:pkg/host',
+                   HOST_SERVICES, 'octosense:hostile/x']
+        self.assertEqual(wasm_component.refused_imports(imports),
+                         ['wasi:sockets/network@0.2.9', 'my:pkg/host', 'octosense:hostile/x'])
+        self.assertTrue(wasm_component.uses_http(imports))
+        self.assertTrue(wasm_component.uses_host_services(imports))
+        self.assertFalse(wasm_component.uses_http([ENV, FILES, 'wasi:httpx/x']))
+        self.assertFalse(wasm_component.uses_host_services([ENV, 'octosense:hostile/x']))
+
+    def test_the_reach_line_is_app_hub_s(self):
+        # App Hub's `ComponentInfo::reach` tests, word for word.
+        reach = wasm_component.reach
+        hosts = ['api.example.com', 'cdn.example.com']
+        self.assertEqual(reach([ENV]), 'nothing but its input')
+        self.assertEqual(reach([CLOCK, RANDOM]), 'the clock and random numbers, but no files, network or other app')
+        self.assertEqual(reach([FILES]), 'files in its app folder, but no network or other app')
+        self.assertEqual(reach([CLOCK, FILES]), 'the clock and files in its app folder, but no network or other app')
+        self.assertEqual(reach([HTTP, CLOCK], hosts),
+                         'the clock and HTTPS to api.example.com, cdn.example.com, but no files or other app')
+        self.assertEqual(reach([HTTP, FILES], hosts[:1]),
+                         'files in its app folder and HTTPS to api.example.com, but no other app')
+        self.assertEqual(reach([HOST_SERVICES]), "its app's host services, but no files, network or other app")
+        self.assertEqual(reach([CLOCK, HOST_SERVICES]), "the clock and its app's host services, but no files, network or other app")
+        self.assertEqual(reach([CLOCK, RANDOM, FILES, HTTP, HOST_SERVICES], hosts[:1]),
+                         "the clock, random numbers, files in its app folder, HTTPS to api.example.com and "
+                         "its app's host services, but no other app")
+        # Hosts reach nothing without the import, and the import nothing without hosts.
+        self.assertEqual(reach([CLOCK], hosts), 'the clock, but no files, network or other app')
+        self.assertEqual(reach([HTTP_TYPES]), 'nothing but its input')
 
     def test_a_core_module_s_imports_and_exports(self):
         self.assertEqual(wasm_component.describe(CORE_MODULE), {
@@ -213,13 +244,37 @@ class WasmReader(unittest.TestCase):
         self.assertTrue(wasm_component.uses_files(info['imports']))
         self.assertEqual(wasm_component.refused_imports(info['imports']), [])
 
+    def test_built_phase_3_examples_import_only_what_they_call(self):
+        found = {name: [d / name for d in SDK_WASM if (d / name).is_file()]
+                 for name in ('http_client.wasm', 'host_services.wasm')}
+        if not all(found.values()): self.skipTest('build sdk/rust first: cargo test --locked --workspace')
+        client = wasm_component.describe(found['http_client.wasm'][0].read_bytes())
+        services = wasm_component.describe(found['host_services.wasm'][0].read_bytes())
+        for info in (client, services):
+            self.assertEqual(wasm_component.refused_imports(info['imports']), [])
+        self.assertTrue(wasm_component.uses_http(client['imports']))
+        self.assertFalse(wasm_component.uses_host_services(client['imports']))
+        self.assertIn(HOST_SERVICES, services['imports'])
+        self.assertFalse(wasm_component.uses_http(services['imports']))
+        self.assertEqual(wasm_component.reach(client['imports'], ['api.example.com']),
+                         'the clock and HTTPS to api.example.com, but no files or other app')
+        self.assertEqual(wasm_component.reach(services['imports']),
+                         "the clock and its app's host services, but no files, network or other app")
+        self.assertEqual([(e['name'], e['params'], e['result']) for e in services['exports']], [
+            ('call', [['service', 'string'], ['args', 'string']], 'result<string, string>'),
+            ('host-apis', [], 'result<string, string>'),
+        ])
+
 
 class WasmCommands(unittest.TestCase):
-    def app(self, temp, capabilities=('storage',)):
+    def app(self, temp, capabilities=('storage',), hosts=None):
         app = Path(temp) / 'texttools'
         Onboarding.create(self, app, 'dev.example.texttools')
         manifest = app / 'bundle/manifest.json'
-        manifest.write_text(json.dumps(dict(json.loads(manifest.read_text()), capabilities=list(capabilities)), indent=2) + '\n')
+        fields = dict(json.loads(manifest.read_text()), capabilities=list(capabilities))
+        if hosts is not None:
+            fields['network'] = {'hosts': list(hosts)}
+        manifest.write_text(json.dumps(fields, indent=2) + '\n')
         return app
 
     def octo(self, *argv):
@@ -349,9 +404,50 @@ class WasmCommands(unittest.TestCase):
             code, _, err = self.build(app, component(ENV, TCP))
             self.assertEqual(code, 1)
             self.assertIn(TCP, err)
-            self.assertIn('a component has no network', err)
+            self.assertIn('a component has none. It reaches the app\'s own hosts over HTTP through wasi:http, '
+                          'with octosense_component::http', err)
             self.assertFalse((app / 'bundle/fns').exists())
             self.assertEqual((app / 'bundle/manifest.json').read_text(), before)
+        with tempfile.TemporaryDirectory() as temp:
+            app = self.app(temp)
+            code, _, err = self.build(app, component(ENV, 'octosense:hostile/x'))
+            self.assertEqual(code, 1)
+            self.assertIn('octosense:hostile/x:\n    not an interface any host gives a component', err)
+
+    def test_build_adds_net_for_http_when_the_manifest_lists_its_hosts(self):
+        with tempfile.TemporaryDirectory() as temp:
+            app = self.app(temp, capabilities=(), hosts=['api.example.com'])
+            code, out, err = self.build(app, component(CLOCK, HTTP, HTTP_TYPES))
+            self.assertEqual(code, 0, out + err)
+            manifest = json.loads((app / 'bundle/manifest.json').read_text())
+            self.assertEqual(manifest['capabilities'], ['wasm', 'net'])
+            self.assertEqual(manifest['network'], {'hosts': ['api.example.com']})
+            self.assertIn('a component that reaches the clock and HTTPS to api.example.com, but no files or other app', out)
+            self.assertIn('added "net" to capabilities: text-tools imports wasi:http, and its requests reach only '
+                          "the hosts in network.hosts (api.example.com), as the app's script does", out)
+            self.assertNotIn('warning', out + err)
+
+    def test_build_never_adds_a_host_and_says_the_gate_refuses_http_without_one(self):
+        for capabilities in ((), ('net',)):
+            with self.subTest(capabilities=capabilities), tempfile.TemporaryDirectory() as temp:
+                app = self.app(temp, capabilities=capabilities)
+                code, out, err = self.build(app, component(CLOCK, HTTP))
+                self.assertEqual(code, 0, out + err)
+                manifest = json.loads((app / 'bundle/manifest.json').read_text())
+                self.assertEqual(manifest['capabilities'], [*capabilities, 'wasm'])
+                self.assertNotIn('network', manifest)
+                self.assertIn('a component that reaches the clock, but no files, network or other app', out)
+                self.assertIn("octo: warning: text-tools imports wasi:http, but the manifest's network.hosts lists no "
+                              "host, so App Hub's gate refuses the bundle", out)
+
+    def test_build_takes_host_services_with_no_grant_of_their_own(self):
+        with tempfile.TemporaryDirectory() as temp:
+            app = self.app(temp, capabilities=())
+            code, out, err = self.build(app, component(CLOCK, HOST_SERVICES))
+            self.assertEqual(code, 0, out + err)
+            manifest = json.loads((app / 'bundle/manifest.json').read_text())
+            self.assertEqual((manifest['capabilities'], manifest['requires']), (['wasm'], ['wasm-components-v1']))
+            self.assertIn("a component that reaches the clock and its app's host services, but no files, network or other app", out)
 
     def test_build_refuses_a_core_module(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -409,6 +505,15 @@ class WasmCommands(unittest.TestCase):
                 self.assertIn(f'{TCP}   (refused)', out)
                 code, out, _ = self.octo('wasm', 'info', str(path), '--json')
                 self.assertEqual(json.loads(out), wasm_component.describe(component(ENV, TCP)))
+                # What a phase 3 component needs, without the app's manifest.
+                path.write_bytes(component(CLOCK, FILES, HTTP, HOST_SERVICES))
+                code, out, _ = self.octo('wasm', 'info', str(path))
+                self.assertEqual(code, 0)
+                self.assertIn("reaches: the clock, files in its app folder, HTTPS to the hosts in the app's "
+                              "network.hosts and its app's host services, but no other app", out)
+                self.assertIn('"storage" in capabilities (it imports wasi:filesystem), "net" in capabilities and '
+                              'the hosts it reaches in network.hosts (it imports wasi:http), the capability of each '
+                              'host service it calls (it imports octosense:host', out)
 
     @unittest.skipUnless(toolchain(), 'needs cargo and the wasm32-wasip2 target (rustup target add wasm32-wasip2)')
     def test_new_then_build_with_cargo_makes_a_working_bundle(self):

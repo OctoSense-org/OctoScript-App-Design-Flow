@@ -17,11 +17,17 @@ import (2), function (3) and export (7) sections.
 COMPONENT_PREAMBLE = b"\0asm\x0d\x00\x01\x00"
 MODULE_PREAMBLE = b"\0asm\x01\x00\x00\x00"
 
-# The WASI packages a component may import, each scoped to its app by the
-# host (ADR 0014); the same list as App Hub's ALLOWED_COMPONENT_IMPORTS.
-# wasi:filesystem needs the manifest's `storage` capability.
-ALLOWED_IMPORTS = ("wasi:cli/", "wasi:clocks/", "wasi:filesystem/", "wasi:io/", "wasi:random/")
+# The packages a component may import, each scoped to its app by the host
+# (ADR 0014); the same list as App Hub's ALLOWED_COMPONENT_IMPORTS.
+# wasi:filesystem needs the manifest's `storage` capability, and wasi:http
+# `net` with the hosts it reaches in `network.hosts` (phase 3). octosense:host
+# needs no grant of its own: it reaches only the host services the app is
+# granted (phase 3). A package name is matched whole.
+ALLOWED_IMPORTS = ("wasi:cli/", "wasi:clocks/", "wasi:filesystem/", "wasi:http/", "wasi:io/", "wasi:random/",
+                   "octosense:host/")
 FILESYSTEM = "wasi:filesystem/"
+HTTP = "wasi:http/"
+HOST_SERVICES = "octosense:host/"
 
 PRIMITIVES = {
     0x7f: "bool", 0x7e: "s8", 0x7d: "u8", 0x7c: "s16", 0x7b: "u16", 0x7a: "s32",
@@ -586,20 +592,45 @@ def refused_imports(imports):
 
 
 def uses_files(imports):
+    """Whether it imports wasi:filesystem: the app's storage folder, with `storage`."""
     return any(name.startswith(FILESYSTEM) for name in imports)
 
 
-def reach(imports):
-    """What a component reaches, in App Hub's words for its reviewers."""
+def uses_http(imports):
+    """Whether it imports wasi:http: requests to the app's network.hosts, with `net`."""
+    return any(name.startswith(HTTP) for name in imports)
+
+
+def uses_host_services(imports):
+    """Whether it imports octosense:host: the host services its app is granted."""
+    return any(name.startswith(HOST_SERVICES) for name in imports)
+
+
+def reach(imports, hosts=()):
+    """What a component reaches, in App Hub's words for its reviewers
+    (`ComponentInfo::reach`). `hosts` are the app's network.hosts when the
+    manifest has `net`: a component reaches them only when it imports
+    wasi:http, and with no hosts, its requests reach nothing."""
     has = lambda prefix: any(name.startswith(prefix) for name in imports)  # noqa: E731
+    files = uses_files(imports)
+    network = uses_http(imports) and bool(hosts)
     reaches = []
     if has("wasi:clocks/"):
         reaches.append("the clock")
     if has("wasi:random/"):
         reaches.append("random numbers")
-    if uses_files(imports):
+    if files:
         reaches.append("files in its app folder")
-    nothing_else = "no network or other app" if uses_files(imports) else "no files, network or other app"
+    if network:
+        reaches.append("HTTPS to " + ", ".join(hosts))
+    if uses_host_services(imports):
+        reaches.append("its app's host services")
+    nothing_else = {
+        (True, True): "no other app",
+        (True, False): "no network or other app",
+        (False, True): "no files or other app",
+        (False, False): "no files, network or other app",
+    }[(files, network)]
     if not reaches:
         return "nothing but its input"
     if len(reaches) == 1:
