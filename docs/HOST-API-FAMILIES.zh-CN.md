@@ -6,7 +6,7 @@
 
 核对基准：desktop-v0.1.0-rc.1 (933abbcf)；OctoSense main c0e67f17 (2026-10-09 UTC)；OctoSense main f0bf8ca7 (2026-10-09 UTC) for the ten wave-2 engine rows, after OctoSense #415。
 
-**评审中，尚未进入任何可下载的构建**：OctoSense [#402](https://github.com/OctoSense-org/OctoSense/pull/402)（配合 App Hub [#175](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/175)，契约 1.9）新增 `files` 能力族（`files.status/import/export`）、`storage.binary_write@1`（`fs.write_bytes`）、`location.sample` 和原生的外部链接打开方式。在它们发行之前，不要依赖这些接口。
+**评审中，尚未进入任何可下载的构建**：OctoSense [#402](https://github.com/OctoSense-org/OctoSense/pull/402)（配合 App Hub [#175](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/175)，契约 1.9）新增 `files` 能力族（`files.status/import/export`）、`storage.binary_write@1`（`fs.write_bytes`）、`location.sample` 和原生的外部链接打开方式。OctoSense [#413](https://github.com/OctoSense-org/OctoSense/pull/413)（配合 App Hub [#176](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/176)，契约 1.10，叠加在 #402 之上）新增面向应用本地文件的 `audio.play/stop/status`、`microphone.record_*`、原生的 `device_calendar` 能力族、`files.pick_photo` 和 `files.share`、面向应用的 `mail.compose` 和 `mail.review_send`、相机、麦克风和定位的权限方法，以及 `Video` 控件的 Splash 控制接口。在它们发行之前，不要依赖其中任何一个。
 
 | 能力族 | 能力 | 响应对象 | 平台 | 起始版本 | 备注 |
 | --- | --- | --- | --- | --- | --- |

@@ -6,7 +6,7 @@ Every `host.request` family, with the capability a manifest declares for it, who
 
 Checked against: desktop-v0.1.0-rc.1 (933abbcf); OctoSense main c0e67f17 (2026-10-09 UTC); OctoSense main f0bf8ca7 (2026-10-09 UTC) for the ten wave-2 engine rows, after OctoSense #415.
 
-**In review, in no build you can download:** OctoSense [#402](https://github.com/OctoSense-org/OctoSense/pull/402) (with App Hub [#175](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/175), contract 1.9) adds a `files` family (`files.status/import/export`), `storage.binary_write@1` (`fs.write_bytes`), `location.sample` and native external-link openers. Do not build on them until they ship.
+**In review, in no build you can download:** OctoSense [#402](https://github.com/OctoSense-org/OctoSense/pull/402) (with App Hub [#175](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/175), contract 1.9) adds a `files` family (`files.status/import/export`), `storage.binary_write@1` (`fs.write_bytes`), `location.sample` and native external-link openers. OctoSense [#413](https://github.com/OctoSense-org/OctoSense/pull/413) (with App Hub [#176](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/176), contract 1.10, stacked on #402) adds `audio.play/stop/status` for app-local files, `microphone.record_*`, a native `device_calendar` family, `files.pick_photo` and `files.share`, app-scoped `mail.compose` and `mail.review_send`, permission methods for camera, microphone and location, and Splash controls for the `Video` widget. Do not build on any of them until they ship.
 
 | Family | Capability | Serves | Platforms | Since | Note |
 | --- | --- | --- | --- | --- | --- |
