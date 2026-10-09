@@ -2,7 +2,8 @@
  "source": "App Hub issue #172, the host-API family table and its addendum (https://github.com/OctoSense-org/OctoSense-App-Hub/issues/172#issuecomment-6073188277, https://github.com/OctoSense-org/OctoSense-App-Hub/issues/172#issuecomment-6073269227)",
  "checked_against": [
   "desktop-v0.1.0-rc.1 (933abbcf)",
-  "OctoSense main c0e67f17 (2026-10-09 UTC)"
+  "OctoSense main c0e67f17 (2026-10-09 UTC)",
+  "OctoSense main f0bf8ca7 (2026-10-09 UTC) for the ten wave-2 engine rows, after OctoSense #415"
  ],
  "families": [
   {
@@ -54,19 +55,20 @@
    "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `cad` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified).",
    "capability": [],
    "platforms": [
-    "android",
-    "ios",
-    "openharmony",
     "macos",
     "windows",
     "linux"
    ],
    "since": "main (unreleased)",
    "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
     "apps/cad/host-service/src/lib.rs:41-42@main",
     "apps/cad/host-service/src/lib.rs:52-59@main",
     "crates/shell/src/apps.rs:295-296@main"
-   ]
+   ],
+   "ref": "OctoSense@f0bf8ca7 (#415)"
   },
   {
    "family": "calendar",
@@ -131,19 +133,20 @@
    "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `deck` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified).",
    "capability": [],
    "platforms": [
-    "android",
-    "ios",
-    "openharmony",
     "macos",
     "windows",
     "linux"
    ],
    "since": "main (unreleased)",
    "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
     "apps/deck/host-service/src/lib.rs:46-47@main",
     "apps/deck/host-service/src/lib.rs:57-64@main",
     "crates/shell/src/apps.rs:292-293@main"
-   ]
+   ],
+   "ref": "OctoSense@f0bf8ca7 (#415)"
   },
   {
    "family": "design",
@@ -151,19 +154,20 @@
    "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `design` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified).",
    "capability": [],
    "platforms": [
-    "android",
-    "ios",
-    "openharmony",
     "macos",
     "windows",
     "linux"
    ],
    "since": "main (unreleased)",
    "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
     "apps/design/host-service/src/lib.rs:39-40@main",
     "apps/design/host-service/src/lib.rs:50-57@main",
     "crates/shell/src/apps.rs:305-306@main"
-   ]
+   ],
+   "ref": "OctoSense@f0bf8ca7 (#415)"
   },
   {
    "family": "effect",
@@ -171,19 +175,20 @@
    "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `effect` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified).",
    "capability": [],
    "platforms": [
-    "android",
-    "ios",
-    "openharmony",
     "macos",
     "windows",
     "linux"
    ],
    "since": "main (unreleased)",
    "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
     "apps/effect/host-service/src/lib.rs:52-53@main",
     "apps/effect/host-service/src/lib.rs:63-70@main",
     "crates/shell/src/apps.rs:312-313@main"
-   ]
+   ],
+   "ref": "OctoSense@f0bf8ca7 (#415)"
   },
   {
    "family": "film",
@@ -191,19 +196,20 @@
    "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `film` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified).",
    "capability": [],
    "platforms": [
-    "android",
-    "ios",
-    "openharmony",
     "macos",
     "windows",
     "linux"
    ],
    "since": "main (unreleased)",
    "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
     "apps/film/host-service/src/lib.rs:55-56@main",
     "apps/film/host-service/src/lib.rs:66-73@main",
     "crates/shell/src/apps.rs:309-310@main"
-   ]
+   ],
+   "ref": "OctoSense@f0bf8ca7 (#415)"
   },
   {
    "family": "gcalendar",
@@ -298,19 +304,20 @@
    "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `light` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified).",
    "capability": [],
    "platforms": [
-    "android",
-    "ios",
-    "openharmony",
     "macos",
     "windows",
     "linux"
    ],
    "since": "main (unreleased)",
    "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
     "apps/light/host-service/src/lib.rs:48-49@main",
     "apps/light/host-service/src/lib.rs:59-66@main",
     "crates/shell/src/apps.rs:298-299@main"
-   ]
+   ],
+   "ref": "OctoSense@f0bf8ca7 (#415)"
   },
   {
    "family": "llm",
@@ -517,19 +524,20 @@
    "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `pdf` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified).",
    "capability": [],
    "platforms": [
-    "android",
-    "ios",
-    "openharmony",
     "macos",
     "windows",
     "linux"
    ],
    "since": "main (unreleased)",
    "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
     "apps/pdf/host-service/src/lib.rs:43-44@main",
     "apps/pdf/host-service/src/lib.rs:54-61@main",
     "crates/shell/src/apps.rs:318-319@main"
-   ]
+   ],
+   "ref": "OctoSense@f0bf8ca7 (#415)"
   },
   {
    "family": "photo",
@@ -628,19 +636,20 @@
    "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `sound` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified).",
    "capability": [],
    "platforms": [
-    "android",
-    "ios",
-    "openharmony",
     "macos",
     "windows",
     "linux"
    ],
    "since": "main (unreleased)",
    "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
     "apps/sound/host-service/src/lib.rs:44-45@main",
     "apps/sound/host-service/src/lib.rs:55-62@main",
     "crates/shell/src/apps.rs:302-303@main"
-   ]
+   ],
+   "ref": "OctoSense@f0bf8ca7 (#415)"
   },
   {
    "family": "vector",
@@ -648,19 +657,20 @@
    "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `vector` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified).",
    "capability": [],
    "platforms": [
-    "android",
-    "ios",
-    "openharmony",
     "macos",
     "windows",
     "linux"
    ],
    "since": "main (unreleased)",
    "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
     "apps/vector/host-service/src/lib.rs:43-44@main",
     "apps/vector/host-service/src/lib.rs:54-61@main",
     "crates/shell/src/apps.rs:315-316@main"
-   ]
+   ],
+   "ref": "OctoSense@f0bf8ca7 (#415)"
   },
   {
    "family": "wasm",
@@ -693,19 +703,20 @@
    "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `word` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified).",
    "capability": [],
    "platforms": [
-    "android",
-    "ios",
-    "openharmony",
     "macos",
     "windows",
     "linux"
    ],
    "since": "main (unreleased)",
    "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
     "apps/word/host-service/src/lib.rs:40-41@main",
     "apps/word/host-service/src/lib.rs:51-58@main",
     "crates/shell/src/apps.rs:289-290@main"
-   ]
+   ],
+   "ref": "OctoSense@f0bf8ca7 (#415)"
   },
   {
    "family": "youtube",

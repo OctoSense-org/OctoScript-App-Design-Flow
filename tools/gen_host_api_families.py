@@ -37,6 +37,8 @@ NOTE = {
  "gmail": ("Through a connection made with `auth`. The shell reviews each send, and RC1 cannot approve one on Windows or Linux.", "通过 `auth` 建立的连接；发送审阅由 Shell 负责，RC1 在 Windows 和 Linux 上无法批准。"),
  "glance": ("Cards on the Glance screen that open only this app.", "速览栏上的卡片，只会打开本应用。"),
 }
+DESKTOP_ENGINES = {"word", "deck", "cad", "light", "sound", "design", "film", "effect", "vector", "pdf"}
+DESKTOP_ENGINE_NOTE = ("A craft engine behind a host service for system apps ([ADR 0013](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0013-craft-engines-as-pinned-services.md)), in desktop builds only on OctoSense `main` (feature `craft-engines`); the Windows build is unverified. Not a capability a store app can declare.", "面向系统应用的 craft 引擎宿主服务（[ADR 0013](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0013-craft-engines-as-pinned-services.zh-CN.md)），在 OctoSense `main` 上仅限桌面构建（特性 `craft-engines`）；Windows 构建尚未验证。商店应用无法申请。")
 ENGINE_NOTE = ("A craft engine behind a host service for system apps ([ADR 0013](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0013-craft-engines-as-pinned-services.md)). Not a capability a store app can declare.", "面向系统应用的 craft 引擎宿主服务（[ADR 0013](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0013-craft-engines-as-pinned-services.zh-CN.md)）。商店应用无法申请。")
 def cap(r, lang):
     c = r.get("capability")
@@ -65,7 +67,7 @@ def gen(lang):
         f = r["family"]; serves = SERVES.get(str(r.get("served_to")), (str(r.get("served_to")),)*2)[i]
         plats = "、".join(PLAT.get(p, p) for p in (r.get("platforms") or [])) if lang == "zh" else ", ".join(PLAT.get(p, p) for p in (r.get("platforms") or []))
         since = r.get("since"); since = SINCE.get(since, (since, since))[i] if since else "—"
-        note = (ENGINE_NOTE if f in ENGINES else NOTE.get(f, ("", "")))[i]
+        note = (DESKTOP_ENGINE_NOTE if f in DESKTOP_ENGINES else ENGINE_NOTE if f in ENGINES else NOTE.get(f, ("", "")))[i]
         L.append(f"| `{f}` | {cap(r, lang)} | {serves} | {plats or '—'} | {since} | {note} |")
     out = os.path.join(ROOT, "docs", "HOST-API-FAMILIES.md" if lang == "en" else "HOST-API-FAMILIES.zh-CN.md")
     open(out, "w", encoding="utf-8").write("\n".join(L) + "\n"); print("wrote", out)
