@@ -253,6 +253,8 @@ fn tip_20_percent() {
 "network": { "hosts": ["api.open-meteo.com"] }
 ```
 
+在围绕某个宿主 API 搭建界面之前，先确认它所属的能力族会在你声明的平台上响应商店应用（[HOST-API-FAMILIES](HOST-API-FAMILIES.zh-CN.md)）：准入检查接受的能力，仍可能只响应系统应用。
+
 `main.splash` 中提到的每个 `https://` 主机都要列入 `network.hosts`。声明了 `images` 或 `web` 时，准入检查接受任何 `https://` 主机，但在运行时，未列出的主机只能提供图片（`images`）或网页视图中的页面（`web`）；`net` 仍然只能访问列出的主机。纯 `http://` 一律不允许。没有 `storage`，应用就完全没有存储：准入检查的 `grants:` 行会显示 `storage none`。[CAPABILITIES](CAPABILITIES.zh-CN.md) 说明每项能力解锁什么、用户会看到什么；[HOST-SERVICES](HOST-SERVICES.zh-CN.md) 介绍 Mail 等服务。
 
 **已连接账户。** 要使用用户的 GitHub 或 Google 账户，像参考应用那样声明 `auth`、对应提供商的能力族（`github`、`gmail` 或 `gcalendar`）和 `storage.accounts: true`；如果只需识别用户身份、不读取其数据，只声明 `auth` 就够了。登录由宿主完成，宿主给应用的是连接句柄，绝不是令牌。这些服务需要兼容的 OctoSense Shell。当前公开应用使用 [RC1 发行版](../README.zh-CN.md#下载兼容-shell)。它没有公开提供商注册信息，需要发行方或运维人员提供，例如通过 `oauth/clients.json`（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。`card-host` 会返回 `no service answers "…" on this device`。完整示例见 [examples/connected-apps](../examples/connected-apps/README.zh-CN.md)。
