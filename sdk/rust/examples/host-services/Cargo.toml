@@ -1,0 +1,12 @@
+[package]
+name = "host-services"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "The app's host services through octosense_component::host, for the end-to-end tests."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+octosense-component = { path = "../../octosense-component" }

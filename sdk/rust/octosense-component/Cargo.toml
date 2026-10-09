@@ -10,3 +10,8 @@ repository.workspace = true
 [dependencies]
 octosense-component-macros = { path = "../octosense-component-macros", version = "0.1.0" }
 wit-bindgen = "0.62"
+
+# WASI 0.2's own bindings, for `http` (wasi:http). Only a component built for
+# wasm32-wasip2 links them; elsewhere, `http` says it runs only there.
+[target.'cfg(all(target_os = "wasi", target_env = "p2"))'.dependencies]
+wasi = "0.14.7"

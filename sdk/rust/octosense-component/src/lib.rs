@@ -42,7 +42,17 @@
 //! The component runs in the OctoSense `wasm` service. It has clocks and
 //! randomness, and with the app's `storage` grant, the app's own folder as
 //! `/` through `std::fs`. Its stdout and stderr ([`log`]) become log lines.
-//! It has no network, environment or other host access.
+//! ADR 0014's phase 3 adds two more, each imported only by a component that
+//! calls it:
+//! - [`http`]: requests to the hosts in the app's `network.hosts`, over
+//!   HTTPS, when the manifest has the `net` capability;
+//! - [`host`]: the host services the app is granted, as its script calls
+//!   them with `host.request`.
+//!
+//! It has no sockets, environment or other host access.
+
+pub mod host;
+pub mod http;
 
 pub use octosense_component_macros::export;
 

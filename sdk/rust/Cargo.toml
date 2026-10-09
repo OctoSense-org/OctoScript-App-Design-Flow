@@ -9,8 +9,14 @@ members = [
     "examples/markdown-tools",
     "examples/type-tour",
     "examples/template",
+    "examples/http-client",
+    "examples/host-services",
     "e2e",
 ]
+# Cargo.lock keeps wasip2, behind octosense-component's `wasi`, at
+# 1.0.1+wasi-0.2.4: what a crate made from templates/rust-component (Rust
+# 1.85, an MSRV-aware resolver) resolves, so the end-to-end tests build what
+# a new crate builds. wasip2 1.0.2 and later need Rust 1.87.
 
 [workspace.package]
 version = "0.1.0"

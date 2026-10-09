@@ -11,9 +11,12 @@
 //!
 //! Use any crate that builds for `wasm32-wasip2` (`tools/octo wasm doctor`
 //! names the ones that do not). Its code has the clock and random numbers,
-//! the app's storage folder as `/` through `std::fs` when the app has
-//! `storage`, and no network. What a function may take and return is in
-//! OctoSense App Flow's docs/RUST.md.
+//! and the app's storage folder as `/` through `std::fs` when the app has
+//! `storage`. It has no sockets: `octosense_component::http` reaches the
+//! app's own hosts when the app has `net` and lists them in `network.hosts`,
+//! and `octosense_component::host` calls the host services the app is
+//! granted. What a function may take and return is in OctoSense App Flow's
+//! docs/RUST.md.
 
 #[octosense_component::export]
 pub mod functions {

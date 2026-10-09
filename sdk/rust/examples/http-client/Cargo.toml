@@ -1,0 +1,12 @@
+[package]
+name = "http-client"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "HTTP to the app's own hosts through octosense_component::http, for the end-to-end tests."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+octosense-component = { path = "../../octosense-component" }

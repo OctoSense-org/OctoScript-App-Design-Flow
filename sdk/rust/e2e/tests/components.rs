@@ -6,19 +6,37 @@
 //! wasm32-wasip2` into `target/e2e-wasm`, which does nothing when it is up to
 //! date), or for markdown-tools takes the file `OCTOSENSE_COMPONENT_WASM`
 //! names.
+//!
+//! Phase 3's two imports are linked as OctoSense links them, with its rules
+//! copied here: `wasi:http`, whose requests reach only the hosts the test
+//! grants ([`Hosts`]), and `octosense:host`, whose calls reach fake host
+//! services ([`Services`]).
 
+use std::collections::BTreeSet;
+use std::future::Future;
+use std::io::{BufRead, BufReader, Read, Write};
+use std::net::{SocketAddr, TcpListener, TcpStream};
 use std::path::{Path, PathBuf};
 use std::process::Command;
+use std::time::Duration;
 
 use wasmtime::component::types::{ComponentItem, Type};
 use wasmtime::component::{Component, Func, Instance, Linker, ResourceTable, Val};
-use wasmtime::{Config, Engine, Store};
+use wasmtime::{Config, Engine, Store, StoreContextMut};
 use wasmtime_wasi::p2::pipe::MemoryOutputPipe;
 use wasmtime_wasi::{FsPerms, WasiCtx, WasiCtxBuilder, WasiCtxView, WasiView};
+use wasmtime_wasi_http::{
+    RequestOptions, WasiBody, WasiHttpCtx, WasiHttpCtxView, WasiHttpHooks, WasiHttpView,
+};
 
 struct State {
     wasi: WasiCtx,
     table: ResourceTable,
+    http: WasiHttpCtx,
+    /// The hosts its `wasi:http` requests may reach, and what it was refused.
+    hosts: Hosts,
+    /// Its app's host services (`octosense:host`), when the test gives some.
+    services: Option<Services>,
 }
 
 impl WasiView for State {
@@ -28,6 +46,160 @@ impl WasiView for State {
             table: &mut self.table,
         }
     }
+}
+
+impl WasiHttpView for State {
+    fn http(&mut self) -> WasiHttpCtxView<'_> {
+        WasiHttpCtxView {
+            ctx: &mut self.http,
+            table: &mut self.table,
+            hooks: &mut self.hosts,
+        }
+    }
+}
+
+/// OctoSense's rule for a component's requests (ADR 0014 phase 3, its
+/// `crates/wasm-host/src/component/net.rs`): a listed host, in any case and
+/// on any port, over HTTPS, or over plain HTTP to the device itself. Any
+/// other request fails inside the component with `HTTP-request-denied`, and
+/// the refusal is recorded as OctoSense logs it.
+struct Hosts {
+    hosts: Vec<String>,
+    refused: Vec<String>,
+}
+
+impl Hosts {
+    fn allows(&self, uri: &http::Uri) -> Result<(), &'static str> {
+        const NOT_LISTED: &str = "it is not one of the app's network hosts";
+        let host = uri.host().ok_or(NOT_LISTED)?.to_ascii_lowercase();
+        if !self
+            .hosts
+            .iter()
+            .any(|listed| listed.eq_ignore_ascii_case(&host))
+        {
+            return Err(NOT_LISTED);
+        }
+        let this_device = matches!(host.as_str(), "localhost" | "127.0.0.1" | "[::1]");
+        if uri.scheme() != Some(&http::uri::Scheme::HTTPS) && !this_device {
+            return Err("it is plain HTTP; a component's requests use HTTPS");
+        }
+        Ok(())
+    }
+}
+
+type Io = Box<dyn Future<Output = Result<(), wasmtime_wasi_http::Error>> + Send>;
+type Sent = Box<
+    dyn Future<Output = Result<(http::Response<WasiBody>, Io), wasmtime_wasi_http::Error>> + Send,
+>;
+
+impl WasiHttpHooks for Hosts {
+    fn send_request(
+        &mut self,
+        request: http::Request<WasiBody>,
+        options: Option<RequestOptions>,
+        fut: Io,
+    ) -> Sent {
+        _ = fut;
+        let allowed = self.allows(request.uri());
+        if let Err(why) = allowed {
+            let authority = request.uri().authority().map(|a| a.to_string());
+            self.refused.push(format!(
+                "a request to {} was refused: {why}",
+                authority.unwrap_or_default()
+            ));
+        }
+        let allowed = allowed.is_ok();
+        Box::new(async move {
+            if !allowed {
+                return Err(wasmtime_wasi_http::Error::HttpRequestDenied);
+            }
+            // OctoSense clamps a request's timeouts to what is left of its
+            // call (10 s); these tests bound each request by 10 s.
+            let clamp = |asked: Option<Duration>| {
+                Some(asked.map_or(Duration::from_secs(10), |a| a.min(Duration::from_secs(10))))
+            };
+            let options = options.unwrap_or_default();
+            let options = RequestOptions {
+                connect_timeout: clamp(options.connect_timeout),
+                first_byte_timeout: clamp(options.first_byte_timeout),
+                between_bytes_timeout: clamp(options.between_bytes_timeout),
+            };
+            let (response, io) =
+                wasmtime_wasi_http::default_send_request(request, Some(options)).await?;
+            Ok((
+                response.map(http_body_util::BodyExt::boxed_unsync),
+                Box::new(io) as Io,
+            ))
+        })
+    }
+}
+
+/// Fake host services behind `octosense:host`, held to OctoSense's rules
+/// (ADR 0014 phase 3, its `crates/shell/src/wasm_service.rs`): an app calls
+/// only the families its manifest grants, never `wasm.*`, with JSON
+/// arguments. These answer `runtime.list` and echo `notes.get`.
+struct Services {
+    app: String,
+    granted: BTreeSet<String>,
+    calls: Vec<(String, String)>,
+}
+
+impl Services {
+    fn new(app: &str, capabilities: &[&str]) -> Services {
+        Services {
+            app: app.into(),
+            granted: capabilities.iter().map(|c| c.to_string()).collect(),
+            calls: Vec::new(),
+        }
+    }
+
+    fn request(&mut self, service: &str, args: &str) -> Result<String, String> {
+        self.calls.push((service.into(), args.into()));
+        let family = service.split('.').next().unwrap_or("");
+        if family == "wasm" {
+            return Err(
+                "a component cannot call wasm.*: its app's functions are already running it".into(),
+            );
+        }
+        if !self.granted.contains(family) {
+            return Err(format!(
+                "{} was not granted the {family} service, which {service} needs",
+                self.app
+            ));
+        }
+        let args: serde_json::Value = serde_json::from_str(args)
+            .map_err(|e| format!("{service}: the arguments are not JSON: {e}"))?;
+        match service {
+            "runtime.list" => Ok(r#"{"methods":["runtime.list","runtime.describe"]}"#.into()),
+            "notes.get" => Ok(serde_json::json!({"app": self.app, "args": args}).to_string()),
+            _ => Err(format!("the fake services do not answer {service}")),
+        }
+    }
+}
+
+/// Links WASI 0.2, `wasi:http` and `octosense:host/services`, as OctoSense's
+/// runtime does.
+fn linker(engine: &Engine) -> Linker<State> {
+    let mut linker = Linker::new(engine);
+    wasmtime_wasi::p2::add_to_linker_sync(&mut linker).unwrap();
+    wasmtime_wasi_http::p2::add_only_http_to_linker_sync(&mut linker).unwrap();
+    linker
+        .instance("octosense:host/services@0.1.0")
+        .unwrap()
+        .func_wrap(
+            "request",
+            |mut store: StoreContextMut<'_, State>,
+             (service, args): (String, String)|
+             -> wasmtime::Result<(Result<String, String>,)> {
+                let answer = match store.data_mut().services.as_mut() {
+                    Some(services) => services.request(&service, &args),
+                    None => Err("this host gives a component no host services".into()),
+                };
+                Ok((answer,))
+            },
+        )
+        .unwrap();
+    linker
 }
 
 fn workspace() -> PathBuf {
@@ -82,6 +254,11 @@ fn load(storage: &Path) -> Loaded {
 }
 
 fn load_component(storage: &Path, package: &str, file: &str) -> Loaded {
+    load_with(storage, package, file, &[], None)
+}
+
+/// A component compiled for a fresh engine.
+fn compile(package: &str, file: &str) -> (Engine, Component) {
     let mut config = Config::new();
     config.wasm_component_model(true);
     let engine = Engine::new(&config).unwrap();
@@ -92,6 +269,19 @@ fn load_component(storage: &Path, package: &str, file: &str) -> Loaded {
         "a component, not a core module"
     );
     let component = Component::new(&engine, &bytes).unwrap();
+    (engine, component)
+}
+
+/// Loads a component whose requests may reach `hosts`, and whose host
+/// services are `services`.
+fn load_with(
+    storage: &Path,
+    package: &str,
+    file: &str,
+    hosts: &[&str],
+    services: Option<Services>,
+) -> Loaded {
+    let (engine, component) = compile(package, file);
     let stderr = MemoryOutputPipe::new(64 << 10);
     let mut wasi = WasiCtxBuilder::new();
     wasi.stderr(stderr.clone())
@@ -105,11 +295,15 @@ fn load_component(storage: &Path, package: &str, file: &str) -> Loaded {
         State {
             wasi: wasi.build(),
             table: ResourceTable::new(),
+            http: WasiHttpCtx::new(),
+            hosts: Hosts {
+                hosts: hosts.iter().map(|h| h.to_string()).collect(),
+                refused: Vec::new(),
+            },
+            services,
         },
     );
-    let mut linker = Linker::new(&engine);
-    wasmtime_wasi::p2::add_to_linker_sync(&mut linker).unwrap();
-    let instance = linker.instantiate(&mut store, &component).unwrap();
+    let instance = linker(&engine).instantiate(&mut store, &component).unwrap();
     Loaded {
         store,
         instance,
@@ -416,4 +610,251 @@ fn every_type_mapping_crosses_both_ways() {
         Val::List(vec![s("a"), s("c")])
     );
     let _ = std::fs::remove_dir_all(dir);
+}
+
+// ------------------------------------------------- phase 3: HTTP and host calls
+
+/// A local HTTP/1.1 server, one request per connection: `POST` echoes its
+/// body with its content type; `GET /missing` answers 404; any other `GET`
+/// answers 200 with its request line and its `x-test` header as text.
+fn serve() -> SocketAddr {
+    let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+    let address = listener.local_addr().unwrap();
+    std::thread::spawn(move || {
+        for stream in listener.incoming().flatten() {
+            std::thread::spawn(move || answer(stream));
+        }
+    });
+    address
+}
+
+fn answer(mut stream: TcpStream) {
+    let mut reader = BufReader::new(stream.try_clone().unwrap());
+    let mut line = String::new();
+    reader.read_line(&mut line).unwrap();
+    let mut headers = Vec::new();
+    loop {
+        let mut header = String::new();
+        if reader.read_line(&mut header).unwrap_or(0) == 0 || header == "\r\n" {
+            break;
+        }
+        if let Some((name, value)) = header.trim_end().split_once(':') {
+            headers.push((name.trim().to_ascii_lowercase(), value.trim().to_string()));
+        }
+    }
+    let header = |name: &str| {
+        headers
+            .iter()
+            .find(|(n, _)| n == name)
+            .map(|(_, v)| v.clone())
+    };
+    let mut body = vec![0; header("content-length").map_or(0, |n| n.parse().unwrap())];
+    reader.read_exact(&mut body).unwrap();
+    let request_line = line.trim_end().trim_end_matches(" HTTP/1.1").to_string();
+    let (status, content_type, body) = if request_line.starts_with("POST ") {
+        ("200 OK", header("content-type").unwrap_or_default(), body)
+    } else if request_line == "GET /missing" {
+        ("404 Not Found", "text/plain".into(), b"not here".to_vec())
+    } else {
+        let test = header("x-test").map_or(String::new(), |v| format!(" x-test: {v}"));
+        (
+            "200 OK",
+            "text/plain".into(),
+            format!("{request_line}{test}").into_bytes(),
+        )
+    };
+    let head = format!(
+        "HTTP/1.1 {status}\r\nContent-Type: {content_type}\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
+        body.len()
+    );
+    let _ = stream.write_all(head.as_bytes());
+    let _ = stream.write_all(&body);
+}
+
+/// The http-client example's `page` record.
+fn page(status: u16, content_type: &str, body: &str) -> Val {
+    Val::Result(Ok(Some(Box::new(Val::Record(vec![
+        ("status".into(), Val::U16(status)),
+        (
+            "content-type".into(),
+            Val::Option(Some(Box::new(s(content_type)))),
+        ),
+        ("body".into(), s(body)),
+    ])))))
+}
+
+/// The error text of a `result<_, string>` that failed.
+fn error(val: Val) -> String {
+    match val {
+        Val::Result(Err(Some(error))) => match *error {
+            Val::String(text) => text,
+            other => panic!("{other:?}"),
+        },
+        other => panic!("not an error: {other:?}"),
+    }
+}
+
+#[test]
+fn http_reaches_the_apps_own_hosts_and_nothing_else() {
+    let server = serve();
+    let url = |path: &str| format!("http://{server}{path}");
+    let dir = storage();
+    let mut c = load_with(
+        &dir,
+        "http-client",
+        "http_client.wasm",
+        &["127.0.0.1", "api.example.com"],
+        None,
+    );
+    // A GET: its status, content type and body, with the path and query.
+    assert_eq!(
+        call(&mut c, "fetch", &[s(&url("/items?page=2"))]),
+        page(200, "text/plain", "GET /items?page=2")
+    );
+    // A 404 is a response, not an error.
+    assert_eq!(
+        call(&mut c, "fetch", &[s(&url("/missing"))]),
+        page(404, "text/plain", "not here")
+    );
+    // A header from the request builder reaches the server.
+    assert_eq!(
+        call(
+            &mut c,
+            "fetch-with",
+            &[s(&url("/items")), s("x-test"), s("yes")]
+        ),
+        page(200, "text/plain", "GET /items x-test: yes")
+    );
+    // The host sets the hop-by-hop headers itself.
+    assert_eq!(
+        error(call(
+            &mut c,
+            "fetch-with",
+            &[s(&url("/items")), s("connection"), s("close")]
+        )),
+        "the host sets the header \"connection\" itself"
+    );
+    // A body larger than one 4096-byte write arrives whole, with its type.
+    let json = format!(r#"{{"text":"{}"}}"#, "x".repeat(10_000));
+    assert_eq!(
+        call(&mut c, "post-json", &[s(&url("/echo")), s(&json)]),
+        page(200, "application/json", &json)
+    );
+    // The same server under another name is another host: refused inside
+    // the component, which says so.
+    let port = server.port();
+    let refused = error(call(
+        &mut c,
+        "fetch",
+        &[s(&format!("http://localhost:{port}/items"))],
+    ));
+    assert_eq!(
+        refused,
+        format!(
+            "the host refused the request to http://localhost:{port}/items: its host is not in the \
+             app's network.hosts, or the request is plain HTTP (ErrorCode::HttpRequestDenied)"
+        )
+    );
+    // A listed host other than the device itself takes HTTPS only.
+    let plain = error(call(&mut c, "fetch", &[s("http://api.example.com/v1")]));
+    assert!(plain.contains("(ErrorCode::HttpRequestDenied)"), "{plain}");
+    assert_eq!(
+        c.store.data().hosts.refused,
+        [
+            format!("a request to localhost:{port} was refused: it is not one of the app's network hosts"),
+            "a request to api.example.com was refused: it is plain HTTP; a component's requests use HTTPS"
+                .to_string(),
+        ]
+    );
+    // A URL the SDK cannot send never reaches the host.
+    let bad = error(call(&mut c, "fetch", &[s("ftp://api.example.com/x")]));
+    assert_eq!(
+        bad,
+        "\"ftp://api.example.com/x\" is not an https:// or http:// URL"
+    );
+    // With no hosts, a component reaches none.
+    let mut offline = load_with(&dir, "http-client", "http_client.wasm", &[], None);
+    let refused = error(call(&mut offline, "fetch", &[s(&url("/items"))]));
+    assert!(refused.contains("HttpRequestDenied"), "{refused}");
+    let _ = std::fs::remove_dir_all(dir);
+}
+
+#[test]
+fn a_component_calls_its_apps_granted_host_services() {
+    let dir = storage();
+    let services = Services::new("dev.example.texttools", &["wasm", "runtime", "notes"]);
+    let mut c = load_with(
+        &dir,
+        "host-services",
+        "host_services.wasm",
+        &[],
+        Some(services),
+    );
+    let ok = |text: &str| Val::Result(Ok(Some(Box::new(s(text)))));
+    assert_eq!(
+        call(&mut c, "host-apis", &[]),
+        ok(r#"{"methods":["runtime.list","runtime.describe"]}"#)
+    );
+    assert_eq!(
+        call(&mut c, "call", &[s("notes.get"), s(r#"{"id": 1}"#)]),
+        ok(r#"{"app":"dev.example.texttools","args":{"id":1}}"#)
+    );
+    // What the host refuses reaches the component as its error.
+    assert_eq!(
+        error(call(&mut c, "call", &[s("mail.list"), s("{}")])),
+        "dev.example.texttools was not granted the mail service, which mail.list needs"
+    );
+    assert_eq!(
+        error(call(&mut c, "call", &[s("wasm.functions"), s("{}")])),
+        "a component cannot call wasm.*: its app's functions are already running it"
+    );
+    let not_json = error(call(&mut c, "call", &[s("notes.get"), s("id=1")]));
+    assert!(
+        not_json.starts_with("notes.get: the arguments are not JSON"),
+        "{not_json}"
+    );
+    let calls = &c.store.data().services.as_ref().unwrap().calls;
+    assert_eq!(calls.len(), 5);
+    assert_eq!(calls[1], ("notes.get".into(), r#"{"id": 1}"#.into()));
+    // A host that gives a component no services.
+    let mut alone = load_with(&dir, "host-services", "host_services.wasm", &[], None);
+    assert_eq!(
+        error(call(&mut alone, "host-apis", &[])),
+        "this host gives a component no host services"
+    );
+    let _ = std::fs::remove_dir_all(dir);
+}
+
+#[test]
+fn a_component_imports_http_and_host_services_only_when_it_calls_them() {
+    let imports = |package: &str, file: &str| -> Vec<String> {
+        let (engine, component) = compile(package, file);
+        let names = component
+            .component_type()
+            .imports(&engine)
+            .map(|(name, _)| name.to_string())
+            .collect();
+        names
+    };
+    let has = |names: &[String], prefix: &str| names.iter().any(|n| n.starts_with(prefix));
+    let client = imports("http-client", "http_client.wasm");
+    assert!(has(&client, "wasi:http/outgoing-handler@"), "{client:?}");
+    assert!(!has(&client, "octosense:host/"), "{client:?}");
+    let services = imports("host-services", "host_services.wasm");
+    assert!(
+        services.contains(&"octosense:host/services@0.1.0".to_string()),
+        "{services:?}"
+    );
+    assert!(!has(&services, "wasi:http/"), "{services:?}");
+    for (package, file) in [
+        ("markdown-tools", "markdown_tools.wasm"),
+        ("component-template", "component_template.wasm"),
+        ("type-tour", "type_tour.wasm"),
+    ] {
+        let names = imports(package, file);
+        assert!(
+            !has(&names, "wasi:http/") && !has(&names, "octosense:host/"),
+            "{package}: {names:?}"
+        );
+    }
 }
