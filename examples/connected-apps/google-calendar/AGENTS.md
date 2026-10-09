@@ -5,17 +5,17 @@
 This directory is one OctoSense script app. `bundle/` is the app and the only
 thing submitted to the App Hub; everything else stays outside it.
 
-Follow the Design Flow docs (the harness), and do not invent requirements or
+Follow the App Flow docs (the harness), and do not invent requirements or
 APIs:
 
-- Build, run and test: [QUICKSTART](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/QUICKSTART.md)
-- The language and every API an app may use: [SCRIPT-API](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/SCRIPT-API.md)
-- Capabilities: [CAPABILITIES](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/CAPABILITIES.md)
-- Final bundle, screenshots and human checkpoints: [PUBLISHING](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/PUBLISHING.md)
+- Build, run and test: [QUICKSTART](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/QUICKSTART.md)
+- The language and every API an app may use: [SCRIPT-API](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/SCRIPT-API.md)
+- Capabilities: [CAPABILITIES](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/CAPABILITIES.md)
+- Final bundle, screenshots and human checkpoints: [PUBLISHING](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/PUBLISHING.md)
 - Signing and the submission issue: App Hub's [SUBMITTING](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md)
 
 Run this edit-and-check loop from this directory, with
-`OCTO=<path to OctoScript-App-Design-Flow>/tools/octo`. The CLI lives in the
+`OCTO=<path to OctoSense-App-Flow>/tools/octo`. The CLI lives in the
 harness repository, not here; on Windows, run it as `python $OCTO`.
 
 1. Edit `bundle/main.splash`.
@@ -26,7 +26,7 @@ harness repository, not here; on Windows, run it as `python $OCTO`.
    and open the PNG. Without a host service, the agenda is empty and shows
    `Google sign-in unavailable: no service answers "auth" on this device`.
 4. Run `curl -s 127.0.0.1:8141/quit`.
-5. From the App Design Flow root, run
+5. From the App Flow root, run
    `python3 examples/connected-apps/google-calendar/scripts/verify-native.py`.
    It prints a JSON summary with `"passed": 5`.
 6. Run `$OCTO check bundle`.

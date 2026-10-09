@@ -137,7 +137,7 @@ approval and authenticated catalog publication remain separate steps.
 Follow [QUICKSTART](QUICKSTART.md) for cloning and prerequisites. Use a
 prepared workspace with this repository, App Hub, `makepad`,
 `octoscript-makepad` and `octoscript` as siblings. The setup and build steps
-are QUICKSTART's (not run). From Design Flow:
+are QUICKSTART's (not run). From App Flow:
 
 ```sh
 python3 tools/setup-native.py
@@ -152,7 +152,7 @@ cargo build --release -p octosense-card-host -p octosense-app-hub
 
 If the build fails with `no variant … TextInputStateQuery`, see [The `card-host` build fails on `TextInputStateQuery`](QUICKSTART.md#the-card-host-build-fails-on-textinputstatequery).
 
-Back in Design Flow:
+Back in App Flow:
 
 ```sh
 tools/octo doctor

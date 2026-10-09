@@ -23,7 +23,7 @@
 
 ## 在本地检查界面
 
-在 App Design Flow 根目录运行（已在 macOS 上验证）：
+在 App Flow 根目录运行（已在 macOS 上验证）：
 
 ```sh
 tools/octo doctor
@@ -40,14 +40,14 @@ tools/octo check examples/connected-apps/google-calendar/bundle
 
 ## 运行签名安装后的集成验收
 
-先构建相邻 OctoSense 仓库中的测试宿主，再从 App Design Flow 根目录运行验证器：
+先构建相邻 OctoSense 仓库中的测试宿主，再从 App Flow 根目录运行验证器：
 
 ```sh
 # 在 ../OctoSense 中：
 cargo build --locked --release -p octosense-shell \
   --features mobile-apps,acceptance-fixtures \
   --example connected-app-host --example connected-inbox-e2e --example connected-install
-# 在 App Design Flow 根目录：
+# 在 App Flow 根目录：
 python3 examples/connected-apps/google-calendar/scripts/verify-installed.py \
   --host ../OctoSense/target/release/examples/connected-app-host
 python3 examples/connected-apps/google-calendar/scripts/verify-shell.py \

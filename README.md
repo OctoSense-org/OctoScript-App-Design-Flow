@@ -1,9 +1,18 @@
-# OctoScript App Design Flow
+# OctoSense App Flow
 
 English | [简体中文](README.zh-CN.md)
 
-The development harness for [OctoSense](https://github.com/OctoSense-org) apps.
-It takes you, or a coding agent, from an idea (a text brief, a generated UX
+**Agentic flows that design, build, test and submit OctoSense apps.**
+
+App Flow (formerly OctoScript App Design Flow) makes
+[OctoSense](https://github.com/OctoSense-org) apps, and
+[OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub)
+publishes them. App Flow is a development harness: a command-line kit with
+agent flows, templates and guides, not a GUI IDE. App Hub's
+[`card-studio`](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/DEVELOPMENT.md#inspect-a-card-before-you-publish-card-studio)
+is a separate tool that helps you render and critique a card.
+
+App Flow takes you, or a coding agent, from an idea (a text brief, a generated UX
 image) to a contained app bundle that passes the
 [OctoSense App Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) gate
 and is ready for a GitHub-attested release and App Hub review, without a
@@ -18,7 +27,7 @@ wraps App Hub's `card-host` and `hub` and never decides admission:
 output and exit status.
 
 It is for hackathon contestants and other developers building an OctoSense
-app, and for the coding agents they work with. This repository was formerly
+app, and for the coding agents they work with. This repository was originally
 named *OctoScript-AppCard*.
 
 ## Contents
@@ -206,7 +215,7 @@ Prerequisites ([QUICKSTART §1](docs/QUICKSTART.md#1-prerequisites)):
 
   ```text
   <workspace>/
-    OctoScript-App-Design-Flow/   this repository
+    OctoSense-App-Flow/           this repository
     OctoSense-App-Hub/            hub, card-host, appstore
     makepad/                      OctoSense-org/makepad
     octoscript-makepad/           OctoSense-org/Octoscript-Makepad
@@ -219,9 +228,9 @@ Then create the workspace and, from this repository, build and use the tools:
 # 0. The workspace: clone this repository and the App Hub side by side, then
 #    let setup-native.py add makepad, octoscript and octoscript-makepad
 mkdir octosense-ws && cd octosense-ws
-git clone https://github.com/OctoSense-org/OctoScript-App-Design-Flow.git
+git clone https://github.com/OctoSense-org/OctoSense-App-Flow.git
 git clone https://github.com/OctoSense-org/OctoSense-App-Hub.git
-cd OctoScript-App-Design-Flow && python3 tools/setup-native.py
+cd OctoSense-App-Flow && python3 tools/setup-native.py
 
 # 1. Build the two tools once (in the App Hub checkout)
 (cd ../OctoSense-App-Hub && cargo build --release -p octosense-card-host -p octosense-app-hub)

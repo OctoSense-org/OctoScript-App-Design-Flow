@@ -6,16 +6,16 @@ the same rules.
 This repository is one OctoSense script app. `bundle/` is the app and the only
 thing submitted to the App Hub; everything else stays outside it.
 
-Follow the docs of OctoScript App Design Flow, the harness this app came from,
+Follow the docs of OctoSense App Flow, the harness this app came from,
 and do not invent requirements or APIs:
 
-- Build, run and test: [QUICKSTART](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/QUICKSTART.md)
-- The language and every API an app may use: [SCRIPT-API](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/SCRIPT-API.md)
-- Capabilities: [CAPABILITIES](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/CAPABILITIES.md)
-- Final bundle, screenshots and human checkpoints: [PUBLISHING](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/main/docs/PUBLISHING.md)
+- Build, run and test: [QUICKSTART](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/QUICKSTART.md)
+- The language and every API an app may use: [SCRIPT-API](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/SCRIPT-API.md)
+- Capabilities: [CAPABILITIES](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/CAPABILITIES.md)
+- Final bundle, screenshots and human checkpoints: [PUBLISHING](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/PUBLISHING.md)
 - Publisher proof and the submission issue: App Hub's [SUBMITTING](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md)
 
-Set `OCTO=<path to OctoScript-App-Design-Flow>/tools/octo`, then run this loop
+Set `OCTO=<path to OctoSense-App-Flow>/tools/octo`, then run this loop
 from this directory. The CLI lives in the harness repository, not here; on
 Windows, run it as `python $OCTO`.
 

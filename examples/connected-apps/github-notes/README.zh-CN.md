@@ -63,7 +63,7 @@ cargo build --locked --release -p octosense-shell \
   --features mobile-apps,acceptance-fixtures \
   --example connected-app-host --example connected-install
 python3 tools/connected-e2e/notes.py \
-  --bundle ../OctoScript-App-Design-Flow/examples/connected-apps/github-notes/bundle
+  --bundle ../OctoSense-App-Flow/examples/connected-apps/github-notes/bundle
 ```
 
 驱动脚本最后输出 `PASS: installed Notes flow with synthetic provider; native pixel review pending`。`acceptance-fixtures` 特性在普通构建中关闭，并拒绝未标记的配置目录和真实的提供商注册信息。测试只使用虚构数据。示例应用本身只使用普通宿主 API，没有测试开关。

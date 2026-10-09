@@ -362,7 +362,7 @@ build.
    `wasm` needs no `requires` marker; it is an ordinary capability. The
    store shows the person "Run its own sandboxed functions on this device".
 
-2. Stamp and check the bundle, from your Design Flow checkout:
+2. Stamp and check the bundle, from your App Flow checkout:
 
    ```sh
    tools/octo check ~/apps/my-app/bundle

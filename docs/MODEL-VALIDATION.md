@@ -133,8 +133,8 @@ operator-run tests must not be described as autonomous model validation.
 
 ## Recover from observed model weaknesses
 
-These are reproducible failure patterns from the [archived runs](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/REVIEW.md),
-not permanent traits assigned to a provider. The [MiniMax history](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/minimax/turn-14/history/index.json)
+These are reproducible failure patterns from the [archived runs](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/REVIEW.md),
+not permanent traits assigned to a provider. The [MiniMax history](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/minimax/turn-14/history/index.json)
 retains intermediate source diagnostics and later repairs.
 
 | Failure pattern | Corrective feedback and acceptance check |
@@ -155,7 +155,7 @@ retains intermediate source diagnostics and later repairs.
 For model-authored experiments, reviewers may write harnesses and feedback, but
 must return app and design fixes to the designated author. Preserve the
 original source bytes and successful mutation history; use the [continuation import and
-replay workflow](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/README.md).
+replay workflow](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/README.md).
 Never include provider profiles, credentials or private reasoning in that archive.
 
 ## Feedback the model can act on
@@ -180,7 +180,7 @@ market data, image loading, playback or durable service state.
 
 ## Evidence
 
-The [DeepSeek turn 12 and MiniMax turn 14 collections](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/REVIEW.md)
+The [DeepSeek turn 12 and MiniMax turn 14 collections](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/REVIEW.md)
 each contain six Android-authored offline app families. A separate agent
 review scores each 4.5/5 overall and 4.4/5 visually. Operators supplied
 feedback and independent tests. These runs establish supervised development,

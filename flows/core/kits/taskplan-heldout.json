@@ -31,7 +31,7 @@
   "native_widgets_first": true,
   "scope": "Two previously unported Taskplan component artboards, held out from the 79 Hifi screens",
   "font_files": {
-    "RedHatDisplay-Regular": "~/home/OctoScript-App-Design-Flow/flows/core/work/taskplan-heldout/native/fonts/RedHatDisplay-Regular.ttf",
-    "RedHatDisplay-Bold": "~/home/OctoScript-App-Design-Flow/flows/core/work/taskplan-heldout/native/fonts/RedHatDisplay-Bold.ttf"
+    "RedHatDisplay-Regular": "flows/core/work/taskplan-heldout/native/fonts/RedHatDisplay-Regular.ttf",
+    "RedHatDisplay-Bold": "flows/core/work/taskplan-heldout/native/fonts/RedHatDisplay-Bold.ttf"
   }
 }

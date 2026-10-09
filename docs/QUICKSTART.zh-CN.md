@@ -16,8 +16,8 @@
 | 平台 | 状态 |
 | --- | --- |
 | Apple 芯片上的 macOS | 已验证：本页所有命令都在这个平台上运行过。 |
-| Windows | App Hub CI 已通过原生 `hub`、`card-host` 构建及 contract、policy、CLI、模态输入测试。Design Flow 的 `tools/test_*.py` 也在该平台运行。当前固定版本上的完整创建、运行、截图流程仍未验证。通过 Python 运行 `tools/octo`（§2），并保留应用包的原始换行符（§3）。 |
-| Linux | 同一套 App Hub 构建与测试已在 Ubuntu 24.04 通过；Design Flow 的 `tools/test_*.py` 也在该平台运行。这里尚未验证原生应用交互与截帧。有报告称，在软件渲染（llvmpipe、WSL）下截帧（`/g`、`tools/octo shot`）会超时。 |
+| Windows | App Hub CI 已通过原生 `hub`、`card-host` 构建及 contract、policy、CLI、模态输入测试。App Flow 的 `tools/test_*.py` 也在该平台运行。当前固定版本上的完整创建、运行、截图流程仍未验证。通过 Python 运行 `tools/octo`（§2），并保留应用包的原始换行符（§3）。 |
+| Linux | 同一套 App Hub 构建与测试已在 Ubuntu 24.04 通过；App Flow 的 `tools/test_*.py` 也在该平台运行。这里尚未验证原生应用交互与截帧。有报告称，在软件渲染（llvmpipe、WSL）下截帧（`/g`、`tools/octo shot`）会超时。 |
 
 Windows、Linux 构建与测试结果来自 [App Hub CI 37724164489](https://github.com/OctoSense-org/OctoSense-App-Hub/actions/runs/37724164489)，对应 `582a6ed`，由 [App Hub #146](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/146) 合并为 `8885c375`，使用固定版本的普通 Makepad。该次 CI 的 macOS 任务仍在排队；本地 macOS release 构建与原生打包字体截图已通过。这些结果不能证明提供商登录、应用 UX，或本页每条命令都已在 Windows、Linux 上运行。
 
@@ -32,7 +32,7 @@ Windows、Linux 构建与测试结果来自 [App Hub CI 37724164489](https://git
 
   ```text
   <workspace>/
-    OctoScript-App-Design-Flow/   本仓库
+    OctoSense-App-Flow/           本仓库
     OctoSense-App-Hub/            hub、card-host、appstore
     makepad/                      OctoSense-org/makepad
     octoscript-makepad/           OctoSense-org/Octoscript-Makepad
@@ -45,9 +45,9 @@ Windows、Linux 构建与测试结果来自 [App Hub CI 37724164489](https://git
 
 ```sh
 mkdir octosense-ws && cd octosense-ws
-git clone https://github.com/OctoSense-org/OctoScript-App-Design-Flow.git
+git clone https://github.com/OctoSense-org/OctoSense-App-Flow.git
 git clone https://github.com/OctoSense-org/OctoSense-App-Hub.git
-cd OctoScript-App-Design-Flow
+cd OctoSense-App-Flow
 python3 tools/setup-native.py           # 在本仓库旁克隆 makepad、octoscript 和 octoscript-makepad
 python3 tools/setup-native.py --check   # 通过时以退出码 0 退出，并输出锁定的版本
 ```

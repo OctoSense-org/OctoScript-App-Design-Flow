@@ -118,7 +118,7 @@ and retry or reconciliation UI. **Unverified:** Android, Windows and Linux.
 
 ## Development and validation
 
-From the App Design Flow root, run:
+From the App Flow root, run:
 
 ```sh
 tools/octo doctor

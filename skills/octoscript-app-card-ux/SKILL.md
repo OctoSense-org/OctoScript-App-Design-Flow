@@ -1,6 +1,6 @@
 ---
 name: octoscript-app-card-ux
-description: Design, review, and validate OctoScript app cards in OctoSense Glance, including glance/expanded/full-app presentation, Card/Chat or Email/Chat interactions, keyboard reachability, retained state, and model-authored repair. Use for new app cards or card UX acceptance; complement the chosen App Design Flow and its publishing gates.
+description: Design, review, and validate OctoScript app cards in OctoSense Glance, including glance/expanded/full-app presentation, Card/Chat or Email/Chat interactions, keyboard reachability, retained state, and model-authored repair. Use for new app cards or card UX acceptance; complement the flow chosen in App Flow and its publishing gates.
 ---
 
 # OctoScript App Card UX
@@ -14,9 +14,9 @@ OctoSense system/app agent, grant tools, or install instructions in an app bundl
 
 ## Establish the contract
 
-Locate the user's App Design Flow checkout and read its `AGENTS.md`, selected
+Locate the user's App Flow checkout and read its `AGENTS.md`, selected
 `flows/*/FLOW.md` and `docs/MODEL-VALIDATION.md`. Use their local copies; the
-[repository](https://github.com/OctoSense-org/OctoScript-App-Design-Flow) provides
+[repository](https://github.com/OctoSense-org/OctoSense-App-Flow) provides
 fallback references if no checkout was supplied. Keep the flow's admission,
 visual-review and publishing requirements; this skill supplements them.
 

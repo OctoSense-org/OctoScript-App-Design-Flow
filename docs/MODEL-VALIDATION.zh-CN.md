@@ -61,7 +61,7 @@ flowchart LR
 
 ## 应对实测中的模型弱点
 
-下面是[归档测试](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/REVIEW.zh-CN.md)中的可复现失败模式，不是给某个提供方贴永久标签。[MiniMax 历史记录](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/minimax/turn-14/history/index.json) 保留了中间源码诊断与后续修复。
+下面是[归档测试](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/REVIEW.zh-CN.md)中的可复现失败模式，不是给某个提供方贴永久标签。[MiniMax 历史记录](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/minimax/turn-14/history/index.json) 保留了中间源码诊断与后续修复。
 
 | 失败模式 | 纠正反馈与验收方式 |
 | --- | --- |
@@ -78,7 +78,7 @@ flowchart LR
 | 错误选择器被当作应用缺陷 | 检查当前可见、启用的控件，需要时先滚动。只有目标行为未变时才更新操作人员的预期。保留失败并解释输入修正，不要靠删除断言取得通过。 |
 | 工具权限或过长轮次使修复失控 | 先在宿主修正授权和工作区问题，再考虑修改应用源码。每次给模型一个有明确范围的修复目标。同一失败反复出现且没有新证据时，检查解析器和运行时并提供准确诊断，不要要求大范围重写。在工具额度耗尽前保存源码哈希、已验证路径及剩余工作的检查点。 |
 
-要求模型创作的实验中，评审者可以编写测试工具和反馈，但应用和设计修改必须交给指定作者。保留原始源码字节与成功修改记录，使用[续跑导入和重放流程](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/README.zh-CN.md)。归档中不能包含提供方配置、凭据或私有推理。
+要求模型创作的实验中，评审者可以编写测试工具和反馈，但应用和设计修改必须交给指定作者。保留原始源码字节与成功修改记录，使用[续跑导入和重放流程](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/README.zh-CN.md)。归档中不能包含提供方配置、凭据或私有推理。
 
 ## 给模型的可执行反馈
 
@@ -98,4 +98,4 @@ flowchart LR
 
 ## 证据
 
-[DeepSeek 第 12 轮与 MiniMax 第 14 轮合集](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/REVIEW.zh-CN.md) 各包含六类由 Android 上的模型编写的离线应用原型。独立 Agent 评审给两者的综合分均为 4.5/5、视觉分均为 4.4/5。操作人员提供了反馈和独立测试。这些结果证明了有人监督的开发流程，尚不能证明无人干预、完全在手机内完成的验证，也不代表真实服务已完成或模型能力排名。
+[DeepSeek 第 12 轮与 MiniMax 第 14 轮合集](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/e9459ca1ebd2401d03673bd3c94de0270ccd3231/examples/android-a2app-card-templates/continuations/REVIEW.zh-CN.md) 各包含六类由 Android 上的模型编写的离线应用原型。独立 Agent 评审给两者的综合分均为 4.5/5、视觉分均为 4.4/5。操作人员提供了反馈和独立测试。这些结果证明了有人监督的开发流程，尚不能证明无人干预、完全在手机内完成的验证，也不代表真实服务已完成或模型能力排名。

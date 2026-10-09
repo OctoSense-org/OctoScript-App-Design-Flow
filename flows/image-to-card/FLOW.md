@@ -176,7 +176,7 @@ Rerun `hub stamp` after every change to `bundle/`; `card-host` refuses a
 bundle whose digest does not match. Sign last: `card-host` has no signature
 verifier, so it refuses any signed manifest. Next:
 
-- Design Flow's [PUBLISHING.md](../../docs/PUBLISHING.md): the final bundle and
+- App Flow's [PUBLISHING.md](../../docs/PUBLISHING.md): the final bundle and
   screenshots.
 - App Hub's [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md):
   signing and the submission issue.

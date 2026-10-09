@@ -302,7 +302,7 @@ Shell 分四步完成一次调用：
 
    `wasm` 不需要 `requires` 标记，它是一项普通能力。商店向用户显示的说明是“Run its own sandboxed functions on this device”。
 
-2. 在你的 Design Flow 检出目录中写入摘要并检查应用包：
+2. 在你的 App Flow 检出目录中写入摘要并检查应用包：
 
    ```sh
    tools/octo check ~/apps/my-app/bundle

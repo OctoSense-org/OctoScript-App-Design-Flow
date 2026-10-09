@@ -34,7 +34,7 @@
 | 定量图表、波形、进度 | 原生数值控件和经评审的数据绑定；绝不使用静态 SVG/Image 绘制 |
 | 照片或不受支持的图形特性 | `Image`，并逐元素记录回退原因 |
 
-**优先使用 Makepad 原生控件，除非源特性无法表达。**新套件设置 `native_widgets_first: true`（见 `atro-native-all.json`）。现有 Taskplan 模板早于这一策略，包含许多图层 Image，包括按钮背景。新的合成先使用原生表面、文本和控件，再对受支持的矢量几何使用原生 SVG。位图回退必须指明源照片或不受支持的蒙版/滤镜特性；它不能悄悄替代文本、控件或整个屏幕。控件识别依赖套件的源符号；未知变体需要明确的映射和验证。整屏参考截图和文本不得成为实现素材。复合路径可以保持为单个图形，并保留其源祖先链。定量区域是例外：两个导入分支现在共用 `flows/core/policy.py` 和同一套映射规则。Sketch 合成的验收要求每个画板都有 `native/semantics/<screen>.json`，其中包含绑定到源层级和参考哈希的完整 `source_review`。被提名的图表/进度区域需要逐一决策。这些决策保留源 ID、确切的绘制归属、单位、定义域和数据来源。具名候选只是评审辅助；匿名数据区域必须明确标注。`semantic_lowering.py` 把折线、面积、环形、柱状、雷达、散点、波形和进度区域降级为原生数值适配器，同时把文本和控件保留为控件。源蒙版成为包裹数值绘制的原生裁剪容器。渐变、柱宽、气泡半径、弧形几何和雷达轴都有明确的、源自设计稿的样式和数值。不受支持的图表类型会失败，直到有对应适配器。`curve.py` 可以把单条经评审的 SVG 曲线测量为近似的归一化采样；这些采样不是还原出的业务数值。Studio 必须报告实际数组。尚未迁移的旧套件需要先完成语义迁移，其早先的视觉验收才能满足这一更严格的门禁。Taskplan、Atro 和 Camo 已完成迁移；源评审、导入、L0 提升和全新 Studio 验证步骤见[旧套件迁移](../../core/OLD-KIT-MIGRATION.md)。
+**优先使用 Makepad 原生控件，除非源特性无法表达**。新套件设置 `native_widgets_first: true`（见 `atro-native-all.json`）。现有 Taskplan 模板早于这一策略，包含许多图层 Image，包括按钮背景。新的合成先使用原生表面、文本和控件，再对受支持的矢量几何使用原生 SVG。位图回退必须指明源照片或不受支持的蒙版/滤镜特性；它不能悄悄替代文本、控件或整个屏幕。控件识别依赖套件的源符号；未知变体需要明确的映射和验证。整屏参考截图和文本不得成为实现素材。复合路径可以保持为单个图形，并保留其源祖先链。定量区域是例外：两个导入分支现在共用 `flows/core/policy.py` 和同一套映射规则。Sketch 合成的验收要求每个画板都有 `native/semantics/<screen>.json`，其中包含绑定到源层级和参考哈希的完整 `source_review`。提名的图表/进度区域需要逐一决策。这些决策保留源 ID、确切的绘制归属、单位、定义域和数据来源。具名候选只是评审辅助；匿名数据区域必须明确标注。`semantic_lowering.py` 把折线、面积、环形、柱状、雷达、散点、波形和进度区域降级为原生数值适配器，同时把文本和控件保留为控件。源蒙版成为包裹数值绘制的原生裁剪容器。渐变、柱宽、气泡半径、弧形几何和雷达轴都有明确的、源自设计稿的样式和数值。不受支持的图表类型会失败，直到有对应适配器。`curve.py` 可以把单条经评审的 SVG 曲线测量为近似的归一化采样；这些采样不是还原出的业务数值。Studio 必须报告实际数组。尚未迁移的旧套件需要先完成语义迁移，其早先的视觉验收才能满足这一更严格的门禁。Taskplan、Atro 和 Camo 已完成迁移；源评审、导入、L0 提升和全新 Studio 验证步骤见[旧套件迁移](../../core/OLD-KIT-MIGRATION.md)。
 
 关于常驻 Studio 桥接、超高画板的分配、声明式修复和重启协议，见[共享循环指南](../../core/README.md)。玻璃覆盖层属于拥有它的组件；提示框不得把画板背景移出场景捕获。当嵌套表面共享 Makepad 的背景纹理时，覆盖型玻璃材质保留其源着色来源。画板大小的玻璃背景在场景捕获中保留其前面的照片；之后的内容和重叠控件绘制在玻璃之上。源按钮的点击区域内边距不得把其标签放到玻璃背景之后。普通玻璃着色在 Overlay 混合之前合成。复选框的镂空保持透明，因此其标记显示的是实际背景而非固定颜色。玻璃覆盖在画板裁剪区域内评估，包括源背景超出画板边缘的键盘。模糊半径仍以逻辑点为单位；原生采样会考虑纹理 DPI 和 Gauss 重建核。SVG 玻璃使用与圆角表面相同的分数 mip 重建。源 alpha 蒙版给出的覆盖范围才能证明复合玻璃形状是否真正覆盖了另一种材质；仅凭包围盒无法证明。任何被推迟到玻璃之上的图形，也会推迟之后重叠的绘制，包括位于原始玻璃边界之外、但在导出阴影画布之内的标签。固定高度的文本框保留完整的原生文本，并把绘制裁剪到源文本框内。旋转图形使用变换后的边界做可见性检查。分组的旋转和镜像会传递到子几何和蒙版链。Sketch 的镜像在旋转后的父级坐标轴中应用。未绘制的蒙版轮廓保留其原生布局容器，而不凭空生成可绘制的 SVG 几何。独立蒙版自身的绘制仍受其祖先蒙版约束。Alpha 蒙版保留其填充和渐变用于后代覆盖，而不会绘制一个独立的黑色表面。轮廓蒙版只贡献其形状。Atro 使用 Sketch 文档中内嵌的确切 Montserrat 字重；它们的版本和哈希保存在 `native-fonts.json` 中。混排的 emoji 基线不代表多出一行文本。Sketch 不绘制的尾随段落换行保留在源来源记录中，不会生成空的原生布局行。明确的段落高度包含 Sketch 的居中行距；垂直对齐的文本也在源框内保留其偏移。导入器会补上 SVG 中缺失的偏移，并检测已包含行压缩的基线，避免在较短的固定行框上再次上移。
 
@@ -52,12 +52,12 @@ Camo 的 `camo-native-all.json` 覆盖 246 个移动端屏幕，包括 Sketch �
 
 `inherit_visual.py --kit <family>-l0-all` 只有在完整的 target/capture/prompt 哈希完全一致时，才能沿用已有的视觉结论。它从不复用结构检查、不给出新评分，也不接受发生变化的像素。发生变化的图像对需要重新做截图评审。参见[原生 L0 套件契约](https://github.com/OctoSense-org/Octoscript-Makepad/blob/main/docs/native-l0-kits.md)。
 
-1. **导入源文件。**校验归档和源文档；在副本中解析符号和覆盖项。把原始 Sketch 画板导出为参考图。保留源 ID、层级、框架、字体、文本、蒙版和控件状态。
-2. **合成控件。**生成经过检查的 Splash 树，并把节点映射为原生控件。优先使用内置控件和原生属性；保留文本和可编辑控件。对其余受支持的矢量使用原生 SVG。逐个导出回退图形，并考虑绘制边界、蒙版和阴影。不受支持的映射会失败，需要有源依据的实现。保持语义组件边界：按钮拥有其点击目标、标签、图标、背景和状态，即使它们通过不同的控件绘制。其底层绘制节点的数量与其可复用组件状态分开统计。
-3. **在 Studio 中渲染。**启动 release 版 RunItem，设置画板视口，挂载生成的树，并等待字体、布局和解码后的图像纹理就绪。保存原生截图，拒绝空白、不完整或尺寸错误的捕获。在 Studio 初始标签页布局之后确认嵌入视口；如果该布局替换了请求的画板尺寸，就重复调整大小。当根节点仍被裁剪在 Studio 的初始视口内时，不要保存布局 nonce；等待整个画板的绘制区域。只消费返回给本桥接的临时截图，且在成功复制证据之后；复制失败的截图会保留其 Studio 源以便恢复。
-4. **检查结构和控件。**使用 WidgetTreeDump、对每个生成 ID 的精确 WidgetQuery 以及 WidgetSnapshot。关联回 Sketch ID，比较层级、边界、可见性、文本、裁剪和控件状态。在存在相应控件时，操作原生输入的键入/恢复、密码掩码、焦点、复选框/开关点击以及两个滑块手柄，并恢复状态。对同一组源和生成的清单运行原生合成门禁；声明了 `native_widgets_first` 却没有原生控件映射不能通过。
-5. **评审截图。**比较原始 Sketch 与原生输出的排版、颜色、图像和效果。要求当前结论为 `accept` 且评分至少 9/10（除非套件明确配置了阈值）。评审副本使用原生像素尺寸，透明的导出像素用白色窗口背景填充；原始 Sketch 导出保持不变。两个评审输入在评审者读取之前都会按内容哈希冻结。部分评审会保留其他屏幕的结论。相互独立的冻结图像对按有界批次评审（`--workers`，默认 3），由一个结论写入者写入。某个请求失败时，会保留同一批次中其他已完成的评审。文件锁还会串行化不同的评审调用，使聚焦修复不会覆盖完整运行中较新的行。有争议的视觉发现可以借助 `visual_evidence.py` 进行基于证据的追加评审。它保存测量的区域和原生边界，保留原始结论，并请求对完整图像对重新评审。门禁会校验所有证据哈希并保持相同的评分阈值；单凭测量或追加评审都不能推翻结构失败。
-6. **修复并重新捕获。**阅读 `repair-feedback.json` 和逐元素报告，修复负责的导入器、控件、渲染器或素材导出代码，重新生成并重复。导入器会把之前的发现记录在 `.repair-input.json` 中；它不会自动编造代码修复。旧版 L0 作者可以在 LLM 修复轮次中使用这些发现。不要为了让缺陷通过而放宽容差。即使结构和截图评审都通过，合成失败也会进入逐屏修复队列。让 `acceptance.json` 中尚未完成的组件、布局和工作流工作保持可见，作为下一轮合成的内容。
+1. **导入源文件**：校验归档和源文档；在副本中解析符号和覆盖项。把原始 Sketch 画板导出为参考图。保留源 ID、层级、框架、字体、文本、蒙版和控件状态。
+2. **合成控件**：生成经过检查的 Splash 树，并把节点映射为原生控件。优先使用内置控件和原生属性；保留文本和可编辑控件。对其余受支持的矢量使用原生 SVG。逐个导出回退图形，并考虑绘制边界、蒙版和阴影。不受支持的映射会失败，需要有源依据的实现。保持语义组件边界：按钮拥有其点击目标、标签、图标、背景和状态，即使它们通过不同的控件绘制。其底层绘制节点的数量与其可复用组件状态分开统计。
+3. **在 Studio 中渲染**：启动 release 版 RunItem，设置画板视口，挂载生成的树，并等待字体、布局和解码后的图像纹理就绪。保存原生截图，拒绝空白、不完整或尺寸错误的捕获。在 Studio 初始标签页布局之后确认嵌入视口；如果该布局替换了请求的画板尺寸，就重复调整大小。当根节点仍受 Studio 初始视口裁剪时，不要保存布局 nonce；等待整个画板的绘制区域。只消费返回给本桥接的临时截图，且在成功复制证据之后；复制失败的截图会保留其 Studio 源以便恢复。
+4. **检查结构和控件**：使用 WidgetTreeDump、对每个生成 ID 的精确 WidgetQuery 以及 WidgetSnapshot。关联回 Sketch ID，比较层级、边界、可见性、文本、裁剪和控件状态。在存在相应控件时，操作原生输入的键入/恢复、密码掩码、焦点、复选框/开关点击以及两个滑块手柄，并恢复状态。对同一组源和生成的清单运行原生合成门禁；声明了 `native_widgets_first` 却没有原生控件映射不能通过。
+5. **评审截图**：比较原始 Sketch 与原生输出的排版、颜色、图像和效果。要求当前结论为 `accept` 且评分至少 9/10（除非套件明确配置了阈值）。评审副本使用原生像素尺寸，透明的导出像素用白色窗口背景填充；原始 Sketch 导出保持不变。两个评审输入在评审者读取之前都会按内容哈希冻结。部分评审会保留其他屏幕的结论。相互独立的冻结图像对按有界批次评审（`--workers`，默认 3），由一个结论写入者写入。某个请求失败时，会保留同一批次中其他已完成的评审。文件锁还会串行化不同的评审调用，使聚焦修复不会覆盖完整运行中较新的行。有争议的视觉发现可以借助 `visual_evidence.py` 进行基于证据的追加评审。它保存测量的区域和原生边界，保留原始结论，并请求对完整图像对重新评审。门禁会校验所有证据哈希并保持相同的评分阈值；单凭测量或追加评审都不能推翻结构失败。
+6. **修复并重新捕获**：阅读 `repair-feedback.json` 和逐元素报告，修复负责的导入器、控件、渲染器或素材导出代码，重新生成并重复。导入器会把之前的发现记录在 `.repair-input.json` 中；它不会自动编造代码修复。旧版 L0 作者可以在 LLM 修复轮次中使用这些发现。不要为了让缺陷通过而放宽容差。即使结构和截图评审都通过，合成失败也会进入逐屏修复队列。让 `acceptance.json` 中尚未完成的组件、布局和工作流工作保持可见，作为下一轮合成的内容。
 
 `beauty` 运行一次导入/编写 + 原生捕获/检查/评审循环。修复后请重新运行。对于共享控件或渲染器的修复，请重新验证整个套件；一次小范围的成功探测并不能让未测试的屏幕通过。
 
@@ -77,7 +77,7 @@ Camo 的 `camo-native-all.json` 覆盖 246 个移动端屏幕，包括 Sketch �
 
 使用 `../core/examples/sketch-kit.json` 作为可共享的配置示例。为每个套件设置独立的输出目录、`source_archive`、`pages`、精确的 `screens`、`input_format: "design"`、`native_widgets_first: true`、`reference_renderer: "Sketch"`、`rails: ["splash-makepad"]`、`studio_embedded: true` 以及正确的 `design_scale`。把归档以及生成的模板/素材放在被忽略的 `work/` 下；不要发布购买的套件内容。
 
-在 `flows/kits/sketch/.venv` 中按 `requirements.txt` 安装 Python 依赖。把 `SKETCHTOOL` 设为 Sketch.app 的原生 CLI，把 `CARGO_MAKEPAD` 设为打过补丁的 release 版 Studio 桥接。该桥接必须转发 WidgetSnapshot。使用 [Taskplan 报告](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/taskplan-native-parity-2026-09-05.md)中记录的开发版 Studio 视口持久化和后备缓冲分配修复。
+在 `flows/kits/sketch/.venv` 中按 `requirements.txt` 安装 Python 依赖。把 `SKETCHTOOL` 设为 Sketch.app 的原生 CLI，把 `CARGO_MAKEPAD` 设为打过补丁的 release 版 Studio 桥接。该桥接必须转发 WidgetSnapshot。使用 [Taskplan 报告](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/taskplan-native-parity-2026-09-05.md)中记录的开发版 Studio 视口持久化和后备缓冲分配修复。
 
 用 `python3 tools/setup-native.py` 准备共享运行时（见 [NATIVE-WORKSPACE.md](../../../docs/NATIVE-WORKSPACE.md)）。启动 Studio 时，用一个 `splashref` 挂载指向准备好的 `octoscript-makepad` 检出，它默认位于本仓库旁边：
 
@@ -127,11 +127,11 @@ tools/beauty-pipeline.sh --kit atro-native-all --stages report
 
 ## 结果与限制
 
-Camo 的 246 个移动端模板于 2026-09-06 通过了原生结构、合成和视觉门禁。Studio 构建 63 检查了 29,929 个节点；所有截图对的评分为 9–10/10。[Camo 报告](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/camo-native-parity-2026-09-05.md)链接了完整的对比画廊、修复证据和固定画板范围。
+Camo 的 246 个移动端模板于 2026-09-06 通过了原生结构、合成和视觉门禁。Studio 构建 63 检查了 29,929 个节点；所有截图对的评分为 9–10/10。[Camo 报告](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/camo-native-parity-2026-09-05.md)链接了完整的对比画廊、修复证据和固定画板范围。
 
-Atro 的 150 个画板原生运行通过了其配置的固定布局结构和视觉门禁：3,009 个文本节点、279 个 Button、48 个 Input、3,935 个 SVG 控件和 919 个 Image 实例，另有原生表面和选择控件。其保存的模板也通过了原生合成审计。范围和时效见 [Atro 报告](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/atro-native-parity-2026-09-05.md)以及当前生成的 `acceptance.json`。
+Atro 的 150 个画板原生运行通过了其配置的固定布局结构和视觉门禁：3,009 个文本节点、279 个 Button、48 个 Input、3,935 个 SVG 控件和 919 个 Image 实例，另有原生表面和选择控件。其保存的模板也通过了原生合成审计。范围和时效见 [Atro 报告](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/atro-native-parity-2026-09-05.md)以及当前生成的 `acceptance.json`。
 
-Taskplan 的 79 个画板运行通过了其配置的原生结构和视觉门禁：1,952 个文本节点、97 个输入框、7 个开关、4,012 个图像节点和 8,672 个容器节点。容器包含组合控件。见[完整报告](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/taskplan-native-parity-2026-09-05.md)。这一历史结果早于强制执行的原生优先合成门禁以及之后的共享运行时改动；它不是当前的验收结果。
+Taskplan 的 79 个画板运行通过了其配置的原生结构和视觉门禁：1,952 个文本节点、97 个输入框、7 个开关、4,012 个图像节点和 8,672 个容器节点。容器包含组合控件。见[完整报告](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/taskplan-native-parity-2026-09-05.md)。这一历史结果早于强制执行的原生优先合成门禁以及之后的共享运行时改动；它不是当前的验收结果。
 
 这些历史结果验证的是固定画板的复现。生成的 L0 套件现在增加了共享原生组件、组件操作和选中状态；它们的当前证据在 L0 对比索引（`work/l0-themes/index.html`）和每个 `l0-captures/acceptance.json` 中。响应式重排和完整的应用工作流需要单独的实现和测试。更早的五屏 L0 Taskplan 运行仍是一个失败的基线，记录在 [TASKPLAN-VALIDATION.md](TASKPLAN-VALIDATION.md) 中。
 
@@ -139,6 +139,6 @@ Taskplan 的 79 个画板运行通过了其配置的原生结构和视觉门禁�
 
 提升过程现在还会通过 `export_app_recipes.py` 导出 `Octoscript-Makepad/components/l0/native/app-recipes.json`。这些紧凑的配方保留源组件 ID、源屏幕名称、套件哈希和原生部件样式。用 `--check` 运行导出器可检测过期的配方。首批应用适配器把 Weather 与 Atro 控件、Stocks 与 Camo 行/标签页、News 与 Taskplan 卡片组合在一起。它们与 Sketch 宿主共用原生套件类的实现，并把已有的 L0 值/操作绑定到真实的 Button、Label 和 TextInput 子控件上。
 
-应用适配有其自己的门禁：源关联的原生组件和子绑定必须在 Studio 中存在，控件状态和交互必须可用，测量得到的滚动画布必须包含最终的组合结果。流式的应用布局是有意的适配，不会继承画板一致性的通过结果。前后对比捕获、逐元素差异、源映射和验证脚本位于 [`docs/reviews/theme-phone-evidence/components/`](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/tree/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/theme-phone-evidence/components)（已从此处移除；保留在历史中）。
+应用适配有其自己的门禁：源关联的原生组件和子绑定必须在 Studio 中存在，控件状态和交互必须可用，测量得到的滚动画布必须包含最终的组合结果。流式的应用布局是有意的适配，不会继承画板一致性的通过结果。前后对比捕获、逐元素差异、源映射和验证脚本位于 [`docs/reviews/theme-phone-evidence/components/`](https://github.com/OctoSense-org/OctoSense-App-Flow/tree/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/theme-phone-evidence/components)（已从此处移除；保留在历史中）。
 
-页面结构是一个单独的适配步骤。六个人工编写的 L0 配方现位于 `Octoscript-Makepad/components/l0/pages/`：Weather 仪表盘/预报、Stocks 磁贴/图表，以及 News 杂志/紧凑版式。它们替换具名视图，同时保留应用的源/状态/事件声明。例如，内置的选择器可以选择 `weather@atro_light/dashboard`。每个适配后的页面都必须通过原生组件检查以及拓扑检查（区块顺序、列边界、条目数量、滚动和操作）；仅改变颜色无法满足该门禁。手机端对比和逐元素修复证据位于 [`docs/reviews/theme-phone-evidence/structures/`](https://github.com/OctoSense-org/OctoScript-App-Design-Flow/tree/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/theme-phone-evidence/structures)（已从此处移除；保留在历史中）。这是一个明确的人工编写配方层，而不是为每个移植的主题自动生成页面。
+页面结构是一个单独的适配步骤。六个人工编写的 L0 配方现位于 `Octoscript-Makepad/components/l0/pages/`：Weather 仪表盘/预报、Stocks 磁贴/图表，以及 News 杂志/紧凑版式。它们替换具名视图，同时保留应用的源/状态/事件声明。例如，内置的选择器可以选择 `weather@atro_light/dashboard`。每个适配后的页面都必须通过原生组件检查以及拓扑检查（区块顺序、列边界、条目数量、滚动和操作）；仅改变颜色无法满足该门禁。手机端对比和逐元素修复证据位于 [`docs/reviews/theme-phone-evidence/structures/`](https://github.com/OctoSense-org/OctoSense-App-Flow/tree/cbbda4da0a9d0fbf13497335dd3342b71f35e71f/docs/reviews/theme-phone-evidence/structures)（已从此处移除；保留在历史中）。这是一个明确的人工编写配方层，而不是为每个移植的主题自动生成页面。

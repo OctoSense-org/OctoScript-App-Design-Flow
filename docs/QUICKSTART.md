@@ -17,8 +17,8 @@ Quoted output is real, with local paths and process ids shortened to `…`.
 | Platform | State |
 | --- | --- |
 | macOS on Apple silicon | Verified: every command on this page. |
-| Windows | Native `hub`/`card-host` builds and contract, policy, CLI and modal-input tests pass in App Hub CI. Design Flow's `tools/test_*.py` tests also run there. The complete create/run/capture sequence remains unverified on the current pins. Run `tools/octo` through Python (§2), and preserve bundle line endings (§3). |
-| Linux | The same App Hub build/test suite passes on Ubuntu 24.04; Design Flow's `tools/test_*.py` tests also run there. Native app interaction and frame capture remain unverified here. Capture (`/g`, `tools/octo shot`) has been reported to time out under software rendering (llvmpipe, WSL). |
+| Windows | Native `hub`/`card-host` builds and contract, policy, CLI and modal-input tests pass in App Hub CI. App Flow's `tools/test_*.py` tests also run there. The complete create/run/capture sequence remains unverified on the current pins. Run `tools/octo` through Python (§2), and preserve bundle line endings (§3). |
+| Linux | The same App Hub build/test suite passes on Ubuntu 24.04; App Flow's `tools/test_*.py` tests also run there. Native app interaction and frame capture remain unverified here. Capture (`/g`, `tools/octo shot`) has been reported to time out under software rendering (llvmpipe, WSL). |
 
 The Windows and Linux build/test results are from [App Hub CI run 37724164489](https://github.com/OctoSense-org/OctoSense-App-Hub/actions/runs/37724164489),
 at `582a6ed`, merged by [App Hub #146](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/146)
@@ -45,7 +45,7 @@ You need:
 
   ```text
   <workspace>/
-    OctoScript-App-Design-Flow/   this repository
+    OctoSense-App-Flow/           this repository
     OctoSense-App-Hub/            hub, card-host, appstore
     makepad/                      OctoSense-org/makepad
     octoscript-makepad/           OctoSense-org/Octoscript-Makepad
@@ -63,9 +63,9 @@ Create the workspace:
 
 ```sh
 mkdir octosense-ws && cd octosense-ws
-git clone https://github.com/OctoSense-org/OctoScript-App-Design-Flow.git
+git clone https://github.com/OctoSense-org/OctoSense-App-Flow.git
 git clone https://github.com/OctoSense-org/OctoSense-App-Hub.git
-cd OctoScript-App-Design-Flow
+cd OctoSense-App-Flow
 python3 tools/setup-native.py           # makepad, octoscript, octoscript-makepad beside it
 python3 tools/setup-native.py --check   # pass: exits 0 and prints the pinned revisions
 ```
