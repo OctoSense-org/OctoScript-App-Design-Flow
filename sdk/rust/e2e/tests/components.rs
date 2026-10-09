@@ -60,11 +60,14 @@ impl WasiHttpView for State {
 
 /// OctoSense's rule for a component's requests (ADR 0014 phase 3, its
 /// `crates/wasm-host/src/component/net.rs`): a listed host, in any case and
-/// on any port, over HTTPS, or over plain HTTP to the device itself. Any
-/// other request fails inside the component with `HTTP-request-denied`, and
-/// the refusal is recorded as OctoSense logs it.
+/// on any port, over HTTPS, and never this device or its local network,
+/// unless the run allows a local server (`local`, OctoSense's
+/// `Grants::http_local`: tests only; then plain HTTP too). Any other request
+/// fails inside the component with `HTTP-request-denied`, and the refusal is
+/// recorded as OctoSense logs it.
 struct Hosts {
     hosts: Vec<String>,
+    local: bool,
     refused: Vec<String>,
 }
 
@@ -79,12 +82,53 @@ impl Hosts {
         {
             return Err(NOT_LISTED);
         }
-        let this_device = matches!(host.as_str(), "localhost" | "127.0.0.1" | "[::1]");
-        if uri.scheme() != Some(&http::uri::Scheme::HTTPS) && !this_device {
+        let local = is_local(&host);
+        if local && !self.local {
+            return Err("it is this device or its local network, which a component never reaches");
+        }
+        if uri.scheme() != Some(&http::uri::Scheme::HTTPS) && !(local && self.local) {
             return Err("it is plain HTTP; a component's requests use HTTPS");
         }
         Ok(())
     }
+}
+
+/// OctoSense's `is_local`: loopback, private, link-local and similar
+/// addresses, and names that are not public ones.
+fn is_local(host: &str) -> bool {
+    let bare = host.trim_start_matches('[').trim_end_matches(']');
+    if let Ok(ip) = bare.parse::<std::net::IpAddr>() {
+        return match ip {
+            std::net::IpAddr::V4(v4) => {
+                let [a, b, ..] = v4.octets();
+                v4.is_loopback()
+                    || v4.is_private()
+                    || v4.is_link_local()
+                    || v4.is_unspecified()
+                    || v4.is_broadcast()
+                    || v4.is_documentation()
+                    || v4.is_multicast()
+                    || a == 0
+                    || (a == 100 && (64..128).contains(&b))
+            }
+            std::net::IpAddr::V6(v6) => {
+                let first = v6.segments()[0];
+                v6.is_loopback()
+                    || v6.is_unspecified()
+                    || v6.is_multicast()
+                    || (first & 0xfe00) == 0xfc00
+                    || (first & 0xffc0) == 0xfe80
+            }
+        };
+    }
+    let last = host.rsplit('.').next().unwrap_or("");
+    let numeric = last.bytes().all(|b| b.is_ascii_digit()) || last.starts_with("0x");
+    numeric
+        || !host.contains('.')
+        || host == "localhost"
+        || [".localhost", ".internal", ".local", ".lan", ".home.arpa"]
+            .iter()
+            .any(|suffix| host.ends_with(suffix))
 }
 
 type Io = Box<dyn Future<Output = Result<(), wasmtime_wasi_http::Error>> + Send>;
@@ -298,6 +342,8 @@ fn load_with(
             http: WasiHttpCtx::new(),
             hosts: Hosts {
                 hosts: hosts.iter().map(|h| h.to_string()).collect(),
+                // The tests' server is on this device: allowed here only.
+                local: true,
                 refused: Vec::new(),
             },
             services,
@@ -752,10 +798,11 @@ fn http_reaches_the_apps_own_hosts_and_nothing_else() {
         refused,
         format!(
             "the host refused the request to http://localhost:{port}/items: its host is not in the \
-             app's network.hosts, or the request is plain HTTP (ErrorCode::HttpRequestDenied)"
+             app's network.hosts, is this device or its local network, or the request is plain \
+             HTTP (ErrorCode::HttpRequestDenied)"
         )
     );
-    // A listed host other than the device itself takes HTTPS only.
+    // A listed host takes HTTPS only.
     let plain = error(call(&mut c, "fetch", &[s("http://api.example.com/v1")]));
     assert!(plain.contains("(ErrorCode::HttpRequestDenied)"), "{plain}");
     assert_eq!(
@@ -766,6 +813,16 @@ fn http_reaches_the_apps_own_hosts_and_nothing_else() {
                 .to_string(),
         ]
     );
+    // As in a shell, which never allows a local server: a listed 127.0.0.1
+    // is this device, and refused.
+    c.store.data_mut().hosts.local = false;
+    let local = error(call(&mut c, "fetch", &[s(&url("/items"))]));
+    assert!(local.contains("(ErrorCode::HttpRequestDenied)"), "{local}");
+    assert_eq!(
+        c.store.data().hosts.refused.last().map(String::as_str),
+        Some(format!("a request to {server} was refused: it is this device or its local network, which a component never reaches").as_str())
+    );
+    c.store.data_mut().hosts.local = true;
     // A URL the SDK cannot send never reaches the host.
     let bad = error(call(&mut c, "fetch", &[s("ftp://api.example.com/x")]));
     assert_eq!(

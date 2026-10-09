@@ -465,16 +465,19 @@ ADR 0014's phase 3 holds every request to these rules:
 - It reaches only a host in `network.hosts`, and only when the manifest has
   `net`. A host is compared without ASCII case, and a listed host matches
   any port.
-- It is HTTPS. Plain HTTP reaches only the device itself, `localhost`,
-  `127.0.0.1` or `[::1]`, and only when it is listed too.
+- It is HTTPS, and it never reaches this device or its local network, even
+  when listed: not loopback, private or link-local addresses, nor
+  `localhost`, single-label or `.local`, `.lan`, `.internal` names. (A
+  script's requests may reach a listed `localhost`; a component's may not.)
 - A call of a component that may reach the network gets a 10 s deadline
   instead of 2 s, and each request's connect, first-byte and between-bytes
   timeouts end with the call.
 - The host refuses any other request, which fails inside the component with
   the WASI error code `HTTP-request-denied`. Through the SDK, the error reads
-  `the host refused the request to http://localhost:61204/items: its host is not in the app's network.hosts, or the request is plain HTTP (ErrorCode::HttpRequestDenied)`,
+  `the host refused the request to http://localhost:61204/items: its host is not in the app's network.hosts, is this device or its local network, or the request is plain HTTP (ErrorCode::HttpRequestDenied)`,
   and the shell logs `a request to localhost:61204 was refused: it is not one of the app's network hosts`
-  (or `…: it is plain HTTP; a component's requests use HTTPS`).
+  (or `…: it is this device or its local network, which a component never reaches`,
+  or `…: it is plain HTTP; a component's requests use HTTPS`).
 
 `tools/octo wasm build` adds `net` when a component imports `wasi:http` and
 `network.hosts` lists a host, and it never adds a host. With no host listed,

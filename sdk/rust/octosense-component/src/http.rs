@@ -27,9 +27,10 @@
 //!
 //! The component imports `wasi:http` only when it calls this module. ADR 0014
 //! lets its requests reach only the hosts in the app's `network.hosts`, when
-//! the manifest has the `net` capability, and only over HTTPS, except to the
-//! device itself (`localhost`, `127.0.0.1`, `[::1]`), where plain HTTP is
-//! allowed too. The host refuses any other request, and it fails with
+//! the manifest has the `net` capability, and only over HTTPS; never this
+//! device or its local network (loopback, private and link-local addresses,
+//! `localhost`, single-label and `.local`, `.lan`, `.internal` names), even
+//! when listed. The host refuses any other request, and it fails with
 //! `the host refused the request to <url>: …` (`HTTP-request-denied`). A call
 //! of a component that may reach the network gets 10 s instead of 2 s, and
 //! each request's timeouts end with the call.
@@ -78,8 +79,9 @@ pub struct Request {
 }
 
 impl Request {
-    /// A request with `method` (`"GET"`, `"PUT"`, …) to an `https://` (or,
-    /// to the device itself, `http://`) URL.
+    /// A request with `method` (`"GET"`, `"PUT"`, …) to an `https://` URL
+    /// (`http://` is accepted here, but the host sends it only in tests and
+    /// developers' runs that allow a local server).
     pub fn new(method: &str, url: &str) -> Request {
         Request {
             method: method.to_string(),
@@ -374,7 +376,8 @@ mod component {
             ErrorCode::HttpRequestDenied => {
                 return format!(
                     "the host refused the request to {url}: its host is not in the app's \
-                     network.hosts, or the request is plain HTTP ({code:?})"
+                     network.hosts, is this device or its local network, or the request is \
+                     plain HTTP ({code:?})"
                 )
             }
             ErrorCode::DnsTimeout | ErrorCode::DnsError(_) | ErrorCode::DestinationNotFound => {

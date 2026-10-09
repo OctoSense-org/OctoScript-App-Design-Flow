@@ -324,9 +324,9 @@ pub mod functions {
 ADR 0014 第 3 阶段对每个请求执行下列规则：
 
 - 只能访问 `network.hosts` 中的主机，并且清单必须有 `net`。比较主机名时不区分 ASCII 大小写，列出的主机匹配任何端口。
-- 必须使用 HTTPS。普通 HTTP 只能访问设备本身（`localhost`、`127.0.0.1` 或 `[::1]`），而且它也必须列在主机中。
+- 必须使用 HTTPS，并且即使列出也绝不访问设备本身或其本地网络：不访问环回、私有或链路本地地址，也不访问 `localhost`、单标签名称或 `.local`、`.lan`、`.internal` 名称。（脚本的请求可以访问列出的 `localhost`，组件的请求不可以。）
 - 能访问网络的组件，每次调用的截止时间是 10 秒而不是 2 秒；每个请求的连接、首字节和字节间隔超时都随这次调用结束。
-- 宿主拒绝其他任何请求，请求在组件内以 WASI 错误码 `HTTP-request-denied` 失败。通过 SDK 得到的错误是 `the host refused the request to http://localhost:61204/items: its host is not in the app's network.hosts, or the request is plain HTTP (ErrorCode::HttpRequestDenied)`，Shell 的日志记录 `a request to localhost:61204 was refused: it is not one of the app's network hosts`（或 `…: it is plain HTTP; a component's requests use HTTPS`）。
+- 宿主拒绝其他任何请求，请求在组件内以 WASI 错误码 `HTTP-request-denied` 失败。通过 SDK 得到的错误是 `the host refused the request to http://localhost:61204/items: its host is not in the app's network.hosts, is this device or its local network, or the request is plain HTTP (ErrorCode::HttpRequestDenied)`，Shell 的日志记录 `a request to localhost:61204 was refused: it is not one of the app's network hosts`（或 `…: it is this device or its local network, which a component never reaches`，或 `…: it is plain HTTP; a component's requests use HTTPS`）。
 
 组件导入 `wasi:http` 且 `network.hosts` 中列有主机时，`tools/octo wasm build` 会加入 `net`；它从不添加主机。没有列出主机时，它照常构建并为应用包写入摘要，然后警告：
 
