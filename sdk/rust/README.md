@@ -20,12 +20,14 @@ pub mod functions {
 
 | Path | What it is |
 | --- | --- |
-| [octosense-component/](octosense-component/src/lib.rs) | The crate a component depends on. It re-exports the macro and `wit-bindgen` 0.62, and has `log(line)`. |
+| [octosense-component/](octosense-component/src/lib.rs) | The crate a component depends on. It re-exports the macro and `wit-bindgen` 0.62, and has `log(line)`, [`http`](octosense-component/src/http.rs) (requests to the app's own hosts over `wasi:http`, with WASI 0.2's `wasi` crate) and [`host`](octosense-component/src/host.rs) (the app's host services over `octosense:host`, whose WIT is OctoSense's [`octosense-host.wit`](octosense-component/wit/octosense-host.wit)). A component imports either only when it calls it. |
 | [octosense-component-macros/](octosense-component-macros/src/lib.rs) | `#[octosense_component::export]`. It writes the WIT world from the module's `pub fn`s, `pub struct`s and `pub enum`s (names in kebab case), generates the bindings with `wit_bindgen::generate!`, and converts between the module's types and the generated ones. A type it cannot map fails the build with what to use instead. |
 | [examples/markdown-tools/](examples/markdown-tools/src/lib.rs) | An unmodified crate (`pulldown-cmark`), a record, an enum, files through `std::fs`, the clock and a log line. |
 | [examples/type-tour/](examples/type-tour/src/lib.rs) | Every type mapping both ways, random numbers through `getrandom`, and state kept between calls. |
 | [examples/template/](examples/template/src/lib.rs) | [templates/rust-component/src/lib.rs](../../templates/rust-component/src/lib.rs), which `tools/octo wasm new` copies, built as a member here. |
-| [e2e/](e2e/tests/components.rs) | Builds the three examples with plain cargo for `wasm32-wasip2`, loads them in Wasmtime 49 with WASI 0.2 as ADR 0014's runtime does, and calls every function. |
+| [examples/http-client/](examples/http-client/src/lib.rs) | `GET` and `POST` with `octosense_component::http`, a header and a timeout through its request builder (ADR 0014 phase 3). |
+| [examples/host-services/](examples/host-services/src/lib.rs) | Calls to the app's host services with `octosense_component::host` (ADR 0014 phase 3). |
+| [e2e/](e2e/tests/components.rs) | Builds the examples with plain cargo for `wasm32-wasip2`, loads them in Wasmtime 49 with WASI 0.2 as ADR 0014's runtime does, and calls every function. It links `wasi:http` (`wasmtime-wasi-http` 49) and `octosense:host` as OctoSense's phase 3 runtime does, with copies of its rules: requests go to a local HTTP/1.1 server and reach only the hosts a test grants, and host calls reach fake services. |
 
 Run the tests from this folder; they need the target
 (`rustup target add wasm32-wasip2`):
@@ -39,4 +41,6 @@ CI's `rust-sdk` job runs them on Ubuntu, with `cargo fmt --all -- --check`.
 The SDK is not on crates.io yet. ADR 0014 publishes it there with a
 maintainer's approval; until then, a crate depends on it by a git commit of
 this repository or by path, and `tools/octo wasm new` writes either. No
-OctoSense build runs components yet ([docs/RUST.md](../../docs/RUST.md)).
+OctoSense build runs components yet, and HTTP and host services from a
+component also need ADR 0014's phase 3, which is not merged
+([docs/RUST.md](../../docs/RUST.md)).

@@ -82,7 +82,7 @@ says who runs each one and when.
   the host's operator registers it
   ([the backend guide](docs/HOST-API-V1.md#4-connect-the-apps-backend)).
 - **Declare every host.** List in `network.hosts` every `https://` host that
-  `main.splash` contacts, and request `net`. `images` and `web` add pictures
+  `main.splash` or a component contacts, and request `net`. `images` and `web` add pictures
   and pages from any public `https://` host; they do not widen `net`. Never
   use `http://`.
 - **Every AI feature is optional.** Make the app complete without one:
@@ -132,10 +132,13 @@ says who runs each one and when.
     between calls.
   - A **component** (ADR 0014) is ordinary Rust built with this
     repository's SDK: `tools/octo wasm new`, then `tools/octo wasm build`,
-    which also adds `requires: ["wasm-components-v1"]` (and `storage` for
-    files). No OctoSense build loads components yet, and App Hub `main`
-    refuses them until App Hub #186 merges: say so, and report calling one
-    from an app as unverified.
+    which also adds `requires: ["wasm-components-v1"]` (`storage` for
+    files, and `net` for HTTP once `network.hosts` lists the hosts; it never
+    adds a host). No OctoSense build loads components yet, and App Hub
+    `main` refuses them until App Hub #186 merges; HTTP
+    (`octosense_component::http`) and host services
+    (`octosense_component::host`) also need ADR 0014's phase 3 and App Hub
+    #188. Say so, and report calling one from an app as unverified.
   - `card-host` answers every call with
     `no service answers "wasm" on this device`. An isolated Wasm fixture is
     not evidence that your app's functions work; test its exact bundle and
