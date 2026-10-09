@@ -6,6 +6,7 @@ let accounts = []
 let repos = []
 let files = []
 let repo_page = 1
+let repo_state = "idle"
 let browse_owner = ""
 let browse_repo = ""
 let browse_branch = "main"
@@ -16,6 +17,16 @@ let save_timer = nil
 let local_revision = 0
 let local_file = "draft-b.json"
 let editor_ready = false
+let screen = "editor"
+// The GitHub card. auth_state: loading | ready | connecting. auth_note holds
+// the last sign-in's outcome in plain words; auth_failed marks it a failure.
+let auth_state = "loading"
+let auth_note = ""
+let auth_failed = false
+let wants_private = false
+let adding_account = false
+let confirm_disconnect = false
+let wait_step = 0
 fn notice(text){ ui.editor.set_status(text) ui.status.set_text(text) }
 fn persist(){
     // Verify the alternate snapshot before advancing it. The previous good
@@ -42,6 +53,7 @@ fn edited(text){
 }
 fn show_editor(){
     if !editor_ready { notice("Saved draft could not load · choose a valid file or recovery draft first") return }
+    screen = "editor"
     ui.repository.set_visible(false)
     ui.workspace.set_visible(true)
     ui.status.set_visible(false)
@@ -51,21 +63,78 @@ fn show_editor(){
 }
 fn show_repository(){
     persist()
+    screen = "repository"
+    if auth_state != "connecting" { auth_note = "" auth_failed = false }
     ui.workspace.set_visible(false)
     ui.repository.set_visible(true)
     ui.status.set_visible(true)
     ui.path_entry.set_text(draft.path)
     ui.commit_entry.set_text(draft.message)
     ui.branch_entry.set_text(browse_branch)
-    ui.account_list.render()
+    show_account()
     ui.repo_list.render()
     ui.file_list.render()
     load_accounts()
+}
+fn active_account(){
+    for known in accounts { if known.handle == connection { return known } }
+    return nil
+}
+fn private_access(account){
+    for granted in account.scopes { if granted == "repo" { return true } }
+    return false
+}
+fn access_words(account){
+    if private_access(account) { return "Public and private repositories" }
+    return "Public repositories only"
+}
+fn remember(account){
+    let kept = []
+    for known in accounts { if known.handle != account.handle { kept.push(known) } }
+    kept.push(account)
+    accounts = kept
+}
+// The host's sign-in errors in the words this card shows. The status line
+// keeps the original.
+fn sign_in_words(error){
+    if regex("declined", "i").test(error) { return "You declined on GitHub, so nothing was connected." }
+    if regex("authorization expired", "i").test(error) { return "The code expired before it was approved on GitHub." }
+    if regex("cancelled or expired", "i").test(error) { return "The sign-in timed out before it was finished." }
+    if regex("connection failed|check the network", "i").test(error) { return "Couldn't reach GitHub. Check your connection, then try again." }
+    if regex("not granted", "i").test(error) { return "GitHub didn't grant the access this app asked for, so nothing was connected." }
+    return error
+}
+fn show_account(){
+    let current = active_account()
+    let ready = auth_state == "ready"
+    let public_only = false
+    if current != nil { public_only = !private_access(current) }
+    ui.account_loading.set_visible(auth_state == "loading")
+    ui.account_waiting.set_visible(auth_state == "connecting")
+    ui.account_connected.set_visible(ready && current != nil && !adding_account)
+    ui.account_connect.set_visible(ready && (current == nil || adding_account))
+    ui.connected_body.render()
+    ui.connect_body.render()
+    ui.repo_section.set_visible(ready && current != nil)
+    ui.private_hint.set_visible(public_only)
+}
+fn choose_access(private_repos){
+    wants_private = private_repos
+    ui.connect_body.render()
+}
+fn waiting(){
+    if auth_state != "connecting" { return }
+    let trail = ""
+    for i in wait_step { trail = trail + "." }
+    ui.wait_label.set_text("Finish in the GitHub sheet" + trail)
+    wait_step = (wait_step + 1) % 4
+    start_timeout(0.5, || waiting())
 }
 fn set_active(handle){
     if connection == handle { return }
     connection = handle
     repos = [] files = []
+    repo_state = "idle"
     browse_owner = "" browse_repo = "" browse_branch = "main" browse_path = ""
     ui.branch_entry.set_text(browse_branch)
     ui.repo_list.render() ui.file_list.render()
@@ -74,17 +143,22 @@ fn load_accounts(){
     let epoch = auth_epoch
     host.request("auth.accounts", {}, fn(r){
         if epoch != auth_epoch { return }
-        if !r.is_ok { notice(r.error) return }
+        if !r.is_ok {
+            if auth_state == "loading" { auth_state = "ready" }
+            notice(r.error) show_account() return
+        }
         accounts = []
         for i in r.data.len() { if r.data[i].provider == "github" { accounts.push(r.data[i]) } }
-        ui.account_list.render()
         host.request("auth.active", {}, fn(active){
             if epoch != auth_epoch { return }
-            if !active.is_ok { notice(active.error) return }
+            if auth_state == "loading" { auth_state = "ready" }
+            if !active.is_ok { notice(active.error) show_account() return }
             let handle = ""
             if active.data != nil && active.data.provider == "github" { handle = active.data.handle }
             set_active(handle)
-            ui.account_list.render()
+            show_account()
+            // Opening this screen with an account shows its repositories.
+            if screen == "repository" && handle != "" && repo_state == "idle" { list_repos(1) }
         })
     })
 }
@@ -110,12 +184,33 @@ fn connect(private_repos){
     if busy { return }
     busy = true
     auth_epoch = auth_epoch + 1
-    notice("Continue in the OctoSense GitHub sign-in sheet")
+    wants_private = private_repos
+    auth_state = "connecting"
+    auth_note = ""
+    auth_failed = false
+    confirm_disconnect = false
+    show_account()
+    wait_step = 0
+    waiting()
     let scopes = ["read:user", "public_repo"]
     if private_repos { scopes = ["read:user", "repo"] }
     host.request("auth.connect", {provider: "github", scopes: scopes}, fn(r){
         busy = false
-        if !r.is_ok { notice(r.error) return }
+        auth_state = "ready"
+        if !r.is_ok {
+            if r.error == "Sign-in cancelled" || r.error == "A new sign-in replaced this request" {
+                auth_note = "Sign-in cancelled. Nothing was connected."
+                auth_failed = false
+            } else {
+                auth_note = sign_in_words(r.error)
+                auth_failed = true
+            }
+            show_account()
+            notice((if auth_failed {"Not connected to GitHub"} else {"Sign-in cancelled"}))
+            return
+        }
+        adding_account = false
+        remember(r.data)
         choose_account(r.data.handle)
     })
 }
@@ -125,10 +220,15 @@ fn choose_account(handle){
     auth_epoch = auth_epoch + 1
     host.request("auth.select", {connection: handle}, fn(r){
         busy = false
-        if !r.is_ok { notice(r.error) return }
+        if !r.is_ok { notice(r.error) show_account() return }
+        remember(r.data)
         set_active(r.data.handle)
+        adding_account = false
+        confirm_disconnect = false
+        auth_note = ""
+        auth_failed = false
         // Account choice changes browsing, never the identity of an open draft.
-        ui.account_list.render()
+        show_account()
         list_repos(1)
     })
 }
@@ -138,22 +238,33 @@ fn disconnect(){
     auth_epoch = auth_epoch + 1
     host.request("auth.disconnect", {connection: connection}, fn(r){
         busy = false
-        if !r.is_ok { notice(r.error) return }
+        confirm_disconnect = false
+        if !r.is_ok { notice(r.error) show_account() return }
+        let gone = connection
+        let kept = []
+        for known in accounts { if known.handle != gone { kept.push(known) } }
+        accounts = kept
         set_active("")
+        auth_note = "Disconnected. Your note and its saved destination stay on this device."
+        auth_failed = false
+        notice("Disconnected from GitHub")
+        show_account()
         load_accounts()
-        notice("Disconnected · your local draft and its original destination are retained")
     })
 }
 fn list_repos(page){
     if busy { return }
     if connection == "" { notice("Connect GitHub or select an account first") return }
     busy = true
+    repo_state = "loading"
+    ui.repo_list.render()
     notice("Loading repositories…")
     host.request("github.repositories", {connection: connection, page: page}, fn(r){
         busy = false
-        if !r.is_ok { notice(r.error) return }
+        if !r.is_ok { repo_state = "failed" ui.repo_list.render() notice(r.error) return }
         repos = r.data
         repo_page = page
+        repo_state = "ready"
         ui.repo_list.render()
         notice("Choose a repository · page " + page)
     })
@@ -277,6 +388,42 @@ fn save_remote(){
 start_timeout(0.05, || boot())
 let ink = #x172b40
 let muted = #x576d80
+let line = #xd5dce5
+let good = #x1a7f37
+let bad = #xb42318
+let pick = #x285cd6
+let Primary = Button {width: Fill height: 48
+    draw_bg +: {color: #x1f2937 color_hover: #x111827 color_down: #x0b1220 color_focus: #x1f2937 border_size: 0.0 border_radius: 8.0}
+    draw_text +: {color: #xffffff color_hover: #xffffff color_down: #xffffff color_focus: #xffffff text_style: theme.font_bold{font_size: 13}}
+}
+let Quiet = ButtonFlat {height: 44 padding: Inset{left: 14 right: 14}
+    draw_bg +: {color: #xffffff color_hover: #xf3f6f9 color_down: #xe8edf3 border_size: 1.0 border_color: #xc9d2dd border_radius: 8.0}
+    draw_text +: {color: ink color_hover: ink color_down: ink text_style: theme.font_regular{font_size: 13}}
+}
+let Danger = Button {height: 44 padding: Inset{left: 14 right: 14}
+    draw_bg +: {color: bad color_hover: #x912018 color_down: #x7a271a color_focus: bad border_size: 0.0 border_radius: 8.0}
+    draw_text +: {color: #xffffff color_hover: #xffffff color_down: #xffffff color_focus: #xffffff text_style: theme.font_bold{font_size: 13}}
+}
+// A list entry: a repository, folder or file.
+let Row = ButtonFlat {width: Fill height: 44 align: Align{x: 0.0 y: 0.5} padding: Inset{left: 12 right: 12}
+    draw_bg +: {color: #xf6f8fa color_hover: #xeef2f6 color_down: #xe3e9ef border_size: 0.0 border_radius: 8.0}
+    draw_text +: {color: ink color_hover: ink color_down: ink text_style: theme.font_regular{font_size: 13}}
+}
+// Light fields need a dark caret: the theme's caret is white.
+let Field = TextInput {width: Fill height: 44 padding: Inset{left: 12 right: 12 top: 11 bottom: 11}
+    draw_bg +: {color: #xf6f8fa color_hover: #xf6f8fa color_focus: #xffffff color_empty: #xf6f8fa
+        border_size: 1.0 border_color: line border_color_hover: #x9aa7b8 border_color_focus: pick border_color_empty: line border_radius: 8.0}
+    draw_text +: {color: ink color_hover: ink color_focus: ink color_empty: muted color_empty_hover: muted color_empty_focus: muted text_style: theme.font_regular{font_size: 13}}
+    draw_cursor +: {color: ink}
+    draw_selection +: {color: #x285cd640}
+}
+let Heading = Label {width: Fill draw_text +: {color: ink text_style: theme.font_bold{font_size: 18}}}
+let Section = Label {width: Fill draw_text +: {color: ink text_style: theme.font_bold{font_size: 15}}}
+let Body = Label {width: Fill draw_text +: {color: ink wrap: Words text_style: theme.font_regular{font_size: 13}}}
+let Hint = Label {width: Fill draw_text +: {color: muted wrap: Words text_style: theme.font_regular{font_size: 12}}}
+let FieldLabel = Label {width: Fill margin: Inset{top: 6} draw_text +: {color: muted text_style: theme.font_bold{font_size: 12}}}
+let Choice = RoundedView {width: Fill height: Fit flow: Right spacing: 12 padding: 12}
+let Radio = RoundedView {width: 18 height: 18 margin: Inset{top: 4} align: Align{x: 0.5 y: 0.5}}
 SolidView {width: Fill height: Fill flow: Down draw_bg.color: #xffffff
     workspace := View {width: Fill height: Fill flow: Down
         editor := MarkdownEditor {width: Fill height: Fill
@@ -285,61 +432,165 @@ SolidView {width: Fill height: Fill flow: Down draw_bg.color: #xffffff
             on_save: || save_remote()
         }
     }
-    repository := View {width: Fill height: Fill flow: Down padding: 16 spacing: 8 visible: false
-        View {width: Fill height: 44 spacing: 8 align: Align{y: 0.5}
-            Label {width: Fill text: "Repository & file" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 20}}
-            ButtonFlat {height: 44 text: "Back to note" on_click: || {draft.message = ui.commit_entry.text() persist() show_editor()}}
+    repository := View {width: Fill height: Fill flow: Down visible: false
+        View {width: Fill height: Fit padding: Inset{left: 16 right: 16 top: 12 bottom: 8} align: Align{x: 0.5}
+            View {width: Fill max_width: 720 height: 44 flow: Right spacing: 8 align: Align{y: 0.5}
+                Label {width: Fill text: "Repository & file" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 20}}
+                Quiet {width: Fit height: 40 text: "Back to note" on_click: || {draft.message = ui.commit_entry.text() persist() show_editor()}}
+            }
         }
-        ScrollYView {width: Fill height: Fill flow: Down spacing: 8
-            Label {width: Fill text: "GitHub access stays with OctoSense. Your note stays editable while disconnected." draw_text.color: muted draw_text.wrap: Words}
-            account_list := View {width: Fill height: Fit flow: Down spacing: 6 on_render: || {
-                if accounts.len() == 0 { Label {width: Fill text: "No GitHub connection" draw_text.color: muted} }
-                for i in accounts.len() { ButtonFlat {width: Fill height: 44 text: (if accounts[i].handle == connection {"Selected · " + accounts[i].label} else {accounts[i].label}) on_click: || choose_account(accounts[i].handle)} }
-            }}
-            View {width: Fill height: Fit flow: Down spacing: 4
-                ButtonFlat {width: Fill height: 44 text: "Connect public repositories" on_click: || connect(false)}
-                ButtonFlat {width: Fill height: 44 text: "Connect private repositories (broader access)" on_click: || connect(true)}
-                ButtonFlat {width: Fill height: 44 text: "Disconnect selected account" on_click: || disconnect()}
-            }
-            Hr {}
-            ButtonFlat {width: Fill height: 44 text: "Refresh repositories" on_click: || list_repos(1)}
-            repo_list := View {width: Fill height: Fit flow: Down spacing: 4 on_render: || {
-                for i in repos.len() { ButtonFlat {width: Fill height: 44 text: repos[i].full_name on_click: || choose_repo(i)} }
-                if repos.len() == 0 { Label {width: Fill text: "No repositories on this page" draw_text.color: muted} }
-                if repos.len() > 0 || repo_page > 1 {
-                    View {width: Fill height: 44 spacing: 8
-                        ButtonFlat {width: Fill height: 44 text: "Previous" on_click: || {if repo_page > 1 {list_repos(repo_page - 1)}}}
-                        if repos.len() > 0 { ButtonFlat {width: Fill height: 44 text: "Next" on_click: || list_repos(repo_page + 1)} }
+        ScrollYView {width: Fill height: Fill flow: Down padding: Inset{left: 16 right: 16 bottom: 16} align: Align{x: 0.5}
+            View {width: Fill max_width: 720 height: Fit flow: Down spacing: 20
+                account_card := RoundedView {width: Fill height: Fit flow: Down padding: 16 spacing: 12
+                    draw_bg +: {color: #xffffff border_radius: 12.0 border_size: 1.0 border_color: line}
+                    account_loading := Hint {text: "Checking your GitHub connection…"}
+                    account_waiting := View {visible: false width: Fill height: Fit flow: Down spacing: 10
+                        Heading {text: "Connecting to GitHub"}
+                        View {width: Fill height: Fit flow: Right spacing: 10 align: Align{y: 0.5}
+                            RoundedView {width: 10 height: 10 draw_bg +: {color: pick border_radius: 5.0}}
+                            wait_label := Body {text: "Finish in the GitHub sheet"}
+                        }
+                        Hint {text: "Approve with the one-time code on github.com. This page updates when you're done."}
+                    }
+                    // Visibility lives on these wrappers: a render re-applies its
+                    // own view's declaration, which would hide that view again.
+                    account_connected := View {visible: false width: Fill height: Fit
+                        connected_body := View {width: Fill height: Fit flow: Down spacing: 14 on_render: || {
+                            let current = active_account()
+                            if current != nil {
+                                View {width: Fill height: Fit flow: Down spacing: 4
+                                    Hint {text: "GitHub account"}
+                                    Heading {text: current.label}
+                                    View {width: Fill height: Fit flow: Right spacing: 8 align: Align{y: 0.5}
+                                        RoundedView {width: 8 height: 8 draw_bg +: {color: good border_radius: 4.0}}
+                                        Hint {text: "Connected · " + access_words(current)}
+                                    }
+                                }
+                                if confirm_disconnect {
+                                    RoundedView {width: Fill height: Fit flow: Down padding: 12 spacing: 10 draw_bg +: {color: #xfef3f2 border_radius: 8.0 border_size: 1.0 border_color: #xfecdca}
+                                        Body {text: "Disconnect " + current.label + "? Your note and its saved destination stay on this device."}
+                                        View {width: Fill height: Fit flow: Right spacing: 8
+                                            Quiet {width: Fill text: "Keep connected" on_click: || {confirm_disconnect = false show_account()}}
+                                            Danger {width: Fill text: "Disconnect" on_click: || disconnect()}
+                                        }
+                                    }
+                                }
+                                if !confirm_disconnect {
+                                    View {width: Fill height: Fit flow: Right spacing: 8
+                                        Quiet {width: Fill text: "Use another account" on_click: || {adding_account = true auth_note = "" auth_failed = false show_account()}}
+                                        Quiet {width: Fit text: "Disconnect" on_click: || {confirm_disconnect = true show_account()}}
+                                    }
+                                }
+                            }
+                        }}
+                    }
+                    account_connect := View {visible: false width: Fill height: Fit
+                        connect_body := View {width: Fill height: Fit flow: Down spacing: 12 on_render: || {
+                            Heading {text: (if adding_account {"Add a GitHub account"} else {"Connect GitHub"})}
+                            Hint {text: "Open notes from your repositories and save changes back as commits. Your note stays editable here either way."}
+                            if auth_note != "" && auth_failed {
+                                RoundedView {width: Fill height: Fit flow: Down padding: 12 spacing: 4 draw_bg +: {color: #xfef3f2 border_radius: 8.0 border_size: 1.0 border_color: #xfecdca}
+                                    Label {width: Fill text: "Not connected" draw_text.color: bad draw_text.text_style: theme.font_bold{font_size: 13}}
+                                    Body {text: auth_note}
+                                }
+                            }
+                            if auth_note != "" && !auth_failed {
+                                RoundedView {width: Fill height: Fit padding: 12 draw_bg +: {color: #xf3f6f9 border_radius: 8.0}
+                                    Body {text: auth_note}
+                                }
+                            }
+                            let others = 0
+                            for known in accounts { if known.handle != connection { others = others + 1 } }
+                            if others > 0 {
+                                FieldLabel {text: "Your accounts"}
+                                for i in accounts.len() {
+                                    if accounts[i].handle != connection {
+                                        Row {text: "Use " + accounts[i].label + (if private_access(accounts[i]) {" · public and private"} else {" · public only"}) on_click: || choose_account(accounts[i].handle)}
+                                    }
+                                }
+                                FieldLabel {text: "Or connect another account"}
+                            }
+                            FieldLabel {text: "What GitHub Notes can reach"}
+                            GestureView {width: Fill height: Fit on_tap: |x, y| choose_access(false)
+                                Choice {draw_bg +: {color: (if wants_private {#xffffff} else {#xf0f5ff}) border_radius: 8.0 border_size: 1.0 border_color: (if wants_private {line} else {pick})}
+                                    Radio {draw_bg +: {color: #xffffff border_radius: 9.0 border_size: 1.5 border_color: (if wants_private {#x9aa7b8} else {pick})}
+                                        if !wants_private { RoundedView {width: 10 height: 10 draw_bg +: {color: pick border_radius: 5.0}} }
+                                    }
+                                    View {width: Fill height: Fit flow: Down spacing: 2
+                                        Label {width: Fill text: "Public repositories" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 13}}
+                                        Hint {text: "Open and save notes in your public repositories."}
+                                    }
+                                }
+                            }
+                            GestureView {width: Fill height: Fit on_tap: |x, y| choose_access(true)
+                                Choice {draw_bg +: {color: (if wants_private {#xf0f5ff} else {#xffffff}) border_radius: 8.0 border_size: 1.0 border_color: (if wants_private {pick} else {line})}
+                                    Radio {draw_bg +: {color: #xffffff border_radius: 9.0 border_size: 1.5 border_color: (if wants_private {pick} else {#x9aa7b8})}
+                                        if wants_private { RoundedView {width: 10 height: 10 draw_bg +: {color: pick border_radius: 5.0}} }
+                                    }
+                                    View {width: Fill height: Fit flow: Down spacing: 2
+                                        Label {width: Fill text: "Public and private repositories" draw_text.color: ink draw_text.text_style: theme.font_bold{font_size: 13}}
+                                        Hint {text: "Also reaches your private repositories. Choose this if your notes are private."}
+                                    }
+                                }
+                            }
+                            Primary {text: (if auth_failed {"Try again"} else {"Connect GitHub"}) on_click: || connect(wants_private)}
+                            if adding_account {
+                                Quiet {width: Fill text: "Cancel" on_click: || {adding_account = false auth_note = "" auth_failed = false show_account()}}
+                            }
+                            Label {width: Fill text: "You approve on github.com with a one-time code. OctoSense keeps the sign-in; GitHub Notes never sees your password or token." draw_text.color: muted draw_text.wrap: Words draw_text.text_style.font_size: 12}
+                        }}
                     }
                 }
-            }}
-            Label {text: "Branch" draw_text.color: muted}
-            branch_entry := TextInput {width: Fill height: 44 text: "main" empty_text: "Branch"}
-            ButtonFlat {width: Fill height: 44 text: "Browse root on this branch" on_click: || list_files("")}
-            file_list := View {width: Fill height: Fit flow: Down spacing: 4 on_render: || {
-                if browse_repo != "" && files.len() == 0 { Label {width: Fill text: "No Markdown files here · choose a new path below" draw_text.color: muted draw_text.wrap: Words} }
-                for i in files.len() {
-                    if files[i].type == "dir" || regex("[.](md|markdown)$", "i").test(files[i].name) {
-                        ButtonFlat {width: Fill height: 44 text: files[i].path on_click: || choose_file(i)}
+                repo_section := View {visible: false width: Fill height: Fit flow: Down spacing: 8
+                    View {width: Fill height: Fit flow: Right spacing: 8 align: Align{y: 0.5}
+                        Section {text: "Repository"}
+                        Quiet {width: Fit height: 36 text: "Refresh" on_click: || list_repos(1)}
                     }
+                    repo_list := View {width: Fill height: Fit flow: Down spacing: 6 on_render: || {
+                        if repo_state == "loading" { Hint {text: "Loading repositories…"} }
+                        if repo_state == "failed" { Hint {text: "Couldn't load repositories. Choose Refresh to try again."} }
+                        if repo_state == "ready" && repos.len() == 0 { Hint {text: "No repositories on this page"} }
+                        for i in repos.len() { Row {text: repos[i].full_name on_click: || choose_repo(i)} }
+                        if repo_state == "ready" && (repos.len() > 0 || repo_page > 1) {
+                            View {width: Fill height: Fit flow: Right spacing: 8
+                                if repo_page > 1 { Quiet {width: Fill text: "Previous page" on_click: || list_repos(repo_page - 1)} }
+                                if repos.len() > 0 { Quiet {width: Fill text: "Next page" on_click: || list_repos(repo_page + 1)} }
+                            }
+                        }
+                    }}
+                    private_hint := View {visible: false width: Fill height: Fit flow: Down spacing: 8 margin: Inset{top: 4}
+                        Hint {text: "Private repositories aren't listed: this connection covers public repositories only."}
+                        Quiet {width: Fill text: "Include private repositories" on_click: || connect(true)}
+                    }
+                    FieldLabel {text: "Branch"}
+                    branch_entry := Field {text: "main" empty_text: "Branch"}
+                    Quiet {width: Fill text: "Browse files on this branch" on_click: || list_files("")}
+                    file_list := View {width: Fill height: Fit flow: Down spacing: 6 on_render: || {
+                        if browse_repo != "" && files.len() == 0 { Hint {text: "No Markdown files here · choose a new path below"} }
+                        for i in files.len() {
+                            if files[i].type == "dir" || regex("[.](md|markdown)$", "i").test(files[i].name) {
+                                Row {text: files[i].path on_click: || choose_file(i)}
+                            }
+                        }
+                    }}
+                    FieldLabel {text: "Markdown file path"}
+                    path_entry := Field {text: "notes/new-note.md"}
+                    View {width: Fill height: Fit flow: Right spacing: 8
+                        Quiet {width: Fill text: "Open existing" on_click: || read_file()}
+                        Quiet {width: Fill text: "Use as new path" on_click: || new_file()}
+                    }
+                    FieldLabel {text: "Commit message"}
+                    commit_entry := Field {text: "Update note" on_change: |text| {draft.message = text persist()}}
                 }
-            }}
-            Label {text: "Markdown file path" draw_text.color: muted}
-            path_entry := TextInput {width: Fill height: 44 text: "notes/new-note.md"}
-            View {width: Fill height: 44 spacing: 8
-                ButtonFlat {width: Fill height: 44 text: "Open existing" on_click: || read_file()}
-                ButtonFlat {width: Fill height: 44 text: "Use as new path" on_click: || new_file()}
+                Quiet {width: Fill text: "Recover previous draft" on_click: || recover()}
             }
-            Label {text: "Commit message" draw_text.color: muted}
-            commit_entry := TextInput {width: Fill height: 44 text: "Update note" on_change: |text| {draft.message = text persist()}}
-            ButtonFlat {width: Fill height: 44 text: "Recover previous draft" on_click: || recover()}
         }
     }
-    replace_prompt := View {width: Fill height: Fit flow: Down padding: 16 spacing: 6 visible: false
-        replace_text := Label {width: Fill draw_text.color: ink draw_text.wrap: Words}
-        View {width: Fill height: 44 spacing: 8
-            ButtonFlat {width: Fill height: 44 text: "Keep current draft" on_click: || {pending = nil ui.replace_prompt.set_visible(false)}}
-            Button {width: Fill height: 44 text: "Open & keep recovery" on_click: || apply_pending()}
+    replace_prompt := View {width: Fill height: Fit flow: Down padding: 16 spacing: 8 visible: false
+        replace_text := Body {}
+        View {width: Fill height: Fit flow: Right spacing: 8
+            Quiet {width: Fill text: "Keep current draft" on_click: || {pending = nil ui.replace_prompt.set_visible(false)}}
+            Primary {width: Fill height: 44 text: "Open & keep recovery" on_click: || apply_pending()}
         }
     }
     status := Label {width: Fill height: Fit visible: false padding: Inset{left: 16 right: 16 top: 6 bottom: 8} text: "Opening local draft…" draw_text.color: muted draw_text.wrap: Words draw_text.text_style.font_size: 11}

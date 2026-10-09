@@ -15,13 +15,13 @@
 1. 使用 OctoSense desktop-v0.1.0-beta.2 或更新版本，其中包含连接账户服务和 `MarkdownEditor` 控件。
 2. 为宿主提供 GitHub 注册信息。beta.2 的下载包里没有：请按[宿主配置指南](https://github.com/OctoSense-org/OctoSense/blob/desktop-v0.1.0-beta.2/crates/oauth-service/README.zh-CN.md)，在宿主的 `<apps root>/.host/oauth/clients.json` 中添加启用设备授权流程的 GitHub OAuth 客户端 ID。缺少它时，连接会失败并提示 `OAuth is not configured`。如果宿主构建时已编入分发者的注册信息，就不需要这个文件。不要把客户端密钥或令牌放进应用包或应用数据。
 3. 从 App Hub 安装已发布的 GitHub Notes，或通过本地测试目录安装本副本（[PUBLISHING 第 4 节](../../../docs/PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。授予界面列出的能力。
-4. 先写笔记，再点击左上角的返回/文件图标打开 **Repository & file**。选择公开或私有仓库权限，然后在宿主面板和浏览器中完成 GitHub 授权。私有权限会授予 GitHub 范围更广的 `repo` 权限。
-5. 选择账户、仓库、分支和文件。新笔记可以填写新的 Markdown 路径，再选择 **Use as new path**。已有文件会连同 blob SHA 一起加载；如果远端文件已经改变，GitHub 会拒绝提交，应用保留你的草稿。
+4. 先写笔记，再点击左上角的返回/文件图标打开 **Repository & file**。选择应用可访问的范围（**Public repositories**，或会授予 GitHub 范围更广的 `repo` 权限的 **Public and private repositories**），然后点 **Connect GitHub**，在宿主面板和浏览器中完成授权。
+5. 账户卡片随后显示已连接的账户及其访问范围，并加载仓库。选择仓库、分支和文件。新笔记可以填写新的 Markdown 路径，再选择 **Use as new path**。已有文件会连同 blob SHA 一起加载；如果远端文件已经改变，GitHub 会拒绝提交，应用保留你的草稿。
 6. 设置提交说明，回到笔记，点击纸飞机图标。在宿主面板中核对确切内容和目标位置，然后选择 **Approve & Save**。只有 GitHub 返回提交 SHA 后，应用才报告提交成功。
 
 ## 草稿与账户
 
-未发送的编辑以交替保存、读回校验的快照形式存放在应用的私有存储中。主动打开另一个文件时，当前草稿会保留为恢复副本。远程保存失败或取消时，本地草稿保留不变。网络超时会让远端结果不明；重试前请先到 GitHub 查看。**Disconnect selected account** 会移除本应用的 OAuth 连接，但保留本地笔记。
+未发送的编辑以交替保存、读回校验的快照形式存放在应用的私有存储中。主动打开另一个文件时，当前草稿会保留为恢复副本。远程保存失败或取消时，本地草稿保留不变。网络超时会让远端结果不明；重试前请先到 GitHub 查看。**Disconnect** 经确认后会移除本应用的 OAuth 连接，但保留本地笔记。**Use another account** 可切换或添加账户。
 
 清单声明了 `storage.accounts: true`。启动时读取 `auth.active`，选择账户时调用 `auth.select`，让宿主和应用对当前账户保持一致。浏览使用当前选中的账户。已打开的草稿保留原来的账户和仓库；切换账户不会悄悄改变它下一次提交的目标。要提交这样的草稿，请选回原账户，或选择新的目标。
 

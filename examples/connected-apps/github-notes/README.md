@@ -46,10 +46,12 @@ editor layout.
    ([PUBLISHING §4](../../../docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
    Grant the displayed capabilities.
 4. Write a note, then click the top-left back/file icon to open
-   **Repository & file**. Choose public or private access, and complete GitHub
-   consent in the host sheet and the browser. Private access grants GitHub's
-   broader `repo` scope.
-5. Select the account, repository, branch and file. For a new note, enter a new
+   **Repository & file**. Choose what the app can reach (**Public
+   repositories**, or **Public and private repositories**, which grants
+   GitHub's broader `repo` scope), then **Connect GitHub** and complete
+   consent in the host sheet and the browser.
+5. The account card then names the connected account and its access, and the
+   repositories load. Choose a repository, branch and file. For a new note, enter a new
    Markdown path and choose **Use as new path**. An existing file loads with its
    blob SHA; if the remote file has changed, GitHub refuses the commit and the
    app keeps your draft.
@@ -64,8 +66,8 @@ Unsent edits are saved as alternating verified snapshots in the app's private
 storage. Opening a different file explicitly keeps the current draft as a
 recovery copy. A failed or cancelled remote save keeps the local draft. A
 network timeout leaves the remote result unknown; check GitHub before you
-retry. **Disconnect selected account** removes this app's OAuth connection and
-keeps its local note.
+retry. **Disconnect**, once confirmed, removes this app's OAuth connection and
+keeps its local note. **Use another account** switches or adds an account.
 
 The manifest declares `storage.accounts: true`. Startup reads `auth.active`, and
 account choice calls `auth.select`, so the host and the app agree on the active
