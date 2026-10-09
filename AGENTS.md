@@ -134,7 +134,7 @@ says who runs each one and when.
   does ([docs/CAPABILITIES.md](docs/CAPABILITIES.md)), and remove the rest.
 - **Check that a family serves store apps before you build on it.** The gate
   admitting a capability does not mean a shell answers your app: `llm`,
-  `news`, the engine services and `calendar` answer only system apps,
+  `news`, `calendar` and the craft engines answer only system apps,
   `clipboard` is served by nothing, `matrix.*` only inside Rinx, and `mail`
   cannot send on RC1. Check [docs/HOST-API-FAMILIES.md](docs/HOST-API-FAMILIES.md),
   and `runtime.describe` for optional methods, before writing a screen around

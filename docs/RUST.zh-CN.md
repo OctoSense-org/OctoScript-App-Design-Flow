@@ -16,10 +16,10 @@
 | 相机、麦克风或位置 | 宿主 API：`camera`、`microphone` 和 `location` 能力及其权限方法，以及 `location.get` | [HOST-API-V1 §3](HOST-API-V1.zh-CN.md#3-在前台申请设备访问) |
 | 网络 | Splash 的 `net`，只能访问 `network.hosts` 中的主机。函数访问不了网络：先在 Splash 中取回数据，再传给函数。 | [SCRIPT-API § Network](SCRIPT-API.md#network) |
 | 文件 | 应用自己的存储，在 Splash 中通过 `fs.*` 读写。把内容传给函数：文本作为字符串传，其他数据作为 JSON 传。 | [SCRIPT-API § Storage](SCRIPT-API.md#storage-fs) |
-| Rust crate 已经实现的功能 | 三条途径，没有一条是在 Splash 中直接调用这个 crate：把它编译成 Wasm 函数（纯计算）；向 OctoSense 提议一项共享宿主服务并贡献它的适配层，连同方法描述、按应用隔离的资源和测试（[HOST-SERVICES § 新增宿主服务](HOST-SERVICES.zh-CN.md#新增宿主服务)）；或者放在你自己的后端里，通过 `net` 或经过认证的后端 API 调用（[HOST-API-V1 §4](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）。Shell 的 `Cargo.lock` 里有某个 crate，不等于 Splash 能调用它；应用包里的 `.so`、`.dylib` 或 `Cargo.toml` 什么也不会增加，准入检查会拒绝它们。 | 本页、[HOST-SERVICES](HOST-SERVICES.zh-CN.md)、[HOST-API-V1 §4](HOST-API-V1.zh-CN.md#4-连接应用自己的后端) |
+| Rust crate 已经实现的功能 | 三条途径，没有一条是在 Splash 中直接调用这个 crate：把它编译成 Wasm 函数（纯计算）；向 OctoSense 提议一项共享宿主服务并贡献它的适配层，连同方法描述、按应用隔离的资源和测试（[HOST-SERVICES § 新增宿主服务](HOST-SERVICES.zh-CN.md#新增宿主服务)）；或者放在你自己的后端里，通过 `net` 或经过认证的后端 API 调用（[HOST-API-V1 §4](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）。Shell 的 `Cargo.lock` 里有某个 crate，不等于 Splash 能调用它；把 `.so`、`.dylib` 或 `Cargo.toml` 放进应用包也没有任何用处，准入检查会直接拒绝。 | 本页、[HOST-SERVICES](HOST-SERVICES.zh-CN.md)、[HOST-API-V1 §4](HOST-API-V1.zh-CN.md#4-连接应用自己的后端) |
 | 原生库、线程或系统调用 | 商店应用无法使用。App Hub 的准入检查会拒绝原生库，原生代码只能随 Shell 的发布版本分发。 | App Hub 的[交付路径](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/DEVELOPMENT.zh-CN.md#选择合适的交付路径) |
 
-Splash 应用能调用的是宿主 API 表面，而不是它背后的 Rust crate：[HOST-API-FAMILIES](HOST-API-FAMILIES.zh-CN.md) 列出每个 `host.request` 能力族及其响应对象，[RUNTIME-TYPES](RUNTIME-TYPES.zh-CN.md) 列出运行时能解析的全部类型名，[SCRIPT-API](SCRIPT-API.md) 记录受支持的子集，而已安装宿主上的 `runtime.list` 给出它实现的方法（[HOST-API-V1 §2](HOST-API-V1.zh-CN.md#2-提供可选功能前先查询)）。
+Splash 应用能调用的是宿主 API 表面，而不是它背后的 Rust crate：[HOST-API-FAMILIES](HOST-API-FAMILIES.zh-CN.md) 列出每个 `host.request` 能力族以及它响应哪些应用，[RUNTIME-TYPES](RUNTIME-TYPES.zh-CN.md) 列出运行时能解析的全部类型名，[SCRIPT-API](SCRIPT-API.md) 记录受支持的子集，已安装宿主上的 `runtime.list` 则给出它实现的方法（[HOST-API-V1 §2](HOST-API-V1.zh-CN.md#2-提供可选功能前先查询)）。
 
 ## 函数在哪里运行
 
