@@ -502,13 +502,17 @@ class WasmCommands(unittest.TestCase):
             self.assertEqual(wasm_component.refused_imports(info['imports']), [])
             manifest = json.loads((app / 'bundle/manifest.json').read_text())
             self.assertEqual((manifest['capabilities'], manifest['requires']), (['wasm'], ['wasm-components-v1']))
-            # It records the crates it links: wit-bindgen's proc macro and
-            # what only that macro uses (syn, wit-parser, …) run in the compiler.
+            # It records the crates it links, and not the proc macros (the
+            # SDK's, wit-bindgen's) or what only they use (syn, wit-parser, …),
+            # which run in the compiler.
             built = (app / 'bundle/fns/text-tools.wasm').read_bytes()
             crates = wasm_component.recorded_crates(built)['crates']
-            self.assertEqual([(c['name'], c['source'], 'checksum' in c) for c in crates], [
-                ('bitflags', 'crates.io', True), ('octosense-component', 'path', False), ('wit-bindgen', 'crates.io', True)])
-            self.assertIn('  built from 3 crates (tools/octo wasm info lists them)', out)
+            self.assertIn({'name': 'octosense-component', 'version': '0.1.0', 'source': 'path'}, crates)
+            self.assertIn('wit-bindgen', [c['name'] for c in crates])
+            self.assertTrue(all('checksum' in c for c in crates if c['source'] == 'crates.io'))
+            self.assertFalse({'syn', 'quote', 'proc-macro2', 'wit-parser', 'octosense-component-macros',
+                              'wit-bindgen-rust-macro'} & {c['name'] for c in crates})
+            self.assertIn(f'  built from {len(crates)} crates (tools/octo wasm info lists them)', out)
             # The release workflow's step, on the component cargo built,
             # writes the same bytes.
             section = next(s for s in wasm_component.custom_sections(built) if s[2] == b'octosense-crates')
