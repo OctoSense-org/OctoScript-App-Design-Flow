@@ -14,6 +14,8 @@
 
 OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home（`phone/`）。两者的标准构建都注册了下表中的全部服务，但只在面向 macOS、Linux 和 Android 的构建中注册 `wasm`。`crates/shell/src/apps.rs` 中的 `register_host_services` 注册面向应用的服务；`crates/ai-host/src/lib.rs` 注册 `llm`、`model` 和 `octos`。App Hub 的 `card-host` 不注册任何服务，只响应用于发现宿主 API 的 `runtime`，这个能力族由 App Hub 的分发器自己处理。
 
+按能力族汇总的平台和起始版本见 [HOST-API-FAMILIES](HOST-API-FAMILIES.zh-CN.md)。
+
 | 能力族 | 谁可以调用 | 服务代码 |
 | --- | --- | --- |
 | `mail` | 任何获得 `mail` 授权的应用 | `apps/mail/host-service` |
@@ -22,16 +24,17 @@ OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home�
 | `gmail` | 获得 `gmail` 授权的应用，通过 `auth` 建立的连接调用。发信前的审阅界面由 Shell 提供。 | `crates/oauth-service/src/host_inbox.rs`、`crates/shell/src/connected_review.rs` |
 | `glance` | 任何获得 `glance` 授权的应用 | `crates/shell/src/glance.rs` |
 | `model` | 任何获得 `model` 授权的应用，受每个应用各自的每日预算限制 | `apps/ai-providers/host-service/src/complete/` |
-| `octos` | 获得对应的精确 `octos.*` 名称授权的应用；用户允许该应用的 Agent 之后才能调用，且仅限托管 octos 内核的 Shell | `crates/ai-host/src/contained.rs` |
+| `octos` | 获得对应的精确 `octos.*` 名称授权的应用；用户允许该应用的 Agent 之后才能调用，且仅限托管 octos 内核的 Shell（iOS 除外） | `crates/ai-host/src/contained.rs` |
 | `llm` | 仅限系统应用 | `apps/ai-providers/host-service` |
 | `news` | 仅限系统应用 | `apps/news/host-service` |
 | `calendar` | 仅限 Calendar（`os.calendar`） | `apps/calendar/host-service` |
 | `photos`、`youtube` | 仅限对应系统应用的 `notify` | `crates/shell/src/glance_notice.rs` |
 | `wasm` | 获得 `wasm` 授权的应用，仅限 macOS、Linux 和 Android 上的标准构建（特性 `wasm-functions`，旧名 `wasm-lab`）；尚无任何发布版本提供（见[运行自己的 Rust 代码](RUST.zh-CN.md)） | `crates/shell/src/wasm_service.rs` |
+| `sheet`、`photo`、`word`、`deck`、`cad`、`light`、`sound`、`design`、`film`、`effect`、`vector`、`pdf` | 仅限系统应用：craft 引擎宿主服务（[ADR 0013](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0013-craft-engines-as-pinned-services.zh-CN.md)），在 `main` 上，尚未进入任何发行版。商店应用无法申请这样的能力。 | `apps/<engine>/host-service` |
 
 对于没有自己服务的其他系统应用，例如 Maps 和 Camera，`glance_notice.rs` 也会响应它们的 `<namespace>.notify`。
 
-没有任何 OctoSense Shell 向已安装的应用提供 `prompt`、`ledger.read`、`clipboard`、`matrix.*` 或 `palpo.*`。Rinx 是 OctoSense 作为原生应用随附的 Matrix 客户端。用户可以把应用包作为迷你应用导入 Rinx，Rinx 向这样导入的应用包提供 `octos.*`；这种导入方式不属于 App Hub 的安装途径。**未验证**：Rinx 也向这些迷你应用提供 `matrix.*`。只有开发 Rinx 迷你应用时才申请 `matrix.*`。`research` 和 `crawl` 为应用的 Agent 授予工具箱中的工具，它们不是 `host.request` 的能力族（[AI-SERVICES § 系统工具箱](AI-SERVICES.zh-CN.md#系统工具箱)）。
+没有任何 OctoSense Shell 向已安装的应用提供 `prompt`、`ledger.read`、`clipboard`、`matrix.*` 或 `palpo.*`；`maps.*` 和 `ai-providers.*` 是对应系统应用自己的服务。Rinx 是 OctoSense 作为原生应用随附的 Matrix 客户端，它通过自己的宿主，向用户导入其中的迷你应用提供 `octos.*` 和 `matrix.*`；这种导入方式不属于 App Hub 的安装途径。只有开发 Rinx 迷你应用时才申请 `matrix.*`。`research` 和 `crawl` 为应用的 Agent 授予工具箱中的工具，它们不是 `host.request` 的能力族（[AI-SERVICES § 系统工具箱](AI-SERVICES.zh-CN.md#系统工具箱)）。
 
 有些服务要先完成配置才能使用，而且并非每个构建都有：
 

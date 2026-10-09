@@ -498,6 +498,12 @@ routes, quotas and job lifetime; use it rather than inventing provider parameter
   remote job may refuse cancellation. Show that result honestly and do not
   blindly retry a possibly billable submission. Apps still need their own
   rendering/playback UI and handling for unavailable service or quota errors.
+  On RC1 no store app can play the result: the runtime has no audio widget, no
+  shell serves an audio method, and the `Video` widget is undocumented for
+  store apps
+  ([OctoSense #403](https://github.com/OctoSense-org/OctoSense/issues/403)). OctoSense [#413](https://github.com/OctoSense-org/OctoSense/pull/413), in review, adds
+  `audio.play/stop/status` over files in the app's storage and Splash controls
+  for `Video`; it is in no downloadable build.
 - Providers and credentials remain host-owned. Current adapters use OpenAI
   for images, speech and embeddings, and MiniMax for images, speech and H3
   video. A DeepSeek chat configuration or MiniMax M Plan subscription does

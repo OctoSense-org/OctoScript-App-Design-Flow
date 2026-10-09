@@ -348,6 +348,8 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 | [docs/MODEL-VALIDATION.zh-CN.md](docs/MODEL-VALIDATION.zh-CN.md)（[English](docs/MODEL-VALIDATION.md)） | 检查编码 Agent 做出的应用：原生输入与截图、评审循环、修复 |
 | [docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md)（[English](docs/PUBLISHING.md)） | 从能运行的应用到提交 issue 和带 GitHub 证明的 Release：定稿商店信息、截图、准入/审核、工作流与 Hub 批准 |
 | [docs/CODE-WALKTHROUGH.md](docs/CODE-WALKTHROUGH.md) | `tools/octo`、App Hub 与 OctoSense Shell 如何衔接，沿一个请求逐层追踪 |
+| [docs/HOST-API-FAMILIES.zh-CN.md](docs/HOST-API-FAMILIES.zh-CN.md)（[English](docs/HOST-API-FAMILIES.md)） | 每个 `host.request` 能力族：Shell 响应哪些应用、支持哪些平台、从哪个版本开始；自动生成 |
+| [docs/RUNTIME-TYPES.zh-CN.md](docs/RUNTIME-TYPES.zh-CN.md)（[English](docs/RUNTIME-TYPES.md)） | 锁定的运行时可以解析的全部类型名，按命名空间列出；自动生成 |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | 每个术语只有一个含义 |
 | [docs/NATIVE-WORKSPACE.md](docs/NATIVE-WORKSPACE.md)、[docs/l0/](docs/l0/) | 原生运行时所需同级仓库的配置；L0 卡片示例 |
 | [templates/script-app/](templates/script-app/README.zh-CN.md) | `tools/octo new` 复制的可运行模板（“My Notes”） |

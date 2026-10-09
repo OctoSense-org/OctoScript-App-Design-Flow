@@ -90,7 +90,9 @@ Edit `$B/manifest.json`:
 - `version`: new for every submission (`0.1.0`, then `0.1.1`, …). The gate
   refuses a version already in the catalog, and the release tag carries the
   same number.
-- `capabilities`: only what the implemented app uses ([CAPABILITIES](CAPABILITIES.md)).
+- `capabilities`: only what the implemented app uses ([CAPABILITIES](CAPABILITIES.md)),
+  and only families that serve store apps on your platforms
+  ([HOST-API-FAMILIES](HOST-API-FAMILIES.md)).
 - `network.hosts`: every host the program names, bare (`api.example.com`).
 - Leave `integrity` to `hub stamp`.
 

@@ -21,7 +21,15 @@ marked **unverified**. No shell that runs functions was built for this guide.
 | The camera, the microphone or the location | Host APIs: the `camera`, `microphone` and `location` capabilities, their permission methods and `location.get` | [HOST-API-V1 §3](HOST-API-V1.md#3-request-device-access-in-the-foreground) |
 | The network | Splash's `net`, to the hosts in `network.hosts`. A function cannot reach the network: fetch the data in Splash, then pass it to the function. | [SCRIPT-API § Network](SCRIPT-API.md#network) |
 | Files | The app's own storage, through `fs.*` in Splash. Pass the contents to the function: text as a string, other data as JSON. | [SCRIPT-API § Storage](SCRIPT-API.md#storage-fs) |
+| Something a Rust crate already does | Three routes, none of which calls the crate from Splash: compile it into a Wasm function (pure computation); propose a shared host service in OctoSense and contribute its adapter, with method descriptors, app-scoped resources and tests ([HOST-SERVICES § Add a host service](HOST-SERVICES.md#add-a-host-service)); or run it in your own backend, reached through `net` or the authenticated backend API ([HOST-API-V1 §4](HOST-API-V1.md#4-connect-the-apps-backend)). A crate in a shell's `Cargo.lock` is not callable from Splash, and a `.so`, `.dylib` or `Cargo.toml` in a bundle adds nothing: the gate refuses it. | This page, [HOST-SERVICES](HOST-SERVICES.md), [HOST-API-V1 §4](HOST-API-V1.md#4-connect-the-apps-backend) |
 | A native library, threads or OS calls | Not available to a store app. App Hub's gate refuses native libraries, and native code ships only inside a shell release. | App Hub's [delivery paths](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/DEVELOPMENT.md#choose-a-delivery-path) |
+
+What a Splash app can call is the host API surface, not the Rust crates behind
+it: [HOST-API-FAMILIES](HOST-API-FAMILIES.md) lists every `host.request` family
+with who it serves, [RUNTIME-TYPES](RUNTIME-TYPES.md) every type name the
+runtime resolves, [SCRIPT-API](SCRIPT-API.md) the supported subset, and
+`runtime.list` on the installed host the methods it implements
+([HOST-API-V1 §2](HOST-API-V1.md#2-discover-before-offering-an-optional-feature)).
 
 ## Where functions run
 

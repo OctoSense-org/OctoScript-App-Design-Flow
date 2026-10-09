@@ -386,6 +386,10 @@ Add only what a screen uses, in `bundle/manifest.json`:
 "network": { "hosts": ["api.open-meteo.com"] }
 ```
 
+Before you build a screen on a host API, check that its family serves store
+apps on your platforms ([HOST-API-FAMILIES](HOST-API-FAMILIES.md)): a
+capability the gate admits can still answer only system apps.
+
 List in `network.hosts` every `https://` host that your `main.splash` names.
 With `images` or `web`, the gate accepts any `https://` host, but at runtime
 an unlisted host serves only pictures (`images`) or pages in the web view

@@ -40,10 +40,10 @@ service.
 | Capability | What the script gets | Without it |
 | --- | --- | --- |
 | `storage` | The app's own storage jail, one directory per app id: [`fs.*`](SCRIPT-API.md#storage-fs), camera captures, and local files a widget reads, such as a map archive. | No jail. Every `fs.*` call errors with `storage not available in this context`, a capture saves nothing, and a widget reads no local file. |
-| `camera` | `CameraPreview`: preview, photo and video. Captures land in the jail as `DCIM/IMG_<ms>.jpg` and `DCIM/VID_<ms>.mp4`, so request `storage` too. | `CameraPreview` refuses: `this app was not granted the camera`. The operating system's own camera prompt applies either way. |
-| `microphone` | Sound in camera videos. Useful only with `camera`. | Videos record without sound. |
+| `camera` | `CameraPreview`: preview, photo and video. Captures land in the jail as `DCIM/IMG_<ms>.jpg` and `DCIM/VID_<ms>.mp4`, so request `storage` too. Served by RC1 on Android and macOS. | `CameraPreview` refuses: `this app was not granted the camera`. The operating system's own camera prompt applies either way. |
+| `microphone` | Sound in camera videos. Useful only with `camera`. Served by RC1 on Android and macOS. | Videos record without sound. |
 | `library` | Each capture is also offered to the system photo library, where other apps can see it. | Captures stay in the app's jail. |
-| `location` | The device position: `sys.gps(...)` and the follow camera of `MapView`. The operating system's location prompt still applies. | `sys.gps("ok")` reads 0, meaning no fix. |
+| `location` | The device position: `sys.gps(...)` and the follow camera of `MapView`. The operating system's location prompt still applies. Served by RC1 on Android and macOS; `location.get` is Android only. | `sys.gps("ok")` reads 0, meaning no fix. |
 
 Without `storage`, the `grants:` line of `hub check` says `storage none`, and
 the gate warns about each script that calls `fs.*` and about a `camera` grant:
@@ -97,7 +97,7 @@ this app was not granted "mail", which "mail.accounts" needs
 
 | Capability | What the script gets |
 | --- | --- |
-| `mail` | Mail accounts the person signs in to on a host sheet: folders, messages and sync. Sending goes through the host's send review. The methods are in [HOST-SERVICES § Mail](HOST-SERVICES.md#mail-the-worked-example). |
+| `mail` | Mail accounts the person signs in to on a host sheet: folders, messages and sync. A store app cannot send on RC1: `mail.send` answers `approval_required`, and the review methods serve only Mail ([OctoSense #409](https://github.com/OctoSense-org/OctoSense/issues/409)). The methods are in [HOST-SERVICES § Mail](HOST-SERVICES.md#mail-the-worked-example). |
 | `auth` | Connections to GitHub and Google that the person approves on a host sheet, and, in desktop RC1, sign-in to the app's own backend. The app receives handles, never tokens. `auth` alone identifies the person but reads none of their data. See [Use a connected account](#use-a-connected-account). |
 | `github` | Repository reads, and saves the person approves on a host sheet. Needs `auth`. |
 | `gcalendar` | Google Calendar reads and sync, and writes the person approves on a host sheet. Needs `auth`. |
@@ -113,8 +113,8 @@ in an OctoSense shell.
 
 ## Capabilities a store app gains nothing from
 
-The gate admits these names, but no shell serves them to a store app. Do not
-request them.
+No shell serves these names to a store app. The gate admits all but the
+engine names, which it refuses. Do not request them.
 
 | Capability | What happens |
 | --- | --- |
@@ -124,7 +124,10 @@ request them.
 | `news` | The service answers only system apps: `The news service serves system apps only.` |
 | `research`, `crawl` | The system toolbox for an app's agent. The shells grant it only to system apps, and only in builds with the `toolbox-peers` feature. The gate still requires a top-level `research` scope: `requests research but declares no research scope`. Not yet for store apps: [OctoSense#64](https://github.com/OctoSense-org/OctoSense/issues/64). |
 | `prompt` | Not yet: no host reads it, and `host.prompt` does not exist. An app's agent asks the person questions with `ask_user_question`, declared in `agent.tools`. |
-| `ledger.read`, `clipboard` | Not yet: no host serves them. |
+| `ledger.read`, `clipboard` | No host serves them on any release: every call fails. |
+| `sheet`, `photo`, `word`, `deck`, `cad`, `light`, `sound`, `design`, `film`, `effect`, `vector`, `pdf` | Craft engines behind host services for system apps ([ADR 0013](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0013-craft-engines-as-pinned-services.md)), on OctoSense `main` and in no release. The contract has no such capability, so the gate refuses a manifest that names one, and the services answer no store app. |
+
+The per-family summary, with platforms and since-versions, is [HOST-API-FAMILIES](HOST-API-FAMILIES.md).
 
 ## Use a connected account
 
@@ -294,7 +297,7 @@ Each is its own consent; a prefix grants nothing.
 | Names | What they grant | Who serves them |
 | --- | --- | --- |
 | `octos.session.open`, `octos.session.history`, `octos.turn.start`, `octos.turn.interrupt` | The app's own conversation with the device's assistant. See [AI-SERVICES](AI-SERVICES.md#the-assistant-capabilities). | An OctoSense shell that hosts the octos kernel, once the person allows the app's agent. Until then a call answers `Waiting for the person to allow this app's agent (OctoSense asks the first time)`. Rinx, a Matrix client, also serves them to bundles imported into it as mini-apps. |
-| `matrix.*` (45 names, such as `matrix.read_messages`) | One operation each on the person's Matrix account. | No OctoSense shell, for an installed app. **Unverified:** Rinx serves them to its own mini-apps. Request them only for a Rinx mini-app. |
+| `matrix.*` (45 names, such as `matrix.read_messages`) | One operation each on the person's Matrix account. | Not served by any OctoSense shell. Only the Rinx app serves `matrix.*`, through its own host, to the mini-apps a person imports into it; that is not the App Hub install path. |
 | `palpo.*` (29 names, such as `palpo.inbox.list`) | One operation each on Palpo, a Matrix server, for the person's account. | No OctoSense shell. Do not request them. |
 
 ## Storage, compute and agent limits
