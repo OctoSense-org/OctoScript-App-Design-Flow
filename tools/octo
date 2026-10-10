@@ -12,12 +12,17 @@ exactly what `hub check` prints and exits with its status.
     tools/octo check <bundle> [hub check flags ...]
     tools/octo publish-github <app-directory> [--replace]
     tools/octo package-help
+    tools/octo wasm new <name> [--app DIR] [--sdk auto|git|path]
+    tools/octo wasm build [--app DIR] [--crate DIR ...]
+    tools/octo wasm doctor [--crate DIR ...]
+    tools/octo wasm info <file.wasm> [--json]
 
 Binaries are found, in order, from $OCTO_HUB / $OCTO_CARD_HOST, then
 $OCTOSENSE_APP_HUB/target/release, $CARGO_TARGET_DIR/release,
 $OCTOSENSE_APP_HUB/../target/release, ../OctoSense-App-Hub/target/release and
-../target/release beside this repository, then PATH. Python 3.9+, no
-third-party packages.
+../target/release beside this repository, then PATH. `octo wasm` needs cargo
+and the wasm32-wasip2 target, and reads WebAssembly with
+tools/wasm_component.py. Python 3.9+, no third-party packages.
 """
 import argparse
 import json
@@ -29,10 +34,15 @@ import socket
 import subprocess
 import sys
 import tempfile
+import textwrap
 import time
 import urllib.error
 import urllib.request
 from pathlib import Path
+
+if str(Path(__file__).resolve().parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+import wasm_component  # noqa: E402  tools/wasm_component.py
 
 REPO = Path(__file__).resolve().parent.parent
 TEMPLATE = REPO / "templates" / "script-app"
@@ -208,10 +218,8 @@ def cmd_doctor(args):
             for s in searched:
                 print(f"           {s}")
 
-    cargo_file = "cargo.exe" if sys.platform == "win32" else "cargo"
-    cargo_fallback = Path.home() / ".cargo" / "bin" / cargo_file
-    cargo = shutil.which("cargo") or (str(cargo_fallback) if cargo_fallback.is_file() else None)
-    print(f"  [{'ok' if cargo else 'info'}]   cargo: {cargo or 'not on PATH (needed only to build hub and card-host)'}"
+    cargo = cargo_path()
+    print(f"  [{'ok' if cargo else 'info'}]   cargo: {cargo or 'not on PATH (needed to build hub and card-host, and Rust components)'}"
           + ("" if shutil.which("cargo") or not cargo else "  -- add ~/.cargo/bin to PATH"))
 
     if (TEMPLATE / "bundle" / "manifest.json").is_file():
@@ -637,6 +645,664 @@ def cmd_package_help(args):
     return 0
 
 
+# ------------------------------------------------------------------------ wasm
+# The app's own Rust code as WebAssembly components (OctoSense ADR 0014):
+# `wasm new` writes a crate from templates/rust-component, `wasm build` builds
+# it into bundle/fns/, records in it the crates it is built from and declares
+# what the manifest needs, `wasm doctor` checks the toolchain and a crate's
+# dependencies, and `wasm info` says what a function file imports, exports and
+# is built from.
+COMPONENT_TEMPLATE = REPO / "templates" / "rust-component"
+SDK_CRATE = REPO / "sdk" / "rust" / "octosense-component"
+SDK_GIT = "https://github.com/OctoSense-org/OctoSense-App-Flow"
+# App Flow's repository, also under its former name.
+SDK_REMOTE = re.compile(r"github\.com[:/]OctoSense-org/(OctoSense-App-Flow|OctoScript-App-Design-Flow)(\.git)?/?$", re.I)
+WASM_TARGET = "wasm32-wasip2"
+COMPONENTS_FEATURE = "wasm-components-v1"
+# Rust builds components for wasm32-wasip2 from 1.82; the SDK's wit-bindgen
+# 0.62 needs 1.85, and the crates it builds with (wit-component, wit-parser
+# 0.259) need 1.88.
+MIN_RUST = (1, 88)
+# A crate's name is also its file's, fns/<name>.wasm: App Hub admits
+# [a-z0-9_-]{1,64}, and Cargo wants a letter first.
+COMPONENT_NAME_RE = re.compile(r"^[a-z][a-z0-9_-]{0,63}$")
+RUST_RESERVED = frozenset("""
+    abstract alloc as async await become box break const continue core crate do dyn else enum extern
+    false final fn for gen if impl in let loop macro match mod move mut override priv proc_macro pub
+    ref return self static std struct super test trait true try type typeof unsafe unsized use virtual
+    where while yield""".split())
+MAX_FUNCTION_FILES = 8
+MAX_BUNDLE_BYTES = 8 << 20
+
+# Why a component imports what no host gives it, and what to do instead.
+IMPORT_HINTS = (
+    ("wasi:sockets/", "network sockets (std::net, or a crate such as reqwest, ureq or tokio's net, which open "
+                      "sockets): a component has none. It reaches the network over HTTP through wasi:http, "
+                      "with octosense_component::http, once the manifest has `net`."),
+    ("__wbindgen", "JavaScript bindings (wasm-bindgen): turn off the dependency's js or wasm-bindgen feature."),
+)
+
+# Dependencies that cannot work in a component, and what to use instead.
+NETWORK_HINT = ("opens network sockets, which a component does not have, so it does not work. A component "
+                "reaches the network over HTTP through wasi:http, with octosense_component::http, once the "
+                "manifest has `net`.")
+BLOCKING_CRATES = {
+    "openssl-sys": "links OpenSSL, a C library, which does not build for wasm32-wasip2. "
+                   "For cryptography use pure-Rust crates such as RustCrypto's sha2, hmac or aes-gcm.",
+    "native-tls": NETWORK_HINT,
+    "libsqlite3-sys": "builds SQLite, a C library, which needs a C compiler for WASI. "
+                      "Keep the data in files in the app's storage (std::fs), or let the script store it.",
+    "reqwest": NETWORK_HINT, "hyper": NETWORK_HINT, "ureq": NETWORK_HINT, "curl": NETWORK_HINT,
+    "curl-sys": NETWORK_HINT, "isahc": NETWORK_HINT, "surf": NETWORK_HINT, "attohttpc": NETWORK_HINT,
+    "socket2": NETWORK_HINT, "mio": NETWORK_HINT, "tungstenite": NETWORK_HINT,
+    "wasm-bindgen": "binds JavaScript, which a component does not have. "
+                    "Turn off the feature that pulls it in (often `js` or `wasm-bindgen`).",
+    "js-sys": "binds JavaScript, which a component does not have.",
+    "web-sys": "binds the browser's APIs, which a component does not have.",
+    "pyo3": "embeds Python, native code a component cannot load.",
+    "jni": "calls Java through native code, which a component cannot.",
+    "libloading": "loads native libraries, which a component cannot.",
+    "nix": "calls Unix system APIs, which do not build for WASI.",
+}
+THREAD_CRATES = {
+    "rayon": "starts threads, which wasm32-wasip2 does not have, so its parallel iterators panic. "
+             "Turn off the feature that pulls it in, or use plain iterators.",
+    "rayon-core": "starts threads, which wasm32-wasip2 does not have.",
+}
+TOKIO_FEATURES = ("rt-multi-thread", "net", "fs", "process", "signal")
+
+# What OctoSense already does for a store app, which a component would
+# otherwise ship a crate for. OctoSense links such crates natively, but a
+# component cannot call native code: an app reaches them only through Splash's
+# widgets and functions, and through the host services it is granted. Each
+# entry names the crates, what the app uses instead and when the crate is still
+# worth shipping, and the doc section that says a store app may use it. Engine
+# services such as `photo`, `pdf` or `word` are for system apps, so they are
+# not here. `wasm doctor` prints an info finding for each direct dependency
+# listed.
+OCTOSENSE_PROVIDES = (
+    (("pulldown-cmark", "comrak", "markdown"),
+     "OctoSense renders Markdown itself: Splash's Markdown widget shows it, tables included. "
+     "Ship the crate only to produce HTML or to read Markdown as data.",
+     "docs/SCRIPT-API.md#widgets-available-to-an-app"),
+    (("feed-rs", "rss", "atom_syndication"),
+     "the app's script reads RSS and Atom feeds itself: `text.parse_feed(style)` gives each item's title, link, "
+     "source, publication time, summary and image. Ship the crate only for what parse_feed does not read.",
+     "docs/SCRIPT-API.md#data-and-strings"),
+    (("async-openai", "genai", "ollama-rs", "openai-api-rs"),
+     "OctoSense asks the person's own AI providers for the app: `model.complete`, with the `model` capability, "
+     "answers one-shot, schema-checked requests within a daily budget, and the app never sees a key. "
+     "Never put a provider key in an app.",
+     "docs/AI-SERVICES.md#one-shot-model-calls-model"),
+)
+PROVIDED_CRATES = {name: (hint, doc) for names, hint, doc in OCTOSENSE_PROVIDES for name in names}
+
+
+def cargo_path():
+    cargo_file = "cargo.exe" if sys.platform == "win32" else "cargo"
+    fallback = Path.home() / ".cargo" / "bin" / cargo_file
+    return shutil.which("cargo") or (str(fallback) if fallback.is_file() else None)
+
+
+def rust_toolchain(cargo, cwd=None):
+    """The rustc beside cargo (or on PATH): its version and whether the
+    wasm32-wasip2 standard library is installed. None without a rustc."""
+    rustc = Path(cargo).with_name("rustc.exe" if sys.platform == "win32" else "rustc")
+    rustc = str(rustc) if rustc.is_file() else shutil.which("rustc")
+    if not rustc:
+        return None
+    try:
+        version = subprocess.run([rustc, "--version"], capture_output=True, text=True, cwd=cwd, timeout=120).stdout.strip()
+        sysroot = subprocess.run([rustc, "--print", "sysroot"], capture_output=True, text=True, cwd=cwd, timeout=120).stdout.strip()
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    release = re.match(r"rustc (\d+)\.(\d+)", version)
+    return {
+        "version": version or rustc,
+        "release": (int(release.group(1)), int(release.group(2))) if release else None,
+        "target": bool(sysroot) and (Path(sysroot) / "lib" / "rustlib" / WASM_TARGET / "lib").is_dir(),
+    }
+
+
+def target_fix(cargo):
+    rustup = shutil.which("rustup") or (Path(cargo).parent / "rustup").is_file()
+    return f"rustup target add {WASM_TARGET}" if rustup else f"install the {WASM_TARGET} standard library for this Rust"
+
+
+def app_dir(arg):
+    app = Path(arg).expanduser().resolve() if arg else Path.cwd()
+    if not (app / "bundle" / "manifest.json").is_file():
+        die(f"{app} has no bundle/manifest.json; pass the app's directory (the one `tools/octo new` made) with --app")
+    return app
+
+
+def component_crates(app, crates):
+    if crates:
+        return [Path(c).expanduser().resolve() for c in crates]
+    return sorted(p.parent for p in (app / "components").glob("*/Cargo.toml"))
+
+
+def sdk_revision():
+    """(commit, None): the newest commit of this App Flow checkout that is on
+    App Flow's main, as last fetched, and has the SDK. (None, why) otherwise."""
+    git = shutil.which("git")
+    if not git or not (REPO / ".git").exists():
+        return None, "this copy of App Flow is not a git checkout"
+
+    def run(*args):
+        r = subprocess.run([git, "-C", str(REPO), *args], capture_output=True, text=True)
+        return r.stdout.strip() if r.returncode == 0 else None
+
+    remotes = sorted({fields[0] for fields in (line.split() for line in (run("remote", "-v") or "").splitlines())
+                      if len(fields) >= 2 and SDK_REMOTE.search(fields[1])})
+    for remote in remotes:
+        main = f"refs/remotes/{remote}/main"
+        if run("rev-parse", "--verify", "--quiet", main) is None:
+            continue
+        base = run("merge-base", "HEAD", main)
+        if base and run("cat-file", "-e", f"{base}:sdk/rust/octosense-component/Cargo.toml") is not None:
+            return base, None
+        return None, f"App Flow's main ({remote}/main, as last fetched) does not have the SDK yet"
+    return None, "no remote of this checkout is OctoSense-org/OctoSense-App-Flow with a fetched main"
+
+
+def toml_comment(text):
+    return textwrap.fill(text, width=78, initial_indent="# ", subsequent_indent="# ", break_on_hyphens=False)
+
+
+def sdk_dependency(crate, mode):
+    """The SDK's line in a new crate's Cargo.toml, after a comment saying why
+    it is a git commit or a path, and a one-line summary."""
+    rev, why = (None, "you chose --sdk path") if mode == "path" else sdk_revision()
+    if rev:
+        comment = toml_comment(
+            "The SDK, from OctoSense App Flow at a fixed commit: the newest one on App Flow's main that "
+            "`tools/octo wasm new` found in its checkout. A commit builds the same everywhere, so a "
+            "teammate, CI and a reviewer build what you built. For a newer SDK, change `rev`, then run "
+            "`cargo update -p octosense-component`. The SDK is not on crates.io yet.")
+        line = f"octosense-component = {{ git = {json.dumps(SDK_GIT)}, rev = {json.dumps(rev)} }}"
+        return f"{comment}\n{line}", f"SDK: {SDK_GIT} at commit {rev[:12]}"
+    if mode == "git":
+        die(f"no App Flow commit to pin the SDK to: {why}. Run `git pull` in App Flow, or pass --sdk path")
+    # Relative while the two share a folder, so the app moves with its App
+    # Flow checkout; absolute when they share only the root.
+    common = os.path.commonpath([str(SDK_CRATE), str(crate)]) if SDK_CRATE.anchor == crate.anchor else None
+    path = SDK_CRATE.as_posix() if not common or Path(common) == Path(common).parent \
+        else Path(os.path.relpath(SDK_CRATE, crate)).as_posix()
+    absolute = Path(path).is_absolute()
+    comment = toml_comment(
+        f"The SDK, by path from the OctoSense App Flow checkout that `tools/octo wasm new` ran from, "
+        f"because {why}. It needs no network and follows that checkout, but another machine needs App "
+        "Flow at the same place" + (" (an absolute path)" if absolute else " relative to this crate")
+        + ". Before you share the app, pin a commit on App Flow's main instead, as below. The SDK is "
+        "not on crates.io yet.")
+    pinned = f'#   octosense-component = {{ git = {json.dumps(SDK_GIT)}, rev = "<commit>" }}'
+    line = f"octosense-component = {{ path = {json.dumps(path)} }}"
+    note = "; it names this machine, so keep it out of a public repository" if absolute else ""
+    return f"{comment}\n{pinned}\n{line}", f"SDK: path {path} ({why}{note})"
+
+
+def cmd_wasm_new(args):
+    app = app_dir(args.app)
+    name = args.name
+    if not COMPONENT_NAME_RE.match(name) or name.replace("-", "_") in RUST_RESERVED:
+        die(f"{name!r} names the crate and the bundle's fns/{name}.wasm: use 1-64 of [a-z0-9_-], "
+            "starting with a letter, and not a Rust keyword or std, core, alloc or test")
+    crate = app / "components" / name
+    if crate.exists():
+        die(f"{crate} already exists; build it with `tools/octo wasm build --app {app}`")
+    if (app / "bundle" / "fns" / f"{name}.wasm").exists():
+        die(f"bundle/fns/{name}.wasm already exists, and `wasm build` would replace it; choose another name")
+    sdk, summary = sdk_dependency(crate, args.sdk)
+    (crate / "src").mkdir(parents=True)
+    template = (COMPONENT_TEMPLATE / "Cargo.toml.template").read_text()
+    (crate / "Cargo.toml").write_text(template.replace("{{name}}", name).replace("{{sdk}}", sdk))
+    shutil.copy2(COMPONENT_TEMPLATE / "src" / "lib.rs", crate / "src" / "lib.rs")
+    shutil.copy2(COMPONENT_TEMPLATE / ".gitignore", crate / ".gitignore")
+    print(f"created {crate}")
+    print(f"  {summary}")
+    print("next:")
+    print(f"  edit {crate / 'src' / 'lib.rs'}: every pub fn of its #[octosense_component::export] module is a function")
+    print(f"  cargo test --manifest-path {crate / 'Cargo.toml'}")
+    print(f"  tools/octo wasm build --app {app}     # builds bundle/fns/{name}.wasm and updates the manifest")
+    return 0
+
+
+def import_hint(name):
+    for prefix, hint in IMPORT_HINTS:
+        if name.startswith(prefix):
+            return hint
+    return "not an interface any host gives a component; drop the dependency that imports it."
+
+
+def refusal_lines(refused):
+    """The refused imports, grouped by what to do about them."""
+    groups = {}
+    for name in refused:
+        groups.setdefault(import_hint(name), []).append(name)
+    return [f"  {', '.join(names)}:\n    {hint}" for hint, names in groups.items()]
+
+
+def dependency_findings(cargo, crate):
+    """[(level, text)] for a crate's dependencies on wasm32-wasip2, from
+    `cargo metadata`; level is "fail", "warn", "ok" or "info". None, with the
+    reason in the list's only entry, when cargo cannot resolve the crate."""
+    cmd = [cargo, "metadata", "--format-version", "1", "--filter-platform", WASM_TARGET,
+           "--manifest-path", str(crate / "Cargo.toml")]
+    r = subprocess.run(cmd, capture_output=True, text=True, cwd=crate)
+    if r.returncode != 0:
+        return [("fail", "cargo metadata failed: " + (r.stderr.strip().splitlines() or ["no output"])[-1])]
+    meta = json.loads(r.stdout)
+    packages = {p["id"]: p for p in meta["packages"]}
+    manifest = (crate / "Cargo.toml").resolve()
+    root = next((p for p in meta["packages"] if Path(p["manifest_path"]).resolve() == manifest), None)
+    if root is None:
+        return [("fail", f"{manifest} is a workspace, not a package; pass a component crate's own directory")]
+    findings = []
+    if any("cdylib" in target.get("crate_types", target["kind"]) for target in root["targets"]):
+        findings.append(("ok", f"{root['name']} {root['version']} is a cdylib, which cargo builds into a component"))
+    else:
+        findings.append(("fail", f"{root['name']} builds no component: add [lib] crate-type = [\"cdylib\", \"rlib\"] to its Cargo.toml"))
+    if any(d["name"] == "octosense-component" for d in root["dependencies"]):
+        findings.append(("ok", "uses octosense-component: #[octosense_component::export] writes the WIT"))
+    else:
+        findings.append(("info", "does not use octosense-component, so the crate writes its own WIT and bindings"))
+    # What the component links: the root's normal dependencies, and theirs.
+    # Build and dev dependencies, and proc macros, run on this machine. The
+    # same walk lists the crates `wasm build` records in the component.
+    nodes = {node["id"]: node for node in meta["resolve"]["nodes"]}
+    linked = wasm_component.linked_packages(meta, root["id"])
+    problems = []
+    for node in (nodes[i] for i in sorted(linked) if i != root["id"]):
+        package = packages.get(node["id"])
+        if package is None:
+            continue
+        name = package["name"]
+        label = f"{name} {package['version']}"
+        if name in BLOCKING_CRATES:
+            problems.append(("fail", f"{label} {BLOCKING_CRATES[name]}"))
+        elif name in THREAD_CRATES:
+            problems.append(("warn", f"{label} {THREAD_CRATES[name]}"))
+        elif name == "tokio":
+            features = [f for f in TOKIO_FEATURES if f in node.get("features", [])]
+            if features:
+                problems.append(("warn", f"{label} with {', '.join(features)}: these need threads, the network "
+                                         "or the device. A component's functions are plain calls; write them "
+                                         "without an async runtime."))
+        if name not in BLOCKING_CRATES and any(
+                d["name"] in ("cc", "cmake") and any(k.get("kind") == "build" for k in d.get("dep_kinds", []))
+                for d in node.get("deps", [])):
+            problems.append(("warn", f"{label} compiles C code, which needs a C compiler for WASI, such as "
+                                     "wasi-sdk's clang; look for a pure-Rust feature or crate instead."))
+    findings += sorted(set(problems), key=lambda f: (f[0] != "fail", f[1]))
+    if not problems:
+        findings.append(("ok", f"none of the {len(linked) - 1} crates it links is known not to build or run in a component"))
+    # What OctoSense already provides, for the crate's own normal dependencies.
+    direct = sorted({(packages[d["pkg"]]["name"], packages[d["pkg"]]["version"])
+                     for d in nodes.get(root["id"], {}).get("deps", [])
+                     if d["pkg"] in packages and any(k.get("kind") is None for k in d.get("dep_kinds", [{"kind": None}]))})
+    for name, version in direct:
+        if name in PROVIDED_CRATES:
+            hint, doc = PROVIDED_CRATES[name]
+            findings.append(("info", f"{name} {version}: {hint} ({doc})"))
+    return findings
+
+
+def finding(level, text):
+    """One line of a doctor's report, aligned as `octo doctor` aligns them."""
+    return f"  [{level}]{' ' * (5 - len(level))}{text}"
+
+
+def cmd_wasm_doctor(args):
+    print("octo wasm doctor")
+    cargo = cargo_path()
+    if not cargo:
+        print(finding("fail", "cargo not found: install Rust with rustup (https://rustup.rs)"))
+        return 1
+    print(finding("ok", f"cargo: {cargo}"))
+    crates = component_crates(Path.cwd(), args.crate)
+    report = []
+    toolchain = rust_toolchain(cargo, crates[0] if crates else None)
+    if toolchain is None:
+        report.append(("fail", "rustc not found beside cargo or on PATH"))
+    else:
+        if toolchain["release"] and toolchain["release"] < MIN_RUST:
+            report.append(("fail", f"{toolchain['version']}: components need Rust 1.88 or newer "
+                                   "(wasm32-wasip2 from 1.82; the SDK's wit-bindgen and its crates need 1.88): rustup update stable"))
+        else:
+            report.append(("ok", toolchain["version"]))
+        if toolchain["target"]:
+            report.append(("ok", f"target {WASM_TARGET} is installed"))
+        else:
+            report.append(("fail", f"target {WASM_TARGET} is not installed: {target_fix(cargo)}"))
+    for level, text in report:
+        print(finding(level, text))
+    ok = not any(level == "fail" for level, _ in report)
+    for crate in crates:
+        print(f"crate {crate}")
+        findings = dependency_findings(cargo, crate) if (crate / "Cargo.toml").is_file() else [("fail", "no Cargo.toml")]
+        for level, text in findings:
+            print(finding(level, text))
+        ok = ok and not any(level == "fail" for level, _ in findings)
+    if not crates:
+        print(finding("info", "no crate checked: pass --crate DIR, or run it in an app directory with components/<name>/"))
+    return 0 if ok else 1
+
+
+def cargo_package(cargo, crate):
+    """The package whose manifest is crate/Cargo.toml (`cargo metadata --no-deps`)."""
+    manifest = crate / "Cargo.toml"
+    if not manifest.is_file():
+        die(f"{crate} has no Cargo.toml")
+    r = subprocess.run([cargo, "metadata", "--no-deps", "--format-version", "1", "--manifest-path", str(manifest)],
+                       capture_output=True, text=True, cwd=crate)
+    if r.returncode != 0:
+        die(f"cargo metadata failed for {crate}:\n{r.stderr.strip()}")
+    for package in json.loads(r.stdout)["packages"]:
+        if Path(package["manifest_path"]).resolve() == manifest.resolve():
+            return package
+    die(f"{manifest} is a workspace, not a package; pass a component crate's own directory")
+
+
+def build_component(cargo, crate):
+    """Builds one crate for wasm32-wasip2, reads the component it made and
+    records in it the crates it is built from (its `octosense-crates`
+    section). Dies, before anything in the bundle changes, when the build
+    fails or the component imports what no host gives it."""
+    package = cargo_package(cargo, crate)
+    name = package["name"]
+    if not COMPONENT_NAME_RE.match(name):
+        die(f"package {name!r} becomes fns/{name}.wasm, so its name must be 1-64 of [a-z0-9_-], "
+            f"starting with a letter; rename it in {crate / 'Cargo.toml'}")
+    toolchain = rust_toolchain(cargo, crate)
+    if toolchain and not toolchain["target"]:
+        die(f"the {WASM_TARGET} target is not installed for {toolchain['version']}: {target_fix(cargo)}")
+    cmd = [cargo, "build", "--release", "--target", WASM_TARGET, "--manifest-path", str(crate / "Cargo.toml"),
+           "--message-format=json-render-diagnostics"]
+    print("octo: " + " ".join(cmd), flush=True)
+    proc = subprocess.run(cmd, cwd=crate, stdout=subprocess.PIPE, text=True)
+    artifact = None
+    for line in proc.stdout.splitlines():
+        try:
+            message = json.loads(line)
+        except ValueError:
+            continue
+        if message.get("reason") == "compiler-artifact" and message.get("package_id") == package["id"]:
+            artifact = next((Path(f) for f in message.get("filenames") or [] if f.endswith(".wasm")), artifact)
+    if proc.returncode != 0:
+        known = [(level, text) for level, text in dependency_findings(cargo, crate) if level in ("fail", "warn")]
+        print(f"octo: building {name} for {WASM_TARGET} failed" + (", and octo knows these about its dependencies:" if known else "."),
+              file=sys.stderr)
+        for level, text in known:
+            print(finding(level, text), file=sys.stderr)
+        sys.exit(proc.returncode)
+    if artifact is None:
+        die(f"{name} built no .wasm file: add [lib] crate-type = [\"cdylib\", \"rlib\"] to {crate / 'Cargo.toml'}")
+    data = artifact.read_bytes()
+    if not data.startswith(wasm_component.COMPONENT_PREAMBLE):
+        die(f"{artifact} is not a WebAssembly component; build it with Rust 1.88 or newer for {WASM_TARGET}")
+    try:
+        info = wasm_component.describe(data)
+    except wasm_component.ReadError as error:
+        die(f"{artifact}: {error}")
+    refused = wasm_component.refused_imports(info["imports"])
+    if refused:
+        die(f"{name} imports what no host gives a component, so the wasm service would refuse to load it "
+            "and App Hub's gate refuses the bundle:\n" + "\n".join(refusal_lines(refused))
+            + f"\n`tools/octo wasm doctor --crate {crate}` names the dependencies that usually bring these in.")
+    if not info["exports"]:
+        die(f"{name} exports no function: put #[octosense_component::export] on a module of pub fns")
+    # The crates it is built from, for App Hub's reviewers: the release
+    # workflow records the same list, so it writes the same bytes.
+    try:
+        inventory = wasm_component.crate_inventory(cargo, crate)
+    except wasm_component.CrateListError as error:
+        die(f"{name}: {error}")
+    data = wasm_component.with_crates(data, inventory)
+    return {"crate": crate, "name": name, "data": data, "info": info, "crates": inventory["crates"]}
+
+
+def crates_line(crates):
+    """`built from 3 crates`: how many the crate list names, the component's own aside."""
+    if not crates:
+        return "built from no crate but its own"
+    return f"built from {len(crates)} crate{'' if len(crates) == 1 else 's'}"
+
+
+def script_call(export, kind="component"):
+    """How the app's script names a function: `wasm.to_html(markdown: string) -> string`."""
+    name = export["name"].replace("-", "_") if kind == "component" else export["name"]
+    if export.get("params") is None:
+        return f"wasm.{name}"
+    params = ", ".join(f"{p.replace('-', '_') if kind == 'component' else p}: {t}" for p, t in export["params"])
+    return f"wasm.{name}({params})" + (f" -> {export['result']}" if export.get("result") else "")
+
+
+def component_manifest_changes(manifest, files, http=None):
+    """Adds what a bundle with components needs to `manifest`; returns a note
+    per change. `files` and `http` name a component that imports
+    wasi:filesystem or wasi:http. It never touches network.hosts: an app's
+    network declarations are shown at install and not enforced while it runs
+    (OctoSense's ruling of 8 October 2026), so a component's requests reach
+    any host, and App Hub's gate asks only for `net`."""
+    notes = []
+    capabilities = manifest.setdefault("capabilities", [])
+    requires = manifest.setdefault("requires", [])
+    if "wasm" not in capabilities:
+        capabilities.append("wasm")
+        notes.append('added "wasm" to capabilities: the app runs its own sandboxed functions')
+    if COMPONENTS_FEATURE not in requires:
+        requires.append(COMPONENTS_FEATURE)
+        notes.append(f'added "{COMPONENTS_FEATURE}" to requires: a host that runs only core modules '
+                     "refuses the app at install, instead of failing at its first call")
+    if files and "storage" not in capabilities:
+        capabilities.append("storage")
+        notes.append(f'added "storage" to capabilities: {files} imports wasi:filesystem, '
+                     "and its `/` is the app's storage folder")
+    if http and "net" not in capabilities:
+        capabilities.append("net")
+        notes.append(f'added "net" to capabilities: {http} imports wasi:http, the network')
+    return notes
+
+
+def function_names(path):
+    """The names the wasm service registers for one fns/ file: a component's
+    functions in snake_case, a module's (i32, i32) -> i64 exports."""
+    try:
+        info = wasm_component.describe(path.read_bytes())
+    except (OSError, wasm_component.ReadError):
+        return []
+    if info["kind"] == "component":
+        return [e["name"].replace("-", "_") for e in info["exports"]]
+    return [e["name"] for e in info["exports"]
+            if e["params"] == [["p0", "i32"], ["p1", "i32"]] and e["result"] == "i64"]
+
+
+def cmd_wasm_build(args):
+    app = app_dir(args.app)
+    bundle = app / "bundle"
+    manifest_path = bundle / "manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text())
+    except (OSError, ValueError) as error:
+        die(f"{manifest_path}: {error}")
+    if sealed_release(manifest):
+        die("this bundle is a sealed release; build into the app's editable source bundle")
+    crates = component_crates(app, args.crate)
+    if not crates:
+        die(f"no crate in {app / 'components'}: create one with `tools/octo wasm new <name> --app {app}`, or pass --crate DIR")
+    cargo = cargo_path()
+    if not cargo:
+        die(f"cargo not found: install Rust with rustup (https://rustup.rs), then `rustup target add {WASM_TARGET}`")
+    built = [build_component(cargo, crate) for crate in crates]
+    names = [b["name"] for b in built]
+    for name in set(names):
+        if names.count(name) > 1:
+            die(f"two crates are both named {name!r}, and each would be fns/{name}.wasm; rename one")
+
+    # What the manifest needs, from what the components import.
+    files = next((b["name"] for b in built if wasm_component.uses_files(b["info"]["imports"])), None)
+    http = next((b["name"] for b in built if wasm_component.uses_http(b["info"]["imports"])), None)
+    notes = component_manifest_changes(manifest, files, http)
+
+    fns = bundle / "fns"
+    fns.mkdir(exist_ok=True)
+    for b in built:
+        target = fns / f"{b['name']}.wasm"
+        same = target.is_file() and target.read_bytes() == b["data"]
+        if not same:
+            target.write_bytes(b["data"])
+        imports = b["info"]["imports"]
+        print(f"{'unchanged' if same else 'wrote'} bundle/fns/{target.name}: {len(b['data']):,} bytes, "
+              f"a component that reaches {wasm_component.reach(imports)}")
+        for export in b["info"]["exports"]:
+            print(f"  {script_call(export)}")
+        print(f"  {crates_line(b['crates'])} (tools/octo wasm info lists them)")
+    if notes:
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
+        print("bundle/manifest.json:")
+        for note in notes:
+            print(f"  {note}")
+
+    # What the gate and the service check later, said now.
+    files_in_fns = sorted(fns.glob("*.wasm"))
+    if len(files_in_fns) > MAX_FUNCTION_FILES:
+        print(f"octo: warning: fns/ holds {len(files_in_fns)} files; App Hub admits at most {MAX_FUNCTION_FILES}")
+    owners = {}
+    for path in files_in_fns:
+        for name in function_names(path):
+            owners.setdefault(name, []).append(path.name)
+    for name, owned in sorted(owners.items()):
+        if len(owned) > 1:
+            print(f"octo: warning: {' and '.join(owned)} both export {name}; the wasm service refuses to load them. Rename one.")
+    total = sum(p.stat().st_size for p in bundle.rglob("*") if p.is_file() and p != manifest_path)
+    if total > MAX_BUNDLE_BYTES:
+        print(f"octo: warning: the bundle's files are {total:,} bytes, over the {MAX_BUNDLE_BYTES:,} App Hub admits")
+
+    hub, _, _ = find_binary("hub", "OCTO_HUB")
+    if hub and subprocess.run([str(hub), "stamp", str(bundle)], stdout=subprocess.DEVNULL).returncode == 0:
+        print("stamped the bundle")
+    else:
+        print("not stamped; `tools/octo check` and `tools/octo run` stamp it")
+    first = built[0]["info"]["exports"][0]
+    print("next:")
+    print(f"  tools/octo check {bundle}")
+    print(f"  call a function from main.splash: host.request(\"wasm.{first['name'].replace('-', '_')}\", {{…}}, fn(r){{ … }})")
+    print("  card-host has no wasm service: run the app in an OctoSense build that loads components (docs/RUST.md)")
+    return 0
+
+
+def component_info_hub():
+    """The OctoSense hub, when it has `component-info`."""
+    hub, _, _ = find_binary("hub", "OCTO_HUB")
+    if not hub:
+        return None
+    try:
+        out = subprocess.run([str(hub), "help"], capture_output=True, text=True, timeout=10)
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    return hub if "component-info" in out.stdout + out.stderr else None
+
+
+def print_crates(crates, unreadable=None):
+    """The crate list `wasm info` prints: what App Hub's reviewers see."""
+    if unreadable:
+        print(f"crates: unreadable, {unreadable}")
+    elif crates is None:
+        print(f"crates: not recorded; `tools/octo wasm build` and the release workflow record them "
+              f"in an {wasm_component.CRATES_SECTION} section")
+    else:
+        print(f"{crates_line(crates)}, as its {wasm_component.CRATES_SECTION} section lists them:")
+        for crate in crates:
+            print(f"  {crate.get('name')} {crate.get('version')}, {crate.get('source')}")
+
+
+def cmd_wasm_info(args):
+    path = Path(args.file).expanduser()
+    try:
+        data = path.read_bytes()
+    except OSError as error:
+        die(f"{path}: {error}")
+    hub = component_info_hub()
+    if hub:
+        r = subprocess.run([str(hub), "component-info", str(path)], capture_output=True, text=True)
+        if r.returncode != 0:
+            print((r.stdout + r.stderr).strip(), file=sys.stderr)
+            return r.returncode
+        info, reader = json.loads(r.stdout), f"hub component-info ({hub})"
+    else:
+        try:
+            info = wasm_component.describe(data)
+        except wasm_component.ReadError as error:
+            die(f"{path}: {error}")
+        reader = "octo's own reader (no hub with component-info found)"
+    # The crates it is built from, as its octosense-crates section lists them:
+    # octo reads them itself, whichever reader answered the rest.
+    unreadable = None
+    try:
+        listed = wasm_component.recorded_crates(data)
+    except wasm_component.ReadError as error:
+        listed, unreadable = None, str(error)
+    crates = listed["crates"] if listed else None
+    if args.json:
+        info["crates"] = crates
+        print(json.dumps(info, indent=2))
+        if unreadable:
+            print(f"octo: {path}: {unreadable}", file=sys.stderr)
+        return 0
+    kind = info.get("kind")
+    imports, exports = info.get("imports") or [], info.get("exports") or []
+    if kind == "component":
+        print(f"{path}: a WebAssembly component (OctoSense ADR 0014), {len(data):,} bytes, read by {reader}")
+        refused = wasm_component.refused_imports(imports)
+        print("reaches: " + ("what no host gives a component (refused below)" if refused
+                             else wasm_component.reach(imports)))
+        print(f"imports ({len(imports)}):")
+        for name in imports:
+            print(f"  {name}" + ("   (refused)" if name in refused else ""))
+        print(f"functions ({len(exports)}), each called from the app's script as wasm.<name>:")
+        for export in exports:
+            print(f"  {script_call(export)}")
+        print_crates(crates, unreadable)
+        if refused:
+            print("refused: no host loads it, and App Hub's gate refuses a bundle with it, for these imports:")
+            print("\n".join(refusal_lines(refused)))
+        else:
+            needs = ['"wasm" in capabilities', f'"{COMPONENTS_FEATURE}" in requires']
+            if wasm_component.uses_files(imports):
+                needs.append('"storage" in capabilities (it imports wasi:filesystem)')
+            if wasm_component.uses_http(imports):
+                needs.append('"net" in capabilities (it imports wasi:http)')
+            if wasm_component.uses_host_services(imports):
+                needs.append("the capability of each host service it calls (it imports octosense:host, "
+                             "which reaches only the services the app is granted)")
+            print("the manifest needs " + ", ".join(needs))
+    else:
+        print(f"{path}: a WebAssembly core module (OctoSense ADR 0011), {len(data):,} bytes, read by {reader}")
+        print("imports: " + (", ".join(imports) or "none"))
+        callable_ = [e for e in exports if e["params"] == [["p0", "i32"], ["p1", "i32"]] and e["result"] == "i64"
+                     and e["name"] not in ("octo_alloc", "octo_free")]
+        print(f"functions ({len(callable_)}), each called from the app's script as wasm.<name>:")
+        for export in callable_:
+            print(f"  wasm.{export['name']}")
+        others = [e for e in exports if e not in callable_]
+        if others:
+            print("other exports: " + ", ".join(script_call(e, kind="module")[len("wasm."):] for e in others))
+        if crates is not None or unreadable:
+            print_crates(crates, unreadable)
+    if info.get("unresolved"):
+        print(f"note: {info['unresolved']}; `hub component-info` reads every type")
+    return 0
+
+
+def cmd_wasm(args, parser):
+    handlers = {"new": cmd_wasm_new, "build": cmd_wasm_build, "doctor": cmd_wasm_doctor, "info": cmd_wasm_info}
+    if args.wasm_cmd not in handlers:
+        parser.print_help()
+        return 0
+    return handlers[args.wasm_cmd](args)
+
+
 # ------------------------------------------------------------------------ main
 def main():
     p = argparse.ArgumentParser(
@@ -686,6 +1352,29 @@ def main():
 
     sub.add_parser("package-help", help="print the publish checklist")
 
+    w = sub.add_parser("wasm", help="the app's own Rust code as WebAssembly components (OctoSense ADR 0014)",
+                       description="Write, build and inspect the app's own Rust functions as WebAssembly "
+                                   "components, which its script calls as wasm.<function>. Guide: docs/RUST.md")
+    wsub = w.add_subparsers(dest="wasm_cmd", metavar="WASM_COMMAND")
+    wn = wsub.add_parser("new", help="create a component crate in <app>/components/<name> from templates/rust-component")
+    wn.add_argument("name", help="the crate's name, and its file's in the bundle, fns/<name>.wasm: [a-z][a-z0-9_-]{0,63}")
+    wn.add_argument("--app", metavar="DIR", help="the app's directory, which holds bundle/ (default: the current directory)")
+    wn.add_argument("--sdk", choices=("auto", "git", "path"), default="auto",
+                    help="depend on the SDK by a git commit on App Flow's main, or by path from this checkout "
+                         "(default auto: the commit when this checkout has one with the SDK, else the path)")
+    wb = wsub.add_parser("build", help="build the component crates for wasm32-wasip2 into bundle/fns/, with the crates "
+                                       "each is built from, and update the manifest")
+    wb.add_argument("--app", metavar="DIR", help="the app's directory, which holds bundle/ (default: the current directory)")
+    wb.add_argument("--crate", action="append", metavar="DIR", help="a crate to build (repeatable; default: every <app>/components/*/)")
+    wd = wsub.add_parser("doctor", help="check Rust, the wasm32-wasip2 target and a crate's dependencies, "
+                                        "and name what OctoSense already provides")
+    wd.add_argument("--crate", action="append", metavar="DIR", help="a crate to check (repeatable; default: every ./components/*/)")
+    wi = wsub.add_parser("info", help="what a function file is, imports, exports and is built from "
+                                      "(hub component-info, or octo's reader)")
+    wi.add_argument("file")
+    wi.add_argument("--json", action="store_true",
+                    help="print the answer as JSON, as hub component-info does, with the crate list as \"crates\"")
+
     args, extra = p.parse_known_args()
     if args.cmd != "check" and extra:
         p.error("unrecognized arguments: " + " ".join(extra))
@@ -699,6 +1388,8 @@ def main():
     }
     if args.cmd == "check":
         sys.exit(cmd_check(args, extra))
+    if args.cmd == "wasm":
+        sys.exit(cmd_wasm(args, w))
     if args.cmd in handlers:
         sys.exit(handlers[args.cmd](args))
     p.print_help()

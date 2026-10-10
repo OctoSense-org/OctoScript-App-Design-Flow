@@ -1,0 +1,33 @@
+# The Rust SDK for OctoSense app components (OctoSense ADR 0014): ordinary
+# Rust functions become a WebAssembly component the shell's `wasm` service
+# calls from an app's script, with no WIT and no glue to write.
+[workspace]
+resolver = "2"
+members = [
+    "octosense-component",
+    "octosense-component-macros",
+    "examples/markdown-tools",
+    "examples/type-tour",
+    "examples/template",
+    "examples/http-client",
+    "examples/host-services",
+    "e2e",
+]
+# Cargo.lock keeps wasip2, behind octosense-component's `wasi`, at
+# 1.0.1+wasi-0.2.4: what a crate made from templates/rust-component (Rust
+# 1.85, an MSRV-aware resolver) resolves, so the end-to-end tests build what
+# a new crate builds. wasip2 1.0.2 and later need Rust 1.87.
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+# wit-bindgen 0.62 needs 1.85; wasm32-wasip2 builds components from 1.82.
+rust-version = "1.85"
+license = "Apache-2.0"
+repository = "https://github.com/OctoSense-org/OctoSense-App-Flow"
+
+[profile.release]
+opt-level = "s"
+lto = true
+strip = true
+codegen-units = 1
