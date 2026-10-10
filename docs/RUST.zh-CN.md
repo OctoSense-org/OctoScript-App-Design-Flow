@@ -6,10 +6,10 @@
 
 商店应用的应用包不能带原生代码，但可以把你的 Rust 代码编译成 WebAssembly，放在应用包的 `fns/` 文件夹中带上。Shell 的 `wasm` 服务在沙盒中运行这些代码，应用的脚本按名称调用它们。共有两种形式：
 
-- **组件**（[ADR 0014](https://github.com/OctoSense-org/OctoSense/pull/436)，提议中）：用本仓库的 SDK 编写普通的 Rust，`tools/octo wasm build` 把它变成 `fns/<name>.wasm`。脚本以 `wasm.<function>` 加 JSON 调用每个 `pub fn`，因此不需要编写 WIT，也不需要胶水代码。组件在调用之间保留状态，能用时钟和随机数；还能访问受配额限制的私有文件。ADR 0014 的第 3 阶段再加两项：经 HTTP 访问主机（见[网络](#网络)）；以及通过实际授权检查调用可用的公开宿主服务（见[宿主服务](#宿主服务)）。
+- **组件**（[ADR 0014](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/docs/adr/0014-app-components-in-webassembly.zh-CN.md)，已接受）：用本仓库的 SDK 编写普通的 Rust，`tools/octo wasm build` 把它变成 `fns/<name>.wasm`。脚本以 `wasm.<function>` 加 JSON 调用每个 `pub fn`，因此不需要编写 WIT，也不需要胶水代码。组件在调用之间保留状态，能用时钟和随机数；还能访问受配额限制的私有文件。ADR 0014 的第 3 阶段再加两项：经 HTTP 访问主机（见[网络](#网络)）；以及通过实际授权检查调用可用的公开宿主服务（见[宿主服务](#宿主服务)）。
 - **核心模块**（[ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.zh-CN.md)）：处理字节或 JSON 的函数，用复制来的客体 crate 编写，只能看到自己的输入。本页末尾的[核心模块](#核心模块adr-0011)介绍它们。
 
-**当前源码与发布边界。** [OctoSense #453](https://github.com/OctoSense-org/OctoSense/pull/453) 已合并组件加载、HTTP 与宿主服务集成。App Hub #186 和 #188 也已合并。契约 1.11.0 与 [App Hub #192](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/192) 准备修正后的策略：`capabilities` 和 `network.hosts` 披露用途，遗漏它们不能拒绝原本可用的公开 API。`requires`、受支持的导入、完整性、配额、应用与账户作用域、实际设备同意、原生写入审核及应用间共享检查仍然生效。源码合并和 SDK 夹具通过不等于可下载宿主已能运行某个应用；兼容发布版本与真实应用验收仍需分别完成。RC2 只有核心模块。
+**当前源码与发布边界。** [桌面 RC4](../README.zh-CN.md#下载兼容-shell) 已发布，源码为 `9266b008`，包含组件加载、HTTP、公开宿主服务导入与签名目录中的共享组件。它使用 App Hub 契约 1.11，`capabilities` 与 `network.hosts` 披露用途，不作为执行开关。`requires`、受支持的导入、完整性、配额、应用与账户 scope、实际设备同意、原生写入审核及应用间共享检查继续生效。最终 Mac 归档包与通过 11/11 项 Store/组件检查的候选包字节一致；测试使用真实 GitHub 证明与经管理员证明的私有演练目录，不代表官方公开目录组件安装、真实模型或 Windows/Linux 界面验收。OnePlus 6 组件检查使用隔离的源码测试包，没有升级 Home。你的确切应用仍需单独验收。RC2 与 Home beta.2 只包含核心模块；下方历史观察记录保留原有范围。
 
 | | 核心模块（ADR 0011） | 组件（ADR 0014） |
 | --- | --- | --- |
@@ -18,9 +18,9 @@
 | 两次调用之间 | 每次调用都从头开始 | 保留状态 |
 | 清单 | 披露 `wasm` | 要求 `wasm-components-v1`；披露 `wasm`、文件用途的 `storage` 和 HTTP 用途的 `net` |
 | App Hub 的准入检查（`hub check`） | 从契约 1.7 起接受 | 当前源码接受带有 `wasm-components-v1` 的受支持组件；1.11 策略把能力族声明视为披露。 |
-| OctoSense `main`（macOS、Linux 和 Android） | 运行它 | 从 #453 起包含组件加载与第 3 阶段适配器。须在受支持宿主上验收确切应用；这里不声称已完成组件发布版验收。 |
+| 当前源码（macOS、Windows、Linux、Android 和 OpenHarmony） | 包含；OpenHarmony 使用 Pulley | 包含第 3 阶段适配器与逐应用共享组件加载；不含 iOS。源码包含不等于真机验收。 |
 | `card-host` | 接受应用；调用返回 `no service answers "wasm" on this device` | 同样没有 `wasm` 服务。清单通过准入不代表组件能在其中运行。 |
-| 发布版本 | 桌面版 0.1.0-rc.2 在 macOS 和 Linux 上运行它；还没有 Home 发布版本运行它 | 都不运行它 |
+| 发布版本 | 桌面 RC4 的 macOS/Windows/Linux 包；桌面 RC2 的 macOS/Linux 包及 Home beta.2 也包含 | 桌面 RC4 的 macOS/Windows/Linux 包包含；最终 Mac 归档包验收见上文。Home beta.2 不含组件。 |
 
 下方命令示例在声明策略修正前，曾在 macOS（Apple 芯片）上用 Rust 1.97.1 运行，标注为**未验证**的除外。历史准入输出只证明当时版本行为，不是当前必须取得能力族授权的要求。示例使用 `tools/octo new` 在 `~/apps/my-app` 创建的应用（见 [QUICKSTART §3](QUICKSTART.zh-CN.md#3-创建应用)），id 为 `dev.example.texttools`。
 
@@ -29,10 +29,10 @@
 | 你需要 | 途径 | 参阅 |
 | --- | --- | --- |
 | 借助 crates.io 上的 crate 做计算：解析、格式转换、打分、密码学运算、图像处理 | 组件 | [编写组件](#编写组件) |
-| 在今天就要能运行的应用中做纯计算 | 核心模块 | [核心模块](#核心模块adr-0011) |
+| 还须兼容较旧核心模块宿主的纯计算 | 核心模块 | [核心模块](#核心模块adr-0011) |
 | 相机、麦克风或位置 | 宿主 API：`camera`、`microphone` 和 `location` 能力及其权限方法，以及 `location.get` | [HOST-API-V1 §3](HOST-API-V1.zh-CN.md#3-在前台申请设备访问) |
 | 网络 | Splash 的 `net` 或组件的 `octosense_component::http`；声明披露预计目标。核心模块没有网络：先在 Splash 中取回数据，再传进去。 | [网络](#网络) |
-| 应用的宿主服务，例如 `runtime.list` | Splash 中的 `host.request`，或组件中的 `octosense_component::host`（第 3 阶段，在 Shell 中属于**未验证**） | [宿主服务](#宿主服务) |
+| 应用的宿主服务，例如 `runtime.list` | Splash 中的 `host.request`，或组件中的 `octosense_component::host`（RC4 已包含；须验证确切宿主方法及其授权） | [宿主服务](#宿主服务) |
 | 文件 | 有配额的私有存储，在 Splash 中用 `fs.*`，在组件中用 `std::fs`。 | [存储](SCRIPT-API.md#storage-fs) |
 | Rust crate 已经实现的功能 | 不能在 Splash 中直接调用这个 crate。可以把它构建成组件（见[编写组件](#编写组件)；先运行 `tools/octo wasm doctor`，它会指出哪些 crate 的功能 OctoSense 已经提供），纯计算也可以编译成核心模块；向 OctoSense 提议一项共享宿主服务并贡献它的适配层，连同方法描述、按应用隔离的资源和测试（[HOST-SERVICES § 新增宿主服务](HOST-SERVICES.zh-CN.md#新增宿主服务)）；或者放在你自己的后端里，通过 `net` 或经过认证的后端 API 调用（[HOST-API-V1 §4](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）。Shell 的 `Cargo.lock` 里有某个 crate，不等于 Splash 能调用它；把 `.so`、`.dylib` 或 `Cargo.toml` 放进应用包也没有任何用处，准入检查会直接拒绝。 | 本页、[HOST-SERVICES](HOST-SERVICES.zh-CN.md)、[HOST-API-V1 §4](HOST-API-V1.zh-CN.md#4-连接应用自己的后端) |
 | 原生库、线程或系统调用 | 商店应用无法使用。App Hub 的准入检查会拒绝原生库，原生代码只能随 Shell 的发布版本分发。 | App Hub 的[交付路径](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/DEVELOPMENT.zh-CN.md#选择合适的交付路径) |
@@ -193,7 +193,7 @@ tools/octo wasm info bundle/fns/text-tools.wasm
 
 ### 5. 在应用中调用
 
-**未验证**：目前还没有运行组件的 Shell；以下内容依据 ADR 0014。
+RC4 已实现此组件调用路径。下方既有 SDK 示例保留原有验证范围；须在已安装宿主中单独验证你的确切应用。
 
 ```splash
 host.request("wasm.count", {text: "one two\nthree"}, fn(r){
@@ -213,8 +213,8 @@ Agent 工具映射到组件函数的方式与映射到模块函数相同，用 `
 
 - 像第 3 步那样用 `cargo test` 以本机方式测试逻辑。
 - `tools/octo run` 在 `card-host` 中启动应用。`card-host` 没有 `wasm` 服务，每次调用都返回 `no service answers "wasm" on this device`。用它检查布局，以及应用在没有函数时显示什么。App Hub `main` 的 `card-host` 是否接受这份清单属于**未验证**（见页首的表格）。
-- `tools/octo check` 运行 App Hub 的准入检查。用 App Hub `main` 的 `hub` 时，它在写入摘要这一步就停止：`hub: app dev.example.texttools needs a newer host: wasm-components-v1`。用 App Hub #186 的 `hub` 时，准入检查接受组件，并告诉审核者它能访问什么（见[准入检查查看什么](#准入检查查看什么)）。
-- 在 OctoSense 中运行应用的函数需要 ADR 0014 的第 2 阶段，属于**未验证**。第 2 阶段合并后，按模块的方式测试（见[测试](#测试)第 2 到 9 步）。发出 HTTP 请求或调用宿主服务的函数还需要第 3 阶段。
+- `tools/octo check` 运行当前 App Hub 准入检查，接受带 `wasm-components-v1` 的受支持组件。历史 #186 之前的运行在写入摘要时停止：`hub: app dev.example.texttools needs a newer host: wasm-components-v1`。这条输出属于旧准入检查；当前策略见[准入检查查看什么](#准入检查查看什么)。
+- 桌面 RC4 包含第 2、3 阶段。请在该宿主中测试应用实际使用的导入与公开宿主服务；SDK 本地测试示例不代表你的应用行为或提供商授权已验证。较早的模块演练（[测试](#测试)第 2 到 9 步）保留其自己的记录范围。
 
 SDK 自己的测试用普通的 cargo 为 `wasm32-wasip2` 构建示例和模板，像 ADR 0014 的运行时一样在 Wasmtime 49 中以 WASI 0.2 加载它们，并调用每个函数。对第 3 阶段，测试像 OctoSense 的运行时一样链接 `wasi:http`（`wasmtime-wasi-http` 49）和 `octosense:host`，并照搬它的钩子：`http-client` 示例不经任何授权，按地址和按名称向本机的 HTTP/1.1 服务器发请求，发往从不应答的服务器的请求随这次调用结束；`host-services` 示例调用模拟的宿主服务。在 `sdk/rust/` 中运行：
 
@@ -407,7 +407,7 @@ OctoSense 以原生方式链接了许多 crate，例如 Makepad 的 Markdown 控
 | --- | --- | --- | --- |
 | `pulldown-cmark`、`comrak`、`markdown` | Splash 的 `Markdown` 控件，它渲染 Markdown，包括表格 | 只在生成 HTML，或把 Markdown 当作数据读取时 | [SCRIPT-API § Widgets](SCRIPT-API.md#widgets-available-to-an-app) |
 | `feed-rs`、`rss`、`atom_syndication` | 脚本中的 `text.parse_feed(style)`：每个 RSS 或 Atom 条目的标题、链接、来源、发布时间、摘要和图片 | 只在需要 `parse_feed` 不读取的内容时 | [SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings) |
-| `async-openai`、`genai`、`ollama-rs`、`openai-api-rs` | `model.complete`（需要 `model` 能力）：在每日预算内，向用户自己的 AI 提供商发出一次性、按 schema 校验的请求 | 绝不带着提供商密钥：应用不持有任何密钥 | [AI-SERVICES § 一次性模型调用](AI-SERVICES.zh-CN.md#一次性模型调用model) |
+| `async-openai`、`genai`、`ollama-rs`、`openai-api-rs` | `model.complete`（披露 `model` 用途）：在每日预算内，向用户自己的 AI 提供商发出一次性、按 schema 校验的请求 | 绝不带着提供商密钥：应用不持有任何密钥 | [AI-SERVICES § 一次性模型调用](AI-SERVICES.zh-CN.md#一次性模型调用model) |
 
 对 SDK 的 `markdown-tools` 示例（它把 Markdown 转成 HTML），`tools/octo wasm doctor --crate sdk/rust/examples/markdown-tools` 在 `[ok]` 行之后输出：
 
@@ -419,7 +419,7 @@ OctoSense 以原生方式链接了许多 crate，例如 Makepad 的 Markdown 控
 
 ### 构建所用的 crate
 
-`tools/octo wasm build` 在每个组件中记录构建它所用的 crate，发布工作流也记录同样的清单（见[7. 发布](#7-发布)）。App Hub 的准入检查将把这份清单展示给审核者，并对照 [RustSec 安全公告数据库](https://rustsec.org/)检查它。App Hub 这一侧仍在评审中，因此在这里属于**未验证**。
+`tools/octo wasm build` 在每个组件中记录构建它所用的 crate，发布工作流也记录同样的清单（见[7. 发布](#7-发布)）。App Hub 会校验并报告这份清单。`hub check --advisory-db <directory>` 还会检查本地的 [RustSec 安全公告数据库](https://rustsec.org/)副本，不会隐式下载数据库。固定版本的 Hub 已实现此路径；这些既有 SDK 示例不等于对你的依赖完成了一次新的安全公告审核。
 
 清单列出组件链接了其代码的每个包：即 crate 的普通依赖在 `wasm32-wasip2` 上能到达的包（由 `cargo metadata --filter-platform wasm32-wasip2` 解析），不包括 crate 自身。构建依赖和开发依赖在构建机器上运行，过程宏也是如此，因此清单中既没有过程宏，也没有只被过程宏使用的 crate。模板的清单有六个 crate：`bitflags`、`octosense-component`、`wasi` 和 `wasip2`（供 `octosense_component::http` 使用），以及两个版本的 `wit-bindgen`；不包括 `syn`、`wit-parser` 以及 SDK 和 `wit-bindgen` 的宏用来生成代码的其他 crate。每一项包含：
 
@@ -429,7 +429,7 @@ OctoSense 以原生方式链接了许多 crate，例如 Makepad 的 Markdown 控
 | `source` | `crates.io`；git 依赖为 `git+<url>#<commit>`，去掉 `?rev=` 或 `?branch=`；本地依赖（例如用 `--sdk path` 引入的 SDK）为 `path`；其他注册表则照 Cargo 写出的来源原样记录 |
 | `checksum` | 注册表包在 crate 的 `Cargo.lock` 中的 SHA-256。git 和路径包没有。 |
 
-这份清单是文件末尾一个名为 `octosense-crates` 的 WebAssembly 自定义段。它的内容是 `{"schema": 1, "crates": [...]}` 的 UTF-8 JSON，键已排序、不含空格，crate 按名称和版本排序。再次构建会替换它，因此一个文件只有一份。Wasmtime 49 加载带这个段的组件，并像以前一样运行它：SDK 的端到端测试在一个带清单的 `markdown-tools` 组件上通过了（在 `sdk/rust/` 中运行 `OCTOSENSE_COMPONENT_WASM=<file> cargo test --locked -p octosense-component-e2e`）。由于目前还没有运行组件的 Shell，Shell 的 `wasm` 服务能否加载它属于**未验证**。
+这份清单是文件末尾一个名为 `octosense-crates` 的 WebAssembly 自定义段。它的内容是 `{"schema": 1, "crates": [...]}` 的 UTF-8 JSON，键已排序、不含空格，crate 按名称和版本排序。再次构建会替换它，因此一个文件只有一份。Wasmtime 49 加载带这个段的组件，并像以前一样运行它：SDK 的端到端测试在一个带清单的 `markdown-tools` 组件上通过了（在 `sdk/rust/` 中运行 `OCTOSENSE_COMPONENT_WASM=<file> cargo test --locked -p octosense-component-e2e`）。RC4 的 `wasm` 服务已加载组件；上述既有 SDK 测试与[最终归档包验收](../README.zh-CN.md#下载兼容-shell)分别记录。
 
 `tools/octo wasm info` 输出这份清单。对以路径依赖 SDK 构建的模板：
 
@@ -471,11 +471,11 @@ built from 6 crates, as its octosense-crates section lists them:
 
 ## 核心模块（ADR 0011）
 
-核心模块是 OctoSense `main` 和桌面版 0.1.0-rc.2 目前运行的形式：WebAssembly 核心模块，不是组件；它的函数接收和返回字节或 JSON，除了自己的输入什么也接触不到。本节其余部分是核心模块的指南。
+当前 OctoSense 与下表发行版本支持核心模块：WebAssembly 核心模块，不是组件；它的函数接收和返回字节或 JSON，除了自己的输入什么也接触不到。本节其余部分是核心模块的指南。
 
 ### 函数在哪里运行
 
-函数由 Shell 的 `wasm` 宿主服务运行。OctoSense 的 [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.zh-CN.md) 已接受这项服务，属于有限支持：OctoSense 的 Cargo 特性 `wasm-functions` 默认开启，让 macOS、Linux 和 Android 上的每个标准桌面端和 Home 构建都包含这项服务。`wasm-lab` 是这项特性以前的名字，仍保留为别名。Windows（RC2 未包含）、iOS（不允许应用生成代码）和 OpenHarmony（策略未知）的构建不包含这个运行时。
+函数由 Shell 的 `wasm` 宿主服务运行。OctoSense 的 [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.zh-CN.md) 已接受这项服务，属于有限支持：OctoSense 的 Cargo 特性 `wasm-functions` 默认开启，让 macOS、Windows、Linux、Android 和 OpenHarmony 上的标准桌面端和 Home 源码构建包含这项服务。OpenHarmony 使用 Pulley，这里没有其真机验收。`wasm-lab` 是这项特性以前的名字，仍保留为别名。iOS 构建不包含运行时。
 
 | 构建 | 是否接受申请 `wasm` 的应用 | 是否运行它的函数 |
 | --- | --- | --- |
@@ -483,11 +483,13 @@ built from 6 crates, as its octosense-crates section lists them:
 | [OctoSense 桌面版 0.1.0-rc.1](../README.zh-CN.md#下载兼容-shell) 的默认构建 | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
 | [OctoSense 桌面版 0.1.0-rc.2](../README.zh-CN.md#下载兼容-shell)，macOS 或 Linux | 是 | 是 |
 | OctoSense 桌面版 0.1.0-rc.2，Windows | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
-| OctoSense `main` 面向 macOS、Linux 或 Android 的默认构建（特性 `wasm-functions`，旧名 `wasm-lab`） | 是 | 是 |
-| OctoSense `main` 面向 Windows、iOS 或 OpenHarmony 的构建 | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
+| 桌面 RC4，macOS、Windows 和 Linux | 是 | 包含；Mac 归档包验收通过。Windows/Linux 安装后界面仍未验证。 |
+| Home beta.2 | 是 | 包含核心模块；此次桌面发布不升级 Home。 |
+| 当前 macOS、Windows、Linux、Android 或 OpenHarmony 源码，特性 `wasm-functions` | 是 | 包含；OpenHarmony 使用 Pulley，这里没有其真机验收。 |
+| 当前 iOS 源码 | 是 | 没有 Wasm 服务。 |
 | 基于 App Hub `main` 构建的 `card-host` | 是 | 否。每次调用都返回 `no service answers "wasm" on this device`。 |
 
-桌面版 0.1.0-rc.2 是第一个包含这项服务的发布版本，在 macOS 和 Linux 上提供（其 Windows 构建不包含）；`desktop-v0.1.0-beta.2`、桌面端 RC1 和 `home-v0.1.0-beta.1` 都不包含。目前还没有任何 Home 发布版本包含它。
+桌面版 0.1.0-rc.2 是第一个包含这项服务的发布版本，在 macOS 和 Linux 上提供（其 Windows 构建不包含）；`desktop-v0.1.0-beta.2`、桌面端 RC1 和 `home-v0.1.0-beta.1` 都不包含。[Home beta.2](https://github.com/OctoSense-org/OctoSense/releases/tag/home-v0.1.0-beta.2) 包含核心模块；RC4 新增桌面组件。
 
 App Hub 的准入检查（`hub check`）从应用契约 1.7 起接受 `wasm` 能力，每个应用包最多带 8 个模块（见[构建](#构建)）。
 
@@ -893,7 +895,7 @@ host.request("wasm.md_to_html", "# Hello", fn(r){
 | `r.error` | 原因 | 修复方法 |
 | --- | --- | --- |
 | 较旧宿主报告 `this app was not granted "wasm"` | 它早于声明仅用于披露的策略。 | 使用修正后的兼容宿主，并披露 Wasm 用途供审核。 |
-| `no service answers "wasm" on this device` | 宿主没有 `wasm` 服务：`card-host`、发布版本，或面向 Windows、iOS 或 OpenHarmony 的 OctoSense 构建。 | 在 macOS 或 Linux 上从 OctoSense `main` 构建的桌面端 Shell 中测试（见[测试](#测试)）。 |
+| `no service answers "wasm" on this device` | 宿主没有该服务，例如 `card-host`、旧发行版或 iOS 构建。 | 使用兼容的 [RC4 宿主](../README.zh-CN.md#下载兼容-shell)，验证确切应用（见[测试](#测试)）。 |
 | `<app id> has no function "rank"` | 没有模块导出这个名称。 | 与 `wasm.functions` 列出的名称核对。 |
 | `<app id>'s bundle has no fns directory` | 应用申请了 `wasm`，却没有带模块。 | 加入 `fns/<name>.wasm`。 |
 | `<file>: the module imports <name>; only octo.log is provided` | 某个依赖导入了 WASI 或 `wasm-bindgen` 的函数。 | 为 `wasm32-unknown-unknown` 构建，并去掉这个依赖。 |
@@ -936,30 +938,32 @@ host.request("wasm.md_to_html", "# Hello", fn(r){
 
 Agent 工具（无论是 Wasm Lab 的还是你的应用的）还需要 octos 内核（按[桌面端 README](https://github.com/OctoSense-org/OctoSense/blob/main/desktop/README.zh-CN.md#构建与运行) 的说明部署）和一个 AI 提供商。手机 Shell（即 Home）的默认构建在 Android 上同样运行这项服务，也有 `phone/system-apps-wasm-lab.json` 文件；构建方法见 OctoSense 的[手机端 README](https://github.com/OctoSense-org/OctoSense/blob/main/phone/README.zh-CN.md)（**未验证**）。
 
-## 未决事项
+<a id="未决事项"></a>
 
-OctoSense 的 [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.zh-CN.md) 记录了模块的设计，[ADR 0014](https://github.com/OctoSense-org/OctoSense/pull/436) 记录了组件的设计及其各个阶段。下列事项尚未解决：
+## 实现状态与剩余事项
+
+OctoSense 的 [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.zh-CN.md) 记录了模块的设计，[ADR 0014](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/docs/adr/0014-app-components-in-webassembly.zh-CN.md) 记录了组件的设计及其各个阶段。当前实现状态与剩余限制如下：
 
 | 事项 | 状态 |
 | --- | --- |
-| 在 Shell 中运行组件（ADR 0014 第 2 阶段） | 源码集成已在 #453 合并；确切应用、设备和可下载发布版仍须分别验收。 |
+| 在 Shell 中运行组件（ADR 0014 第 2 阶段） | 桌面 RC4 已包含；最终 Mac 归档包通过 11/11 项检查。你的确切应用仍须验收。 |
 | App Hub 对组件的准入检查 | #186/#188 已合并：受支持组件需要 `wasm-components-v1`；1.11 移除从能力族声明推导的拒绝。 |
-| App Hub 对 crate 清单的使用 | App Hub 中正在评审：准入检查把组件的 `octosense-crates` 清单展示给审核者，并对照 RustSec 安全公告数据库检查它（见[构建所用的 crate](#构建所用的-crate)）。 |
+| App Hub 对 crate 清单的使用 | 已实现清单校验，并可通过 `hub check --advisory-db` 检查本地 RustSec 数据库（见[构建所用的 crate](#构建所用的-crate)）。 |
 | 把 SDK 发布到 crates.io | 尚未实现。ADR 0014 会在维护者批准后发布；在此之前，crate 通过 git 提交或路径依赖它。 |
 | 组件的出站 HTTP 和宿主服务（第 3 阶段） | 源码已在 #453 合并；SDK 夹具用本地 HTTP 服务器和模拟服务，真实账户与服务调用须另做验收。 |
 | 首次使用前编译（第 3 阶段） | 源码在准入后安排后台缓存预热，一次一个应用。须在目标设备上测量确切应用；缓存加载不证明安装期间编译已完成。 |
-| App Hub 目录中的共享组件（第 4 阶段） | 尚未实现。 |
+| App Hub 目录中的共享组件（第 4 阶段） | 已实现并包含于 RC4。经管理员证明的私有目录安装通过；官方公开目录组件发布/安装仍未验证。 |
 | 每个应用的 CPU 预算 | 尚未实现。上限按调用计算，所以一个应用可以用连续调用占满一个核心。 |
 | 用真实模型调用 Agent 工具 | 未验证。OctoSense 的测试通过 Shell 的工具执行器调用 Wasm Lab 的工具，没有用到模型。 |
-| Windows | #453 源码包含运行时；这里未验证原生 Windows 组件验收。 |
-| iOS | 尚未实现。iOS 构建不包含这个运行时。iOS 不允许应用使用 JIT，Wasmtime 将只能改用自带的 Pulley 解释器，速度约为 Cranelift 的 1/17；ADR 0014 计划在第 3 阶段这样做。iOS 也不允许应用下载原生代码，因此商店应用的函数在 iOS 上同样无法预先编译。 |
+| Windows | RC4 已包含。后续仅修改测试的 `a8e170d4` 通过 42/42 项运行时 CI；安装后界面仍未验证（[发行限制](../README.zh-CN.md#下载兼容-shell)）。 |
+| iOS | 已接受的 ADR 0014 将其排除，当前没有支持计划；不声称存在 iOS 运行时或真机验证。 |
 | OpenHarmony | #453 源码包含 Wasmtime Pulley；这里未验证设备组件验收。 |
 | 确定性的限制（fuel） | 尚未决定。 |
 
 ## 另请参阅
 
 - OctoSense 的 [OctoSense 中的 WebAssembly](https://github.com/OctoSense-org/OctoSense/blob/main/docs/wasm.zh-CN.md)：`wasm` 服务在 `main` 上如何工作，包括它的上限、平台和测试。
-- [OctoSense #436](https://github.com/OctoSense-org/OctoSense/pull/436) 中 OctoSense 的 ADR 0014：组件、它的 WASI 子集、JSON 映射和各个阶段。
+- OctoSense 已接受的 [ADR 0014](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/docs/adr/0014-app-components-in-webassembly.zh-CN.md)：组件、它的 WASI 子集、JSON 映射和各个阶段。
 - 本仓库的 SDK [sdk/rust/](../sdk/rust/README.zh-CN.md)：`octosense-component` crate 及其宏和 `http`、`host` 模块，示例和端到端测试。`tools/octo wasm` 用 [tools/wasm_component.py](../tools/wasm_component.py) 读取 WebAssembly。
 - [HOST-API-V1](HOST-API-V1.zh-CN.md)：设备权限和 `location.get`。
 - [CAPABILITIES § 宿主服务](CAPABILITIES.zh-CN.md#宿主服务)：`wasm` 与其他宿主服务。

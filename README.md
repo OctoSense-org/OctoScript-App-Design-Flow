@@ -62,7 +62,7 @@ organizers. What a contestant needs from here:
 | --- | --- |
 | **Start** | The [Quick path](#quick-path) below: every step is a shell command. |
 | **Machine** | The complete guide was run on Apple silicon macOS. App Hub's Windows and Linux CI also passes the native tools build and contract, policy, CLI and modal-input tests; native app interaction on those platforms is a separate check. Linux software-rendered frame capture remains unverified. See [platform evidence](docs/QUICKSTART.md#1-prerequisites) and the [Quick path](#quick-path). |
-| **What an app can do** | Keep its own storage; make HTTPS requests to hosts it declares; show pictures and web pages; use the camera and the device's location; read mail through the host's `mail` service; publish Glance cards; call `model.complete`; and, in the compatible RC releases, use a person's GitHub, Gmail or Google Calendar account through the host; since RC2, also import and export documents (macOS, Windows and Android) and, on macOS and Android, read and write the device's calendars, send mail after the person's review and play or record short audio clips, within the platform limits. [docs/CAPABILITIES.md](docs/CAPABILITIES.md) lists the capabilities; [docs/SCRIPT-API.md](docs/SCRIPT-API.md) covers the language and every API. |
+| **What an app can do** | Keep its own storage; make public HTTPS requests and disclose expected destinations; show pictures and web pages; use the camera and the device's location; read mail through the host's `mail` service; publish Glance cards; call `model.complete`; and, in the compatible RC releases, use a person's GitHub, Gmail or Google Calendar account through the host; since RC2, also import and export documents (macOS, Windows and Android) and, on macOS and Android, read and write the device's calendars, send mail after the person's review and play or record short audio clips, within the platform limits. [docs/CAPABILITIES.md](docs/CAPABILITIES.md) lists the capabilities; [docs/SCRIPT-API.md](docs/SCRIPT-API.md) covers the language and every API. |
 | **What it cannot do** | Hold a password, API key or token, even in its own storage. Sign people in through an arbitrary app-owned secret form: the compatible RC uses host-run backend sign-in on supported platforms, with the backend declared in the app's manifest or registered by the host's operator ([CAPABILITIES](docs/CAPABILITIES.md#sign-in-to-your-own-backend), [App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)). Use media generation or embeddings on beta.2 or `card-host`: those services require the implementation in [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368), included since the RC1 release; [download status](#compatible-shell-download) ([media guide](docs/AI-SERVICES.md#media-and-embeddings-model)). Add a capability or host service (an App Hub and shell change), use the system-app-only `llm`, `news` and `calendar` capabilities or an `os.*` id, or ship native code. |
 | **AI in the app** | Building an app needs no AI service, and `card-host` serves none, so make the app complete without one. See [AI in your app](#ai-in-your-app). |
 | **Reference apps** | The three published [connected apps](#connected-apps-github-gmail-and-google-calendar). |
@@ -94,25 +94,41 @@ architecture; published repositories above own the current release bytes.
 
 ### Compatible shell download
 
-[**Desktop 0.1.0-rc.2 is available**](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-rc.2), released 2026-10-09 and built from
-source `4ccf8e06`, for GitHub-attested apps, the public v2 catalog, Host API v1
-and the RC2 host OS APIs: document import and export, device calendars,
-reviewed Mail sending, audio sessions and fresh location samples, each within
-its platform limits ([Host API families](docs/HOST-API-FAMILIES.md)).
+[**Desktop 0.1.0-rc.4 is available**](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-rc.4), published 2026-10-10 from
+source [`9266b008`](https://github.com/OctoSense-org/OctoSense/commit/9266b0083544d86bd7636543b5ff60c61b26460f).
+It includes GitHub-attested apps, the public v2 catalog, Host API v1,
+shared Wasm components and the corrected declaration-only API policy.
+Capability names and `network.hosts` describe expected use; omitted declarations
+do not deny public APIs. App identity, private storage, resource limits,
+account/device consent and reviewed tool access remain enforced
+([policy](docs/CAPABILITIES.md#current-source-policy-and-release-boundary)).
+The OS APIs introduced in RC2 remain subject to their platform limits
+([Host API families](docs/HOST-API-FAMILIES.md)).
 
 | Platform | Download |
 | --- | --- |
-| macOS Apple silicon | [DMG](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.2/OctoSense_0.1.0-rc.2_aarch64.dmg) or [app ZIP](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.2/OctoSense_0.1.0-rc.2_macos_aarch64.app.zip) |
-| Windows x64 | [Installer](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.2/octosense_0.1.0-rc.2_x64-setup.exe) |
-| Linux x86_64 | [Debian package](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.2/octosense_0.1.0-rc.2_amd64.deb) or [AppImage](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.2/octosense_0.1.0-rc.2_x86_64.AppImage) |
+| macOS Apple silicon | [DMG](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.4/OctoSense_0.1.0-rc.4_aarch64.dmg) or [app ZIP](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.4/OctoSense_0.1.0-rc.4_macos_aarch64.app.zip) |
+| Windows x64 | [Installer](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.4/octosense_0.1.0-rc.4_x64-setup.exe) |
+| Linux x86_64 | [Debian package](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.4/octosense_0.1.0-rc.4_amd64.deb) or [AppImage](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.4/octosense_0.1.0-rc.4_x86_64.AppImage) |
 
-Check downloads against [SHA256SUMS](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.2/SHA256SUMS) and read the release's
-platform instructions. These prerelease packages have **no Apple Developer ID
-signature or notarization, and no Windows publisher signature**. The macOS
-package was built and validated locally; Windows/Linux packages came from the
-tagged CI package jobs. [Release provenance](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.2/RELEASE-PROVENANCE.json)
-records the exact files and signing status. To build yourself, follow the
-[pinned setup guide](https://github.com/OctoSense-org/OctoSense/blob/4ccf8e068399b1da139771a9ed94cef05fa6ae60/README.md#set-up).
+Check downloads against [SHA256SUMS](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.4/SHA256SUMS) and read the release's
+platform instructions. The macOS packages have only a linker ad-hoc signature,
+**no Developer ID signature or notarization**; Windows has **no publisher
+signature**. The [release workflow](https://github.com/OctoSense-org/OctoSense/actions/runs/38065627444)
+built the packages; its [macOS](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.4/OctoSense_0.1.0-rc.4_macos-arm64.receipt.json),
+[Windows](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.4/OctoSense_0.1.0-rc.4_windows-x64.receipt.json) and
+[Linux](https://github.com/OctoSense-org/OctoSense/releases/download/desktop-v0.1.0-rc.4/OctoSense_0.1.0-rc.4_linux-x64.receipt.json) receipts record source
+and package identities. All nine published assets passed checksum verification.
+
+The final Mac ZIP bytes match the candidate that passed **11/11** App Hub/component
+checks: installation, cold restart, component calls and separate app state/files
+([archive acceptance and limits](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-rc.4)). This used real GitHub publisher proofs
+and a private administrator-attested dry-run catalog; it did not publish or
+install those components through the official public catalog. Installed
+Windows/Linux GUI acceptance and live-provider effects remain **unverified**.
+Android Home is a separate release; Home beta.2 is unchanged by this desktop
+release. To build RC4 yourself, follow the
+[pinned setup guide](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/README.md#set-up).
 
 For these samples, use a Mac: **App Hub → Search → exact app ID → Get →
 Install → Open**. Review the permissions before Install; **Library** offers
@@ -122,7 +138,7 @@ consume these publisher proofs or the public v2 catalog.
 
 The RC has **no public GitHub/Google OAuth registrations**. Local drafts and
 no-account states are usable; sign-in requires registrations supplied by the
-host distributor/operator ([configuration](https://github.com/OctoSense-org/OctoSense/blob/4ccf8e068399b1da139771a9ed94cef05fa6ae60/crates/oauth-service/README.md#configure-a-release-maintainers)).
+host distributor/operator ([configuration](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/crates/oauth-service/README.md#configure-a-release-maintainers)).
 Ordinary users should not need Google developer accounts. Installing an app
 does not prove live login, a Gmail send, a GitHub commit or a Calendar write.
 Those protected writes require physical host confirmation on supported
@@ -133,7 +149,7 @@ backend, while Linux is untested. Embedded backend login
 and protected writes remain unsupported and fail closed. Android Google
 authorization remains unavailable. Ordinary embedded pages are separate from
 login. Linux needs GTK 3/WebKitGTK and X11/XWayland; Windows needs WebView2.
-These engines are not bundled ([browser requirements](https://github.com/OctoSense-org/OctoSense/blob/4ccf8e068399b1da139771a9ed94cef05fa6ae60/docs/desktop-embedded-browser.md)).
+These engines are not bundled ([browser requirements](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/docs/desktop-embedded-browser.md)).
 `card-host` has no connected-account services or native Markdown editor.
 
 Native public-catalog installation and 0.2.0 → 0.2.1 update retained local
@@ -197,9 +213,9 @@ Use `main` of each repository.
 
 | Piece | State |
 | --- | --- |
-| The gate (`hub`) | App Hub `main`, app contract 1.10.0 (the manifest rules `hub` enforces), which admits the connected-account capabilities `auth`, `github`, `gmail` and `gcalendar`, the [Host API v1](docs/HOST-API-V1.md) declarations, the `wasm` capability and RC2's `files`, `audio` and `device_calendar`. |
+| The gate (`hub`) | App Hub `main`, app contract 1.11.0 (also pinned by RC4), which validates usage declarations for the connected-account capabilities `auth`, `github`, `gmail` and `gcalendar`, the [Host API v1](docs/HOST-API-V1.md) declarations, the `wasm` capability and RC2's `files`, `audio` and `device_calendar`. |
 | `card-host` | App Hub `main`. It runs one bundle and serves no host services except `runtime` discovery. Build it as the [Quick path](#quick-path) shows. |
-| The shells | [RC2 release, source `4ccf8e06`](#compatible-shell-download); see platform downloads there. The desktop shell and the phone's Home run system and store apps; the desktop also serves connected accounts and app agents' host-service tools. |
+| The shells | [Desktop RC4 release, source `9266b008`](#compatible-shell-download); see platform downloads there. The desktop shell and the phone's Home run system and store apps; the desktop also serves connected accounts and app agents' host-service tools. |
 | GitHub publishing | Contract 1.8.0 / `publisher-github-v1`, no developer key. Real releases and public-catalog macOS install/update checks passed; [RC download status](#compatible-shell-download). Isolated phone fixture checks do not establish support for macOS-only sample apps. |
 | Submission | An issue on OctoSense-App-Hub, as App Hub's [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md) describes. |
 | Installing your own bundle on a phone | Not supported. See [Running an app](#running-an-app). |
@@ -360,26 +376,28 @@ my-app/                     the app's own Git repository
 | Field | Holds |
 | --- | --- |
 | `schema`, `id`, `name`, `version` | Identity, with a new `version` for each release. The id's last segment, after its final `.`, must not be a name the host reserves (`notes`, `weather`, `terminal`, `rinx`, `system`, …): `com.example.notes` is refused, `my-notes` passes. `tools/octo new` refuses such an id before it creates any file, and the gate refuses it if you change the id later. |
-| `capabilities` | The permissions the app asks for. |
-| `network.hosts` | Bare host names; needs `net`. |
-| `storage`, `compute`, `agent` | Optional requests, clamped to the host's ceilings; `hub check` prints the result as its `grants:` line. `storage.accounts: true` gives each account its own data folder and agent, instead of one shared `device` folder; `storage.agent_workspace` sets what the agent may read: its account's folder (the default) or nothing. |
+| `capabilities` | Expected API use, disclosed to users and reviewers; not execution grants. |
+| `network.hosts` | Expected destinations as bare host names; not a runtime allowlist. |
+| `storage`, `compute`, `agent` | Optional requests, clamped to the host's ceilings; current `hub check` prints declarations and the resolved bounds on its `declarations:` line. `storage.accounts: true` gives each account its own data folder and agent, instead of one shared `device` folder; `storage.agent_workspace` sets what the agent may read: its account's folder (the default) or nothing. |
 | `integrity.github` | The repository/owner/workflow/tag/commit identity and GitHub attestation, added by the release workflow (`publisher-github-v1`, requires RC1 or later). |
 | `integrity.bundle_blake3` | Written by `hub stamp` during development; the GitHub workflow prepares the final digest and attestation. |
 
 For every field, see App Hub's
 [The manifest](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-manifest).
 
-**Capabilities** form a closed list defined by App Hub: 30 families in
-contract 1.10.0 (27 in 1.8.0), such as `storage`, `net`, `images`, `web`, `camera`,
+**Capabilities** form a closed list defined by App Hub: [42 families in contract 1.11.0](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/8347a489141c0e24cab564883db7c4592935a8b2/crates/app-contract/src/manifest.rs#L63), such as `storage`, `net`, `images`, `web`, `camera`,
 `location`, `mail`, `glance`, `model`, RC2's `files`, `audio` and
 `device_calendar`, and the connected-account `auth`, `github`, `gmail` and `gcalendar`,
 plus 78 exact host-service names: 4 `octos.*` for the device's assistant, 45
 `matrix.*` for Rinx, and 29 `palpo.*`, which no OctoSense shell serves yet.
-Not requested means not granted, and the store shows the person one
-plain-language line per capability before install. Ask for the least the app
-needs. [docs/CAPABILITIES.md](docs/CAPABILITIES.md) says what each one
-unlocks, which have no working path yet (`prompt`, `ledger.read`,
-`clipboard`) and which only a system app can use;
+The store shows one plain-language usage disclosure per capability before
+install. In RC4 with contract 1.11, omitting a declaration
+does not deny public APIs. Keep declarations accurate. Actual consent,
+account scopes, resource limits and required API versions still apply;
+[older releases keep their own behavior](docs/CAPABILITIES.md#current-source-policy-and-release-boundary).
+[docs/CAPABILITIES.md](docs/CAPABILITIES.md) describes the API families,
+including those with no working path yet (`prompt`, `ledger.read`,
+`clipboard`) and those restricted to system apps;
 [docs/AI-SERVICES.md](docs/AI-SERVICES.md) covers what the assistant
 capabilities and an app's own agent do in OctoSense.
 
@@ -401,9 +419,11 @@ the gotchas that cost the most time.
 
 ## Containment rules
 
-Each app runs in its own isolate under exactly the grants its manifest asks
-for. The gate (`hub check`, the same code App Hub runs on submissions)
-enforces most of this; App Hub's
+Each admitted app runs in its own isolate with a private storage jail and
+resource limits. Usage declarations describe its expected behavior; actual
+device/account consent and reviewed tool permissions remain separate. The
+gate (`hub check`, the same code App Hub runs on submissions) checks bundle
+structure and metadata; the runtime enforces access and isolation. App Hub's
 [rules the gate enforces](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#rules-the-gate-enforces)
 lists every check.
 
@@ -413,21 +433,23 @@ lists every check.
   and the runtime makes such a field inert. Sign-in happens on a host-owned
   **sheet**: a surface the host service draws over the app for what only the
   person may type.
-- **Declare every host.** A `.splash` file may call only `https://` hosts
-  listed in `network.hosts`; `images` and `web` add pictures and pages from
-  any public `https://` host, but `net` still reaches only listed hosts.
+- **Disclose network use.** List expected HTTPS destinations in
+  `network.hosts`. The corrected SDK supplies the network module even
+  without `net`; unlisted HTTPS destinations are not refused.
   `http://`, `file://` and `../` are refused.
 - **Only bundle files.** Allowed extensions are
   `.card .json .l0 .octoscript .splash .svg .png .jpg .jpeg .webp .ttf .otf .txt .md`,
-  and an app that requests `wasm` may also carry up to 8 WebAssembly modules
+  and an app may also carry up to 8 WebAssembly modules
   at `fns/<name>.wasm`. Any other file is refused, including macOS
   `.DS_Store`. The gate also refuses other scripts, archives, binaries,
   symlinks. Plain `.txt`/`.md` documentation may contain attribution or
   license URLs; agent guidance and structured resources still undergo their
   normal host/resource checks.
 - **Host services for anything privileged.** An app calls
-  `host.request("<family>.<method>", args, fn(r){…})`, and the family must be
-  a granted capability. Mail is the worked example (`mail.accounts`,
+  `host.request("<family>.<method>", args, fn(r){…})`. The service checks
+  admitted identity, availability, account scope and actual consent; a
+  missing family disclosure is not an execution refusal. Mail is the worked
+  example (`mail.accounts`,
   `mail.add_account`, `mail.list`, `mail.send`, …): the service raises its own
   sheet for the password and keeps it in the platform's secret store, outside
   every app's jail. `<family>.sheet.*` methods are accepted only from the
@@ -447,17 +469,29 @@ lists every check.
 
 OctoSense runs one octos agent kernel per shell, configured by the person in
 the AI providers system app; an app never sees a key. The kernel runs the
-**system agent** (the shell's own assistant, which the person talks to in
-the system chat) and one **app agent** for each app that has one. On
-the compatible RC2 release, an app can do the following within its grants and platform limits:
+**system agent** (the shell's assistant) and a separate **app agent** for each
+app that opts in. The table describes the API contract in
+[desktop RC4 source `9266b008`](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/crates/ai-host/src/contained.rs#L132),
+within its platform, account and consent limits. It does not establish live
+provider results; see the [release and acceptance status](#compatible-shell-download).
 
 | An app can | How | In `card-host` |
 | --- | --- | --- |
-| Make a one-shot, schema-checked model call | `model` capability, `host.request("model.complete", …)`, within a daily budget that `model.budget` reports | `no service answers "model"` |
-| Talk to the assistant from its own screens | the 4 `octos.*` capabilities, once the person allows the app's agent on a first-use sheet | `no service answers "octos"` |
-| Have its own agent, which the person talks to directly (the shell's `Ask <app>` panel, an in-card chat, the app's own screens) and the system agent can hand work to | an `agent` block and `tools.json`: a tool marked `implemented_by: "host-service"` runs through a `host_method` from App Hub's reviewed list, on `github`, `gcalendar`, `gmail` or `glance`; since the RC1 release, a tool marked `implemented_by: "app"` runs the app's own Splash handler while the app is open ([HOST-API-V1 §5](docs/HOST-API-V1.md#5-implement-a-declared-app-tool)); `AGENT.md` and skills are loaded as per-turn guidance | checked by `hub check` only |
-| Publish cards to the Glance screen, with an in-card chat its agent answers and model-written text marked AI-written | `glance` capability, `glance.publish` (L0 `sys.chat`, `model-copy`) | `no service answers "glance"` |
-| Run its agent in the background when new mail arrives | `agent.background: true` and `agent.triggers.events: ["<namespace>.new_message"]`, plus `auth` and `gmail`, as Inbox Assistant does | not available |
+| Make a one-shot, schema-checked model call | `host.request("model.complete", …)` from an admitted app, using a configured host provider and the per-app daily budget reported by `model.budget`. `model` discloses usage; it does not grant execution. | `no service answers "model"` |
+| Talk to its assistant from its own screens | Opt in to an agent and obtain the person's first-use consent. All four public `octos.*` methods are then available; individual capability names do not grant them. | `no service answers "octos"` |
+| Have its own agent, with direct human chat and system-agent delegation | Declare an `agent` block and add `tools.json` when the app has tools. `AGENT.md` and skills provide admitted per-turn guidance. Tool access, sharing and account checks remain separate from agent consent. | checked by `hub check` only |
+| Expose its own tools to agents | A tool with `implemented_by: "host-service"` selects an exact reviewed `host_method`; account scope, minimum risk and human review still apply. `implemented_by: "app"` requires `script-tools-v1` and dispatches to the open app's Splash handler; a closed app returns `app_not_running`. See [HOST-API-V1 §5](docs/HOST-API-V1.md#5-implement-a-declared-app-tool). | checked by `hub check` only |
+| Publish Glance cards with an in-card agent chat and marked AI-written text | `glance.publish` verifies the admitted publisher and owns/rate-limits its cards. Agent tools may publish an admitted `template` with `initial`, or L0 `source` with `data`; they cannot publish arbitrary `script`. Chat still requires the app's consented agent. | `no service answers "glance"` |
+| Run its agent when new Gmail arrives | An admitted app with an active app-owned Google connection authorized for `mail.read`, agent consent, `agent.background: true` and `agent.triggers.events: ["<namespace>.new_message"]`. The `<namespace>` is the app ID's final segment. Background execution must be allowed; `auth`/`gmail` declarations are not wake-up grants. | not available |
+
+Exact shared-tool requests in `agent.tools` must also match the host's admission
+offer. The default store offer excludes the system toolbox; listing
+`workflow.*` or `toolbox.*` cannot enable it. See
+[the toolbox boundary](docs/AI-SERVICES.md#the-system-toolbox).
+These rules follow the pinned [assistant broker](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/crates/ai-host/src/contained.rs#L486),
+[model admission hook](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/crates/shell/src/apps.rs#L221),
+[tool executor](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/crates/shell/src/host_tools/script_apps.rs#L403)
+and [Gmail event discovery](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/crates/shell/src/connected_events.rs#L138).
 
 Image, speech, video and embeddings are implemented in [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368),
 included since the RC1 release; [download status](#compatible-shell-download). They are absent from beta.2 and `card-host`;
@@ -512,8 +546,9 @@ trust anchor, then set `OCTOSENSE_HUB_CATALOG=legacy` and point
 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` at that mirror using a fresh
 app-data directory. The shell's store then installs and opens the app
 ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
-**Unverified:** a rehearsal with a GitHub-attested release; the recorded run
-used a key-signed test app.
+**Unverified for these legacy commands:** a GitHub-attested release; their
+recorded run used a key-signed test app. RC4's separate administrator-attested
+catalog rehearsal is described in the [download evidence](#compatible-shell-download).
 
 **On a phone, today** ([QUICKSTART §9](docs/QUICKSTART.md#9-run-it-on-an-octosense-phone)):
 
@@ -525,9 +560,10 @@ used a key-signed test app.
 - The closest you can get is the desktop rehearsal above.
 - `card-host`'s remote bridge is compiled out on Android, so phone testing
   does not use `tools/octo`.
-- After Hub admission, only a compatible host can install the app. Released
-  phone builds lack both `auth` and `publisher-github-v1`; catalog visibility
-  does not establish runtime compatibility.
+- After Hub admission, the host must support the app's required API/ABI and
+  declared platform. The connected-account samples above declare macOS only;
+  isolated phone fixtures do not establish their Android compatibility.
+  Desktop RC4 does not upgrade Home.
 
 ## Headless testing: many apps, no screen
 

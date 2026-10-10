@@ -13,8 +13,8 @@ service.
 ## Current source policy and release boundary
 
 Capability names and `network.hosts` are usage disclosures, not permission
-gates. The compatible host/SDK update being prepared with App Hub contract
-1.11.0 makes public APIs, the network module and bounded app storage available
+gates. [Desktop RC4](../README.md#compatible-shell-download), with App Hub
+contract 1.11.0, makes public APIs, the network module and bounded app storage available
 without a matching declaration. Keep declarations accurate for users and
 reviewers. RC2 and older installed tools do not acquire this behavior from a
 documentation update; use matching host, Hub and runtime revisions.
@@ -76,7 +76,7 @@ and location still require the app's consent, OS permission and host support.
 | Capability | What the script gets |
 | --- | --- |
 | `net` | `net.http_request` and `net.web_socket`, with destinations described in `network.hosts`. A host is a bare, exact, lowercase name: no scheme, path, port or wildcard. |
-| `images` | Pictures (`Image{src: http_resource(url)}`) from any public `https://` host, beyond `network.hosts`: a feed reader's thumbnails. It does not widen `net.http_request`. |
+| `images` | Pictures (`Image{src: http_resource(url)}`) from any public `https://` host, beyond `network.hosts`: a feed reader's thumbnails. Both use the public network path; host declarations do not limit it. |
 | `web` | `WebReader` opens any public `https://` page in the system web view. The page has no way back into the app. Availability follows the [host and platform limits](../README.md#compatible-shell-download). |
 
 Desktop RC1 and RC2 embed ordinary pages on Windows with WebView2 and on Linux
@@ -107,14 +107,14 @@ a family usage declaration does not cause `this app was not granted`.
 | Capability | What the script gets |
 | --- | --- |
 | `mail` | Mail accounts the person signs in to on a host sheet: folders, messages and sync. Since RC2 a store app can also send: `mail.compose` and `mail.compose_status` keep a draft, and `mail.review_send` (or `mail.send`, which opens the same review) shows the message on the host's native review, where the person approves it with a physical press. That review exists on macOS and Android; on Windows and Linux it fails with `Physical Mail send approval is unavailable on this platform`, and SMTP delivery is unverified. On RC1 a store app had no send path ([OctoSense #409](https://github.com/OctoSense-org/OctoSense/issues/409)). The methods are in [HOST-SERVICES § Mail](HOST-SERVICES.md#mail-the-worked-example). |
-| `auth` | Connections to GitHub and Google that the person approves on a host sheet, and, since desktop RC1, sign-in to the app's own backend. The app receives handles, never tokens. `auth` alone identifies the person but reads none of their data. See [Use a connected account](#use-a-connected-account). |
+| `auth` | Connections to GitHub and Google that the person approves on a host sheet, and, since desktop RC1, sign-in to the app's own backend. The app receives handles, never tokens. Identity-only provider scopes identify the person without granting data access. See [Use a connected account](#use-a-connected-account). |
 | `github` | Repository reads, and saves the person approves on a host sheet. Needs an app-owned authorized connection. |
 | `gcalendar` | Google Calendar reads and sync, and writes the person approves on a host sheet. Needs an app-owned authorized connection. |
 | `gmail` | Gmail reads, versioned reply drafts, sending after the person approves it in the host's send review, and new-mail events for the app's agent. Needs an app-owned authorized connection. |
 | `glance` | `glance.publish`, `glance.withdraw` and `glance.list`: cards on the Glance screen that open only this app. See [AI-SERVICES § Publishing to the Glance screen](AI-SERVICES.md#publishing-to-the-glance-screen). |
 | `model` | `model.complete` and `model.budget`: one-shot model calls on the person's own AI providers, checked against the app's JSON Schema, within a daily budget. See [one-shot calls](AI-SERVICES.md#one-shot-model-calls-model). [Media and embeddings](AI-SERVICES.md#media-and-embeddings-model) use the same capability in OctoSense #368, included since [desktop RC1](../README.md#compatible-shell-download); beta.2 and `card-host` do not serve them. Provider entitlement and live validation are separate. |
 | `runtime` | `runtime.list` and `runtime.describe`: the host APIs this build implements, with no account data. Desktop RC1, RC2 and `card-host` answer them; desktop-v0.1.0-beta.2 refuses the capability. See [HOST-API-V1 §2](HOST-API-V1.md#2-discover-before-offering-an-optional-feature). |
-| `wasm` | The app's own functions: WebAssembly modules in the bundle's `fns/` (at most 8), which the host's `wasm` service runs in a sandbox with a deadline and a memory cap. A function gets only its input and reaches no file, network, clock or other app. An agent tool can run one with `host_method: "wasm.<function>"`. The store says "Run its own sandboxed functions on this device". Desktop RC2 serves it, with limited support, on macOS and Linux, as do standard Home source builds on Android; builds for Windows, iOS and OpenHarmony leave it out, and RC1 did not serve it. A WebAssembly component (OctoSense ADR 0014, which no OctoSense build loads yet) also reaches the clock, random numbers and, with `storage`, the app's storage folder, and needs `requires: ["wasm-components-v1"]`. ADR 0014's phase 3, not merged, lets it reach the network with `net` (any host: `network.hosts` is shown at install, not enforced) and call the host services the app is granted. To write, build and call a function, see [RUST](RUST.md). |
+| `wasm` | Usage disclosure for the app's sandboxed functions. Core modules receive only their input; current source also supports components with the required `wasm-components-v1` ABI, bounded app storage, HTTP and public host-service imports. Family declarations do not authorize these calls: app/account identity, consent, native review, quotas and supported imports still apply. RC2 has core modules on macOS/Linux; [Desktop RC4](../README.md#compatible-shell-download) includes modules and components in its macOS, Windows and Linux packages. Current source includes macOS, Windows, Linux, Android and OpenHarmony (Pulley), excluding iOS; source inclusion is not device acceptance or a released package. See [RUST](RUST.md) for SDK and release boundaries. |
 | `device_calendar` | Since RC2: the calendars configured in the OS. `device_calendar.permission.request` asks the person's consent and the OS permission, `calendars.list` and `calendars.select` pick a calendar and return a handle, `events.list` and `events.get` read (recurrence and attendees read-only), and `events.create`, `events.update` and `events.delete` wait for the person's physical press on a native review. Needs `requires: ["host-api-v1"]`. Served on macOS (EventKit) and Android Home; the OS-calendar interaction is pending acceptance. Separate from `calendar` (Calendar's own service) and `gcalendar` (Google). |
 
 Apart from `runtime`, none of these services runs in `card-host`. There
@@ -132,7 +132,7 @@ engine names, which it refuses. Do not request them.
 | `photos`, `youtube` | The only service for each answers the matching system app's `notify` call: `photos.notify serves os.photos only`. |
 | `llm` | The service manages the device's AI providers and answers only system apps: `llm is for OctoSense's own apps.` For model calls, use `model`. |
 | `news` | The service answers only system apps: `The news service serves system apps only.` |
-| `research`, `crawl` | The system toolbox for an app's agent. The shells grant it only to system apps, and only in builds with the `toolbox-peers` feature. The gate still requires a top-level `research` scope: `requests research but declares no research scope`. Not yet for store apps: [OctoSense#64](https://github.com/OctoSense-org/OctoSense/issues/64). |
+| `research`, `crawl` | Usage disclosures for agent research. With `toolbox-peers`, a script app requests exact shared tools through `agent.tools`, subject to the host's offered-tool admission, agent consent, sharing and research scope. The default store offer does not include toolbox tools; declarations do not bypass it. See [The system toolbox](AI-SERVICES.md#the-system-toolbox). |
 | `prompt` | Not yet: no host reads it, and `host.prompt` does not exist. An app's agent asks the person questions with `ask_user_question`, declared in `agent.tools`. |
 | `ledger.read`, `clipboard` | No host serves them through `host.request` on any release: every call fails. The `clipboard` grant only unlocks a WebCard's write-only clipboard bridge. |
 | `sheet`, `photo`, `word`, `deck`, `cad`, `light`, `sound`, `design`, `film`, `effect`, `vector`, `pdf` | Craft engines behind host services for system apps ([ADR 0013](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0013-craft-engines-as-pinned-services.md)), shipped in desktop RC2 for the system assistant. App Hub `main`'s contract now lists the twelve names as declarable capabilities, but RC2's admission (contract 1.10.0) refuses a manifest that names one, and the services answer no store app on any build. |
@@ -268,13 +268,13 @@ Live provider sign-in is not established by the synthetic backend checks.
 
 ### Limits
 
-- **Builds.** Use [desktop RC2](../README.md#compatible-shell-download) for
+- **Builds.** Use [desktop RC4](../README.md#compatible-shell-download) for
   current GitHub-attested apps; RC1 also installs them. Historical desktop-v0.1.0-beta.2 (macOS, Apple silicon) serves
   `auth`, `github`, `gcalendar` and `gmail`. The beta.1 stores
   (desktop-v0.1.0-beta.1 and home-v0.1.0-beta.1) list such apps but refuse to
-  install them, because their contract does not know `auth`. No released phone
-  build installs them.
-- **Provider registrations.** Public RC packages (RC1, RC2) contain no Google/GitHub
+  install them, because their contract does not know `auth`. The current connected samples declare macOS only; isolated phone
+  fixtures do not establish Android compatibility. Desktop RC4 does not upgrade Home.
+- **Provider registrations.** Public RC packages (RC1, RC2 and RC4) contain no Google/GitHub
   registrations; the host distributor/operator must supply them. Beta.2 reads the GitHub and Google
   registrations only from `<apps root>/.host/oauth/clients.json`, and its
   downloads contain none, so whoever runs beta.2 supplies that file. A build
@@ -298,17 +298,18 @@ Live provider sign-in is not established by the synthetic backend checks.
   ([current delivery boundary](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.md#current-delivery-boundary)).
 - **Not yet:** Google sign-in on Android. `auth.connect` answers
   `Google authorization needs the Android host adapter; desktop login is not supported on this device`.
-- **Backend platform limits:** RC1 and RC2 support the host-run paths
+- **Backend platform limits:** RC4 retains the host-run paths
   [above](#sign-in-to-your-own-backend); Windows/Linux embedded login and
   protected writes remain unavailable, and the Windows/Linux browser sign-in
   that RC2 makes reachable has been exercised only by a Windows fixture.
 
 ## Exact service names
 
-Besides the 27 broad capabilities, `KNOWN_CAPABILITIES` holds 78 exact service names.
-Each is its own consent; a prefix grants nothing.
+Besides the 42 capability families in contract 1.11, `KNOWN_CAPABILITIES` holds 78 exact service names.
+These names describe usage, not separate consent grants. A prefix is not
+a valid declaration. Rinx's imported mini-apps use their own host policy.
 
-| Names | What they grant | Who serves them |
+| Names | Described use | Who serves them |
 | --- | --- | --- |
 | `octos.session.open`, `octos.session.history`, `octos.turn.start`, `octos.turn.interrupt` | The app's own conversation with the device's assistant. See [AI-SERVICES](AI-SERVICES.md#the-assistant-capabilities). | An OctoSense shell that hosts the octos kernel, once the person allows the app's agent. Until then a call answers `Waiting for the person to allow this app's agent (OctoSense asks the first time)`. Rinx, a Matrix client, also serves them to bundles imported into it as mini-apps. |
 | `matrix.*` (45 names, such as `matrix.read_messages`) | One operation each on the person's Matrix account. | Not served by any OctoSense shell. Only the Rinx app serves `matrix.*`, through its own host, to the mini-apps a person imports into it; that is not the App Hub install path. |
@@ -328,8 +329,8 @@ Each is its own consent; a prefix grants nothing.
 | `research` (top level) | The scope of `research` and `crawl`; required with either | – |
 
 The gate clamps a value above its ceiling instead of refusing it, and gives
-an absent value the ceiling. The `grants:` line of `hub check` shows the
-result. A manifest asking for 100 MiB of storage gets:
+an absent value the ceiling. Current `hub check` prints `declarations:`.
+The earlier recorded output below shows a 100 MiB request clamped to 16 MiB:
 
 ```text
 grants: capabilities {"storage"}, hosts {}, storage 16777216 bytes, agent none

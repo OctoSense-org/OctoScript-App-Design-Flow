@@ -10,8 +10,9 @@
 
 ## 当前源码策略与发布边界
 
-能力名称与 `network.hosts` 是使用披露，不是权限开关。配合 App Hub 契约
-1.11.0 准备的兼容宿主和 SDK 更新，让应用即使遗漏对应声明，也能使用已实现
+能力名称与 `network.hosts` 是使用披露，不是权限开关。已发布的
+[桌面 RC4](../README.zh-CN.md#下载兼容-shell) 使用 App Hub 契约 1.11.0，
+让应用即使遗漏对应声明，也能使用已实现
 的公开 API、网络模块和带配额的独立存储。仍应向用户与审核人员准确披露用途。
 修改文档不会改变 RC2 或更早工具的行为；请使用相互匹配的宿主、Hub 和运行时。
 
@@ -60,7 +61,7 @@
 | 能力 | 脚本得到什么 |
 | --- | --- |
 | `net` | `net.http_request` 和 `net.web_socket`，`network.hosts` 用于披露预计目的地。主机必须写成精确的小写纯主机名：不带协议、路径、端口或通配符。 |
-| `images` | 任何公开 `https://` 主机上的图片（`Image{src: http_resource(url)}`），不限于 `network.hosts`，例如 RSS 阅读器的缩略图。`net.http_request` 的访问范围不会因此扩大。 |
+| `images` | 任何公开 `https://` 主机上的图片（`Image{src: http_resource(url)}`），不限于 `network.hosts`，例如 RSS 阅读器的缩略图。两者都使用公开网络路径，主机声明不限制该路径。 |
 | `web` | `WebReader` 可以在系统的网页视图中打开任何公开的 `https://` 网页。网页无法反过来访问应用。可用性取决于[宿主与平台限制](../README.zh-CN.md#下载兼容-shell)。 |
 
 桌面 RC1 和 RC2 在 Windows 上使用 WebView2、在 Linux X11/XWayland 上使用 GTK 3/WebKitGTK 内嵌普通网页。这些引擎不随包附带；原生 Wayland 内嵌及 Windows/Linux 嵌入式后端登录仍不支持（[运行条件](../README.zh-CN.md#下载兼容-shell)）。历史版本中，`card-host` 和 `desktop-v0.1.0-beta.1` 的 Linux、Windows 版本会让 `open` 返回 `true`，但不显示网页，日志中显示 `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`。`desktop-v0.1.0-beta.2` 只有 macOS 版本。
@@ -82,14 +83,14 @@ this app was not granted "mail", which "mail.accounts" needs
 | 能力 | 脚本得到什么 |
 | --- | --- |
 | `mail` | 用户在宿主面板上登录的邮件账户：文件夹、邮件和同步。从 RC2 起，商店应用也能发送：`mail.compose` 和 `mail.compose_status` 保存草稿，`mail.review_send`（或打开同一审阅界面的 `mail.send`）把邮件显示在宿主的原生审阅界面上，由用户亲手点按确认。这个审阅界面只在 macOS 和 Android 上有；在 Windows 和 Linux 上它会以 `Physical Mail send approval is unavailable on this platform` 失败，SMTP 投递也尚未验证。在 RC1 上，商店应用没有发送路径（[OctoSense #409](https://github.com/OctoSense-org/OctoSense/issues/409)）。方法见 [HOST-SERVICES § Mail](HOST-SERVICES.zh-CN.md#完整示例mail)。 |
-| `auth` | 用户在宿主面板上批准的 GitHub 和 Google 连接；从桌面 RC1 起，还能让用户登录应用自己的后端。应用拿到的是连接句柄，绝不是令牌。只申请 `auth` 可以识别用户身份，但读不到用户的任何数据。见[使用已连接账户](#使用已连接账户)。 |
+| `auth` | 用户在宿主面板上批准的 GitHub 和 Google 连接；从桌面 RC1 起，还能让用户登录应用自己的后端。应用拿到的是连接句柄，绝不是令牌。身份类提供商 scope 可以识别用户，但不授予数据访问权限。见[使用已连接账户](#使用已连接账户)。 |
 | `github` | 读取仓库；保存要经用户在宿主面板上批准。需要属于本应用且经过授权的连接。 |
 | `gcalendar` | 读取和同步 Google Calendar；写入要经用户在宿主面板上批准。需要属于本应用且经过授权的连接。 |
 | `gmail` | 读取 Gmail，使用带版本号的回复草稿，经用户在宿主的审阅界面上批准后发送邮件，并为应用 Agent 提供新邮件事件。需要属于本应用且经过授权的连接。 |
 | `glance` | `glance.publish`、`glance.withdraw` 和 `glance.list`：在速览栏上发布卡片，这些卡片只会打开本应用。见 [AI-SERVICES § 发布到速览栏](AI-SERVICES.zh-CN.md#发布到速览栏)。 |
 | `model` | `model.complete` 和 `model.budget`：通过用户自己的 AI 提供商进行一次性模型调用，结果按应用的 JSON Schema 校验，并受每日预算限制。见[一次性调用](AI-SERVICES.zh-CN.md#一次性模型调用model)。OctoSense #368 中的[媒体与嵌入向量](AI-SERVICES.zh-CN.md#媒体与嵌入向量model) 使用同一能力，自[桌面 RC1](../README.zh-CN.md#下载兼容-shell) 起包含；beta.2 和 `card-host` 不提供这些方法。提供商权益与真实调用验证需单独确认。 |
 | `runtime` | `runtime.list` 和 `runtime.describe`：当前构建实现了哪些宿主 API，不含任何账户数据。桌面 RC1、RC2 和 `card-host` 都会响应；desktop-v0.1.0-beta.2 拒绝这项能力。见 [HOST-API-V1 §2](HOST-API-V1.zh-CN.md#2-提供可选功能前先查询)。 |
-| `wasm` | 应用自带的函数：应用包 `fns/` 中的 WebAssembly 模块（最多 8 个），由宿主的 `wasm` 服务在沙盒中运行，有截止时间和内存上限。函数只拿到自己的输入，接触不到文件、网络、时钟或其他应用。Agent 工具可以用 `host_method: "wasm.<function>"` 运行其中一个函数。商店显示的说明是“Run its own sandboxed functions on this device”。桌面 RC2 在 macOS 和 Linux 上提供这项服务，Android 上的标准 Home 源码构建也提供，属于有限支持；Windows、iOS 和 OpenHarmony 的构建不包含它，RC1 也没有提供。WebAssembly 组件（OctoSense ADR 0014，目前还没有任何 OctoSense 构建加载它）还能访问时钟、随机数，有 `storage` 时还能访问应用的存储文件夹，并且需要 `requires: ["wasm-components-v1"]`。尚未合并的 ADR 0014 第 3 阶段还让它在有 `net` 时访问网络（任何主机：`network.hosts` 在安装时展示，不强制），并调用应用获授权的宿主服务。函数的编写、构建和调用方法见 [RUST](RUST.zh-CN.md)。 |
+| `wasm` | 披露应用的沙盒函数用途。核心模块只获得输入；当前源码还支持声明了 `wasm-components-v1` ABI 的组件，可使用带配额的应用存储、HTTP 和公开宿主服务导入。能力族声明不授予调用权限：应用和账户身份、同意、原生审阅、配额和受支持导入仍须检查。RC2 在 macOS/Linux 上提供核心模块；[桌面 RC4](../README.zh-CN.md#下载兼容-shell) 的 macOS、Windows 和 Linux 包包含模块与组件。当前源码包含 macOS、Windows、Linux、Android 和 OpenHarmony（Pulley），不包含 iOS；源码包含不代表设备验收或已发布软件包。SDK 和发布边界见 [RUST](RUST.zh-CN.md)。 |
 | `device_calendar` | 从 RC2 起：操作系统中已配置的日历。`device_calendar.permission.request` 请求用户授权和操作系统权限，`calendars.list` 和 `calendars.select` 选择日历并返回句柄，`events.list` 和 `events.get` 读取日程（重复日程和参与者只读），`events.create`、`events.update` 和 `events.delete` 要等用户在原生审阅界面上亲手点按。需要 `requires: ["host-api-v1"]`。在 macOS（EventKit）和 Android Home 上提供；与系统日历的实际交互仍待验收。与 `calendar`（Calendar 自己的服务）和 `gcalendar`（Google）是不同的服务。 |
 
 除 `runtime` 外，这些服务都不在 `card-host` 中运行，在那里每次调用都返回 `no service answers "<family>" on this device`。请在 OctoSense Shell 中测试它们。
@@ -104,7 +105,7 @@ this app was not granted "mail", which "mail.accounts" needs
 | `photos`、`youtube` | 两者各自只有一个服务，而且只响应对应系统应用的 `notify` 调用：`photos.notify serves os.photos only`。 |
 | `llm` | 该服务管理设备上的 AI 提供商，只响应系统应用（返回 `llm is for OctoSense's own apps.`）。要调用模型，请用 `model`。 |
 | `news` | 该服务只响应系统应用（返回 `The news service serves system apps only.`）。 |
-| `research`、`crawl` | 供应用 Agent 使用的系统工具箱。各 Shell 只把它授予系统应用，而且只在启用了 `toolbox-peers` 构建特性的版本中授予。准入检查仍要求清单带有顶层的 `research` 范围：`requests research but declares no research scope`。商店应用尚不支持：[OctoSense#64](https://github.com/OctoSense-org/OctoSense/issues/64)。 |
+| `research`、`crawl` | 披露 Agent 研究用途。启用 `toolbox-peers` 时，脚本应用通过 `agent.tools` 请求精确共享工具，仍受宿主工具列表准入、Agent 同意、共享和研究范围限制。默认商店列表不提供工具箱工具；使用声明不能绕过该限制。见[系统工具箱](AI-SERVICES.zh-CN.md#系统工具箱)。 |
 | `prompt` | 尚不支持：没有宿主读取它，`host.prompt` 也不存在。应用 Agent 通过 `ask_user_question` 向用户提问，这个工具在 `agent.tools` 中声明。 |
 | `ledger.read`、`clipboard` | 任何发行版都没有宿主通过 `host.request` 提供它们：每次调用都会失败。`clipboard` 授权只解锁 WebCard 自己的只写剪贴板桥接。 |
 | `sheet`、`photo`、`word`、`deck`、`cad`、`light`、`sound`、`design`、`film`、`effect`、`vector`、`pdf` | 面向系统应用的 craft 引擎宿主服务（[ADR 0013](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0013-craft-engines-as-pinned-services.zh-CN.md)），随桌面 RC2 发行，供系统助手使用。App Hub `main` 的契约现已把这十二个名称列为可申请的能力，但 RC2 的准入检查（契约 1.10.0）仍会拒绝写了它们的清单，这些服务在任何构建上都不响应商店应用。 |
@@ -139,7 +140,7 @@ this app was not granted "mail", which "mail.accounts" needs
 
    宿主会弹出自己的登录面板。成功时，`r.data` 就是新建的连接：`handle` 指代这个连接，`subject` 和 `label` 标识对应的账户。提供商 scope 必须由用户授予，能力声明不代替 scope。仅请求身份 scope 时，应用可以识别用户而不读取仓库、邮件或日历：
 
-   | 提供商 | 权限 | 所需能力 |
+   | 提供商 | scope | 用途披露 |
    | --- | --- | --- |
    | `github` | `read:user` | `auth` |
    | `github` | `public_repo`、`repo` | `auth` 和 `github` |
@@ -195,18 +196,18 @@ this app was not granted "mail", which "mail.accounts" needs
 
 ### 限制
 
-- **版本。** 当前带 GitHub 证明的应用使用[桌面 RC2](../README.zh-CN.md#下载兼容-shell)，RC1 也能安装它们。历史 OctoSense desktop-v0.1.0-beta.2（macOS，Apple 芯片）提供 `auth`、`github`、`gcalendar` 和 `gmail`。beta.1 的商店（desktop-v0.1.0-beta.1 和 home-v0.1.0-beta.1）会列出这类应用，但拒绝安装，因为它们的契约不认识 `auth`。目前没有任何已发布的手机版本能安装这类应用。
-- **提供商注册信息。** 公开的 RC 包（RC1、RC2）不附带 Google/GitHub 注册信息，需要宿主发行方或运维人员提供。beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取 GitHub 和 Google 的注册信息，而它的下载包中没有任何注册信息，所以运行 beta.2 的人要自己提供这个文件。自行构建 RC 时，可以改为把分发者的注册信息编译进去；此时 `clients.json` 是可选的运维人员覆盖配置，会替换编译进去的全部注册信息（[OctoSense：配置发布版本](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#配置发行版本维护者)、[运维人员高级覆盖配置](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#高级运维覆盖配置)）。
+- **版本。** 当前带 GitHub 证明的应用使用[桌面 RC4](../README.zh-CN.md#下载兼容-shell)，RC1 也能安装它们。历史 OctoSense desktop-v0.1.0-beta.2（macOS，Apple 芯片）提供 `auth`、`github`、`gcalendar` 和 `gmail`。beta.1 的商店（desktop-v0.1.0-beta.1 和 home-v0.1.0-beta.1）会列出这类应用，但拒绝安装，因为它们的契约不认识 `auth`。当前连接账户示例只声明 macOS；隔离手机测试示例不代表兼容 Android。桌面 RC4 不升级 Home。
+- **提供商注册信息。** 公开的 RC 包（RC1、RC2 和 RC4）不附带 Google/GitHub 注册信息，需要宿主发行方或运维人员提供。beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取 GitHub 和 Google 的注册信息，而它的下载包中没有任何注册信息，所以运行 beta.2 的人要自己提供这个文件。自行构建 RC 时，可以改为把分发者的注册信息编译进去；此时 `clients.json` 是可选的运维人员覆盖配置，会替换编译进去的全部注册信息（[OctoSense：配置发布版本](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#配置发行版本维护者)、[运维人员高级覆盖配置](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#高级运维覆盖配置)）。
 - **日历同步。** 在 desktop-v0.1.0-beta.2 上，`gcalendar.refresh` 同步整个日历，并从最早的日程开始返回；`gcalendar.sync` 返回 Google 的原始日程分页。OctoSense 桌面 RC1 及之后版本只同步从今天之前 30 天到之后 366 天的日程，并展开重复日程，还会以 `window: {time_min, time_max}` 返回这个范围。它会拒绝 `gcalendar.sync`，并返回 `Use gcalendar.refresh for the bounded agenda; raw history synchronization is not exposed`。
 - **未验证**：真实 GitHub 和 Google 服务上的大部分实际使用，包括写入仓库和发送 Gmail。OctoSense `main` 记录了两次 macOS 上的检查：一是通过原生宿主、仅验证身份的 GitHub 和 Google 登录（Google 用的是测试账户）；二是一次手动的 Google Calendar 会话，列出了日历并保存了一个日程（[当前交付边界](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#当前交付边界)）。
 - **尚不支持**：在 Android 上登录 Google。`auth.connect` 返回 `Google authorization needs the Android host adapter; desktop login is not supported on this device`。
-- **后端平台限制**：RC1 和 RC2 支持[上文](#登录应用自己的后端)的宿主登录流程；Windows/Linux 的嵌入式登录和受保护的写操作仍不可用，RC2 使之可达的 Windows/Linux 浏览器登录也只由一个 Windows 测试程序验证过。
+- **后端平台限制**：RC4 保留[上文](#登录应用自己的后端)的宿主登录流程；Windows/Linux 的嵌入式登录和受保护的写操作仍不可用，RC2 使之可达的 Windows/Linux 浏览器登录也只由一个 Windows 测试程序验证过。
 
 ## 精确服务名
 
-除了 27 个大类能力，`KNOWN_CAPABILITIES` 还有 78 个精确服务名。每个名称都是一项单独的授权；前缀不授予任何能力。
+除了契约 1.11 的 42 个能力族，`KNOWN_CAPABILITIES` 还有 78 个精确服务名。这些名称描述用途，不是逐项同意授权；前缀不是有效声明。Rinx 导入的迷你应用使用它自己的宿主策略。
 
-| 名称 | 授予什么 | 由谁提供 |
+| 名称 | 描述的用途 | 由谁提供 |
 | --- | --- | --- |
 | `octos.session.open`、`octos.session.history`、`octos.turn.start`、`octos.turn.interrupt` | 应用与设备助手的专属对话。见 [AI-SERVICES](AI-SERVICES.zh-CN.md#助手相关能力)。 | 运行 octos 内核的 OctoSense Shell，前提是用户已允许该应用的 Agent。在此之前，调用会返回 `Waiting for the person to allow this app's agent (OctoSense asks the first time)`。Matrix 客户端 Rinx 也向以迷你应用形式导入其中的应用包提供这些服务。 |
 | `matrix.*`（45 个名称，例如 `matrix.read_messages`） | 每个名称对应用户 Matrix 账户上的一项操作。 | 任何 OctoSense Shell 都不提供。只有 Rinx 应用通过自己的宿主，向用户导入其中的迷你应用提供 `matrix.*`；这不属于 App Hub 的安装途径。 |
@@ -225,7 +226,7 @@ this app was not granted "mail", which "mail.accounts" needs
 | `agent.max_iterations`、`agent.token_budget` | 应用 Agent 每次请求可用的模型轮数和 token 数 | 8 轮和 200,000 个 token / 相同 |
 | `research`（顶层） | `research` 和 `crawl` 的范围；申请其中任一项时必填 | – |
 
-值超过上限时，准入检查会把它降到上限，而不是拒绝；未填写的值直接取上限。`hub check` 的 `grants:` 行显示最终结果。申请 100 MiB 存储的清单会得到：
+值超过上限时，准入检查会把它降到上限，而不是拒绝；未填写的值直接取上限。当前 `hub check` 使用 `declarations:` 行。下面保留早期记录输出，说明申请 100 MiB 时会限制为 16 MiB：
 
 ```text
 grants: capabilities {"storage"}, hosts {}, storage 16777216 bytes, agent none

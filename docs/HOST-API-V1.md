@@ -5,10 +5,12 @@ English | [简体中文](HOST-API-V1.zh-CN.md)
 Host API v1 lets an app discover and call the Rust services compiled into its
 host, and lets the app's agent call Splash functions that the app declares as
 tools. It loads no native code from the app, and it does not expose every OS
-API. To run your own Rust code, compile it to WebAssembly and request the
-`wasm` capability, which OctoSense `main`'s standard builds serve on macOS,
-Linux and Android; no release serves it yet
-([Run your own Rust code](RUST.md)).
+API. To run your own Rust code, compile it to WebAssembly and disclose `wasm`
+usage. [Desktop RC4](../README.md#compatible-shell-download) includes core
+modules and components on macOS, Windows and Linux; component ABI/import
+checks, app/account isolation and actual consent remain enforced. RC2 already
+shipped core modules on macOS/Linux. Archive acceptance and phone source
+fixtures are separate evidence ([Run your own Rust code](RUST.md)).
 
 App Hub contract 1.6 or later, published on crates.io, defines the
 declarations on this page. Each build treats an app that declares them as
@@ -16,14 +18,16 @@ follows:
 
 | Build | Host API v1 |
 | --- | --- |
-| [RC1 release `933abbcf`](../README.md#compatible-shell-download) | Implements every API on this page, within the platform limits each section gives. |
-| [RC2 release `4ccf8e06`](../README.md#compatible-shell-download) | Implements every API on this page plus the RC2 host OS APIs (`files.*`, `location.sample`, `device_calendar.*`, `mail.compose` and `mail.review_send`, `audio.*`, `microphone.record_*`), within the platform limits in [Host API families](HOST-API-FAMILIES.md). |
+| [RC4 release `9266b008`](../README.md#compatible-shell-download) | Includes the public API declaration policy and shared Wasm components. API/ABI requirements, identity, account scope, actual consent and platform limits still apply. |
+| [RC1 release `933abbcf`](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-rc.1) | Implements every API on this page, within the platform limits each section gives. |
+| [RC2 release `4ccf8e06`](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-rc.2) | Implements every API on this page plus the RC2 host OS APIs (`files.*`, `location.sample`, `device_calendar.*`, `mail.compose` and `mail.review_send`, `audio.*`, `microphone.record_*`), within the platform limits in [Host API families](HOST-API-FAMILIES.md). |
 | `desktop-v0.1.0-beta.2` | Refuses the app: its contract, 1.5, knows none of the `requires` markers below. For what beta.2 serves, see [Host services](HOST-SERVICES.md). |
 | `card-host`, which `tools/octo run` starts | Refuses the app ([Before publishing](#before-publishing)). For an app that requests `runtime` without the markers, it answers `runtime.list` and `runtime.describe`. |
 
-**Unverified:** a physical permission approval, camera capture, the Android
-runtime, Linux and Windows device services, consent to the app's agent, and
-live-model runs.
+**Not covered by this guide's recorded example:** physical permission approval,
+camera capture, Android execution, Linux/Windows device services, consent to
+the app's agent or live-model runs. Later source-fixture and RC4 archive checks
+have separate [acceptance scope](../README.md#compatible-shell-download).
 
 For a runnable example, see OctoSense's
 [Host API Lab](https://github.com/OctoSense-org/OctoSense/blob/main/tools/fixtures/host-api-lab/README.md),
@@ -36,8 +40,8 @@ live model nor consent to the app's agent.
 ## Current source policy and release boundary
 
 Capability names and `network.hosts` are usage disclosures, not permission
-gates. The compatible host/SDK update being prepared with App Hub contract
-1.11.0 makes public APIs, the network module and bounded app storage available
+gates. [Desktop RC4](../README.md#compatible-shell-download), with App Hub
+contract 1.11.0, makes public APIs, the network module and bounded app storage available
 without a matching declaration. Keep declarations accurate for users and
 reviewers. RC2 and older installed tools do not acquire this behavior from a
 documentation update; use matching host, Hub and runtime revisions.
@@ -77,8 +81,8 @@ This **manifest fragment** is not a complete manifest:
 | `backend-api-v1` | Enables the `backend` block ([§4](#4-connect-the-apps-backend)). The host must implement `auth.backend.request@1`. |
 
 Markers (the values in `requires`) and ABI versions grant no capability. The
-usual rules for identity, capabilities, accounts, network access, signing and
-publication still apply. An ABI version describes a method's contract, not an
+rules for identity, account scopes, actual consent, signing and publication
+still apply; capabilities and network destinations are usage disclosures. An ABI version describes a method's contract, not an
 OctoSense release number.
 
 ## 2. Discover before offering an optional feature
@@ -133,8 +137,8 @@ read status, revoke the app's consent and read the location once the app is
 authorized, but it cannot approve consent.
 
 A response reports three states separately: `app_policy_granted` (the
-manifest grants the capability), `app_consent` (the person consented for this
-app) and `os_permission` (the OS grant to the shell). Revoking the app's
+app identity passed admission; the field name is retained for compatibility),
+`app_consent` (the person consented for this app) and `os_permission` (the OS grant to the shell). Revoking the app's
 consent changes neither the shell's OS grant nor other apps' consent.
 
 In an app that declares `host-api-v1`, the same consent check covers
@@ -328,7 +332,7 @@ Test such an app this way:
    [local mirror rehearsal](PUBLISHING.md#4-rehearse-the-store-path-locally)
    is an optional legacy compatibility route for pre-publication tests, not
    verification of GitHub-attested releases. `publisher-github-v1` needs a
-   compatible Store verifier. Use the [RC2 release](../README.md#compatible-shell-download);
+   compatible Store verifier. Use the [RC4 release](../README.md#compatible-shell-download);
    its download status and public sample acceptance are recorded there.
 3. Exercise discovery and the fallback for a missing API, account changes,
    permission denial and revocation, a tool call while the app is closed, and
