@@ -301,14 +301,14 @@ OctoSense 每个 Shell 运行一个 octos Agent 内核，由用户在系统应�
 
 `on_render` 生成的控件与其他控件一样出现在 `/snap` 和 `/d` 中；应用稍后才添加的内容（来自定时器或响应）在绘制后才出现，请轮询 `/snap?q=` 等待它。`card-host` **不**注册任何宿主服务，所以类似 Mail 的应用在其中会得到 `no service answers "mail" on this device`。`card-host` 还会拒绝已封存的 Release：请在创建 Release 之前测试可编辑源码并截图。
 
-**在 Shell 中。** OctoSense 桌面端 Shell 和手机 Home 通过 App Hub 的 Card runner（App Hub `crates/appstore` 中的 `card` 模块）运行应用，而不是 `card-host`；Card runner 执行同一套清单策略。系统应用从 OctoSense 的 `apps/` 打包进 Shell 构建；商店应用从 App Hub 商店根据签名目录安装。想在 App Hub 发布之前在桌面端 Shell 中试用应用的某个 Release：用一次性信任锚把它的 Release pack 发布到本地签名目录，设置 `OCTOSENSE_HUB_CATALOG=legacy`，再使用新的应用数据目录，把 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 指向该镜像；之后 Shell 的商店就能安装并打开该应用（[PUBLISHING §4](docs/PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。**未验证**：用带 GitHub 证明的 Release 进行演练；已记录的结果来自一个用密钥签名的测试应用。
+**在 Shell 中。** OctoSense 桌面端 Shell 和手机 Home 通过 App Hub 的 Card runner（App Hub `crates/appstore` 中的 `card` 模块）运行应用，而不是 `card-host`；Card runner 执行同一套清单策略。系统应用从 OctoSense 的 `apps/` 打包进 Shell 构建；商店应用从 App Hub 商店根据签名目录安装。想在 App Hub 发布之前在桌面端 Shell 中试用应用的某个 Release：用一次性信任锚把它的 Release pack 发布到本地签名目录，设置 `OCTOSENSE_HUB_CATALOG=legacy`，再使用新的应用数据目录，把 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 指向该镜像；之后 Shell 的商店就能安装并打开该应用（[PUBLISHING §4](docs/PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。**这些旧格式命令尚未验证**带 GitHub 证明的 Release；其既有记录来自一个用密钥签名的测试应用。RC4 使用经管理员证明的签名目录单独演练，见[下载证据](#下载兼容-shell)。
 
 **目前在手机上**（[QUICKSTART §9](docs/QUICKSTART.zh-CN.md#9-在-octosense-手机上运行)）：
 
 - 无法把任意应用包侧载到普通 OctoSense 手机上。手机商店读取 App Hub 内置地址上的签名目录，只信任编译进构建的信任锚；`OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` 是环境变量，Android 启动器不会设置。在设备上从本地签名目录安装不受支持，也未验证。
 - 最接近的路径是上面的桌面端演练。
 - Android 版 `card-host` 不编译远程控制桥，所以手机测试不使用 `tools/octo`。
-- Hub 准入后，只有兼容宿主才能安装应用。已发布手机版本缺少 `auth` 和 `publisher-github-v1`；目录可见不代表运行时兼容。
+- Hub 准入后，宿主仍须支持应用所需的 API/ABI 及声明平台。上述连接账户示例只声明 macOS；隔离手机测试示例不代表这些应用兼容 Android。桌面 RC4 不升级 Home。
 
 ## 无头测试：同时测多个应用，不占屏幕
 

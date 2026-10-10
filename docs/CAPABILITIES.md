@@ -114,7 +114,7 @@ a family usage declaration does not cause `this app was not granted`.
 | `glance` | `glance.publish`, `glance.withdraw` and `glance.list`: cards on the Glance screen that open only this app. See [AI-SERVICES § Publishing to the Glance screen](AI-SERVICES.md#publishing-to-the-glance-screen). |
 | `model` | `model.complete` and `model.budget`: one-shot model calls on the person's own AI providers, checked against the app's JSON Schema, within a daily budget. See [one-shot calls](AI-SERVICES.md#one-shot-model-calls-model). [Media and embeddings](AI-SERVICES.md#media-and-embeddings-model) use the same capability in OctoSense #368, included since [desktop RC1](../README.md#compatible-shell-download); beta.2 and `card-host` do not serve them. Provider entitlement and live validation are separate. |
 | `runtime` | `runtime.list` and `runtime.describe`: the host APIs this build implements, with no account data. Desktop RC1, RC2 and `card-host` answer them; desktop-v0.1.0-beta.2 refuses the capability. See [HOST-API-V1 §2](HOST-API-V1.md#2-discover-before-offering-an-optional-feature). |
-| `wasm` | Usage disclosure for the app's sandboxed functions. Core modules receive only their input; current source also supports components with the required `wasm-components-v1` ABI, bounded app storage, HTTP and public host-service imports. Family declarations do not authorize these calls: app/account identity, consent, native review, quotas and supported imports still apply. RC2 has core modules on macOS/Linux. Current source includes macOS, Windows, Linux, Android and OpenHarmony (Pulley), excluding iOS; source inclusion is not device acceptance or a released package. See [RUST](RUST.md) for SDK and release boundaries. |
+| `wasm` | Usage disclosure for the app's sandboxed functions. Core modules receive only their input; current source also supports components with the required `wasm-components-v1` ABI, bounded app storage, HTTP and public host-service imports. Family declarations do not authorize these calls: app/account identity, consent, native review, quotas and supported imports still apply. RC2 has core modules on macOS/Linux; [Desktop RC4](../README.md#compatible-shell-download) includes modules and components in its macOS, Windows and Linux packages. Current source includes macOS, Windows, Linux, Android and OpenHarmony (Pulley), excluding iOS; source inclusion is not device acceptance or a released package. See [RUST](RUST.md) for SDK and release boundaries. |
 | `device_calendar` | Since RC2: the calendars configured in the OS. `device_calendar.permission.request` asks the person's consent and the OS permission, `calendars.list` and `calendars.select` pick a calendar and return a handle, `events.list` and `events.get` read (recurrence and attendees read-only), and `events.create`, `events.update` and `events.delete` wait for the person's physical press on a native review. Needs `requires: ["host-api-v1"]`. Served on macOS (EventKit) and Android Home; the OS-calendar interaction is pending acceptance. Separate from `calendar` (Calendar's own service) and `gcalendar` (Google). |
 
 Apart from `runtime`, none of these services runs in `card-host`. There
@@ -268,13 +268,13 @@ Live provider sign-in is not established by the synthetic backend checks.
 
 ### Limits
 
-- **Builds.** Use [desktop RC2](../README.md#compatible-shell-download) for
+- **Builds.** Use [desktop RC4](../README.md#compatible-shell-download) for
   current GitHub-attested apps; RC1 also installs them. Historical desktop-v0.1.0-beta.2 (macOS, Apple silicon) serves
   `auth`, `github`, `gcalendar` and `gmail`. The beta.1 stores
   (desktop-v0.1.0-beta.1 and home-v0.1.0-beta.1) list such apps but refuse to
-  install them, because their contract does not know `auth`. No released phone
-  build installs them.
-- **Provider registrations.** Public RC packages (RC1, RC2) contain no Google/GitHub
+  install them, because their contract does not know `auth`. The current connected samples declare macOS only; isolated phone
+  fixtures do not establish Android compatibility. Desktop RC4 does not upgrade Home.
+- **Provider registrations.** Public RC packages (RC1, RC2 and RC4) contain no Google/GitHub
   registrations; the host distributor/operator must supply them. Beta.2 reads the GitHub and Google
   registrations only from `<apps root>/.host/oauth/clients.json`, and its
   downloads contain none, so whoever runs beta.2 supplies that file. A build
@@ -298,14 +298,14 @@ Live provider sign-in is not established by the synthetic backend checks.
   ([current delivery boundary](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.md#current-delivery-boundary)).
 - **Not yet:** Google sign-in on Android. `auth.connect` answers
   `Google authorization needs the Android host adapter; desktop login is not supported on this device`.
-- **Backend platform limits:** RC1 and RC2 support the host-run paths
+- **Backend platform limits:** RC4 retains the host-run paths
   [above](#sign-in-to-your-own-backend); Windows/Linux embedded login and
   protected writes remain unavailable, and the Windows/Linux browser sign-in
   that RC2 makes reachable has been exercised only by a Windows fixture.
 
 ## Exact service names
 
-Besides the 27 broad capabilities, `KNOWN_CAPABILITIES` holds 78 exact service names.
+Besides the 42 capability families in contract 1.11, `KNOWN_CAPABILITIES` holds 78 exact service names.
 These names describe usage, not separate consent grants. A prefix is not
 a valid declaration. Rinx's imported mini-apps use their own host policy.
 

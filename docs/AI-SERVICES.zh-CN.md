@@ -4,7 +4,7 @@
 
 未注明中文版的链接指向英文文档。
 
-用本仓库开发的脚本应用，可以通过三种方式在 OctoSense 设备上使用 AI：宿主模型调用（`model`）、与设备助手对话（`octos.*`），以及在应用包中声明一个应用自己的 Agent。下文区分在指定宿主和平台上**可用**与**尚未支持**。[桌面 RC1 和 RC2](../README.zh-CN.md#下载兼容-shell)包含下文指出的源码功能；方法已实现不代表提供商已配置、账户有相应权益或真实执行已经验证。
+用本仓库开发的脚本应用，可以通过三种方式在 OctoSense 设备上使用 AI：宿主模型调用（`model`）、与设备助手对话（`octos.*`），以及在应用包中声明一个应用自己的 Agent。下文区分在指定宿主和平台上**可用**与**尚未支持**。[桌面 RC4](../README.zh-CN.md#下载兼容-shell) 包含当前 API 策略；下文 RC1/RC2 的观察记录保持为历史证据。方法已实现不代表提供商已配置、账户有相应权益或真实执行已经验证。
 
 标为 **✓ 已运行**的命令，是在 macOS（Apple 芯片）上用 App Hub `main` 构建的 `hub` 和 `card-host` 运行的。其余内容读自代码，没有在 OctoSense Shell 中运行过。Shell 如何实现这些功能，见 OctoSense 的 [`docs/ai-services.zh-CN.md`](https://github.com/OctoSense-org/OctoSense/blob/main/docs/ai-services.zh-CN.md) 和 [`docs/architecture.zh-CN.md`](https://github.com/OctoSense-org/OctoSense/blob/main/docs/architecture.zh-CN.md)。
 

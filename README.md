@@ -546,8 +546,9 @@ trust anchor, then set `OCTOSENSE_HUB_CATALOG=legacy` and point
 `OCTOSENSE_HUB` / `OCTOSENSE_HUB_ANCHOR` at that mirror using a fresh
 app-data directory. The shell's store then installs and opens the app
 ([PUBLISHING §4](docs/PUBLISHING.md#4-rehearse-the-store-path-locally)).
-**Unverified:** a rehearsal with a GitHub-attested release; the recorded run
-used a key-signed test app.
+**Unverified for these legacy commands:** a GitHub-attested release; their
+recorded run used a key-signed test app. RC4's separate administrator-attested
+catalog rehearsal is described in the [download evidence](#compatible-shell-download).
 
 **On a phone, today** ([QUICKSTART §9](docs/QUICKSTART.md#9-run-it-on-an-octosense-phone)):
 
@@ -559,9 +560,10 @@ used a key-signed test app.
 - The closest you can get is the desktop rehearsal above.
 - `card-host`'s remote bridge is compiled out on Android, so phone testing
   does not use `tools/octo`.
-- After Hub admission, only a compatible host can install the app. Released
-  phone builds lack both `auth` and `publisher-github-v1`; catalog visibility
-  does not establish runtime compatibility.
+- After Hub admission, the host must support the app's required API/ABI and
+  declared platform. The connected-account samples above declare macOS only;
+  isolated phone fixtures do not establish their Android compatibility.
+  Desktop RC4 does not upgrade Home.
 
 ## Headless testing: many apps, no screen
 

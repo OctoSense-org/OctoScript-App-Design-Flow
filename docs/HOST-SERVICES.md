@@ -25,8 +25,8 @@ has none of them.
 ## Current source policy and release boundary
 
 Capability names and `network.hosts` are usage disclosures, not permission
-gates. The compatible host/SDK update being prepared with App Hub contract
-1.11.0 makes public APIs, the network module and bounded app storage available
+gates. [Desktop RC4](../README.md#compatible-shell-download), with App Hub
+contract 1.11.0, makes public APIs, the network module and bounded app storage available
 without a matching declaration. Keep declarations accurate for users and
 reviewers. RC2 and older installed tools do not acquire this behavior from a
 documentation update; use matching host, Hub and runtime revisions.
@@ -94,7 +94,7 @@ Some services work only after setup, and not every build has them:
 
 | Service | Needs | Builds |
 | --- | --- | --- |
-| `auth`, `github`, `gcalendar`, `gmail` | GitHub and Google registrations. Beta.2 reads them only from `<apps root>/.host/oauth/clients.json`, which its operator supplies; RC1 and later builds can compile them in, but the public RC1 packages include none ([CAPABILITIES § Limits](CAPABILITIES.md#limits)). | RC1 and later builds (on Windows and Linux they cannot approve protected writes), and the desktop-v0.1.0-beta.2 release (macOS, Apple silicon). Not yet: Google sign-in on Android. |
+| `auth`, `github`, `gcalendar`, `gmail` | GitHub and Google registrations. Beta.2 reads them only from `<apps root>/.host/oauth/clients.json`, which its operator supplies; RC1 and later builds can compile them in, but the public RC packages, including RC4, include none ([CAPABILITIES § Limits](CAPABILITIES.md#limits)). | RC1 and later builds (on Windows and Linux they cannot approve protected writes), and the desktop-v0.1.0-beta.2 release (macOS, Apple silicon). Not yet: Google sign-in on Android. |
 | `auth` with the `backend` provider | The app's backend registration: the `backend` block of the admitted signed bundle ([backend guide](HOST-API-V1.md#4-connect-the-apps-backend)), or, when the bundle declares none, the operator's `<apps root>/.host/oauth/backends.json`. | RC1 and later builds; beta.2 has no backend sign-in. The login uses a host WebView on macOS and on Android 9 or later, and the system browser on Windows and Linux, reachable since RC2's native link openers (a Windows fixture completed a sign-in; Linux untested). Not on iOS. |
 | `octos`, `model` | An AI provider the person adds in the AI providers app. | Every standard build; `octos` only where the shell hosts the kernel. |
 | `mail` | An account the person signs in to on Mail's sheet. | Every standard build. |
@@ -206,8 +206,9 @@ An app with an account system of its own can use the host's backend sign-in.
 The bundle declares its backend in the manifest's `backend` block, or the
 host's operator registers it
 ([CAPABILITIES § Sign in to your own backend](CAPABILITIES.md#sign-in-to-your-own-backend)).
-No release has this yet
-([App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)).
+[Desktop RC4](../README.md#compatible-shell-download) includes it within
+the backend platform limits above; release inclusion does not verify a real
+provider or your backend ([App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)).
 
 ## Mail, the worked example
 

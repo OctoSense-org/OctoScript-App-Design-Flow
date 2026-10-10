@@ -90,7 +90,7 @@ this app was not granted "mail", which "mail.accounts" needs
 | `glance` | `glance.publish`、`glance.withdraw` 和 `glance.list`：在速览栏上发布卡片，这些卡片只会打开本应用。见 [AI-SERVICES § 发布到速览栏](AI-SERVICES.zh-CN.md#发布到速览栏)。 |
 | `model` | `model.complete` 和 `model.budget`：通过用户自己的 AI 提供商进行一次性模型调用，结果按应用的 JSON Schema 校验，并受每日预算限制。见[一次性调用](AI-SERVICES.zh-CN.md#一次性模型调用model)。OctoSense #368 中的[媒体与嵌入向量](AI-SERVICES.zh-CN.md#媒体与嵌入向量model) 使用同一能力，自[桌面 RC1](../README.zh-CN.md#下载兼容-shell) 起包含；beta.2 和 `card-host` 不提供这些方法。提供商权益与真实调用验证需单独确认。 |
 | `runtime` | `runtime.list` 和 `runtime.describe`：当前构建实现了哪些宿主 API，不含任何账户数据。桌面 RC1、RC2 和 `card-host` 都会响应；desktop-v0.1.0-beta.2 拒绝这项能力。见 [HOST-API-V1 §2](HOST-API-V1.zh-CN.md#2-提供可选功能前先查询)。 |
-| `wasm` | 披露应用的沙盒函数用途。核心模块只获得输入；当前源码还支持声明了 `wasm-components-v1` ABI 的组件，可使用带配额的应用存储、HTTP 和公开宿主服务导入。能力族声明不授予调用权限：应用和账户身份、同意、原生审阅、配额和受支持导入仍须检查。RC2 在 macOS/Linux 上提供核心模块。当前源码包含 macOS、Windows、Linux、Android 和 OpenHarmony（Pulley），不包含 iOS；源码包含不代表设备验收或已发布软件包。SDK 和发布边界见 [RUST](RUST.zh-CN.md)。 |
+| `wasm` | 披露应用的沙盒函数用途。核心模块只获得输入；当前源码还支持声明了 `wasm-components-v1` ABI 的组件，可使用带配额的应用存储、HTTP 和公开宿主服务导入。能力族声明不授予调用权限：应用和账户身份、同意、原生审阅、配额和受支持导入仍须检查。RC2 在 macOS/Linux 上提供核心模块；[桌面 RC4](../README.zh-CN.md#下载兼容-shell) 的 macOS、Windows 和 Linux 包包含模块与组件。当前源码包含 macOS、Windows、Linux、Android 和 OpenHarmony（Pulley），不包含 iOS；源码包含不代表设备验收或已发布软件包。SDK 和发布边界见 [RUST](RUST.zh-CN.md)。 |
 | `device_calendar` | 从 RC2 起：操作系统中已配置的日历。`device_calendar.permission.request` 请求用户授权和操作系统权限，`calendars.list` 和 `calendars.select` 选择日历并返回句柄，`events.list` 和 `events.get` 读取日程（重复日程和参与者只读），`events.create`、`events.update` 和 `events.delete` 要等用户在原生审阅界面上亲手点按。需要 `requires: ["host-api-v1"]`。在 macOS（EventKit）和 Android Home 上提供；与系统日历的实际交互仍待验收。与 `calendar`（Calendar 自己的服务）和 `gcalendar`（Google）是不同的服务。 |
 
 除 `runtime` 外，这些服务都不在 `card-host` 中运行，在那里每次调用都返回 `no service answers "<family>" on this device`。请在 OctoSense Shell 中测试它们。
@@ -140,7 +140,7 @@ this app was not granted "mail", which "mail.accounts" needs
 
    宿主会弹出自己的登录面板。成功时，`r.data` 就是新建的连接：`handle` 指代这个连接，`subject` 和 `label` 标识对应的账户。提供商 scope 必须由用户授予，能力声明不代替 scope。仅请求身份 scope 时，应用可以识别用户而不读取仓库、邮件或日历：
 
-   | 提供商 | 权限 | 所需能力 |
+   | 提供商 | scope | 用途披露 |
    | --- | --- | --- |
    | `github` | `read:user` | `auth` |
    | `github` | `public_repo`、`repo` | `auth` 和 `github` |
@@ -196,16 +196,16 @@ this app was not granted "mail", which "mail.accounts" needs
 
 ### 限制
 
-- **版本。** 当前带 GitHub 证明的应用使用[桌面 RC2](../README.zh-CN.md#下载兼容-shell)，RC1 也能安装它们。历史 OctoSense desktop-v0.1.0-beta.2（macOS，Apple 芯片）提供 `auth`、`github`、`gcalendar` 和 `gmail`。beta.1 的商店（desktop-v0.1.0-beta.1 和 home-v0.1.0-beta.1）会列出这类应用，但拒绝安装，因为它们的契约不认识 `auth`。目前没有任何已发布的手机版本能安装这类应用。
-- **提供商注册信息。** 公开的 RC 包（RC1、RC2）不附带 Google/GitHub 注册信息，需要宿主发行方或运维人员提供。beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取 GitHub 和 Google 的注册信息，而它的下载包中没有任何注册信息，所以运行 beta.2 的人要自己提供这个文件。自行构建 RC 时，可以改为把分发者的注册信息编译进去；此时 `clients.json` 是可选的运维人员覆盖配置，会替换编译进去的全部注册信息（[OctoSense：配置发布版本](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#配置发行版本维护者)、[运维人员高级覆盖配置](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#高级运维覆盖配置)）。
+- **版本。** 当前带 GitHub 证明的应用使用[桌面 RC4](../README.zh-CN.md#下载兼容-shell)，RC1 也能安装它们。历史 OctoSense desktop-v0.1.0-beta.2（macOS，Apple 芯片）提供 `auth`、`github`、`gcalendar` 和 `gmail`。beta.1 的商店（desktop-v0.1.0-beta.1 和 home-v0.1.0-beta.1）会列出这类应用，但拒绝安装，因为它们的契约不认识 `auth`。当前连接账户示例只声明 macOS；隔离手机测试示例不代表兼容 Android。桌面 RC4 不升级 Home。
+- **提供商注册信息。** 公开的 RC 包（RC1、RC2 和 RC4）不附带 Google/GitHub 注册信息，需要宿主发行方或运维人员提供。beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取 GitHub 和 Google 的注册信息，而它的下载包中没有任何注册信息，所以运行 beta.2 的人要自己提供这个文件。自行构建 RC 时，可以改为把分发者的注册信息编译进去；此时 `clients.json` 是可选的运维人员覆盖配置，会替换编译进去的全部注册信息（[OctoSense：配置发布版本](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#配置发行版本维护者)、[运维人员高级覆盖配置](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#高级运维覆盖配置)）。
 - **日历同步。** 在 desktop-v0.1.0-beta.2 上，`gcalendar.refresh` 同步整个日历，并从最早的日程开始返回；`gcalendar.sync` 返回 Google 的原始日程分页。OctoSense 桌面 RC1 及之后版本只同步从今天之前 30 天到之后 366 天的日程，并展开重复日程，还会以 `window: {time_min, time_max}` 返回这个范围。它会拒绝 `gcalendar.sync`，并返回 `Use gcalendar.refresh for the bounded agenda; raw history synchronization is not exposed`。
 - **未验证**：真实 GitHub 和 Google 服务上的大部分实际使用，包括写入仓库和发送 Gmail。OctoSense `main` 记录了两次 macOS 上的检查：一是通过原生宿主、仅验证身份的 GitHub 和 Google 登录（Google 用的是测试账户）；二是一次手动的 Google Calendar 会话，列出了日历并保存了一个日程（[当前交付边界](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#当前交付边界)）。
 - **尚不支持**：在 Android 上登录 Google。`auth.connect` 返回 `Google authorization needs the Android host adapter; desktop login is not supported on this device`。
-- **后端平台限制**：RC1 和 RC2 支持[上文](#登录应用自己的后端)的宿主登录流程；Windows/Linux 的嵌入式登录和受保护的写操作仍不可用，RC2 使之可达的 Windows/Linux 浏览器登录也只由一个 Windows 测试程序验证过。
+- **后端平台限制**：RC4 保留[上文](#登录应用自己的后端)的宿主登录流程；Windows/Linux 的嵌入式登录和受保护的写操作仍不可用，RC2 使之可达的 Windows/Linux 浏览器登录也只由一个 Windows 测试程序验证过。
 
 ## 精确服务名
 
-除了 27 个大类能力，`KNOWN_CAPABILITIES` 还有 78 个精确服务名。这些名称描述用途，不是逐项同意授权；前缀不是有效声明。Rinx 导入的迷你应用使用它自己的宿主策略。
+除了契约 1.11 的 42 个能力族，`KNOWN_CAPABILITIES` 还有 78 个精确服务名。这些名称描述用途，不是逐项同意授权；前缀不是有效声明。Rinx 导入的迷你应用使用它自己的宿主策略。
 
 | 名称 | 描述的用途 | 由谁提供 |
 | --- | --- | --- |

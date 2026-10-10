@@ -12,8 +12,9 @@
 
 ## 当前源码策略与发布边界
 
-能力名称与 `network.hosts` 是使用披露，不是权限开关。配合 App Hub 契约
-1.11.0 准备的兼容宿主和 SDK 更新，让应用即使遗漏对应声明，也能使用已实现
+能力名称与 `network.hosts` 是使用披露，不是权限开关。已发布的
+[桌面 RC4](../README.zh-CN.md#下载兼容-shell) 使用 App Hub 契约 1.11.0，
+让应用即使遗漏对应声明，也能使用已实现
 的公开 API、网络模块和带配额的独立存储。仍应向用户与审核人员准确披露用途。
 修改文档不会改变 RC2 或更早工具的行为；请使用相互匹配的宿主、Hub 和运行时。
 
@@ -59,7 +60,7 @@ OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home�
 
 | 服务 | 前提 | 可用的构建 |
 | --- | --- | --- |
-| `auth`、`github`、`gcalendar`、`gmail` | GitHub 和 Google 的提供商注册信息。beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取注册信息，这个文件由宿主的运维人员提供；RC1 及之后的构建可以把注册信息编译进去，但公开的 RC1 安装包不含任何注册信息（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。 | RC1 及之后的构建（Windows 和 Linux 无法批准受保护的写操作），以及 desktop-v0.1.0-beta.2 发行版（macOS，Apple 芯片）。尚不支持：在 Android 上登录 Google。 |
+| `auth`、`github`、`gcalendar`、`gmail` | GitHub 和 Google 的提供商注册信息。beta.2 只从 `<apps root>/.host/oauth/clients.json` 读取注册信息，这个文件由宿主的运维人员提供；RC1 及之后的构建可以把注册信息编译进去，但公开的 RC 安装包（包括 RC4）不含任何注册信息（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。 | RC1 及之后的构建（Windows 和 Linux 无法批准受保护的写操作），以及 desktop-v0.1.0-beta.2 发行版（macOS，Apple 芯片）。尚不支持：在 Android 上登录 Google。 |
 | 使用 `backend` 提供商的 `auth` | 应用后端的注册信息：来自已准入签名应用包的 `backend` 块（[后端指南](HOST-API-V1.zh-CN.md#4-连接应用自己的后端)）；应用包没有声明时，来自运维人员配置的 `<apps root>/.host/oauth/backends.json`。 | RC1 及之后的构建；beta.2 没有后端登录。macOS 和 Android 9 及以上版本使用宿主的 WebView 登录，Windows 和 Linux 使用系统浏览器，RC2 补上原生链接打开方式后才可用（Windows 测试程序完成了登录，Linux 未测试）。iOS 不支持。 |
 | `octos`、`model` | 用户在 AI providers 应用中添加的 AI 提供商。 | 所有标准构建；`octos` 仅限托管内核的 Shell。 |
 | `mail` | 用户在 Mail 的面板上登录的账户。 | 所有标准构建。 |
@@ -115,7 +116,7 @@ Mail 在 macOS 和 iOS 上把密码存进钥匙串。在 Android 和其他平台
 
 应用的 Agent 同样接触不到这些密钥：它在应用的账户文件夹中工作（[AI-SERVICES](AI-SERVICES.zh-CN.md#agent-在哪里工作storage)）。
 
-如果应用需要某个服务上的账户，它需要的是对接该服务的宿主服务，而不是登录表单。GitHub 和 Google 已有现成的宿主服务（[CAPABILITIES § 使用已连接账户](CAPABILITIES.zh-CN.md#使用已连接账户)）。有自己账户体系的应用可以使用宿主的后端登录。后端可以在清单的 `backend` 块中声明，也可以由宿主的运维人员注册（[CAPABILITIES § 登录应用自己的后端](CAPABILITIES.zh-CN.md#登录应用自己的后端)）。目前还没有发布版本包含这项功能（[App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)）。
+如果应用需要某个服务上的账户，它需要的是对接该服务的宿主服务，而不是登录表单。GitHub 和 Google 已有现成的宿主服务（[CAPABILITIES § 使用已连接账户](CAPABILITIES.zh-CN.md#使用已连接账户)）。有自己账户体系的应用可以使用宿主的后端登录。后端可以在清单的 `backend` 块中声明，也可以由宿主的运维人员注册（[CAPABILITIES § 登录应用自己的后端](CAPABILITIES.zh-CN.md#登录应用自己的后端)）。[桌面 RC4](../README.zh-CN.md#下载兼容-shell) 已包含这项功能，仍受上文后端平台限制；发行包含不代表真实提供商或你的后端已经验证（[App Hub#16](https://github.com/OctoSense-org/OctoSense-App-Hub/issues/16)）。
 
 ## 完整示例：Mail
 

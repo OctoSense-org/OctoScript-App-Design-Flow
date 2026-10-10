@@ -154,7 +154,7 @@ no --reviewer given; the packet holds 7 questions for one
 
 每个应用都用自己的公开 GitHub 仓库和 GitHub Actions 证明来证实发布者身份：App Hub 只接受带 GitHub 证明的 Release。你无需生成 `publisher.key`，也无需在仓库中添加签名 secret。用自己的账户创建 Release 之前，请审阅发布者信息和工作流。
 
-**可用状态**：这条路径需要应用契约 1.8.0 和 `publisher-github-v1`。两个真实的 GitHub Release 通过了证明验证，也通过了原生商店的安装、启动校验、更新、撤回和篡改拒绝检查（[验收记录](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/reviews/github-publisher-v1/acceptance.json)）。这些商店检查使用的是隔离的测试签名目录；测试应用既没有向 Hub 提交，也没有获得准入。[OctoSense 桌面版 0.1.0-rc.1（RC1）和 0.1.0-rc.2（RC2）](../README.zh-CN.md#下载兼容-shell)是兼容宿主。macOS 公开示例的安装/更新验收和隔离手机测试应用的验收另有发行证据；这些都不能证明你的应用体验或提供商效果。旧宿主会拒绝这个要求。`publisher-toolchain.json` 必须指定一个经过评审、不可变的 App Hub commit；安装命令会拒绝缺失或浮动的版本。
+**可用状态**：这条路径需要应用契约 1.8.0 和 `publisher-github-v1`。两个真实的 GitHub Release 通过了证明验证，也通过了原生商店的安装、启动校验、更新、撤回和篡改拒绝检查（[验收记录](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/reviews/github-publisher-v1/acceptance.json)）。这些商店检查使用的是隔离的测试签名目录；测试应用既没有向 Hub 提交，也没有获得准入。[桌面 RC4](../README.zh-CN.md#下载兼容-shell) 是当前下载；RC1 和 RC2 也支持这一发布者身份。macOS 公开示例的安装/更新验收和隔离手机测试应用的验收另有发行证据；这些都不能证明你的应用体验或提供商效果。旧宿主会拒绝这个要求。`publisher-toolchain.json` 必须指定一个经过评审、不可变的 App Hub commit；安装命令会拒绝缺失或浮动的版本。
 
 对已有的可编辑应用目录，在 App Flow 仓库中运行以下命令安装工作流：
 
@@ -196,7 +196,7 @@ CI 会构建[固定版本的发布工具](../tools/publisher-toolchain.json)，�
 
 ### 3.9 App Hub 接下来做什么
 
-审核人员验证发布者证明和应用包，运行准入检查，并在 issue 中反馈拒绝原因。随后由 App Hub 管理员批准确切的版本，再由 Hub 把它发布到签名目录；之后，[RC2](../README.zh-CN.md#下载兼容-shell) 这样的兼容宿主就能安装它。需要修改时，用新版本和新 tag 生成 Release，并按 §3.8 的做法发到 issue 中；绝不要替换旧字节。
+审核人员验证发布者证明和应用包，运行准入检查，并在 issue 中反馈拒绝原因。随后由 App Hub 管理员批准确切的版本，再由 Hub 把它发布到签名目录；之后，[RC4](../README.zh-CN.md#下载兼容-shell) 这样的兼容宿主就能安装它。需要修改时，用新版本和新 tag 生成 Release，并按 §3.8 的做法发到 issue 中；绝不要替换旧字节。
 
 ## 4. 在本地演练商店流程
 
@@ -204,7 +204,7 @@ CI 会构建[固定版本的发布工具](../tools/publisher-toolchain.json)，�
 
 商店会拒绝未签名的应用，所以要演练的是 tag 工作流生成的 Release pack（§3.7），而不是可编辑源码。本地签名目录使用旧格式：请设置 `OCTOSENSE_HUB_CATALOG=legacy`，并使用新的应用数据目录，因为已经缓存 v2 签名目录的应用库会拒绝降级到旧格式。
 
-**未验证**：用带 GitHub 证明的 Release 进行演练。下面的命令针对带证明的 Release 做过源码审阅；记录的结果来自一个用密钥签名的测试应用和较早版本的 App Hub。
+**这些旧格式目录命令尚未验证**带 GitHub 证明的 Release。RC4 使用经管理员证明的签名目录单独演练，见[下载证据](../README.zh-CN.md#下载兼容-shell)。下面的命令针对带证明的 Release 做过源码审阅；记录的结果来自一个用密钥签名的测试应用和较早版本的 App Hub。
 
 ### 4.1 发布到本地镜像
 
@@ -251,7 +251,7 @@ OCTOSENSE_HUB_CATALOG=legacy OCTOSENSE_HUB="$M" OCTOSENSE_HUB_ANCHOR="$ANCHOR" \
 已在 macOS 上用上文的测试应用 Test Notes（用密钥签名）验证：应用的交互、存储以及向已声明主机发出的请求，表现都与在 `card-host` 中一致。
 
 - 用 `<text>` 绘制的 `icon.svg` 在商店中显示为空白图块。请像模板那样，用形状和路径绘制图标。
-- 声明了 `auth` 的应用需要从 OctoSense `main` 构建的 Shell 或 [RC 发行版](../README.zh-CN.md#下载兼容-shell)；当前带 GitHub 证明的应用使用 RC2。beta.1 的商店会拒绝这个能力。你在这里构建的 Shell 没有提供商注册信息，要由你自己提供，而且注册信息绝不放进应用。提供方式有两种：在 `cargo` 编译 Shell 时设置构建变量，例如 `OCTOSENSE_GITHUB_CLIENT_ID`（[配置发行版本](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#配置发行版本维护者)）；或者写入 `$OCTOSENSE_APP_DATA/.host/oauth/clients.json`（这里是 `$APP/build/desktop-apps/.host/oauth/clients.json`），它会取代编译进去的那组注册信息（[高级运维覆盖配置](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#高级运维覆盖配置)）。接入真实提供商后的实际使用大多未验证（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。
+- 声明了 `auth` 的应用需要从 OctoSense `main` 构建的 Shell 或 [RC 发行版](../README.zh-CN.md#下载兼容-shell)；当前带 GitHub 证明的应用使用 RC4。beta.1 的商店会拒绝这个能力。你在这里构建的 Shell 没有提供商注册信息，要由你自己提供，而且注册信息绝不放进应用。提供方式有两种：在 `cargo` 编译 Shell 时设置构建变量，例如 `OCTOSENSE_GITHUB_CLIENT_ID`（[配置发行版本](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#配置发行版本维护者)）；或者写入 `$OCTOSENSE_APP_DATA/.host/oauth/clients.json`（这里是 `$APP/build/desktop-apps/.host/oauth/clients.json`），它会取代编译进去的那组注册信息（[高级运维覆盖配置](https://github.com/OctoSense-org/OctoSense/blob/main/crates/oauth-service/README.zh-CN.md#高级运维覆盖配置)）。接入真实提供商后的实际使用大多未验证（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。
 - 这只是用你自己的信任锚做的演练。标准构建只信任 App Hub 的信任锚。
 
 ### 4.3 可选：用独立商店安装

@@ -276,11 +276,11 @@ fn tip_20_percent() {
 
 在 `network.hosts` 中披露预计的 HTTPS 目的地。配套 SDK 不会因为 HTTPS 主机未列出而拒绝访问；每个已准入应用都有网络模块和带配额的私有存储，即使未声明 `net` 或 `storage`。普通 `http://`、`file://` 和不安全的包内路径仍会被准入检查拒绝。旧工具保留旧行为。[CAPABILITIES](CAPABILITIES.zh-CN.md) 说明使用披露和实际授权边界；[HOST-SERVICES](HOST-SERVICES.zh-CN.md) 介绍 Mail 等服务。
 
-**已连接账户。** 要使用用户的 GitHub 或 Google 账户，像参考应用那样声明 `auth`、对应提供商的能力族（`github`、`gmail` 或 `gcalendar`）和 `storage.accounts: true`；如果只需识别用户身份、不读取其数据，只声明 `auth` 就够了。登录由宿主完成，宿主给应用的是连接句柄，绝不是令牌。这些服务需要兼容的 OctoSense Shell。当前公开应用使用 [RC2 发行版](../README.zh-CN.md#下载兼容-shell)。它没有公开提供商注册信息，需要发行方或运维人员提供，例如通过 `oauth/clients.json`（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。`card-host` 会返回 `no service answers "…" on this device`。完整示例见 [examples/connected-apps](../examples/connected-apps/README.zh-CN.md)。
+**已连接账户。** 要使用用户的 GitHub 或 Google 账户，像参考应用那样声明 `auth`、对应提供商的能力族（`github`、`gmail` 或 `gcalendar`）和 `storage.accounts: true`；如果只需识别用户身份、不读取其数据，只声明 `auth` 就够了。登录由宿主完成，宿主给应用的是连接句柄，绝不是令牌。这些服务需要兼容的 OctoSense Shell。当前公开应用使用 [RC4 发行版](../README.zh-CN.md#下载兼容-shell)。它没有公开提供商注册信息，需要发行方或运维人员提供，例如通过 `oauth/clients.json`（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。`card-host` 会返回 `no service answers "…" on this device`。完整示例见 [examples/connected-apps](../examples/connected-apps/README.zh-CN.md)。
 
 **AI。** 在 OctoSense 的 Shell 中，隔离运行的应用可以调用 `model.complete`；用户允许该应用的 Agent 之后，还可以调用 4 个 `octos.*` 方法。在 `card-host` 中，这类调用一律返回 `no service answers "…" on this device`。请让应用在没有这些服务时也完整可用。[AI-SERVICES](AI-SERVICES.zh-CN.md) 列出了已有和计划中的功能，并给出一个经过验证、能处理“不可用”状态的调用。
 
-**Host API v1。** [RC 发行版](../README.zh-CN.md#下载兼容-shell)（RC1 及之后）允许应用发现宿主 API、申请设备权限、调用自己的后端，以及用 Splash 实现 Agent 工具（[HOST-API-V1](HOST-API-V1.zh-CN.md)）。这类应用会在 `requires` 中列出 `host-api-v1`、`backend-api-v1` 或 `script-tools-v1`。`card-host` 会拒绝列出其中任何一项的应用，所以 `tools/octo run` 无法运行它们：`run` 会输出 `admitted`，但窗口显示 `card-host refused this bundle` 和宿主缺少的 API。请在兼容 RC2 发行版中按其平台限制测试这类应用（[HOST-API-V1 § 发布前](HOST-API-V1.zh-CN.md#发布前)）。`desktop-v0.1.0-beta.2` 同样会拒绝它们。
+**Host API v1。** [RC 发行版](../README.zh-CN.md#下载兼容-shell)（RC1 及之后）允许应用发现宿主 API、申请设备权限、调用自己的后端，以及用 Splash 实现 Agent 工具（[HOST-API-V1](HOST-API-V1.zh-CN.md)）。这类应用会在 `requires` 中列出 `host-api-v1`、`backend-api-v1` 或 `script-tools-v1`。`card-host` 会拒绝列出其中任何一项的应用，所以 `tools/octo run` 无法运行它们：`run` 会输出 `admitted`，但窗口显示 `card-host refused this bundle` 和宿主缺少的 API。请在兼容 RC4 发行版中按其平台限制测试这类应用（[HOST-API-V1 § 发布前](HOST-API-V1.zh-CN.md#发布前)）。`desktop-v0.1.0-beta.2` 同样会拒绝它们。
 
 ## 7. 最费时间的坑
 
@@ -348,10 +348,10 @@ App Hub 的 [`hub` 命令参考](https://github.com/OctoSense-org/OctoSense-App-
 目前的情况：
 
 - **无法把任意应用包侧载到普通 OctoSense 手机上。** 手机商店读取内置的 Hub 地址（`DEFAULT_HUB`，即 `raw.githubusercontent.com/OctoSense-org/OctoSense-App-Hub/main/`），并且只信任编译进构建的信任锚（App Hub 的根公钥）。`OCTOSENSE_HUB` 和 `OCTOSENSE_HUB_ANCHOR`（镜像目录或 URL，及其信任锚）是环境变量，Android 启动器不会设置它们；也没有找到在设备上设置它们的选项。**在设备上未验证。**
-- **桌面端的可选演练**：用你自己的一次性信任锚把应用的 Release pack 发布到本地签名目录，显式设置 `OCTOSENSE_HUB_CATALOG=legacy` 并使用新的应用数据目录，再用 App Hub 的商店安装；这个商店运行的安装代码与手机上的相同（[PUBLISHING §4](PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。OctoSense 桌面端 Shell 同样读取 `OCTOSENSE_HUB` 和 `OCTOSENSE_HUB_ANCHOR`；它的商店会从这个签名目录安装你的应用，并在 Shell 的 Card runner 中打开。**未验证**：用带 GitHub 证明的 Release 进行演练。
+- **桌面端的可选演练**：用你自己的一次性信任锚把应用的 Release pack 发布到本地签名目录，显式设置 `OCTOSENSE_HUB_CATALOG=legacy` 并使用新的应用数据目录，再用 App Hub 的商店安装；这个商店运行的安装代码与手机上的相同（[PUBLISHING §4](PUBLISHING.zh-CN.md#4-在本地演练商店流程)）。OctoSense 桌面端 Shell 同样读取 `OCTOSENSE_HUB` 和 `OCTOSENSE_HUB_ANCHOR`；它的商店会从这个签名目录安装你的应用，并在 Shell 的 Card runner 中打开。**这些旧格式目录命令尚未验证**带 GitHub 证明的 Release。RC4 使用经管理员证明的签名目录单独演练，见[下载证据](../README.zh-CN.md#下载兼容-shell)。
 - **第一方应用**作为系统应用进入手机：应用包位于 [OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps)，列在 Shell 的 `system-apps.json` 中（手机上是 OctoSense 的 `phone/system-apps.json`），由 App Hub 的 `crates/app-hub-app/build.rs` 打包，再经过 Home 或 ROM 构建。这条路径用于 OctoSense 维护的 `os.*` 应用，不用于商店应用。
-- **连接账户的应用**（`auth`）无法安装到手机上：目前没有任何已发布的手机版本接受 `auth` 能力。
-- **Hub 准入之后**，只有兼容宿主才能安装应用。已发布手机版本不支持 `auth` 和 `publisher-github-v1`；出现在签名目录中，不等于宿主能运行这个应用。
+- **连接账户的示例**目前只声明 macOS。隔离手机测试示例不代表这些已发布应用能在 Android 上运行。
+- **Hub 准入之后**，宿主仍须支持所需 API/ABI 和声明平台。出现在签名目录中不代表兼容；桌面 RC4 不升级 Home。
 
 Android 版 `card-host` 不编译远程控制桥。在手机上，请用 OctoSense 测试构建中的 App Studio 工具操作应用（[MODEL-VALIDATION](MODEL-VALIDATION.zh-CN.md#选择测试方式)），而不是 `tools/octo`。
 
@@ -368,7 +368,7 @@ tools/octo package-help
 
 评审 `.github/workflows/publish-app.yml`，与已测试应用一起 commit，再推送新的 `v<manifest.version>` tag。GitHub Actions 会准备、证明、验证和打包。App Hub 只接受带 GitHub 证明的 Release，所以无需 `publisher.key` 或开发者签名 secret。把成功的工作流和确切的 Release pack 附到提交 issue。在 App Hub 首次发布应用之前，每个新 Release 都以评论的形式发在这个 issue 中，并更新 issue 标题和 Version 字段；发布之后，每个新版本都开新 issue。安装工作流、创建 GitHub Release 都不会自动提交或批准应用。日常更新使用同一身份下的新版本/新 tag。
 
-此路径需要契约 1.8.0 / `publisher-github-v1`。真实的 Release 及原生 Store 的安装、更新检查已在隔离的测试签名目录中通过（[历史证据](PUBLISHING.zh-CN.md#36-github-发布者身份human)）。当前公开的 macOS 示例也通过了原生安装、更新及 RC 重新打开检查；见[下载状态与平台限制](../README.zh-CN.md#下载兼容-shell)。旧宿主和 `card-host` 会拒绝已封存的 Release。本地商店演练（[PUBLISHING §4](PUBLISHING.zh-CN.md#4-在本地演练商店流程)）是可选的，而且尚未用带 GitHub 证明的 Release 验证过。
+此路径需要契约 1.8.0 / `publisher-github-v1`。真实的 Release 及原生 Store 的安装、更新检查已在隔离的测试签名目录中通过（[历史证据](PUBLISHING.zh-CN.md#36-github-发布者身份human)）。当前公开的 macOS 示例也通过了原生安装、更新及 RC 重新打开检查；见[下载状态与平台限制](../README.zh-CN.md#下载兼容-shell)。旧宿主和 `card-host` 会拒绝已封存的 Release。本地商店演练（[PUBLISHING §4](PUBLISHING.zh-CN.md#4-在本地演练商店流程)）是可选的；这些旧格式目录命令尚未用带 GitHub 证明的 Release 验证。RC4 的证明目录验收单独记录（[下载证据](../README.zh-CN.md#下载兼容-shell)）。
 
 ## 故障排查
 
@@ -394,7 +394,7 @@ tools/octo package-help
 | `variable net not found in scope` | 检查宿主、SDK 和运行时版本是否匹配（§6）；新适配器即使没有声明也安装 `net`，旧适配器可能省略它。 |
 | `this app may not reach <url>` | 这是旧运行时策略。升级到相互匹配的配套宿主、SDK 和运行时；`network.hosts` 是披露信息，不是运行时白名单。 |
 | `no service answers "…" on this device` | 除了用于发现宿主 API 的 `runtime`，`card-host` 不提供任何宿主服务，出现这条消息是正常的；请在 OctoSense Shell 中试用应用（[HOST-SERVICES](HOST-SERVICES.zh-CN.md)）。 |
-| `run` 输出 `admitted`，但窗口显示 `card-host refused this bundle`，以及 `app <id> needs a host implementing …@1` 或 `this host does not implement required APIs: …` 这样的原因 | 清单的 `requires` 中列有 `host-api-v1`、`backend-api-v1` 或 `script-tools-v1`，而 `card-host` 缺少它们所要求的 API。请在兼容 RC2 发行版中按其平台限制测试应用（[HOST-API-V1 § 发布前](HOST-API-V1.zh-CN.md#发布前)）。 |
+| `run` 输出 `admitted`，但窗口显示 `card-host refused this bundle`，以及 `app <id> needs a host implementing …@1` 或 `this host does not implement required APIs: …` 这样的原因 | 清单的 `requires` 中列有 `host-api-v1`、`backend-api-v1` 或 `script-tools-v1`，而 `card-host` 缺少它们所要求的 API。请在兼容 RC4 发行版中按其平台限制测试应用（[HOST-API-V1 § 发布前](HOST-API-V1.zh-CN.md#发布前)）。 |
 | `check`：`screenshots/01-main.png is named by the listing but is not in the bundle` | 截取真实截图（§8）；绝不要用占位图片。 |
 | `check`：`[refused] listing: listing names no platforms` | 商店信息的 `platforms` 为空，原始模板就是这样。在 `listing.json` 中列出你测试过的平台，或用 `tools/octo new … --platform …` 创建应用（§3）。 |
 | `check`：`[refused] identity: app id "…" ends in "…", which is reserved: …` | 修改 id 的最后一段（§3）。同样的检查结果还会在 `policy` 下再出现一次。 |
@@ -404,7 +404,7 @@ tools/octo package-help
 | `check`：`[refused] resource-invalid (…/font_src): not a portable bundle path: "makepad_widgets:resources/…"` | 当前 `hub` 接受内置 `Inter.ttf`、`LXGWWenKaiRegular.ttf`、`LXGWWenKaiBold.ttf` 的确切路径（§7）；请重建旧版准入工具。其他字体要随应用打包并使用相对路径，例如 `assets/Body.ttf`。`desktop-v0.1.0-beta.2` 仍早于打包字体加载功能；这个版本请使用不设 `font_src` 的纯 L0 角色套件。 |
 | `hub: the bundle exceeds the size limit`，没有报告 | 应用包超过了 8 MiB。压缩或删除图片和字体。 |
 | `card-host: refused: card-host --stamp refuses publisher signing metadata; use an unsigned development copy` | `tools/octo run` 会传入 `--stamp`，所以 `card-host` 在检查证明之前就会拒绝已封存的 Release。请改为运行可编辑源码。 |
-| `card-host: refused: this host has no GitHub publisher verifier` | `card-host` 不运行已封存的 Release。请测试未签名的可编辑源码；准入之后，在兼容宿主（例如 [RC2 发行版](../README.zh-CN.md#下载兼容-shell)）中测试这个 Release。 |
+| `card-host: refused: this host has no GitHub publisher verifier` | `card-host` 不运行已封存的 Release。请测试未签名的可编辑源码；准入之后，在兼容宿主（例如 [RC4 发行版](../README.zh-CN.md#下载兼容-shell)）中测试这个 Release。 |
 | `hub scan … --packet build/review.json` 输出 `hub: build/review.json: No such file or directory (os error 2)` | `hub` 不会创建审核包所在的目录。先运行 `mkdir -p build`。 |
 | `hub check --help` 输出 `hub: No such file or directory (os error 2)` | 你的 `hub` 比 App Hub 当前的 `main` 旧；在当前 `main` 中，`--help` 会输出用法。重新构建（§2），或不带参数运行 `hub`。 |
 | 准入检查的其他拒绝 | 见 App Hub 的[常见拒绝原因及修复](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#常见拒绝原因及修复)。 |

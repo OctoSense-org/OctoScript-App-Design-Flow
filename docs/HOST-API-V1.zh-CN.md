@@ -4,25 +4,27 @@
 
 未注明中文版的链接指向英文文档。
 
-Host API v1 让应用发现并调用编译进宿主的 Rust 服务，也让应用的 Agent 调用应用声明为工具的 Splash 函数。它不加载应用自带的原生代码，也不会开放全部系统 API。要运行自己的 Rust 代码，请把它编译成 WebAssembly，并申请 `wasm` 能力；OctoSense `main` 的标准构建在 macOS、Linux 和 Android 上提供这项服务，目前还没有任何发布版本提供（见[运行自己的 Rust 代码](RUST.zh-CN.md)）。
+Host API v1 让应用发现并调用编译进宿主的 Rust 服务，也让应用的 Agent 调用应用声明为工具的 Splash 函数。它不加载应用自带的原生代码，也不会开放全部系统 API。要运行自己的 Rust 代码，请编译成 WebAssembly 并披露 `wasm` 用途。[桌面 RC4](../README.zh-CN.md#下载兼容-shell) 在 macOS、Windows 和 Linux 包中包含核心模块与组件；组件 ABI/导入检查、应用与账户隔离、实际同意仍然生效。RC2 已在 macOS/Linux 发行核心模块。归档包验收与手机源码测试示例的证据分别记录（见[运行自己的 Rust 代码](RUST.zh-CN.md)）。
 
 本页的各项声明由 App Hub 契约 1.6 或更高版本定义，这些版本已发布到 crates.io。声明了这些内容的应用在各个构建中的结果如下：
 
 | 构建 | Host API v1 |
 | --- | --- |
-| [RC1 发行版 `933abbcf`](../README.zh-CN.md#下载兼容-shell) | 实现本页的全部 API，平台限制见各节。 |
-| [RC2 发行版 `4ccf8e06`](../README.zh-CN.md#下载兼容-shell) | 实现本页的全部 API，以及 RC2 的宿主 OS API（`files.*`、`location.sample`、`device_calendar.*`、`mail.compose` 和 `mail.review_send`、`audio.*`、`microphone.record_*`），平台限制见[宿主 API 能力族](HOST-API-FAMILIES.zh-CN.md)。 |
+| [RC4 发行版 `9266b008`](../README.zh-CN.md#下载兼容-shell) | 包含公开 API 用途声明策略与共享 Wasm 组件。API/ABI 要求、身份、账户 scope、实际同意和平台限制继续生效。 |
+| [RC1 发行版 `933abbcf`](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-rc.1) | 实现本页的全部 API，平台限制见各节。 |
+| [RC2 发行版 `4ccf8e06`](https://github.com/OctoSense-org/OctoSense/releases/tag/desktop-v0.1.0-rc.2) | 实现本页的全部 API，以及 RC2 的宿主 OS API（`files.*`、`location.sample`、`device_calendar.*`、`mail.compose` 和 `mail.review_send`、`audio.*`、`microphone.record_*`），平台限制见[宿主 API 能力族](HOST-API-FAMILIES.zh-CN.md)。 |
 | `desktop-v0.1.0-beta.2` | 拒绝该应用：它的契约是 1.5，不认识下文 `requires` 中的任何标记。beta.2 提供哪些服务，见[宿主服务](HOST-SERVICES.zh-CN.md)。 |
 | `tools/octo run` 启动的 `card-host` | 拒绝该应用（见[发布前](#发布前)）。应用申请了 `runtime` 但没有声明这些标记时，它会响应 `runtime.list` 和 `runtime.describe`。 |
 
-**未验证**：亲手点按批准权限、相机拍摄、Android 运行时、Linux 和 Windows 上的设备服务、对应用 Agent 的授权，以及真实模型运行。
+**本指南既有示例记录未覆盖**：亲手点按批准权限、相机拍摄、Android 执行、Linux/Windows 设备服务、对应用 Agent 的授权，以及真实模型运行。后续源码测试示例与 RC4 归档包检查有单独的[验收范围](../README.zh-CN.md#下载兼容-shell)。
 
 可运行的示例见 OctoSense 的 [Host API Lab](https://github.com/OctoSense-org/OctoSense/blob/main/tools/fixtures/host-api-lab/README.zh-CN.md)：一个开发用的测试示例，README 中有构建和运行命令。在 macOS 上，它通过了这些检查：签名安装、应用自己的 Splash 工具、真实的系统权限状态调用（`camera.permission.status`）、界面实时更新，以及权限不足时的拒绝。它不是已发布的 App Hub 应用，既不测试真实模型运行，也不测试对应用 Agent 的授权。
 
 ## 当前源码策略与发布边界
 
-能力名称与 `network.hosts` 是使用披露，不是权限开关。配合 App Hub 契约
-1.11.0 准备的兼容宿主和 SDK 更新，让应用即使遗漏对应声明，也能使用已实现
+能力名称与 `network.hosts` 是使用披露，不是权限开关。已发布的
+[桌面 RC4](../README.zh-CN.md#下载兼容-shell) 使用 App Hub 契约 1.11.0，
+让应用即使遗漏对应声明，也能使用已实现
 的公开 API、网络模块和带配额的独立存储。仍应向用户与审核人员准确披露用途。
 修改文档不会改变 RC2 或更早工具的行为；请使用相互匹配的宿主、Hub 和运行时。
 
@@ -203,7 +205,7 @@ app_tools.dispatch@1
 拒绝原因会写出宿主缺少的 API；对 `host-api-v1` 来说是 `app_policy.device_consent@1`。如果 `host_api.required` 列出了宿主缺少的方法，原因则是 `this host does not implement required APIs: <method>@<version>`。请改用以下方式测试这类应用：
 
 1. 写入摘要后，用 `hub check <bundle> --allow-unsigned` 检查可编辑源码。最终的 Release 证明由 GitHub 工作流生成（[PUBLISHING §3.6](PUBLISHING.zh-CN.md#36-github-发布者身份human)），无需开发者密钥。
-2. 在兼容的 OctoSense Shell 中测试宿主服务。[本地镜像演练](PUBLISHING.zh-CN.md#4-在本地演练商店流程)是发布前测试的可选旧格式兼容路径，不能验证带 GitHub 证明的 Release。`publisher-github-v1` 需要兼容 Store 验证器，请使用 [RC2 发行版](../README.zh-CN.md#下载兼容-shell)；下载状态和公开示例验收范围见该节。
+2. 在兼容的 OctoSense Shell 中测试宿主服务。[本地镜像演练](PUBLISHING.zh-CN.md#4-在本地演练商店流程)是发布前测试的可选旧格式兼容路径，不能验证带 GitHub 证明的 Release。`publisher-github-v1` 需要兼容 Store 验证器，请使用 [RC4 发行版](../README.zh-CN.md#下载兼容-shell)；下载状态和公开示例验收范围见该节。
 3. 逐项测试：API 发现与缺少 API 时的降级、账户切换、拒绝和撤销权限、应用关闭时调用工具，以及后端写操作的原生审阅。
 4. 在 `listing.json` 中只列出实际测试过的平台。
 

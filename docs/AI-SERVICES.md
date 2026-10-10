@@ -6,8 +6,8 @@ A script app built here can use AI on an OctoSense device in three ways:
 host model calls (`model`), a conversation with the device's assistant
 (`octos.*`), and an agent of its own, declared in its bundle. The status labels
 below distinguish **available** on the named host and platform from **not yet**.
-[Desktop RC1 and RC2](../README.md#compatible-shell-download) include the source
-features identified below; implemented methods do not establish provider
+[Desktop RC4](../README.md#compatible-shell-download) includes the current API
+policy; RC1/RC2 observations below remain historical. Implemented methods do not establish provider
 configuration, entitlement or live execution.
 
 Commands marked **✓ run** were run on macOS (Apple silicon) with `hub` and
