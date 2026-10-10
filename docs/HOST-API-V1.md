@@ -77,8 +77,8 @@ This **manifest fragment** is not a complete manifest:
 | `backend-api-v1` | Enables the `backend` block ([§4](#4-connect-the-apps-backend)). The host must implement `auth.backend.request@1`. |
 
 Markers (the values in `requires`) and ABI versions grant no capability. The
-usual rules for identity, capabilities, accounts, network access, signing and
-publication still apply. An ABI version describes a method's contract, not an
+rules for identity, account scopes, actual consent, signing and publication
+still apply; capabilities and network destinations are usage disclosures. An ABI version describes a method's contract, not an
 OctoSense release number.
 
 ## 2. Discover before offering an optional feature
@@ -133,8 +133,8 @@ read status, revoke the app's consent and read the location once the app is
 authorized, but it cannot approve consent.
 
 A response reports three states separately: `app_policy_granted` (the
-manifest grants the capability), `app_consent` (the person consented for this
-app) and `os_permission` (the OS grant to the shell). Revoking the app's
+app identity passed admission; the field name is retained for compatibility),
+`app_consent` (the person consented for this app) and `os_permission` (the OS grant to the shell). Revoking the app's
 consent changes neither the shell's OS grant nor other apps' consent.
 
 In an app that declares `host-api-v1`, the same consent check covers

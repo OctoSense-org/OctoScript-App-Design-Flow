@@ -34,7 +34,7 @@ of the app's agent.
    creation, process launch, screenshots and admission checks.
 2. [`templates/script-app/bundle/main.splash`](../templates/script-app/bundle/main.splash)
    and [`manifest.json`](../templates/script-app/bundle/manifest.json):
-   the actual small notes app and its requested permissions.
+   the actual small notes app and its usage declarations.
 3. [`SCRIPT-API.md`](SCRIPT-API.md): the callable script API and lifetime
    rules, including `ui` availability and callbacks.
 4. [`flows/script-app/FLOW.md`](../flows/script-app/FLOW.md): how to turn
@@ -204,9 +204,10 @@ build and flash workflow.
 ## 5. Understand what the standalone run proves
 
 `card-host` applies the manifest policy before evaluating the UI. That
-checks the contained app path: script/card parsing, rendering, jail storage,
-network allowlist and declared capabilities. It has the host-request
-transport but **registers no services**, so no host service (`mail.*`,
+checks the contained app path: script/card parsing, rendering, bounded jail
+storage and validated usage declarations. The current adapter always supplies
+the network module; declared hosts do not restrict destinations. It has the
+host-request transport but **registers no services**, so no host service (`mail.*`,
 `auth.*`, `gmail.*`, `model.complete`, `octos.*`, `glance.*`) can be tested
 end to end there. Every call answers
 `no service answers "<family>" on this device`, except `runtime.list` and
@@ -223,7 +224,7 @@ sequenceDiagram
     participant Agent as Shell app peer
     participant Kernel as octos / model
     UI->>Host: host.request("octos.turn.start", args, callback)
-    Host->>Host: Check grant and app-agent consent
+    Host->>Host: Check admitted identity, agent opt-in and consent
     Host->>Agent: Route request on this app's context
     Agent->>Kernel: Start model turn with allowed tools
     Kernel-->>Agent: Events and completion
@@ -298,10 +299,11 @@ outside the account workspace. Host-service credentials and
 
 An app's `tools.json` describes APIs for model callers. The shell runs a tool
 with `implemented_by: "host-service"` on the host service its `host_method`
-names, or else on the service of its namespace, when the app is granted that
-family. A system app's own namespace counts as granted; a store app's
-namespace grants nothing, so a store app's host-service tools run through a
-`host_method` from App Hub's reviewed list. A tool with
+names, or else on a registered service of its namespace. Execution retains
+admitted identity, account scope, actual consent and service availability;
+family declarations do not authorize it. A namespace alone installs no
+service. Store apps can map tools to a `host_method` from App Hub's reviewed
+list, subject to its risk/privacy rules. A tool with
 `implemented_by: "app"` runs in OctoSense desktop RC1 and later: `ScriptAppExecutor` in
 `crates/shell/src/host_tools/script_apps.rs` submits it to App Hub's
 `script_tools` queue, and the open full app's signed `app_tool` handler

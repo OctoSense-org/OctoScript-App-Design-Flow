@@ -360,9 +360,9 @@ my-app/                     the app's own Git repository
 | Field | Holds |
 | --- | --- |
 | `schema`, `id`, `name`, `version` | Identity, with a new `version` for each release. The id's last segment, after its final `.`, must not be a name the host reserves (`notes`, `weather`, `terminal`, `rinx`, `system`, …): `com.example.notes` is refused, `my-notes` passes. `tools/octo new` refuses such an id before it creates any file, and the gate refuses it if you change the id later. |
-| `capabilities` | The permissions the app asks for. |
-| `network.hosts` | Bare host names; needs `net`. |
-| `storage`, `compute`, `agent` | Optional requests, clamped to the host's ceilings; `hub check` prints the result as its `grants:` line. `storage.accounts: true` gives each account its own data folder and agent, instead of one shared `device` folder; `storage.agent_workspace` sets what the agent may read: its account's folder (the default) or nothing. |
+| `capabilities` | Expected API use, disclosed to users and reviewers; not execution grants. |
+| `network.hosts` | Expected destinations as bare host names; not a runtime allowlist. |
+| `storage`, `compute`, `agent` | Optional requests, clamped to the host's ceilings; current `hub check` prints declarations and the resolved bounds on its `declarations:` line. `storage.accounts: true` gives each account its own data folder and agent, instead of one shared `device` folder; `storage.agent_workspace` sets what the agent may read: its account's folder (the default) or nothing. |
 | `integrity.github` | The repository/owner/workflow/tag/commit identity and GitHub attestation, added by the release workflow (`publisher-github-v1`, requires RC1 or later). |
 | `integrity.bundle_blake3` | Written by `hub stamp` during development; the GitHub workflow prepares the final digest and attestation. |
 
@@ -375,11 +375,14 @@ contract 1.10.0 (27 in 1.8.0), such as `storage`, `net`, `images`, `web`, `camer
 `device_calendar`, and the connected-account `auth`, `github`, `gmail` and `gcalendar`,
 plus 78 exact host-service names: 4 `octos.*` for the device's assistant, 45
 `matrix.*` for Rinx, and 29 `palpo.*`, which no OctoSense shell serves yet.
-Not requested means not granted, and the store shows the person one
-plain-language line per capability before install. Ask for the least the app
-needs. [docs/CAPABILITIES.md](docs/CAPABILITIES.md) says what each one
-unlocks, which have no working path yet (`prompt`, `ledger.read`,
-`clipboard`) and which only a system app can use;
+The store shows one plain-language usage disclosure per capability before
+install. In the corrected host/contract 1.11 policy, omitting a declaration
+does not deny public APIs. Keep declarations accurate. Actual consent,
+account scopes, resource limits and required API versions still apply;
+[older releases keep their own behavior](docs/CAPABILITIES.md#current-source-policy-and-release-boundary).
+[docs/CAPABILITIES.md](docs/CAPABILITIES.md) describes the API families,
+including those with no working path yet (`prompt`, `ledger.read`,
+`clipboard`) and those restricted to system apps;
 [docs/AI-SERVICES.md](docs/AI-SERVICES.md) covers what the assistant
 capabilities and an app's own agent do in OctoSense.
 
@@ -401,9 +404,11 @@ the gotchas that cost the most time.
 
 ## Containment rules
 
-Each app runs in its own isolate under exactly the grants its manifest asks
-for. The gate (`hub check`, the same code App Hub runs on submissions)
-enforces most of this; App Hub's
+Each admitted app runs in its own isolate with a private storage jail and
+resource limits. Usage declarations describe its expected behavior; actual
+device/account consent and reviewed tool permissions remain separate. The
+gate (`hub check`, the same code App Hub runs on submissions) checks bundle
+structure and metadata; the runtime enforces access and isolation. App Hub's
 [rules the gate enforces](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#rules-the-gate-enforces)
 lists every check.
 
@@ -413,21 +418,23 @@ lists every check.
   and the runtime makes such a field inert. Sign-in happens on a host-owned
   **sheet**: a surface the host service draws over the app for what only the
   person may type.
-- **Declare every host.** A `.splash` file may call only `https://` hosts
-  listed in `network.hosts`; `images` and `web` add pictures and pages from
-  any public `https://` host, but `net` still reaches only listed hosts.
+- **Disclose network use.** List expected HTTPS destinations in
+  `network.hosts`. The corrected SDK supplies the network module even
+  without `net`; unlisted HTTPS destinations are not refused.
   `http://`, `file://` and `../` are refused.
 - **Only bundle files.** Allowed extensions are
   `.card .json .l0 .octoscript .splash .svg .png .jpg .jpeg .webp .ttf .otf .txt .md`,
-  and an app that requests `wasm` may also carry up to 8 WebAssembly modules
+  and an app may also carry up to 8 WebAssembly modules
   at `fns/<name>.wasm`. Any other file is refused, including macOS
   `.DS_Store`. The gate also refuses other scripts, archives, binaries,
   symlinks. Plain `.txt`/`.md` documentation may contain attribution or
   license URLs; agent guidance and structured resources still undergo their
   normal host/resource checks.
 - **Host services for anything privileged.** An app calls
-  `host.request("<family>.<method>", args, fn(r){…})`, and the family must be
-  a granted capability. Mail is the worked example (`mail.accounts`,
+  `host.request("<family>.<method>", args, fn(r){…})`. The service checks
+  admitted identity, availability, account scope and actual consent; a
+  missing family disclosure is not an execution refusal. Mail is the worked
+  example (`mail.accounts`,
   `mail.add_account`, `mail.list`, `mail.send`, …): the service raises its own
   sheet for the password and keeps it in the platform's secret store, outside
   every app's jail. `<family>.sheet.*` methods are accepted only from the

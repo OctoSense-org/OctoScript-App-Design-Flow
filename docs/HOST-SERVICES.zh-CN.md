@@ -4,7 +4,7 @@
 
 未注明中文版的链接指向英文文档。
 
-应用不能与邮件服务器建立 socket 连接，不能持有密码，也不能与设备通信。它改为调用**宿主服务**。宿主服务是 Shell 中的 Rust 代码，用 Shell 持有的资源完成工作，只把结果返回给应用。
+宿主管理的凭据和设备权限留在 Shell 中。应用通过**宿主服务**执行这些操作：Shell 中的 Rust 代码检查应用身份、账户 scope 和用户同意后返回结果。这不禁止应用通过自己的网络模块发送公开网络请求。
 
 分发器属于 App Hub（[OctoSense-App-Hub](https://github.com/OctoSense-org/OctoSense-App-Hub) 中的 `crates/appstore/src/services.rs`）。服务属于 OctoSense：[OctoSense](https://github.com/OctoSense-org/OctoSense) 中的 `crates/shell`、`crates/ai-host`、`crates/oauth-service` 和 `apps/*/host-service`。下文未加标注的路径都在 OctoSense 中。
 
@@ -28,32 +28,32 @@
 
 ## 哪个 Shell 提供哪项服务
 
-OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home（`phone/`）。两者的标准构建都注册了下表中的全部服务，但只在面向 macOS、Linux 和 Android 的构建中注册 `wasm`。`crates/shell/src/apps.rs` 中的 `register_host_services` 注册面向应用的服务；`crates/ai-host/src/lib.rs` 注册 `llm`、`model` 和 `octos`。App Hub 的 `card-host` 不注册任何服务，只响应用于发现宿主 API 的 `runtime`，这个能力族由 App Hub 的分发器自己处理。
+OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home（`phone/`）。两者的标准构建都注册了下表中的全部服务，当前源码在 macOS、Windows、Linux、Android 和 OpenHarmony 构建中包含 `wasm`（OpenHarmony 使用 Pulley），不包含 iOS。这只是构建包含，不代表 OpenHarmony 设备验收；RC2 只在 macOS/Linux 提供核心模块。`crates/shell/src/apps.rs` 中的 `register_host_services` 注册面向应用的服务；`crates/ai-host/src/lib.rs` 注册 `llm`、`model` 和 `octos`。App Hub 的 `card-host` 不注册任何服务，只响应用于发现宿主 API 的 `runtime`，这个能力族由 App Hub 的分发器自己处理。
 
 按能力族汇总的平台和起始版本见 [HOST-API-FAMILIES](HOST-API-FAMILIES.zh-CN.md)。
 
 | 能力族 | 谁可以调用 | 服务代码 |
 | --- | --- | --- |
-| `mail` | 任何获得 `mail` 授权的应用 | `apps/mail/host-service` |
-| `auth` | 任何获得 `auth` 授权的应用。申请数据权限时，还需要对应的能力族（`github`、`gcalendar` 或 `gmail`）；身份权限，以及 RC1 起的后端登录，只需要 `auth`。 | `crates/oauth-service/src/host.rs`、`host_backend.rs` |
-| `github`、`gcalendar` | 获得相应能力族授权的应用，通过 `auth` 建立的连接调用。从 RC1 起，保存前的审阅界面与 `gmail` 一样由 Shell 提供。 | `crates/oauth-service/src/host_api.rs`；从 RC1 起还有 `crates/shell/src/connected_review.rs` |
-| `gmail` | 获得 `gmail` 授权的应用，通过 `auth` 建立的连接调用。发信前的审阅界面由 Shell 提供。 | `crates/oauth-service/src/host_inbox.rs`、`crates/shell/src/connected_review.rs` |
-| `glance` | 任何获得 `glance` 授权的应用 | `crates/shell/src/glance.rs` |
-| `model` | 任何获得 `model` 授权的应用，受每个应用各自的每日预算限制 | `apps/ai-providers/host-service/src/complete/` |
-| `octos` | 获得对应的精确 `octos.*` 名称授权的应用；用户允许该应用的 Agent 之后才能调用，且仅限托管 octos 内核的 Shell（iOS 除外） | `crates/ai-host/src/contained.rs` |
+| `mail` | 已准入且有已授权 Mail 账户的应用 | `apps/mail/host-service` |
+| `auth` | 任何已准入应用。提供商数据需要应用自己的连接及用户批准的提供商 scope；身份登录和后端登录使用各自的 scope。能力族声明只是用途披露。 | `crates/oauth-service/src/host.rs`、`host_backend.rs` |
+| `github`、`gcalendar` | 已准入应用，通过 `auth` 建立的本应用连接调用。从 RC1 起，保存前的审阅界面与 `gmail` 一样由 Shell 提供。 | `crates/oauth-service/src/host_api.rs`；从 RC1 起还有 `crates/shell/src/connected_review.rs` |
+| `gmail` | 已准入应用，通过 `auth` 建立的本应用连接调用。发信前的审阅界面由 Shell 提供。 | `crates/oauth-service/src/host_inbox.rs`、`crates/shell/src/connected_review.rs` |
+| `glance` | 任何已准入应用 | `crates/shell/src/glance.rs` |
+| `model` | 任何已准入应用，受每个应用各自的每日预算限制 | `apps/ai-providers/host-service/src/complete/` |
+| `octos` | 已准入且选择启用 Agent 的应用；用户允许该应用的 Agent 之后才能调用，且仅限托管 octos 内核的 Shell（iOS 除外） | `crates/ai-host/src/contained.rs` |
 | `llm` | 仅限系统应用 | `apps/ai-providers/host-service` |
 | `news` | 仅限系统应用 | `apps/news/host-service` |
 | `calendar` | 仅限 Calendar（`os.calendar`） | `apps/calendar/host-service` |
 | `photos`、`youtube` | 仅限对应系统应用的 `notify` | `crates/shell/src/glance_notice.rs` |
-| `wasm` | 获得 `wasm` 授权的应用，仅限 macOS、Linux 和 Android 上的标准构建（特性 `wasm-functions`，旧名 `wasm-lab`）；桌面 RC2 在 macOS 和 Linux 上提供，RC1 没有（见[运行自己的 Rust 代码](RUST.zh-CN.md)） | `crates/shell/src/wasm_service.rs` |
-| `files` | 任何获得 `files` 授权的应用（导入、导出和 `pick_photo` 还需要 `storage`）；从 RC2 起，在 macOS、Windows 和 Android 上提供，Linux 需要对话框辅助程序；`share` 仅限 Android | `crates/shell/src/files_service` |
-| `audio` | 任何获得 `audio` 和 `storage` 授权且声明了 `requires: ["host-api-v1"]` 的应用；从 RC2 起，在 macOS 和 Android 上提供，仅限前台 | `crates/shell/src/audio_service` |
-| `device_calendar` | 任何获得 `device_calendar` 授权、声明了 `requires: ["host-api-v1"]` 并取得用户授权和操作系统权限的应用；从 RC2 起，在 macOS 和 Android Home 上提供 | `crates/shell/src/device_calendar` |
+| `wasm` | 已准入应用，当前源码构建包含 macOS、Windows、Linux、Android 和 OpenHarmony（特性 `wasm-functions`，旧名 `wasm-lab`）；RC2 在 macOS/Linux 上提供核心模块，RC1 没有（见[运行自己的 Rust 代码](RUST.zh-CN.md)） | `crates/shell/src/wasm_service.rs` |
+| `files` | 已准入应用；导入、导出和 `pick_photo` 使用应用自己的带配额存储；从 RC2 起，在 macOS、Windows 和 Android 上提供，Linux 需要对话框辅助程序；`share` 仅限 Android | `crates/shell/src/files_service` |
+| `audio` | 已准入、播放自身带配额存储中的文件且声明了 `requires: ["host-api-v1"]` 的应用；从 RC2 起，在 macOS 和 Android 上提供，仅限前台 | `crates/shell/src/audio_service` |
+| `device_calendar` | 已准入、声明了 `requires: ["host-api-v1"]` 并取得用户授权和操作系统权限的应用；从 RC2 起，在 macOS 和 Android Home 上提供 | `crates/shell/src/device_calendar` |
 | `sheet`、`photo`、`word`、`deck`、`cad`、`light`、`sound`、`design`、`film`、`effect`、`vector`、`pdf` | 仅限系统应用：craft 引擎宿主服务（[ADR 0013](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0013-craft-engines-as-pinned-services.zh-CN.md)），随桌面 RC2 发行，供系统助手使用。App Hub `main` 现已准入这十二个可申请的能力名称，但 RC2 的准入检查不认识它们，也没有任何商店应用能得到服务。 | `apps/<engine>/host-service` |
 
 对于没有自己服务的其他系统应用，例如 Maps 和 Camera，`glance_notice.rs` 也会响应它们的 `<namespace>.notify`。
 
-没有任何 OctoSense Shell 向已安装的应用提供 `prompt`、`ledger.read`、`clipboard`、`matrix.*` 或 `palpo.*`；`maps.*` 和 `ai-providers.*` 是对应系统应用自己的服务。Rinx 是 OctoSense 作为原生应用随附的 Matrix 客户端，它通过自己的宿主，向用户导入其中的迷你应用提供 `octos.*` 和 `matrix.*`；这种导入方式不属于 App Hub 的安装途径。只有开发 Rinx 迷你应用时才申请 `matrix.*`。`research` 和 `crawl` 为应用的 Agent 授予工具箱中的工具，它们不是 `host.request` 的能力族（[AI-SERVICES § 系统工具箱](AI-SERVICES.zh-CN.md#系统工具箱)）。
+没有任何 OctoSense Shell 向已安装的应用提供 `prompt`、`ledger.read`、`clipboard`、`matrix.*` 或 `palpo.*`；`maps.*` 和 `ai-providers.*` 是对应系统应用自己的服务。Rinx 是 OctoSense 作为原生应用随附的 Matrix 客户端，它通过自己的宿主，向用户导入其中的迷你应用提供 `octos.*` 和 `matrix.*`；这种导入方式不属于 App Hub 的安装途径。只有开发 Rinx 迷你应用时才申请 `matrix.*`。`research` 和 `crawl` 描述工具箱用途；具体工具仍需要宿主提供、`agent.tools` 选择、Agent 同意和研究范围。它们不是 `host.request` 的能力族（[AI-SERVICES § 系统工具箱](AI-SERVICES.zh-CN.md#系统工具箱)）。
 
 有些服务要先完成配置才能使用，而且并非每个构建都有：
 
@@ -119,7 +119,7 @@ Mail 在 macOS 和 iOS 上把密码存进钥匙串。在 Android 和其他平台
 
 ## 完整示例：Mail
 
-系统应用 Mail（`apps/mail/bundle/main.splash`）使用 `mail` 能力族，也就是 `mail` 能力授予的这组方法：
+系统应用 Mail（`apps/mail/bundle/main.splash`）使用 `mail` 能力族，声明 `mail` 用途供审核，并由宿主核验账户授权：
 
 | 方法 | 参数 | 返回（`r.data`） |
 | --- | --- | --- |
@@ -131,9 +131,9 @@ Mail 在 macOS 和 iOS 上把密码存进钥匙串。在 Android 和其他平台
 | `mail.list` | `{account, folder?, offset?, limit?}` | `{folder, total, messages: [{id, sender, address, subject, preview, time, unread}]}` |
 | `mail.message` | `{account, folder?, message}` | `{id, sender, address, subject, body, html, attachments, date, time}` |
 | `mail.mark_read` | `{account, folder?, message}` | `{}` |
-| `mail.compose` | `{account, to, subject, body, compose_id?, expected_revision?, folder?, message?}` | 从 RC2 起，任何获得 `mail` 授权的应用都可调用：保存草稿并返回 `compose_id`、`revision` 和状态；不弹出提示，也不发送。请保留 id 和 revision。 |
+| `mail.compose` | `{account, to, subject, body, compose_id?, expected_revision?, folder?, message?}` | 从 RC2 起，已准入且有已授权 Mail 账户的应用都可调用：保存草稿并返回 `compose_id`、`revision` 和状态；不弹出提示，也不发送。请保留 id 和 revision。 |
 | `mail.compose_status` | `{account, compose_id}` | 从 RC2 起：本应用和账户的草稿及其最后一次尝试和回执。结果不确定时，先读它再重试。 |
-| `mail.review_send` | 与 `mail.compose` 相同的字段 | 从 RC2 起，任何获得 `mail` 授权的应用都可在前台调用：打开宿主的原生发送审阅界面；用户在 **Approve & Send** 上亲手点按或取消后，回调才会结束。审阅界面只在 macOS 和 Android 上有；在 Windows 和 Linux 上它会以 `Physical Mail send approval is unavailable on this platform` 失败。真实的 SMTP 投递尚未验证。在 RC1 上只有 Mail 应用本身（`os.mail`）可以调用，其他应用得到的是 `Only Mail owns reply drafts`。 |
+| `mail.review_send` | 与 `mail.compose` 相同的字段 | 从 RC2 起，已准入且有已授权 Mail 账户的应用都可在前台调用：打开宿主的原生发送审阅界面；用户在 **Approve & Send** 上亲手点按或取消后，回调才会结束。审阅界面只在 macOS 和 Android 上有；在 Windows 和 Linux 上它会以 `Physical Mail send approval is unavailable on this platform` 失败。真实的 SMTP 投递尚未验证。在 RC1 上只有 Mail 应用本身（`os.mail`）可以调用，其他应用得到的是 `Only Mail owns reply drafts`。 |
 | `mail.send` | 与 `mail.compose` 相同的字段 | 从 RC2 起是兼容入口，打开与 `mail.review_send` 相同的审阅界面；绝不直接走 SMTP。在 RC1 和 beta.2 上，它一律返回 `approval_required: use mail.review_send with Mail open, …`，而这段提示指向的方法商店应用当时无法调用（[OctoSense #409](https://github.com/OctoSense-org/OctoSense/issues/409)）。 |
 | `mail.notify` | `{title, body, card_id?, priority?}`（title 1–80 个字符，body 1–600 个字符） | Mail 的通知卡片出现在速览栏上并发出通知后，返回 `{card_id, replaced, expires_at}`。Mail 的 Agent 以工具的形式调用它。 |
 | `mail.sheet.submit` | 登录字段 | 仅限面板 |

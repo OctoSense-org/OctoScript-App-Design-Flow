@@ -424,14 +424,13 @@ Before you build a screen on a host API, check that its family serves store
 apps on your platforms ([HOST-API-FAMILIES](HOST-API-FAMILIES.md)): a
 capability the gate admits can still answer only system apps.
 
-List in `network.hosts` every `https://` host that your `main.splash` names.
-With `images` or `web`, the gate accepts any `https://` host, but at runtime
-an unlisted host serves only pictures (`images`) or pages in the web view
-(`web`); `net` still reaches only the listed hosts. Plain `http://` is never
-allowed. Without
-`storage`, the app gets no storage at all: the gate's `grants:` line says
-`storage none`. [CAPABILITIES](CAPABILITIES.md) says what each capability
-unlocks and what the person sees; [HOST-SERVICES](HOST-SERVICES.md) covers
+Disclose expected HTTPS destinations in `network.hosts`. In the corrected
+SDK, unlisted HTTPS destinations are not refused and every admitted app gets
+a network module and bounded private storage, even with no `net` or
+`storage` declaration. Plain `http://`, `file://` and unsafe bundle paths
+remain admission refusals. Older installed tools retain their old behavior.
+[CAPABILITIES](CAPABILITIES.md) describes usage disclosures and actual
+authorization boundaries; [HOST-SERVICES](HOST-SERVICES.md) covers
 services such as mail.
 
 **Connected accounts.** To work with a person's GitHub or Google account,
@@ -676,8 +675,8 @@ is optional and has not yet been run with a GitHub-attested release.
 | A button shows no label | `ButtonFlat`'s default text is white for a dark theme; set `draw_text +: {color: …}` ([SCRIPT-API § Gotchas](SCRIPT-API.md#gotchas)). |
 | A number shows `NaN` | `"".to_f64()` and non-numeric text give NaN, not nil; guard with `if v >= 0` ([SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings)). |
 | `widget has no uid` / `widget '<id>' not found in tree` after typing | A runtime older than Makepad `d0a9def5`, where a `TextInput`'s `on_change` could not read that same input through `ui`: run `python3 tools/setup-native.py --update` and rebuild `card-host`. |
-| `variable net not found in scope` | The manifest lacks `net` or has no `network.hosts` (§6). |
-| `this app may not reach <url>` | The host is not in `network.hosts` (exact, lowercase). |
+| `variable net not found in scope` | Check the matched host/SDK/runtime versions (§6). The corrected adapter installs `net` even without declarations; an older adapter may omit it. |
+| `this app may not reach <url>` | This is an older runtime policy. Upgrade to matching corrected host/SDK/runtime versions; `network.hosts` is disclosure, not a runtime allowlist. |
 | `no service answers "…" on this device` | Expected in `card-host`, which serves no host services except `runtime` discovery; try the app in an OctoSense shell ([HOST-SERVICES](HOST-SERVICES.md)). |
 | `run` prints `admitted`, but the window shows `card-host refused this bundle` and a reason such as `app <id> needs a host implementing …@1` or `this host does not implement required APIs: …` | The manifest's `requires` lists `host-api-v1`, `backend-api-v1` or `script-tools-v1`, and `card-host` lacks the APIs they require. Test the app in the compatible RC2 release, within its platform limits ([HOST-API-V1 § Before publishing](HOST-API-V1.md#before-publishing)). |
 | `check`: `screenshots/01-main.png is named by the listing but is not in the bundle` | Capture a real screenshot (§8); never a placeholder. |

@@ -124,7 +124,7 @@ my-notes 0.1.0 — REFUSED
 hub: the bundle was refused
 ```
 
-对照应用在界面上实际做的事检查 `grants:` 行；如果授权超出所需，就从清单中删减。`storage 16777216 bytes` 是商店应用的 16 MiB 存储上限。应用声明了 `storage` 但没有设置 `storage.max_bytes` 时，得到的就是这个上限；没有声明 `storage` 的应用得到 `storage none`，什么都存不了。
+上面保留原有记录输出。当前 Hub 用 `declarations:` 显示使用元数据；请对照应用界面上的实际行为核对。每个已准入应用都有私有存储，即使未声明 `storage`。商店应用默认上限为 16 MiB，可用 `storage.max_bytes` 申请更小的配额；这不授予其他应用数据或宿主文件的访问权限。
 
 要对照已发布的签名目录检查版本，给上面任一条检查命令加上 `--catalog <App Hub checkout>/catalog-v2.json`。准入检查会拒绝已经发布过的版本：
 

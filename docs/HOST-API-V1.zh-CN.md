@@ -58,7 +58,7 @@ Host API v1 让应用发现并调用编译进宿主的 Rust 服务，也让应�
 | `script-tools-v1` | 启用 `implemented_by: "app"` 的工具（[第 5 节](#5-实现声明的应用工具)）；宿主必须实现 `app_tools.dispatch@1` 运行时 ABI。 |
 | `backend-api-v1` | 启用 `backend` 块（[第 4 节](#4-连接应用自己的后端)）；宿主必须实现 `auth.backend.request@1`。 |
 
-标记（即 `requires` 中的取值）和 ABI 版本不授予任何能力。应用身份、能力、账户、网络访问、签名和发布方面的要求照旧有效。ABI 版本描述的是方法的契约，不是 OctoSense 的发布版本号。
+标记（即 `requires` 中的取值）和 ABI 版本不授予任何能力。应用身份、账户 scope、实际同意、签名和发布方面的要求照旧有效；能力和网络目的地是使用披露。ABI 版本描述的是方法的契约，不是 OctoSense 的发布版本号。
 
 ## 2. 提供可选功能前先查询
 
@@ -86,7 +86,7 @@ host.request("runtime.describe", {method: "location.get"}, fn(r){
 
 申请权限时，宿主先在原生面板上请用户为本应用授权，需要时再向系统申请权限。授权针对单个应用，覆盖它的所有账户。应用无法在授权面板上替用户批准。由 Agent 或后台卡片发起的申请会失败，返回 `<method> is unavailable to agents/background surfaces`。Shell 转入后台时仍在等待的申请会失败，返回 `authorization_required`；在用户授予应用位置权限之前，`location.get` 也返回 `authorization_required`。Agent 可以读取状态、撤销应用的授权，也可以在应用获得授权后读取位置，但不能批准授权。
 
-响应分别报告三种状态：`app_policy_granted`（清单授予了该能力）、`app_consent`（用户已为本应用授权）和 `os_permission`（系统授予 Shell 的权限）。撤销应用的授权，不会撤销系统授予 Shell 的权限，也不影响其他应用的授权。
+响应分别报告三种状态：`app_policy_granted`（应用身份已通过准入检查；字段名为兼容保留）、`app_consent`（用户已为本应用授权）和 `os_permission`（系统授予 Shell 的权限）。撤销应用的授权，不会撤销系统授予 Shell 的权限，也不影响其他应用的授权。
 
 在声明了 `host-api-v1` 的应用中，`CameraPreview`、`sys.request_location`、`sys.gps` 和地图控件的 GPS 读取同样要通过这道授权关口。Shell 每次启动后，这道关口会一直拒绝相应的访问，直到应用调用对应能力的权限方法；这次调用会加载应用为该能力保存的授权。请在应用打开时，先调用 `camera.permission.status` 再启动 `CameraPreview`，先调用 `location.permission.status` 再读取 GPS。`sys.request_location` 可能弹出提示，所以只在前台调用；后台代码可以用从不弹出提示的 `sys.gps`，或在应用获得授权后用 `location.get`。
 

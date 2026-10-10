@@ -239,15 +239,15 @@ my-app/                     应用自己的 Git 仓库
 | 字段 | 内容 |
 | --- | --- |
 | `schema`、`id`、`name`、`version` | 身份信息，每次发布都要新的 `version`。id 的最后一段（最后一个 `.` 之后的部分）不能是宿主保留的名字（`notes`、`weather`、`terminal`、`rinx`、`system` 等）：准入检查会拒绝 `com.example.notes`，`my-notes` 则可以通过。`tools/octo new` 在创建任何文件之前就会拒绝这样的 id；之后修改 id 的话，准入检查也会拒绝。 |
-| `capabilities` | 应用申请的能力。 |
-| `network.hosts` | 纯主机名；需要 `net`。 |
-| `storage`、`compute`、`agent` | 可选的申请项，宿主会把它们限制在上限以内；`hub check` 把结果输出为 `grants:` 行。`storage.accounts: true` 为每个账户分别提供数据文件夹和 Agent，而不是共用一个 `device` 文件夹；`storage.agent_workspace` 决定 Agent 能读什么：它所属账户的文件夹（默认）或者什么都不读。 |
+| `capabilities` | 向用户和审核人员披露的预计 API 用途，不是执行授权。 |
+| `network.hosts` | 以纯主机名披露预计目的地，不是运行时白名单。 |
+| `storage`、`compute`、`agent` | 可选的申请项，宿主会把它们限制在上限以内；当前 `hub check` 用 `declarations:` 行显示声明及解析后的上限。`storage.accounts: true` 为每个账户分别提供数据文件夹和 Agent，而不是共用一个 `device` 文件夹；`storage.agent_workspace` 决定 Agent 能读什么：它所属账户的文件夹（默认）或者什么都不读。 |
 | `integrity.github` | Release 工作流加入的仓库/所有者/工作流/tag/commit 身份和 GitHub 证明（`publisher-github-v1`，需要 RC1 或更高版本）。 |
 | `integrity.bundle_blake3` | 开发时由 `hub stamp` 写入；GitHub 工作流准备最终摘要和证明。 |
 
 全部字段见 App Hub 的 [清单](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#清单)。
 
-**能力**是 App Hub 定义的封闭列表：契约 1.10.0 中的 30 个能力族（1.8.0 中为 27 个），例如 `storage`、`net`、`images`、`web`、`camera`、`location`、`mail`、`glance`、`model`、RC2 的 `files`、`audio` 和 `device_calendar`，以及连接账户用的 `auth`、`github`、`gmail` 和 `gcalendar`；另有 78 个精确的宿主服务名：设备助手的 4 个 `octos.*`、Rinx 的 45 个 `matrix.*`，以及目前没有任何 OctoSense Shell 提供的 29 个 `palpo.*`。未申请即不授予；安装前商店会为每项能力向用户显示一行通俗说明。只申请应用真正需要的。[docs/CAPABILITIES.zh-CN.md](docs/CAPABILITIES.zh-CN.md) 说明每项能力解锁什么、哪些目前还没有可用路径（`prompt`、`ledger.read`、`clipboard`）、哪些只有系统应用能用；[docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md) 说明助手相关能力和应用自己的 Agent 在 OctoSense 中能做什么。
+**能力**是 App Hub 定义的封闭列表：契约 1.10.0 中的 30 个能力族（1.8.0 中为 27 个），例如 `storage`、`net`、`images`、`web`、`camera`、`location`、`mail`、`glance`、`model`、RC2 的 `files`、`audio` 和 `device_calendar`，以及连接账户用的 `auth`、`github`、`gmail` 和 `gcalendar`；另有 78 个精确的宿主服务名：设备助手的 4 个 `octos.*`、Rinx 的 45 个 `matrix.*`，以及目前没有任何 OctoSense Shell 提供的 29 个 `palpo.*`。安装前商店会为每项能力显示一行通俗的使用说明。在配套宿主与契约 1.11 的新策略中，遗漏声明不会拒绝公开 API；声明应准确反映用途。实际同意、账户 scope、资源上限和所需 API 版本仍须检查；[旧发行版保留原有行为](docs/CAPABILITIES.zh-CN.md#当前源码策略与发布边界)。[docs/CAPABILITIES.zh-CN.md](docs/CAPABILITIES.zh-CN.md) 说明每项能力对应的 API 用途、哪些目前还没有可用路径（`prompt`、`ledger.read`、`clipboard`）、哪些只有系统应用能用；[docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md) 说明助手相关能力和应用自己的 Agent 在 OctoSense 中能做什么。
 
 **`listing.json`**（商店信息）包含商店展示的内容：副标题、描述、类别、关键词、图标、截图、实际测试过的平台、年龄分级，以及发布者信息（名称、支持方式、HTTPS 隐私政策 URL）。合法取值见 App Hub 的 [商店信息](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#商店信息)。
 
@@ -255,12 +255,12 @@ my-app/                     应用自己的 Git 仓库
 
 ## 隔离规则
 
-每个应用运行在自己的隔离环境中，只拥有清单申请的授权。大部分规则由准入检查（`hub check`，与 App Hub 处理提交时运行的是同一份代码）强制执行；全部检查项见 App Hub 的 [准入检查的规则](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#准入检查的规则)。
+每个已准入应用运行在自己的隔离环境中，具有私有存储目录和资源上限。使用声明描述预计行为；设备和账户的实际同意、经审核的工具权限仍单独检查。准入检查（`hub check`，与 App Hub 处理提交时运行的是同一份代码）检查包结构与元数据；运行时执行访问和隔离规则。全部检查项见 App Hub 的 [准入检查的规则](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md#准入检查的规则)。
 
 - **应用中不得有密钥或密码。** 不得有密码、PIN 或一次性验证码输入框，不得有登录表单，应用包和应用的存储中都不得有 API key 或令牌。准入检查会拒绝 `is_password: true` 以及密码、验证码类型的输入，运行时也会让这类输入框失效。登录在宿主自有的**面板**上完成：面板是宿主服务覆盖在应用之上的界面，专门用来输入只有用户本人才能填写的内容。
-- **声明每一个主机。** `.splash` 文件只能调用 `network.hosts` 中列出的 `https://` 主机；`images` 和 `web` 让应用可以显示任何公开 `https://` 主机上的图片和网页，但 `net` 仍然只能访问列出的主机。`http://`、`file://` 和 `../` 一律拒绝。
-- **只放应用包文件。** 允许的扩展名为 `.card .json .l0 .octoscript .splash .svg .png .jpg .jpeg .webp .ttf .otf .txt .md`；申请了 `wasm` 的应用还可以带上最多 8 个 WebAssembly 模块，路径为 `fns/<name>.wasm`。其他文件一律拒绝，包括 macOS 的 `.DS_Store`。准入检查还会拒绝其他脚本、压缩包、二进制文件和符号链接。普通 `.txt`、`.md` 文档可以包含署名或许可 URL；Agent 指引与结构化资源仍须通过原有的主机、资源检查。
-- **特权操作交给宿主服务。** 应用调用 `host.request("<family>.<method>", args, fn(r){…})`，其中的能力族（family）必须已获授予。Mail 是完整示例（`mail.accounts`、`mail.add_account`、`mail.list`、`mail.send` 等）：服务弹出自己的面板收集密码，并把密码存进平台的密钥存储，位于任何应用的 jail 之外。`<family>.sheet.*` 方法只接受来自面板的调用。新增宿主服务要修改 Shell，而不是应用包，详见 [docs/HOST-SERVICES.zh-CN.md](docs/HOST-SERVICES.zh-CN.md)。
+- **披露网络用途。** 在 `network.hosts` 中列出预计的 HTTPS 目的地。配套 SDK 即使没有 `net` 声明也提供网络模块；不会因 HTTPS 主机未列出而拒绝访问。`http://`、`file://` 和 `../` 一律拒绝。
+- **只放应用包文件。** 允许的扩展名为 `.card .json .l0 .octoscript .splash .svg .png .jpg .jpeg .webp .ttf .otf .txt .md`；应用还可以带上最多 8 个 WebAssembly 模块，路径为 `fns/<name>.wasm`。其他文件一律拒绝，包括 macOS 的 `.DS_Store`。准入检查还会拒绝其他脚本、压缩包、二进制文件和符号链接。普通 `.txt`、`.md` 文档可以包含署名或许可 URL；Agent 指引与结构化资源仍须通过原有的主机、资源检查。
+- **特权操作交给宿主服务。** 应用调用 `host.request("<family>.<method>", args, fn(r){…})`，服务检查已准入的应用身份、可用性、账户 scope 和实际同意；遗漏能力族使用声明不会导致拒绝执行。Mail 是完整示例（`mail.accounts`、`mail.add_account`、`mail.list`、`mail.send` 等）：服务弹出自己的面板收集密码，并把密码存进平台的密钥存储，位于任何应用的 jail 之外。`<family>.sheet.*` 方法只接受来自面板的调用。新增宿主服务要修改 Shell，而不是应用包，详见 [docs/HOST-SERVICES.zh-CN.md](docs/HOST-SERVICES.zh-CN.md)。
 - **商店应用与系统应用。** `os.` 开头的 id 保留给系统应用：准入检查会拒绝，任何商店也不会安装。系统应用（[OctoSense `apps/`](https://github.com/OctoSense-org/OctoSense/tree/main/apps) 中的 News、Photos、Maps、Camera、Mail、AI providers）的应用包结构与商店应用相同，但随 Shell 一起发布，上限也更高（例如存储为 64 MiB 而不是 16 MiB）。`tools/octo new --system` 和 `tools/octo run --system` 用于开发系统应用；App Hub 没有接收它们的提交途径。其余都是商店应用，只通过 App Hub 签名目录分发。
 
 ## 应用中的 AI

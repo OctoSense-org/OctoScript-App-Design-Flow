@@ -23,6 +23,17 @@ and [`docs/architecture.md`](https://github.com/OctoSense-org/OctoSense/blob/mai
 > visual reviewer, which calls the `claude` CLI (`flows/core/llm.py`). This page is only about the assistant
 > your *finished app* may ask for on the device.
 
+## Current source policy and release boundary
+
+The corrected host with App Hub contract 1.11 treats `capabilities` and
+`network.hosts` as usage disclosures. They do not grant or deny public APIs.
+The app must still be admitted; agents need opt-in and user consent, connected
+accounts need app-owned connections and approved provider scopes, and tool
+sharing and external writes retain their own checks. See
+[the policy and release boundary](CAPABILITIES.md#current-source-policy-and-release-boundary).
+RC2 and older binaries keep their historical behavior. Recorded outputs below
+are preserved; they do not establish current-source execution or a new release.
+
 ## Contents
 
 - [The short answer](#the-short-answer)
@@ -205,8 +216,10 @@ has allowed the app's agent on its first-use sheet.
 
 ## The assistant capabilities
 
-There are four exact names, each its own consent (`KNOWN_CAPABILITIES` in
-App Hub `crates/app-contract/src/manifest.rs`). A prefix grants nothing: the
+There are four public method names (`KNOWN_CAPABILITIES` in App Hub
+`crates/app-contract/src/manifest.rs`). An admitted app with an opted-in,
+consented agent can use all four; separate name declarations do not grant
+each method. A prefix is still not a valid declaration: the
 gate refuses `octos.` and `octos.admin`. For the store's words for each, see
 App Hub [PUBLISHING § The manifest](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-manifest).
 
@@ -266,16 +279,18 @@ fn ask(){
 with `prompt := TextInput{…}`, `answer := Label{…}` and
 `Button{text: "Ask the assistant" on_click: || ask()}` in the body.
 
-- `host.has("octos.turn.start")` says whether the capability was **granted**,
-  not whether any service answers it. Always handle `r.is_ok == false`.
+- `host.has("octos.turn.start")` is a runtime capability hint, not proof of
+  an opted-in agent, actual consent or a responding service. Always handle
+  `r.is_ok == false`.
 - Treat "unavailable" as a normal state: no kernel on this device (iOS, a
-  desktop without one), no provider configured, not granted, signed out.
+  desktop without one), no provider configured, consent pending, signed out.
   Show it in a sentence and keep every other screen working.
 - Never ask the person for a key or a provider. The host's AI providers app
   owns that.
 
-**✓ run** in `card-host` with `tools/octo run … --hidden`, with `ask()`
-called once the app started:
+**✓ run**, recorded with the earlier capability-gated `card-host`, using
+`tools/octo run … --hidden` and calling `ask()` once the app started. Current
+`card-host` has no assistant service, irrespective of these declarations:
 
 | Manifest | The label read |
 | --- | --- |
@@ -331,13 +346,13 @@ list.
 
 | `r.error` | Meaning | What your app does |
 | --- | --- | --- |
-| `this app was not granted "octos", which "<service>" needs` | The manifest does not list that exact name | Add it to `capabilities`, or remove the call |
+| Legacy `this app was not granted "octos", which "<service>" needs` | An older adapter treats declarations as grants | Use matching corrected host/SDK/runtime versions; keep declarations accurate |
 | `no service answers "octos" on this device` | This host does not serve the assistant to apps (`card-host`, or a shell built without a kernel) | Show "unavailable" and carry on |
 | `Waiting for the person to allow this app's agent (OctoSense asks the first time)` | The person has not allowed the app's agent yet; the shell is asking | Show it; call again after the person answers |
 | `The assistant is turned off for apps on this device` | The device turned the assistant off for apps (`OCTOSENSE_CONTAINED_APPS=0`) | Show "unavailable" and carry on |
 | `The assistant is not available on this device` | The shell could not start the app's peer | Show "unavailable" and carry on |
 | `Add an account in the app before using its assistant` | The app keeps accounts (`storage.accounts: true`) and has none yet | Offer the app's own way to add an account |
-| `This app's manifest does not declare that assistant service` | The shell's own check behind the isolate's: the manifest lists no `octos.*` name, or not this one | Declare it, or remove the call |
+| `This app has not opted in to an assistant` | The admitted app has no agent opt-in (`agent`, `tools.json` or assistant declaration) | Intentionally opt the app into an agent, then request the person's consent; an individual method declaration is not a permission |
 | `no service answers "model" on this device` | No `model` service on this host (`card-host`) | Show "unavailable" and carry on |
 | `<code>: <sentence>` from `model.complete`, `<code>` one of `capability`, `no_provider`, `rate`, `budget`, `bad_request`, `invalid_output`, `too_large`, `provider` | The `model` service refused the call ([details](#the-model-service)) | Show the sentence; keep the app usable without the model |
 | `Unsupported Octos arguments` | An argument other than `text`, `trigger` or `from` to `octos.turn.start`, or any argument to the other calls | Send only those |
@@ -356,7 +371,7 @@ reports ([below](#the-model-service)).
   OS screenshots ([QUICKSTART §4a](QUICKSTART.md#4a-headless-test-without-the-screen-several-apps-at-once)).
   `card-host` registers no host services, so expect `no service answers`
   from every assistant, model and Glance call; screenshot that as your app's
-  "unavailable" state. A granted `glance.publish` there answers
+  "unavailable" state. A `glance.publish` call there answers
   `no service answers "glance" on this device` (**✓ run**).
 - **The agent declarations:** `tools/octo check <bundle>` (`hub check`)
   checks `agent`, `tools.json`, `AGENT.md` and skills offline, with no model
@@ -491,11 +506,11 @@ The API description below remains pinned to source `ccb62ab2`; beta.2 and
 [media API reference](https://github.com/OctoSense-org/OctoSense/blob/ccb62ab2f995abb2c273a33fc1c139f47c73aa07/apps/ai-providers/host-service/MEDIA.md) defines exact arguments, outputs, provider
 routes, quotas and job lifetime; use it rather than inventing provider parameters.
 
-- Grant `model`, declare the needed API versions and `host-api-v1` as shown
+- Disclose `model` use, declare the needed API versions and `host-api-v1` as shown
   in that reference, and use `runtime.describe` to check optional methods.
   `model.capabilities` reports configured route availability. An implemented
   method, a configured route and provider account entitlement are three
-  separate checks; `host.has` proves only the app's capability grant.
+  separate checks; `host.has` is not proof of provider access or user consent.
 - `model.image`, `model.audio` and `model.embeddings` return bounded image,
   MP3 or vector data. `model.video` starts a scoped asynchronous job;
   `model.video.status` polls it and `model.video.cancel` requests cancellation.
@@ -509,17 +524,19 @@ routes, quotas and job lifetime; use it rather than inventing provider parameter
   with hardware acceptance pending, and Splash playback controls for the
   `Video` widget, verified with a local MP4 on macOS; RC1 had neither. The gap
   is the file: `model.audio` and `model.image` answer base64 text, and no
-  script function decodes it into the byte array `fs.write_bytes` takes, while
-  a generated video's provider URL is not on the app's declared hosts
+  script function decodes it into the byte array `fs.write_bytes` takes
   ([OctoSense #403](https://github.com/OctoSense-org/OctoSense/issues/403)).
+  In corrected source, an undeclared provider HTTPS destination does not
+  itself block networking; media rendering and download validation still
+  need app-specific acceptance.
 - Providers and credentials remain host-owned. Current adapters use OpenAI
   for images, speech and embeddings, and MiniMax for images, speech and H3
   video. A DeepSeek chat configuration or MiniMax M Plan subscription does
   not establish media API entitlement. Never collect a key in the app.
 - [App Hub #147](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/147)
-  admits the seven media aliases in `tools.json`. The owning app still needs
-  `model` and `private_data: true`; generation, embeddings and cancellation
-  require at least `act` risk, while capabilities and status are `read`.
+  admits the seven media aliases in `tools.json`. The tool must still declare
+  `private_data: true`; `model` discloses its usage. Generation, embeddings and
+  cancellation require at least `act` risk, while capabilities and status are `read`.
   An admitted alias needs the matching host implementation before it runs.
 - **Validation boundary:** the service has synthetic provider-protocol tests
   and a loopback HTTP transport test. Live paid providers, generated-media
@@ -562,11 +579,11 @@ OctoSense `crates/shell/src/host_tools/`:
 | --- | --- | --- | --- |
 | `ask_user_question` (octos kernel tool) | `agent.tools: ["ask_user_question"]` | **yes** | **yes** (every system app with an agent) |
 | `files.list`, `files.read`, `files.search` (read, no approval) | every peer whose agent has a workspace, on Unix platforms | **yes**: its account folder only, 128 KiB per read, 500 entries per listing, 100 matches per search | **yes** |
-| Its own `tools.json` tools, `implemented_by: "host-service"` | run on the host service of the tool's `host_method` family, or of its namespace, with the app's identity, as its own `host.request` would; the family must be granted, or be the system app's own namespace | **yes**, through a `host_method` on a granted `github`, `gcalendar`, `gmail` or `glance`. Without `host_method`, a tool calls its namespace's service, which no capability grants: `summary.list` in `dev.example.summary` answers `not_granted`, `dev.example.summary was not granted the summary service`. A `github`, `gcalendar` or `gmail` call also needs an active connection: `Connect this app account first` | **yes**: News (`news.list`, `news.read`, `news.notify`), Mail (12 tools, such as `mail.peek` and `mail.propose_reply`), Calendar (`calendar.events`, `add_event`, `update_event`, `remove_event`, `notify`, `agenda`), and `photos.notify`, `maps.notify`, `youtube.notify`, `camera.notify` |
+| Its own `tools.json` tools, `implemented_by: "host-service"` | run as the admitted app on the registered service named by `host_method`, or by the tool namespace; identity, account scopes, actual consent and service availability remain enforced | **yes**, through a reviewed `host_method`. A namespace alone installs no service. Provider calls also require the app's active authorized connection; missing family declarations do not deny execution | **yes**, under the same identity and service-specific checks |
 | Its own `tools.json` tools, `implemented_by: "app"` | the app's `app_tool` handler, in its open full app | since OctoSense desktop RC1, with `requires: ["script-tools-v1"]`; a call to a closed app answers `app_not_running`. `desktop-v0.1.0-beta.2` refuses them (`app_tool_unavailable`): `<tool> declares a script implementation, but this host does not support script tool dispatch` | the same |
 | The generic host tools `ledger.read`, `ledger.write`, `net.fetch`, `storage.read`, `storage.write`, `card.render` | `agent.tools` | admitted by the gate, but no shell implements them | the same |
 | Other apps' shareable tools (`mail.send`) | a dotted name in `agent.tools` | refused by the gate (`hub check`): `app <id> requests tool "mail.send", which this host does not offer contained apps` (**✓ run**) | granted by the shell's own policy; for example, Mail keeps `calendar.events`, `calendar.add_event` and `calendar.notify` |
-| System toolbox tools | the `research` / `crawl` capabilities | **not yet** | with `toolbox-peers` ([below](#the-system-toolbox)); no system app declares `research` |
+| System toolbox tools | exact shared names in `agent.tools`, research scope, and a matching host offer | not in the default store offer | when the shell offers them, with `toolbox-peers` and agent consent ([below](#the-system-toolbox)) |
 | `dev.run` (a shell command) | developer mode, for the apps it covers | development builds, and release builds launched with `--dev-grant-all`; never a store build | the same |
 
 The relay caps every agent at 32 tool calls a turn and 1000 a day by default
@@ -677,8 +694,9 @@ With `"capabilities": ["storage", "glance"]` the smaller agent gives the same
 | `triggers.events` | the app's own host-service events, in its namespace (`news.items.new`) | gate; the shells deliver the Gmail service's `<namespace>.new_message` and Mail's own `mail.messages.new`; other events not yet |
 | `instructions`, `skills` | `AGENT.md` (text, 32 KiB, no HTML scripts, no `#!`); skill names `[a-z0-9_-]{1,64}`, at most 16 | gate; the shell loads both as guidance for each turn |
 
-**The Gmail event.** An app granted `auth` and `gmail`, with
-`background: true` and `triggers.events: ["<namespace>.new_message"]`
+**The Gmail event.** An admitted app with an active Google connection
+authorized for `mail.read`, `background: true` and
+`triggers.events: ["<namespace>.new_message"]`
 (`inbox.new_message` for an id ending in `.inbox`), gets one turn per new
 message on its active account. The shell polls every 300 s while it runs in
 the foreground or holds an Android background job, and only once the person
@@ -766,12 +784,11 @@ app's own card template through the shared `glance.publish` method:
   secrets) or `app` (the app's script). The shell runs a `host-service` tool
   on a host service with the app's identity, as the app's own `host.request`
   would, never from a sheet (`may_prompt: false`). The service is the one its
-  `host_method` names, or else its namespace's (`news.list` → `news`). The
-  family must be granted, or be a system app's own namespace (`os.calendar`
-  → `calendar`); otherwise the call answers
-  `<app> was not granted the <family> service`. A store app's namespace,
-  such as `summary`, is not a capability, so its host-service tools run only
-  through `host_method`. The gate admits an `app` tool.
+  `host_method` names, or else its namespace's (`news.list` → `news`). A
+  family declaration is not an execution grant. The service must exist and
+  authorize the admitted app's identity, account and action. A namespace
+  such as `summary` installs no service; use a reviewed `host_method` for a
+  shared service. The gate admits an `app` tool.
   `desktop-v0.1.0-beta.2` refuses every call to it:
   `<tool> declares a script implementation, but this host does not support script tool dispatch`.
   OctoSense desktop RC1 and later run it in the open full app, for a manifest that declares
@@ -784,8 +801,8 @@ app's own card template through the shared `glance.publish` method:
   (`crates/app-policy/src/agent.rs`): reads of `github`, `gcalendar` and
   `gmail`, `gmail.draft.open`, `gmail.draft.edit`, `gmail.event.decide`, and
   `glance.publish`, `glance.withdraw` and `glance.list`. The tool must
-  request the method's capability, declare `private_data: true` and at least
-  the method's risk. No provider write, review approval or account change is
+  satisfy the method's reviewed privacy and minimum-risk requirements.
+  Disclose the family's usage; omission does not deny execution. No provider write, review approval or account change is
   an alias. For `github`, `gcalendar` and `gmail` the shell adds the app's
   active connection to the arguments.
 - An agent tool that publishes Glance cards should take only `template` +
@@ -869,18 +886,23 @@ is closed, on a schedule; only if you allow it, and you can turn it off." and
 ## The system toolbox
 
 The toolbox lets an app's agent search and read the web through the host,
-inside the scope of the manifest's top-level `research` object. `research`
-gives `workflow.run`, `workflow.fork`, `toolbox.search` and
-`toolbox.web_read`; `crawl`, with `max_depth` and `max_pages` above 0 in the
-scope, gives `toolbox.deep_crawl`. The agent never fetches a page itself:
+inside the scope of the manifest's top-level `research` object. In corrected
+source, a script app selects exact shared names in `agent.tools`:
+`workflow.run`, `workflow.fork`, `toolbox.search`, `toolbox.web_read` or
+`toolbox.deep_crawl`. Crawl also needs positive `max_depth` and `max_pages`.
+`ToolboxGrant::for_manifest` derives the runtime grant from those selected
+tools, not from `research` / `crawl` capability disclosures. The agent never fetches a page itself:
 the host runs each call within the app's scope and budget, keeps the
 provenance, and writes results where the app cannot forge them.
 
-- **Not yet for store apps.** The shells grant the toolbox only to system
-  apps (`os.*`) that declare it, and only in builds with the
-  `toolbox-peers` feature (the phone's default, not the desktop's)
-  ([OctoSense#64](https://github.com/OctoSense-org/OctoSense/issues/64)). No
-  system app declares `research`.
+- **Host admission still controls the tool offer.** Default store admission
+  does not offer these exact tools. A shell may offer them to a reviewed
+  system app; capability disclosure alone cannot enable them. The relay
+  checks agent consent and sharing, and the executor rechecks the selected
+  tools and scope. This route needs `toolbox-peers` (Home enables it; desktop
+  leaves it off by default). Native modules use a separate compiled offer.
+  Source: OctoSense `crates/ai-host/src/toolbox_peers.rs` and
+  `crates/shell/src/host_tools/toolbox.rs`.
 - A store app that declares `research` must still carry the top-level
   `research` scope object, or the gate refuses it (**✓ run**):
   `[refused] policy: app dev.example.summary requests research but declares no research scope; add a top-level "research" object (octos's scope; {} means no limits)`.
@@ -947,12 +969,12 @@ included (`crates/shell/src/glance.rs`):
 
 ### Who may publish
 
-- **Any contained app granted `glance`** may publish, list and withdraw its
-  own cards. System apps get no exemption. Refusal:
-  `<app> was not granted the glance capability`.
+- **Any admitted contained app** may publish, list and withdraw its own
+  cards. App/account identity and publisher ownership remain enforced;
+  `glance` is a usage disclosure, not permission to publish for another app.
 - A store app publishes from its script, or from an agent tool mapped to
-  `glance.publish` with `host_method`; either way it needs the `glance`
-  grant.
+  `glance.publish` with a reviewed `host_method`; tool admission and actual
+  consent checks still apply.
 - **What an agent may publish depends on the build.** On
   `desktop-v0.1.0-beta.2`, an agent tool can publish all three kinds of card.
   OctoSense desktop RC1 and later check every agent call that

@@ -273,7 +273,7 @@ fn tip_20_percent() {
 
 在围绕某个宿主 API 搭建界面之前，先确认它所属的能力族会在你声明的平台上响应商店应用（[HOST-API-FAMILIES](HOST-API-FAMILIES.zh-CN.md)）：准入检查接受的能力，仍可能只响应系统应用。
 
-`main.splash` 中提到的每个 `https://` 主机都要列入 `network.hosts`。声明了 `images` 或 `web` 时，准入检查接受任何 `https://` 主机，但在运行时，未列出的主机只能提供图片（`images`）或网页视图中的页面（`web`）；`net` 仍然只能访问列出的主机。纯 `http://` 一律不允许。没有 `storage`，应用就完全没有存储：准入检查的 `grants:` 行会显示 `storage none`。[CAPABILITIES](CAPABILITIES.zh-CN.md) 说明每项能力解锁什么、用户会看到什么；[HOST-SERVICES](HOST-SERVICES.zh-CN.md) 介绍 Mail 等服务。
+在 `network.hosts` 中披露预计的 HTTPS 目的地。配套 SDK 不会因为 HTTPS 主机未列出而拒绝访问；每个已准入应用都有网络模块和带配额的私有存储，即使未声明 `net` 或 `storage`。普通 `http://`、`file://` 和不安全的包内路径仍会被准入检查拒绝。旧工具保留旧行为。[CAPABILITIES](CAPABILITIES.zh-CN.md) 说明使用披露和实际授权边界；[HOST-SERVICES](HOST-SERVICES.zh-CN.md) 介绍 Mail 等服务。
 
 **已连接账户。** 要使用用户的 GitHub 或 Google 账户，像参考应用那样声明 `auth`、对应提供商的能力族（`github`、`gmail` 或 `gcalendar`）和 `storage.accounts: true`；如果只需识别用户身份、不读取其数据，只声明 `auth` 就够了。登录由宿主完成，宿主给应用的是连接句柄，绝不是令牌。这些服务需要兼容的 OctoSense Shell。当前公开应用使用 [RC2 发行版](../README.zh-CN.md#下载兼容-shell)。它没有公开提供商注册信息，需要发行方或运维人员提供，例如通过 `oauth/clients.json`（[CAPABILITIES § 限制](CAPABILITIES.zh-CN.md#限制)）。`card-host` 会返回 `no service answers "…" on this device`。完整示例见 [examples/connected-apps](../examples/connected-apps/README.zh-CN.md)。
 
@@ -390,8 +390,8 @@ tools/octo package-help
 | 按钮上不显示文字 | `ButtonFlat` 的默认文字是为深色主题准备的白色；请设置 `draw_text +: {color: …}`（[SCRIPT-API § Gotchas](SCRIPT-API.md#gotchas)）。 |
 | 数字显示为 `NaN` | `"".to_f64()` 和非数字文本得到的是 NaN，而不是 nil；请用 `if v >= 0` 判断（[SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings)）。 |
 | 输入文字后出现 `widget has no uid` / `widget '<id>' not found in tree` | 运行时早于 Makepad `d0a9def5`：在这些版本中，`TextInput` 的 `on_change` 无法通过 `ui` 读取同一个输入框。运行 `python3 tools/setup-native.py --update`，然后重新构建 `card-host`。 |
-| `variable net not found in scope` | 清单缺少 `net`，或没有 `network.hosts`（§6）。 |
-| `this app may not reach <url>` | 该主机不在 `network.hosts` 中（须完全一致，且为小写）。 |
+| `variable net not found in scope` | 检查宿主、SDK 和运行时版本是否匹配（§6）；新适配器即使没有声明也安装 `net`，旧适配器可能省略它。 |
+| `this app may not reach <url>` | 这是旧运行时策略。升级到相互匹配的配套宿主、SDK 和运行时；`network.hosts` 是披露信息，不是运行时白名单。 |
 | `no service answers "…" on this device` | 除了用于发现宿主 API 的 `runtime`，`card-host` 不提供任何宿主服务，出现这条消息是正常的；请在 OctoSense Shell 中试用应用（[HOST-SERVICES](HOST-SERVICES.zh-CN.md)）。 |
 | `run` 输出 `admitted`，但窗口显示 `card-host refused this bundle`，以及 `app <id> needs a host implementing …@1` 或 `this host does not implement required APIs: …` 这样的原因 | 清单的 `requires` 中列有 `host-api-v1`、`backend-api-v1` 或 `script-tools-v1`，而 `card-host` 缺少它们所要求的 API。请在兼容 RC2 发行版中按其平台限制测试应用（[HOST-API-V1 § 发布前](HOST-API-V1.zh-CN.md#发布前)）。 |
 | `check`：`screenshots/01-main.png is named by the listing but is not in the bundle` | 截取真实截图（§8）；绝不要用占位图片。 |

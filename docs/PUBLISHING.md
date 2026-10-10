@@ -170,11 +170,11 @@ my-notes 0.1.0 — REFUSED
 hub: the bundle was refused
 ```
 
-Read the `grants:` line against what the app visibly does, and shrink the
-manifest if the grants are wider. `storage 16777216 bytes` is the 16 MiB store
-ceiling. An app gets it when it declares `storage` without
-`storage.max_bytes`; without `storage`, it gets `storage none` and cannot
-save anything.
+The recorded output above is unchanged. Current Hub prints `declarations:`
+for usage metadata; compare it with what the app visibly does. Every admitted
+app gets private storage, even without `storage`. Its default store ceiling
+is 16 MiB; `storage.max_bytes` can request less. This does not grant access
+to another app's data or host files.
 
 To check the version against the published catalog, add
 `--catalog <App Hub checkout>/catalog-v2.json` to either command. A version
