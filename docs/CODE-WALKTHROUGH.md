@@ -126,8 +126,9 @@ supplies no private signing key; GitHub supplies the job/OIDC identity.
 
 `publisher-github-v1` needs contract 1.8.0 and a compatible Store verifier.
 Real GitHub proof and native Store install/update checks passed with an isolated
-test catalog ([evidence](PUBLISHING.md#36-publisher-key--human)); shipped-shell
-and phone installation remain unverified, and a compatible release is pending.
+test catalog ([evidence](PUBLISHING.md#36-github-publisher-identity--human)).
+OctoSense desktop 0.1.0-rc.1 and later install and update the public GitHub-attested
+samples on macOS; phone installation remains unverified.
 Opening an App Hub issue expresses publication intent and can happen first;
 the workflow provides verifiable bytes for that issue. Hub checks, administrator
 approval and authenticated catalog publication remain separate steps.
@@ -301,7 +302,7 @@ names, or else on the service of its namespace, when the app is granted that
 family. A system app's own namespace counts as granted; a store app's
 namespace grants nothing, so a store app's host-service tools run through a
 `host_method` from App Hub's reviewed list. A tool with
-`implemented_by: "app"` runs only on OctoSense `main`: `ScriptAppExecutor` in
+`implemented_by: "app"` runs in OctoSense desktop RC1 and later: `ScriptAppExecutor` in
 `crates/shell/src/host_tools/script_apps.rs` submits it to App Hub's
 `script_tools` queue, and the open full app's signed `app_tool` handler
 answers it. `desktop-v0.1.0-beta.2` has no executor for it and refuses it.

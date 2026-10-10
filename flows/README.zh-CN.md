@@ -29,8 +29,8 @@
 3. **人工检查点。** 标记为 **HUMAN** 的步骤是 Agent 必须停下的地方：报告已准备好的内容，然后等待人来处理。检查点包括：
    - **使用付费生成器生成图像。** 由人运行生成器（或明确授权这笔花费），并提供原始输出和确切的提示词。
    - **语义与视觉评审。** 由人（或其指定的评审人）对照源图检查映射，并批准截图。脚本通过不等于视觉批准。
-   - **发布者身份与发布工作流。** 发布前审阅 GitHub 仓库、工作流和 tag。新 GitHub 应用及日常更新无需开发者签名密钥。手动 Ed25519 只是可选兼容路径，其私钥永不进入仓库、应用包、提示词或日志。
-   - **发布与提交。** 为发布打 tag，以及在 OctoSense-App-Hub 开 `Submit <app id> <version>` issue（[SUBMITTING §7](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#7-开提交-issue)），都由人决定。
+   - **发布者身份与 Release 工作流。** 发布前审阅 GitHub 仓库、工作流和 tag。App Hub 只接受带 GitHub 证明的 Release，不涉及任何发布者密钥：不要创建发布者密钥、为清单签名，或为了发布而传入 `--publisher-key`。
+   - **Release 与提交。** 为 Release 打 tag，以及在 OctoSense-App-Hub 开 `Submit <app id> <version>` issue（[SUBMITTING §7](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#7-开提交-issue)），都由人决定。
    - 各流程特有的检查点（例如购买 Sketch 或设计套件）列在该流程的步骤表中。
 4. **统一的交接。** 每个应用流程都以相同的方式结束。先设置这些变量：
 
@@ -48,11 +48,11 @@
    | 5 | 截图 | 在另一个终端中、在本仓库目录下：`tools/octo shot 8141 "$APP_REPO/bundle/screenshots/01-main.png"`，然后 `curl -sS 127.0.0.1:8141/quit`。`shot` 会等应用的控件出现、画面稳定后再截图。 | PNG 显示的是应用，而不是错误画面（**HUMAN** 评审） |
    | 6 | 重新写入摘要并检查 | `"$HUB_BIN" stamp "$APP_REPO/bundle" && "$HUB_BIN" check "$APP_REPO/bundle" --allow-unsigned` | 只剩下未签名警告 |
    | 7 | 审核问题 | `mkdir -p "$APP_REPO/build" && "$HUB_BIN" scan "$APP_REPO/bundle" --packet "$APP_REPO/build/review.json"` | 已生成审核包，问题都已书面回答：七个；应用包附带 `tools.json`、`AGENT.md` 或 skills 时为八个 |
-   | 8 | 请求发布（**HUMAN**，可以提前） | 在 App Hub 开 `Submit <app id> <version>`，附仓库/版本/commit、截图和权限 | issue 记录发布意图；之后可补充 release 产物 |
-   | 9 | 准备发布包（公开操作需 **HUMAN** 授权） | `tools/octo publish-github "$APP_REPO"`；审阅并 commit 已测试源码和工作流，再推送新的 `v<manifest.version>` tag | GitHub 的 `publisher-verify` 和 `publisher-pack` 成功；把 release/pack/摘要补充到 issue |
-   | 10 | Hub 审核 | Hub 检查确切的候选版本，管理员审核并批准 | 经过身份验证的目录完成发布；GitHub release 本身不代表批准 |
+   | 8 | 请求发布（**HUMAN**，可以提前） | 在 App Hub 开 `Submit <app id> <version>`，附仓库/版本/commit、截图和权限 | issue 记录发布意图；之后可补充 Release 产物 |
+   | 9 | 准备 Release（公开操作需 **HUMAN** 授权） | `tools/octo publish-github "$APP_REPO"`；审阅并 commit 已测试源码和工作流，再推送新的 `v<manifest.version>` tag | GitHub 的 `publisher-verify` 和 `publisher-pack` 成功；把 Release、pack 和摘要补充到 issue |
+   | 10 | Hub 审核 | Hub 检查确切的候选版本，管理员审核并批准 | 经过认证的签名目录完成发布；GitHub Release 本身不代表批准 |
 
-   `card-host` 拒绝封存的发布包，所以先测试可编辑源码并截图。新工作流需要契约 1.8.0 / `publisher-github-v1`，真实发布与兼容宿主安装尚未验证，兼容版本尚待发布。上表是通过条件，不是已完成的测试结果。本仓库的 [docs/PUBLISHING.zh-CN.md](../docs/PUBLISHING.zh-CN.md) 讲解完整流程。App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md) 讲解提交 issue 和审核，它的 [PUBLISHING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md) 是每条准入规则的参考。
+   `card-host` 拒绝已封存的 Release，所以先测试可编辑源码并截图。Release 工作流需要契约 1.8.0 / `publisher-github-v1`；安装 Release 需要兼容宿主，例如 macOS 上的 OctoSense 桌面版 0.1.0-rc.1。上表列出的是通过条件，不是测试结果。本仓库的 [docs/PUBLISHING.zh-CN.md](../docs/PUBLISHING.zh-CN.md) 讲解完整流程。App Hub 的 [SUBMITTING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md) 讲解提交 issue 和审核，它的 [PUBLISHING.zh-CN.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.zh-CN.md) 是每条准入规则的参考。
 5. **购买的素材不外传。** 不要把购买的设计素材或本地日志当作通用示例分享。
 
 ## 清理本地存储

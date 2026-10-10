@@ -17,6 +17,7 @@ follows:
 | Build | Host API v1 |
 | --- | --- |
 | [RC1 release `933abbcf`](../README.md#compatible-shell-download) | Implements every API on this page, within the platform limits each section gives. |
+| [RC2 release `4ccf8e06`](../README.md#compatible-shell-download) | Implements every API on this page plus the RC2 host OS APIs (`files.*`, `location.sample`, `device_calendar.*`, `mail.compose` and `mail.review_send`, `audio.*`, `microphone.record_*`), within the platform limits in [Host API families](HOST-API-FAMILIES.md). |
 | `desktop-v0.1.0-beta.2` | Refuses the app: its contract, 1.5, knows none of the `requires` markers below. For what beta.2 serves, see [Host services](HOST-SERVICES.md). |
 | `card-host`, which `tools/octo run` starts | Refuses the app ([Before publishing](#before-publishing)). For an app that requests `runtime` without the markers, it answers `runtime.list` and `runtime.describe`. |
 
@@ -85,7 +86,9 @@ takes `{method: "…"}`; service responses include `implemented`, `supported`,
 or status methods to check setup. A discovered API can still refuse a call for
 missing configuration, account, app consent or OS permission. Some older
 services have no descriptor, so discovery does not list every method a host
-serves.
+serves. Which families answer a store app at all, on which platforms and since
+which release, is [HOST-API-FAMILIES](HOST-API-FAMILIES.md); discovery tells
+you what this host implements, not what it will serve your app.
 
 `app_tools.dispatch` is a runtime ABI, not a callable service. Its description
 has `kind: "runtime-abi"` and `callable_via_host_request: false`. Use the hook
@@ -127,7 +130,11 @@ prompts, or `location.get` once the app is authorized.
 `location.get` currently works only on Android. It returns `latitude`,
 `longitude`, `accuracy_m`, `source: "last_known"`, `timestamp: null` and
 `freshness: "unknown"`. It does not guarantee a fresh fix or background
-location. The permission methods add no capture, picker or calendar API; call
+location. Since RC2, `location.sample` waits for a fresh fix within the age,
+accuracy and timeout bounds the app passes (5 s of age and a 10 s timeout by
+default), on macOS and Android, for a foreground app after
+`location.permission.request`; `location.sample.cancel` cancels the app's
+pending samples. The permission methods add no capture, picker or calendar API; call
 only methods the host registers. On Windows, Linux and iOS, the host does not
 advertise these device methods: `status` reports
 `os_permission: "unsupported"`, and the other methods fail with
@@ -295,13 +302,13 @@ lacks, the reason is
 Test such an app this way:
 
 1. Check editable source with `hub check <bundle> --allow-unsigned` after
-   stamping. Use the GitHub publishing workflow for the final release proof
+   stamping. Use the GitHub release workflow for the final release proof
    ([PUBLISHING §3.6](PUBLISHING.md#36-github-publisher-identity--human)); it needs no developer key.
 2. Test host services in a compatible OctoSense shell. The
    [local mirror rehearsal](PUBLISHING.md#4-rehearse-the-store-path-locally)
    is an optional legacy compatibility route for pre-publication tests, not
    verification of GitHub-attested releases. `publisher-github-v1` needs a
-   compatible Store verifier. Use the [RC1 release](../README.md#compatible-shell-download);
+   compatible Store verifier. Use the [RC2 release](../README.md#compatible-shell-download);
    its download status and public sample acceptance are recorded there.
 3. Exercise discovery and the fallback for a missing API, account changes,
    permission denial and revocation, a tool call while the app is closed, and

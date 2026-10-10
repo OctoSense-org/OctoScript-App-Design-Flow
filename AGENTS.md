@@ -76,7 +76,7 @@ says who runs each one and when.
   form, and no API key or token in the bundle or in the app's storage. The
   gate refuses only password and one-time-code fields; a key kept anywhere
   else is still a secret the app holds. Accounts go through a host service's
-  sheet ([docs/HOST-SERVICES.md](docs/HOST-SERVICES.md)). Use the [compatible RC1 release](README.md#compatible-shell-download),
+  sheet ([docs/HOST-SERVICES.md](docs/HOST-SERVICES.md)). Use the [compatible RC2 release](README.md#compatible-shell-download),
   within its platform limits, to sign the person in to the
   app's own backend: the bundle declares it in a signed `backend` block, or
   the host's operator registers it
@@ -91,15 +91,15 @@ says who runs each one and when.
   device a store app can call `model.complete`, and `octos.*` once the person
   allows its agent. Released hosts offer `model.complete` and `model.budget`.
   Image, speech, video and embedding methods are implemented in
-  [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368), included in the RC1 release; neither beta.2 nor
+  [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368), included since the RC1 release; neither beta.2 nor
   `card-host` provides them. Follow the [media guide](docs/AI-SERVICES.md#media-and-embeddings-model)
   and its source-pinned API reference. A configured chat provider is not
   proof of media entitlement; live paid providers and device execution remain
   unverified. `llm` is for system apps only. Never put a model key in an app. Read
   [docs/AI-SERVICES.md](docs/AI-SERVICES.md) before adding an AI feature, and
   report each one as unverified until exercised on its actual host.
-- **Connected accounts, GitHub-proven apps and Host API v1 need the compatible
-  RC1 release.** Read [download status](README.md#compatible-shell-download)
+- **Connected accounts, GitHub-attested apps and Host API v1 need the compatible
+  RC release, RC1 or later.** Read [download status](README.md#compatible-shell-download)
   for package checksums and platform prerequisites. Contract 1.8.0 admits the public
   publisher proof; beta.2 cannot install the new apps or consume the v2 catalog.
   - The host runs OAuth sign-in and returns app-bound connection handles,
@@ -126,9 +126,9 @@ says who runs each one and when.
   with the `wasm` capability; a bundle never carries a native library.
   Follow [docs/RUST.md](docs/RUST.md).
   - A **core module** (OctoSense ADR 0011) is what runs today. Standard
-    OctoSense builds from `main` run modules on macOS, Linux and Android;
-    no release does yet, and builds for Windows, iOS and OpenHarmony leave
-    the runtime out. Every call gets a fresh instance, so no state survives
+    OctoSense builds from `main` run modules on macOS, Linux and Android,
+    and desktop 0.1.0-rc.2 on macOS and Linux; builds for Windows, iOS and
+    OpenHarmony leave the runtime out. Every call gets a fresh instance, so no state survives
     between calls.
   - A **component** (ADR 0014) is ordinary Rust built with this
     repository's SDK: `tools/octo wasm new`, then `tools/octo wasm build`,
@@ -142,6 +142,13 @@ says who runs each one and when.
     host.
 - **Only needed capabilities.** Map each capability to something a screen
   does ([docs/CAPABILITIES.md](docs/CAPABILITIES.md)), and remove the rest.
+- **Check that a family serves store apps before you build on it.** The gate
+  admitting a capability does not mean a shell answers your app: `llm`,
+  `news`, `calendar` and the craft engines answer only system apps,
+  `clipboard` is served by nothing, `matrix.*` only inside Rinx, and `mail`
+  sends only through the host's review, which RC2 has on macOS and Android. Check [docs/HOST-API-FAMILIES.md](docs/HOST-API-FAMILIES.md),
+  and `runtime.describe` for optional methods, before writing a screen around
+  a call.
 - **No placeholder screenshots.** Capture the real app in a real state with
   `tools/octo shot`, then open each PNG and look at it. Never draw, generate,
   redraw from `/snap`, crop from another app, or copy a screenshot to make
@@ -216,10 +223,12 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   Confirm it with
   `git check-attr text -- <path to bundle>/manifest.json`, which prints a
   line ending in `text: unset` ([QUICKSTART §3](docs/QUICKSTART.md#3-create-an-app)).
-- **Use GitHub publishing for a new app.** `tools/octo publish-github <app>`
-  installs the tag workflow; `new` also copies it. No developer signing key
-  or signing secret is required. Review the workflow and test unsigned source
-  before release. Manual Ed25519 signing is optional compatibility only.
+- **Use GitHub publishing.** App Hub accepts only GitHub-attested releases.
+  `tools/octo publish-github <app>` installs the tag workflow; `new` also
+  copies it. No signing key or signing secret is required. Review the
+  workflow and test unsigned source before release. Never create a publisher
+  key, sign a manifest or pass `--publisher-key` to publish an app; App Hub
+  reviewers do not approve key-signed releases.
 - **Never move a tag.** Commit tested editable source and the workflow, then
   use `v` plus the manifest's version (`v0.1.0`). The workflow prepares,
   attests, verifies and packs the release; do not commit its sealed output
@@ -231,16 +240,19 @@ The gate checks some of these; reviewers and the shells hold you to the rest.
   compatible host are required. Public-catalog sample install/update checks
   passed on macOS, with a final RC reopen; isolated phone fixtures have
   separate evidence. None proves your app or provider effects. See the
-  [RC download status](README.md#compatible-shell-download).
-  See [PUBLISHING §3.6](docs/PUBLISHING.md#36-github-publisher-identity--human).
+  [RC download status](README.md#compatible-shell-download) and
+  [PUBLISHING §3.6](docs/PUBLISHING.md#36-github-publisher-identity--human).
 - **An issue requests publication.** Include repository, version/commit,
   screenshots and permissions; it may precede the release. Attach the
   successful workflow and exact release pack when ready. A reviewer, not a
-  bot, runs the gate on the exact release and posts problems in the issue;
-  an App Hub admin approves the submission; the Hub then publishes the entry
-  in its signed
-  catalog. Never claim that pushing a tag automatically submits or approves
-  an app.
+  bot, runs the gate on the exact release and posts problems in the issue; an
+  App Hub admin approves the submission; the Hub then publishes the entry in
+  its signed catalog. Never claim that pushing a tag automatically submits or
+  approves an app.
+- **One issue until first publication.** Until App Hub first publishes the
+  app, post each new release on the same issue as a comment with its tag, full
+  commit SHA and workflow-run link, and update the issue title and Version
+  field; after publication, each new version gets a new issue.
 - **No `script` in a Glance tool.** An agent tool that publishes Glance
   cards accepts `template` with `initial`, or L0 `source` with `data`, and
   never `script`. OctoSense runs a script card under the app's own policy.
@@ -263,7 +275,7 @@ Hand off only when all of these hold:
    `listing.json` and inspected.
 3. You have driven every interaction in the brief natively in `card-host`
    (click, type and tap through the remote bridge) and observed its effect.
-   For an app that `card-host` refuses, use the compatible RC1 release ([docs/HOST-API-V1.md](docs/HOST-API-V1.md#before-publishing)).
+   For an app that `card-host` refuses, use the compatible RC2 release ([docs/HOST-API-V1.md](docs/HOST-API-V1.md#before-publishing)).
 4. You have exercised the empty, error and restart states.
 5. The `hub scan` packet is written outside the bundle and its questions are
    answered: seven, or eight when the bundle ships `tools.json`, `AGENT.md`

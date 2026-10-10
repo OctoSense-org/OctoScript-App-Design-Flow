@@ -35,7 +35,7 @@ Today, only core modules run in an app.
 | App Hub's gate (`hub check`) | Admits it from app contract 1.7 | `main` refuses it. With `requires: ["wasm-components-v1"]`, even `hub stamp` answers `app <id> needs a newer host: wasm-components-v1`; without it, the gate finds `not a WebAssembly core module (magic and version 1)`. App Hub #186, in review, admits it. |
 | OctoSense `main` (macOS, Linux and Android) | Runs it | Does not load it. [OctoSense #436](https://github.com/OctoSense-org/OctoSense/pull/436) (in review) adds the runtime; loading components in the `wasm` service is phase 2, not merged. |
 | `card-host` | Admits the app; every call answers `no service answers "wasm" on this device` | Has no `wasm` service either. **Unverified:** built from App Hub `main`, it runs the same manifest check as `hub`, so it should refuse the app with `app <id> needs a newer host: wasm-components-v1`. |
-| Releases | None runs it | None runs it |
+| Releases | Desktop 0.1.0-rc.2 runs it on macOS and Linux; no Home release does | None runs it |
 
 Every command on this page was run on macOS (Apple silicon) with Rust
 1.97.1, unless it is marked **unverified**. The examples use an app that
@@ -52,7 +52,15 @@ Every command on this page was run on macOS (Apple silicon) with Rust
 | The camera, the microphone or the location | Host APIs: the `camera`, `microphone` and `location` capabilities, their permission methods and `location.get` | [HOST-API-V1 §3](HOST-API-V1.md#3-request-device-access-in-the-foreground) |
 | The network | Splash's `net`, to the hosts in `network.hosts`. Neither kind of function reaches the network: fetch the data in Splash, then pass it in. | [SCRIPT-API § Network](SCRIPT-API.md#network) |
 | Files | The app's own storage, through `fs.*` in Splash, or through `std::fs` in a component when the app has `storage`. | [SCRIPT-API § Storage](SCRIPT-API.md#storage-fs) |
+| Something a Rust crate already does | Not by calling the crate from Splash. Build it into a component ([Write a component](#write-a-component); first run `tools/octo wasm doctor`, which names the crates whose job OctoSense already does), or into a core module for pure computation; propose a shared host service in OctoSense and contribute its adapter, with method descriptors, app-scoped resources and tests ([HOST-SERVICES § Add a host service](HOST-SERVICES.md#add-a-host-service)); or run it in your own backend, reached through `net` or the authenticated backend API ([HOST-API-V1 §4](HOST-API-V1.md#4-connect-the-apps-backend)). A crate in a shell's `Cargo.lock` is not callable from Splash, and a `.so`, `.dylib` or `Cargo.toml` in a bundle adds nothing: the gate refuses it. | This page, [HOST-SERVICES](HOST-SERVICES.md), [HOST-API-V1 §4](HOST-API-V1.md#4-connect-the-apps-backend) |
 | A native library, threads or OS calls | Not available to a store app. App Hub's gate refuses native libraries, and native code ships only inside a shell release. | App Hub's [delivery paths](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/DEVELOPMENT.md#choose-a-delivery-path) |
+
+What a Splash app can call is the host API surface, not the Rust crates behind
+it: [HOST-API-FAMILIES](HOST-API-FAMILIES.md) lists every `host.request` family
+with who it serves, [RUNTIME-TYPES](RUNTIME-TYPES.md) every type name the
+runtime resolves, [SCRIPT-API](SCRIPT-API.md) the supported subset, and
+`runtime.list` on the installed host the methods it implements
+([HOST-API-V1 §2](HOST-API-V1.md#2-discover-before-offering-an-optional-feature)).
 
 ## Write a component
 
@@ -526,7 +534,7 @@ bundle) are the same as for modules ([Build it](#build-it)).
 
 ## Core modules (ADR 0011)
 
-A core module is what OctoSense `main` runs today: a WebAssembly core module,
+A core module is what OctoSense `main` and desktop 0.1.0-rc.2 run today: a WebAssembly core module,
 not a component, whose functions take and return bytes or JSON and reach
 nothing but their input. The rest of this section is the guide to them.
 
@@ -537,21 +545,23 @@ The shell's `wasm` host service runs the functions. OctoSense's
 accepts the service with limited support: `wasm-functions`, an OctoSense
 Cargo feature that is on by default, includes it in every standard desktop
 and Home build on macOS, Linux and Android. `wasm-lab` is the feature's
-former name and stays as an alias. Builds for Windows (not yet checked), iOS
+former name and stays as an alias. Builds for Windows (RC2 leaves it out), iOS
 (no code generation for apps) and OpenHarmony (policy unknown) leave the
 runtime out.
 
 | Build | Accepts an app that requests `wasm` | Runs its functions |
 | --- | --- | --- |
 | `desktop-v0.1.0-beta.2` | No. Its app contract, 1.5, refuses the capability: `app <id> requests unknown capability "wasm"`. | No |
-| OctoSense `main` (in no release yet), default build for macOS, Linux or Android: feature `wasm-functions`, formerly `wasm-lab` | Yes | Yes |
-| OctoSense `main` (in no release yet), build for Windows, iOS or OpenHarmony | Yes | No. Every call answers `no service answers "wasm" on this device`. |
+| [OctoSense desktop 0.1.0-rc.1](../README.md#compatible-shell-download) default build | Yes | No. Every call answers `no service answers "wasm" on this device`. |
+| [OctoSense desktop 0.1.0-rc.2](../README.md#compatible-shell-download) on macOS or Linux | Yes | Yes |
+| OctoSense desktop 0.1.0-rc.2 on Windows | Yes | No. Every call answers `no service answers "wasm" on this device`. |
+| OctoSense `main`, default build for macOS, Linux or Android: feature `wasm-functions`, formerly `wasm-lab` | Yes | Yes |
+| OctoSense `main`, build for Windows, iOS or OpenHarmony | Yes | No. Every call answers `no service answers "wasm" on this device`. |
 | `card-host`, built from App Hub `main` | Yes | No. Every call answers `no service answers "wasm" on this device`. |
 
-No release includes the service yet: `desktop-v0.1.0-beta.2`, desktop RC1
-and `home-v0.1.0-beta.1` leave it out. The first desktop and Home releases
-built from `main` after OctoSense
-[#400](https://github.com/OctoSense-org/OctoSense/pull/400) will include it.
+Desktop 0.1.0-rc.2 is the first release with the service, on macOS and Linux
+(its Windows build leaves it out); `desktop-v0.1.0-beta.2`, desktop RC1 and
+`home-v0.1.0-beta.1` do not include it. No released Home build has it yet.
 
 App Hub's gate (`hub check`) admits the `wasm` capability from app contract
 1.7, with at most 8 modules per bundle ([Build it](#build-it)).

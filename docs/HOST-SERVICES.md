@@ -13,10 +13,13 @@ OctoSense owns the services: `crates/shell`, `crates/ai-host`,
 [OctoSense](https://github.com/OctoSense-org/OctoSense). Paths below are
 OctoSense's unless marked.
 
-OctoSense `main` (in no release yet) also implements Host API v1: version
-requirements, discovery, signed backend operations, device consent and script
-tools. [Host API v1](HOST-API-V1.md) shows how to use them.
-`desktop-v0.1.0-beta.2` has none of them.
+[OctoSense desktop 0.1.0-rc.1](../README.md#compatible-shell-download) (RC1) and
+later also implement Host API v1: version requirements, discovery, signed backend
+operations, device consent and script tools, within the platform limits in
+App Hub's
+[Host API compatibility](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/HOST-API.md#limits).
+[Host API v1](HOST-API-V1.md) shows how to use them. `desktop-v0.1.0-beta.2`
+has none of them.
 
 ## Which shell serves which service
 
@@ -28,30 +31,37 @@ app-facing services; `crates/ai-host/src/lib.rs` registers `llm`, `model`
 and `octos`. App Hub's `card-host` registers none; it answers only `runtime`
 discovery, which App Hub's dispatcher handles itself.
 
+The per-family summary, with platforms and since-versions, is
+[HOST-API-FAMILIES](HOST-API-FAMILIES.md).
+
 | Family | Who may call it | Service code |
 | --- | --- | --- |
 | `mail` | Any app granted `mail` | `apps/mail/host-service` |
-| `auth` | Any app granted `auth`. A data scope also needs its family (`github`, `gcalendar` or `gmail`); identity scopes and, on OctoSense `main`, backend sign-in need only `auth`. | `crates/oauth-service/src/host.rs`, `host_backend.rs` |
-| `github`, `gcalendar` | Apps granted the family, through a connection made with `auth`. On OctoSense `main`, the save review is the shell's, as for `gmail`. | `crates/oauth-service/src/host_api.rs`; on `main`, also `crates/shell/src/connected_review.rs` |
+| `auth` | Any app granted `auth`. A data scope also needs its family (`github`, `gcalendar` or `gmail`); identity scopes and, since RC1, backend sign-in need only `auth`. | `crates/oauth-service/src/host.rs`, `host_backend.rs` |
+| `github`, `gcalendar` | Apps granted the family, through a connection made with `auth`. Since RC1, the save review is the shell's, as for `gmail`. | `crates/oauth-service/src/host_api.rs`; since RC1, also `crates/shell/src/connected_review.rs` |
 | `gmail` | Apps granted `gmail`, through a connection made with `auth`. The send review is the shell's. | `crates/oauth-service/src/host_inbox.rs`, `crates/shell/src/connected_review.rs` |
 | `glance` | Any app granted `glance` | `crates/shell/src/glance.rs` |
 | `model` | Any app granted `model`, within a per-app daily budget | `apps/ai-providers/host-service/src/complete/` |
-| `octos` | Apps granted the exact `octos.*` name, once the person allows the app's agent, where the shell hosts the octos kernel | `crates/ai-host/src/contained.rs` |
+| `octos` | Apps granted the exact `octos.*` name, once the person allows the app's agent, where the shell hosts the octos kernel (every platform but iOS) | `crates/ai-host/src/contained.rs` |
 | `llm` | System apps only | `apps/ai-providers/host-service` |
 | `news` | System apps only | `apps/news/host-service` |
 | `calendar` | Calendar (`os.calendar`) only | `apps/calendar/host-service` |
 | `photos`, `youtube` | Only the matching system app's `notify` | `crates/shell/src/glance_notice.rs` |
-| `wasm` | Apps granted `wasm`, in standard builds for macOS, Linux and Android (feature `wasm-functions`, formerly `wasm-lab`); no release serves it yet ([Run your own Rust code](RUST.md)) | `crates/shell/src/wasm_service.rs` |
+| `wasm` | Apps granted `wasm`, in standard builds for macOS, Linux and Android (feature `wasm-functions`, formerly `wasm-lab`); desktop RC2 serves it on macOS and Linux, and RC1 did not ([Run your own Rust code](RUST.md)) | `crates/shell/src/wasm_service.rs` |
+| `files` | Any app granted `files` (import, export and `pick_photo` also need `storage`); since RC2, on macOS, Windows and Android, and on Linux with a dialog helper; `share` on Android only | `crates/shell/src/files_service` |
+| `audio` | Any app granted `audio` and `storage` that declares `requires: ["host-api-v1"]`; since RC2, on macOS and Android, in the foreground only | `crates/shell/src/audio_service` |
+| `device_calendar` | Any app granted `device_calendar` that declares `requires: ["host-api-v1"]`, after the person's consent and the OS permission; since RC2, on macOS and Android Home | `crates/shell/src/device_calendar` |
+| `sheet`, `photo`, `word`, `deck`, `cad`, `light`, `sound`, `design`, `film`, `effect`, `vector`, `pdf` | System apps only: craft engines behind host services ([ADR 0013](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0013-craft-engines-as-pinned-services.md)), shipped in desktop RC2 for the system assistant. App Hub `main` now admits the twelve names as declarable capabilities, but RC2's admission does not know them and no store app is served. | `apps/<engine>/host-service` |
 
 `glance_notice.rs` also answers `<namespace>.notify` for every other system
 app without a service of its own, such as Maps and Camera.
 
 No OctoSense shell serves `prompt`, `ledger.read`, `clipboard`, `matrix.*`
-or `palpo.*` to an installed app. Rinx, a Matrix client that OctoSense ships
-as a native app, serves `octos.*` to bundles a person imports into it as
-mini-apps, which is not the App Hub install path. **Unverified:** it serves
-`matrix.*` to those mini-apps too. Request `matrix.*` only for a Rinx
-mini-app.
+or `palpo.*` to an installed app; `maps.*` and `ai-providers.*` belong to
+those system apps alone. Rinx, a Matrix client that OctoSense ships as a native
+app, serves `octos.*` and `matrix.*` through its own host to bundles a person
+imports into it as mini-apps, which is not the App Hub install path. Request
+`matrix.*` only for a Rinx mini-app.
 `research` and `crawl` grant toolbox tools to an app's agent; they are not a
 `host.request` family
 ([AI-SERVICES § The system toolbox](AI-SERVICES.md#the-system-toolbox)).
@@ -60,8 +70,8 @@ Some services work only after setup, and not every build has them:
 
 | Service | Needs | Builds |
 | --- | --- | --- |
-| `auth`, `github`, `gcalendar`, `gmail` | GitHub and Google registrations. Beta.2 reads them only from `<apps root>/.host/oauth/clients.json`, which its operator supplies; a build from OctoSense `main` can compile them in ([CAPABILITIES § Limits](CAPABILITIES.md#limits)). | Builds from OctoSense `main`, and the desktop-v0.1.0-beta.2 release (macOS, Apple silicon). Not yet: Google sign-in on Android. |
-| `auth` with the `backend` provider | The app's backend registration: the `backend` block of the admitted signed bundle ([backend guide](HOST-API-V1.md#4-connect-the-apps-backend)), or, when the bundle declares none, the operator's `<apps root>/.host/oauth/backends.json`. | Builds from OctoSense `main` only; beta.2 has no backend sign-in. The login uses a host WebView on macOS and on Android 9 or later, and the system browser on Windows and Linux (unverified). Not on iOS. |
+| `auth`, `github`, `gcalendar`, `gmail` | GitHub and Google registrations. Beta.2 reads them only from `<apps root>/.host/oauth/clients.json`, which its operator supplies; RC1 and later builds can compile them in, but the public RC1 packages include none ([CAPABILITIES § Limits](CAPABILITIES.md#limits)). | RC1 and later builds (on Windows and Linux they cannot approve protected writes), and the desktop-v0.1.0-beta.2 release (macOS, Apple silicon). Not yet: Google sign-in on Android. |
+| `auth` with the `backend` provider | The app's backend registration: the `backend` block of the admitted signed bundle ([backend guide](HOST-API-V1.md#4-connect-the-apps-backend)), or, when the bundle declares none, the operator's `<apps root>/.host/oauth/backends.json`. | RC1 and later builds; beta.2 has no backend sign-in. The login uses a host WebView on macOS and on Android 9 or later, and the system browser on Windows and Linux, reachable since RC2's native link openers (a Windows fixture completed a sign-in; Linux untested). Not on iOS. |
 | `octos`, `model` | An AI provider the person adds in the AI providers app. | Every standard build; `octos` only where the shell hosts the kernel. |
 | `mail` | An account the person signs in to on Mail's sheet. | Every standard build. |
 
@@ -134,11 +144,12 @@ A call marked `from_sheet` proves only that the sheet's program made it, not
 that the person pressed anything. So a send or save that must come from the
 person goes through a native control that checks Makepad's
 `trusted_user_input()` on both the press and the click. Gmail's send review
-works this way on every build. GitHub and Calendar saves do on OctoSense
-`main` (not in any release yet), where a `sheet.save` call gets
+works this way on every build. GitHub and Calendar saves do since RC1, where a
+`sheet.save` call gets
 `Saving requires a physical activation of the native host review. Script and agent requests cannot approve it.`
-On desktop-v0.1.0-beta.2, the GitHub and Calendar services still accept
-`sheet.save` from their sheet without that check.
+On Windows and Linux, no release approves these saves or a Gmail send:
+protected writes fail closed. On desktop-v0.1.0-beta.2, the GitHub and Calendar services still
+accept `sheet.save` from their sheet without that check.
 
 ## Secrets are the host's
 
@@ -190,8 +201,10 @@ which the `mail` capability grants:
 | `mail.list` | `{account, folder?, offset?, limit?}` | `{folder, total, messages: [{id, sender, address, subject, preview, time, unread}]}` |
 | `mail.message` | `{account, folder?, message}` | `{id, sender, address, subject, body, html, attachments, date, time}` |
 | `mail.mark_read` | `{account, folder?, message}` | `{}` |
-| `mail.review_send` | `{account, to, subject, body, compose_id?, expected_revision?, folder?, message?}` | `{review_required: true, compose_id, draft_id, revision}`. The host opens its review; nothing is sent until the person approves there. Needs Mail in the foreground. |
-| `mail.send` | – | Always refused: `approval_required: use mail.review_send with Mail open, or open the reply card, then use the host's Approve & Send control. mail.send cannot authorize delivery.` |
+| `mail.compose` | `{account, to, subject, body, compose_id?, expected_revision?, folder?, message?}` | Since RC2, for any app granted `mail`: a saved draft with its `compose_id`, `revision` and status; no prompt, nothing sent. Keep the id and revision. |
+| `mail.compose_status` | `{account, compose_id}` | Since RC2: this app and account's draft with its last attempt and receipt. Read it before retrying an uncertain send. |
+| `mail.review_send` | the `mail.compose` fields | Since RC2, for any app granted `mail`, in the foreground: opens the host's native send review; the callback settles after the person's physical press on **Approve & Send** or a cancellation. The review exists on macOS and Android; on Windows and Linux it fails with `Physical Mail send approval is unavailable on this platform`. Real SMTP acceptance is unverified. On RC1 only Mail itself (`os.mail`) could call it; other apps got `Only Mail owns reply drafts`. |
+| `mail.send` | the `mail.compose` fields | Since RC2 a compatibility entry that opens the same review as `mail.review_send`; never direct SMTP. On RC1 and beta.2 it always answered `approval_required: use mail.review_send with Mail open, …`, naming a method a store app could not call ([OctoSense #409](https://github.com/OctoSense-org/OctoSense/issues/409)). |
 | `mail.notify` | `{title, body, card_id?, priority?}` (title 1–80, body 1–600 characters) | `{card_id, replaced, expires_at}` once Mail's notice card is on the Glance screen, with a notification. Mail's agent calls it as a tool. |
 | `mail.sheet.submit` | sign-in fields | sheet only |
 | `mail.sheet.cancel` | – | sheet only |

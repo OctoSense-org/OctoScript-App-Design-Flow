@@ -46,12 +46,13 @@ Rules:
   whole bundle within 8 MiB.
 - Capture screenshots from the unsigned bundle, look at each one, and never use
   a placeholder.
-- Restamp after every edit (`$OCTO check` does it). Sign last; any edit
-  after signing needs a new stamp and a new signature.
+- Restamp after every edit (`$OCTO check` does it). Never edit a sealed
+  release: a change needs a new version and tag, and the release workflow
+  attests it.
 - Keep keys, `.local-state/`, `build/` and review packets out of `bundle/` and
   Git.
-- Stop at human steps: publisher key, publisher details, platform claims, tag,
-  submission.
+- Stop at human steps: publisher details, workflow review, platform claims,
+  tag, submission.
 
 ## This sample
 

@@ -6,7 +6,7 @@ A script app built here can use AI on an OctoSense device in three ways:
 host model calls (`model`), a conversation with the device's assistant
 (`octos.*`), and an agent of its own, declared in its bundle. The status labels
 below distinguish **available** on the named host and platform from **not yet**.
-[Desktop RC1](../README.md#compatible-shell-download) includes the source
+[Desktop RC1 and RC2](../README.md#compatible-shell-download) include the source
 features identified below; implemented methods do not establish provider
 configuration, entitlement or live execution.
 
@@ -59,17 +59,17 @@ decline, and a device may have no kernel (iOS) or no provider.
 | You want to | What happens today | More |
 | --- | --- | --- |
 | Make one-shot model calls (`model`) | **available** in the OctoSense shells: a schema-checked call answered by the person's own AI providers, within a daily budget. `card-host` answers `no service answers "model" on this device` (**✓ run**). | [One-shot model calls](#one-shot-model-calls-model) |
-| Generate images, speech, video or embeddings (`model`) | **Included in desktop RC1** via [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368). Requires a compatible shell and an entitled configured provider; absent from beta.2 and `card-host`. Live paid-provider/device use is **unverified**. | [Media and embeddings](#media-and-embeddings-model) |
+| Generate images, speech, video or embeddings (`model`) | **Included since desktop RC1** via [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368). Requires a compatible shell and an entitled configured provider; absent from beta.2 and `card-host`. Live paid-provider/device use is **unverified**. | [Media and embeddings](#media-and-embeddings-model) |
 | Talk to the assistant from your screens (`octos.*`) | **available** where the shell hosts a kernel (not iOS). The first call is refused with `Waiting for the person to allow this app's agent (OctoSense asks the first time)` while the shell asks; after that, the app talks to its own peer. `card-host` answers `no service answers "octos" on this device` (**✓ run**). | [A minimal call](#a-minimal-call-and-handling-unavailable) |
 | Give the app its own agent (`agent`, `tools.json`, `AGENT.md`, `skills/`) | **available**: once the person allows it, the agent gets a peer, an "Ask &lt;app&gt;" panel, `ask_user_question`, read tools over the account folder (Unix only), its granted host-service tools, and `AGENT.md` and skills as guidance for each turn. A `tools.json` without an `agent` block also gives the app an agent. | [An app's own agent](#an-apps-own-agent) |
-| Run a tool the app's script implements (`implemented_by: "app"`) | **available in desktop RC1**: the tool runs in the open app when the manifest declares `requires: ["script-tools-v1"]`, and a call to a closed app answers `app_not_running`. `desktop-v0.1.0-beta.2` refuses it. | [The app's tools](#the-apps-tools-and-peer-tools), [HOST-API-V1 §5](HOST-API-V1.md#5-implement-a-declared-app-tool) |
+| Run a tool the app's script implements (`implemented_by: "app"`) | **available since desktop RC1**: the tool runs in the open app when the manifest declares `requires: ["script-tools-v1"]`, and a call to a closed app answers `app_not_running`. `desktop-v0.1.0-beta.2` refuses it. | [The app's tools](#the-apps-tools-and-peer-tools), [HOST-API-V1 §5](HOST-API-V1.md#5-implement-a-declared-app-tool) |
 | Wake the agent on an event | **available** for the Gmail service's `<namespace>.new_message`; **not yet** for other events. | [The manifest's agent](#the-manifests-agent) |
 | Wake the agent on a schedule, or choose its model from `needs` | **not yet** | [The manifest's agent](#the-manifests-agent) |
-| Publish Glance cards (`glance`) | **available**: L0, script and template cards, with notifications. On OctoSense desktop RC1, an agent's tools may publish only template and L0 cards. | [Publishing to the Glance screen](#publishing-to-the-glance-screen) |
+| Publish Glance cards (`glance`) | **available**: L0, script and template cards, with notifications. Since OctoSense desktop RC1, an agent's tools may publish only template and L0 cards. | [Publishing to the Glance screen](#publishing-to-the-glance-screen) |
 | Chat with the agent inside a card, or show model-written text (`sys.chat`, `model-copy`) | **available** in the shells; this repository's runtime checks both. | [AI-written text](#ai-written-text-and-in-card-chat-model-copy-syschat) |
 | Bind a card to research findings (`sys.digest`) | **available** for system apps; **not yet** for store apps, which have no research runs to bind. | [Cards bound to findings](#cards-bound-to-findings-sysdigest) |
 | Search and crawl through the system toolbox (`research`, `crawl`) | **not yet** for store apps ([OctoSense#64](https://github.com/OctoSense-org/OctoSense/issues/64)). | [The system toolbox](#the-system-toolbox) |
-| Use the person's GitHub or Google account (`auth` with `github`, `gcalendar` or `gmail`) | **available** in desktop RC1 within its platform limits; public packages need operator-supplied OAuth registrations. Most live provider use remains unverified. | [CAPABILITIES](CAPABILITIES.md#use-a-connected-account) |
+| Use the person's GitHub or Google account (`auth` with `github`, `gcalendar` or `gmail`) | **available** since desktop RC1 within its platform limits; public packages need operator-supplied OAuth registrations. Most live provider use remains unverified. | [CAPABILITIES](CAPABILITIES.md#use-a-connected-account) |
 | Manage the device's AI providers (`llm`) | System apps only: `llm is for OctoSense's own apps.` Do not request it. | – |
 | Render and critique a card (`card-studio`) | **available** in App Hub; an agent that runs this loop itself: **not yet**. | [Card levels](#card-levels-and-render-and-critique) |
 | Ship a provider API key | Never. No keys, tokens or passwords in an app ([AGENTS.md](../AGENTS.md#rules-for-every-app)). | – |
@@ -306,7 +306,7 @@ list.
   shows "Run an assistant for this app (&lt;tools&gt;), inside this app's own data
   only", where `<tools>` lists the `agent.tools` entries that are not kernel
   tools, or says `no tools`; it leaves out the `tools.json` tools. The store
-  in OctoSense desktop RC1 shows "Run an assistant for
+  in OctoSense desktop RC1 and later shows "Run an assistant for
   this app, only after you allow it", then "Its assistant can use these app
   tools: …" with the `tools.json` names, and "Its assistant requests these
   additional tools: …" with the same non-kernel `agent.tools` entries.
@@ -385,9 +385,8 @@ Two version differences matter when you test:
   OctoSense's `Cargo.toml` and `native-apps.json`), which can lag App Hub
   `main`. Both take the manifest rules from one crate,
   `octosense-app-contract` ([ADR 0005](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0005-app-contract.md)),
-  which App Hub requires at version 1.7, published on crates.io.
-  OctoSense `main` resolves 1.6.0 from crates.io; Host API v1 needs 1.6 or
-  later.
+  which App Hub requires at version 1.10.0, published on crates.io.
+  OctoSense desktop RC1 links 1.8.0 and RC2 links 1.10.0; Host API v1 needs 1.6 or later.
   A manifest at the default `schema_minor` (0) still refuses unknown fields
   (**✓ run**: ``hub: manifest is not valid: unknown field `future_field`, expected one of `schema`, `id`, … `requires`, `schema_minor` ``),
   so do not use a field the shells' pin does not know.
@@ -480,7 +479,7 @@ host.request("model.complete", {
 
 ## Media and embeddings (`model`)
 
-**Included in [desktop RC1](../README.md#compatible-shell-download)** via
+**Included since [desktop RC1](../README.md#compatible-shell-download)** via
 [OctoSense #368](https://github.com/OctoSense-org/OctoSense/pull/368).
 The API description below remains pinned to source `ccb62ab2`; beta.2 and
 `card-host` lack these methods. This is not live paid-provider acceptance. The owning
@@ -499,6 +498,15 @@ routes, quotas and job lifetime; use it rather than inventing provider parameter
   remote job may refuse cancellation. Show that result honestly and do not
   blindly retry a possibly billable submission. Apps still need their own
   rendering/playback UI and handling for unavailable service or quota errors.
+  Playing a result is still unverified. RC2 adds `audio.play/status/stop`
+  (capability `audio` with `storage`) over a WAV, MP3, FLAC or Ogg file of at
+  most 1 MiB and 60 seconds in the app's storage, on macOS and Android only,
+  with hardware acceptance pending, and Splash playback controls for the
+  `Video` widget, verified with a local MP4 on macOS; RC1 had neither. The gap
+  is the file: `model.audio` and `model.image` answer base64 text, and no
+  script function decodes it into the byte array `fs.write_bytes` takes, while
+  a generated video's provider URL is not on the app's declared hosts
+  ([OctoSense #403](https://github.com/OctoSense-org/OctoSense/issues/403)).
 - Providers and credentials remain host-owned. Current adapters use OpenAI
   for images, speech and embeddings, and MiniMax for images, speech and H3
   video. A DeepSeek chat configuration or MiniMax M Plan subscription does
@@ -550,7 +558,7 @@ OctoSense `crates/shell/src/host_tools/`:
 | `ask_user_question` (octos kernel tool) | `agent.tools: ["ask_user_question"]` | **yes** | **yes** (every system app with an agent) |
 | `files.list`, `files.read`, `files.search` (read, no approval) | every peer whose agent has a workspace, on Unix platforms | **yes**: its account folder only, 128 KiB per read, 500 entries per listing, 100 matches per search | **yes** |
 | Its own `tools.json` tools, `implemented_by: "host-service"` | run on the host service of the tool's `host_method` family, or of its namespace, with the app's identity, as its own `host.request` would; the family must be granted, or be the system app's own namespace | **yes**, through a `host_method` on a granted `github`, `gcalendar`, `gmail` or `glance`. Without `host_method`, a tool calls its namespace's service, which no capability grants: `summary.list` in `dev.example.summary` answers `not_granted`, `dev.example.summary was not granted the summary service`. A `github`, `gcalendar` or `gmail` call also needs an active connection: `Connect this app account first` | **yes**: News (`news.list`, `news.read`, `news.notify`), Mail (12 tools, such as `mail.peek` and `mail.propose_reply`), Calendar (`calendar.events`, `add_event`, `update_event`, `remove_event`, `notify`, `agenda`), and `photos.notify`, `maps.notify`, `youtube.notify`, `camera.notify` |
-| Its own `tools.json` tools, `implemented_by: "app"` | the app's `app_tool` handler, in its open full app | in OctoSense desktop RC1, with `requires: ["script-tools-v1"]`; a call to a closed app answers `app_not_running`. `desktop-v0.1.0-beta.2` refuses them (`app_tool_unavailable`): `<tool> declares a script implementation, but this host does not support script tool dispatch` | the same |
+| Its own `tools.json` tools, `implemented_by: "app"` | the app's `app_tool` handler, in its open full app | since OctoSense desktop RC1, with `requires: ["script-tools-v1"]`; a call to a closed app answers `app_not_running`. `desktop-v0.1.0-beta.2` refuses them (`app_tool_unavailable`): `<tool> declares a script implementation, but this host does not support script tool dispatch` | the same |
 | The generic host tools `ledger.read`, `ledger.write`, `net.fetch`, `storage.read`, `storage.write`, `card.render` | `agent.tools` | admitted by the gate, but no shell implements them | the same |
 | Other apps' shareable tools (`mail.send`) | a dotted name in `agent.tools` | refused by the gate (`hub check`): `app <id> requests tool "mail.send", which this host does not offer contained apps` (**✓ run**) | granted by the shell's own policy; for example, Mail keeps `calendar.events`, `calendar.add_event` and `calendar.notify` |
 | System toolbox tools | the `research` / `crawl` capabilities | **not yet** | with `toolbox-peers` ([below](#the-system-toolbox)); no system app declares `research` |
@@ -600,7 +608,7 @@ Every file is under the bundle digest, so the agent that runs is the one that
 was reviewed. An undeclared `AGENT.md` or skill directory is refused (App Hub
 `crates/app-policy/src/agent.rs`). A `tools.json` alone, without an `agent`
 block, is admitted and still gives the app an agent, even though `hub check`
-reports `agent none` (**✓ run**). The store in OctoSense desktop RC1 discloses it: its privacy summary says the app offers the host's
+reports `agent none` (**✓ run**). The store in OctoSense desktop RC1 and later discloses it: its privacy summary says the app offers the host's
 Ask assistant after the person consents. The `desktop-v0.1.0-beta.2` store
 says `Runs no assistant.`
 
@@ -761,7 +769,7 @@ app's own card template through the shared `glance.publish` method:
   through `host_method`. The gate admits an `app` tool.
   `desktop-v0.1.0-beta.2` refuses every call to it:
   `<tool> declares a script implementation, but this host does not support script tool dispatch`.
-  OctoSense `main` runs it in the open full app, for a manifest that declares
+  OctoSense desktop RC1 and later run it in the open full app, for a manifest that declares
   `requires: ["script-tools-v1"]`
   ([HOST-API-V1 §5](HOST-API-V1.md#5-implement-a-declared-app-tool);
   OctoSense `crates/shell/src/host_tools/script_apps.rs`).
@@ -779,7 +787,7 @@ app's own card template through the shared `glance.publish` method:
   `initial`, as above, or an L0 `source` + `data`, never `script`: a script
   card runs under the app's own policy, so a turn misled by its input could
   publish arbitrary code. `desktop-v0.1.0-beta.2` publishes whatever the tool
-  accepts; OctoSense `main` refuses `script` from agent tools
+  accepts; OctoSense desktop RC1 and later refuse `script` from agent tools
   ([Who may publish](#who-may-publish)).
 - `background`, `shareable`, `private_data`, `confirm`, `outward`,
   `auto_approvable`: see
@@ -826,8 +834,8 @@ from `auto_approvable` (App Hub PUBLISHING):
 
 Not yet for store apps: `confirm: "app"`. The gate allows it only on a tool
 with `implemented_by: "app"` (or a native module's tool).
-`desktop-v0.1.0-beta.2` refuses those tools, and OctoSense `main` refuses a
-script tool call that needs the app's own confirmation:
+`desktop-v0.1.0-beta.2` refuses those tools, and OctoSense desktop RC1 and later refuse
+a script tool call that needs the app's own confirmation:
 `Script tools require host confirmation; confirm: app is not supported by this ABI`.
 On a host-service tool the gate refuses it (**✓ run**):
 `[refused] tools: summary.card.publish says confirm "app" but is implemented by the host service: …`.
@@ -882,7 +890,8 @@ Templates and tools: OctoSense
 ### `glance.publish`, `glance.withdraw`, `glance.list`
 
 The Glance screen is the desktop's Glance panel and the phone's feed. Its
-service is **available** on OctoSense `main` (`crates/shell/src/glance.rs`):
+service is **available** in the OctoSense shells, desktop RC1, RC2 and beta.2
+included (`crates/shell/src/glance.rs`):
 
 | Method | Args | Answer |
 | --- | --- | --- |
@@ -941,7 +950,7 @@ service is **available** on OctoSense `main` (`crates/shell/src/glance.rs`):
   grant.
 - **What an agent may publish depends on the build.** On
   `desktop-v0.1.0-beta.2`, an agent tool can publish all three kinds of card.
-  OctoSense desktop RC1 checks every agent call that
+  OctoSense desktop RC1 and later check every agent call that
   resolves to `glance.publish` before it runs. It refuses `script` with
   `Agents cannot publish executable Splash; choose an admitted template with initial data, or L0 source`.
   A template card needs a template name and an `initial` object, without

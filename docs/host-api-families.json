@@ -1,0 +1,789 @@
+{
+ "source": "App Hub issue #172, the host-API family table and its addendum (https://github.com/OctoSense-org/OctoSense-App-Hub/issues/172#issuecomment-6073188277, https://github.com/OctoSense-org/OctoSense-App-Hub/issues/172#issuecomment-6073269227)",
+ "checked_against": [
+  "desktop-v0.1.0-rc.2 (4ccf8e06; App Hub 95e4831a; octosense-app-contract 1.10.0)",
+  "App Hub main 28745c0 (KNOWN_CAPABILITIES: engine names)"
+ ],
+ "families": [
+  {
+   "family": "ai-providers",
+   "served_to": "per-app",
+   "served_to_detail": "The notice service: ai-providers.notify only, os.ai-providers only. Unreachable in practice: no capability names it and App Hub refuses the hyphenated tool namespace, so os.ai-providers cannot declare the tool.",
+   "capability": [],
+   "platforms": [
+    "android",
+    "ios",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.1",
+   "sources": [
+    "crates/shell/src/glance_notice.rs:118-155@rc.1",
+    "crates/shell/src/host_tools/script_apps.rs:680-697@main"
+   ]
+  },
+  {
+   "family": "audio",
+   "served_to": "store",
+   "served_to_detail": "Any admitted app granted `audio` and `storage` that declares requires: [\"host-api-v1\"]. play, status and stop run a foreground session over one WAV, MP3, FLAC or Ogg file of at most 1 MiB and 60 seconds in the app's own storage; the session belongs to the app's live heap and stops when the app loses the foreground. Never the Hub's embedded preview. Hardware acceptance is pending.",
+   "capability": [
+    "audio"
+   ],
+   "platforms": [
+    "macos",
+    "android"
+   ],
+   "since": "rc.2",
+   "sources": [
+    "crates/shell/src/audio_service/mod.rs:133-152,178-217,407-429,541-550@rc.2"
+   ]
+  },
+  {
+   "family": "auth",
+   "served_to": "store",
+   "served_to_detail": "Connections are stored per calling app id. auth.connect needs the app's admitted manifest to grant `auth`, plus `github`, `gcalendar` or `gmail` for those scopes (the shell's scope check). auth.backend.me and auth.backend.request since rc.1. connect, select and disconnect are foreground only; accounts, active and backend.* are agent-allowed.",
+   "capability": [
+    "auth"
+   ],
+   "platforms": [
+    "android",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.2",
+   "sources": [
+    "crates/oauth-service/src/host.rs:315-321@rc.1",
+    "crates/oauth-service/src/host.rs:353-370@rc.1",
+    "crates/oauth-service/src/host.rs:477@rc.1",
+    "crates/shell/src/apps.rs:247-260@rc.1",
+    "crates/oauth-service/src/host_catalog.rs:81-141@rc.1",
+    "crates/oauth-service/src/host.rs:303-305@beta.2",
+    "crates/shell/src/apps.rs:242-254@beta.2"
+   ]
+  },
+  {
+   "family": "cad",
+   "served_to": "system-only",
+   "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `cad` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified). Desktop rc.2 ships the engine as a system service (the ten newer engines expose their tools to the system assistant); App Hub main lists the name as a declarable capability, but rc.2's pinned admission (95e4831a) does not know it, so no store app can declare or reach it.",
+   "capability": "cad (App Hub main only)",
+   "platforms": [
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "rc.2 (system assistant only)",
+   "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
+    "apps/cad/host-service/src/lib.rs:41-42@main",
+    "apps/cad/host-service/src/lib.rs:52-59@main",
+    "crates/shell/src/apps.rs:295-296@main"
+   ],
+   "ref": "desktop-v0.1.0-rc.2 (4ccf8e06); App Hub main 28745c0 for the capability name"
+  },
+  {
+   "family": "calendar",
+   "served_to": "per-app",
+   "served_to_detail": "os.calendar only (\"calendar is Calendar's own service\"). os.calendar's agent reaches it as its own namespace; Mail's agent is offered calendar.events, calendar.add_event and calendar.notify, which still run as os.calendar. The capability exists from contract 1.5.0 (beta.2); a store app that declares it is refused by the service.",
+   "capability": [
+    "calendar"
+   ],
+   "platforms": [
+    "android",
+    "ios",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.1",
+   "sources": [
+    "apps/calendar/host-service/src/lib.rs:44@rc.1",
+    "apps/calendar/host-service/src/lib.rs:268-271@rc.1",
+    "apps/calendar/host-service/src/lib.rs:411-429@rc.1",
+    "apps/calendar/host-service/src/lib.rs:214-217@beta.1",
+    "crates/shell/src/apps.rs:189@rc.1",
+    "AH:crates/app-contract/src/manifest.rs:80@d6a14133"
+   ]
+  },
+  {
+   "family": "camera",
+   "served_to": "store",
+   "served_to_detail": "Any admitted app whose manifest grants `camera` and declares requires: [\"host-api-v1\"]; then per-app consent on a host sheet and the OS permission. permission.status and permission.revoke are agent-allowed, permission.request is foreground only. Registered on every app-hub shell, but descriptors and permission support exist on Android and macOS only. Before rc.1 the string was os.camera's notice namespace on phone builds (camera.notify, os.camera only); see the collision note.",
+   "capability": [
+    "camera"
+   ],
+   "platforms": [
+    "android",
+    "macos"
+   ],
+   "since": "rc.1",
+   "sources": [
+    "crates/shell/src/platform_services/mod.rs:119-128@rc.1",
+    "crates/shell/src/platform_services/mod.rs:132-188@rc.1",
+    "crates/shell/src/platform_services/mod.rs:215-235@rc.1",
+    "crates/shell/src/platform_services/mod.rs:89-94@rc.1",
+    "crates/shell/src/apps.rs:236@rc.1",
+    "AH:crates/app-contract/src/manifest.rs:55@ba36df05"
+   ]
+  },
+  {
+   "family": "clipboard",
+   "served_to": "none",
+   "served_to_detail": "Declarable capability with an install-time permission label; no service answers `host.request(\"clipboard.*\")` on any ref (the dispatcher says `no service answers \"clipboard\"`). The grant unlocks only a WebCard's write-only clipboard.write bridge, on rc.1 and rc.2 alike.",
+   "capability": "clipboard",
+   "platforms": [],
+   "since": null,
+   "sources": [
+    "AH:crates/appstore/src/services.rs:338@95e4831a",
+    "makepad:widgets/src/web_card.rs:120-126,421-424@32d6415f",
+    "app-hub@ba36df05:crates/app-hub/src/index.rs:96"
+   ]
+  },
+  {
+   "family": "deck",
+   "served_to": "system-only",
+   "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `deck` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified). Desktop rc.2 ships the engine as a system service (the ten newer engines expose their tools to the system assistant); App Hub main lists the name as a declarable capability, but rc.2's pinned admission (95e4831a) does not know it, so no store app can declare or reach it.",
+   "capability": "deck (App Hub main only)",
+   "platforms": [
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "rc.2 (system assistant only)",
+   "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
+    "apps/deck/host-service/src/lib.rs:46-47@main",
+    "apps/deck/host-service/src/lib.rs:57-64@main",
+    "crates/shell/src/apps.rs:292-293@main"
+   ],
+   "ref": "desktop-v0.1.0-rc.2 (4ccf8e06); App Hub main 28745c0 for the capability name"
+  },
+  {
+   "family": "design",
+   "served_to": "system-only",
+   "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `design` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified). Desktop rc.2 ships the engine as a system service (the ten newer engines expose their tools to the system assistant); App Hub main lists the name as a declarable capability, but rc.2's pinned admission (95e4831a) does not know it, so no store app can declare or reach it.",
+   "capability": "design (App Hub main only)",
+   "platforms": [
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "rc.2 (system assistant only)",
+   "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
+    "apps/design/host-service/src/lib.rs:39-40@main",
+    "apps/design/host-service/src/lib.rs:50-57@main",
+    "crates/shell/src/apps.rs:305-306@main"
+   ],
+   "ref": "desktop-v0.1.0-rc.2 (4ccf8e06); App Hub main 28745c0 for the capability name"
+  },
+  {
+   "family": "device_calendar",
+   "served_to": "store",
+   "served_to_detail": "Any admitted app granted `device_calendar` that declares requires: [\"host-api-v1\"], after per-app/account consent and the OS permission. permission.request and permission.revoke, calendars.select and events.create/update/delete are foreground only and need a physical press on a native review; permission.status, calendars.list and events.list/get are agent-allowed once consent exists. On Android call permission.status first (it probes the adapter). Separate from calendar.* and gcalendar.*; the OS-calendar interaction is pending acceptance.",
+   "capability": [
+    "device_calendar"
+   ],
+   "platforms": [
+    "macos",
+    "android"
+   ],
+   "since": "rc.2",
+   "sources": [
+    "crates/shell/src/device_calendar/mod.rs:40-71,203-226,304-334,425-435@rc.2"
+   ]
+  },
+  {
+   "family": "effect",
+   "served_to": "system-only",
+   "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `effect` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified). Desktop rc.2 ships the engine as a system service (the ten newer engines expose their tools to the system assistant); App Hub main lists the name as a declarable capability, but rc.2's pinned admission (95e4831a) does not know it, so no store app can declare or reach it.",
+   "capability": "effect (App Hub main only)",
+   "platforms": [
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "rc.2 (system assistant only)",
+   "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
+    "apps/effect/host-service/src/lib.rs:52-53@main",
+    "apps/effect/host-service/src/lib.rs:63-70@main",
+    "crates/shell/src/apps.rs:312-313@main"
+   ],
+   "ref": "desktop-v0.1.0-rc.2 (4ccf8e06); App Hub main 28745c0 for the capability name"
+  },
+  {
+   "family": "files",
+   "served_to": "store",
+   "served_to_detail": "Any admitted app granted `files`. status needs only `files` and is agent-allowed; import, export and pick_photo also need `storage` and are foreground only; share needs only `files`, is foreground only and hands text to the Android share chooser (handoff, not delivery). No host-api-v1 marker needed. 1 MiB per file; import refuses overwrite; paths are app-relative, never OS paths or URIs. Native chooser acceptance is pending.",
+   "capability": [
+    "files"
+   ],
+   "platforms": [
+    "macos",
+    "windows",
+    "android",
+    "linux"
+   ],
+   "since": "rc.2",
+   "sources": [
+    "crates/shell/src/files_service/mod.rs:98-100,196-203,260-337@rc.2",
+    "tools/runtime-patches/makepad-host-os-batch1.patch:149-154@rc.2"
+   ]
+  },
+  {
+   "family": "film",
+   "served_to": "system-only",
+   "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `film` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified). Desktop rc.2 ships the engine as a system service (the ten newer engines expose their tools to the system assistant); App Hub main lists the name as a declarable capability, but rc.2's pinned admission (95e4831a) does not know it, so no store app can declare or reach it.",
+   "capability": "film (App Hub main only)",
+   "platforms": [
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "rc.2 (system assistant only)",
+   "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
+    "apps/film/host-service/src/lib.rs:55-56@main",
+    "apps/film/host-service/src/lib.rs:66-73@main",
+    "crates/shell/src/apps.rs:309-310@main"
+   ],
+   "ref": "desktop-v0.1.0-rc.2 (4ccf8e06); App Hub main 28745c0 for the capability name"
+  },
+  {
+   "family": "gcalendar",
+   "served_to": "store",
+   "served_to_detail": "The calling app's own authorized connection (`auth` to connect). Methods calendars, cached, refresh, get, prepare; review_save; review_save is foreground only, needs the native review hook and is described for macOS and Android only.",
+   "capability": [
+    "gcalendar"
+   ],
+   "platforms": [
+    "android",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.2",
+   "sources": [
+    "crates/oauth-service/src/host_api.rs:169-179@rc.1",
+    "crates/oauth-service/src/host_api.rs:325-331@rc.1",
+    "crates/oauth-service/src/host_catalog.rs:142-246@rc.1",
+    "crates/oauth-service/src/host_api.rs:67-68@beta.2"
+   ]
+  },
+  {
+   "family": "github",
+   "served_to": "store",
+   "served_to_detail": "The calling app's own authorized connection (`auth` to connect). Methods repositories, files, read; review_save; review_save is foreground only, needs the native review hook and is described for macOS and Android only.",
+   "capability": [
+    "github"
+   ],
+   "platforms": [
+    "android",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.2",
+   "sources": [
+    "crates/oauth-service/src/host_api.rs:169-179@rc.1",
+    "crates/oauth-service/src/host_api.rs:325-331@rc.1",
+    "crates/oauth-service/src/host_catalog.rs:142-246@rc.1",
+    "crates/oauth-service/src/host_api.rs:67-68@beta.2"
+   ]
+  },
+  {
+   "family": "glance",
+   "served_to": "store",
+   "served_to_detail": "Caller is the runner's app id, treated as granted unless the call comes from a host sheet (the service relies on the isolate's `glance` gate); no os.* check. Methods publish, withdraw, list; take_open (since beta.2) only from the foreground app.",
+   "capability": [
+    "glance"
+   ],
+   "platforms": [
+    "android",
+    "ios",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.1",
+   "sources": [
+    "crates/shell/src/glance.rs:962-992@rc.1",
+    "crates/shell/src/glance.rs:697-719@beta.1",
+    "crates/shell/src/apps.rs:193@rc.1",
+    "AH:crates/app-contract/src/manifest.rs:97@ba36df05"
+   ]
+  },
+  {
+   "family": "gmail",
+   "served_to": "store",
+   "served_to_detail": "The calling app's own authorized Google connection. Methods labels, messages, message, draft.open, draft.get, draft.edit, event.status, events.status, event.decide; draft.review is foreground only, needs the native review hook, macOS and Android only.",
+   "capability": [
+    "gmail"
+   ],
+   "platforms": [
+    "android",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.2",
+   "sources": [
+    "crates/oauth-service/src/host_inbox.rs:31-44@rc.1",
+    "crates/oauth-service/src/host_inbox.rs:183-189@rc.1",
+    "crates/oauth-service/src/host_catalog.rs:247-336@rc.1",
+    "crates/oauth-service/src/host_inbox.rs:184-186@beta.2",
+    "crates/shell/src/apps.rs:239@rc.1"
+   ]
+  },
+  {
+   "family": "light",
+   "served_to": "system-only",
+   "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `light` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified). Desktop rc.2 ships the engine as a system service (the ten newer engines expose their tools to the system assistant); App Hub main lists the name as a declarable capability, but rc.2's pinned admission (95e4831a) does not know it, so no store app can declare or reach it.",
+   "capability": "light (App Hub main only)",
+   "platforms": [
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "rc.2 (system assistant only)",
+   "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
+    "apps/light/host-service/src/lib.rs:48-49@main",
+    "apps/light/host-service/src/lib.rs:59-66@main",
+    "crates/shell/src/apps.rs:298-299@main"
+   ],
+   "ref": "desktop-v0.1.0-rc.2 (4ccf8e06); App Hub main 28745c0 for the capability name"
+  },
+  {
+   "family": "llm",
+   "served_to": "system-only",
+   "served_to_detail": "Refuses any app id not starting with `os.`; llm.connect_client (and its sheet's client_* methods) only for os.ai-providers. Registered by ai-host's `llm` feature, which the shell's app-hub feature turns on and native mobile always has.",
+   "capability": [
+    "llm"
+   ],
+   "platforms": [
+    "android",
+    "ios",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.1",
+   "sources": [
+    "apps/ai-providers/host-service/src/lib.rs:1063-1076@rc.1",
+    "apps/ai-providers/host-service/src/lib.rs:1063-1076@beta.1",
+    "crates/ai-host/src/lib.rs:390-431@rc.1",
+    "crates/shell/Cargo.toml:130@rc.1",
+    "crates/shell/Cargo.toml:151@rc.1"
+   ]
+  },
+  {
+   "family": "location",
+   "served_to": "store",
+   "served_to_detail": "Any admitted app whose manifest grants `location` and declares requires: [\"host-api-v1\"]; then per-app consent on a host sheet and the OS permission. permission.status and permission.revoke are agent-allowed, permission.request is foreground only. Descriptors exist on Android and macOS only. location.get (last-known fix) is Android only. Since rc.2, location.sample waits for a fresh fix within the caller's age, accuracy and timeout bounds (foreground only, never prompts) and location.sample.cancel cancels the app's pending samples, on Android and macOS.",
+   "capability": [
+    "location"
+   ],
+   "platforms": [
+    "android",
+    "macos"
+   ],
+   "since": "rc.1; `sample` rc.2",
+   "sources": [
+    "crates/shell/src/platform_services/mod.rs:118-120,209-216,278-292,346-378@rc.2",
+    "crates/shell/src/platform_services/location.rs:88-106@rc.2",
+    "crates/shell/src/platform_services/mod.rs:119-128@rc.1",
+    "crates/shell/src/apps.rs:236@rc.1"
+   ]
+  },
+  {
+   "family": "mail",
+   "served_to": "mixed",
+   "served_to_detail": "store: accounts, add_account, remove_account, folders, sync, peek, skip_event, list, message, mark_read, notify for any app granted `mail`, each account bound to the app ids that signed it in; since rc.2 also compose and compose_status (agent-allowed, on the app's active account) and review_send and send (foreground, host review sheet, physical Approve & Send; a store app's send opens the same review). The review approves only on macOS and Android; on Linux and Windows it fails with `Physical Mail send approval is unavailable on this platform`. os.mail only: publish_card, propose_reply, draft, suggest_reply, propose_send. On rc.1 review_send was os.mail only and send always answered approval_required.",
+   "capability": [
+    "mail"
+   ],
+   "platforms": [
+    "android",
+    "ios",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.1; `compose`/`review_send` rc.2",
+   "sources": [
+    "apps/mail/host-service/src/lib.rs:848-884,941-944@rc.2",
+    "apps/mail/host-service/src/public_review.rs:191-261@rc.2",
+    "apps/mail/host-service/src/drafts.rs:244-250,1144-1148@rc.2",
+    "apps/mail/host-service/src/lib.rs:671-908@rc.1",
+    "apps/mail/host-service/src/lib.rs:490-492@beta.1"
+   ]
+  },
+  {
+   "family": "maps",
+   "served_to": "per-app",
+   "served_to_detail": "The notice service (one per system app whose namespace has no service): maps.notify only, os.maps only. Reached by os.maps's agent tool as its own namespace; no capability names it.",
+   "capability": [],
+   "platforms": [
+    "android",
+    "ios",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.1",
+   "sources": [
+    "crates/shell/src/glance_notice.rs:118-155@beta.1",
+    "crates/shell/src/glance_notice.rs:120-157@main",
+    "crates/shell/src/apps.rs:325@main",
+    "crates/shell/src/host_tools/script_apps.rs:333-341@main"
+   ]
+  },
+  {
+   "family": "matrix",
+   "served_to": "none",
+   "served_to_detail": "Not registered as a shell host service; answered only for mini-apps inside the native Rinx app by Rinx's own host.",
+   "capability": "matrix.* (method-level)",
+   "platforms": [],
+   "since": null,
+   "sources": [
+    "rinx@4b89097d:crates/miniapp-core/src/matrix.rs:1-7",
+    "rinx@4b89097d:src/host/matrix/mod.rs"
+   ]
+  },
+  {
+   "family": "microphone",
+   "served_to": "store",
+   "served_to_detail": "Any admitted app whose manifest grants `microphone` and declares requires: [\"host-api-v1\"]; then per-app consent on a host sheet and the OS permission. permission.status and permission.revoke are agent-allowed, permission.request is foreground only. Descriptors exist on Android and macOS only. Since rc.2, record_start, record_status, record_stop and record_cancel (also needing `storage`) record a short mono WAV into the app's storage, foreground only; hardware acceptance is pending.",
+   "capability": [
+    "microphone"
+   ],
+   "platforms": [
+    "android",
+    "macos"
+   ],
+   "since": "rc.1; `record_*` rc.2",
+   "sources": [
+    "crates/shell/src/platform_services/mod.rs:220-229@rc.2",
+    "crates/shell/src/audio_service/mod.rs:156-177,407-451@rc.2",
+    "crates/shell/src/platform_services/mod.rs:119-128@rc.1"
+   ]
+  },
+  {
+   "family": "model",
+   "served_to": "store",
+   "served_to_detail": "Any admitted app (installed or system) whose manifest lists `model`: from rc.1 the shell's digest-checked admitted bundle (set_model_grants, root must match); at beta.1 and beta.2 the manifest file next to the host dir (manifest_grants). complete and budget since beta.1, with no descriptor; image, audio, embeddings, video, video.status, video.cancel, capabilities since rc.1, described (agent access allowed). Platforms are the media descriptors; complete and budget register on the same six by gate.",
+   "capability": [
+    "model"
+   ],
+   "platforms": [
+    "android",
+    "ios",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.1",
+   "sources": [
+    "crates/shell/src/apps.rs:223-230@rc.1",
+    "apps/ai-providers/host-service/src/complete/mod.rs:706-727@rc.1",
+    "apps/ai-providers/host-service/src/complete/media/mod.rs:286-299@rc.1",
+    "apps/ai-providers/host-service/src/complete/media/mod.rs:757-766@rc.1",
+    "apps/ai-providers/host-service/src/complete/mod.rs:697-700@beta.1",
+    "apps/ai-providers/host-service/src/complete/mod.rs:411@beta.1"
+   ]
+  },
+  {
+   "family": "news",
+   "served_to": "system-only",
+   "served_to_detail": "may_call: app id starts with `os.`. Methods list, read, topics.get, topics.set, refresh, sources, feeds.import, notify.",
+   "capability": [
+    "news"
+   ],
+   "platforms": [
+    "android",
+    "ios",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.1",
+   "sources": [
+    "apps/news/host-service/src/lib.rs:278-279@rc.1",
+    "apps/news/host-service/src/lib.rs:697-740@rc.1",
+    "apps/news/host-service/src/lib.rs:278-279@beta.1",
+    "crates/shell/src/apps.rs:328-350@rc.1"
+   ]
+  },
+  {
+   "family": "octos",
+   "served_to": "store",
+   "served_to_detail": "Any contained app; per call the person's consent for that app (the shipped gate) and the exact octos.* method in its manifest. No os.* check. Registered only where the shell hosts the octos kernel (cfg(kernel) plus a configured kernel source); iOS has no supported kernel source.",
+   "capability": [
+    "octos.session.open",
+    "octos.session.history",
+    "octos.turn.start",
+    "octos.turn.interrupt"
+   ],
+   "platforms": [
+    "android",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.1",
+   "sources": [
+    "crates/ai-host/src/contained.rs:484-522@rc.1",
+    "crates/ai-host/src/contained.rs:133-143@rc.1",
+    "crates/ai-host/src/lib.rs:351-370@rc.1",
+    "crates/ai-host/src/lib.rs:126-138@rc.1",
+    "crates/ai-host/src/contained.rs:455-493@beta.1",
+    "AH:crates/app-contract/src/manifest.rs:202-205@ba36df05"
+   ]
+  },
+  {
+   "family": "pdf",
+   "served_to": "system-only",
+   "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `pdf` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified). Desktop rc.2 ships the engine as a system service (the ten newer engines expose their tools to the system assistant); App Hub main lists the name as a declarable capability, but rc.2's pinned admission (95e4831a) does not know it, so no store app can declare or reach it.",
+   "capability": "pdf (App Hub main only)",
+   "platforms": [
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "rc.2 (system assistant only)",
+   "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
+    "apps/pdf/host-service/src/lib.rs:43-44@main",
+    "apps/pdf/host-service/src/lib.rs:54-61@main",
+    "crates/shell/src/apps.rs:318-319@main"
+   ],
+   "ref": "desktop-v0.1.0-rc.2 (4ccf8e06); App Hub main 28745c0 for the capability name"
+  },
+  {
+   "family": "photo",
+   "served_to": "system-only",
+   "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `photo` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified). Desktop rc.2 ships the engine as a system service (the ten newer engines expose their tools to the system assistant); App Hub main lists the name as a declarable capability, but rc.2's pinned admission (95e4831a) does not know it, so no store app can declare or reach it.",
+   "capability": "photo (App Hub main only)",
+   "platforms": [
+    "android",
+    "ios",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "rc.2 (system assistant only)",
+   "sources": [
+    "apps/photo/host-service/src/lib.rs:43-45@main",
+    "apps/photo/host-service/src/lib.rs:62-71@main",
+    "crates/shell/src/apps.rs:278-279@main"
+   ],
+   "ref": "desktop-v0.1.0-rc.2 (4ccf8e06); App Hub main 28745c0 for the capability name"
+  },
+  {
+   "family": "photos",
+   "served_to": "per-app",
+   "served_to_detail": "os.photos only. beta.1 to rc.1: the notice service, photos.notify only. main: os.photos's own service under feature app-hub, photos.info (photo engine, area <host dir>/photo) and photos.notify. os.photos reaches it as its own namespace and does not declare `photos`; `photos` is declarable from contract 1.5.0 and passes the isolate gate, but makes no store app a caller.",
+   "capability": [
+    "photos"
+   ],
+   "platforms": [
+    "android",
+    "ios",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.1",
+   "sources": [
+    "crates/shell/src/glance_notice.rs:118-155@rc.1",
+    "crates/shell/src/apps.rs:273@rc.1",
+    "apps/photo/host-service/src/lib.rs:96-123@main",
+    "crates/shell/src/apps.rs:283-287@main",
+    "crates/shell/src/host_tools/script_apps.rs:333-341@main",
+    "AH:crates/app-contract/src/manifest.rs:91-92@ba36df05"
+   ]
+  },
+  {
+   "family": "runtime",
+   "served_to": "store",
+   "served_to_detail": "App Hub built-in, answered in dispatch before the service registry; no caller check beyond the isolate's capability gate. Methods runtime.list and runtime.describe, agent access allowed. Describes implemented APIs; grants nothing.",
+   "capability": [
+    "runtime"
+   ],
+   "platforms": [
+    "android",
+    "ios",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux",
+    "web"
+   ],
+   "since": "rc.1",
+   "sources": [
+    "AH:crates/appstore/src/services.rs:303-307@ba36df05",
+    "AH:crates/appstore/src/host_api.rs:47-54@ba36df05",
+    "AH:crates/appstore/src/host_api.rs:93-105@ba36df05",
+    "AH:crates/app-contract/src/manifest.rs:42-43@ba36df05"
+   ]
+  },
+  {
+   "family": "sheet",
+   "served_to": "system-only",
+   "served_to_detail": "may_call: os.* or the native Sheets app id `sheets` (a reserved name, so never a store app). No manifest can declare `sheet` (not in KNOWN_CAPABILITIES at ba36df05); the live route is the Sheets agent's sheets.* tools, renamed to sheet.* by the shell. Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified). Desktop rc.2 ships the engine as a system service (the ten newer engines expose their tools to the system assistant); App Hub main lists the name as a declarable capability, but rc.2's pinned admission (95e4831a) does not know it, so no store app can declare or reach it.",
+   "capability": "sheet (App Hub main only)",
+   "platforms": [
+    "android",
+    "ios",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "rc.2 (system assistant only)",
+   "sources": [
+    "apps/sheets/host-service/src/lib.rs:70-72@main",
+    "apps/sheets/host-service/src/lib.rs:90-99@main",
+    "crates/shell/src/apps.rs:268-276@main",
+    "crates/shell/src/host_tools/engines.rs:19-52@main",
+    "AH:crates/app-contract/src/manifest.rs:622-625@ba36df05"
+   ],
+   "ref": "desktop-v0.1.0-rc.2 (4ccf8e06); App Hub main 28745c0 for the capability name"
+  },
+  {
+   "family": "sound",
+   "served_to": "system-only",
+   "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `sound` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified). Desktop rc.2 ships the engine as a system service (the ten newer engines expose their tools to the system assistant); App Hub main lists the name as a declarable capability, but rc.2's pinned admission (95e4831a) does not know it, so no store app can declare or reach it.",
+   "capability": "sound (App Hub main only)",
+   "platforms": [
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "rc.2 (system assistant only)",
+   "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
+    "apps/sound/host-service/src/lib.rs:44-45@main",
+    "apps/sound/host-service/src/lib.rs:55-62@main",
+    "crates/shell/src/apps.rs:302-303@main"
+   ],
+   "ref": "desktop-v0.1.0-rc.2 (4ccf8e06); App Hub main 28745c0 for the capability name"
+  },
+  {
+   "family": "vector",
+   "served_to": "system-only",
+   "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `vector` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified). Desktop rc.2 ships the engine as a system service (the ten newer engines expose their tools to the system assistant); App Hub main lists the name as a declarable capability, but rc.2's pinned admission (95e4831a) does not know it, so no store app can declare or reach it.",
+   "capability": "vector (App Hub main only)",
+   "platforms": [
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "rc.2 (system assistant only)",
+   "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
+    "apps/vector/host-service/src/lib.rs:43-44@main",
+    "apps/vector/host-service/src/lib.rs:54-61@main",
+    "crates/shell/src/apps.rs:315-316@main"
+   ],
+   "ref": "desktop-v0.1.0-rc.2 (4ccf8e06); App Hub main 28745c0 for the capability name"
+  },
+  {
+   "family": "wasm",
+   "served_to": "store",
+   "served_to_detail": "Any admitted app whose admitted manifest grants `wasm`; functions come only from the caller's own bundle. Desktop rc.2 serves it on macOS and Linux (feature wasm-functions, on by default); its Windows build leaves the service out, as do iOS and OpenHarmony. Standard Android Home source builds serve it; no released Home build does. rc.1 served it only with the non-default feature wasm-lab, which its packaging did not enable.",
+   "capability": [
+    "wasm"
+   ],
+   "platforms": [
+    "android",
+    "macos",
+    "linux"
+   ],
+   "since": "rc.2 (desktop macOS/Linux)",
+   "sources": [
+    "crates/shell/src/wasm_service.rs:116-121@rc.2",
+    "crates/shell/src/apps.rs:321-322@rc.2",
+    "crates/shell/build.rs:37-41@rc.2",
+    "desktop/Cargo.toml:52@rc.2",
+    "crates/shell/src/apps.rs:268-270@rc.1",
+    "crates/shell/Cargo.toml:166-168@rc.1"
+   ]
+  },
+  {
+   "family": "word",
+   "served_to": "system-only",
+   "served_to_detail": "may_call: app id starts with `os.`. No manifest can declare `word` (not in KNOWN_CAPABILITIES at ba36df05). Registered under `feature = \"app-hub\"`, which both packages enable by default, so by the gates on all six native targets; the code comment says desktop only and ADR 0013 leaves phone packaging open (phone unverified). Desktop rc.2 ships the engine as a system service (the ten newer engines expose their tools to the system assistant); App Hub main lists the name as a declarable capability, but rc.2's pinned admission (95e4831a) does not know it, so no store app can declare or reach it.",
+   "capability": "word (App Hub main only)",
+   "platforms": [
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "rc.2 (system assistant only)",
+   "sources": [
+    "OctoSense@f0bf8ca7:crates/shell/Cargo.toml (craft-engines)",
+    "OctoSense@f0bf8ca7:tools/check-shell-graph.sh",
+    "OctoSense@f0bf8ca7:tools/native_apps.py (SHELL_BASE_DEFAULT desktop)",
+    "apps/word/host-service/src/lib.rs:40-41@main",
+    "apps/word/host-service/src/lib.rs:51-58@main",
+    "crates/shell/src/apps.rs:289-290@main"
+   ],
+   "ref": "desktop-v0.1.0-rc.2 (4ccf8e06); App Hub main 28745c0 for the capability name"
+  },
+  {
+   "family": "youtube",
+   "served_to": "per-app",
+   "served_to_detail": "The notice service: youtube.notify only, os.youtube only. `youtube` is declarable from contract 1.5.0 but no service serves a store app.",
+   "capability": [
+    "youtube"
+   ],
+   "platforms": [
+    "android",
+    "ios",
+    "openharmony",
+    "macos",
+    "windows",
+    "linux"
+   ],
+   "since": "beta.1",
+   "sources": [
+    "crates/shell/src/glance_notice.rs:118-155@rc.1",
+    "crates/shell/src/glance_notice.rs:120-157@main",
+    "AH:crates/app-contract/src/manifest.rs:93@ba36df05"
+   ]
+  }
+ ]
+}
