@@ -3,12 +3,15 @@
 What a script app's `main.splash` can use when it runs in a policed isolate:
 App Hub's `card-host` and the shells' Card runner. Everything here was read in
 the source of OctoSense-org/makepad `32d6415f` and of App Hub. This
-repository now pins makepad `a772b370`, which includes #110–#116 and has no
+repository now pins makepad `d653bc44`, which includes #110–#116, has no
 per-app URL, media, socket or instruction-budget gate
-([makepad#117](https://github.com/OctoSense-org/makepad/pull/117),
-[OctoSense#450](https://github.com/OctoSense-org/OctoSense/issues/450));
-the URL, media, socket and cumulative instruction-budget rules described
-below are those of `32d6415f`. Behavior marked **✓ run** was observed in
+([makepad#117](https://github.com/OctoSense-org/makepad/pull/117)), and no
+capability check before `host.request`
+([makepad#118](https://github.com/OctoSense-org/makepad/pull/118),
+[OctoSense#450](https://github.com/OctoSense-org/OctoSense/issues/450)).
+The URL, media, socket, cumulative instruction-budget and `host.request`
+capability rules described below are those of `32d6415f`. Behavior marked
+**✓ run** was observed in
 `card-host` on macOS. Idioms come from the system apps (OctoSense
 `apps/<name>/bundle/main.splash`), which are working code.
 

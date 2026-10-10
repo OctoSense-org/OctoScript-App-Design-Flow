@@ -393,10 +393,12 @@ Two version differences matter when you test:
 - The `card-host` and `card-studio` you build for this repository (both
   App Hub tools) use the runtime that
   [`native-runtime.lock.json`](../native-runtime.lock.json) pins:
-  OctoScript-Makepad `b0960902`, which pins OctoScript `2e37d9e6`. That
+  OctoScript-Makepad `6cf2d90a`, which pins OctoScript `2e37d9e6`. That
   runtime checks `sys.digest`, `model-copy` in text slots, `sys.chat` and
-  `ChatEntry`, and has no per-app URL, media, socket or instruction-budget
-  gate ([makepad#117](https://github.com/OctoSense-org/makepad/pull/117),
+  `ChatEntry`. It has no per-app URL, media, socket or instruction-budget
+  gate ([makepad#117](https://github.com/OctoSense-org/makepad/pull/117)),
+  and no capability check before `host.request`
+  ([makepad#118](https://github.com/OctoSense-org/makepad/pull/118),
   [OctoSense#450](https://github.com/OctoSense-org/OctoSense/issues/450)).
   The shells use the same OctoScript, but
   `desktop-v0.1.0-beta.2` pins the older OctoScript-Makepad `aa80f72c`,
