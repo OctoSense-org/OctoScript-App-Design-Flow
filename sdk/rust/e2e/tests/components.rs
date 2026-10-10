@@ -7,10 +7,10 @@
 //! date), or for markdown-tools takes the file `OCTOSENSE_COMPONENT_WASM`
 //! names.
 //!
-//! Phase 3's two imports are linked as OctoSense links them, with its rules
-//! copied here: `wasi:http`, whose requests reach only the hosts the test
-//! grants ([`Hosts`]), and `octosense:host`, whose calls reach fake host
-//! services ([`Services`]).
+//! Phase 3's two imports are linked as OctoSense links them, with its hooks
+//! copied here: `wasi:http`, whose requests reach any host and end with the
+//! call's deadline ([`Network`]), and `octosense:host`, whose calls reach
+//! fake host services ([`Services`]).
 
 use std::collections::BTreeSet;
 use std::future::Future;
@@ -18,7 +18,7 @@ use std::io::{BufRead, BufReader, Read, Write};
 use std::net::{SocketAddr, TcpListener, TcpStream};
 use std::path::{Path, PathBuf};
 use std::process::Command;
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 use wasmtime::component::types::{ComponentItem, Type};
 use wasmtime::component::{Component, Func, Instance, Linker, ResourceTable, Val};
@@ -33,8 +33,8 @@ struct State {
     wasi: WasiCtx,
     table: ResourceTable,
     http: WasiHttpCtx,
-    /// The hosts its `wasi:http` requests may reach, and what it was refused.
-    hosts: Hosts,
+    /// The running call's deadline, for the requests it sends.
+    network: Network,
     /// Its app's host services (`octosense:host`), when the test gives some.
     services: Option<Services>,
 }
@@ -53,82 +53,22 @@ impl WasiHttpView for State {
         WasiHttpCtxView {
             ctx: &mut self.http,
             table: &mut self.table,
-            hooks: &mut self.hosts,
+            hooks: &mut self.network,
         }
     }
 }
 
-/// OctoSense's rule for a component's requests (ADR 0014 phase 3, its
-/// `crates/wasm-host/src/component/net.rs`): a listed host, in any case and
-/// on any port, over HTTPS, and never this device or its local network,
-/// unless the run allows a local server (`local`, OctoSense's
-/// `Grants::http_local`: tests only; then plain HTTP too). Any other request
-/// fails inside the component with `HTTP-request-denied`, and the refusal is
-/// recorded as OctoSense logs it.
-struct Hosts {
-    hosts: Vec<String>,
-    local: bool,
-    refused: Vec<String>,
-}
-
-impl Hosts {
-    fn allows(&self, uri: &http::Uri) -> Result<(), &'static str> {
-        const NOT_LISTED: &str = "it is not one of the app's network hosts";
-        let host = uri.host().ok_or(NOT_LISTED)?.to_ascii_lowercase();
-        if !self
-            .hosts
-            .iter()
-            .any(|listed| listed.eq_ignore_ascii_case(&host))
-        {
-            return Err(NOT_LISTED);
-        }
-        let local = is_local(&host);
-        if local && !self.local {
-            return Err("it is this device or its local network, which a component never reaches");
-        }
-        if uri.scheme() != Some(&http::uri::Scheme::HTTPS) && !(local && self.local) {
-            return Err("it is plain HTTP; a component's requests use HTTPS");
-        }
-        Ok(())
-    }
-}
-
-/// OctoSense's `is_local`: loopback, private, link-local and similar
-/// addresses, and names that are not public ones.
-fn is_local(host: &str) -> bool {
-    let bare = host.trim_start_matches('[').trim_end_matches(']');
-    if let Ok(ip) = bare.parse::<std::net::IpAddr>() {
-        return match ip {
-            std::net::IpAddr::V4(v4) => {
-                let [a, b, ..] = v4.octets();
-                v4.is_loopback()
-                    || v4.is_private()
-                    || v4.is_link_local()
-                    || v4.is_unspecified()
-                    || v4.is_broadcast()
-                    || v4.is_documentation()
-                    || v4.is_multicast()
-                    || a == 0
-                    || (a == 100 && (64..128).contains(&b))
-            }
-            std::net::IpAddr::V6(v6) => {
-                let first = v6.segments()[0];
-                v6.is_loopback()
-                    || v6.is_unspecified()
-                    || v6.is_multicast()
-                    || (first & 0xfe00) == 0xfc00
-                    || (first & 0xffc0) == 0xfe80
-            }
-        };
-    }
-    let last = host.rsplit('.').next().unwrap_or("");
-    let numeric = last.bytes().all(|b| b.is_ascii_digit()) || last.starts_with("0x");
-    numeric
-        || !host.contains('.')
-        || host == "localhost"
-        || [".localhost", ".internal", ".local", ".lan", ".home.arpa"]
-            .iter()
-            .any(|suffix| host.ends_with(suffix))
+/// OctoSense's hook for a component's requests (ADR 0014 phase 3, its
+/// `crates/wasm-host/src/component/net.rs`). It refuses nothing: an app's
+/// network declarations (`net`, `network.hosts`) are shown at install and
+/// not enforced while it runs (OctoSense's ruling of 8 October 2026), so a
+/// request reaches any host, over HTTPS or plain HTTP. A request waits for
+/// the network outside the guest, where the deadline's epoch check cannot
+/// end it, so its timeouts are clamped to what is left of the call.
+#[derive(Debug, Default)]
+struct Network {
+    /// The running call's deadline, set for every call.
+    deadline: Option<Instant>,
 }
 
 type Io = Box<dyn Future<Output = Result<(), wasmtime_wasi_http::Error>> + Send>;
@@ -136,7 +76,7 @@ type Sent = Box<
     dyn Future<Output = Result<(http::Response<WasiBody>, Io), wasmtime_wasi_http::Error>> + Send,
 >;
 
-impl WasiHttpHooks for Hosts {
+impl WasiHttpHooks for Network {
     fn send_request(
         &mut self,
         request: http::Request<WasiBody>,
@@ -144,30 +84,11 @@ impl WasiHttpHooks for Hosts {
         fut: Io,
     ) -> Sent {
         _ = fut;
-        let allowed = self.allows(request.uri());
-        if let Err(why) = allowed {
-            let authority = request.uri().authority().map(|a| a.to_string());
-            self.refused.push(format!(
-                "a request to {} was refused: {why}",
-                authority.unwrap_or_default()
-            ));
-        }
-        let allowed = allowed.is_ok();
+        let left = self
+            .deadline
+            .map(|deadline| deadline.saturating_duration_since(Instant::now()));
         Box::new(async move {
-            if !allowed {
-                return Err(wasmtime_wasi_http::Error::HttpRequestDenied);
-            }
-            // OctoSense clamps a request's timeouts to what is left of its
-            // call (10 s); these tests bound each request by 10 s.
-            let clamp = |asked: Option<Duration>| {
-                Some(asked.map_or(Duration::from_secs(10), |a| a.min(Duration::from_secs(10))))
-            };
-            let options = options.unwrap_or_default();
-            let options = RequestOptions {
-                connect_timeout: clamp(options.connect_timeout),
-                first_byte_timeout: clamp(options.first_byte_timeout),
-                between_bytes_timeout: clamp(options.between_bytes_timeout),
-            };
+            let options = clamped(options.unwrap_or_default(), left);
             let (response, io) =
                 wasmtime_wasi_http::default_send_request(request, Some(options)).await?;
             Ok((
@@ -177,6 +98,25 @@ impl WasiHttpHooks for Hosts {
         })
     }
 }
+
+/// `options` with no timeout longer than `left` (and `left` where it sets
+/// none).
+fn clamped(options: RequestOptions, left: Option<Duration>) -> RequestOptions {
+    let clamp = |asked: Option<Duration>| match (asked, left) {
+        (Some(asked), Some(left)) => Some(asked.min(left)),
+        (asked, left) => asked.or(left),
+    };
+    RequestOptions {
+        connect_timeout: clamp(options.connect_timeout),
+        first_byte_timeout: clamp(options.first_byte_timeout),
+        between_bytes_timeout: clamp(options.between_bytes_timeout),
+    }
+}
+
+/// Each call's deadline here, which ends the requests it sends: what
+/// OctoSense gives a call of a component that imports `wasi:http` (others
+/// get 2 s, and send no request).
+const NETWORK_DEADLINE: Duration = Duration::from_secs(10);
 
 /// Fake host services behind `octosense:host`, held to OctoSense's rules
 /// (ADR 0014 phase 3, its `crates/shell/src/wasm_service.rs`): an app calls
@@ -291,6 +231,8 @@ struct Loaded {
     component: Component,
     engine: Engine,
     stderr: MemoryOutputPipe,
+    /// How long each call may take, which also ends its requests.
+    deadline: Duration,
 }
 
 fn load(storage: &Path) -> Loaded {
@@ -298,7 +240,7 @@ fn load(storage: &Path) -> Loaded {
 }
 
 fn load_component(storage: &Path, package: &str, file: &str) -> Loaded {
-    load_with(storage, package, file, &[], None)
+    load_with(storage, package, file, None)
 }
 
 /// A component compiled for a fresh engine.
@@ -316,15 +258,8 @@ fn compile(package: &str, file: &str) -> (Engine, Component) {
     (engine, component)
 }
 
-/// Loads a component whose requests may reach `hosts`, and whose host
-/// services are `services`.
-fn load_with(
-    storage: &Path,
-    package: &str,
-    file: &str,
-    hosts: &[&str],
-    services: Option<Services>,
-) -> Loaded {
+/// Loads a component whose host services are `services`.
+fn load_with(storage: &Path, package: &str, file: &str, services: Option<Services>) -> Loaded {
     let (engine, component) = compile(package, file);
     let stderr = MemoryOutputPipe::new(64 << 10);
     let mut wasi = WasiCtxBuilder::new();
@@ -340,12 +275,7 @@ fn load_with(
             wasi: wasi.build(),
             table: ResourceTable::new(),
             http: WasiHttpCtx::new(),
-            hosts: Hosts {
-                hosts: hosts.iter().map(|h| h.to_string()).collect(),
-                // The tests' server is on this device: allowed here only.
-                local: true,
-                refused: Vec::new(),
-            },
+            network: Network::default(),
             services,
         },
     );
@@ -356,6 +286,7 @@ fn load_with(
         component,
         engine,
         stderr,
+        deadline: NETWORK_DEADLINE,
     }
 }
 
@@ -364,6 +295,8 @@ fn call(loaded: &mut Loaded, name: &str, args: &[Val]) -> Val {
         .instance
         .get_func(&mut loaded.store, name)
         .unwrap_or_else(|| panic!("no export {name}"));
+    // As OctoSense sets it for every call.
+    loaded.store.data_mut().network.deadline = Some(Instant::now() + loaded.deadline);
     let mut results = vec![Val::Bool(false)];
     func.call(&mut loaded.store, args, &mut results).unwrap();
     results.remove(0)
@@ -674,6 +607,19 @@ fn serve() -> SocketAddr {
     address
 }
 
+/// A local server that takes every connection and never answers it.
+fn serve_nothing() -> SocketAddr {
+    let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+    let address = listener.local_addr().unwrap();
+    std::thread::spawn(move || {
+        let mut held = Vec::new();
+        for stream in listener.incoming().flatten() {
+            held.push(stream);
+        }
+    });
+    address
+}
+
 fn answer(mut stream: TcpStream) {
     let mut reader = BufReader::new(stream.try_clone().unwrap());
     let mut line = String::new();
@@ -740,18 +686,15 @@ fn error(val: Val) -> String {
     }
 }
 
+/// `wasi:http` reaches any host, as in OctoSense's runtime: an app's network
+/// declarations are shown at install and not enforced while it runs
+/// (OctoSense's ruling of 8 October 2026), so no grant names a host.
 #[test]
-fn http_reaches_the_apps_own_hosts_and_nothing_else() {
+fn http_reaches_any_host() {
     let server = serve();
     let url = |path: &str| format!("http://{server}{path}");
     let dir = storage();
-    let mut c = load_with(
-        &dir,
-        "http-client",
-        "http_client.wasm",
-        &["127.0.0.1", "api.example.com"],
-        None,
-    );
+    let mut c = load_component(&dir, "http-client", "http_client.wasm");
     // A GET: its status, content type and body, with the path and query.
     assert_eq!(
         call(&mut c, "fetch", &[s(&url("/items?page=2"))]),
@@ -786,53 +729,49 @@ fn http_reaches_the_apps_own_hosts_and_nothing_else() {
         call(&mut c, "post-json", &[s(&url("/echo")), s(&json)]),
         page(200, "application/json", &json)
     );
-    // The same server under another name is another host: refused inside
-    // the component, which says so.
+    // The same server under another name is reached too: this device, over
+    // plain HTTP, by address (above) and by name.
     let port = server.port();
-    let refused = error(call(
-        &mut c,
-        "fetch",
-        &[s(&format!("http://localhost:{port}/items"))],
-    ));
     assert_eq!(
-        refused,
-        format!(
-            "the host refused the request to http://localhost:{port}/items: its host is not in the \
-             app's network.hosts, is this device or its local network, or the request is plain \
-             HTTP (ErrorCode::HttpRequestDenied)"
-        )
+        call(
+            &mut c,
+            "fetch",
+            &[s(&format!("http://localhost:{port}/items"))]
+        ),
+        page(200, "text/plain", "GET /items")
     );
-    // A listed host takes HTTPS only.
-    let plain = error(call(&mut c, "fetch", &[s("http://api.example.com/v1")]));
-    assert!(plain.contains("(ErrorCode::HttpRequestDenied)"), "{plain}");
-    assert_eq!(
-        c.store.data().hosts.refused,
-        [
-            format!("a request to localhost:{port} was refused: it is not one of the app's network hosts"),
-            "a request to api.example.com was refused: it is plain HTTP; a component's requests use HTTPS"
-                .to_string(),
-        ]
-    );
-    // As in a shell, which never allows a local server: a listed 127.0.0.1
-    // is this device, and refused.
-    c.store.data_mut().hosts.local = false;
-    let local = error(call(&mut c, "fetch", &[s(&url("/items"))]));
-    assert!(local.contains("(ErrorCode::HttpRequestDenied)"), "{local}");
-    assert_eq!(
-        c.store.data().hosts.refused.last().map(String::as_str),
-        Some(format!("a request to {server} was refused: it is this device or its local network, which a component never reaches").as_str())
-    );
-    c.store.data_mut().hosts.local = true;
     // A URL the SDK cannot send never reaches the host.
     let bad = error(call(&mut c, "fetch", &[s("ftp://api.example.com/x")]));
     assert_eq!(
         bad,
         "\"ftp://api.example.com/x\" is not an https:// or http:// URL"
     );
-    // With no hosts, a component reaches none.
-    let mut offline = load_with(&dir, "http-client", "http_client.wasm", &[], None);
-    let refused = error(call(&mut offline, "fetch", &[s(&url("/items"))]));
-    assert!(refused.contains("HttpRequestDenied"), "{refused}");
+    let _ = std::fs::remove_dir_all(dir);
+}
+
+/// A request waits outside the guest, where the deadline's epoch check
+/// cannot end it: its timeouts are clamped to the call's deadline, so a
+/// server that never answers ends the call instead of holding it.
+#[test]
+fn a_request_that_never_answers_ends_at_the_deadline() {
+    let silent = serve_nothing();
+    let dir = storage();
+    let mut c = load_component(&dir, "http-client", "http_client.wasm");
+    c.deadline = Duration::from_millis(800);
+    let started = Instant::now();
+    let failed = error(call(&mut c, "fetch", &[s(&format!("http://{silent}/"))]));
+    assert_eq!(
+        failed,
+        format!(
+            "the request to http://{silent}/ failed: the server did not answer in time \
+             (ErrorCode::ConnectionReadTimeout)"
+        )
+    );
+    assert!(
+        started.elapsed() < Duration::from_secs(5),
+        "ended after {:?}",
+        started.elapsed()
+    );
     let _ = std::fs::remove_dir_all(dir);
 }
 
@@ -840,13 +779,7 @@ fn http_reaches_the_apps_own_hosts_and_nothing_else() {
 fn a_component_calls_its_apps_granted_host_services() {
     let dir = storage();
     let services = Services::new("dev.example.texttools", &["wasm", "runtime", "notes"]);
-    let mut c = load_with(
-        &dir,
-        "host-services",
-        "host_services.wasm",
-        &[],
-        Some(services),
-    );
+    let mut c = load_with(&dir, "host-services", "host_services.wasm", Some(services));
     let ok = |text: &str| Val::Result(Ok(Some(Box::new(s(text)))));
     assert_eq!(
         call(&mut c, "host-apis", &[]),
@@ -874,7 +807,7 @@ fn a_component_calls_its_apps_granted_host_services() {
     assert_eq!(calls.len(), 5);
     assert_eq!(calls[1], ("notes.get".into(), r#"{"id": 1}"#.into()));
     // A host that gives a component no services.
-    let mut alone = load_with(&dir, "host-services", "host_services.wasm", &[], None);
+    let mut alone = load_component(&dir, "host-services", "host_services.wasm");
     assert_eq!(
         error(call(&mut alone, "host-apis", &[])),
         "this host gives a component no host services"

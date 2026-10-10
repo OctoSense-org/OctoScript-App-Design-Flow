@@ -15,14 +15,14 @@ pub mod functions {
 
 | 路径 | 内容 |
 | --- | --- |
-| [octosense-component/](octosense-component/src/lib.rs) | 组件依赖的 crate。它重新导出宏和 `wit-bindgen` 0.62，并提供 `log(line)`、[`http`](octosense-component/src/http.rs)（经 `wasi:http` 向应用自己的主机发请求，使用 WASI 0.2 的 `wasi` crate）和 [`host`](octosense-component/src/host.rs)（经 `octosense:host` 调用应用的宿主服务，其 WIT 即 OctoSense 的 [`octosense-host.wit`](octosense-component/wit/octosense-host.wit)）。只有调用了它们的组件才会导入对应的接口。 |
+| [octosense-component/](octosense-component/src/lib.rs) | 组件依赖的 crate。它重新导出宏和 `wit-bindgen` 0.62，并提供 `log(line)`、[`http`](octosense-component/src/http.rs)（经 `wasi:http` 向任何主机发 HTTP 请求，使用 WASI 0.2 的 `wasi` crate）和 [`host`](octosense-component/src/host.rs)（经 `octosense:host` 调用应用的宿主服务，其 WIT 即 OctoSense 的 [`octosense-host.wit`](octosense-component/wit/octosense-host.wit)）。只有调用了它们的组件才会导入对应的接口。 |
 | [octosense-component-macros/](octosense-component-macros/src/lib.rs) | `#[octosense_component::export]`。它根据模块中的 `pub fn`、`pub struct` 和 `pub enum` 写出 WIT world（名称用 kebab 形式），用 `wit_bindgen::generate!` 生成绑定，并在模块自己的类型与生成的类型之间转换。无法映射的类型会让构建失败，并说明改用什么。 |
 | [examples/markdown-tools/](examples/markdown-tools/src/lib.rs) | 一个未作修改的 crate（`pulldown-cmark`）、一个记录、一个枚举、经由 `std::fs` 访问的文件、时钟和一行日志。 |
 | [examples/type-tour/](examples/type-tour/src/lib.rs) | 双向的每一种类型映射、经由 `getrandom` 获取的随机数，以及在调用之间保留的状态。 |
 | [examples/template/](examples/template/src/lib.rs) | `tools/octo wasm new` 复制的 [templates/rust-component/src/lib.rs](../../templates/rust-component/src/lib.rs)，在这里作为成员构建。 |
 | [examples/http-client/](examples/http-client/src/lib.rs) | 用 `octosense_component::http` 发送 `GET` 和 `POST`，并通过它的请求构建器设置请求头和超时（ADR 0014 第 3 阶段）。 |
 | [examples/host-services/](examples/host-services/src/lib.rs) | 用 `octosense_component::host` 调用应用的宿主服务（ADR 0014 第 3 阶段）。 |
-| [e2e/](e2e/tests/components.rs) | 用普通的 cargo 为 `wasm32-wasip2` 构建这些示例，像 ADR 0014 的运行时一样在 Wasmtime 49 中以 WASI 0.2 加载，并调用每个函数。它像 OctoSense 第 3 阶段的运行时一样链接 `wasi:http`（`wasmtime-wasi-http` 49）和 `octosense:host`，并照搬其规则：请求发往本机的 HTTP/1.1 服务器，只能访问测试授予的主机；宿主调用由模拟的服务答复。 |
+| [e2e/](e2e/tests/components.rs) | 用普通的 cargo 为 `wasm32-wasip2` 构建这些示例，像 ADR 0014 的运行时一样在 Wasmtime 49 中以 WASI 0.2 加载，并调用每个函数。它像 OctoSense 第 3 阶段的运行时一样链接 `wasi:http`（`wasmtime-wasi-http` 49）和 `octosense:host`，并照搬其钩子：请求可以访问任何主机（这里是本机的 HTTP/1.1 服务器），并随这次调用的截止时间结束；宿主调用由模拟的服务答复。 |
 
 在本目录中运行测试，需要先安装目标（`rustup target add wasm32-wasip2`）：
 

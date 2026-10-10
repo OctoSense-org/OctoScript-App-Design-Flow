@@ -29,12 +29,13 @@ import subprocess
 COMPONENT_PREAMBLE = b"\0asm\x0d\x00\x01\x00"
 MODULE_PREAMBLE = b"\0asm\x01\x00\x00\x00"
 
-# The packages a component may import, each scoped to its app by the host
-# (ADR 0014); the same list as App Hub's ALLOWED_COMPONENT_IMPORTS.
-# wasi:filesystem needs the manifest's `storage` capability, and wasi:http
-# `net` with the hosts it reaches in `network.hosts` (phase 3). octosense:host
-# needs no grant of its own: it reaches only the host services the app is
-# granted (phase 3). A package name is matched whole.
+# The packages a component may import (ADR 0014); the same list as App Hub's
+# ALLOWED_COMPONENT_IMPORTS. wasi:filesystem reaches only the app's storage
+# folder and needs the manifest's `storage` capability. wasi:http needs `net`
+# and reaches any host: an app's network declarations are shown at install and
+# not enforced while it runs (OctoSense's ruling of 8 October 2026; phase 3).
+# octosense:host needs no grant of its own: it reaches only the host services
+# the app is granted (phase 3). A package name is matched whole.
 ALLOWED_IMPORTS = ("wasi:cli/", "wasi:clocks/", "wasi:filesystem/", "wasi:http/", "wasi:io/", "wasi:random/",
                    "octosense:host/")
 FILESYSTEM = "wasi:filesystem/"
@@ -617,7 +618,7 @@ def uses_files(imports):
 
 
 def uses_http(imports):
-    """Whether it imports wasi:http: requests to the app's network.hosts, with `net`."""
+    """Whether it imports wasi:http: the network, which the app declares with `net`."""
     return any(name.startswith(HTTP) for name in imports)
 
 
@@ -626,14 +627,13 @@ def uses_host_services(imports):
     return any(name.startswith(HOST_SERVICES) for name in imports)
 
 
-def reach(imports, hosts=()):
+def reach(imports):
     """What a component reaches, in App Hub's words for its reviewers
-    (`ComponentInfo::reach`). `hosts` are the app's network.hosts when the
-    manifest has `net`: a component reaches them only when it imports
-    wasi:http, and with no hosts, its requests reach nothing."""
+    (`ComponentInfo::reach`): "the clock, files in its app folder and the
+    network, but no other app"."""
     has = lambda prefix: any(name.startswith(prefix) for name in imports)  # noqa: E731
     files = uses_files(imports)
-    network = uses_http(imports) and bool(hosts)
+    network = uses_http(imports)
     reaches = []
     if has("wasi:clocks/"):
         reaches.append("the clock")
@@ -642,7 +642,7 @@ def reach(imports, hosts=()):
     if files:
         reaches.append("files in its app folder")
     if network:
-        reaches.append("HTTPS to " + ", ".join(hosts))
+        reaches.append("the network")
     if uses_host_services(imports):
         reaches.append("its app's host services")
     nothing_else = {

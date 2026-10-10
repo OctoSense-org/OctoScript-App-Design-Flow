@@ -1,5 +1,5 @@
-//! Outgoing HTTP from a component to the app's own hosts, over WASI 0.2's
-//! `wasi:http` (OctoSense ADR 0014, phase 3).
+//! Outgoing HTTP from a component, over WASI 0.2's `wasi:http` (OctoSense
+//! ADR 0014, phase 3).
 //!
 //! ```ignore
 //! use octosense_component::http;
@@ -21,19 +21,18 @@
 //!
 //! A request blocks until the whole response has arrived, and returns it
 //! whatever its status: a `404` is an `Ok` [`Response`]. An `Err` is a
-//! request that got no response (a URL it cannot send, a host the app may
-//! not reach, a connection or TLS failure, a timeout), as a readable string,
-//! so `?` passes it on as the call's error.
+//! request that got no response (a URL it cannot send, a host name not
+//! found, a connection or TLS failure, a timeout), as a readable string, so
+//! `?` passes it on as the call's error.
 //!
-//! The component imports `wasi:http` only when it calls this module. ADR 0014
-//! lets its requests reach only the hosts in the app's `network.hosts`, when
-//! the manifest has the `net` capability, and only over HTTPS; never this
-//! device or its local network (loopback, private and link-local addresses,
-//! `localhost`, single-label and `.local`, `.lan`, `.internal` names), even
-//! when listed. The host refuses any other request, and it fails with
-//! `the host refused the request to <url>: …` (`HTTP-request-denied`). A call
-//! of a component that may reach the network gets 10 s instead of 2 s, and
-//! each request's timeouts end with the call.
+//! The component imports `wasi:http` only when it calls this module, and its
+//! app must then declare the `net` capability (App Hub's gate refuses the
+//! bundle otherwise). Its requests reach any host, over HTTPS or plain HTTP,
+//! this device and its local network included: an app's network
+//! declarations (`net`, `network.hosts`) are shown at install and not
+//! enforced while it runs (OctoSense's ruling of 8 October 2026). A call of a
+//! component that imports `wasi:http` gets 10 s instead of 2 s, and each
+//! request's timeouts end with the call.
 //!
 //! Outside a component, such as in `cargo test` on your machine, every
 //! request fails with an error that says so.
@@ -79,9 +78,8 @@ pub struct Request {
 }
 
 impl Request {
-    /// A request with `method` (`"GET"`, `"PUT"`, …) to an `https://` URL
-    /// (`http://` is accepted here, but the host sends it only in tests and
-    /// developers' runs that allow a local server).
+    /// A request with `method` (`"GET"`, `"PUT"`, …) to an `https://` or
+    /// `http://` URL.
     pub fn new(method: &str, url: &str) -> Request {
         Request {
             method: method.to_string(),
@@ -373,13 +371,7 @@ mod component {
     /// Why a request got no response, readably, with the WASI error code.
     fn failure(url: &str, code: &ErrorCode) -> String {
         let why = match code {
-            ErrorCode::HttpRequestDenied => {
-                return format!(
-                    "the host refused the request to {url}: its host is not in the app's \
-                     network.hosts, is this device or its local network, or the request is \
-                     plain HTTP ({code:?})"
-                )
-            }
+            ErrorCode::HttpRequestDenied => "the host refused to send it",
             ErrorCode::DnsTimeout | ErrorCode::DnsError(_) | ErrorCode::DestinationNotFound => {
                 "its host name was not found"
             }

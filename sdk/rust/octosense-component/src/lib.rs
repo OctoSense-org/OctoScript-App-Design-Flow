@@ -44,8 +44,9 @@
 //! `/` through `std::fs`. Its stdout and stderr ([`log`]) become log lines.
 //! ADR 0014's phase 3 adds two more, each imported only by a component that
 //! calls it:
-//! - [`http`]: requests to the hosts in the app's `network.hosts`, over
-//!   HTTPS, when the manifest has the `net` capability;
+//! - [`http`]: HTTP requests to any host, in an app that declares the `net`
+//!   capability (an app's network declarations are shown at install and not
+//!   enforced while it runs);
 //! - [`host`]: the host services the app is granted, as its script calls
 //!   them with `host.request`.
 //!

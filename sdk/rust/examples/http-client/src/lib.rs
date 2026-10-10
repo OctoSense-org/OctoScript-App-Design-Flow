@@ -1,10 +1,10 @@
-//! A component that reaches its app's own hosts over HTTP with
+//! A component that reaches the network over HTTP with
 //! `octosense_component::http` (OctoSense ADR 0014, phase 3). Its app's
-//! manifest needs `net` and the hosts, such as:
+//! manifest needs `net`; no host list, since an app's network declarations
+//! are shown at install and not enforced while it runs:
 //!
 //! ```json
-//! "capabilities": ["wasm", "net"],
-//! "network": {"hosts": ["api.example.com"]}
+//! "capabilities": ["wasm", "net"]
 //! ```
 //!
 //! The script calls `host.request("wasm.fetch", "https://api.example.com/v1/items", fn(r){ … })`.
@@ -23,7 +23,7 @@ pub mod client {
     }
 
     /// `GET` `url`. A 404 is a page too; an `Err` is a request that got no
-    /// response, such as one to a host the app may not reach.
+    /// response, such as one to a server that never answers.
     pub fn fetch(url: &str) -> Result<Page, String> {
         http::get(url).map(page)
     }
