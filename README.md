@@ -307,6 +307,7 @@ Run `tools/octo <command> -h` for flags.
 | `shot <port> <out.png> [--settle S]` | Saves a PNG of the running window (`GET /g?raw=1`) once the app's widgets exist and two frames in a row match (at most `--settle`, 2 s by default). |
 | `check <bundle> [hub check flags]` | `hub stamp`, then `hub check --allow-unsigned`; exits nonzero on a refusal. Passes other flags, such as `--catalog`, to `hub check`. Does not restamp a sealed manifest: one that carries `integrity.github` or a legacy signature. A failed stamp returns its status at once and skips the gate. |
 | `package-help` | Prints the publish checklist. |
+| `wasm new <name> [--app DIR] [--sdk auto\|git\|path]`, `wasm build [--app DIR] [--crate DIR]`, `wasm doctor [--crate DIR]`, `wasm info <file.wasm> [--json]` | The app's own Rust code as WebAssembly components (OctoSense ADR 0014): `new` writes a crate in `<app>/components/<name>` from `templates/rust-component`; `build` builds it for `wasm32-wasip2`, refuses imports no host gives a component, records the crates it is built from, copies it to `bundle/fns/<name>.wasm` and adds what the manifest needs; `doctor` checks Rust, the target and a crate's dependencies, and names what OctoSense already provides; `info` prints a function file's imports, typed exports and crate list. No OctoSense build runs components yet ([docs/RUST.md](docs/RUST.md)). |
 
 `doctor` prints every place it looks for `hub` and `card-host`;
 [QUICKSTART §2](docs/QUICKSTART.md#2-build-hub-and-card-host) lists the
@@ -607,7 +608,7 @@ public-catalog sample installation and update passed on macOS; see the
 | [docs/SCRIPT-API.md](docs/SCRIPT-API.md) | The Splash language and every API a contained app may call |
 | [docs/CAPABILITIES.md](docs/CAPABILITIES.md) | Each capability: what it unlocks, what the person sees, the rules |
 | [docs/HOST-SERVICES.md](docs/HOST-SERVICES.md) | `host.request`, sheets, "secrets are the host's", adding a service |
-| [docs/RUST.md](docs/RUST.md) ([简体中文](docs/RUST.zh-CN.md)) | An app's own Rust code: Wasm functions, and the routes for device APIs, the network, files and native code |
+| [docs/RUST.md](docs/RUST.md) ([简体中文](docs/RUST.zh-CN.md)) | An app's own Rust code: components (ordinary Rust, `tools/octo wasm`) and core modules, and the routes for device APIs, the network, files and native code |
 | [docs/AI-SERVICES.md](docs/AI-SERVICES.md) ([简体中文](docs/AI-SERVICES.zh-CN.md)) | OctoSense's assistant (octos): what an app can use today, app agents and their tools, Glance cards and in-card chat (`sys.chat`) |
 | [docs/MODEL-VALIDATION.md](docs/MODEL-VALIDATION.md) ([简体中文](docs/MODEL-VALIDATION.zh-CN.md)) | Checking what a coding agent built: native input and capture, review loops, repair |
 | [docs/PUBLISHING.md](docs/PUBLISHING.md) | From a working app to a publication issue and GitHub-attested release: final listing, screenshots, gate/review, workflow and Hub approval |

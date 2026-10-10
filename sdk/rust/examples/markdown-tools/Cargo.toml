@@ -1,0 +1,12 @@
+[package]
+name = "markdown-tools"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+octosense-component = { path = "../../octosense-component" }
+pulldown-cmark = { version = "0.13", default-features = false, features = ["html"] }

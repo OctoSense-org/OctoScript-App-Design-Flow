@@ -199,6 +199,7 @@ tools/octo package-help
 | `shot <port> <out.png> [--settle S]` | 等应用的控件出现、且连续两帧相同（最多 `--settle`，默认 2 秒）后，保存运行中窗口的 PNG（`GET /g?raw=1`）。 |
 | `check <bundle> [hub check flags]` | 先 `hub stamp`，再 `hub check --allow-unsigned`；检查不通过时以非零退出码退出。其他参数（如 `--catalog`）原样传给 `hub check`。不会为已封存（带有 `integrity.github` 或旧格式签名）的清单重新写入摘要。写入摘要失败时，立即返回其退出码，不运行准入检查。 |
 | `package-help` | 输出发布检查表。 |
+| `wasm new <name> [--app DIR] [--sdk auto\|git\|path]`、`wasm build [--app DIR] [--crate DIR]`、`wasm doctor [--crate DIR]`、`wasm info <file.wasm> [--json]` | 把应用自己的 Rust 代码做成 WebAssembly 组件（OctoSense ADR 0014）：`new` 根据 `templates/rust-component` 在 `<app>/components/<name>` 写出 crate；`build` 为 `wasm32-wasip2` 构建它，拒绝宿主不提供给组件的导入，记录构建它所用的 crate，把它复制到 `bundle/fns/<name>.wasm`，并补上清单所需的内容；`doctor` 检查 Rust、目标和 crate 的依赖，并指出 OctoSense 已经提供的功能；`info` 输出函数文件的导入、带类型的导出和 crate 清单。目前还没有任何 OctoSense 构建运行组件（见 [docs/RUST.zh-CN.md](docs/RUST.zh-CN.md)）。 |
 
 `doctor` 会列出它查找 `hub` 和 `card-host` 的每个位置；查找顺序（包括 Windows 上的 `.exe` 文件名）见 [QUICKSTART §2](docs/QUICKSTART.zh-CN.md#2-构建-hub-和-card-host)。App Hub 的 [`hub` 命令参考](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.zh-CN.md#hub-命令)列出了所有 `hub` 命令（包括 `tools/octo` 封装的那些），以及每个命令由谁运行、用在提交的哪一步。
 
@@ -343,7 +344,7 @@ curl -s 127.0.0.1:8161/quit; curl -s 127.0.0.1:8162/quit
 | [docs/SCRIPT-API.md](docs/SCRIPT-API.md) | Splash 语言及隔离应用可调用的全部 API |
 | [docs/CAPABILITIES.zh-CN.md](docs/CAPABILITIES.zh-CN.md)（[English](docs/CAPABILITIES.md)） | 每项能力：解锁什么、用户看到什么、规则 |
 | [docs/HOST-SERVICES.zh-CN.md](docs/HOST-SERVICES.zh-CN.md)（[English](docs/HOST-SERVICES.md)） | `host.request`、面板、“密钥归宿主所有”、新增宿主服务 |
-| [docs/RUST.zh-CN.md](docs/RUST.zh-CN.md)（[English](docs/RUST.md)） | 应用自己的 Rust 代码：Wasm 函数，以及设备 API、网络、文件和原生代码各走哪条路 |
+| [docs/RUST.zh-CN.md](docs/RUST.zh-CN.md)（[English](docs/RUST.md)） | 应用自己的 Rust 代码：组件（普通的 Rust，`tools/octo wasm`）和核心模块，以及设备 API、网络、文件和原生代码各走哪条路 |
 | [docs/AI-SERVICES.zh-CN.md](docs/AI-SERVICES.zh-CN.md)（[English](docs/AI-SERVICES.md)） | OctoSense 的助手（octos）：应用目前能用什么、应用 Agent 及其工具、速览卡片和卡片内对话（`sys.chat`） |
 | [docs/MODEL-VALIDATION.zh-CN.md](docs/MODEL-VALIDATION.zh-CN.md)（[English](docs/MODEL-VALIDATION.md)） | 检查编码 Agent 做出的应用：原生输入与截图、评审循环、修复 |
 | [docs/PUBLISHING.zh-CN.md](docs/PUBLISHING.zh-CN.md)（[English](docs/PUBLISHING.md)） | 从能运行的应用到提交 issue 和带 GitHub 证明的 Release：定稿商店信息、截图、准入/审核、工作流与 Hub 批准 |

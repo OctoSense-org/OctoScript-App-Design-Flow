@@ -27,6 +27,29 @@ jobs:
       - name: Starter and executable discovery regressions
         run: python -m unittest discover -s tools -p "test_*.py" -v
 
+  rust-sdk:
+    # The Rust SDK for app components (OctoSense ADR 0014): the macro, the
+    # example components built for wasm32-wasip2 and run in Wasmtime with
+    # WASI 0.2, then `octo wasm` reading them and building a new crate.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Rust with the wasm32-wasip2 target
+        run: |
+          rustup update stable --no-self-update
+          rustup default stable
+          rustup target add wasm32-wasip2
+      - name: Macro, examples and end-to-end tests
+        working-directory: sdk/rust
+        run: |
+          cargo fmt --all -- --check
+          cargo test --locked --workspace
+      - name: octo wasm with cargo and the built components
+        run: python -m unittest discover -s tools -p "test_*.py" -v
+
   flows:
     # macOS: the image library's OCR and the flows' native tooling are
     # macOS-only, and the tests are only verified there.

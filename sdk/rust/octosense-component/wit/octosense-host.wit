@@ -1,0 +1,14 @@
+package octosense:host@0.1.0;
+
+/// The app's host services, as its script's `host.request` reaches them:
+/// only the families its app is granted, and never a sheet or a prompt.
+interface services {
+  /// Calls `service` ("family.method") with JSON `args`: the service's JSON
+  /// answer, or why there is none.
+  request: func(service: string, args: string) -> result<string, string>;
+}
+
+/// What a component imports to reach them.
+world component-host {
+  import services;
+}

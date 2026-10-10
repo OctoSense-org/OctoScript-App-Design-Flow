@@ -14,7 +14,8 @@ when you review this repository's documentation.
 ## What this repository is, and is not
 
 This repository holds the flows (`flows/*/FLOW.md`), the developer docs
-(`docs/`), `tools/octo`, the template (`templates/script-app/`) and the
+(`docs/`), `tools/octo`, the templates (`templates/script-app/`,
+`templates/rust-component/`), the Rust component SDK (`sdk/rust/`) and the
 worked examples (`examples/`). Change anything else where it lives:
 
 | To change | Go to |
@@ -111,7 +112,7 @@ says who runs each one and when.
     login and protected writes are unsupported and fail closed. Android Google
     authorization remains unavailable.
   - A granted `implemented_by: "host-service"` tool maps to a reviewed
-    `host_method`. Capability, risk, private-data and account checks still apply.
+    `host_method`. Actual consent, risk, private-data and account checks still apply.
   - `implemented_by: "app"` requires `script-tools-v1`; the shell invokes the
     app's `app_tool` handler in its existing full-app isolate. A closed app
     returns `app_not_running` ([host API guide](docs/HOST-API-V1.md)).
@@ -123,15 +124,25 @@ says who runs each one and when.
     pass does not prove login, a model call or an external write. Keep a manual
     path and an honest missing-service state.
 
-- **Your own Rust code runs only as a Wasm function.** Compile it to a
-  WebAssembly module in `bundle/fns/` and request `wasm`; a bundle never
-  carries a native library. Standard OctoSense builds from `main` run
-  functions on macOS, Linux and Android; no release does yet, and builds
-  for Windows, iOS and OpenHarmony leave the runtime out. Every call gets a
-  fresh instance, so no state survives between calls. `card-host` answers
-  every call with `no service answers "wasm" on this device`. An isolated Wasm fixture is
-  not evidence that your app's functions work; test its exact bundle and host.
+- **Your own Rust code runs only as WebAssembly.** It goes in `bundle/fns/`
+  with `wasm` disclosed; a bundle never carries a native library.
   Follow [docs/RUST.md](docs/RUST.md).
+  - A **core module** (OctoSense ADR 0011) starts a fresh instance on each
+    call. Desktop 0.1.0-rc.2 runs modules on macOS and Linux. Current source
+    includes macOS, Windows, Linux, Android and OpenHarmony (Pulley), but
+    excludes iOS. Source inclusion is not native platform acceptance.
+  - A **component** (ADR 0014) is ordinary Rust built with this
+    repository's SDK: `tools/octo wasm new`, then `tools/octo wasm build`,
+    which also adds the required `wasm-components-v1` ABI and usage
+    disclosures (`storage` for files, `net` for HTTP). Missing disclosures
+    must not become execution gates. OctoSense #453 merged component,
+    HTTP and host-service integration; App Hub #186/#188 are also merged.
+    Compatible release and actual app acceptance remain separate.
+    Preserve app/account scope, quotas, consent and native reviews.
+  - `card-host` answers every call with
+    `no service answers "wasm" on this device`. An isolated Wasm fixture is
+    not evidence that your app's functions work; test its exact bundle and
+    host.
 - **Only needed capabilities.** Map each capability to something a screen
   does ([docs/CAPABILITIES.md](docs/CAPABILITIES.md)), and remove the rest.
 - **Check that a family serves store apps before you build on it.** The gate
@@ -153,8 +164,9 @@ says who runs each one and when.
   in `bundle/`. An app with its own agent adds `tools.json`, `AGENT.md`,
   `skills/` and the `.splash` Glance templates its tools publish
   ([An app's own agent](docs/AI-SERVICES.md#an-apps-own-agent)). An app with
-  Wasm functions adds `fns/*.wasm` ([docs/RUST.md](docs/RUST.md)). Notes, keys,
-  logs, review packets and `.local-state/` stay out.
+  Wasm functions adds `fns/*.wasm` ([docs/RUST.md](docs/RUST.md)); the Rust
+  crates that build them stay outside `bundle/`, in `components/`. Notes,
+  keys, logs, review packets and `.local-state/` stay out.
 - **Run headless.** Start apps with `tools/octo run … --hidden`, so you never
   take over the person's screen. This is Makepad's hidden-window mode: the app
   still needs a graphical session, but its window is never shown or focused,
