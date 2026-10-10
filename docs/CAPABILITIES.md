@@ -13,8 +13,8 @@ service.
 ## Current source policy and release boundary
 
 Capability names and `network.hosts` are usage disclosures, not permission
-gates. The compatible host/SDK update being prepared with App Hub contract
-1.11.0 makes public APIs, the network module and bounded app storage available
+gates. [Desktop RC4](../README.md#compatible-shell-download), with App Hub
+contract 1.11.0, makes public APIs, the network module and bounded app storage available
 without a matching declaration. Keep declarations accurate for users and
 reviewers. RC2 and older installed tools do not acquire this behavior from a
 documentation update; use matching host, Hub and runtime revisions.
