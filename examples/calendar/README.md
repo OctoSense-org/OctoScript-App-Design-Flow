@@ -48,6 +48,20 @@ and `calendar-sync-status-09` (owner `sync`). 64 native controls, bilingual EN/C
 
 ## Run it
 
+For the native Rust examples, first prepare the pinned sibling runtime from
+the repository root, then check both committed dependency graphs:
+
+```sh
+python3 tools/setup-native.py
+python3 tools/setup-native.py --check
+cargo check --locked --manifest-path examples/calendar/app/Cargo.toml
+cargo check --locked --manifest-path examples/calendar/native/Cargo.toml
+```
+
+Both lockfiles belong to the runtime pin update. Do not delete or silently
+regenerate them to make a validation pass. These checks verify compilation;
+they do not establish device UI, login or calendar-provider acceptance.
+
 ```sh
 export BEAUTY_PYTHON="$PWD/flows/image-lib/.venv/bin/python"   # from the repository root
 bash tools/image-to-appcard-flow.sh run \

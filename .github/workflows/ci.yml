@@ -52,6 +52,12 @@ jobs:
         working-directory: octosense-org/OctoSense-App-Flow
         run: PYTHONPATH=flows python -m unittest core.test_native_runtime
 
+      - name: Calendar native examples reproduce from committed locks
+        working-directory: octosense-org/OctoSense-App-Flow
+        run: |
+          cargo check --locked --manifest-path examples/calendar/app/Cargo.toml
+          cargo check --locked --manifest-path examples/calendar/native/Cargo.toml
+
       - name: Environments (image library and Sketch kit pin different NumPy majors)
         working-directory: octosense-org/OctoSense-App-Flow
         run: |

@@ -46,6 +46,19 @@
 
 ## 运行
 
+对于原生 Rust 示例，先在仓库根目录准备固定版本的同级运行时，再检查两份
+已提交的依赖图：
+
+```sh
+python3 tools/setup-native.py
+python3 tools/setup-native.py --check
+cargo check --locked --manifest-path examples/calendar/app/Cargo.toml
+cargo check --locked --manifest-path examples/calendar/native/Cargo.toml
+```
+
+更新运行时版本时须同时维护两份锁文件；不要删除或偷偷重建锁文件来通过验证。
+这些检查只证明可编译，不代表设备界面、登录或日历提供商功能已通过验收。
+
 ```sh
 export BEAUTY_PYTHON="$PWD/flows/image-lib/.venv/bin/python"   # from the repository root
 bash tools/image-to-appcard-flow.sh run \
