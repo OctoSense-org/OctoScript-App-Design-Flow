@@ -75,8 +75,13 @@ python3 tools/setup-native.py --check   # pass: exits 0 and prints the pinned re
 the locked revisions.
 
 Use `main` of App Hub and of this repository. The runtime is
-OctoScript-Makepad `33dea2f1`, which pins Makepad `32d6415f` and OctoScript
-`2e37d9e6`.
+OctoScript-Makepad `6cf2d90a`, which pins Makepad `d653bc44` and OctoScript
+`2e37d9e6`. It includes makepad #110–#116, has no per-app URL, media,
+socket or instruction-budget gate
+([makepad#117](https://github.com/OctoSense-org/makepad/pull/117)), and no
+capability check before `host.request`
+([makepad#118](https://github.com/OctoSense-org/makepad/pull/118),
+[OctoSense#450](https://github.com/OctoSense-org/OctoSense/issues/450)).
 
 ## 2. Build `hub` and `card-host`
 
