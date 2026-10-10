@@ -243,9 +243,9 @@ cargo test --locked --workspace
 `unchanged: bundle/fns/text-tools.wasm, 83,061 bytes built from app/components/text-tools and the 6 crates its octosense-crates section lists`。
 以路径依赖 SDK 时，cargo 构建出逐字节相同的组件，但 crate 清单把 SDK 的来源记为 `path`，而不是
 `git+https://github.com/OctoSense-org/OctoSense-App-Flow#<commit>`，因此文件在这一处与发布的不同
-（82,969 字节）。在 GitHub 上运行发布**未验证**。发布带组件的应用还需要本仓库的
-发布工具链（`tools/publisher-toolchain.json`）指向接受组件的 App Hub 修订版（App Hub #186）；它现在指向的
-修订版会拒绝组件。
+（82,969 字节）。在 GitHub 上运行发布**未验证**。发布工具链（`tools/publisher-toolchain.json`）
+指向 App Hub `769e9ee3`，即 App Hub #186 的合并提交，它的准入检查接受组件；导入 `wasi:http` 或
+`octosense:host` 的组件还需要包含 App Hub #188 的工具链修订版。
 
 ## 组件能用什么
 
