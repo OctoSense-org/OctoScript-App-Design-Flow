@@ -595,6 +595,7 @@ def cmd_publish_github(args):
     print("Review and commit this workflow with the tested app in its public GitHub repository.")
     print("Then push a NEW tag v<manifest.version>. GitHub checks and attests the app and creates its release assets.")
     print("Add the successful release link and review evidence to the submission issue for maintainer review.")
+    print("Until the app is first published, post each new release on that issue and update its title and Version field; after publication, open a new issue per version.")
     print("Installing this workflow does not push, release, submit, or approve the app.")
     return 0
 
@@ -626,12 +627,16 @@ Publish checklist (full text: docs/PUBLISHING.md). Run top to bottom; stop at HU
      Do not modify/restamp its sealed release asset. Edit the development
      bundle instead and release a new version with a new tag.
  11. After the workflow passes, add the release link and review evidence to
-     the submission issue.
+     the submission issue. Until App Hub first publishes the app, post each
+     new release there as a comment (tag, full commit SHA, workflow run) and
+     update the issue title and Version field; after publication, open a new
+     issue for each new version.
      A maintainer reviews the exact bytes before catalog admission. Never edit
      its catalog/index/artifacts or claim release equals Hub approval.
 
-The sealed app requires a host supporting publisher-github-v1. Keep legacy
-key-based publication only when deliberately targeting the older protocol.
+App Hub accepts only GitHub-attested releases: never sign a release with a
+publisher key. Installing the sealed app needs a host that supports
+publisher-github-v1, such as OctoSense desktop 0.1.0-rc.1.
 """
 
 
@@ -1362,9 +1367,9 @@ def main():
     c = sub.add_parser("check", help="hub stamp, then hub check --allow-unsigned; nonzero on refusal")
     c.add_argument("bundle")
     c.add_argument("--catalog", metavar="PATH", help="forward the catalog path to hub check")
-    c.add_argument("--publisher-key", action="append", default=[], metavar="KEY", help="forward a trusted publisher key to hub check (repeatable)")
+    c.add_argument("--publisher-key", action="append", default=[], metavar="KEY", help="forward a legacy publisher key (id=hex) to hub check, to check an existing key-signed bundle; never needed to publish (repeatable)")
 
-    g = sub.add_parser("publish-github", help="install the GitHub release workflow; no separate developer signing key")
+    g = sub.add_parser("publish-github", help="install the GitHub release workflow; no signing key")
     g.add_argument("dir", help="app repository directory containing bundle/manifest.json")
     g.add_argument("--replace", action="store_true", help="replace an existing publishing workflow after reviewing it")
 

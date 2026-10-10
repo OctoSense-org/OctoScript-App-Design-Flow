@@ -4,8 +4,9 @@ English | [简体中文](PUBLISHING.zh-CN.md)
 
 Take a working script app through local checks to a GitHub-attested release
 and App Hub review. Finish the manifest, listing, real screenshots and review
-answers first; the tag workflow then prepares and verifies the sealed release
-without a developer signing key. See §3.6 for the current implementation limits.
+answers first; the tag workflow then prepares and verifies the sealed release.
+App Hub accepts only GitHub-attested releases, so you need no signing key. See
+§3.6 for the current implementation limits.
 
 **Opening an App Hub submission issue is the request to publish.** Include the
 repository, version/commit, screenshots and requested permissions. You can open
@@ -20,7 +21,7 @@ Two App Hub documents own the rest:
 | You need | Read |
 | --- | --- |
 | The gate's rules, capability names, reserved ids, manifest and listing fields, signing | App Hub [PUBLISHING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md) |
-| Signing, tagging, the submission issue, what reviewers check, common refusals | App Hub [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md) |
+| Release provenance, tagging, the submission issue, what reviewers check, common refusals | App Hub [SUBMITTING.md](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md) |
 
 - Start here when [QUICKSTART](QUICKSTART.md) §1–6 pass: the app runs in
   `card-host`, and you have tested its interactions.
@@ -50,8 +51,8 @@ my-app/
 
 `bundle/` holds only file types the gate knows. macOS Finder adds
 `.DS_Store` files to folders you open, and the gate refuses them; delete them
-before you stamp. The published reference apps keep `PRIVACY.md`,
-`publisher.json` and a `review/` folder beside `bundle/`:
+before you stamp. The published reference apps keep `PRIVACY.md`, a
+`review/` folder and their release workflow beside `bundle/`:
 [SUBMITTING §1](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#1-lay-out-the-repository)
 shows that layout.
 
@@ -89,7 +90,9 @@ Edit `$B/manifest.json`:
 - `version`: new for every submission (`0.1.0`, then `0.1.1`, …). The gate
   refuses a version already in the catalog, and the release tag carries the
   same number.
-- `capabilities`: only what the implemented app uses ([CAPABILITIES](CAPABILITIES.md)).
+- `capabilities`: only what the implemented app uses ([CAPABILITIES](CAPABILITIES.md)),
+  and only families that serve store apps on your platforms
+  ([HOST-API-FAMILIES](HOST-API-FAMILIES.md)).
 - `network.hosts`: every host the program names, bare (`api.example.com`).
 - Leave `integrity` to `hub stamp`.
 
@@ -112,7 +115,7 @@ reviewer does not, and `tools/octo check` prints a note while they remain.
   agent; say so in the listing and the privacy text.
 - The icon: follow App Hub's [`docs/ICONS.md`](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/ICONS.md).
 
-The listing is part of the signed version: changing its text later takes a
+The listing is part of the attested release: changing its text later takes a
 new version.
 
 ### 3.3 Capture real screenshots
@@ -135,7 +138,7 @@ ship it.` It waits for the app's widgets and a settled frame, then saves
 whatever frame is current, which can be half drawn. The capture is at the
 window's pixel size: 412x892 points at 2x on a Retina Mac.
 
-- Capture before you sign: `card-host` refuses a signed bundle.
+- Capture the editable bundle: `card-host` refuses a sealed release.
 - Name up to 8 screenshots in `listing.json`.
 - Never ship an error frame, an empty first frame, a mock-up, or an image
   redrawn from `/snap`.
@@ -204,25 +207,25 @@ issue yourself. There are seven questions, and an eighth about the agent
 files when the bundle ships `tools.json`, `AGENT.md` or skills. Answer each one in writing,
 for example in `$APP/review/ANSWERS.md`; the reviewer asks the same ones
 ([SUBMITTING §8](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md#8-what-reviewers-check)).
-Answer the questions on the editable source. For the optional legacy Ed25519
-path, scanning a signed bundle needs `--publisher-key <publisher-id>=<hex public key>`.
+Answer the questions on the editable source.
 
 <a id="36-publisher-key--human"></a>
 
 ### 3.6 GitHub publisher identity — HUMAN
 
-The default path for a new app uses its public GitHub repository and a GitHub
-Actions attestation. You do not generate `publisher.key` or add a signing
-secret to the repository. Review the publisher details and the workflow before
-releasing under your account.
+Every app proves its publisher with its public GitHub repository and a GitHub
+Actions attestation: App Hub accepts only GitHub-attested releases. You do not
+generate `publisher.key` or add a signing secret to the repository. Review the
+publisher details and the workflow before releasing under your account.
 
 **Availability:** this path requires app contract 1.8.0 and
 `publisher-github-v1`. Two real GitHub releases passed attestation and the native
 Store's install, verified-launch, update, withdrawal and tamper checks
 ([acceptance receipt](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/reviews/github-publisher-v1/acceptance.json)).
 Those Store checks used an isolated test catalog; the fixture has no Hub
-submission or admission. [Desktop RC1](../README.md#compatible-shell-download)
-is now available. Public sample installation/update on macOS and isolated
+submission or admission.
+[OctoSense desktop 0.1.0-rc.1 (RC1) and 0.1.0-rc.2 (RC2)](../README.md#compatible-shell-download)
+are compatible hosts. Public sample installation/update on macOS and isolated
 phone-fixture acceptance have separate release evidence; those do not prove
 your app's UX or provider effects.
 Older hosts refuse this requirement. `publisher-toolchain.json` must name a
@@ -262,8 +265,8 @@ The tag-push workflow performs this sequence with a pinned App Hub toolchain:
    without restamping. The release also contains `octosense-app-manifest.json`
    and `release-receipt.json`.
 
-These are workflow stages, not local key-generation commands. An attested
-bundle is sealed: do not edit, restamp or strip its proof. `card-host` cannot
+These stages run in the workflow, not on your machine. An attested bundle is
+sealed: do not edit, restamp or strip its proof. `card-host` cannot
 run it because it has no publisher-proof verifier. Test the editable source
 before release, then test the admitted release in a compatible Store host.
 A tag's source archive and its sealed release pack are different artifacts;
@@ -287,6 +290,10 @@ for the current issue fields.
 - A GitHub release is not automatic admission to App Hub.
 - Do not hand-edit the Hub's catalog, index or admitted artifacts in a pull
   request. Its protected review/publishing workflow admits the exact bundle.
+- Until App Hub first publishes the app, post each new release on the same
+  issue, as a comment with its tag, full commit SHA and workflow-run link, and
+  update the issue title and Version field. After publication, open a new
+  issue for each new version.
 - An agent may prepare the workflow and draft the issue in
   `build/SUBMISSION.md`. It must not claim a release, review or approval it
   did not observe. Respect the person's authorization for external actions.
@@ -295,54 +302,58 @@ for the current issue fields.
 
 A reviewer verifies the publisher proof and bundle, runs the gate and posts
 any refusals in the issue. An App Hub admin then approves the exact release,
-and the Hub publishes it in its signed catalog. No OctoSense release offers it
-yet; see §3.6.
-If changes are needed, publish a new version/tag; do not replace old bytes.
-
-Manual Ed25519 signing remains an **optional compatibility path** for older
-workflows. It is not a step in new GitHub publishing. The older local rehearsal
-below preserves its original commands and evidence; existing reference releases
-and their signatures are unchanged.
+and the Hub publishes it in its signed catalog, where a compatible host,
+such as [RC2](../README.md#compatible-shell-download), can install it. If
+changes are needed, release a new version with a new tag and post it as §3.8
+describes; never replace old bytes.
 
 ## 4. Rehearse the store path locally
 
-**Optional legacy compatibility rehearsal.** The commands and recorded results
-in this section use Ed25519 publisher/catalog keys. They are not required by
-the GitHub publishing path and do not validate `publisher-github-v1`. Use an
-explicitly prepared legacy test bundle for this rehearsal, never restamp a
-GitHub-attested release. Use `OCTOSENSE_HUB_CATALOG=legacy` explicitly for
-this old-format mirror and a fresh app-data directory. A library that already
-cached v2 refuses a legacy downgrade; it is not converted offline.
+Install a release of your app in the desktop shell from a local catalog, to
+see what a device does before App Hub publishes the app. The rehearsal runs
+the app's host services, which `card-host` cannot. It publishes nothing to App
+Hub: you sign the local catalog with your own throwaway trust anchor in place
+of App Hub's. Keep the mirror and its keys under `build/`, never in `bundle/`.
 
-Run the whole publish-and-install path on your own machine, signed with your
-own trust anchor (a throwaway root key in place of App Hub's), to see what a
-device does. The rehearsal also runs the app's host services, which
-`card-host` cannot. Keep the mirror and its keys under `build/`, never in
-`bundle/`.
+A store refuses an unsigned app, so rehearse the release pack that your tag
+workflow built (§3.7), not the editable source. The local
+catalog uses the legacy format: set `OCTOSENSE_HUB_CATALOG=legacy` and use a
+fresh app-data directory, because a library that already cached the v2
+catalog refuses a legacy downgrade.
+
+**Unverified:** a rehearsal with a GitHub-attested release. The commands below
+are source-reviewed for an attested release; the recorded results come from a
+key-signed test app and an earlier App Hub.
 
 ### 4.1 Publish into a local mirror
 
-Publish the signed bundle into a mirror with throwaway hub keys, then verify
-the mirror. The publisher's public key is the hex string `hub pubkey` prints;
-the private key is not needed. `keygen` refuses an existing file, so remove
-`$APP/build/keys` (throwaway keys only) before you run this block again:
+Unpack the release pack, publish it into a mirror with throwaway catalog keys,
+then verify the mirror. `hub publish` needs the publisher as
+`github:<repository id>`, plus the exact repository and commit that the
+release manifest records in `integrity.github`; the `read` line takes them
+from there. A rerun needs fresh directories, because `keygen` refuses an
+existing file, `publisher-unpack` needs a new directory and a new anchor
+cannot authenticate the old mirror. Remove `$APP/build/keys`,
+`$APP/build/rehearsal` and `$APP/build/mirror` (throwaway files only) before
+you run this block again:
 
-```sh
-M="$APP/build/mirror"; mkdir -p "$M" "$APP/build/keys"
+```bash
+M="$APP/build/mirror"; R="$APP/build/rehearsal"; mkdir -p "$M" "$APP/build/keys"
+"$HUB" publisher-unpack app.bundle.pack.json --out "$R"   # the pack from your GitHub release
+read -r ID REPO COMMIT < <(python3 -c 'import json, sys; g = json.load(open(sys.argv[1]))["integrity"]["github"]; print(g["repository_id"], g["repository"], g["commit"])' "$R/manifest.json")
 ANCHOR=$("$HUB" keygen "$APP/build/keys/anchor.key")        # throwaway, never App Hub's
 "$HUB" keygen "$APP/build/keys/working.key" >/dev/null
 CERT=$("$HUB" certify --anchor "$APP/build/keys/anchor.key" --working "$APP/build/keys/working.key")
-"$HUB" publish "$B" --catalog "$M/catalog.json" --key "$APP/build/keys/working.key" \
-  --anchor-cert "$CERT" --publisher <publisher-id> \
-  --publisher-key "<publisher-id>=<hex public key>" \
-  --repo https://github.com/you/my-app --commit "$(git -C "$APP" rev-parse HEAD)" --out "$M"
+"$HUB" publish "$R" --catalog "$M/catalog.json" --key "$APP/build/keys/working.key" \
+  --anchor-cert "$CERT" --publisher "github:$ID" \
+  --repo "https://github.com/$REPO" --commit "$COMMIT" --out "$M"
 "$HUB" verify "$M/catalog.json" --anchor "$ANCHOR"
 ```
 
-Expected output, recorded on macOS with an earlier App Hub and a test app
-named Test Notes (`my-test-notes`): `publish` prints
-`published my-test-notes 0.1.0 (catalog sequence 1)` and `verify` prints
-`catalog sequence 1 verified, 1 entries`.
+`publish` prints the gate report, then
+`published <app id> <version> (catalog sequence 1)`; `verify` prints
+`catalog sequence 1 verified, 1 entries`. On macOS, with an earlier App Hub,
+the key-signed test app Test Notes (`my-test-notes`) printed these lines.
 
 ### 4.2 Install and open the app in the desktop shell
 
@@ -377,14 +388,14 @@ while you drive it over the bridge. Then:
    `card: <app id> running under …`.
 4. Drive the app, then end with `curl -s 127.0.0.1:8399/gq`.
 
-Verified on macOS: the app's interactions, storage and requests to its
-declared host behave as in `card-host`.
+Verified on macOS with the key-signed test app: the app's interactions,
+storage and requests to its declared host behave as in `card-host`.
 
 - An `icon.svg` drawn with `<text>` showed as a blank tile in the store.
   Draw icons with shapes and paths, as the template does.
 - An app that declares `auth` needs a shell built from OctoSense `main`
-  or the [RC1 release](../README.md#compatible-shell-download); use RC1 for
-  current GitHub-proven apps. A beta.1 store refuses the capability.
+  or an [RC release](../README.md#compatible-shell-download); use RC2 for
+  current GitHub-attested apps. A beta.1 store refuses the capability.
   The shell you build here has no provider registrations until you supply
   them, and they never go in the app. Either set the build variables, such as
   `OCTOSENSE_GITHUB_CLIENT_ID`, when `cargo` compiles the shell
@@ -441,7 +452,8 @@ tree, and build the store in a second workspace:
      MAKEPAD_REMOTE=8143 <second-workspace>/OctoSense-App-Hub/target/release/appstore
    ```
 
-Expected result, recorded on macOS with an earlier App Hub: the store lists
+Expected result, recorded on macOS with an earlier App Hub and the key-signed
+test app: the store lists
 "1 app(s) from …/mirror" and shows the listing. Its buttons are labelled in
 capitals. **GET** installs the app
 (`Installed Test Notes 0.1.0 — 1 capability(ies)`) and unpacks the bundle
@@ -454,7 +466,7 @@ under `store-data/my-test-notes/bundle`; **OPEN** does not show the app.
 | GitHub publisher identity and release workflow (3.6, 3.7) | The release binds the public repository, owner, workflow, tag and commit; the person authorizes publication under that identity. |
 | Publisher name, support contact, privacy policy text (3.2) | Legal and personal statements only the publisher can make. |
 | Platforms claimed (3.2) | A platform claim must match a run that a person did or recorded; an agent cannot vouch for one. |
-| Tagging the release (3.8) | The tag names the exact bytes reviewers check; it never moves. |
+| Tagging the release (3.6) | The tag names the exact bytes reviewers check; it never moves. |
 | Opening the submission issue (3.8) | It acts under the publisher's name. |
 | Approving a submission or merging in OctoSense-App-Hub | Only an App Hub admin approves a submission, and only App Hub's maintainers merge. |
 
@@ -478,11 +490,12 @@ under `store-data/my-test-notes/bundle`; **OPEN** does not show the app.
 [ ] mkdir -p "$APP/build"; hub scan "$B" --packet "$APP/build/review.json"   -> 7 questions answered in writing (8 with tools.json, AGENT.md or skills)
 [ ] git -C "$APP" check-attr text -- "$B/manifest.json"   -> "text: unset" (QUICKSTART §3)
 [ ] git status: only app sources and reviewed workflow; no secrets, .local-state or build/
-[ ] tools/octo publish-github "$APP" -> reviewed .github/workflows/publish-app.yml; no developer key
+[ ] tools/octo publish-github "$APP" -> reviewed .github/workflows/publish-app.yml; no signing key
 [ ] HUMAN: commit tested source/workflow, then push a NEW tag v<manifest.version>
 [ ] GitHub workflow succeeds; publisher-verify and publisher-pack pass on the attested release
 [ ] release pack, canonical manifest and receipt exist; compatible-host installation separately verified or marked pending
 [ ] HUMAN: submission issue requests publication; attach repo/version/commit, screenshots and permissions (may open earlier)
-[ ] Add the successful workflow and exact release pack to that issue; Hub checks/admin approval/catalog publication are separate
+[ ] Add the successful workflow and exact release pack to that issue; until first publication, post each new release there as a comment and update the issue title and Version field
+[ ] Hub checks, admin approval and catalog publication are separate; after publication, each new version gets a new issue
 [ ] report: what was verified, on which platform, and what was not
 ```

@@ -12,6 +12,7 @@ and do not invent requirements or APIs:
 - Build, run and test: [QUICKSTART](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/QUICKSTART.md)
 - The language and every API an app may use: [SCRIPT-API](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/SCRIPT-API.md)
 - Capabilities: [CAPABILITIES](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/CAPABILITIES.md)
+- Which host API families serve store apps, where and since when: [HOST-API-FAMILIES](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/HOST-API-FAMILIES.md)
 - Final bundle, screenshots and human checkpoints: [PUBLISHING](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/PUBLISHING.md)
 - Publisher proof and the submission issue: App Hub's [SUBMITTING](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/SUBMITTING.md)
 
@@ -35,6 +36,7 @@ Follow these rules:
 
 - Ask only for capabilities a screen uses; declare every `https://` host in
   `network.hosts`; never use `http://`.
+- Before building on a host API, check that its family serves store apps on your platforms ([HOST-API-FAMILIES](https://github.com/OctoSense-org/OctoSense-App-Flow/blob/main/docs/HOST-API-FAMILIES.md)): `llm`, `news` and `calendar` answer only system apps, `clipboard` fails, and `mail` cannot send on RC1.
 - Never collect or store a password, PIN, one-time code, API key or token;
   accounts go through a host service.
 - Keep the id's last segment, after its final `.`, off App Hub's reserved
@@ -53,20 +55,23 @@ Follow these rules:
   byte, and a line-ending conversion breaks it.
 - Review `.github/workflows/publish-app.yml` before releasing.
   `$OCTO publish-github .` installs it for an existing app; `new` copies it too.
-  No developer key or repository signing secret is required. Push a new
+  App Hub accepts only GitHub-attested releases, so no publisher key or
+  repository signing secret is involved. Never create a publisher key, sign a
+  manifest or pass `--publisher-key` to publish. Push a new
   `v<manifest.version>` tag of tested source to prepare, attest, verify and
   pack it. The tag source and sealed release pack are different artifacts.
 - Opening the App Hub issue is the request to publish; provide repository,
   version/commit, screenshots and permissions, then add the verified release
-  pack when ready. A release alone does not submit or approve the app.
+  pack when ready. Until App Hub first publishes the app, post each new
+  release on the same issue and update its title and Version field; after
+  publication, open a new issue for each new version. A release alone does
+  not submit or approve the app.
 - Stop at human steps: publisher details, workflow review, platform claims,
   tag and submission, unless already authorized in this session. Respect
-  actual approval; never fabricate it. Manual Ed25519 keys are only an
-  optional compatibility path, never a default setup step.
-- `publisher-github-v1` needs contract 1.8.0 and a compatible Store host;
-  older hosts and `card-host` refuse the sealed release. Real GitHub publishing
-  and native Store install/update checks passed with an isolated test catalog.
-  Shipped-shell and phone installation remain unverified; a compatible release
-  is pending. Follow the linked publishing guide for current evidence.
+  actual approval; never fabricate it.
+- `publisher-github-v1` needs contract 1.8.0 and a compatible host; older
+  hosts and `card-host` refuse the sealed release. OctoSense desktop
+  0.1.0-rc.1 and later install GitHub-attested apps (verified on macOS); no
+  released phone build supports them yet. Follow the linked publishing guide for current evidence.
 
 Add this app's own requirements, data sources and tests below.

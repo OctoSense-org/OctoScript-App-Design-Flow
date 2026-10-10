@@ -32,15 +32,16 @@ What a sync covers depends on the build:
 
 - **desktop-v0.1.0-beta.2:** the whole calendar. The host advances Google's
   sync token only after the final page and starts a full sync after HTTP 410.
-- **OctoSense `main` (not in any release yet):** a fixed window, from 30
-  days before today to 366 days after on UTC day boundaries. Each refresh
+- **[OctoSense desktop 0.1.0-rc.1](../../../README.md#compatible-shell-download) (RC1):**
+  a fixed window, from 30 days before today to 366 days after on UTC day
+  boundaries. Each refresh
   fetches the whole window again; the host keeps no sync token.
 
 The editor uses dates, 24-hour times and an IANA timezone; the host rejects
 missing or repeated local times at daylight-saving transitions. An all-day end
 means the last included day. The app can't edit a recurring event. On
 desktop-v0.1.0-beta.2, a recurring series appears once, labeled with its
-original start. OctoSense `main` expands each series into its occurrences in
+original start. RC1 expands each series into its occurrences in
 the window; the app still labels each one as a recurring series. The agenda
 lists the oldest events first, so on beta.2 it opens on the start of the
 calendar's history. Don't copy this sync strategy; see
@@ -161,5 +162,5 @@ For capabilities, storage, tools and the agent, see
 edit, conflict and revocation; the expanded-card workspace; Glance-card chat
 history; a physical save approval; Android; Linux; Windows. On
 desktop-v0.1.0-beta.2, the host's Calendar review sheet doesn't check for a
-physical press. OctoSense `main` requires one on its native review (not
-in any release yet).
+physical press. RC1 requires one on its native review on macOS and refuses
+the save on Windows and Linux.
