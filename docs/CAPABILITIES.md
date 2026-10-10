@@ -2,15 +2,35 @@
 
 English | [简体中文](CAPABILITIES.zh-CN.md)
 
-A capability is a permission an app requests in `manifest.json`. A script gets
-only what its manifest requests and the gate admits.
+A capability describes expected API usage in `manifest.json`. It does not
+authorize access to user data or deny a public API when omitted.
 
 App Hub's [PUBLISHING § The manifest](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#the-manifest)
 is the reference for the gate's rules and for the words the store shows the
 person. [HOST-SERVICES](HOST-SERVICES.md) says which shell answers each host
 service.
 
-## Request capabilities
+## Current source policy and release boundary
+
+Capability names and `network.hosts` are usage disclosures, not permission
+gates. The compatible host/SDK update being prepared with App Hub contract
+1.11.0 makes public APIs, the network module and bounded app storage available
+without a matching declaration. Keep declarations accurate for users and
+reviewers. RC2 and older installed tools do not acquire this behavior from a
+documentation update; use matching host, Hub and runtime revisions.
+
+Actual consent remains: device and OS permission, connected-account ownership
+and provider scopes, native review of external writes, agent opt-in and
+inter-app sharing. Required host API versions, component ABI/import checks,
+provenance, exact digests, platform availability and quotas also remain.
+Use `runtime.list` and `runtime.describe` to discover implementations; neither
+method needs a `runtime` usage declaration in the corrected host. Internal
+host profile data and unowned `agent.notify` are not public app APIs.
+A plain `card-host` has no device-consent broker and does not expose private
+device reads; test those in a compatible shell with `host-api-v1`.
+
+
+## Declare capabilities
 
 ```json
 "capabilities": ["storage", "net"],
@@ -18,8 +38,8 @@ service.
 ```
 
 - **The list is closed.** `KNOWN_CAPABILITIES` in App Hub
-  `crates/app-contract/src/manifest.rs` holds 105 names: 27 broad
-  capabilities, such as `storage` and `glance`, and 78 exact service names,
+  `crates/app-contract/src/manifest.rs` holds the canonical names, including
+  broad families such as `storage` and `glance`, and exact service names,
   such as `octos.turn.start`. The gate refuses any other name, such as
   `contacts`, and any bare prefix, such as `octos.`:
 
@@ -27,40 +47,37 @@ service.
   [refused] policy: app dev.example.myapp requests unknown capability "contacts"
   ```
 
-- **Nothing is implied.** An app gets no capability it does not request, and
-  no capability grants another.
-- **Request the least the app needs.** Reviewers flag any grant that nothing
-  on screen uses.
+- **Declarations are not authorization.** Actual device consent and account
+  scopes are checked independently.
+- **Describe what the app does.** Reviewers check missing or misleading
+  disclosures against actual behavior.
 - **The store shows the manifest, not the listing.** Before install, the
   person sees one permission line per capability and a privacy summary, both
   derived from `manifest.json`. Listing text cannot soften them.
 
 ## Device and data
 
-| Capability | What the script gets | Without it |
-| --- | --- | --- |
-| `storage` | The app's own storage jail, one directory per app id: [`fs.*`](SCRIPT-API.md#storage-fs), camera captures, and local files a widget reads, such as a map archive. | No jail. Every `fs.*` call errors with `storage not available in this context`, a capture saves nothing, and a widget reads no local file. |
-| `camera` | `CameraPreview`: preview, photo and video. Captures land in the jail as `DCIM/IMG_<ms>.jpg` and `DCIM/VID_<ms>.mp4`, so request `storage` too. Served since RC1 on Android and macOS. | `CameraPreview` refuses: `this app was not granted the camera`. The operating system's own camera prompt applies either way. |
-| `microphone` | Sound in camera videos, and, since RC2, `microphone.record_start/record_status/record_stop/record_cancel`: a short foreground recording (mono WAV, at most 30 seconds) saved into the app's storage, so request `storage` too; consent comes through `microphone.permission.request` and the OS prompt. Served since RC1 on Android and macOS; hardware acceptance of recording is pending. | Videos record without sound, and recording is refused. |
-| `library` | Each capture is also offered to the system photo library, where other apps can see it. | Captures stay in the app's jail. |
-| `location` | The device position: `sys.gps(...)` and the follow camera of `MapView`. The operating system's location prompt still applies. Served since RC1 on Android and macOS; `location.get` is Android only, and RC2 adds `location.sample`, a fresh fix for a foreground app, on both. | `sys.gps("ok")` reads 0, meaning no fix. |
-| `files` | Since RC2: `files.import` and `files.export` move one document between the native file dialog and the app's storage (request `storage` too), `files.pick_photo` imports a PNG, JPEG or WebP, and `files.share` hands text to the Android share sheet; 1 MiB per file, foreground only. Served on macOS, Windows and Android; Linux needs zenity, qarma, matedialog or kdialog; chooser acceptance is pending. | Every `files.*` call is refused. |
-| `audio` | Since RC2: `audio.play`, `audio.status` and `audio.stop` play one WAV, MP3, FLAC or Ogg file (at most 1 MiB and 60 seconds) from the app's storage while the app is in the foreground, so request `storage` too. Served on macOS and Android; hardware acceptance is pending. | `audio.play` is refused. |
+| Capability | What the script gets |
+| --- | --- |
+| `storage` | The app's own storage jail, one directory per app id: [`fs.*`](SCRIPT-API.md#storage-fs), camera captures, and local files a widget reads, such as a map archive. |
+| `camera` | `CameraPreview`: preview, photo and video. Captures land in the jail as `DCIM/IMG_<ms>.jpg` and `DCIM/VID_<ms>.mp4`, so disclose storage use too. Served since RC1 on Android and macOS. |
+| `microphone` | Sound in camera videos, and, since RC2, `microphone.record_start/record_status/record_stop/record_cancel`: a short foreground recording (mono WAV, at most 30 seconds) saved into the app's storage, so disclose storage use too; consent comes through `microphone.permission.request` and the OS prompt. Served since RC1 on Android and macOS; hardware acceptance of recording is pending. |
+| `library` | Each capture is also offered to the system photo library, where other apps can see it. |
+| `location` | The device position: `sys.gps(...)` and the follow camera of `MapView`. The operating system's location prompt still applies. Served since RC1 on Android and macOS; `location.get` is Android only, and RC2 adds `location.sample`, a fresh fix for a foreground app, on both. |
+| `files` | Since RC2: `files.import` and `files.export` move one document between the native file dialog and the app's storage (disclose storage use too), `files.pick_photo` imports a PNG, JPEG or WebP, and `files.share` hands text to the Android share sheet; 1 MiB per file, foreground only. Served on macOS, Windows and Android; Linux needs zenity, qarma, matedialog or kdialog; chooser acceptance is pending. |
+| `audio` | Since RC2: `audio.play`, `audio.status` and `audio.stop` play one WAV, MP3, FLAC or Ogg file (at most 1 MiB and 60 seconds) from the app's storage while the app is in the foreground, so disclose storage use too. Served on macOS and Android; hardware acceptance is pending. |
 
-Without `storage`, the `grants:` line of `hub check` says `storage none`, and
-the gate warns about each script that calls `fs.*` and about a `camera` grant:
-
-```text
-[warning] storage: main.splash calls fs.read, fs.write, fs.exists, which fail without the storage capability
-```
+The app jail and quota exist even without `storage`. Missing usage declarations
+can produce review warnings; they do not remove storage. Camera, microphone
+and location still require the app's consent, OS permission and host support.
 
 ## Network
 
-| Capability | What the script gets | Without it |
-| --- | --- | --- |
-| `net` | `net.http_request` and `net.web_socket`, to exactly the hosts in `network.hosts`. A host is a bare, exact, lowercase name: no scheme, path, port or wildcard. | No `net` in the script at all: `variable net not found in scope`. The same holds for `net` with an empty host list. |
-| `images` | Pictures (`Image{src: http_resource(url)}`) from any public `https://` host, beyond `network.hosts`: a feed reader's thumbnails. It does not widen `net.http_request`. | Pictures load only from listed hosts. |
-| `web` | `WebReader` opens any public `https://` page in the system web view. The page has no way back into the app. Availability follows the [host and platform limits](../README.md#compatible-shell-download). | `WebReader.open` works only for listed hosts and refuses others: ``refused <url>: not on this app's host list, and no `web` grant``. |
+| Capability | What the script gets |
+| --- | --- |
+| `net` | `net.http_request` and `net.web_socket`, with destinations described in `network.hosts`. A host is a bare, exact, lowercase name: no scheme, path, port or wildcard. |
+| `images` | Pictures (`Image{src: http_resource(url)}`) from any public `https://` host, beyond `network.hosts`: a feed reader's thumbnails. It does not widen `net.http_request`. |
+| `web` | `WebReader` opens any public `https://` page in the system web view. The page has no way back into the app. Availability follows the [host and platform limits](../README.md#compatible-shell-download). |
 
 Desktop RC1 and RC2 embed ordinary pages on Windows with WebView2 and on Linux
 X11/XWayland with GTK 3/WebKitGTK. These engines are not bundled; native
@@ -71,16 +88,10 @@ return `true` from `open`, show no page and log
 `Not implemented on this platform: CxOsOp::SpawnSystemBrowser`.
 `desktop-v0.1.0-beta.2` ships for macOS only.
 
-The runtime and the gate refuse these:
-
-| Request | Answer |
-| --- | --- |
-| A `net` request to an unlisted host | `this app may not reach <url>` |
-| A private or internal address, with any capability | `host not permitted (private/internal): <host>` |
-| Hosts listed without `net` | The gate refuses: `lists hosts but does not request the net capability` |
-| A host with a scheme or path, such as `https://x` | The gate refuses: `host "https://x" must be a bare host name, with no scheme or path` |
-| `main.splash` naming an `https://` host that is not listed | The gate refuses under `assets` (`main.splash reaches <host>, which the manifest does not declare in network.hosts`), unless the app requests `images` or `web` |
-| Any `http://` URL in the source | The gate refuses under `assets`, with or without `web` |
+A host listed in `network.hosts` must still be a bare name (no scheme, path,
+port or wildcard), because the field has a defined format. Source admission
+still checks unsafe bundle paths and plain `http://`/`file://` references.
+An unlisted HTTPS destination and a host list without `net` are not refusals.
 
 The script-side rules are in [SCRIPT-API § Network](SCRIPT-API.md#network).
 
@@ -89,21 +100,17 @@ The script-side rules are in [SCRIPT-API § Network](SCRIPT-API.md#network).
 A host service does work in the shell that the app must never do itself, such
 as holding a password or a token. The script calls it with
 `host.request("<family>.<method>", args, fn(r){…})`
-([SCRIPT-API](SCRIPT-API.md#host-services-hostrequest)). Each call needs the
-capability `<family>`. Without it, the callback runs at once with `r.is_ok`
-false and this error:
-
-```text
-this app was not granted "mail", which "mail.accounts" needs
-```
+([SCRIPT-API](SCRIPT-API.md#host-services-hostrequest)). The host validates
+app identity, service availability, actual consent and account scopes. Missing
+a family usage declaration does not cause `this app was not granted`.
 
 | Capability | What the script gets |
 | --- | --- |
 | `mail` | Mail accounts the person signs in to on a host sheet: folders, messages and sync. Since RC2 a store app can also send: `mail.compose` and `mail.compose_status` keep a draft, and `mail.review_send` (or `mail.send`, which opens the same review) shows the message on the host's native review, where the person approves it with a physical press. That review exists on macOS and Android; on Windows and Linux it fails with `Physical Mail send approval is unavailable on this platform`, and SMTP delivery is unverified. On RC1 a store app had no send path ([OctoSense #409](https://github.com/OctoSense-org/OctoSense/issues/409)). The methods are in [HOST-SERVICES § Mail](HOST-SERVICES.md#mail-the-worked-example). |
 | `auth` | Connections to GitHub and Google that the person approves on a host sheet, and, since desktop RC1, sign-in to the app's own backend. The app receives handles, never tokens. `auth` alone identifies the person but reads none of their data. See [Use a connected account](#use-a-connected-account). |
-| `github` | Repository reads, and saves the person approves on a host sheet. Needs `auth`. |
-| `gcalendar` | Google Calendar reads and sync, and writes the person approves on a host sheet. Needs `auth`. |
-| `gmail` | Gmail reads, versioned reply drafts, sending after the person approves it in the host's send review, and new-mail events for the app's agent. Needs `auth`. |
+| `github` | Repository reads, and saves the person approves on a host sheet. Needs an app-owned authorized connection. |
+| `gcalendar` | Google Calendar reads and sync, and writes the person approves on a host sheet. Needs an app-owned authorized connection. |
+| `gmail` | Gmail reads, versioned reply drafts, sending after the person approves it in the host's send review, and new-mail events for the app's agent. Needs an app-owned authorized connection. |
 | `glance` | `glance.publish`, `glance.withdraw` and `glance.list`: cards on the Glance screen that open only this app. See [AI-SERVICES § Publishing to the Glance screen](AI-SERVICES.md#publishing-to-the-glance-screen). |
 | `model` | `model.complete` and `model.budget`: one-shot model calls on the person's own AI providers, checked against the app's JSON Schema, within a daily budget. See [one-shot calls](AI-SERVICES.md#one-shot-model-calls-model). [Media and embeddings](AI-SERVICES.md#media-and-embeddings-model) use the same capability in OctoSense #368, included since [desktop RC1](../README.md#compatible-shell-download); beta.2 and `card-host` do not serve them. Provider entitlement and live validation are separate. |
 | `runtime` | `runtime.list` and `runtime.describe`: the host APIs this build implements, with no account data. Desktop RC1, RC2 and `card-host` answer them; desktop-v0.1.0-beta.2 refuses the capability. See [HOST-API-V1 §2](HOST-API-V1.md#2-discover-before-offering-an-optional-feature). |
@@ -150,7 +157,7 @@ shell holds the provider credentials; the app holds only a connection handle.
    `hub check` then shows:
 
    ```text
-   grants: capabilities {"auth", "github", "storage"}, hosts {}, storage 16777216 bytes, agent none
+   declarations: capabilities {"auth", "github", "storage"}, hosts {}, storage 16777216 bytes, agent none
    ```
 
 2. Ask the person to connect, from one of the app's own screens:
@@ -163,10 +170,11 @@ shell holds the provider credentials; the app holds only a connection handle.
 
    The host raises its own sign-in sheet. On success, `r.data` is the new
    connection: `handle` names it, and `subject` and `label` identify the
-   account. Each scope needs a capability. The identity scopes need only
-   `auth`, so an app can identify the person without reading their data:
+   account. Provider scopes need the person's authorization independently
+   of usage declarations. Identity scopes identify the person without
+   reading their repositories, mail or calendars:
 
-   | Provider | Scopes | Needs |
+   | Provider | Scopes | Usage disclosure |
    | --- | --- | --- |
    | `github` | `read:user` | `auth` |
    | `github` | `public_repo`, `repo` | `auth` and `github` |
@@ -178,7 +186,7 @@ shell holds the provider credentials; the app holds only a connection handle.
 
    | Error | Cause |
    | --- | --- |
-   | `Requested scopes exceed this app's granted services` | A scope's family is missing from `capabilities`. |
+   | Legacy `Requested scopes exceed this app's granted services` | Upgrade the host that treats declarations as grants. Actual provider scopes remain enforced. |
    | `Open the app to connect an account` | The call came from a Glance card or an agent's tool. |
    | `OAuth is not configured. Add provider registrations in the host's oauth/clients.json` | A beta.2 host has no `clients.json` ([Limits](#limits)). |
    | `This provider is not configured in OctoSense` | A beta.2 host's `clients.json` has no registration for the provider. |

@@ -80,10 +80,12 @@ says who runs each one and when.
   app's own backend: the bundle declares it in a signed `backend` block, or
   the host's operator registers it
   ([the backend guide](docs/HOST-API-V1.md#4-connect-the-apps-backend)).
-- **Declare every host.** List in `network.hosts` every `https://` host that
-  `main.splash` contacts, and request `net`. `images` and `web` add pictures
-  and pages from any public `https://` host; they do not widen `net`. Never
-  use `http://`.
+- **Disclose expected API and network use.** Capability names and
+  `network.hosts` are descriptive in the corrected host/SDK; omission must
+  not become an execution gate. Keep genuine device/account consent, native
+  reviews, ABI compatibility, quotas, integrity and inter-app sharing checks.
+  See [the current-source policy](docs/CAPABILITIES.md#current-source-policy-and-release-boundary).
+  Use HTTPS and do not assume this behavior is already in an older release.
 - **Every AI feature is optional.** Make the app complete without one:
   `card-host` (and so `tools/octo run`) serves no AI service, and every call
   there answers `no service answers "…" on this device`. On an OctoSense

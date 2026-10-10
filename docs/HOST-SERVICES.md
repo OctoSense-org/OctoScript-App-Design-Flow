@@ -21,6 +21,26 @@ App Hub's
 [Host API v1](HOST-API-V1.md) shows how to use them. `desktop-v0.1.0-beta.2`
 has none of them.
 
+## Current source policy and release boundary
+
+Capability names and `network.hosts` are usage disclosures, not permission
+gates. The compatible host/SDK update being prepared with App Hub contract
+1.11.0 makes public APIs, the network module and bounded app storage available
+without a matching declaration. Keep declarations accurate for users and
+reviewers. RC2 and older installed tools do not acquire this behavior from a
+documentation update; use matching host, Hub and runtime revisions.
+
+Actual consent remains: device and OS permission, connected-account ownership
+and provider scopes, native review of external writes, agent opt-in and
+inter-app sharing. Required host API versions, component ABI/import checks,
+provenance, exact digests, platform availability and quotas also remain.
+Use `runtime.list` and `runtime.describe` to discover implementations; neither
+method needs a `runtime` usage declaration in the corrected host. Internal
+host profile data and unowned `agent.notify` are not public app APIs.
+A plain `card-host` has no device-consent broker and does not expose private
+device reads; test those in a compatible shell with `host-api-v1`.
+
+
 ## Which shell serves which service
 
 Both OctoSense shells register every service below in their standard
@@ -36,18 +56,18 @@ The per-family summary, with platforms and since-versions, is
 
 | Family | Who may call it | Service code |
 | --- | --- | --- |
-| `mail` | Any app granted `mail` | `apps/mail/host-service` |
+| `mail` | Any admitted app with an authorized Mail account | `apps/mail/host-service` |
 | `auth` | Any app granted `auth`. A data scope also needs its family (`github`, `gcalendar` or `gmail`); identity scopes and, since RC1, backend sign-in need only `auth`. | `crates/oauth-service/src/host.rs`, `host_backend.rs` |
-| `github`, `gcalendar` | Apps granted the family, through a connection made with `auth`. Since RC1, the save review is the shell's, as for `gmail`. | `crates/oauth-service/src/host_api.rs`; since RC1, also `crates/shell/src/connected_review.rs` |
-| `gmail` | Apps granted `gmail`, through a connection made with `auth`. The send review is the shell's. | `crates/oauth-service/src/host_inbox.rs`, `crates/shell/src/connected_review.rs` |
-| `glance` | Any app granted `glance` | `crates/shell/src/glance.rs` |
-| `model` | Any app granted `model`, within a per-app daily budget | `apps/ai-providers/host-service/src/complete/` |
+| `github`, `gcalendar` | Admitted apps, through a connection made with `auth`. Since RC1, the save review is the shell's, as for `gmail`. | `crates/oauth-service/src/host_api.rs`; since RC1, also `crates/shell/src/connected_review.rs` |
+| `gmail` | Admitted apps, through a connection made with `auth`. The send review is the shell's. | `crates/oauth-service/src/host_inbox.rs`, `crates/shell/src/connected_review.rs` |
+| `glance` | Any admitted app | `crates/shell/src/glance.rs` |
+| `model` | Any admitted app, within a per-app daily budget | `apps/ai-providers/host-service/src/complete/` |
 | `octos` | Apps granted the exact `octos.*` name, once the person allows the app's agent, where the shell hosts the octos kernel (every platform but iOS) | `crates/ai-host/src/contained.rs` |
 | `llm` | System apps only | `apps/ai-providers/host-service` |
 | `news` | System apps only | `apps/news/host-service` |
 | `calendar` | Calendar (`os.calendar`) only | `apps/calendar/host-service` |
 | `photos`, `youtube` | Only the matching system app's `notify` | `crates/shell/src/glance_notice.rs` |
-| `wasm` | Apps granted `wasm`, in standard builds for macOS, Linux and Android (feature `wasm-functions`, formerly `wasm-lab`); desktop RC2 serves it on macOS and Linux, and RC1 did not ([Run your own Rust code](RUST.md)) | `crates/shell/src/wasm_service.rs` |
+| `wasm` | Admitted apps, in standard builds for macOS, Linux and Android (feature `wasm-functions`, formerly `wasm-lab`); desktop RC2 serves it on macOS and Linux, and RC1 did not ([Run your own Rust code](RUST.md)) | `crates/shell/src/wasm_service.rs` |
 | `files` | Any app granted `files` (import, export and `pick_photo` also need `storage`); since RC2, on macOS, Windows and Android, and on Linux with a dialog helper; `share` on Android only | `crates/shell/src/files_service` |
 | `audio` | Any app granted `audio` and `storage` that declares `requires: ["host-api-v1"]`; since RC2, on macOS and Android, in the foreground only | `crates/shell/src/audio_service` |
 | `device_calendar` | Any app granted `device_calendar` that declares `requires: ["host-api-v1"]`, after the person's consent and the OS permission; since RC2, on macOS and Android Home | `crates/shell/src/device_calendar` |
@@ -99,11 +119,10 @@ host.request("mail.accounts", {}, fn(r){
 })
 ```
 
-- The service name is `<family>.<method>`. The family is a capability, and
-  the manifest must grant it (`"capabilities": ["mail"]`). Otherwise the
-  isolate refuses the call before anything is queued: the callback runs at
-  once with `r.is_ok` false and `r.error` set to
-  `this app was not granted "mail", which "mail.accounts" needs`.
+- The service name is `<family>.<method>`. Family declarations disclose
+  expected use; they do not deny supported public requests. The receiving
+  host still checks app identity, account scopes, consent and availability.
+
 - `args` is any value that serializes to JSON; the service receives it as
   JSON.
 - The callback runs later, on the UI thread, with `r.is_ok`, `r.data` (the
