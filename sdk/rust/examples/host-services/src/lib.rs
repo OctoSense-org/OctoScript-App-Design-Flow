@@ -1,8 +1,7 @@
 //! A component that calls its app's host services with
 //! `octosense_component::host` (OctoSense ADR 0014, phase 3). The import
-//! needs no grant of its own: it reaches only the services whose family the
-//! app's manifest grants in `capabilities`, such as `runtime` for
-//! `runtime.list`.
+//! keeps the app's identity and actual authorization. Capability names only
+//! disclose usage; they do not grant or deny `runtime.list`.
 
 #[octosense_component::export]
 pub mod services {
@@ -14,8 +13,7 @@ pub mod services {
         host::request(service, args)
     }
 
-    /// The host APIs this build implements (`runtime.list`, with the
-    /// `runtime` capability).
+    /// The host APIs this build implements (`runtime.list`).
     pub fn host_apis() -> Result<String, String> {
         host::request("runtime.list", "{}")
     }

@@ -13,13 +13,11 @@
 //!
 //! The component imports `octosense:host/services@0.1.0`
 //! (`wit/octosense-host.wit`, OctoSense's own) only when it calls
-//! [`request`]. The import needs no grant of its own. ADR 0014 lets it reach
-//! only the host-service families the app's manifest grants in
-//! `capabilities` (a system app's own namespace too), as the app with no
-//! sheet and no prompt, so only the methods a background surface may call,
-//! and never `wasm.*`; the call's deadline bounds the wait. A refusal reads,
-//! for example, `dev.example.texttools was not granted the mail service,
-//! which mail.list needs`.
+//! [`request`]. Capability names are usage disclosures, not permission gates.
+//! Calls keep the app's identity, account scope, actual consent and host
+//! availability. They have no sheet or prompt, so only methods permitted on
+//! a background surface work. Recursive `wasm.*` calls are refused, and the
+//! call's deadline bounds the wait.
 //!
 //! Outside a component, such as in `cargo test` on your machine, every call
 //! fails with an error that says so.

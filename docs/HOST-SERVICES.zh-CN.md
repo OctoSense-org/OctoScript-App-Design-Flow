@@ -10,6 +10,22 @@
 
 [OctoSense 桌面版 0.1.0-rc.1](../README.zh-CN.md#下载兼容-shell)（RC1）及之后的版本还实现了 Host API v1：版本要求、API 发现、签名的后端操作、设备授权和脚本工具，平台限制见 App Hub 的[宿主 API 兼容性](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/HOST-API.zh-CN.md#限制)。用法见 [Host API v1](HOST-API-V1.zh-CN.md)。`desktop-v0.1.0-beta.2` 没有这些功能。
 
+## 当前源码策略与发布边界
+
+能力名称与 `network.hosts` 是使用披露，不是权限开关。配合 App Hub 契约
+1.11.0 准备的兼容宿主和 SDK 更新，让应用即使遗漏对应声明，也能使用已实现
+的公开 API、网络模块和带配额的独立存储。仍应向用户与审核人员准确披露用途。
+修改文档不会改变 RC2 或更早工具的行为；请使用相互匹配的宿主、Hub 和运行时。
+
+实际授权继续生效：逐应用设备同意与系统权限、连接账户归属和提供商 scope、
+外部写入的原生审阅、Agent 启用和跨应用共享。所需 API 版本、组件 ABI 与导入
+检查、发布证明、确切摘要、平台可用性及配额也继续生效。用 `runtime.list` 和
+`runtime.describe` 查询实现；修正后的宿主不要求先声明 `runtime`。
+宿主私有用户资料与不带调用方身份的 `agent.notify` 不是公开应用 API。
+普通 `card-host` 没有设备同意代理，不开放私有设备读取；请在兼容 Shell 中以
+`host-api-v1` 验证这些功能。
+
+
 ## 哪个 Shell 提供哪项服务
 
 OctoSense 有两个 Shell：桌面端（`desktop/`）和手机 Shell，即 Home（`phone/`）。两者的标准构建都注册了下表中的全部服务，但只在面向 macOS、Linux 和 Android 的构建中注册 `wasm`。`crates/shell/src/apps.rs` 中的 `register_host_services` 注册面向应用的服务；`crates/ai-host/src/lib.rs` 注册 `llm`、`model` 和 `octos`。App Hub 的 `card-host` 不注册任何服务，只响应用于发现宿主 API 的 `runtime`，这个能力族由 App Hub 的分发器自己处理。
@@ -64,7 +80,7 @@ host.request("mail.accounts", {}, fn(r){
 })
 ```
 
-- 服务名的形式是 `<family>.<method>`。其中的能力族（family）本身就是一项能力，清单必须授予它（`"capabilities": ["mail"]`）。否则，隔离环境会直接拒绝这次调用，不把任何请求放入队列：回调立即运行，`r.is_ok` 为 false，`r.error` 为 `this app was not granted "mail", which "mail.accounts" needs`。
+- 服务名的形式是 `<family>.<method>`。服务族声明用于披露用途，不会阻止已支持的公开调用。接收请求的宿主仍检查应用身份、实际同意、账户 scope 和可用性。
 - `args` 可以是任何能序列化为 JSON 的值；服务以 JSON 形式接收它。
 - 回调稍后在 UI 线程上运行，并收到 `r.is_ok`、`r.data`（服务返回的 JSON）和 `r.error`（失败时为字符串）。
 - 如果当前 Shell 上没有服务响应这个能力族，回调会立即收到 `no service answers "<family>" on this device`。在 `card-host` 中，每次调用收到的都是这条消息。

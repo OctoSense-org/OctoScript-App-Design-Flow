@@ -19,6 +19,22 @@ Host API v1 让应用发现并调用编译进宿主的 Rust 服务，也让应�
 
 可运行的示例见 OctoSense 的 [Host API Lab](https://github.com/OctoSense-org/OctoSense/blob/main/tools/fixtures/host-api-lab/README.zh-CN.md)：一个开发用的测试示例，README 中有构建和运行命令。在 macOS 上，它通过了这些检查：签名安装、应用自己的 Splash 工具、真实的系统权限状态调用（`camera.permission.status`）、界面实时更新，以及权限不足时的拒绝。它不是已发布的 App Hub 应用，既不测试真实模型运行，也不测试对应用 Agent 的授权。
 
+## 当前源码策略与发布边界
+
+能力名称与 `network.hosts` 是使用披露，不是权限开关。配合 App Hub 契约
+1.11.0 准备的兼容宿主和 SDK 更新，让应用即使遗漏对应声明，也能使用已实现
+的公开 API、网络模块和带配额的独立存储。仍应向用户与审核人员准确披露用途。
+修改文档不会改变 RC2 或更早工具的行为；请使用相互匹配的宿主、Hub 和运行时。
+
+实际授权继续生效：逐应用设备同意与系统权限、连接账户归属和提供商 scope、
+外部写入的原生审阅、Agent 启用和跨应用共享。所需 API 版本、组件 ABI 与导入
+检查、发布证明、确切摘要、平台可用性及配额也继续生效。用 `runtime.list` 和
+`runtime.describe` 查询实现；修正后的宿主不要求先声明 `runtime`。
+宿主私有用户资料与不带调用方身份的 `agent.notify` 不是公开应用 API。
+普通 `card-host` 没有设备同意代理，不开放私有设备读取；请在兼容 Shell 中以
+`host-api-v1` 验证这些功能。
+
+
 ## 1. 声明应用的要求
 
 下面是**清单片段**，不是完整的清单：

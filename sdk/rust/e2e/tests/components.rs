@@ -12,7 +12,6 @@
 //! call's deadline ([`Network`]), and `octosense:host`, whose calls reach
 //! fake host services ([`Services`]).
 
-use std::collections::BTreeSet;
 use std::future::Future;
 use std::io::{BufRead, BufReader, Read, Write};
 use std::net::{SocketAddr, TcpListener, TcpStream};
@@ -120,19 +119,18 @@ const NETWORK_DEADLINE: Duration = Duration::from_secs(10);
 
 /// Fake host services behind `octosense:host`, held to OctoSense's rules
 /// (ADR 0014 phase 3, its `crates/shell/src/wasm_service.rs`): an app calls
-/// only the families its manifest grants, never `wasm.*`, with JSON
-/// arguments. These answer `runtime.list` and echo `notes.get`.
+/// with its app identity, never `wasm.*`, and with JSON arguments.
+/// No declaration gate is simulated. These answer `runtime.list` and echo
+/// `notes.get`; they do not stand in for real account/consent acceptance.
 struct Services {
     app: String,
-    granted: BTreeSet<String>,
     calls: Vec<(String, String)>,
 }
 
 impl Services {
-    fn new(app: &str, capabilities: &[&str]) -> Services {
+    fn new(app: &str) -> Services {
         Services {
             app: app.into(),
-            granted: capabilities.iter().map(|c| c.to_string()).collect(),
             calls: Vec::new(),
         }
     }
@@ -144,12 +142,6 @@ impl Services {
             return Err(
                 "a component cannot call wasm.*: its app's functions are already running it".into(),
             );
-        }
-        if !self.granted.contains(family) {
-            return Err(format!(
-                "{} was not granted the {family} service, which {service} needs",
-                self.app
-            ));
         }
         let args: serde_json::Value = serde_json::from_str(args)
             .map_err(|e| format!("{service}: the arguments are not JSON: {e}"))?;
@@ -776,9 +768,9 @@ fn a_request_that_never_answers_ends_at_the_deadline() {
 }
 
 #[test]
-fn a_component_calls_its_apps_granted_host_services() {
+fn a_component_calls_its_apps_available_host_services() {
     let dir = storage();
-    let services = Services::new("dev.example.texttools", &["wasm", "runtime", "notes"]);
+    let services = Services::new("dev.example.texttools");
     let mut c = load_with(&dir, "host-services", "host_services.wasm", Some(services));
     let ok = |text: &str| Val::Result(Ok(Some(Box::new(s(text)))));
     assert_eq!(
@@ -792,7 +784,7 @@ fn a_component_calls_its_apps_granted_host_services() {
     // What the host refuses reaches the component as its error.
     assert_eq!(
         error(call(&mut c, "call", &[s("mail.list"), s("{}")])),
-        "dev.example.texttools was not granted the mail service, which mail.list needs"
+        "the fake services do not answer mail.list"
     );
     assert_eq!(
         error(call(&mut c, "call", &[s("wasm.functions"), s("{}")])),

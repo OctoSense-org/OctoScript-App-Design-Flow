@@ -32,4 +32,4 @@ cargo test --locked --workspace
 
 CI 的 `rust-sdk` 作业在 Ubuntu 上运行它们，并运行 `cargo fmt --all -- --check`。
 
-SDK 尚未发布到 crates.io。ADR 0014 会在维护者批准后发布它；在此之前，crate 通过本仓库的 git 提交或路径依赖它，`tools/octo wasm new` 两种都能写。目前还没有任何 OctoSense 构建运行组件；组件发 HTTP 请求和调用宿主服务还需要 ADR 0014 的第 3 阶段，它尚未合并（见 [docs/RUST.zh-CN.md](../../docs/RUST.zh-CN.md)）。
+SDK 尚未发布到 crates.io。ADR 0014 会在维护者批准后发布它；在此之前，crate 通过本仓库的 git 提交或路径依赖它，`tools/octo wasm new` 两种都能写。OctoSense #453 已合并组件、HTTP 和宿主服务的源码集成；真实应用验收和兼容的可下载宿主仍需分别完成。能力名称仅披露用途；ABI/导入检查、应用与账户作用域、配额、实际同意及原生审核仍生效（见 [docs/RUST.zh-CN.md](../../docs/RUST.zh-CN.md)）。

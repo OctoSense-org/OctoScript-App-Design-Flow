@@ -445,7 +445,7 @@ class WasmCommands(unittest.TestCase):
             self.assertEqual(code, 1)
             self.assertIn(TCP, err)
             self.assertIn('a component has none. It reaches the network over HTTP through wasi:http, '
-                          'with octosense_component::http, once the manifest has `net`.', err)
+                          'with octosense_component::http; disclose that use with `net`.', err)
             self.assertNotIn('network.hosts', err)
             self.assertFalse((app / 'bundle/fns').exists())
             self.assertEqual((app / 'bundle/manifest.json').read_text(), before)
@@ -569,9 +569,12 @@ class WasmCommands(unittest.TestCase):
                 self.assertEqual(code, 0)
                 self.assertIn("reaches: the clock, files in its app folder, the network and its app's host "
                               "services, but no other app", out)
-                self.assertIn('"storage" in capabilities (it imports wasi:filesystem), "net" in capabilities '
-                              '(it imports wasi:http), the capability of each host service it calls (it imports '
-                              'octosense:host', out)
+                self.assertIn('the manifest requires "wasm-components-v1" in requires (runtime ABI)', out)
+                self.assertIn('usage disclosures in capabilities: "wasm", "storage" (it imports '
+                              'wasi:filesystem), "net" (it imports wasi:http)', out)
+                self.assertIn('omitted declarations do not deny execution', out)
+                self.assertIn('declared families are not permission gates', out)
+                self.assertNotIn('the manifest needs', out)
                 self.assertNotIn('network.hosts', out)
                 # The crates it is built from, as `wasm build` records them.
                 path.write_bytes(wasm_component.with_crates(component(ENV), CrateList.INVENTORY))

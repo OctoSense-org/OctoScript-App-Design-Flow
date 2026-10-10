@@ -9,8 +9,8 @@ per-app URL, media, socket or instruction-budget gate
 capability check before `host.request`
 ([makepad#118](https://github.com/OctoSense-org/makepad/pull/118),
 [OctoSense#450](https://github.com/OctoSense-org/OctoSense/issues/450)).
-The URL, media, socket, cumulative instruction-budget and `host.request`
-capability rules described below are those of `32d6415f`. Behavior marked
+The API shapes below retain their source-based evidence; policy paragraphs
+use the current declaration-only host/SDK contract described below. Behavior marked
 **✓ run** was observed in
 `card-host` on macOS. Idioms come from the system apps (OctoSense
 `apps/<name>/bundle/main.splash`), which are working code.
@@ -19,6 +19,26 @@ If something is not on this page, check the runtime source before using it.
 If it is not there either, it does not exist for apps.
 
 Paths below: `MP` is the makepad checkout, `HUB` is OctoSense-App-Hub `crates/`.
+
+## Current source policy and release boundary
+
+Capability names and `network.hosts` are usage disclosures, not permission
+gates. The compatible host/SDK update being prepared with App Hub contract
+1.11.0 makes public APIs, the network module and bounded app storage available
+without a matching declaration. Keep declarations accurate for users and
+reviewers. RC2 and older installed tools do not acquire this behavior from a
+documentation update; use matching host, Hub and runtime revisions.
+
+Actual consent remains: device and OS permission, connected-account ownership
+and provider scopes, native review of external writes, agent opt-in and
+inter-app sharing. Required host API versions, component ABI/import checks,
+provenance, exact digests, platform availability and quotas also remain.
+Use `runtime.list` and `runtime.describe` to discover implementations; neither
+method needs a `runtime` usage declaration in the corrected host. Internal
+host profile data and unowned `agent.notify` are not public app APIs.
+A plain `card-host` has no device-consent broker and does not expose private
+device reads; test those in a compatible shell with `host-api-v1`.
+
 
 ## Shape of a program
 
@@ -128,8 +148,8 @@ Math functions are global too: `floor ceil round abs min max clamp pow sqrt sin 
 The app's jail (`<app-data>/<id>/`; in `card-host` `<app>/.local-state/<id>/`).
 Paths are relative to it; a leading `/` means the jail root; `..` above the
 root is an error; symlinks are refused (`MP/widgets/src/splash_storage.rs`).
-Only an app granted `storage` has a jail. Without it every call below errors
-with `storage not available in this context` (see
+Every admitted app receives a private jail and quota in the corrected Hub
+adapter, regardless of storage usage declarations (see
 [CAPABILITIES](CAPABILITIES.md)).
 
 | Call | Returns | Verified |
@@ -155,9 +175,9 @@ do not run (**✓ run**: `[E] splash:…:6:21 - file not found`). Check with
 
 ## Network
 
-`net` exists only when the app has `net` **and** at least one host in
-`network.hosts`; otherwise it is not defined at all
-(`variable net not found in scope …`, **✓ run**).
+Every admitted app receives `net` in the corrected Hub adapter, even with
+empty `capabilities` and `network.hosts`. Older adapters can omit the module;
+use a compatible Hub/runtime pair.
 
 ```splash
 fn fetch(url){
@@ -183,25 +203,14 @@ fn refresh(){
   `res.status_code`, `res.headers`, `res.body` (bytes; `.to_string()`);
   `err.message`. Default response cap 16 MiB (`MP/platform/script/std/src/net.rs`).
 - `promise()`, `p.resolve(v)`, `p.await()` (News).
-- A URL outside the rules is refused **without** calling `on_error`: the call
-  logs `this app may not reach <url>` and the rest of the handler does not
-  run (**✓ run**).
-- `Image{src: http_resource(url)}` loads a picture; refused:
-  `this app may not load <url>` and the log line
-  `Script resource refused by the host's allowlist: <url>`.
+- `Image{src: http_resource(url)}` loads a picture. Network failures and
+  resource limits still need an app-visible error state.
 
-The rules (`MP/widgets/src/splash_policy.rs`): requests reach exactly the hosts
-in `network.hosts` (lowercase, exact, no wildcard). Pictures (`http_resource`)
-may also come from any public `https://` host when the app has `images`; web
-pages (WebReader) when it has `web`. Private, internal and non-https addresses
-are refused (`only https:// URLs are allowed`, `host not permitted (private/internal): <h>`).
-The gate additionally refuses a bundle whose source names an undeclared https
-host ([PUBLISHING §2](PUBLISHING.md#2-the-rules-the-gate-enforces)).
-
-`net.web_socket` is held to the host list like `net.http_request`
-(`this app may not reach <url>`). `net.socket_stream` and `net.http_server`
-are refused in a store app, whatever it was granted (`this app may not open a
-raw socket`, `this app may not open a listening server`; `MP/platform/script/std/src/net.rs`).
+The pinned runtime does not use `network.hosts` to deny HTTP, images,
+WebSocket, raw socket or listening-server operations. The current gate also
+does not refuse an unlisted HTTPS destination. Source admission continues
+checking unsafe bundle paths and plain `http://`/`file://` references; those
+are bundle-review rules, not a runtime host allowlist.
 
 ## Host services: `host.request`
 
@@ -215,13 +224,12 @@ host.request("mail.list", {account: account.id folder: folder.id offset: 0 limit
 - `host.request(service, args, fn(r))` returns a request id. `r.is_ok`
   (bool; `ok` is a keyword), `r.data` (parsed JSON or nil), `r.error`
   (string or nil) (`MP/widgets/src/splash_host.rs`).
-- Service `a.b` needs capability `a` (or exactly `a.b`). Without it the
-  callback runs immediately with `is_ok` false and
-  `r.error` = `this app was not granted "mail", which "mail.accounts" needs`;
-  the log shows `splash host: refused "mail.accounts": this app was not granted "mail", which "mail.accounts" needs` (**✓ run**).
+- Public `a.b` calls do not need an `a` usage declaration. The host checks
+  admission, actual consent, app/account ownership and availability.
+
 - No service for the family on this host: the callback gets
   `no service answers "<family>" on this device` at once. `card-host` has no
-  services, so every call there answers this (**✓ run**).
+  provider services; `runtime.list` and `runtime.describe` still answer.
 - Every request answers once (`HUB/appstore/src/services.rs`):
 
   | Situation | `r.error` |
@@ -232,9 +240,11 @@ host.request("mail.list", {account: account.id folder: folder.id offset: 0 limit
 
   The limits in full: App Hub
   [PUBLISHING § Host services and sheets](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/PUBLISHING.md#host-services-and-sheets).
-- `host.capabilities()` returns the granted list, such as `["storage"]` (**✓ run**);
+- `host.capabilities()` reports host-pushed runtime flags, including public
+  flags available independently of manifest declarations. It is not a consent
+  receipt or the full API inventory; use `runtime.list`/`runtime.describe`.
   `host.has("net")` returns a bool (**✓ run**). `host.has` says only that the
-  capability was granted, not that any service answers it. There is no
+  runtime flag is present, not that a service is configured or authorized. There is no
   `host.prompt`.
 - Which shell serves which service, sheets and the Mail methods:
   [HOST-SERVICES](HOST-SERVICES.md).
@@ -271,9 +281,9 @@ widget acts.
 | `GestureView`, `SheetView` | taps, swipes, pinches; bottom sheet with detents | – |
 | `Hr`, `Vr`, `Icon`, `LoadingSpinner`, `Slider`, `CheckBox`, `Toggle`, `RadioButton`, `DropDown` | controls | – |
 | `HostedView` | `full:` / `tile:` faces for the home screen (News, Photos) | – |
-| `WebReader` | `open(url)→bool close() is_open() error() url()` | a URL on the host list, or any public https page with `web`; refused: `refused <url>: not on this app's host list, and no \`web\` grant` |
-| `CameraPreview` | `start() stop() switch() capture() record_start() record_stop() set_zoom(n) set_flash(s) focus(x,y) last() error() …`; captures land in the jail at `DCIM/` | `camera`; refused: `this app was not granted the camera`. `microphone` adds sound, `library` copies to the photo library |
-| `MapView` | map with `set_nav_polyline` etc. (Maps) | tile hosts must be declared; follow camera needs `location` |
+| `WebReader` | `open(url)→bool close() is_open() error() url()` | Public web access depends on the platform adapter, not the destination declaration |
+| `CameraPreview` | `start() stop() switch() capture() record_start() record_stop() set_zoom(n) set_flash(s) focus(x,y) last() error() …`; captures land in the jail at `DCIM/` | Compatible shell and per-app/OS consent required; private device reads unavailable in plain `card-host`. Capture/audio/export intent must be explicit in the compatible release; flags alone are not user intent |
+| `MapView` | map with `set_nav_polyline` etc. (Maps) | Disclose tile destinations; GPS follow requires per-app location consent |
 | `glass.*` | Liquid-glass kit (`glass.Card`, `glass.GlassButton`, …) | – |
 
 Registration lines are in the source (`view_ui.rs`, `label.rs`, `button.rs`,
@@ -286,18 +296,18 @@ Every type name the pinned runtime resolves, by namespace, is listed in
 API.
 
 `card-host` registers `sys.*` (weather, stock, geocode, route, gps, …) with
-`register_agent_module`. Unverified: the OctoSense shells. Every fetch it
-makes is held to `network.hosts`, `sys.gps` reads "no fix" without
-`location`, and profile-backed helpers (`link`, `prefs`, watchlists) return
-empty because no app can hold `profile`. Prefer `net.http_request` to hosts
-you declare.
+`register_agent_module`. Unverified: the OctoSense shells. Network fetches are not limited by destination declarations. Plain
+`card-host` has no device-consent broker, so `sys.gps` has no private fix.
+A compatible shell applies per-app location consent. Profile-backed helpers
+(`link`, `prefs`, watchlists) remain private host APIs and return empty for
+installed apps; disclosure changes do not expose the host profile.
 
 ## Limits and what you see when you hit them
 
 | Limit | Value | Message |
 | --- | --- | --- |
 | One handler, timer, callback or the body | 200,000 instructions and 64 ms | `script instruction limit exceeded` (**✓ run**: an endless `loop` in a timer; the app kept running) / `script time budget exceeded` |
-| Cumulative instructions per session | manifest `compute.instruction_budget`, ceiling 20,000,000 (system 4,000,000,000); charged for the body, host callbacks and `tick` | `splash: <label> is stopped: its instruction budget is spent`; afterwards requests, network and media are refused |
+| Cumulative instructions per session | The pinned runtime counts this metadata but no longer stops the session for it | Per-handler limits still apply |
 | Heap | `compute.memory_bytes`, ceiling 64 MiB (system 128 MiB) | `script heap allocation limit exceeded while <op>: requested <n> bytes, <m> remaining` |
 | Storage | see Storage | `app storage is full`, `file too large`, `too many files` |
 | HTTP response | 16 MiB by default (`MP/platform/script/std/src/net.rs`) | – |
@@ -360,7 +370,7 @@ you declare.
 
 - Runtime errors in handlers, timers and callbacks:
   `[E] splash:<n>:<line>:<col> - <message> (<runtime file>:<line>)`.
-  `<line>` is the `main.splash` line **plus 3** (plus 4 when `net` is granted),
+  `<line>` is the `main.splash` line **plus 3** (plus 4 when `net` is injected),
   because of the prelude. An error on `main.splash` line 2 prints as
   `[E] splash:35135094784:5:26 - property missing_field not found …` (**✓ run**).
 - A body that fails to evaluate logs

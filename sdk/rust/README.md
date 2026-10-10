@@ -40,7 +40,9 @@ CI's `rust-sdk` job runs them on Ubuntu, with `cargo fmt --all -- --check`.
 
 The SDK is not on crates.io yet. ADR 0014 publishes it there with a
 maintainer's approval; until then, a crate depends on it by a git commit of
-this repository or by path, and `tools/octo wasm new` writes either. No
-OctoSense build runs components yet, and HTTP and host services from a
-component also need ADR 0014's phase 3, which is not merged
+this repository or by path, and `tools/octo wasm new` writes either.
+OctoSense #453 merged component, HTTP and host-service source integration;
+actual app acceptance and a compatible downloadable host remain separate.
+Capability names are usage disclosures; ABI/import checks, app/account
+scope, quotas, consent and native reviews still apply
 ([docs/RUST.md](../../docs/RUST.md)).

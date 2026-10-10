@@ -678,7 +678,7 @@ MAX_BUNDLE_BYTES = 8 << 20
 IMPORT_HINTS = (
     ("wasi:sockets/", "network sockets (std::net, or a crate such as reqwest, ureq or tokio's net, which open "
                       "sockets): a component has none. It reaches the network over HTTP through wasi:http, "
-                      "with octosense_component::http, once the manifest has `net`."),
+                      "with octosense_component::http; disclose that use with `net`."),
     ("__wbindgen", "JavaScript bindings (wasm-bindgen): turn off the dependency's js or wasm-bindgen feature."),
 )
 
@@ -1268,15 +1268,17 @@ def cmd_wasm_info(args):
             print("refused: no host loads it, and App Hub's gate refuses a bundle with it, for these imports:")
             print("\n".join(refusal_lines(refused)))
         else:
-            needs = ['"wasm" in capabilities', f'"{COMPONENTS_FEATURE}" in requires']
+            print(f'the manifest requires "{COMPONENTS_FEATURE}" in requires (runtime ABI)')
+            disclosures = ['"wasm"']
             if wasm_component.uses_files(imports):
-                needs.append('"storage" in capabilities (it imports wasi:filesystem)')
+                disclosures.append('"storage" (it imports wasi:filesystem)')
             if wasm_component.uses_http(imports):
-                needs.append('"net" in capabilities (it imports wasi:http)')
+                disclosures.append('"net" (it imports wasi:http)')
+            print("usage disclosures in capabilities: " + ", ".join(disclosures) +
+                  "; omitted declarations do not deny execution in compatible hosts")
             if wasm_component.uses_host_services(imports):
-                needs.append("the capability of each host service it calls (it imports octosense:host, "
-                             "which reaches only the services the app is granted)")
-            print("the manifest needs " + ", ".join(needs))
+                print("host services keep app/account scope, device consent, background-surface "
+                      "limits and availability; declared families are not permission gates")
     else:
         print(f"{path}: a WebAssembly core module (OctoSense ADR 0011), {len(data):,} bytes, read by {reader}")
         print("imports: " + (", ".join(imports) or "none"))

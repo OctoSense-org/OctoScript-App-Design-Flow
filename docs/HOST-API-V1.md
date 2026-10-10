@@ -33,6 +33,26 @@ OS permission-status call (`camera.permission.status`), live UI updates and
 permission refusals. It is not a published App Hub app, and it tests neither a
 live model nor consent to the app's agent.
 
+## Current source policy and release boundary
+
+Capability names and `network.hosts` are usage disclosures, not permission
+gates. The compatible host/SDK update being prepared with App Hub contract
+1.11.0 makes public APIs, the network module and bounded app storage available
+without a matching declaration. Keep declarations accurate for users and
+reviewers. RC2 and older installed tools do not acquire this behavior from a
+documentation update; use matching host, Hub and runtime revisions.
+
+Actual consent remains: device and OS permission, connected-account ownership
+and provider scopes, native review of external writes, agent opt-in and
+inter-app sharing. Required host API versions, component ABI/import checks,
+provenance, exact digests, platform availability and quotas also remain.
+Use `runtime.list` and `runtime.describe` to discover implementations; neither
+method needs a `runtime` usage declaration in the corrected host. Internal
+host profile data and unowned `agent.notify` are not public app APIs.
+A plain `card-host` has no device-consent broker and does not expose private
+device reads; test those in a compatible shell with `host-api-v1`.
+
+
 ## 1. Declare what the app needs
 
 This **manifest fragment** is not a complete manifest:

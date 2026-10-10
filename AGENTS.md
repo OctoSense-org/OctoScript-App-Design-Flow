@@ -81,10 +81,12 @@ says who runs each one and when.
   app's own backend: the bundle declares it in a signed `backend` block, or
   the host's operator registers it
   ([the backend guide](docs/HOST-API-V1.md#4-connect-the-apps-backend)).
-- **Declare every host.** List in `network.hosts` every `https://` host that
-  `main.splash` contacts, and request `net`. `images` and `web` add pictures
-  and pages from any public `https://` host; they do not widen `net`. Never
-  use `http://`.
+- **Disclose expected API and network use.** Capability names and
+  `network.hosts` are descriptive in the corrected host/SDK; omission must
+  not become an execution gate. Keep genuine device/account consent, native
+  reviews, ABI compatibility, quotas, integrity and inter-app sharing checks.
+  See [the current-source policy](docs/CAPABILITIES.md#current-source-policy-and-release-boundary).
+  Use HTTPS and do not assume this behavior is already in an older release.
 - **Every AI feature is optional.** Make the app complete without one:
   `card-host` (and so `tools/octo run`) serves no AI service, and every call
   there answers `no service answers "…" on this device`. On an OctoSense
@@ -110,7 +112,7 @@ says who runs each one and when.
     login and protected writes are unsupported and fail closed. Android Google
     authorization remains unavailable.
   - A granted `implemented_by: "host-service"` tool maps to a reviewed
-    `host_method`. Capability, risk, private-data and account checks still apply.
+    `host_method`. Actual consent, risk, private-data and account checks still apply.
   - `implemented_by: "app"` requires `script-tools-v1`; the shell invokes the
     app's `app_tool` handler in its existing full-app isolate. A closed app
     returns `app_not_running` ([host API guide](docs/HOST-API-V1.md)).
@@ -123,24 +125,20 @@ says who runs each one and when.
     path and an honest missing-service state.
 
 - **Your own Rust code runs only as WebAssembly.** It goes in `bundle/fns/`
-  with the `wasm` capability; a bundle never carries a native library.
+  with `wasm` disclosed; a bundle never carries a native library.
   Follow [docs/RUST.md](docs/RUST.md).
-  - A **core module** (OctoSense ADR 0011) is what runs today. Standard
-    OctoSense builds from `main` run modules on macOS, Linux and Android,
-    and desktop 0.1.0-rc.2 on macOS and Linux; builds for Windows, iOS and
-    OpenHarmony leave the runtime out. Every call gets a fresh instance, so no state survives
-    between calls.
+  - A **core module** (OctoSense ADR 0011) starts a fresh instance on each
+    call. Desktop 0.1.0-rc.2 runs modules on macOS and Linux. Current source
+    includes macOS, Windows, Linux, Android and OpenHarmony (Pulley), but
+    excludes iOS. Source inclusion is not native platform acceptance.
   - A **component** (ADR 0014) is ordinary Rust built with this
     repository's SDK: `tools/octo wasm new`, then `tools/octo wasm build`,
-    which also adds `requires: ["wasm-components-v1"]` (`storage` for
-    files, and `net` for HTTP; it never adds a host). A component's HTTP
-    reaches any host: an app's network declarations are shown at install and
-    not enforced while it runs (OctoSense's ruling of 8 October 2026). No
-    OctoSense build loads components yet, and App Hub `main` refuses them
-    until App Hub #186 merges; HTTP
-    (`octosense_component::http`) and host services
-    (`octosense_component::host`) also need ADR 0014's phase 3 and App Hub
-    #188. Say so, and report calling one from an app as unverified.
+    which also adds the required `wasm-components-v1` ABI and usage
+    disclosures (`storage` for files, `net` for HTTP). Missing disclosures
+    must not become execution gates. OctoSense #453 merged component,
+    HTTP and host-service integration; App Hub #186/#188 are also merged.
+    Compatible release and actual app acceptance remain separate.
+    Preserve app/account scope, quotas, consent and native reviews.
   - `card-host` answers every call with
     `no service answers "wasm" on this device`. An isolated Wasm fixture is
     not evidence that your app's functions work; test its exact bundle and

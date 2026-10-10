@@ -30,12 +30,11 @@ COMPONENT_PREAMBLE = b"\0asm\x0d\x00\x01\x00"
 MODULE_PREAMBLE = b"\0asm\x01\x00\x00\x00"
 
 # The packages a component may import (ADR 0014); the same list as App Hub's
-# ALLOWED_COMPONENT_IMPORTS. wasi:filesystem reaches only the app's storage
-# folder and needs the manifest's `storage` capability. wasi:http needs `net`
-# and reaches any host: an app's network declarations are shown at install and
-# not enforced while it runs (OctoSense's ruling of 8 October 2026; phase 3).
-# octosense:host needs no grant of its own: it reaches only the host services
-# the app is granted (phase 3). A package name is matched whole.
+# ALLOWED_COMPONENT_IMPORTS. Files stay in the app's bounded private folder;
+# wasi:http reaches the network. Capability and destination declarations
+# disclose usage rather than authorize execution. octosense:host keeps the
+# app identity, actual service authorization and background-surface limits.
+# A package name is matched whole.
 ALLOWED_IMPORTS = ("wasi:cli/", "wasi:clocks/", "wasi:filesystem/", "wasi:http/", "wasi:io/", "wasi:random/",
                    "octosense:host/")
 FILESYSTEM = "wasi:filesystem/"
@@ -613,7 +612,7 @@ def refused_imports(imports):
 
 
 def uses_files(imports):
-    """Whether it imports wasi:filesystem: the app's storage folder, with `storage`."""
+    """Whether it imports wasi:filesystem: the app's bounded storage folder."""
     return any(name.startswith(FILESYSTEM) for name in imports)
 
 
@@ -623,7 +622,7 @@ def uses_http(imports):
 
 
 def uses_host_services(imports):
-    """Whether it imports octosense:host: the host services its app is granted."""
+    """Whether it imports octosense:host: the public host services available to its app."""
     return any(name.startswith(HOST_SERVICES) for name in imports)
 
 
