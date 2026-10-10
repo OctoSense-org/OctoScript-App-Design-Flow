@@ -49,6 +49,25 @@ jobs:
           cargo test --locked --workspace
       - name: octo wasm with cargo and the built components
         run: python -m unittest discover -s tools -p "test_*.py" -v
+      - name: Read the publisher pin
+        id: publisher
+        run: |
+          python - <<'PY'
+          import json, os
+          pin = json.load(open('tools/publisher-toolchain.json'))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('revision=' + pin['revision'] + '\n')
+          PY
+      - uses: actions/checkout@v6
+        with:
+          repository: OctoSense-org/OctoSense-App-Hub
+          ref: ${{ steps.publisher.outputs.revision }}
+          path: publisher-tools/app-hub
+          persist-credentials: false
+      - name: Prepare the publisher runtime sources
+        run: python tools/setup-native.py --root publisher-tools
+      - name: Pinned publisher admits current components and retains proof checks
+        run: python tools/check-publisher-toolchain.py --hub-source publisher-tools/app-hub
 
   flows:
     # macOS: the image library's OCR and the flows' native tooling are
