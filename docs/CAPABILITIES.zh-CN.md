@@ -47,7 +47,7 @@
 
 | 能力 | 脚本得到什么 | 未申请时 |
 | --- | --- | --- |
-| `net` | `net.http_request` 和 `net.web_socket`，只能访问 `network.hosts` 中列出的主机。主机必须写成精确的小写纯主机名：不带协议、路径、端口或通配符。组件的 `wasi:http` 请求经 HTTPS 访问同样的主机（OctoSense ADR 0014 第 3 阶段，尚未合并；见 [RUST § 网络](RUST.zh-CN.md#网络)）。 | 脚本中根本没有 `net`：`variable net not found in scope`。申请了 `net` 但主机列表为空时也是如此。 |
+| `net` | `net.http_request` 和 `net.web_socket`，只能访问 `network.hosts` 中列出的主机。主机必须写成精确的小写纯主机名：不带协议、路径、端口或通配符。组件的 `wasi:http` 请求同样需要 `net`，但可以访问任何主机：按 OctoSense 2026 年 10 月 8 日的裁定，应用的网络声明在安装时展示，运行时不强制（OctoSense ADR 0014 第 3 阶段，尚未合并；见 [RUST § 网络](RUST.zh-CN.md#网络)）。 | 脚本中根本没有 `net`：`variable net not found in scope`。申请了 `net` 但主机列表为空时也是如此。 |
 | `images` | 任何公开 `https://` 主机上的图片（`Image{src: http_resource(url)}`），不限于 `network.hosts`，例如 RSS 阅读器的缩略图。`net.http_request` 的访问范围不会因此扩大。 | 只能加载已列出主机上的图片。 |
 | `web` | `WebReader` 可以在系统的网页视图中打开任何公开的 `https://` 网页。网页无法反过来访问应用。可用性取决于[宿主与平台限制](../README.zh-CN.md#下载兼容-shell)。 | `WebReader.open` 只能打开已列出主机上的网页，其他一律拒绝：``refused <url>: not on this app's host list, and no `web` grant``。 |
 

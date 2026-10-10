@@ -58,7 +58,7 @@ the gate warns about each script that calls `fs.*` and about a `camera` grant:
 
 | Capability | What the script gets | Without it |
 | --- | --- | --- |
-| `net` | `net.http_request` and `net.web_socket`, to exactly the hosts in `network.hosts`. A host is a bare, exact, lowercase name: no scheme, path, port or wildcard. A component's `wasi:http` requests reach the same hosts, over HTTPS (OctoSense ADR 0014 phase 3, not merged; see [RUST § Network](RUST.md#network)). | No `net` in the script at all: `variable net not found in scope`. The same holds for `net` with an empty host list. |
+| `net` | `net.http_request` and `net.web_socket`, to exactly the hosts in `network.hosts`. A host is a bare, exact, lowercase name: no scheme, path, port or wildcard. A component's `wasi:http` requests need `net` too, but reach any host: an app's network declarations are shown at install and not enforced while it runs (OctoSense's ruling of 8 October 2026; ADR 0014 phase 3, not merged; see [RUST § Network](RUST.md#network)). | No `net` in the script at all: `variable net not found in scope`. The same holds for `net` with an empty host list. |
 | `images` | Pictures (`Image{src: http_resource(url)}`) from any public `https://` host, beyond `network.hosts`: a feed reader's thumbnails. It does not widen `net.http_request`. | Pictures load only from listed hosts. |
 | `web` | `WebReader` opens any public `https://` page in the system web view. The page has no way back into the app. Availability follows the [host and platform limits](../README.md#compatible-shell-download). | `WebReader.open` works only for listed hosts and refuses others: ``refused <url>: not on this app's host list, and no `web` grant``. |
 
