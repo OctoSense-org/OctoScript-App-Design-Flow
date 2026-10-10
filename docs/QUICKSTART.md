@@ -115,6 +115,15 @@ in `target/release/` (or `$CARGO_TARGET_DIR/release/`): `hub` (the gate) and
 `card-host` (the host that runs one bundle). On Windows they are `hub.exe` and
 `card-host.exe`.
 
+When updating an existing workspace, update App Hub's clean `main` checkout
+(`git pull --ff-only`) and rebuild both binaries with the command above.
+Updating App Flow or running `setup-native.py` alone does not update an old
+`hub` or `card-host` executable. In particular, App Hub #199 fixes the admitted
+app identity used by native host-service calls. `doctor` checks that binaries
+are available, not their revision; check its selected paths and refresh any
+`OCTO_HUB` / `OCTO_CARD_HOST` overrides too. This preview build is separate from
+the immutable toolchain copied into an app's [publishing workflow](PUBLISHING.md#36-github-publisher-identity--human).
+
 If the build fails with `no variant … TextInputStateQuery`, see [The `card-host` build fails on `TextInputStateQuery`](#the-card-host-build-fails-on-textinputstatequery).
 
 Then, from this repository:

@@ -32,8 +32,13 @@ jobs:
     # example components built for wasm32-wasip2 and run in Wasmtime with
     # WASI 0.2, then `octo wasm` reading them and building a new crate.
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app-flow
     steps:
       - uses: actions/checkout@v6
+        with:
+          path: app-flow
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
@@ -43,12 +48,31 @@ jobs:
           rustup default stable
           rustup target add wasm32-wasip2
       - name: Macro, examples and end-to-end tests
-        working-directory: sdk/rust
+        working-directory: app-flow/sdk/rust
         run: |
           cargo fmt --all -- --check
           cargo test --locked --workspace
       - name: octo wasm with cargo and the built components
         run: python -m unittest discover -s tools -p "test_*.py" -v
+      - name: Read the publisher pin
+        id: publisher
+        run: |
+          python - <<'PY'
+          import json, os
+          pin = json.load(open('tools/publisher-toolchain.json'))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('revision=' + pin['revision'] + '\n')
+          PY
+      - uses: actions/checkout@v6
+        with:
+          repository: OctoSense-org/OctoSense-App-Hub
+          ref: ${{ steps.publisher.outputs.revision }}
+          path: publisher-tools/app-hub
+          persist-credentials: false
+      - name: Prepare the publisher runtime sources
+        run: python tools/setup-native.py --root ../publisher-tools
+      - name: Pinned publisher admits current components and retains proof checks
+        run: python tools/check-publisher-toolchain.py --hub-source ../publisher-tools/app-hub
 
   flows:
     # macOS: the image library's OCR and the flows' native tooling are

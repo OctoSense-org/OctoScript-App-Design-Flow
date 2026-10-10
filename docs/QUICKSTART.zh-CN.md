@@ -81,6 +81,8 @@ cargo build --release -p octosense-card-host -p octosense-app-hub
 
 构建成功时，输出以 `Finished release profile …` 结尾。生成的程序位于 `target/release/`（或 `$CARGO_TARGET_DIR/release/`）：`hub`（准入检查）和 `card-host`（运行单个应用包的宿主）。在 Windows 上，文件名是 `hub.exe` 和 `card-host.exe`。
 
+更新已有工作区时，请在 App Hub 的干净 `main` 分支上运行 `git pull --ff-only`，再用上面的命令重建两个程序。只更新 App Flow 或运行 `setup-native.py` 不会更新旧的 `hub` / `card-host` 可执行文件。例如，App Hub #199 修复了原生宿主服务调用所使用的已准入应用身份。`doctor` 只检查能否找到程序，不检查版本；请查看它选择的路径，同时更新 `OCTO_HUB` / `OCTO_CARD_HOST` 指向的程序。这个预览构建与复制到应用[发布工作流](PUBLISHING.zh-CN.md#36-github-发布者身份human)中的固定工具版本相互独立。
+
 如果构建失败并提示 `no variant … TextInputStateQuery`，请看[构建 `card-host` 时报 `TextInputStateQuery` 错误](#构建-card-host-时报-textinputstatequery-错误)。
 
 然后在本仓库中运行：

@@ -243,6 +243,22 @@ It refuses to overwrite a different workflow unless you explicitly use
 `--replace`. No developer signing secret is required; the workflow uses GitHub's
 short-lived job token and OIDC permissions for attestation and release creation.
 
+An existing generated workflow keeps its original Hub pin when App Flow is
+updated. To refresh it, first preserve any local workflow customizations, then
+explicitly run `tools/octo publish-github "$APP" --replace` and review
+`git -C "$APP" diff -- .github/workflows/publish-app.yml` before committing.
+Replacement writes this generated file in full; it does not merge custom steps.
+Do not replace unrelated workflows. The current pin, App Hub `7b36c8af`, admits
+HTTP and host-service component imports and shared components under the
+declaration-only policy; the older `769e9ee3` publisher does not. ABI requirements,
+bundle integrity and GitHub publisher-proof checks still apply.
+
+CI builds the exact [publisher pin](../tools/publisher-toolchain.json) and runs
+[the native CLI regression](../tools/check-publisher-toolchain.py) against real
+SDK components. It checks structural admission and publisher preparation,
+including missing-ABI, unsupported-import and missing-proof refusals. This does
+not attest or publish an app, run its guests, or prove shell/device behavior.
+
 Keep the tested, unsigned `bundle/` as source. Review and commit the workflow,
 source, real screenshots and `.gitattributes` in the public app repository.
 Create and push a **new** `v<manifest.version>` tag for that commit, for example
