@@ -103,7 +103,10 @@ says who runs each one and when.
 - **Connected accounts, GitHub-attested apps and Host API v1 need the compatible
   RC release, RC1 or later.** Read [download status](README.md#compatible-shell-download)
   for package checksums and platform prerequisites. Contract 1.8.0 admits the public
-  publisher proof; beta.2 cannot install the new apps or consume the v2 catalog.
+  publisher proof. Desktop beta.2 predates that support. Home beta.2 includes
+  `publisher-github-v1` and v2 catalog support, but its release smoke did not
+  verify GitHub-attested app installation or updates; check the exact host,
+  bundle ABI and platform requirements before claiming phone acceptance.
   - The host runs OAuth sign-in and returns app-bound connection handles,
     never tokens. The RC contains no public provider registrations; the host
     distributor/operator must supply them. The current connected samples are

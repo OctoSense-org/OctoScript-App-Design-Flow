@@ -6,8 +6,8 @@ A store app's bundle holds no native code, but it can carry your Rust code
 as WebAssembly in its `fns/` folder. The shell's `wasm` service runs that code
 in a sandbox, and the app's script calls it by name. There are two kinds:
 
-- A **component** ([ADR 0014](https://github.com/OctoSense-org/OctoSense/pull/436),
-  proposed): you write ordinary Rust with this repository's SDK, and
+- A **component** ([ADR 0014](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/docs/adr/0014-app-components-in-webassembly.md),
+  accepted): you write ordinary Rust with this repository's SDK, and
   `tools/octo wasm build` turns it into `fns/<name>.wasm`. The script calls
   each `pub fn` as `wasm.<function>` with JSON, so there is no WIT and no glue
   code to write. A component keeps its state between calls, and it has a
@@ -19,16 +19,19 @@ in a sandbox, and the app's script calls it by name. There are two kinds:
   nothing but their input. [Core modules](#core-modules-adr-0011) at the end
   of this page covers them.
 
-**Current source and release boundary.** [OctoSense #453](https://github.com/OctoSense-org/OctoSense/pull/453)
-merged component loading, HTTP and host-service integration. App Hub #186
-and #188 are also merged. Contract 1.11.0 and [App Hub #192](https://github.com/OctoSense-org/OctoSense-App-Hub/pull/192)
-prepare the corrected policy: `capabilities` and `network.hosts` disclose
-usage and do not deny an otherwise available public API when omitted.
+**Current source and release boundary.** [Desktop RC4](../README.md#compatible-shell-download)
+is published at source `9266b008`, with component loading, HTTP, public
+host-service imports and shared catalog components. Its App Hub contract 1.11
+uses `capabilities` and `network.hosts` as disclosures, not execution gates.
 `requires`, supported imports, integrity, quotas, app/account scope, actual
 device consent, native write review and inter-app sharing still apply.
-A source merge and SDK fixture pass do not prove that a downloadable host
-runs a particular app. The compatible release and actual app acceptance
-remain separate; RC2 has core modules only.
+The final Mac archive matches the candidate that passed 11/11 Store/component
+checks using real GitHub proofs and a private administrator-attested rehearsal
+catalog. This is not official-public-catalog component installation, live-model
+or Windows/Linux GUI acceptance. OnePlus 6 component checks used an isolated
+source fixture, not a Home upgrade. Test your exact app separately.
+RC2 and Home beta.2 ship core modules only; historical observations below
+retain their original scope.
 
 | | Core module (ADR 0011) | Component (ADR 0014) |
 | --- | --- | --- |
@@ -37,9 +40,9 @@ remain separate; RC2 has core modules only.
 | Between calls | Starts fresh every call | Keeps its state |
 | The manifest | Disclose `wasm` | Require `wasm-components-v1`; disclose `wasm`, `storage` for files and `net` for HTTP |
 | App Hub's gate (`hub check`) | Admits it from contract 1.7 | Current source admits supported components with `wasm-components-v1`; the 1.11 policy treats family declarations as disclosures. |
-| OctoSense `main` (macOS, Linux and Android) | Runs it | Source includes component loading and phase 3 adapters since #453. Test the exact app on its supported host; no component release acceptance is claimed here. |
+| Current source (macOS, Windows, Linux, Android and OpenHarmony) | Included; OpenHarmony uses Pulley | Included, with phase 3 adapters and per-app shared-component loading; iOS excluded. Source inclusion does not establish device acceptance. |
 | `card-host` | Admits the app; calls answer `no service answers "wasm" on this device` | Also has no `wasm` service. Manifest admission does not make a component runnable there. |
-| Releases | Desktop 0.1.0-rc.2 runs it on macOS and Linux; no Home release does | None runs it |
+| Releases | Desktop RC4 on macOS/Windows/Linux; also desktop RC2 on macOS/Linux and Home beta.2 | Desktop RC4 includes it on macOS/Windows/Linux; final Mac archive acceptance is linked above. Home beta.2 has no components. |
 
 The recorded command examples below were run on macOS (Apple silicon)
 with Rust 1.97.1 before the declaration-policy correction, unless marked
@@ -54,10 +57,10 @@ not a current requirement to obtain a family grant. The examples use an app that
 | You need | Route | Read |
 | --- | --- | --- |
 | Computation with crates.io crates: parsing, formats, scoring, crypto, image processing | A component | [Write a component](#write-a-component) |
-| Pure computation in an app that must run today | A core module | [Core modules](#core-modules-adr-0011) |
+| Pure computation that also needs older core-module hosts | A core module | [Core modules](#core-modules-adr-0011) |
 | The camera, the microphone or the location | Host APIs: the `camera`, `microphone` and `location` capabilities, their permission methods and `location.get` | [HOST-API-V1 §3](HOST-API-V1.md#3-request-device-access-in-the-foreground) |
 | The network | Splash's `net` or a component's `octosense_component::http`; declarations disclose expected destinations. A core module has no network: fetch in Splash, then pass data in. | [Network](#network) |
-| The app's host services, such as `runtime.list` | `host.request` in Splash, or `octosense_component::host` in a component (phase 3, **unverified** in a shell) | [Host services](#host-services) |
+| The app's host services, such as `runtime.list` | `host.request` in Splash, or `octosense_component::host` in a component (included in RC4; test the exact host method and its authorization) | [Host services](#host-services) |
 | Files | Bounded private storage, through `fs.*` in Splash or `std::fs` in a component. | [Storage](SCRIPT-API.md#storage-fs) |
 | Something a Rust crate already does | Not by calling the crate from Splash. Build it into a component ([Write a component](#write-a-component); first run `tools/octo wasm doctor`, which names the crates whose job OctoSense already does), or into a core module for pure computation; propose a shared host service in OctoSense and contribute its adapter, with method descriptors, app-scoped resources and tests ([HOST-SERVICES § Add a host service](HOST-SERVICES.md#add-a-host-service)); or run it in your own backend, reached through `net` or the authenticated backend API ([HOST-API-V1 §4](HOST-API-V1.md#4-connect-the-apps-backend)). A crate in a shell's `Cargo.lock` is not callable from Splash, and a `.so`, `.dylib` or `Cargo.toml` in a bundle adds nothing: the gate refuses it. | This page, [HOST-SERVICES](HOST-SERVICES.md), [HOST-API-V1 §4](HOST-API-V1.md#4-connect-the-apps-backend) |
 | A native library, threads or OS calls | Not available to a store app. App Hub's gate refuses native libraries, and native code ships only inside a shell release. | App Hub's [delivery paths](https://github.com/OctoSense-org/OctoSense-App-Hub/blob/main/docs/DEVELOPMENT.md#choose-a-delivery-path) |
@@ -285,7 +288,8 @@ always reads from the file itself.
 
 ### 5. Call it from the app
 
-**Unverified:** no shell runs components yet; this follows ADR 0014.
+RC4 implements this component call path. The recorded SDK examples below
+retain their own scope; separately test your exact app in the installed host.
 
 ```splash
 host.request("wasm.count", {text: "one two\nthree"}, fn(r){
@@ -317,14 +321,15 @@ An agent tool maps to a component's function as to a module's, with
   Use it for the layout and for what the app shows without its functions.
   Whether App Hub `main`'s `card-host` admits the manifest at all is
   **unverified** (see the table at the top).
-- `tools/octo check` runs App Hub's gate. With App Hub `main`'s `hub`, it
-  stops at the stamp: `hub: app dev.example.texttools needs a newer host: wasm-components-v1`.
-  With App Hub #186's, the gate admits the component and tells the reviewer
-  what it reaches ([What the gate checks](#what-the-gate-checks)).
-- Running the app's functions in OctoSense needs ADR 0014's phase 2, and is
-  **unverified**. Once it lands, test as for a module
-  ([Test it](#test-it), steps 2 to 9). A function that sends HTTP requests
-  or calls host services needs phase 3 as well.
+- `tools/octo check` runs App Hub's current gate, which admits supported
+  components with `wasm-components-v1`. The historical pre-#186 run stopped
+  at the stamp: `hub: app dev.example.texttools needs a newer host: wasm-components-v1`.
+  That output belongs to the older gate; see
+  [What the gate checks](#what-the-gate-checks) for the current policy.
+- Desktop RC4 includes phases 2 and 3. Test your app in that host, with its
+  real imports and public host-service calls; the SDK's local fixtures do not
+  establish your app's behavior or provider authorization. The older module
+  rehearsal ([Test it](#test-it), steps 2 to 9) has its own recorded scope.
 
 The SDK's own tests build its examples and the template with plain cargo for
 `wasm32-wasip2`, load them in Wasmtime 49 with WASI 0.2 as ADR 0014's
@@ -567,9 +572,8 @@ One instance of each component lives for as long as the app's worker, so a
 call. A trap or a deadline ends the instance, and the next call starts a new
 one. An app update, a changed grant or a withdrawal discards it, as for
 modules (ADR 0014). The SDK's tests show a `static` counter kept between two
-calls on one instance; how long the shell keeps the instance is
-**unverified** until phase 2 lands. Keep what must survive in the app's
-storage.
+calls on one instance; test your exact app's instance lifetime on its host.
+Keep what must survive in the app's storage.
 
 ### What cannot build or run
 
@@ -605,7 +609,7 @@ OctoSense already does for a store app, `tools/octo wasm doctor` prints an
 | --- | --- | --- | --- |
 | `pulldown-cmark`, `comrak`, `markdown` | Splash's `Markdown` widget, which renders Markdown, tables included | Only to produce HTML or to read Markdown as data | [SCRIPT-API § Widgets](SCRIPT-API.md#widgets-available-to-an-app) |
 | `feed-rs`, `rss`, `atom_syndication` | `text.parse_feed(style)` in the script: each RSS or Atom item's title, link, source, publication time, summary and image | Only for what `parse_feed` does not read | [SCRIPT-API § Data and strings](SCRIPT-API.md#data-and-strings) |
-| `async-openai`, `genai`, `ollama-rs`, `openai-api-rs` | `model.complete`, with the `model` capability: one-shot, schema-checked requests to the person's own AI providers, within a daily budget | Never with a provider key: an app holds none | [AI-SERVICES § One-shot model calls](AI-SERVICES.md#one-shot-model-calls-model) |
+| `async-openai`, `genai`, `ollama-rs`, `openai-api-rs` | `model.complete`, with `model` usage disclosed: one-shot, schema-checked requests to the person's own AI providers, within a daily budget | Never with a provider key: an app holds none | [AI-SERVICES § One-shot model calls](AI-SERVICES.md#one-shot-model-calls-model) |
 
 For the SDK's `markdown-tools` example, which turns Markdown into HTML,
 `tools/octo wasm doctor --crate sdk/rust/examples/markdown-tools` prints,
@@ -626,10 +630,11 @@ component reaches the network with `octosense_component::http` instead
 
 `tools/octo wasm build` records in each component the crates it is built
 from, and the release workflow records the same list
-([7. Publish it](#7-publish-it)). App Hub's gate is to show the list to the
-reviewers and check it against the
-[RustSec advisory database](https://rustsec.org/). That side is in review in
-App Hub, so it is **unverified** here.
+([7. Publish it](#7-publish-it)). App Hub validates and reports the list.
+`hub check --advisory-db <directory>` additionally checks a local checkout of
+the [RustSec advisory database](https://rustsec.org/); it does not download one
+implicitly. This path is implemented in the pinned Hub source; these recorded
+SDK examples are not a fresh advisory audit of your dependencies.
 
 The list names every package whose code the component links: what the
 crate's normal dependencies reach for `wasm32-wasip2`, as
@@ -655,8 +660,8 @@ component with the section and runs it as before: the SDK's end-to-end tests
 passed on a `markdown-tools` component that carried its list
 (`OCTOSENSE_COMPONENT_WASM=<file> cargo test --locked -p octosense-component-e2e`,
 in `sdk/rust/`).
-Whether the shell's `wasm` service loads one is **unverified**, as no shell
-runs components yet.
+RC4's `wasm` service loads components; the recorded SDK test above is
+separate from [final archive acceptance](../README.md#compatible-shell-download).
 
 `tools/octo wasm info` prints the list. For the template, built with the SDK
 by path:
@@ -706,7 +711,7 @@ bundle) are the same as for modules ([Build it](#build-it)).
 
 ## Core modules (ADR 0011)
 
-A core module is supported by OctoSense `main` and desktop 0.1.0-rc.2: a WebAssembly core module,
+A core module is supported by current OctoSense and the releases listed below: a WebAssembly core module,
 not a component, whose functions take and return bytes or JSON and reach
 nothing but their input. The rest of this section is the guide to them.
 
@@ -716,10 +721,9 @@ The shell's `wasm` host service runs the functions. OctoSense's
 [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.md)
 accepts the service with limited support: `wasm-functions`, an OctoSense
 Cargo feature that is on by default, includes it in every standard desktop
-and Home build on macOS, Linux and Android. `wasm-lab` is the feature's
-former name and stays as an alias. Builds for Windows (RC2 leaves it out), iOS
-(no code generation for apps) and OpenHarmony (policy unknown) leave the
-runtime out.
+and Home source build on macOS, Windows, Linux, Android and OpenHarmony.
+OpenHarmony uses Pulley and has no device acceptance here. `wasm-lab` is the
+feature's former name and stays as an alias. iOS leaves the runtime out.
 
 | Build | Accepts an app that requests `wasm` | Runs its functions |
 | --- | --- | --- |
@@ -727,13 +731,15 @@ runtime out.
 | [OctoSense desktop 0.1.0-rc.1](../README.md#compatible-shell-download) default build | Yes | No. Every call answers `no service answers "wasm" on this device`. |
 | [OctoSense desktop 0.1.0-rc.2](../README.md#compatible-shell-download) on macOS or Linux | Yes | Yes |
 | OctoSense desktop 0.1.0-rc.2 on Windows | Yes | No. Every call answers `no service answers "wasm" on this device`. |
-| OctoSense `main`, default build for macOS, Linux or Android: feature `wasm-functions`, formerly `wasm-lab` | Yes | Yes |
-| OctoSense `main`, build for Windows, iOS or OpenHarmony | Yes | No. Every call answers `no service answers "wasm" on this device`. |
+| Desktop RC4 on macOS, Windows and Linux | Yes | Included; Mac archive acceptance passed. Windows/Linux installed-GUI acceptance is unverified. |
+| Home beta.2 | Yes | Core modules included; this desktop release does not upgrade Home. |
+| Current source for macOS, Windows, Linux, Android or OpenHarmony: `wasm-functions` | Yes | Included; OpenHarmony uses Pulley, without device acceptance here. |
+| Current iOS source | Yes | No Wasm service. |
 | `card-host`, built from App Hub `main` | Yes | No. Every call answers `no service answers "wasm" on this device`. |
 
 Desktop 0.1.0-rc.2 is the first release with the service, on macOS and Linux
 (its Windows build leaves it out); `desktop-v0.1.0-beta.2`, desktop RC1 and
-`home-v0.1.0-beta.1` do not include it. No released Home build has it yet.
+`home-v0.1.0-beta.1` do not include it. [Home beta.2](https://github.com/OctoSense-org/OctoSense/releases/tag/home-v0.1.0-beta.2) includes core modules; RC4 adds desktop components.
 
 App Hub's gate (`hub check`) admits the `wasm` capability from app contract
 1.7, with at most 8 modules per bundle ([Build it](#build-it)).
@@ -1237,7 +1243,7 @@ Do not name a function `functions`: `wasm.functions` never calls it.
 | `r.error` | Cause | Fix |
 | --- | --- | --- |
 | Older host says `this app was not granted "wasm"` | It predates declaration-only policy. | Use the compatible corrected host; disclose Wasm usage for review. |
-| `no service answers "wasm" on this device` | The host has no `wasm` service: `card-host`, a release, or an OctoSense build for Windows, iOS or OpenHarmony. | Test in a desktop shell built from OctoSense `main` on macOS or Linux ([Test it](#test-it)). |
+| `no service answers "wasm" on this device` | The host lacks the service, for example `card-host`, an older release or an iOS build. | Use a compatible [RC4 host](../README.md#compatible-shell-download) and test the exact app ([Test it](#test-it)). |
 | `<app id> has no function "rank"` | No module exports that name. | Compare the name with what `wasm.functions` lists. |
 | `<app id>'s bundle has no fns directory` | The app requests `wasm` but ships no module. | Add `fns/<name>.wasm`. |
 | `<file>: the module imports <name>; only octo.log is provided` | A dependency imports WASI or `wasm-bindgen` functions. | Build for `wasm32-unknown-unknown`, and drop that dependency. |
@@ -1313,26 +1319,28 @@ file; build it as OctoSense's
 [phone README](https://github.com/OctoSense-org/OctoSense/blob/main/phone/README.md)
 describes (**unverified**).
 
-## Open items
+<a id="open-items"></a>
+
+## Implementation status and remaining work
 
 OctoSense's [ADR 0011](https://github.com/OctoSense-org/OctoSense/blob/main/docs/adr/0011-apps-own-functions-in-webassembly.md)
 records the design for modules, and
-[ADR 0014](https://github.com/OctoSense-org/OctoSense/pull/436) the design for
-components, with its phases. These items are open:
+[ADR 0014](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/docs/adr/0014-app-components-in-webassembly.md) the design for
+components, with its phases. Current status and remaining limits:
 
 | Item | Status |
 | --- | --- |
-| Components in a shell (ADR 0014, phase 2) | Source integration merged in #453; exact app/device and downloadable release acceptance remain separate. |
+| Components in a shell (ADR 0014, phase 2) | Included in Desktop RC4; final Mac archive passed 11/11 checks. Your exact app still needs acceptance. |
 | App Hub's gate for components | #186/#188 merged: supported components need `wasm-components-v1`; 1.11 removes declaration-derived refusal. |
-| App Hub's use of the crate list | In review in App Hub: the gate showing a component's `octosense-crates` list to reviewers and checking it against the RustSec advisory database ([The crates it is built from](#the-crates-it-is-built-from)). |
+| App Hub's use of the crate list | Implemented: list validation and optional local RustSec database checks through `hub check --advisory-db` ([The crates it is built from](#the-crates-it-is-built-from)). |
 | The SDK on crates.io | Not yet. ADR 0014 publishes it there with a maintainer's approval; until then, a crate depends on it by a git commit or a path. |
 | Outgoing HTTP and host services from a component (phase 3) | Source merged in #453; SDK fixtures use a local HTTP server and fake services. Real account/provider acceptance is separate. |
 | Compiling before first use (phase 3) | Source schedules background cache warming after admission, one app at a time. Measure an exact installed app on its target device; cached loads do not prove install-time compilation completed. |
-| Shared components in App Hub's catalog (phase 4) | Not yet. |
+| Shared components in App Hub's catalog (phase 4) | Implemented and included in RC4. Private admin-attested catalog installation passed; official public-catalog component publication/install remains unverified. |
 | A CPU budget per app | Not yet. The limits apply per call, so an app can keep one core busy with back-to-back calls. |
 | Agent tools with a live model | Unverified. OctoSense's tests call Wasm Lab's tools through the shell's tool executor, without a model. |
-| Windows | #453 source includes the runtime; native Windows component acceptance is unverified here. |
-| iOS | Not yet. Builds for iOS leave the runtime out. iOS allows no JIT for apps, so Wasmtime would have to use its Pulley interpreter, about 17 times slower than Cranelift; ADR 0014 plans that for phase 3. iOS also allows no downloaded native code, so a store app's functions cannot be compiled ahead of time there either. |
+| Windows | Included in RC4. Runtime CI passed 42/42 at the later test-only `a8e170d4`; installed-GUI acceptance remains unverified ([release limits](../README.md#compatible-shell-download)). |
+| iOS | Excluded and not planned in accepted ADR 0014. No iOS runtime or device claim. |
 | OpenHarmony | #453 source includes Wasmtime Pulley; device component acceptance is unverified here. |
 | Deterministic limits (fuel) | Not decided. |
 
@@ -1341,7 +1349,7 @@ components, with its phases. These items are open:
 - OctoSense's [WebAssembly in OctoSense](https://github.com/OctoSense-org/OctoSense/blob/main/docs/wasm.md):
   how the `wasm` service works on `main`, with its limits, platforms and
   tests.
-- OctoSense's ADR 0014, in [OctoSense #436](https://github.com/OctoSense-org/OctoSense/pull/436):
+- OctoSense's accepted [ADR 0014](https://github.com/OctoSense-org/OctoSense/blob/9266b0083544d86bd7636543b5ff60c61b26460f/docs/adr/0014-app-components-in-webassembly.md):
   components, their WASI subset, the JSON mapping and the phases.
 - This repository's SDK, [sdk/rust/](../sdk/rust/README.md): the
   `octosense-component` crate with its macro and its `http` and `host`
