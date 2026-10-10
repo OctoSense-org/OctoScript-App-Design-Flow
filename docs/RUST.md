@@ -353,10 +353,9 @@ With the SDK by path, cargo built the same component, byte for byte, but its
 crate list names the SDK's source as `path` instead of
 `git+https://github.com/OctoSense-org/OctoSense-App-Flow#<commit>`, so the
 file differs from the release's there (82,346 bytes). A release run on GitHub
-is **unverified**. Publishing an app with components also needs this
-repository's publisher toolchain (`tools/publisher-toolchain.json`) to name
-an App Hub revision that admits them (App Hub #186); the one it names now
-refuses them.
+is **unverified**. The publisher toolchain (`tools/publisher-toolchain.json`)
+names App Hub `769e9ee3`, the merge of App Hub #186, whose gate admits
+components.
 
 ## What a component can use
 
