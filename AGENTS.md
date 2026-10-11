@@ -142,6 +142,8 @@ says who runs each one and when.
     HTTP and host-service integration; App Hub #186/#188 are also merged.
     Compatible release and actual app acceptance remain separate.
     Preserve app/account scope, quotas, consent and native reviews.
+    `tools/octo wasm call` runs one function of a built component from the
+    command line through an OctoSense checkout; it is not a shell.
   - `card-host` answers every call with
     `no service answers "wasm" on this device`. An isolated Wasm fixture is
     not evidence that your app's functions work; test its exact bundle and
